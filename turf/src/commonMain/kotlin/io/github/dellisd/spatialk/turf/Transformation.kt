@@ -4,7 +4,6 @@ import io.github.dellisd.spatialk.geojson.LineString
 import io.github.dellisd.spatialk.geojson.Point
 import io.github.dellisd.spatialk.geojson.Polygon
 import io.github.dellisd.spatialk.geojson.Position
-import kotlin.jvm.JvmOverloads
 
 /**
  * Takes a [LineString] and returns a curved version by applying a Bezier spline algorithm.
@@ -147,7 +146,6 @@ public fun bezierSpline(coords: List<Position>, duration: Int = 10_000, sharpnes
  * @param steps number of steps, must be at least four. Default is 64
  * @param units unit of [radius], default is [Units.Kilometers]
  */
-@JvmOverloads
 @ExperimentalTurfApi
 public fun circle(center: Point, radius: Double, steps: Int = 64, units: Units = Units.Kilometers): Polygon {
     require(steps >= 4) { "circle needs to have four or more coordinates." }
