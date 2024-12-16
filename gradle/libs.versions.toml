@@ -14,5 +14,5 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 
 kotlinx-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version.ref = "benchmark" }
 publish = { id = "com.vanniktech.maven.publish", version = "0.25.2" }
-dokka = { id = "org.jetbrains.dokka", version = "1.9.10" }
+dokka = { id = "org.jetbrains.dokka", version = "2.0.0" }
 resources = { id = "com.goncalossilva.resources", version.ref = "resources" }
