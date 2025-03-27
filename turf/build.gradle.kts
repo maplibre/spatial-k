@@ -126,7 +126,7 @@ kotlin {
 // tasks.named("jsBrowserTest") { enabled = false }
 
 // Configure Dokka tasks
-tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+tasks.withType<org.jetbrains.dokka.gradle.AbstractDokkaTask>().configureEach {
     // Disable Dokka tasks to work around the npm directory issue
     enabled = false
 
@@ -136,7 +136,7 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
 
 tasks.register<Jar>("dokkaJavadocJar") {
     archiveClassifier.set("javadoc")
-    from(tasks.named("dokkaJavadoc"))
+    from(tasks.named("dokkaGeneratePublicationHtml"))
 }
 
 tasks.withType(KotlinCompile::class.java).configureEach {
@@ -146,6 +146,6 @@ tasks.withType(KotlinCompile::class.java).configureEach {
 // Working around dokka problems
 afterEvaluate {
     tasks.named("dokkaJavadocJar").configure {
-        dependsOn(":geojson:dokkaHtml")
+        dependsOn(":geojson:dokkaGeneratePublicationHtml")
     }
 }
