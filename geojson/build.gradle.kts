@@ -157,8 +157,7 @@ benchmark {
 }
 
 tasks.withType<org.jetbrains.dokka.gradle.AbstractDokkaTask>().configureEach {
-    // custom output directory
-    outputDirectory.set(buildDir.resolve("$rootDir/docs/api"))
+    outputDirectory.set(layout.buildDirectory.dir("docs/api"))
 }
 
 tasks.withType(KotlinCompile::class.java).configureEach {

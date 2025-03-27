@@ -129,9 +129,7 @@ kotlin {
 tasks.withType<org.jetbrains.dokka.gradle.AbstractDokkaTask>().configureEach {
     // Disable Dokka tasks to work around the npm directory issue
     enabled = false
-
-    // custom output directory (will not be used since tasks are disabled)
-    outputDirectory.set(buildDir.resolve("$rootDir/docs/api"))
+    outputDirectory.set(layout.buildDirectory.dir("docs/api"))
 }
 
 tasks.register<Jar>("dokkaJavadocJar") {
