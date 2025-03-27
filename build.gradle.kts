@@ -4,7 +4,15 @@ plugins {
     alias(libs.plugins.dokka)
 }
 
-tasks.dokkaHtmlMultiModule.configure {
+// Configure NodeJS for all projects
+rootProject.plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin> {
+    rootProject.the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension>().apply {
+        nodeVersion = "16.0.0"
+        nodeDownloadBaseUrl = "https://nodejs.org/dist"
+    }
+}
+
+tasks.withType<org.jetbrains.dokka.gradle.DokkaMultiModuleTask>().configureEach {
     outputDirectory.set(rootDir.absoluteFile.resolve("docs/api"))
     moduleName.set("Spatial K")
 

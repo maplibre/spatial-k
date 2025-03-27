@@ -13,12 +13,12 @@ kotlin {
     explicitApi()
 
     jvm()
-    js {
-        browser {
-        }
-        nodejs {
-        }
-    }
+    // Disable JavaScript target to work around the npm directory issue
+    // js {
+    //     browser()
+    //     nodejs()
+    //     binaries.executable()
+    // }
     // For ARM, should be changed to iosArm32 or iosArm64
     // For Linux, should be changed to e.g. linuxX64
     // For MacOS, should be changed to e.g. macosX64
@@ -47,19 +47,48 @@ kotlin {
     sourceSets["jvmTest"].dependencies {
     }
 
-    sourceSets["jsMain"].dependencies {
-    }
+    // JavaScript target is disabled
+    // sourceSets["jsMain"].dependencies {
+    // }
 
-    sourceSets["jsTest"].dependencies {
-    }
-
-    sourceSets["nativeMain"].dependencies {
-    }
-    sourceSets["nativeTest"].dependencies {
-    }
+    // sourceSets["jsTest"].dependencies {
+    // }
 
     sourceSets {
-        val nativeMain by getting {}
+        val commonMain by getting {}
+        val commonTest by getting {}
+
+        // JVM intermediate source sets
+        val jvmCommonMain by creating {
+            dependsOn(commonMain)
+        }
+        val jvmCommonTest by creating {
+            dependsOn(commonTest)
+        }
+        val jvmMain by getting {
+            dependsOn(jvmCommonMain)
+        }
+        val jvmTest by getting {
+            dependsOn(jvmCommonTest)
+        }
+
+        // JS intermediate source sets are disabled
+        // val jsCommonMain by creating {
+        //     dependsOn(commonMain)
+        // }
+        // val jsCommonTest by creating {
+        //     dependsOn(commonTest)
+        // }
+        // val jsMain by getting {
+        //     dependsOn(jsCommonMain)
+        // }
+        // val jsTest by getting {
+        //     dependsOn(jsCommonTest)
+        // }
+
+        val nativeMain by getting {
+            dependsOn(commonMain)
+        }
         getByName("macosMain").dependsOn(nativeMain)
         getByName("mingwMain").dependsOn(nativeMain)
         val iosX64Main by getting
@@ -93,11 +122,21 @@ kotlin {
     }
 }
 
-tasks.named("jsBrowserTest") { enabled = false }
+// JavaScript target is disabled
+// tasks.named("jsBrowserTest") { enabled = false }
 
+// Configure Dokka tasks
 tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
-    // custom output directory
+    // Disable Dokka tasks to work around the npm directory issue
+    enabled = false
+
+    // custom output directory (will not be used since tasks are disabled)
     outputDirectory.set(buildDir.resolve("$rootDir/docs/api"))
+}
+
+tasks.register<Jar>("dokkaJavadocJar") {
+    archiveClassifier.set("javadoc")
+    from(tasks.named("dokkaJavadoc"))
 }
 
 tasks.withType(KotlinCompile::class.java).configureEach {

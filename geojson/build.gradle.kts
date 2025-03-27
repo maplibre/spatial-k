@@ -60,46 +60,71 @@ kotlin {
         }
 
         val jsMain by getting {}
+        val jsCommonMain by creating {
+            dependsOn(commonMain)
+        }
+        jsMain.dependsOn(jsCommonMain)
 
         val jvmMain by getting {}
-
-        val nativeMain by getting {
-            getByName("macosMain").dependsOn(this)
-            getByName("mingwMain").dependsOn(this)
+        val jvmCommonMain by creating {
+            dependsOn(commonMain)
         }
+        jvmMain.dependsOn(jvmCommonMain)
 
-        val nativeTest by getting {
-            getByName("macosTest").dependsOn(this)
-            getByName("mingwTest").dependsOn(this)
+        val nativeMain by getting {}
+        val nativeCommonMain by creating {
+            dependsOn(commonMain)
         }
+        nativeMain.dependsOn(nativeCommonMain)
+
+        val macosMain by getting
+        val mingwMain by getting
+        macosMain.dependsOn(nativeCommonMain)
+        mingwMain.dependsOn(nativeCommonMain)
+
+        val nativeTest by getting {}
+        val nativeCommonTest by creating {
+            dependsOn(commonTest)
+        }
+        nativeTest.dependsOn(nativeCommonTest)
+
+        val macosTest by getting
+        val mingwTest by getting
+        macosTest.dependsOn(nativeCommonTest)
+        mingwTest.dependsOn(nativeCommonTest)
 
         val commonBench by creating {
-            dependsOn(commonMain)
             dependencies {
                 implementation(libs.kotlinx.benchmark)
             }
         }
 
+        val jsBenchCommon by creating {
+            dependsOn(commonBench)
+        }
         val jsBench by getting {
-            dependsOn(commonBench)
-            dependsOn(jsMain)
+            dependsOn(jsBenchCommon)
         }
 
+        val jvmBenchCommon by creating {
+            dependsOn(commonBench)
+        }
         val jvmBench by getting {
-            dependsOn(commonBench)
-            dependsOn(jvmMain)
+            dependsOn(jvmBenchCommon)
         }
 
-        val nativeBench by getting {
+        val nativeBenchCommon by creating {
             dependsOn(commonBench)
-            dependsOn(nativeMain)
+        }
+        val nativeBench by getting {
+            dependsOn(nativeBenchCommon)
         }
 
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
         val iosMain by creating {
-            dependsOn(nativeMain)
+            dependsOn(nativeCommonMain)
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
@@ -109,7 +134,7 @@ kotlin {
         val iosArm64Test by getting
         val iosSimulatorArm64Test by getting
         val iosTest by creating {
-            dependsOn(nativeTest)
+            dependsOn(nativeCommonTest)
             iosX64Test.dependsOn(this)
             iosArm64Test.dependsOn(this)
             iosSimulatorArm64Test.dependsOn(this)

@@ -1,10 +1,10 @@
 [versions]
-kotlin = "1.9.22"
+kotlin = "2.1.20"
 resources = "0.4.0"
-benchmark = "0.4.8"
-kotlinx-serialization = "1.5.1"
-maven-publish = "0.25.2"
-dokka = "1.9.10"
+benchmark = "0.4.13"
+kotlinx-serialization = "1.8.0"
+maven-publish = "0.31.0"
+dokka = "2.0.0"
 
 [libraries]
 resources = { module = "com.goncalossilva:resources", version.ref = "resources" }
