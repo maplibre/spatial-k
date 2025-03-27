@@ -161,5 +161,5 @@ tasks.withType<org.jetbrains.dokka.gradle.AbstractDokkaTask>().configureEach {
 }
 
 tasks.withType(KotlinCompile::class.java).configureEach {
-    compilerOptions.jvmTarget.set(JvmTarget.JVM_1_8)
+    compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
 }
