@@ -2,10 +2,13 @@
 kotlin = "1.9.22"
 resources = "0.4.0"
 benchmark = "0.4.8"
+kotlinx-serialization = "1.5.1"
+maven-publish = "0.25.2"
+dokka = "1.9.10"
 
 [libraries]
 resources = { module = "com.goncalossilva:resources", version.ref = "resources" }
-kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version.ref = "benchmark" }
 
 [plugins]
@@ -13,6 +16,6 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 kotlinx-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version.ref = "benchmark" }
-publish = { id = "com.vanniktech.maven.publish", version = "0.25.2" }
-dokka = { id = "org.jetbrains.dokka", version = "1.9.10" }
+publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 resources = { id = "com.goncalossilva.resources", version.ref = "resources" }
