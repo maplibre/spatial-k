@@ -1,6 +1,7 @@
 .idea
 .gradle
 .kotlin
+.output.txt
 
 **/build
 
