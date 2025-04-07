@@ -7,7 +7,7 @@ plugins {
 // Configure NodeJS for all projects
 rootProject.plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin> {
     rootProject.the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension>().apply {
-        nodeVersion = "16.0.0"
+        nodeVersion = "20.10.0"
         nodeDownloadBaseUrl = "https://nodejs.org/dist"
     }
 }
