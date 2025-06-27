@@ -5,7 +5,7 @@ benchmark = "0.4.8"
 
 [libraries]
 resources = { module = "com.goncalossilva:resources", version.ref = "resources" }
-kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
+kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
 kotlinx-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version.ref = "benchmark" }
 
 [plugins]
