@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.9.22"
-resources = "0.4.0"
+resources = "0.10.1"
 benchmark = "0.4.8"
 
 [libraries]
