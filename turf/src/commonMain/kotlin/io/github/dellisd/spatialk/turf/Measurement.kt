@@ -656,6 +656,60 @@ public fun greatCircle(start: Position, end: Position, pointCount: Int = 100, an
 }
 
 /**
+ * Calculates the distance between a given point and the nearest point on a line.
+ *
+ * @param point point to calculate from
+ * @param line line to calculate to
+ * @param units units of [distance]
+ */
+@ExperimentalTurfApi
+public fun pointToLineDistance(point: Position, line: LineString, units: Units = Units.Kilometers): Double {
+    var distance = Double.MAX_VALUE
+
+    line.coordinates.drop(1).mapIndexed { idx, position ->
+        line.coordinates[idx] to position
+    }.forEach { (prev, cur) ->
+        val d = distanceToSegment(point, prev, cur, units)
+        if (d < distance) distance = d
+    }
+
+    return distance
+}
+
+
+@OptIn(ExperimentalTurfApi::class)
+private fun distanceToSegment(
+    point: Position,
+    start: Position,
+    end: Position,
+    units: Units = Units.Meters
+): Double {
+    fun dot(u: Position, v: Position): Double {
+        return u.longitude * v.longitude + u.latitude * v.latitude;
+    }
+
+    val segmentVector = Position(end.longitude - start.longitude, end.latitude - start.latitude)
+    val pointVector = Position(point.longitude - start.longitude, point.latitude - start.latitude)
+
+    val projectionLengthSquared = dot(pointVector, segmentVector)
+    if (projectionLengthSquared <= 0) {
+        return rhumbDistance(point, start, units);
+    }
+    val segmentLengthSquared = dot(segmentVector, segmentVector)
+    if (segmentLengthSquared <= projectionLengthSquared) {
+        return rhumbDistance(point, end, units);
+    }
+
+    val projectionRatio = projectionLengthSquared / segmentLengthSquared;
+    val projectedPoint = Position(
+        start.longitude + projectionRatio * segmentVector.longitude,
+        start.latitude + projectionRatio * segmentVector.latitude
+    )
+
+    return rhumbDistance(point, projectedPoint, units);
+}
+
+/**
  * Calculates the distance along a rhumb line between two points.
  */
 @OptIn(ExperimentalTurfApi::class)
