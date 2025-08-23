@@ -186,4 +186,14 @@ class TurfMeasurementTest {
             greatCircle(start, antipodal)
         }
     }
+    @Test
+    fun testRhumbDistance() {
+        val distance = rhumbDistance(
+            Position(-75.343, 39.984),
+            Position(-75.534, 39.123),
+            Units.Kilometers
+        )
+
+        assertEquals(97.12923942772163, distance)
+    }
 }
