@@ -4,11 +4,13 @@ import io.github.dellisd.spatialk.geojson.Feature
 import io.github.dellisd.spatialk.geojson.FeatureCollection
 import io.github.dellisd.spatialk.geojson.LineString
 import io.github.dellisd.spatialk.geojson.Point
+import io.github.dellisd.spatialk.turf.utils.assertPositionEquals
 import io.github.dellisd.spatialk.turf.utils.readResource
 import kotlinx.serialization.json.double
 import kotlinx.serialization.json.jsonPrimitive
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @ExperimentalTurfApi
 class TransformationTest {
@@ -54,6 +56,11 @@ class TransformationTest {
             radius = point.properties["radius"]?.jsonPrimitive?.double ?: 0.0,
         )
 
-        assertEquals(expectedCircle.geometry, circle)
+        val allCoordinates = expectedCircle.geometry?.coordAll().orEmpty()
+        assertTrue(allCoordinates.isNotEmpty())
+        assertEquals(allCoordinates.size, circle.coordAll().size)
+        allCoordinates.forEachIndexed { i, position ->
+            assertPositionEquals(position, circle.coordAll()[i])
+        }
     }
 }
