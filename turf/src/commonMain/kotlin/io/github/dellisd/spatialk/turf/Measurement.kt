@@ -44,6 +44,7 @@ public fun along(line: LineString, distance: Double, units: Units = Units.Kilome
         when {
             distance >= travelled && i == line.coordinates.size - 1 -> {
             }
+
             travelled >= distance -> {
                 val overshot = distance - travelled
                 return if (overshot == 0.0) coordinate
@@ -60,6 +61,7 @@ public fun along(line: LineString, distance: Double, units: Units = Units.Kilome
                     )
                 }
             }
+
             else -> travelled += distance(
                 coordinate,
                 line.coordinates[i + 1],
@@ -85,6 +87,7 @@ public fun area(geometry: Geometry): Double {
                 geom
             )
         }
+
         else -> calculateArea(geometry)
     }
 }
@@ -97,6 +100,7 @@ private fun calculateArea(geometry: Geometry): Double {
                 coords
             )
         }
+
         else -> 0.0
     }
 }
@@ -140,11 +144,13 @@ private fun ringArea(coordinates: List<Position>): Double {
                     middleIndex = coordinates.size - 1
                     upperIndex = 0
                 }
+
                 coordinates.size - 1 -> {
                     lowerIndex = coordinates.size - 1
                     middleIndex = 0
                     upperIndex = 1
                 }
+
                 else -> {
                     lowerIndex = i
                     middleIndex = i + 1
@@ -231,7 +237,7 @@ public fun bbox(geometry: MultiPolygon): BoundingBox = computeBbox(geometry.coor
  * @return A [BoundingBox] that covers the geometry.
  */
 @ExperimentalTurfApi
-public fun bbox(feature: Feature): BoundingBox = computeBbox(feature.coordAll() ?: emptyList())
+public fun bbox(feature: Feature<Geometry>): BoundingBox = computeBbox(feature.coordAll() ?: emptyList())
 
 /**
  * Takes a feature collection and calculates a bbox that covers all features in the collection.
@@ -472,7 +478,7 @@ public fun midpoint(point1: Position, point2: Position): Position {
  * @return A [Point] holding the center coordinates
  */
 @ExperimentalTurfApi
-public fun center(feature: Feature): Point {
+public fun center(feature: Feature<Geometry>): Point {
     val ext = bbox(feature)
     val x = (ext.southwest.longitude + ext.northeast.longitude) / 2
     val y = (ext.southwest.latitude + ext.northeast.latitude) / 2

@@ -10,10 +10,10 @@ import kotlin.jvm.JvmName
 
 @GeoJsonDsl
 public class FeatureCollectionDsl(
-    private val features: MutableList<Feature> = mutableListOf(),
+    private val features: MutableList<Feature<Geometry>> = mutableListOf(),
     public var bbox: BoundingBox? = null
 ) {
-    public operator fun Feature.unaryPlus() {
+    public operator fun Feature<Geometry>.unaryPlus() {
         features.add(this)
     }
 

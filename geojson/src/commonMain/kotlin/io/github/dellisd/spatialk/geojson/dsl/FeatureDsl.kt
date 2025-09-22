@@ -34,9 +34,9 @@ public class PropertiesBuilder {
 }
 
 @GeoJsonDsl
-public inline fun feature(
-    geometry: Geometry? = null,
+public inline fun <reified T : Geometry> feature(
+    geometry: T? = null,
     id: String? = null,
     bbox: BoundingBox? = null,
     properties: PropertiesBuilder.() -> Unit = {}
-): Feature = Feature(geometry, PropertiesBuilder().apply(properties).build(), id, bbox)
+): Feature<T> = Feature(geometry, PropertiesBuilder().apply(properties).build(), id, bbox)

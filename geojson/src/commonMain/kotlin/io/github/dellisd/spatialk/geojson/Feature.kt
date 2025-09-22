@@ -32,8 +32,8 @@ import kotlin.jvm.JvmStatic
  */
 @Suppress("TooManyFunctions")
 @Serializable(with = FeatureSerializer::class)
-public class Feature(
-    public val geometry: Geometry?,
+public class Feature<out T : Geometry>(
+    public val geometry: T?,
     properties: Map<String, JsonElement> = emptyMap(),
     public val id: String? = null,
     override val bbox: BoundingBox? = null
@@ -80,7 +80,7 @@ public class Feature(
         if (this === other) return true
         if (other == null || this::class != other::class) return false
 
-        other as Feature
+        other as Feature<*>
 
         if (geometry != other.geometry) return false
         if (id != other.id) return false
@@ -115,26 +115,27 @@ public class Feature(
             )
         }}"""
 
-    public fun copy(
-        geometry: Geometry? = this.geometry,
+    public fun <T : Geometry> copy(
+        geometry: T? = this.geometry as T,
         properties: Map<String, JsonElement> = this.properties,
         id: String? = this.id,
         bbox: BoundingBox? = this.bbox
-    ): Feature = Feature(geometry, properties, id, bbox)
+    ): Feature<T> = Feature(geometry, properties, id, bbox)
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): Feature = fromJson(Json.decodeFromString(JsonObject.serializer(), json))
+        public fun <T : Geometry> fromJson(json: String): Feature<T> =
+            fromJson(Json.decodeFromString(JsonObject.serializer(), json))
 
         @JvmStatic
-        public fun fromJsonOrNull(json: String): Feature? = try {
+        public fun <T : Geometry> fromJsonOrNull(json: String): Feature<T>? = try {
             fromJson(json)
         } catch (_: Exception) {
             null
         }
 
         @JvmStatic
-        public fun fromJson(json: JsonObject): Feature {
+        public fun <T : Geometry> fromJson(json: JsonObject): Feature<T> {
             require(json.getValue("type").jsonPrimitive.content == "Feature") {
                 "Object \"type\" is not \"Feature\"."
             }
@@ -143,7 +144,7 @@ public class Feature(
             val id = json["id"]?.jsonPrimitive?.content
 
             val geom = json["geometry"]?.jsonObject
-            val geometry: Geometry? = if (geom != null) Geometry.fromJson(geom) else null
+            val geometry: T? = if (geom != null) Geometry.fromJson(geom) as? T else null
 
             return Feature(geometry, json["properties"]?.jsonObject ?: emptyMap(), id, bbox)
         }

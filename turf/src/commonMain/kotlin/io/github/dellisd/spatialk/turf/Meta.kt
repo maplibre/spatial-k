@@ -52,7 +52,7 @@ public fun GeometryCollection.coordAll(): List<Position> =
     geometries.fold(emptyList<Position>()) { acc, geometry -> acc + geometry.coordAll() }
 
 @ExperimentalTurfApi
-public fun Feature.coordAll(): List<Position>? = geometry?.coordAll()
+public fun Feature<Geometry>.coordAll(): List<Position>? = geometry?.coordAll()
 
 @ExperimentalTurfApi
 public fun FeatureCollection.coordAll(): List<Position> =

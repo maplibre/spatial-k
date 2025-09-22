@@ -20,6 +20,7 @@ import kotlin.jvm.JvmOverloads
  * the point is inside the polygon otherwise false.
  * @return `true` if the Position is inside the Polygon; `false` if the Position is not inside the Polygon
  */
+@ExperimentalTurfApi
 @JvmOverloads
 public fun booleanPointInPolygon(point: Point, polygon: Polygon, ignoreBoundary: Boolean = false): Boolean {
     val bbox = bbox(polygon)
@@ -38,6 +39,7 @@ public fun booleanPointInPolygon(point: Point, polygon: Polygon, ignoreBoundary:
  * the point is inside the polygon otherwise false.
  * @return `true` if the Position is inside the Polygon; `false` if the Position is not inside the Polygon
  */
+@OptIn(ExperimentalTurfApi::class)
 @JvmOverloads
 public fun booleanPointInPolygon(point: Point, polygon: MultiPolygon, ignoreBoundary: Boolean = false): Boolean {
     val bbox = bbox(polygon)

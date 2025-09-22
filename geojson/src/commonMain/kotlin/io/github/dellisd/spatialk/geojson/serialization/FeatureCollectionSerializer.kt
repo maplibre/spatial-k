@@ -2,7 +2,6 @@ package io.github.dellisd.spatialk.geojson.serialization
 
 import io.github.dellisd.spatialk.geojson.FeatureCollection
 import io.github.dellisd.spatialk.geojson.serialization.BoundingBoxSerializer.toJsonArray
-import io.github.dellisd.spatialk.geojson.serialization.FeatureSerializer.toJsonObject
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.json.JsonDecoder
@@ -16,7 +15,7 @@ public object FeatureCollectionSerializer : JsonSerializer<FeatureCollection> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("FeatureCollection")
 
     override fun deserialize(input: JsonDecoder): FeatureCollection {
-        return FeatureCollection.Companion.fromJson(input.decodeJsonElement().jsonObject)
+        return FeatureCollection.fromJson(input.decodeJsonElement().jsonObject)
     }
 
     override fun serialize(output: JsonEncoder, value: FeatureCollection) {
@@ -26,7 +25,7 @@ public object FeatureCollectionSerializer : JsonSerializer<FeatureCollection> {
             put(
                 "features",
                 buildJsonArray {
-                    value.features.forEach { add(it.toJsonObject()) }
+                    value.features.forEach { feature -> add(feature.toJsonObject()) }
                 }
             )
         }

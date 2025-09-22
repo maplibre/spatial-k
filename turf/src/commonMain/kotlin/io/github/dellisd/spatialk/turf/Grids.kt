@@ -3,6 +3,7 @@ package io.github.dellisd.spatialk.turf
 import io.github.dellisd.spatialk.geojson.BoundingBox
 import io.github.dellisd.spatialk.geojson.Feature
 import io.github.dellisd.spatialk.geojson.FeatureCollection
+import io.github.dellisd.spatialk.geojson.Geometry
 import io.github.dellisd.spatialk.geojson.Polygon
 import io.github.dellisd.spatialk.geojson.Position
 import kotlin.math.abs
@@ -24,7 +25,7 @@ public fun squareGrid(
     cellHeight: Double,
     units: Units = Units.Kilometers
 ): FeatureCollection {
-    val featureList = mutableListOf<Feature>()
+    val featureList = mutableListOf<Feature<Geometry>>()
     val west = bbox.southwest.longitude
     val south = bbox.southwest.latitude
     val east = bbox.northeast.longitude
@@ -43,9 +44,9 @@ public fun squareGrid(
     val deltaY = (bboxHeight - rows * cellHeightDeg) / 2
 
     var currentX = west + deltaX
-    repeat (columns.toInt()) {
+    repeat(columns.toInt()) {
         var currentY = south + deltaY
-        repeat (rows.toInt()) {
+        repeat(rows.toInt()) {
             val positions = mutableListOf<Position>().apply {
                 add(Position(currentX, currentY))
                 add(Position(currentX, currentY + cellHeightDeg))

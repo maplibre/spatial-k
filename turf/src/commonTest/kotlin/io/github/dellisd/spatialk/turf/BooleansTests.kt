@@ -12,6 +12,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalTurfApi::class)
 @ExperimentalSerializationApi
 class BooleansTests {
 
@@ -61,7 +62,7 @@ class BooleansTests {
         val ptInHole = point(-86.69208526611328, 36.20373274711739)
         val ptInPoly = point(-86.72229766845702, 36.20258997094334)
         val ptOutsidePoly = point(-86.75079345703125, 36.18527313913089)
-        val polyHole = Feature.fromJson(readResource("booleans/in/poly-with-hole.geojson")).geometry as Polygon
+        val polyHole = Feature.fromJson<Polygon>(readResource("booleans/in/poly-with-hole.geojson")).geometry as Polygon
 
         assertFalse(booleanPointInPolygon(ptInHole, polyHole))
         assertTrue(booleanPointInPolygon(ptInPoly, polyHole))
@@ -75,7 +76,7 @@ class BooleansTests {
         val ptInPoly2 = point(-86.75079345703125, 36.18527313913089)
         val ptOutsidePoly = point(-86.75302505493164, 36.23015046460186)
         val multiPolyHole =
-            Feature.fromJson(readResource("booleans/in/multipoly-with-hole.geojson")).geometry as MultiPolygon
+            Feature.fromJson<MultiPolygon>(readResource("booleans/in/multipoly-with-hole.geojson")).geometry!!
 
         assertFalse(booleanPointInPolygon(ptInHole, multiPolyHole))
         assertTrue(booleanPointInPolygon(ptInPoly, multiPolyHole))
