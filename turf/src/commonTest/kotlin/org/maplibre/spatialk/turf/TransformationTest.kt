@@ -46,21 +46,6 @@ class TransformationTest {
         assertEquals(expectedOut.geometry, bezierSpline(feature.geometry as LineString))
     }
 
-    @Test
-<<<<<<< HEAD:turf/src/commonTest/kotlin/io/github/dellisd/spatialk/turf/TransformationTest.kt
-    fun testSimplifyLineString() {
-        val feature = Feature.fromJson(readResource("transformation/simplify/in/linestring.json"))
-        val expected = Feature.fromJson(readResource("transformation/simplify/out/linestring.json"))
-        val simplified = simplify(feature.geometry as LineString, 0.01, false)
-        val roundedSimplified = LineString(simplified.coordinates.map { position ->
-            Position(
-                (position.longitude * 1000000).roundToInt() / 1000000.0,
-                (position.latitude * 1000000).roundToInt() / 1000000.0
-            )
-        })
-        assertEquals(expected.geometry as LineString, roundedSimplified)
-||||||| 812654b:turf/src/commonTest/kotlin/io/github/dellisd/spatialk/turf/TransformationTest.kt
-=======
     fun testCircle() {
         val point = Feature.fromJson(readResource("transformation/circle/in/circle1.json"))
         val expectedOut = FeatureCollection.fromJson(readResource("transformation/circle/out/circle1.json"))
@@ -78,6 +63,19 @@ class TransformationTest {
         allCoordinates.forEachIndexed { i, position ->
             assertPositionEquals(position, circle.coordAll()[i])
         }
->>>>>>> main:turf/src/commonTest/kotlin/org/maplibre/spatialk/turf/TransformationTest.kt
+    }
+
+    @Test
+    fun testSimplifyLineString() {
+        val feature = Feature.fromJson(readResource("transformation/simplify/in/linestring.json"))
+        val expected = Feature.fromJson(readResource("transformation/simplify/out/linestring.json"))
+        val simplified = simplify(feature.geometry as LineString, 0.01, false)
+        val roundedSimplified = LineString(simplified.coordinates.map { position ->
+            Position(
+                (position.longitude * 1000000).roundToInt() / 1000000.0,
+                (position.latitude * 1000000).roundToInt() / 1000000.0
+            )
+        })
+        assertEquals(expected.geometry as LineString, roundedSimplified)
     }
 }
