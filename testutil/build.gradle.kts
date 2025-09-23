@@ -68,42 +68,25 @@ kotlin {
 
         val fsMain by creating {
             dependsOn(commonMain)
+            jvmMain.get().dependsOn(this)
+            linuxMain.get().dependsOn(this)
+            mingwMain.get().dependsOn(this)
+            macosMain.get().dependsOn(this)
         }
 
         val bundleMain by creating {
             dependsOn(commonMain)
+            jsMain.get().dependsOn(this)
         }
 
         val todoMain by creating {
             dependsOn(commonMain)
-        }
-
-        jvmMain {
-            dependsOn(fsMain)
-        }
-
-        linuxMain {
-            dependsOn(fsMain)
-        }
-
-        mingwMain {
-            dependsOn(fsMain)
-        }
-
-        jsMain {
-            dependsOn(bundleMain)
-        }
-
-        wasmJsMain {
-            dependsOn(todoMain)
-        }
-
-        wasmWasiMain {
-            dependsOn(todoMain)
-        }
-
-        androidNativeMain {
-            dependsOn(todoMain)
+            wasmJsMain.get().dependsOn(this)
+            wasmWasiMain.get().dependsOn(this)
+            iosMain.get().dependsOn(this)
+            watchosMain.get().dependsOn(this)
+            tvosMain.get().dependsOn(this)
+            androidNativeMain.get().dependsOn(this)
         }
     }
 }

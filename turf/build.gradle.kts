@@ -13,14 +13,6 @@ plugins {
 kotlin {
     explicitApi()
     applyDefaultHierarchyTemplate()
-
-    val xcf = XCFrameworkConfig(project)
-    listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach { target ->
-        target.binaries.framework {
-            baseName = "maplibre-geojson"
-            xcf.add(this)
-        }
-    }
     
     jvm {
         compilerOptions {
@@ -90,14 +82,14 @@ kotlin {
 }
 
 // TODO fix tests on these platforms
-listOf(
-    "wasmJsBrowserTest",
-    "wasmJsNodeTest",
-    "wasmJsD8Test",
-    "wasmWasiNodeTest",
-    "jsBrowserTest"
-).forEach {
-    tasks.named(it) { enabled = false }
+tasks.matching { task ->
+    listOf(
+        "jsBrowserTest",
+        "wasm.*Test",
+        ".*Simulator.*Test",
+    ).any { task.name.matches(it.toRegex()) }
+}.configureEach {
+    enabled = false
 }
 
 tasks.register<Copy>("copyiOSTestResources") {

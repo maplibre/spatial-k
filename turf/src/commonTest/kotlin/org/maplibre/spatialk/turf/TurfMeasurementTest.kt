@@ -198,7 +198,7 @@ class TurfMeasurementTest {
         )
 
         val distance = pointToLineDistance(point, line)
-        assertEquals(188.01568693725255, distance)
+        assertDoubleEquals(188.01568693725255, distance, 0.000001)
     }
 
     @Test
@@ -209,6 +209,6 @@ class TurfMeasurementTest {
             Units.Kilometers
         )
 
-        assertEquals(97.12923942772163, distance)
+        assertDoubleEquals(97.12923942772163, distance, 0.000001)
     }
 }

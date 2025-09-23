@@ -27,7 +27,19 @@ jobs:
       - name: Build and test with Gradle
         run: ./gradlew build
   
-  build-macos:
+  build:
+    strategy:
+      matrix:
+        include:
+          # Run full build and most tests on ubuntu
+          - runner: ubuntu-latest
+            task: build
+          # Run windows and macos native tests on those platforms
+          - runner: windows-latest
+            task: mingwX64Test
+          - runner: macos-latest
+            task: macosArm64Test
+
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v5
