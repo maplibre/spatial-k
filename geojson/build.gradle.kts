@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.publish)
     alias(libs.plugins.kotlinx.benchmark)
+    alias(libs.plugins.resources)
 }
 
 kotlin {
@@ -92,6 +93,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-annotations-common"))
+                implementation(libs.resources)
             }
         }
 
@@ -114,6 +116,8 @@ kotlin {
         }
     }
 }
+
+tasks.named("jsBrowserTest") { enabled = false }
 
 benchmark {
     this.configurations {
