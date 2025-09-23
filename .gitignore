@@ -1,6 +1,7 @@
 .idea
 .gradle
-
+.kotlin
+/local.properties
 **/build
 
 /site
