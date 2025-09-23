@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
 }
 
+
 kotlin {
     jvm {
         compilerOptions {
@@ -19,16 +20,15 @@ kotlin {
         nodejs()
     }
 
-    // disabled until tests are fixed
-    //wasmJs {
-    //    browser()
-    //    nodejs()
-    //    d8()
-    //}
-    //
-    //wasmWasi {
-    //    nodejs()
-    //}
+    wasmJs {
+        browser()
+        nodejs()
+        d8()
+    }
+
+    wasmWasi {
+        nodejs()
+    }
 
     // native tier 1
     macosArm64()
@@ -50,12 +50,13 @@ kotlin {
 
     // native tier 3
     mingwX64()
-    // disabled until tests are fixed
-    //androidNativeArm32()
-    //androidNativeArm64()
-    //androidNativeX86()
-    //androidNativeX64()
-    //watchosDeviceArm64()
+    androidNativeArm32()
+    androidNativeArm64()
+    androidNativeX86()
+    androidNativeX64()
+    watchosDeviceArm64()
+
+    applyDefaultHierarchyTemplate()
 
     sourceSets {
         commonMain.dependencies {
@@ -63,5 +64,47 @@ kotlin {
             api(libs.kotlinx.serialization)
         }
 
+        val commonMain by getting
+
+        val fsMain by creating {
+            dependsOn(commonMain)
+        }
+
+        val bundleMain by creating {
+            dependsOn(commonMain)
+        }
+
+        val todoMain by creating {
+            dependsOn(commonMain)
+        }
+
+        jvmMain {
+            dependsOn(fsMain)
+        }
+
+        linuxMain {
+            dependsOn(fsMain)
+        }
+
+        mingwMain {
+            dependsOn(fsMain)
+        }
+
+        jsMain {
+            dependsOn(bundleMain)
+        }
+
+        wasmJsMain {
+            dependsOn(todoMain)
+        }
+
+        wasmWasiMain {
+            dependsOn(todoMain)
+        }
+
+        androidNativeMain {
+            dependsOn(todoMain)
+        }
     }
 }
+
