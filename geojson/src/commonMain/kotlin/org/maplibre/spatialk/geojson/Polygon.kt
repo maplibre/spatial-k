@@ -21,7 +21,16 @@ public class Polygon @JvmOverloads constructor(
     override val bbox: BoundingBox? = null
 ) : Geometry() {
     @JvmOverloads
-    public constructor(vararg coordinates: List<Position>, bbox: BoundingBox? = null) : this(coordinates.toList(), bbox)
+    public constructor(vararg coordinates: List<Position>, bbox: BoundingBox? = null) : this(
+        coordinates.toList(),
+        bbox
+    )
+
+    @JvmOverloads
+    public constructor(
+        vararg lineStrings: LineString,
+        bbox: BoundingBox? = null
+    ) : this(lineStrings.map { it.coordinates }, bbox)
 
     @JvmOverloads
     public constructor(

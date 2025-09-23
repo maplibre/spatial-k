@@ -21,7 +21,16 @@ public class LineString @JvmOverloads constructor(
     override val bbox: BoundingBox? = null
 ) : Geometry() {
     @JvmOverloads
-    public constructor(vararg coordinates: Position, bbox: BoundingBox? = null) : this(coordinates.toList(), bbox)
+    public constructor(
+        vararg coordinates: Position,
+        bbox: BoundingBox? = null
+    ) : this(coordinates.toList(), bbox)
+
+    @JvmOverloads
+    public constructor(
+        vararg points: Point,
+        bbox: BoundingBox? = null
+    ) : this(points.map { it.coordinates }, bbox)
 
     @JvmOverloads
     public constructor(
@@ -56,7 +65,8 @@ public class LineString @JvmOverloads constructor(
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): LineString = fromJson(Json.decodeFromString(JsonObject.serializer(), json))
+        public fun fromJson(json: String): LineString =
+            fromJson(Json.decodeFromString(JsonObject.serializer(), json))
 
         @JvmStatic
         public fun fromJsonOrNull(json: String): LineString? = try {

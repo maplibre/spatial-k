@@ -21,7 +21,16 @@ public class MultiPolygon @JvmOverloads constructor(
     override val bbox: BoundingBox? = null
 ) : Geometry() {
     @JvmOverloads
-    public constructor(vararg coordinates: List<List<Position>>, bbox: BoundingBox? = null) : this(coordinates.toList(), bbox)
+    public constructor(vararg coordinates: List<List<Position>>, bbox: BoundingBox? = null) : this(
+        coordinates.toList(),
+        bbox
+    )
+
+    @JvmOverloads
+    public constructor(
+        vararg polygons: Polygon,
+        bbox: BoundingBox? = null
+    ) : this(polygons.map { it.coordinates }, bbox)
 
     @JvmOverloads
     public constructor(
