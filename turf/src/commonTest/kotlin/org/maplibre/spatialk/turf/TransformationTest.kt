@@ -46,6 +46,7 @@ class TransformationTest {
         assertEquals(expectedOut.geometry, bezierSpline(feature.geometry as LineString))
     }
 
+    @Test
     fun testCircle() {
         val point = Feature.fromJson(readResource("transformation/circle/in/circle1.json"))
         val expectedOut = FeatureCollection.fromJson(readResource("transformation/circle/out/circle1.json"))
