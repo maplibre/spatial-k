@@ -138,7 +138,28 @@ public fun bezierSpline(coords: List<Position>, duration: Int = 10_000, sharpnes
     return positions
 }
 
-<<<<<<< HEAD:turf/src/commonMain/kotlin/io/github/dellisd/spatialk/turf/Transformation.kt
+/**
+ * Takes a [Point] and calculates the circle polygon given a radius in degrees, radians, miles, or kilometers; and steps
+ * for precision.
+ *
+ * @param center center point of circle
+ * @param radius radius of the circle defined in [units]
+ * @param steps number of steps, must be at least four. Default is 64
+ * @param units unit of [radius], default is [Units.Kilometers]
+ */
+@ExperimentalTurfApi
+public fun circle(center: Point, radius: Double, steps: Int = 64, units: Units = Units.Kilometers): Polygon {
+    require(steps >= 4) { "circle needs to have four or more coordinates." }
+    require(radius > 0) { "radius must be a positive value" }
+    val coordinates = (0..steps).map { step ->
+        destination(center.coordinates, radius, (step * -360) / steps.toDouble(), units)
+    }
+    val ring = coordinates.plus(coordinates.first())
+    return Polygon(
+        coordinates = listOf(ring),
+        bbox = computeBbox(ring)
+    )
+}
 
 private fun getSqDist(p1: Position, p2: Position): Double {
     val dx = p1.longitude - p2.longitude
@@ -258,28 +279,3 @@ public fun simplify(
 
     return LineString(simplifyDouglasPeucker(simplifiedPoints, sqTolerance))
 }
-||||||| 812654b:turf/src/commonMain/kotlin/io/github/dellisd/spatialk/turf/Transformation.kt
-=======
-/**
- * Takes a [Point] and calculates the circle polygon given a radius in degrees, radians, miles, or kilometers; and steps
- * for precision.
- *
- * @param center center point of circle
- * @param radius radius of the circle defined in [units]
- * @param steps number of steps, must be at least four. Default is 64
- * @param units unit of [radius], default is [Units.Kilometers]
- */
-@ExperimentalTurfApi
-public fun circle(center: Point, radius: Double, steps: Int = 64, units: Units = Units.Kilometers): Polygon {
-    require(steps >= 4) { "circle needs to have four or more coordinates." }
-    require(radius > 0) { "radius must be a positive value" }
-    val coordinates = (0..steps).map { step ->
-        destination(center.coordinates, radius, (step * -360) / steps.toDouble(), units)
-    }
-    val ring = coordinates.plus(coordinates.first())
-    return Polygon(
-        coordinates = listOf(ring),
-        bbox = computeBbox(ring)
-    )
-}
->>>>>>> main:turf/src/commonMain/kotlin/org/maplibre/spatialk/turf/Transformation.kt
