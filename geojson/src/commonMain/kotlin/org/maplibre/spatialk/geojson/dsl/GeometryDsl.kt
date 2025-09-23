@@ -175,5 +175,6 @@ public class GeometryCollectionDsl(private val geometries: MutableList<Geometry>
 }
 
 @GeoJsonDsl
-public inline fun geometryCollection(block: GeometryCollectionDsl.() -> Unit): GeometryCollection = GeometryCollectionDsl()
-    .apply(block).create()
+public inline fun geometryCollection(block: GeometryCollectionDsl.() -> Unit): GeometryCollection =
+    GeometryCollectionDsl()
+        .apply(block).create()

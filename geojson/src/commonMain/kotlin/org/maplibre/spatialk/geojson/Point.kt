@@ -5,6 +5,7 @@ import org.maplibre.spatialk.geojson.serialization.jsonProp
 import org.maplibre.spatialk.geojson.serialization.toBbox
 import org.maplibre.spatialk.geojson.serialization.toPosition
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
@@ -36,11 +37,13 @@ public class Point @JvmOverloads constructor(public val coordinates: Position, o
         return result
     }
 
-    override fun json(): String = """{"type":"Point",${bbox.jsonProp()}"coordinates":${coordinates.json()}}"""
+    override fun json(): String =
+        """{"type":"Point",${bbox.jsonProp()}"coordinates":${coordinates.json()}}"""
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): Point = fromJson(Json.decodeFromString(JsonObject.serializer(), json))
+        public fun fromJson(json: String): Point =
+            fromJson(Json.decodeFromString(JsonObject.serializer(), json))
 
         @JvmStatic
         public fun fromJsonOrNull(json: String): Point? = try {
@@ -51,14 +54,18 @@ public class Point @JvmOverloads constructor(public val coordinates: Position, o
 
         @JvmStatic
         public fun fromJson(json: JsonObject): Point {
-            require(json.getValue("type").jsonPrimitive.content == "Point") {
-                "Object \"type\" is not \"Point\"."
+            try {
+                require(json.getValue("type").jsonPrimitive.content == "Point") {
+                    "Object \"type\" is not \"Point\"."
+                }
+
+                val coords = json.getValue("coordinates").jsonArray.toPosition()
+                val bbox = json["bbox"]?.jsonArray?.toBbox()
+
+                return Point(coords, bbox)
+            } catch (e: IllegalArgumentException) {
+                throw SerializationException(e.message)
             }
-
-            val coords = json.getValue("coordinates").jsonArray.toPosition()
-            val bbox = json["bbox"]?.jsonArray?.toBbox()
-
-            return Point(coords, bbox)
         }
     }
 }

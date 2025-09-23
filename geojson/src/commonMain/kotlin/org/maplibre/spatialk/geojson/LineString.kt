@@ -6,6 +6,7 @@ import org.maplibre.spatialk.geojson.serialization.jsonProp
 import org.maplibre.spatialk.geojson.serialization.toBbox
 import org.maplibre.spatialk.geojson.serialization.toPosition
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
@@ -66,14 +67,19 @@ public class LineString @JvmOverloads constructor(
 
         @JvmStatic
         public fun fromJson(json: JsonObject): LineString {
-            require(json.getValue("type").jsonPrimitive.content == "LineString") {
-                "Object \"type\" is not \"LineString\"."
+            try {
+                require(json.getValue("type").jsonPrimitive.content == "LineString") {
+                    "Object \"type\" is not \"LineString\"."
+                }
+                
+                val coords =
+                    json.getValue("coordinates").jsonArray.map { it.jsonArray.toPosition() }
+                val bbox = json["bbox"]?.jsonArray?.toBbox()
+
+                return LineString(coords, bbox)
+            } catch (e: IllegalArgumentException) {
+                throw SerializationException(e.message)
             }
-
-            val coords = json.getValue("coordinates").jsonArray.map { it.jsonArray.toPosition() }
-            val bbox = json["bbox"]?.jsonArray?.toBbox()
-
-            return LineString(coords, bbox)
         }
     }
 }

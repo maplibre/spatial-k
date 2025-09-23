@@ -5,6 +5,7 @@ import org.maplibre.spatialk.geojson.serialization.idProp
 import org.maplibre.spatialk.geojson.serialization.jsonProp
 import org.maplibre.spatialk.geojson.serialization.toBbox
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
@@ -16,7 +17,6 @@ import kotlinx.serialization.json.double
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import kotlin.collections.set
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmStatic
 
@@ -124,7 +124,8 @@ public class Feature(
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): Feature = fromJson(Json.decodeFromString(JsonObject.serializer(), json))
+        public fun fromJson(json: String): Feature =
+            fromJson(Json.decodeFromString(JsonObject.serializer(), json))
 
         @JvmStatic
         public fun fromJsonOrNull(json: String): Feature? = try {
@@ -135,17 +136,21 @@ public class Feature(
 
         @JvmStatic
         public fun fromJson(json: JsonObject): Feature {
-            require(json.getValue("type").jsonPrimitive.content == "Feature") {
-                "Object \"type\" is not \"Feature\"."
+            try {
+                require(json.getValue("type").jsonPrimitive.content == "Feature") {
+                    "Object \"type\" is not \"Feature\"."
+                }
+
+                val bbox = json["bbox"]?.jsonArray?.toBbox()
+                val id = json["id"]?.jsonPrimitive?.content
+
+                val geom = json["geometry"]?.jsonObject
+                val geometry: Geometry? = if (geom != null) Geometry.fromJson(geom) else null
+
+                return Feature(geometry, json["properties"]?.jsonObject ?: emptyMap(), id, bbox)
+            } catch (e: IllegalArgumentException) {
+                throw SerializationException(e.message)
             }
-
-            val bbox = json["bbox"]?.jsonArray?.toBbox()
-            val id = json["id"]?.jsonPrimitive?.content
-
-            val geom = json["geometry"]?.jsonObject
-            val geometry: Geometry? = if (geom != null) Geometry.fromJson(geom) else null
-
-            return Feature(geometry, json["properties"]?.jsonObject ?: emptyMap(), id, bbox)
         }
     }
 }
