@@ -1,4 +1,4 @@
-package io.github.dellisd.spatialk.geojson
+package org.maplibre.spatialk.geojson
 
 
 import kotlinx.serialization.json.Json

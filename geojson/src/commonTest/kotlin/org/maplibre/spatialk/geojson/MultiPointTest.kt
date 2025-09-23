@@ -1,7 +1,7 @@
-package io.github.dellisd.spatialk.geojson
+package org.maplibre.spatialk.geojson
 
 
-import io.github.dellisd.spatialk.geojson.utils.DELTA
+import org.maplibre.spatialk.geojson.utils.DELTA
 import kotlinx.serialization.SerializationException
 import kotlin.test.Test
 import kotlin.test.assertEquals

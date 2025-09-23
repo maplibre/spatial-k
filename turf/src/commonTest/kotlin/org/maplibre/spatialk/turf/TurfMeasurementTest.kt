@@ -12,7 +12,7 @@ import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.geojson.dsl.geometryCollection
 import org.maplibre.spatialk.geojson.dsl.polygon
 import org.maplibre.spatialk.turf.utils.assertDoubleEquals
-import org.maplibre.spatialk.turf.utils.readResource
+import org.maplibre.spatialk.testutil.readResourceFile
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
@@ -23,7 +23,7 @@ class TurfMeasurementTest {
 
     @Test
     fun testAlong() {
-        val geometry = LineString.fromJson(readResource("measurement/along/lineString.json"))
+        val geometry = LineString.fromJson(readResourceFile("measurement/along/lineString.json"))
 
         assertEquals(Position(-79.4179672644524, 43.636029126566484), along(geometry, 1.0))
         assertEquals(Position(-79.39973865844715, 43.63797943080659), along(geometry, 2.5))
@@ -33,10 +33,10 @@ class TurfMeasurementTest {
 
     @Test
     fun testArea() {
-        val geometry = Polygon.fromJson(readResource("measurement/area/polygon.json"))
+        val geometry = Polygon.fromJson(readResourceFile("measurement/area/polygon.json"))
         assertDoubleEquals(236446.506, area(geometry), 0.001, "Single polygon")
 
-        val other = Polygon.fromJson(readResource("measurement/area/other.json"))
+        val other = Polygon.fromJson(readResourceFile("measurement/area/other.json"))
         val collection = geometryCollection {
             +geometry
             +other
@@ -46,19 +46,19 @@ class TurfMeasurementTest {
 
     @Test
     fun testBbox() {
-        val point = Point.fromJson(readResource("measurement/bbox/point.json"))
+        val point = Point.fromJson(readResourceFile("measurement/bbox/point.json"))
         assertEquals(
             BoundingBox(point.coordinates, point.coordinates),
             bbox(point)
         )
 
-        val lineString = LineString.fromJson(readResource("measurement/bbox/lineString.json"))
+        val lineString = LineString.fromJson(readResourceFile("measurement/bbox/lineString.json"))
         assertEquals(
             BoundingBox(-79.376220703125, 43.65197548731187, -73.58642578125, 45.4986468234261),
             bbox(lineString)
         )
 
-        val polygon = Polygon.fromJson(readResource("measurement/bbox/polygon.json"))
+        val polygon = Polygon.fromJson(readResourceFile("measurement/bbox/polygon.json"))
         assertEquals(
             BoundingBox(-64.44580078125, 45.9511496866914, -61.973876953125, 47.07012182383309),
             bbox(polygon)
@@ -110,7 +110,7 @@ class TurfMeasurementTest {
 
     @Test
     fun testLength() {
-        val geometry = LineString.fromJson(readResource("measurement/length/lineString.json"))
+        val geometry = LineString.fromJson(readResourceFile("measurement/length/lineString.json"))
 
         assertEquals(42.560767589197006, length(geometry, Units.Kilometers))
     }
@@ -128,7 +128,7 @@ class TurfMeasurementTest {
 
     @Test
     fun testCenterFromFeature() {
-        val geometry = Polygon.fromJson(readResource("measurement/area/other.json"))
+        val geometry = Polygon.fromJson(readResourceFile("measurement/area/other.json"))
 
         val centerPoint = center(Feature(geometry))
 
@@ -138,7 +138,7 @@ class TurfMeasurementTest {
 
     @Test
     fun testCenterFromGeometry() {
-        val geometry = Polygon.fromJson(readResource("measurement/area/other.json"))
+        val geometry = Polygon.fromJson(readResourceFile("measurement/area/other.json"))
 
         val centerPoint = center(geometry)
 

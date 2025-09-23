@@ -1,7 +1,7 @@
-package io.github.dellisd.spatialk.geojson
+package org.maplibre.spatialk.geojson
 
-import io.github.dellisd.spatialk.geojson.utils.DELTA
-import io.github.dellisd.spatialk.geojson.utils.readResource
+import org.maplibre.spatialk.geojson.utils.DELTA
+import org.maplibre.spatialk.testutil.readResourceFile
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -157,7 +157,7 @@ class FeatureCollectionTest {
 
     @Test
     fun fromJson() {
-        val json = readResource(SAMPLE_FEATURECOLLECTION)
+        val json = readResourceFile(SAMPLE_FEATURECOLLECTION)
         val geo = FeatureCollection.fromJson(json)
         assertEquals(geo.features.size, 3)
         assertTrue(geo.features[0].geometry is Point)
@@ -168,7 +168,7 @@ class FeatureCollectionTest {
 
     @Test
     fun toJson() {
-        val json = readResource(SAMPLE_FEATURECOLLECTION_BBOX)
+        val json = readResourceFile(SAMPLE_FEATURECOLLECTION_BBOX)
         val expectedFeatureCollection = FeatureCollection.fromJson(json)
         val actualFeatureCollection =
             FeatureCollection.fromJson(FeatureCollection.fromJson(json).json())

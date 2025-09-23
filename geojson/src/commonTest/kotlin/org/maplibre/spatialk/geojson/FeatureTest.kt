@@ -1,7 +1,7 @@
-package io.github.dellisd.spatialk.geojson
+package org.maplibre.spatialk.geojson
 
-import io.github.dellisd.spatialk.geojson.utils.DELTA
-import io.github.dellisd.spatialk.geojson.utils.compareJson
+import org.maplibre.spatialk.geojson.utils.DELTA
+import org.maplibre.spatialk.geojson.utils.compareJson
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive

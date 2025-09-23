@@ -1,4 +1,4 @@
-package io.github.dellisd.spatialk.geojson.utils
+package org.maplibre.spatialk.geojson.utils
 
 import kotlinx.serialization.json.Json
 import kotlin.test.assertEquals
