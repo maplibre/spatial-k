@@ -1,10 +1,16 @@
 package io.github.dellisd.spatialk.turf
 
 import io.github.dellisd.spatialk.geojson.Feature
+import io.github.dellisd.spatialk.geojson.FeatureCollection
 import io.github.dellisd.spatialk.geojson.LineString
+import io.github.dellisd.spatialk.geojson.Point
+import io.github.dellisd.spatialk.turf.utils.assertPositionEquals
 import io.github.dellisd.spatialk.turf.utils.readResource
+import kotlinx.serialization.json.double
+import kotlinx.serialization.json.jsonPrimitive
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @ExperimentalTurfApi
 class TransformationTest {
@@ -36,5 +42,25 @@ class TransformationTest {
         val expectedOut = Feature.fromJson(readResource("transformation/bezierspline/out/issue-#1063.json"))
 
         assertEquals(expectedOut.geometry, bezierSpline(feature.geometry as LineString))
+    }
+
+    @Test
+    fun testCircle() {
+        val point = Feature.fromJson(readResource("transformation/circle/in/circle1.json"))
+        val expectedOut = FeatureCollection.fromJson(readResource("transformation/circle/out/circle1.json"))
+
+        val (_, expectedCircle) = expectedOut.features
+
+        val circle = circle(
+            center = point.geometry as Point,
+            radius = point.properties["radius"]?.jsonPrimitive?.double ?: 0.0,
+        )
+
+        val allCoordinates = expectedCircle.geometry?.coordAll().orEmpty()
+        assertTrue(allCoordinates.isNotEmpty())
+        assertEquals(allCoordinates.size, circle.coordAll().size)
+        allCoordinates.forEachIndexed { i, position ->
+            assertPositionEquals(position, circle.coordAll()[i])
+        }
     }
 }

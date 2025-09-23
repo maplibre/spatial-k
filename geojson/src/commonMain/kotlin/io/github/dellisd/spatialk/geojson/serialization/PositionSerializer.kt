@@ -23,11 +23,6 @@ import kotlinx.serialization.json.jsonPrimitive
  * A position maps to `[longitude, latitude, altitude]`.
  *
  * A position's [altitude][Position.altitude] is only included in the array if it is not null.
- *
- * An instance of the serializer can be obtained from the [Position.serializer][Position.Companion.serializer]
- * extension function.
- *
- * @see Position.Companion.serializer
  */
 public object PositionSerializer : KSerializer<Position> {
     override val descriptor: SerialDescriptor

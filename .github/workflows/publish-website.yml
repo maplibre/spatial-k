@@ -3,7 +3,10 @@ name: Publish Website
 on:
   push:
     tags:
-      - "*"
+      - "v*"
+
+permissions:
+  contents: write
 
 jobs:
   publish-website:
@@ -17,7 +20,7 @@ jobs:
           python-version: 3.8
       
       - name: Build Dokka docs
-        run: ./gradlew dokkaHtmlMultiModule --no-daemon --no-parallel
+        run: ./gradlew dokkaGenerateHtml --no-daemon --no-parallel
       
       - name: Build mkdocs
         run: |
@@ -28,7 +31,7 @@ jobs:
         if: success()
         uses: JamesIves/github-pages-deploy-action@releases/v4
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: site 
-          SINGLE_COMMIT: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: site
+          single-commit: true

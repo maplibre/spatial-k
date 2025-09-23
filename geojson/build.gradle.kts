@@ -1,5 +1,7 @@
+@file:OptIn(ExperimentalWasmDsl::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -11,30 +13,64 @@ plugins {
 
 kotlin {
     explicitApi()
+    applyDefaultHierarchyTemplate()
 
     jvm {
-        compilations.create("bench")
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
+        }
+        compilations.create("bench") {
+            associateWith(this@jvm.compilations.getByName("main"))
+        }
     }
-    js {
-        browser {
-        }
-        nodejs {
-        }
 
-        compilations.create("bench")
+    js(IR) {
+        browser()
+        nodejs()
+        compilations.create("bench") {
+            associateWith(this@js.compilations.getByName("main"))
+        }
     }
-    // For ARM, should be changed to iosArm32 or iosArm64
-    // For Linux, should be changed to e.g. linuxX64
-    // For MacOS, should be changed to e.g. macosX64
-    // For Windows, should be changed to e.g. mingwX64
-    linuxX64("native") {
-        compilations.create("bench")
+
+    wasmJs {
+        browser()
+        nodejs()
+        d8()
     }
-    mingwX64("mingw")
-    macosX64("macos")
-    iosArm64()
-    iosX64()
+
+    wasmWasi {
+        nodejs()
+    }
+
+    // native tier 1
+    macosArm64()
     iosSimulatorArm64()
+    iosArm64()
+
+    // native tier 2
+    macosX64()
+    iosX64()
+    linuxX64 {
+        compilations.create("bench") {
+            associateWith(this@linuxX64.compilations.getByName("main"))
+        }
+    }
+    linuxArm64()
+    watchosSimulatorArm64()
+    watchosX64()
+    watchosArm32()
+    watchosArm64()
+    tvosSimulatorArm64()
+    tvosX64()
+    tvosArm64()
+
+    // native tier 3
+    mingwX64()
+    androidNativeArm32()
+    androidNativeArm64()
+    androidNativeX86()
+    androidNativeX64()
+    watchosDeviceArm64()
 
     sourceSets {
         all {
@@ -46,73 +82,35 @@ kotlin {
             }
         }
 
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(libs.kotlinx.serialization)
             }
         }
 
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
 
-        val jsMain by getting {}
-
-        val jvmMain by getting {}
-
-        val nativeMain by getting {
-            getByName("macosMain").dependsOn(this)
-            getByName("mingwMain").dependsOn(this)
-        }
-
-        val nativeTest by getting {
-            getByName("macosTest").dependsOn(this)
-            getByName("mingwTest").dependsOn(this)
-        }
-
         val commonBench by creating {
-            dependsOn(commonMain)
             dependencies {
                 implementation(libs.kotlinx.benchmark)
             }
         }
 
-        val jsBench by getting {
+        getByName("jsBench") {
             dependsOn(commonBench)
-            dependsOn(jsMain)
         }
 
-        val jvmBench by getting {
+        getByName("jvmBench") {
             dependsOn(commonBench)
-            dependsOn(jvmMain)
         }
 
-        val nativeBench by getting {
+        getByName("linuxX64Bench") {
             dependsOn(commonBench)
-            dependsOn(nativeMain)
-        }
-
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            dependsOn(nativeMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
-        }
-
-        val iosX64Test by getting
-        val iosArm64Test by getting
-        val iosSimulatorArm64Test by getting
-        val iosTest by creating {
-            dependsOn(nativeTest)
-            iosX64Test.dependsOn(this)
-            iosArm64Test.dependsOn(this)
-            iosSimulatorArm64Test.dependsOn(this)
         }
     }
 }
@@ -127,15 +125,14 @@ benchmark {
     targets {
         register("jvmBench")
         register("jsBench")
-        register("nativeBench")
+        register("linuxX64Bench")
     }
 }
 
-tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
-    // custom output directory
-    outputDirectory.set(buildDir.resolve("$rootDir/docs/api"))
-}
-
-tasks.withType(KotlinCompile::class.java).configureEach {
-    compilerOptions.jvmTarget.set(JvmTarget.JVM_1_8)
+dokka {
+    dokkaSourceSets {
+        configureEach {
+            includes.from("MODULE.md")
+        }
+    }
 }
