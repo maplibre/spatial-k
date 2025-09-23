@@ -1,9 +1,8 @@
 @file:OptIn(ExperimentalWasmDsl::class)
 
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFrameworkConfig
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -16,6 +15,14 @@ plugins {
 kotlin {
     explicitApi()
     applyDefaultHierarchyTemplate()
+
+    val xcf = XCFrameworkConfig(project)
+    listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach { target ->
+        target.binaries.framework {
+            baseName = "maplibre-geojson"
+            xcf.add(this)
+        }
+    }
 
     jvm {
         compilerOptions {
