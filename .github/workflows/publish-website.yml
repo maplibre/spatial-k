@@ -13,14 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.8
       
       - name: Build Dokka docs
-        run: ./gradlew dokkaGenerateHtml --no-daemon --no-parallel
+        run: ./gradlew dokkaGenerateHtml
       
       - name: Build mkdocs
         run: |
@@ -28,7 +23,6 @@ jobs:
           mkdocs build
         
       - name: Deploy 🚀
-        if: success()
         uses: JamesIves/github-pages-deploy-action@releases/v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
