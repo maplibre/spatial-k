@@ -6,12 +6,13 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-        google()
-    }
+  @Suppress("UnstableApiUsage")
+  repositories {
+      mavenCentral()
+      google()
+  }
 }
 
 rootProject.name = "spatial-k"
 
-include("geojson", "turf")
+include(":geojson", ":turf")

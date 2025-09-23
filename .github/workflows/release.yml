@@ -2,17 +2,15 @@ name: Publish Release
 
 on:
   push:
-    branches: [ master ]
     tags:
-      - "*"
+      - "v*"
+
+permissions:
+  contents: read
 
 jobs:
   release:
-    strategy:
-      matrix:
-        os: [ macos-latest, ubuntu-latest ]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -24,19 +22,9 @@ jobs:
           java-version: 17
 
       - name: Publish Artifacts
-        if: matrix.os == 'macos-latest'
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
         run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-daemon --no-parallel
-
-      - name: Publish Mingw Artifacts
-        if: matrix.os == 'windows-latest'
-        env:
-          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
-          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
-        run: ./gradlew publishMingwPublicationToMavenCentralRepository --no-daemon --no-parallel

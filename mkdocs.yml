@@ -1,10 +1,10 @@
 site_name: "Spatial K"
-site_url: https://dellisd.github.io/spatial-k
+site_url: https://maplibre.github.io/spatial-k
 repo_name: "spatial-k"
-repo_url: https://github.com/dellisd/spatial-k
+repo_url: https://github.com/maplibre/spatial-k
 site_description: "Kotlin Multiplatform GeoJson library and Turfjs port"
-site_author: Derek Ellis
-copyright: 'Copyright &copy; 2022 Derek Ellis'
+site_author: MapLibre
+copyright: 'Copyright &copy; 2025 MapLibre Contributors'
 remote_branch: gh-pages
 
 nav:
