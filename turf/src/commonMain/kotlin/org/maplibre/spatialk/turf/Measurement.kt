@@ -660,7 +660,7 @@ public fun greatCircle(start: Position, end: Position, pointCount: Int = 100, an
  * @return a rectangular [Polygon] feature that encompasses all vertices
  */
 @ExperimentalTurfApi
-fun envelope(geoJson: GeoJson): Feature {
+public fun envelope(geoJson: GeoJson): Feature {
     val coordinates = when (geoJson) {
         is Feature -> geoJson.coordAll()
         is FeatureCollection -> geoJson.coordAll()
