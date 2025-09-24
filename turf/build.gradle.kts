@@ -84,9 +84,13 @@ kotlin {
 // TODO fix tests on these platforms
 tasks.matching { task ->
     listOf(
-        "jsBrowserTest",
-        "wasm.*Test",
+        // no filesystem support
+        ".*BrowserTest",
+        "wasmJsD8Test",
+        "wasmWasi.*Test",
         ".*Simulator.*Test",
+        // runs, but fails some tests
+        "wasmJsNodeTest"
     ).any { task.name.matches(it.toRegex()) }
 }.configureEach {
     enabled = false

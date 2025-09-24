@@ -121,6 +121,7 @@ kotlin {
 // TODO fix tests on these platforms
 tasks.matching { task ->
     listOf(
+        // no filesystem support
         ".*BrowserTest",
         "wasmJsD8Test",
         "wasmWasi.*Test",
