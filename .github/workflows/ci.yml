@@ -38,3 +38,10 @@ jobs:
 
       - name: Build and test with Gradle
         run: ./gradlew ${{ matrix.task }}
+
+  # stub to use as a "required" check on github
+  all-good:
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'All checks passed!'
