@@ -1,24 +1,22 @@
-:root {
-    --color-dark: #4cae4f;
+.theme-dark .navigation {
+    background-color: #4cae4f;
 }
 
-:root.theme-dark {
-    --color-dark: #4cae4f;
+.navigation {
+    background-color: #4cae4f;
 }
 
-
-.library-name a {
+.library-name--link {
     position: relative;
     margin-left: 55px;
 }
 
-.library-name a::before {
+.library-name--link::before {
     content: '';
-    background: url("../../images/logo.png") center no-repeat;
+    background: url("../images/logo.png") center no-repeat;
     background-size: contain;
     position: absolute;
     width: 50px;
     height: 50px;
-    top: -18px;
     left: -55px;
 }

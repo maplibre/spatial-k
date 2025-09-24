@@ -3,21 +3,19 @@ name: Publish Website
 on:
   push:
     tags:
-      - "*"
+      - "v*"
+
+permissions:
+  contents: write
 
 jobs:
   publish-website:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.8
+      - uses: actions/checkout@v5
       
       - name: Build Dokka docs
-        run: ./gradlew dokkaHtmlMultiModule --no-daemon --no-parallel
+        run: ./gradlew dokkaGenerateHtml
       
       - name: Build mkdocs
         run: |
@@ -25,10 +23,9 @@ jobs:
           mkdocs build
         
       - name: Deploy 🚀
-        if: success()
         uses: JamesIves/github-pages-deploy-action@releases/v4
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: site 
-          SINGLE_COMMIT: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: site
+          single-commit: true

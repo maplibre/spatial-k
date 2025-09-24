@@ -4,18 +4,20 @@ plugins {
     alias(libs.plugins.dokka)
 }
 
-tasks.dokkaHtmlMultiModule.configure {
-    outputDirectory.set(rootDir.absoluteFile.resolve("docs/api"))
-    moduleName.set("Spatial K")
+dokka {
+    moduleName = "Spatial K"
+    dokkaPublications.html {
+        outputDirectory = rootDir.absoluteFile.resolve("docs/api")
+    }
+    pluginsConfiguration.html {
+        customStyleSheets.from(file("docs/css/logo-styles.css"))
+        customAssets.from(file("docs/images/logo.png"))
+        footerMessage = "Copyright &copy; 2025 MapLibre Contributors"
+    }
+}
 
-    pluginsMapConfiguration.set(
-        mapOf(
-            "org.jetbrains.dokka.base.DokkaBase" to """
-            {
-                "footerMessage": "Copyright &copy; 2022 Derek Ellis",
-                "customStyleSheets": ["${file("docs/css/logo-styles.css").invariantSeparatorsPath}"]
-            }
-        """.trimIndent()
-        )
-    )
+dependencies {
+    dokka(project(":geojson"))
+    dokka(project(":turf"))
+    project(":testutil")
 }

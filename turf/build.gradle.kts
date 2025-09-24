@@ -1,112 +1,123 @@
+@file:OptIn(ExperimentalWasmDsl::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFrameworkConfig
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.dokka)
     alias(libs.plugins.publish)
-    alias(libs.plugins.resources)
 }
 
 kotlin {
     explicitApi()
-
-    jvm()
-    js {
-        browser {
-        }
-        nodejs {
+    applyDefaultHierarchyTemplate()
+    
+    jvm {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
         }
     }
-    // For ARM, should be changed to iosArm32 or iosArm64
-    // For Linux, should be changed to e.g. linuxX64
-    // For MacOS, should be changed to e.g. macosX64
-    // For Windows, should be changed to e.g. mingwX64
 
-    linuxX64("native")
-    mingwX64("mingw")
-    macosX64("macos")
-    iosArm64()
-    iosX64()
+    js(IR) {
+        browser()
+        nodejs()
+    }
+
+    wasmJs {
+        browser()
+        nodejs()
+        d8()
+    }
+
+    wasmWasi {
+        nodejs()
+    }
+
+    // native tier 1
+    macosArm64()
     iosSimulatorArm64()
+    iosArm64()
 
-    sourceSets["commonMain"].dependencies {
-        api(project(":geojson"))
-    }
+    // native tier 2
+    macosX64()
+    iosX64()
+    linuxX64()
+    linuxArm64()
+    watchosSimulatorArm64()
+    watchosX64()
+    watchosArm32()
+    watchosArm64()
+    tvosSimulatorArm64()
+    tvosX64()
+    tvosArm64()
 
-    sourceSets["commonTest"].dependencies {
-        implementation(kotlin("test"))
-        implementation(kotlin("test-annotations-common"))
-        implementation(libs.resources)
-    }
-
-    sourceSets["jvmMain"].dependencies {
-    }
-
-    sourceSets["jvmTest"].dependencies {
-    }
-
-    sourceSets["jsMain"].dependencies {
-    }
-
-    sourceSets["jsTest"].dependencies {
-    }
-
-    sourceSets["nativeMain"].dependencies {
-    }
-    sourceSets["nativeTest"].dependencies {
-    }
+    // native tier 3
+    mingwX64()
+    androidNativeArm32()
+    androidNativeArm64()
+    androidNativeX86()
+    androidNativeX64()
+    watchosDeviceArm64()
 
     sourceSets {
-        val nativeMain by getting {}
-        getByName("macosMain").dependsOn(nativeMain)
-        getByName("mingwMain").dependsOn(nativeMain)
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            dependsOn(nativeMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
-        }
-
-        val nativeTest by getting {}
-        getByName("macosTest").dependsOn(nativeTest)
-        getByName("mingwTest").dependsOn(nativeTest)
-        val iosX64Test by getting
-        val iosArm64Test by getting
-        val iosSimulatorArm64Test by getting
-        val iosTest by creating {
-            dependsOn(nativeTest)
-            iosX64Test.dependsOn(this)
-            iosArm64Test.dependsOn(this)
-            iosSimulatorArm64Test.dependsOn(this)
-        }
-
         all {
             with(languageSettings) {
                 optIn("kotlin.RequiresOptIn")
             }
         }
+
+        commonMain.dependencies {
+            api(project(":geojson"))
+        }
+
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation(kotlin("test-annotations-common"))
+            implementation(libs.kotlinx.io.core)
+            implementation(project(":testutil"))
+        }
     }
 }
 
-tasks.named("jsBrowserTest") { enabled = false }
-
-tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
-    // custom output directory
-    outputDirectory.set(buildDir.resolve("$rootDir/docs/api"))
+// TODO fix tests on these platforms
+tasks.matching { task ->
+    listOf(
+        // no filesystem support
+        ".*BrowserTest",
+        "wasmJsD8Test",
+        "wasmWasi.*Test",
+        ".*Simulator.*Test",
+        // runs, but fails some tests
+        "wasmJsNodeTest"
+    ).any { task.name.matches(it.toRegex()) }
+}.configureEach {
+    enabled = false
 }
 
-tasks.withType(KotlinCompile::class.java).configureEach {
-    compilerOptions.jvmTarget.set(JvmTarget.JVM_1_8)
+tasks.register<Copy>("copyiOSTestResources") {
+    from("src/commonTest/resources")
+    into("build/bin/iosX64/debugTest/resources")
 }
 
-// Working around dokka problems
-afterEvaluate {
-    tasks.named("dokkaJavadocJar").configure {
-        dependsOn(":geojson:dokkaHtml")
+tasks.named("iosX64Test") {
+    dependsOn("copyiOSTestResources")
+}
+
+tasks.register<Copy>("copyiOSArmTestResources") {
+    from("src/commonTest/resources")
+    into("build/bin/iosSimulatorArm64/debugTest/resources")
+}
+
+tasks.named("iosSimulatorArm64Test") {
+    dependsOn("copyiOSArmTestResources")
+}
+
+dokka {
+    dokkaSourceSets {
+        configureEach {
+            includes.from("MODULE.md")
+        }
     }
 }

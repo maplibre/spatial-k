@@ -1,0 +1,47 @@
+# This workflow will build a Java project with Gradle
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+
+name: CI with Gradle
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          # Run full build and most tests on ubuntu
+          - runner: ubuntu-latest
+            task: build
+          # Run windows and macos native tests on those platforms
+          - runner: windows-latest
+            task: mingwX64Test
+          - runner: macos-latest
+            task: macosArm64Test
+
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Build and test with Gradle
+        run: ./gradlew ${{ matrix.task }}
+
+  # stub to use as a "required" check on github
+  all-good:
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'All checks passed!'
