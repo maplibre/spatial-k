@@ -4,10 +4,12 @@ import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Point
+import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.turf.utils.assertPositionEquals
 import org.maplibre.spatialk.turf.utils.readResource
 import kotlinx.serialization.json.double
 import kotlinx.serialization.json.jsonPrimitive
+import kotlin.math.roundToInt
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -62,5 +64,19 @@ class TransformationTest {
         allCoordinates.forEachIndexed { i, position ->
             assertPositionEquals(position, circle.coordAll()[i])
         }
+    }
+
+    @Test
+    fun testSimplifyLineString() {
+        val feature = Feature.fromJson(readResource("transformation/simplify/in/linestring.json"))
+        val expected = Feature.fromJson(readResource("transformation/simplify/out/linestring.json"))
+        val simplified = simplify(feature.geometry as LineString, 0.01, false)
+        val roundedSimplified = LineString(simplified.coordinates.map { position ->
+            Position(
+                (position.longitude * 1000000).roundToInt() / 1000000.0,
+                (position.latitude * 1000000).roundToInt() / 1000000.0
+            )
+        })
+        assertEquals(expected.geometry as LineString, roundedSimplified)
     }
 }

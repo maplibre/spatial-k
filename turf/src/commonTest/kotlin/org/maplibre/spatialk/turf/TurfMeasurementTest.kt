@@ -240,4 +240,27 @@ class TurfMeasurementTest {
         )
     }
 
+    fun testPointToLineDistance() {
+        val point = Position(-0.54931640625, 0.7470491450051796)
+        val line = LineString(
+            Position(1.0, 3.0),
+            Position(2.0, 2.0),
+            Position(2.0, 0.0),
+            Position(-1.5, -1.5)
+        )
+
+        val distance = pointToLineDistance(point, line)
+        assertEquals(188.01568693725255, distance)
+    }
+
+    @Test
+    fun testRhumbDistance() {
+        val distance = rhumbDistance(
+            Position(-75.343, 39.984),
+            Position(-75.534, 39.123),
+            Units.Kilometers
+        )
+
+        assertEquals(97.12923942772163, distance)
+    }
 }
