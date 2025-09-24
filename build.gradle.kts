@@ -19,4 +19,5 @@ dokka {
 dependencies {
     dokka(project(":geojson"))
     dokka(project(":turf"))
+    project(":testutil")
 }

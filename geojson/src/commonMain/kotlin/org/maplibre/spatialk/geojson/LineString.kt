@@ -6,6 +6,7 @@ import org.maplibre.spatialk.geojson.serialization.jsonProp
 import org.maplibre.spatialk.geojson.serialization.toBbox
 import org.maplibre.spatialk.geojson.serialization.toPosition
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
@@ -20,7 +21,16 @@ public class LineString @JvmOverloads constructor(
     override val bbox: BoundingBox? = null
 ) : Geometry() {
     @JvmOverloads
-    public constructor(vararg coordinates: Position, bbox: BoundingBox? = null) : this(coordinates.toList(), bbox)
+    public constructor(
+        vararg coordinates: Position,
+        bbox: BoundingBox? = null
+    ) : this(coordinates.toList(), bbox)
+
+    @JvmOverloads
+    public constructor(
+        vararg points: Point,
+        bbox: BoundingBox? = null
+    ) : this(points.map { it.coordinates }, bbox)
 
     @JvmOverloads
     public constructor(
@@ -55,7 +65,8 @@ public class LineString @JvmOverloads constructor(
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): LineString = fromJson(Json.decodeFromString(JsonObject.serializer(), json))
+        public fun fromJson(json: String): LineString =
+            fromJson(Json.decodeFromString(JsonObject.serializer(), json))
 
         @JvmStatic
         public fun fromJsonOrNull(json: String): LineString? = try {
@@ -66,14 +77,19 @@ public class LineString @JvmOverloads constructor(
 
         @JvmStatic
         public fun fromJson(json: JsonObject): LineString {
-            require(json.getValue("type").jsonPrimitive.content == "LineString") {
-                "Object \"type\" is not \"LineString\"."
+            try {
+                require(json.getValue("type").jsonPrimitive.content == "LineString") {
+                    "Object \"type\" is not \"LineString\"."
+                }
+                
+                val coords =
+                    json.getValue("coordinates").jsonArray.map { it.jsonArray.toPosition() }
+                val bbox = json["bbox"]?.jsonArray?.toBbox()
+
+                return LineString(coords, bbox)
+            } catch (e: IllegalArgumentException) {
+                throw SerializationException(e.message)
             }
-
-            val coords = json.getValue("coordinates").jsonArray.map { it.jsonArray.toPosition() }
-            val bbox = json["bbox"]?.jsonArray?.toBbox()
-
-            return LineString(coords, bbox)
         }
     }
 }

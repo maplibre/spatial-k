@@ -5,6 +5,7 @@ import org.maplibre.spatialk.geojson.serialization.jsonJoin
 import org.maplibre.spatialk.geojson.serialization.jsonProp
 import org.maplibre.spatialk.geojson.serialization.toBbox
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
@@ -27,7 +28,10 @@ public class FeatureCollection(
     override val bbox: BoundingBox? = null
 ) : Collection<Feature> by features, GeoJson {
 
-    public constructor(vararg features: Feature, bbox: BoundingBox? = null) : this(features.toMutableList(), bbox)
+    public constructor(
+        vararg features: Feature,
+        bbox: BoundingBox? = null
+    ) : this(features.toMutableList(), bbox)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -69,14 +73,19 @@ public class FeatureCollection(
 
         @JvmStatic
         public fun fromJson(json: JsonObject): FeatureCollection {
-            require(json.getValue("type").jsonPrimitive.content == "FeatureCollection") {
-                "Object \"type\" is not \"FeatureCollection\"."
+            try {
+                require(json.getValue("type").jsonPrimitive.content == "FeatureCollection") {
+                    "Object \"type\" is not \"FeatureCollection\"."
+                }
+
+                val bbox = json["bbox"]?.jsonArray?.toBbox()
+                val features =
+                    json.getValue("features").jsonArray.map { Feature.fromJson(it.jsonObject) }
+
+                return FeatureCollection(features, bbox)
+            } catch (e: IllegalArgumentException) {
+                throw SerializationException(e.message)
             }
-
-            val bbox = json["bbox"]?.jsonArray?.toBbox()
-            val features = json.getValue("features").jsonArray.map { Feature.fromJson(it.jsonObject) }
-
-            return FeatureCollection(features, bbox)
         }
     }
 }

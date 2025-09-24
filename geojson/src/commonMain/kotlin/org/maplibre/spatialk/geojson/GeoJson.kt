@@ -5,7 +5,7 @@ package org.maplibre.spatialk.geojson
  *
  * @property bbox An optional bounding box used to represent the limits of the object's geometry.
  */
-public interface GeoJson {
+public sealed interface GeoJson {
     public val bbox: BoundingBox?
 
     /**

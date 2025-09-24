@@ -3,6 +3,8 @@ package org.maplibre.spatialk.geojson
 import org.maplibre.spatialk.geojson.serialization.BoundingBoxSerializer
 import org.maplibre.spatialk.geojson.serialization.jsonJoin
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlin.jvm.JvmStatic
 
 /**
  * Represents an area bounded by a [northeast] and [southwest] [Position].
@@ -49,7 +51,12 @@ public class BoundingBox constructor(public val coordinates: DoubleArray) {
     public constructor(southwest: Position, northeast: Position) : this(
         when (southwest.hasAltitude && northeast.hasAltitude) {
             true -> southwest.coordinates + northeast.coordinates
-            false -> doubleArrayOf(southwest.longitude, southwest.latitude, northeast.longitude, northeast.latitude)
+            false -> doubleArrayOf(
+                southwest.longitude,
+                southwest.latitude,
+                northeast.longitude,
+                northeast.latitude
+            )
         }
     )
 
@@ -64,6 +71,18 @@ public class BoundingBox constructor(public val coordinates: DoubleArray) {
             true -> Position(coordinates[3], coordinates[4], coordinates[5])
             false -> Position(coordinates[2], coordinates[3])
         }
+
+    public val west: Double
+        get() = coordinates[0]
+
+    public val south: Double
+        get() = coordinates[1]
+
+    public val east: Double
+        get() = coordinates[2]
+
+    public val north: Double
+        get() = coordinates[3]
 
     public operator fun component1(): Position = southwest
     public operator fun component2(): Position = northeast
@@ -88,6 +107,19 @@ public class BoundingBox constructor(public val coordinates: DoubleArray) {
     }
 
     public fun json(): String = coordinates.jsonJoin()
+
+    public companion object {
+        @JvmStatic
+        public fun fromJson(json: String): BoundingBox =
+            Json.decodeFromString(serializer(), json)
+
+        @JvmStatic
+        public fun fromJsonOrNull(json: String): BoundingBox? = try {
+            fromJson(json)
+        } catch (_: Exception) {
+            null
+        }
+    }
 }
 
 @Suppress("MagicNumber")

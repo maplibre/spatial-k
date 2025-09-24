@@ -1,4 +1,4 @@
-package org.maplibre.spatialk.turf
+package io.github.dellisd.spatialk.turf
 
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.LineString
@@ -7,7 +7,11 @@ import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.turf.utils.assertDoubleEquals
 import org.maplibre.spatialk.turf.utils.assertPositionEquals
-import org.maplibre.spatialk.turf.utils.readResource
+import org.maplibre.spatialk.testutil.readResourceFile
+import org.maplibre.spatialk.turf.ExperimentalTurfApi
+import org.maplibre.spatialk.turf.lineIntersect
+import org.maplibre.spatialk.turf.lineSlice
+import org.maplibre.spatialk.turf.nearestPointOnLine
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -17,17 +21,21 @@ class TurfMiscTest {
 
     @Test
     fun testLineIntersect() {
-        val features = FeatureCollection.fromJson(readResource("misc/lineIntersect/twoPoints.json"))
+        val features =
+            FeatureCollection.fromJson(readResourceFile("misc/lineIntersect/twoPoints.json"))
         val intersect =
-            lineIntersect(features.features[0].geometry as LineString, features.features[1].geometry as LineString)
+            lineIntersect(
+                features.features[0].geometry as LineString,
+                features.features[1].geometry as LineString
+            )
 
         assertEquals(Position(-120.93653884065287, 51.287945374086675), intersect[0])
     }
 
     @Test
     fun testLineSlice() {
-        val features = FeatureCollection.fromJson(readResource("misc/lineSlice/route.json"))
-        val slice = LineString.fromJson(readResource("misc/lineSlice/slice.json"))
+        val features = FeatureCollection.fromJson(readResourceFile("misc/lineSlice/route.json"))
+        val slice = LineString.fromJson(readResourceFile("misc/lineSlice/slice.json"))
 
         val (lineString, start, stop) = features.features
 
@@ -44,9 +52,12 @@ class TurfMiscTest {
     @Test
     fun testNearestPointOnLine() {
         val (multiLine, point) =
-            FeatureCollection.fromJson(readResource("misc/nearestPointOnLine/multiLine.json")).features
+            FeatureCollection.fromJson(readResourceFile("misc/nearestPointOnLine/multiLine.json")).features
 
-        val result = nearestPointOnLine(multiLine.geometry as MultiLineString, (point.geometry as Point).coordinates)
+        val result = nearestPointOnLine(
+            multiLine.geometry as MultiLineString,
+            (point.geometry as Point).coordinates
+        )
         assertDoubleEquals(123.924613, result.point.longitude, 0.00001)
         assertDoubleEquals(-19.025117, result.point.latitude, 0.00001)
         assertDoubleEquals(120.886021, result.distance, 0.00001)

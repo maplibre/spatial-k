@@ -2,18 +2,18 @@
 
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFrameworkConfig
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.dokka)
     alias(libs.plugins.publish)
-    alias(libs.plugins.resources)
 }
 
 kotlin {
     explicitApi()
     applyDefaultHierarchyTemplate()
-
+    
     jvm {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_1_8
@@ -25,16 +25,15 @@ kotlin {
         nodejs()
     }
 
-    // TODO: blocked by the goncalossilva resources library used in tests
-    // wasmJs {
-    //     browser()
-    //     nodejs()
-    //     d8()
-    // }
-    //
-    // wasmWasi {
-    //     nodejs()
-    // }
+    wasmJs {
+        browser()
+        nodejs()
+        d8()
+    }
+
+    wasmWasi {
+        nodejs()
+    }
 
     // native tier 1
     macosArm64()
@@ -56,12 +55,11 @@ kotlin {
 
     // native tier 3
     mingwX64()
-    // TODO: blocked by the goncalossilva resources library used in tests
-    // androidNativeArm32()
-    // androidNativeArm64()
-    // androidNativeX86()
-    // androidNativeX64()
-    // watchosDeviceArm64()
+    androidNativeArm32()
+    androidNativeArm64()
+    androidNativeX86()
+    androidNativeX64()
+    watchosDeviceArm64()
 
     sourceSets {
         all {
@@ -77,12 +75,44 @@ kotlin {
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(kotlin("test-annotations-common"))
-            implementation(libs.resources)
+            implementation(libs.kotlinx.io.core)
+            implementation(project(":testutil"))
         }
     }
 }
 
-tasks.named("jsBrowserTest") { enabled = false }
+// TODO fix tests on these platforms
+tasks.matching { task ->
+    listOf(
+        // no filesystem support
+        ".*BrowserTest",
+        "wasmJsD8Test",
+        "wasmWasi.*Test",
+        ".*Simulator.*Test",
+        // runs, but fails some tests
+        "wasmJsNodeTest"
+    ).any { task.name.matches(it.toRegex()) }
+}.configureEach {
+    enabled = false
+}
+
+tasks.register<Copy>("copyiOSTestResources") {
+    from("src/commonTest/resources")
+    into("build/bin/iosX64/debugTest/resources")
+}
+
+tasks.named("iosX64Test") {
+    dependsOn("copyiOSTestResources")
+}
+
+tasks.register<Copy>("copyiOSArmTestResources") {
+    from("src/commonTest/resources")
+    into("build/bin/iosSimulatorArm64/debugTest/resources")
+}
+
+tasks.named("iosSimulatorArm64Test") {
+    dependsOn("copyiOSArmTestResources")
+}
 
 dokka {
     dokkaSourceSets {

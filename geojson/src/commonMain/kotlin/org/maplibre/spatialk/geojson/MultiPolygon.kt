@@ -6,6 +6,7 @@ import org.maplibre.spatialk.geojson.serialization.jsonProp
 import org.maplibre.spatialk.geojson.serialization.toBbox
 import org.maplibre.spatialk.geojson.serialization.toPosition
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
@@ -20,7 +21,16 @@ public class MultiPolygon @JvmOverloads constructor(
     override val bbox: BoundingBox? = null
 ) : Geometry() {
     @JvmOverloads
-    public constructor(vararg coordinates: List<List<Position>>, bbox: BoundingBox? = null) : this(coordinates.toList(), bbox)
+    public constructor(vararg coordinates: List<List<Position>>, bbox: BoundingBox? = null) : this(
+        coordinates.toList(),
+        bbox
+    )
+
+    @JvmOverloads
+    public constructor(
+        vararg polygons: Polygon,
+        bbox: BoundingBox? = null
+    ) : this(polygons.map { it.coordinates }, bbox)
 
     @JvmOverloads
     public constructor(
@@ -69,17 +79,21 @@ public class MultiPolygon @JvmOverloads constructor(
 
         @JvmStatic
         public fun fromJson(json: JsonObject): MultiPolygon {
-            require(json.getValue("type").jsonPrimitive.content == "MultiPolygon") {
-                "Object \"type\" is not \"MultiPolygon\"."
-            }
-
-            val coords =
-                json.getValue("coordinates").jsonArray.map { polygon ->
-                    polygon.jsonArray.map { ring -> ring.jsonArray.map { it.jsonArray.toPosition() } }
+            try {
+                require(json.getValue("type").jsonPrimitive.content == "MultiPolygon") {
+                    "Object \"type\" is not \"MultiPolygon\"."
                 }
-            val bbox = json["bbox"]?.jsonArray?.toBbox()
 
-            return MultiPolygon(coords, bbox)
+                val coords =
+                    json.getValue("coordinates").jsonArray.map { polygon ->
+                        polygon.jsonArray.map { ring -> ring.jsonArray.map { it.jsonArray.toPosition() } }
+                    }
+                val bbox = json["bbox"]?.jsonArray?.toBbox()
+
+                return MultiPolygon(coords, bbox)
+            } catch (e: IllegalArgumentException) {
+                throw SerializationException(e.message)
+            }
         }
     }
 }

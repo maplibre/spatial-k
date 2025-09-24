@@ -6,6 +6,7 @@ package org.maplibre.spatialk.turf
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.GeoJson
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.GeometryCollection
 import org.maplibre.spatialk.geojson.LineString
@@ -18,13 +19,16 @@ import org.maplibre.spatialk.geojson.Polygon
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmSynthetic
+import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.asin
 import kotlin.math.atan2
 import kotlin.math.cos
+import kotlin.math.ln
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
+import kotlin.math.tan
 
 /**
  * Takes a [LineString] and returns a [position][Position] at a specified distance along the line.
@@ -652,3 +656,114 @@ public fun greatCircle(start: Position, end: Position, pointCount: Int = 100, an
     }
 }
 
+/**
+ * Takes any [GeoJson] and returns a [Feature] containing a rectangular [Polygon] that encompasses all vertices.
+ * @param geoJson input containing any coordinates
+ * @return a rectangular [Polygon] feature that encompasses all vertices
+ */
+@ExperimentalTurfApi
+public fun envelope(geoJson: GeoJson): Feature {
+    val coordinates = when (geoJson) {
+        is Feature -> geoJson.coordAll()
+        is FeatureCollection -> geoJson.coordAll()
+        is GeometryCollection -> geoJson.coordAll()
+        is Geometry -> geoJson.coordAll()
+    }.orEmpty()
+
+    val bbox = geoJson.bbox ?: computeBbox(coordinates)
+
+    return Feature(
+        geometry = bboxPolygon(bbox),
+        bbox = bbox
+    )
+}
+
+/**
+ * Calculates the distance between a given point and the nearest point on a line.
+ *
+ * @param point point to calculate from
+ * @param line line to calculate to
+ * @param units units of [distance]
+ */
+@ExperimentalTurfApi
+public fun pointToLineDistance(point: Position, line: LineString, units: Units = Units.Kilometers): Double {
+    var distance = Double.MAX_VALUE
+
+    line.coordinates.drop(1).mapIndexed { idx, position ->
+        line.coordinates[idx] to position
+    }.forEach { (prev, cur) ->
+        val d = distanceToSegment(point, prev, cur, units)
+        if (d < distance) distance = d
+    }
+
+    return distance
+}
+
+
+@OptIn(ExperimentalTurfApi::class)
+private fun distanceToSegment(
+    point: Position,
+    start: Position,
+    end: Position,
+    units: Units = Units.Meters
+): Double {
+    fun dot(u: Position, v: Position): Double {
+        return u.longitude * v.longitude + u.latitude * v.latitude;
+    }
+
+    val segmentVector = Position(end.longitude - start.longitude, end.latitude - start.latitude)
+    val pointVector = Position(point.longitude - start.longitude, point.latitude - start.latitude)
+
+    val projectionLengthSquared = dot(pointVector, segmentVector)
+    if (projectionLengthSquared <= 0) {
+        return rhumbDistance(point, start, units);
+    }
+    val segmentLengthSquared = dot(segmentVector, segmentVector)
+    if (segmentLengthSquared <= projectionLengthSquared) {
+        return rhumbDistance(point, end, units);
+    }
+
+    val projectionRatio = projectionLengthSquared / segmentLengthSquared;
+    val projectedPoint = Position(
+        start.longitude + projectionRatio * segmentVector.longitude,
+        start.latitude + projectionRatio * segmentVector.latitude
+    )
+
+    return rhumbDistance(point, projectedPoint, units);
+}
+
+/**
+ * Calculates the distance along a rhumb line between two points.
+ */
+@OptIn(ExperimentalTurfApi::class)
+public fun rhumbDistance(
+    origin: Position,
+    destination: Position,
+    units: Units = Units.Meters
+): Double {
+    // compensate the crossing of the 180th meridian
+    val destination = Position(
+        destination.longitude + when {
+            destination.longitude - origin.longitude > 180 -> -360
+            origin.longitude - destination.longitude > 180 -> 360
+            else -> 0
+        }, destination.latitude
+    )
+
+    val phi1 = origin.latitude * PI / 180
+    val phi2 = destination.latitude * PI / 180
+    val deltaPhi = phi2 - phi1
+    var deltaLambda = abs(destination.longitude - origin.longitude) * PI / 180
+
+    if (deltaLambda > PI) {
+        deltaLambda -= 2 * PI
+    }
+
+    val deltaPsi = ln(tan(phi2 / 2 + PI / 4) / tan(phi1 / 2 + PI / 4))
+    val q = if (abs(deltaPsi) > 10e-12) deltaPhi / deltaPsi else cos(phi1)
+
+    val delta = sqrt(deltaPhi * deltaPhi + q * q * deltaLambda * deltaLambda)
+    val dist = delta * units.factor
+
+    return dist
+}

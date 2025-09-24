@@ -2,6 +2,7 @@
 
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFrameworkConfig
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -92,6 +93,8 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-annotations-common"))
+                implementation(libs.kotlinx.io.core)
+                implementation(project(":testutil"))
             }
         }
 
@@ -113,6 +116,37 @@ kotlin {
             dependsOn(commonBench)
         }
     }
+}
+
+// TODO fix tests on these platforms
+tasks.matching { task ->
+    listOf(
+        // no filesystem support
+        ".*BrowserTest",
+        "wasmJsD8Test",
+        "wasmWasi.*Test",
+        ".*Simulator.*Test",
+    ).any { task.name.matches(it.toRegex()) }
+}.configureEach {
+    enabled = false
+}
+
+tasks.register<Copy>("copyiOSTestResources") {
+    from("src/commonTest/resources")
+    into("build/bin/iosX64/debugTest/resources")
+}
+
+tasks.named("iosX64Test") {
+    dependsOn("copyiOSTestResources")
+}
+
+tasks.register<Copy>("copyiOSArmTestResources") {
+    from("src/commonTest/resources")
+    into("build/bin/iosSimulatorArm64/debugTest/resources")
+}
+
+tasks.named("iosSimulatorArm64Test") {
+    dependsOn("copyiOSArmTestResources")
 }
 
 benchmark {

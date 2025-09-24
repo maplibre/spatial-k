@@ -5,6 +5,7 @@ import org.maplibre.spatialk.geojson.serialization.jsonJoin
 import org.maplibre.spatialk.geojson.serialization.jsonProp
 import org.maplibre.spatialk.geojson.serialization.toBbox
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
@@ -20,7 +21,10 @@ public class GeometryCollection @JvmOverloads constructor(
     override val bbox: BoundingBox? = null
 ) : Geometry(), Collection<Geometry> by geometries {
     @JvmOverloads
-    public constructor(vararg geometries: Geometry, bbox: BoundingBox? = null) : this(geometries.toList(), bbox)
+    public constructor(
+        vararg geometries: Geometry,
+        bbox: BoundingBox? = null
+    ) : this(geometries.toList(), bbox)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -57,17 +61,21 @@ public class GeometryCollection @JvmOverloads constructor(
 
         @JvmStatic
         public fun fromJson(json: JsonObject): GeometryCollection {
-            require(json.getValue("type").jsonPrimitive.content == "GeometryCollection") {
-                "Object \"type\" is not \"GeometryCollection\"."
+            try {
+                require(json.getValue("type").jsonPrimitive.content == "GeometryCollection") {
+                    "Object \"type\" is not \"GeometryCollection\"."
+                }
+
+                val geometries = json.getValue("geometries").jsonArray.map {
+                    Geometry.fromJson(it.jsonObject)
+                }
+
+                val bbox = json["bbox"]?.jsonArray?.toBbox()
+
+                return GeometryCollection(geometries, bbox)
+            } catch (e: IllegalArgumentException) {
+                throw SerializationException(e.message)
             }
-
-            val geometries = json.getValue("geometries").jsonArray.map {
-                Geometry.fromJson(it.jsonObject)
-            }
-
-            val bbox = json["bbox"]?.jsonArray?.toBbox()
-
-            return GeometryCollection(geometries, bbox)
         }
     }
 }

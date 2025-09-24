@@ -3,7 +3,6 @@ package org.maplibre.spatialk.geojson
 import org.maplibre.spatialk.geojson.serialization.PositionSerializer
 import org.maplibre.spatialk.geojson.serialization.jsonJoin
 import kotlinx.serialization.Serializable
-import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmSynthetic
 
 /**
@@ -38,7 +37,13 @@ public class Position(public val coordinates: DoubleArray) {
         require(coordinates.size >= 2) { "At least two coordinates must be provided" }
     }
 
-    public constructor(longitude: Double, latitude: Double) : this(doubleArrayOf(longitude, latitude))
+    public constructor(longitude: Double, latitude: Double) : this(
+        doubleArrayOf(
+            longitude,
+            latitude
+        )
+    )
+
     public constructor(longitude: Double, latitude: Double, altitude: Double) : this(
         doubleArrayOf(
             longitude,
