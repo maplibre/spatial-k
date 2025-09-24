@@ -2,7 +2,6 @@
 
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFrameworkConfig
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -13,12 +12,8 @@ plugins {
 kotlin {
     explicitApi()
     applyDefaultHierarchyTemplate()
-    
-    jvm {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_1_8
-        }
-    }
+
+    jvm { compilerOptions { jvmTarget = JvmTarget.JVM_1_8 } }
 
     js(IR) {
         browser()
@@ -31,9 +26,7 @@ kotlin {
         d8()
     }
 
-    wasmWasi {
-        nodejs()
-    }
+    wasmWasi { nodejs() }
 
     // native tier 1
     macosArm64()
@@ -62,15 +55,9 @@ kotlin {
     watchosDeviceArm64()
 
     sourceSets {
-        all {
-            with(languageSettings) {
-                optIn("kotlin.RequiresOptIn")
-            }
-        }
+        all { with(languageSettings) { optIn("kotlin.RequiresOptIn") } }
 
-        commonMain.dependencies {
-            api(project(":geojson"))
-        }
+        commonMain.dependencies { api(project(":geojson")) }
 
         commonTest.dependencies {
             implementation(kotlin("test"))
@@ -82,42 +69,33 @@ kotlin {
 }
 
 // TODO fix tests on these platforms
-tasks.matching { task ->
-    listOf(
-        // no filesystem support
-        ".*BrowserTest",
-        "wasmJsD8Test",
-        "wasmWasi.*Test",
-        ".*Simulator.*Test",
-        // runs, but fails some tests
-        "wasmJsNodeTest"
-    ).any { task.name.matches(it.toRegex()) }
-}.configureEach {
-    enabled = false
-}
+tasks
+    .matching { task ->
+        listOf(
+                // no filesystem support
+                ".*BrowserTest",
+                "wasmJsD8Test",
+                "wasmWasi.*Test",
+                ".*Simulator.*Test",
+                // runs, but fails some tests
+                "wasmJsNodeTest",
+            )
+            .any { task.name.matches(it.toRegex()) }
+    }
+    .configureEach { enabled = false }
 
 tasks.register<Copy>("copyiOSTestResources") {
     from("src/commonTest/resources")
     into("build/bin/iosX64/debugTest/resources")
 }
 
-tasks.named("iosX64Test") {
-    dependsOn("copyiOSTestResources")
-}
+tasks.named("iosX64Test") { dependsOn("copyiOSTestResources") }
 
 tasks.register<Copy>("copyiOSArmTestResources") {
     from("src/commonTest/resources")
     into("build/bin/iosSimulatorArm64/debugTest/resources")
 }
 
-tasks.named("iosSimulatorArm64Test") {
-    dependsOn("copyiOSArmTestResources")
-}
+tasks.named("iosSimulatorArm64Test") { dependsOn("copyiOSArmTestResources") }
 
-dokka {
-    dokkaSourceSets {
-        configureEach {
-            includes.from("MODULE.md")
-        }
-    }
-}
+dokka { dokkaSourceSets { configureEach { includes.from("MODULE.md") } } }

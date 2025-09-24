@@ -1,18 +1,18 @@
 package org.maplibre.spatialk.turf
 
+import kotlin.math.roundToInt
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
+import kotlinx.serialization.json.double
+import kotlinx.serialization.json.jsonPrimitive
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.utils.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
-import kotlinx.serialization.json.double
-import kotlinx.serialization.json.jsonPrimitive
-import kotlin.math.roundToInt
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
+import org.maplibre.spatialk.turf.utils.assertPositionEquals
 
 @ExperimentalTurfApi
 class TransformationTest {
@@ -60,10 +60,11 @@ class TransformationTest {
 
         val (_, expectedCircle) = expectedOut.features
 
-        val circle = circle(
-            center = point.geometry as Point,
-            radius = point.properties["radius"]?.jsonPrimitive?.double ?: 0.0,
-        )
+        val circle =
+            circle(
+                center = point.geometry as Point,
+                radius = point.properties["radius"]?.jsonPrimitive?.double ?: 0.0,
+            )
 
         val allCoordinates = expectedCircle.geometry?.coordAll().orEmpty()
         assertTrue(allCoordinates.isNotEmpty())
@@ -80,12 +81,15 @@ class TransformationTest {
         val expected =
             Feature.fromJson(readResourceFile("transformation/simplify/out/linestring.json"))
         val simplified = simplify(feature.geometry as LineString, 0.01, false)
-        val roundedSimplified = LineString(simplified.coordinates.map { position ->
-            Position(
-                (position.longitude * 1000000).roundToInt() / 1000000.0,
-                (position.latitude * 1000000).roundToInt() / 1000000.0
+        val roundedSimplified =
+            LineString(
+                simplified.coordinates.map { position ->
+                    Position(
+                        (position.longitude * 1000000).roundToInt() / 1000000.0,
+                        (position.latitude * 1000000).roundToInt() / 1000000.0,
+                    )
+                }
             )
-        })
         assertEquals(expected.geometry as LineString, roundedSimplified)
     }
 }

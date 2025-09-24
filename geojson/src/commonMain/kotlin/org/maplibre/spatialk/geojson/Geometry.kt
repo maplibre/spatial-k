@@ -1,12 +1,12 @@
 package org.maplibre.spatialk.geojson
 
-import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
+import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import kotlin.jvm.JvmStatic
+import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
 
 @Serializable(with = GeometrySerializer::class)
 public sealed class Geometry protected constructor() : GeoJson {
@@ -20,11 +20,12 @@ public sealed class Geometry protected constructor() : GeoJson {
             fromJson(Json.decodeFromString(JsonObject.serializer(), json))
 
         @JvmStatic
-        public fun fromJsonOrNull(json: String): Geometry? = try {
-            fromJson(json)
-        } catch (_: Exception) {
-            null
-        }
+        public fun fromJsonOrNull(json: String): Geometry? =
+            try {
+                fromJson(json)
+            } catch (_: Exception) {
+                null
+            }
 
         @JvmStatic
         public fun fromJson(json: JsonObject): Geometry =
@@ -44,6 +45,3 @@ public sealed class Geometry protected constructor() : GeoJson {
             }
     }
 }
-
-
-

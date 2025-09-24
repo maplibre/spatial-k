@@ -1,22 +1,18 @@
 package org.maplibre.spatialk.geojson
 
-import org.maplibre.spatialk.geojson.utils.DELTA
-import org.maplibre.spatialk.testutil.readResourceFile
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-
+import org.maplibre.spatialk.geojson.utils.DELTA
+import org.maplibre.spatialk.testutil.readResourceFile
 
 class FeatureCollectionTest {
 
     @Test
     fun sanity() {
-        val features = listOf(
-            Feature(null),
-            Feature(null)
-        )
+        val features = listOf(Feature(null), Feature(null))
 
         val featureCollection = FeatureCollection(features)
         assertNotNull(featureCollection)
@@ -24,10 +20,7 @@ class FeatureCollectionTest {
 
     @Test
     fun bbox_nullWhenNotSet() {
-        val features = listOf(
-            Feature(null),
-            Feature(null)
-        )
+        val features = listOf(Feature(null), Feature(null))
 
         val featureCollection = FeatureCollection(features)
         assertNull(featureCollection.bbox)
@@ -35,20 +28,17 @@ class FeatureCollectionTest {
 
     @Test
     fun bbox_doesNotSerializeWhenNotPresent() {
-        val points = listOf(
-            Position(1.0, 2.0),
-            Position(2.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
         val lineString = LineString(points)
         val feature = Feature(lineString)
 
         val features = listOf(feature, feature)
 
-        val actualFeatureCollection =
-            FeatureCollection.fromJson(FeatureCollection(features).json())
-        val expectedFeatureCollection = FeatureCollection.fromJson(
-            """
+        val actualFeatureCollection = FeatureCollection.fromJson(FeatureCollection(features).json())
+        val expectedFeatureCollection =
+            FeatureCollection.fromJson(
+                """
                     {
                         "type": "FeatureCollection",
                         "features": [
@@ -74,18 +64,16 @@ class FeatureCollectionTest {
                             }
                         ]
                     }
-                    """.trimIndent()
-        )
+                    """
+                    .trimIndent()
+            )
 
         assertEquals(expectedFeatureCollection, actualFeatureCollection)
     }
 
     @Test
     fun bbox_returnsCorrectBbox() {
-        val features = listOf(
-            Feature(null),
-            Feature(null)
-        )
+        val features = listOf(Feature(null), Feature(null))
 
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
         val featureCollection = FeatureCollection(features, bbox)
@@ -99,10 +87,7 @@ class FeatureCollectionTest {
 
     @Test
     fun bbox_doesSerializeWhenPresent() {
-        val points = listOf(
-            Position(1.0, 2.0),
-            Position(2.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
         val lineString = LineString(points)
         val feature = Feature(lineString)
 
@@ -111,8 +96,9 @@ class FeatureCollectionTest {
 
         val actualFeatureCollection =
             FeatureCollection.fromJson(FeatureCollection(features, bbox).json())
-        val expectedFeatureCollection = FeatureCollection.fromJson(
-            """
+        val expectedFeatureCollection =
+            FeatureCollection.fromJson(
+                """
                     {
                         "type": "FeatureCollection",
                         "bbox": [1.0, 2.0, 3.0, 4.0],
@@ -139,8 +125,9 @@ class FeatureCollectionTest {
                             }
                         ]
                     }
-                    """.trimIndent()
-        )
+                    """
+                    .trimIndent()
+            )
 
         assertEquals(expectedFeatureCollection, actualFeatureCollection)
     }

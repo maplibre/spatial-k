@@ -1,9 +1,7 @@
 package org.maplibre.spatialk.geojson
 
-import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
-import org.maplibre.spatialk.geojson.serialization.idProp
-import org.maplibre.spatialk.geojson.serialization.jsonProp
-import org.maplibre.spatialk.geojson.serialization.toBbox
+import kotlin.jvm.JvmName
+import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.MapSerializer
@@ -17,18 +15,20 @@ import kotlinx.serialization.json.double
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import kotlin.jvm.JvmName
-import kotlin.jvm.JvmStatic
+import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
+import org.maplibre.spatialk.geojson.serialization.idProp
+import org.maplibre.spatialk.geojson.serialization.jsonProp
+import org.maplibre.spatialk.geojson.serialization.toBbox
 
 /**
  * A feature object represents a spatially bounded thing.
  *
- * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.2">https://tools.ietf.org/html/rfc7946#section-3.2</a>
- *
  * @property geometry A [Geometry] object contained within the feature.
- * @property properties Additional properties about this feature.
- * When serialized, any non-simple types will be serialized into JSON objects.
+ * @property properties Additional properties about this feature. When serialized, any non-simple
+ *   types will be serialized into JSON objects.
  * @property id An optionally included string that commonly identifies this feature.
+ * @see <a
+ *   href="https://tools.ietf.org/html/rfc7946#section-3.2">https://tools.ietf.org/html/rfc7946#section-3.2</a>
  */
 @Suppress("TooManyFunctions")
 @Serializable(with = FeatureSerializer::class)
@@ -36,10 +36,11 @@ public class Feature(
     public val geometry: Geometry?,
     properties: Map<String, JsonElement> = emptyMap(),
     public val id: String? = null,
-    override val bbox: BoundingBox? = null
+    override val bbox: BoundingBox? = null,
 ) : GeoJson {
     private val _properties: MutableMap<String, JsonElement> = properties.toMutableMap()
-    public val properties: Map<String, JsonElement> get() = _properties
+    public val properties: Map<String, JsonElement>
+        get() = _properties
 
     public fun setStringProperty(key: String, value: String?) {
         _properties[key] = JsonPrimitive(value)
@@ -99,8 +100,11 @@ public class Feature(
     }
 
     public operator fun component1(): Geometry? = geometry
+
     public operator fun component2(): Map<String, JsonElement> = properties
+
     public operator fun component3(): String? = id
+
     public operator fun component4(): BoundingBox? = bbox
 
     override fun toString(): String = json()
@@ -110,8 +114,8 @@ public class Feature(
             Json.encodeToString(
                 MapSerializer(
                     String.serializer(),
-                    JsonElement.serializer()
-                ), properties
+                    JsonElement.serializer(),
+                ), properties,
             )
         }}"""
 
@@ -119,7 +123,7 @@ public class Feature(
         geometry: Geometry? = this.geometry,
         properties: Map<String, JsonElement> = this.properties,
         id: String? = this.id,
-        bbox: BoundingBox? = this.bbox
+        bbox: BoundingBox? = this.bbox,
     ): Feature = Feature(geometry, properties, id, bbox)
 
     public companion object {
@@ -128,11 +132,12 @@ public class Feature(
             fromJson(Json.decodeFromString(JsonObject.serializer(), json))
 
         @JvmStatic
-        public fun fromJsonOrNull(json: String): Feature? = try {
-            fromJson(json)
-        } catch (_: Exception) {
-            null
-        }
+        public fun fromJsonOrNull(json: String): Feature? =
+            try {
+                fromJson(json)
+            } catch (_: Exception) {
+                null
+            }
 
         @JvmStatic
         public fun fromJson(json: JsonObject): Feature {

@@ -1,10 +1,9 @@
 package org.maplibre.spatialk.geojson
 
-
-import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlinx.serialization.json.Json
 
 class BoundingBoxTest {
     @Test
@@ -47,7 +46,7 @@ class BoundingBoxTest {
 
         assertEquals(
             Json.parseToJsonElement(json),
-            Json.parseToJsonElement("[1.1, 2.2, 3.3, 4.4, 5.5, 6.6]")
+            Json.parseToJsonElement("[1.1, 2.2, 3.3, 4.4, 5.5, 6.6]"),
         )
     }
 
@@ -71,8 +70,6 @@ class BoundingBoxTest {
     fun JSON_deserializing_with_wrong_array_size() {
         val json = "[1.0, 2.0, 3.0, 4.0, 5.0]"
 
-        assertFailsWith(IllegalArgumentException::class) {
-            BoundingBox.fromJson(json)
-        }
+        assertFailsWith(IllegalArgumentException::class) { BoundingBox.fromJson(json) }
     }
 }

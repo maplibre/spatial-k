@@ -6,9 +6,7 @@ plugins {
 
 dokka {
     moduleName = "Spatial K"
-    dokkaPublications.html {
-        outputDirectory = rootDir.absoluteFile.resolve("docs/api")
-    }
+    dokkaPublications.html { outputDirectory = rootDir.absoluteFile.resolve("docs/api") }
     pluginsConfiguration.html {
         customStyleSheets.from(file("docs/css/logo-styles.css"))
         customAssets.from(file("docs/images/logo.png"))

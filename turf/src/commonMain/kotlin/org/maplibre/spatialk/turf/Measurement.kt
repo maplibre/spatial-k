@@ -3,19 +3,6 @@
 
 package org.maplibre.spatialk.turf
 
-import org.maplibre.spatialk.geojson.BoundingBox
-import org.maplibre.spatialk.geojson.Feature
-import org.maplibre.spatialk.geojson.FeatureCollection
-import org.maplibre.spatialk.geojson.GeoJson
-import org.maplibre.spatialk.geojson.Geometry
-import org.maplibre.spatialk.geojson.GeometryCollection
-import org.maplibre.spatialk.geojson.LineString
-import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.geojson.MultiLineString
-import org.maplibre.spatialk.geojson.MultiPoint
-import org.maplibre.spatialk.geojson.MultiPolygon
-import org.maplibre.spatialk.geojson.Point
-import org.maplibre.spatialk.geojson.Polygon
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmSynthetic
@@ -29,6 +16,19 @@ import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.tan
+import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.Feature
+import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.GeoJson
+import org.maplibre.spatialk.geojson.Geometry
+import org.maplibre.spatialk.geojson.GeometryCollection
+import org.maplibre.spatialk.geojson.LineString
+import org.maplibre.spatialk.geojson.MultiLineString
+import org.maplibre.spatialk.geojson.MultiPoint
+import org.maplibre.spatialk.geojson.MultiPolygon
+import org.maplibre.spatialk.geojson.Point
+import org.maplibre.spatialk.geojson.Polygon
+import org.maplibre.spatialk.geojson.Position
 
 /**
  * Takes a [LineString] and returns a [position][Position] at a specified distance along the line.
@@ -46,29 +46,16 @@ public fun along(line: LineString, distance: Double, units: Units = Units.Kilome
 
     line.coordinates.forEachIndexed { i, coordinate ->
         when {
-            distance >= travelled && i == line.coordinates.size - 1 -> {
-            }
+            distance >= travelled && i == line.coordinates.size - 1 -> {}
             travelled >= distance -> {
                 val overshot = distance - travelled
                 return if (overshot == 0.0) coordinate
                 else {
-                    val direction = bearing(
-                        coordinate,
-                        line.coordinates[i - 1]
-                    ) - 180
-                    destination(
-                        coordinate,
-                        overshot,
-                        direction,
-                        units
-                    )
+                    val direction = bearing(coordinate, line.coordinates[i - 1]) - 180
+                    destination(coordinate, overshot, direction, units)
                 }
             }
-            else -> travelled += distance(
-                coordinate,
-                line.coordinates[i + 1],
-                units
-            )
+            else -> travelled += distance(coordinate, line.coordinates[i + 1], units)
         }
     }
 
@@ -84,11 +71,7 @@ public fun along(line: LineString, distance: Double, units: Units = Units.Kilome
 @ExperimentalTurfApi
 public fun area(geometry: Geometry): Double {
     return when (geometry) {
-        is GeometryCollection -> geometry.geometries.fold(0.0) { acc, geom ->
-            acc + area(
-                geom
-            )
-        }
+        is GeometryCollection -> geometry.geometries.fold(0.0) { acc, geom -> acc + area(geom) }
         else -> calculateArea(geometry)
     }
 }
@@ -96,11 +79,8 @@ public fun area(geometry: Geometry): Double {
 private fun calculateArea(geometry: Geometry): Double {
     return when (geometry) {
         is Polygon -> polygonArea(geometry.coordinates)
-        is MultiPolygon -> geometry.coordinates.fold(0.0) { acc, coords ->
-            acc + polygonArea(
-                coords
-            )
-        }
+        is MultiPolygon ->
+            geometry.coordinates.fold(0.0) { acc, coords -> acc + polygonArea(coords) }
         else -> 0.0
     }
 }
@@ -120,12 +100,12 @@ public const val AREA_EARTH_RADIUS: Int = 6378137
 
 /**
  * Calculates the approximate area of the [polygon][coordinates] were it projected onto the earth.
- * Note that this area will be positive if ring is oriented clockwise, otherwise it will be negative.
+ * Note that this area will be positive if ring is oriented clockwise, otherwise it will be
+ * negative.
  *
- * Reference:
- * Robert. G. Chamberlain and William H. Duquette, "Some Algorithms for Polygons on a Sphere",
- * JPL Publication 07-03, Jet Propulsion
- * Laboratory, Pasadena, CA, June 2007 https://trs.jpl.nasa.gov/handle/2014/40409
+ * Reference: Robert. G. Chamberlain and William H. Duquette, "Some Algorithms for Polygons on a
+ * Sphere", JPL Publication 07-03, Jet Propulsion Laboratory, Pasadena, CA, June 2007
+ * https://trs.jpl.nasa.gov/handle/2014/40409
  */
 private fun ringArea(coordinates: List<Position>): Double {
     var p1: Position
@@ -244,16 +224,18 @@ public fun bbox(feature: Feature): BoundingBox = computeBbox(feature.coordAll() 
  * @return A [BoundingBox] that covers the geometry.
  */
 @ExperimentalTurfApi
-public fun bbox(featureCollection: FeatureCollection): BoundingBox = computeBbox(featureCollection.coordAll())
+public fun bbox(featureCollection: FeatureCollection): BoundingBox =
+    computeBbox(featureCollection.coordAll())
 
 @Suppress("MagicNumber")
 public fun computeBbox(coordinates: List<Position>): BoundingBox {
-    val result = doubleArrayOf(
-        Double.POSITIVE_INFINITY,
-        Double.POSITIVE_INFINITY,
-        Double.NEGATIVE_INFINITY,
-        Double.NEGATIVE_INFINITY
-    )
+    val result =
+        doubleArrayOf(
+            Double.POSITIVE_INFINITY,
+            Double.POSITIVE_INFINITY,
+            Double.NEGATIVE_INFINITY,
+            Double.NEGATIVE_INFINITY,
+        )
     coordinates.forEach { (longitude, latitude) ->
         if (result[0] > longitude) {
             result[0] = longitude
@@ -275,10 +257,9 @@ public fun computeBbox(coordinates: List<Position>): BoundingBox {
 /**
  * Takes a bbox and returns an equivalent [Polygon].
  *
- * @see BoundingBox.toPolygon
- *
  * @param bbox The bounding box to convert to a Polygon.
  * @return The bounding box as a polygon
+ * @see BoundingBox.toPolygon
  */
 @ExperimentalTurfApi
 public fun bboxPolygon(bbox: BoundingBox): Polygon {
@@ -292,18 +273,16 @@ public fun bboxPolygon(bbox: BoundingBox): Polygon {
             Position(bbox.northeast.longitude, bbox.southwest.latitude),
             bbox.northeast,
             Position(bbox.southwest.longitude, bbox.northeast.latitude),
-            bbox.southwest
+            bbox.southwest,
         )
     )
 }
 
-@JvmSynthetic
-@ExperimentalTurfApi
-public fun BoundingBox.toPolygon(): Polygon = bboxPolygon(this)
+@JvmSynthetic @ExperimentalTurfApi public fun BoundingBox.toPolygon(): Polygon = bboxPolygon(this)
 
 /**
- * Takes two positions ([start], [end]) and finds the geographic bearing between them,
- * i.e. the angle measured in degrees from the north line (0 degrees)
+ * Takes two positions ([start], [end]) and finds the geographic bearing between them, i.e. the
+ * angle measured in degrees from the north line (0 degrees)
  *
  * @param start starting point
  * @param end ending point
@@ -328,53 +307,54 @@ public fun bearing(start: Position, end: Position, final: Boolean = false): Doub
 
 @Suppress("MagicNumber")
 @ExperimentalTurfApi
-internal fun finalBearing(start: Position, end: Position): Double = (bearing(
-    end,
-    start
-) + 180) % 360
+internal fun finalBearing(start: Position, end: Position): Double =
+    (bearing(end, start) + 180) % 360
 
 /**
- * Takes a [position][origin] and calculates the location of a destination position given a distance in
- * degrees, radians, miles, or kilometers; and bearing in degrees.
- * This uses the Haversine formula to account for global curvature.
+ * Takes a [position][origin] and calculates the location of a destination position given a distance
+ * in degrees, radians, miles, or kilometers; and bearing in degrees. This uses the Haversine
+ * formula to account for global curvature.
  *
  * @param origin starting point
  * @param distance distance from the origin point
  * @param bearing ranging from -180 to 180
  * @param units Unit of [distance]
  * @return destination position
- *
  * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
  */
 @JvmOverloads
 @ExperimentalTurfApi
-public fun destination(origin: Position, distance: Double, bearing: Double, units: Units = Units.Kilometers): Position {
+public fun destination(
+    origin: Position,
+    distance: Double,
+    bearing: Double,
+    units: Units = Units.Kilometers,
+): Position {
     val longitude1 = radians(origin.longitude)
     val latitude1 = radians(origin.latitude)
     val bearingRad = radians(bearing)
     val radians = lengthToRadians(distance, units)
 
-    val latitude2 = asin(sin(latitude1) * cos(radians) + cos(latitude1) * sin(radians) * cos(bearingRad))
-    val longitude2 = longitude1 + atan2(
-        sin(bearingRad) * sin(radians) * cos(latitude1),
-        cos(radians) - sin(latitude1) * sin(latitude2)
-    )
+    val latitude2 =
+        asin(sin(latitude1) * cos(radians) + cos(latitude1) * sin(radians) * cos(bearingRad))
+    val longitude2 =
+        longitude1 +
+            atan2(
+                sin(bearingRad) * sin(radians) * cos(latitude1),
+                cos(radians) - sin(latitude1) * sin(latitude2),
+            )
 
-    return Position(
-        degrees(longitude2),
-        degrees(latitude2)
-    )
+    return Position(degrees(longitude2), degrees(latitude2))
 }
 
 /**
- * Calculates the distance between two positions.
- * This uses the Haversine formula to account for global curvature.
+ * Calculates the distance between two positions. This uses the Haversine formula to account for
+ * global curvature.
  *
  * @param from origin point
  * @param to destination point
  * @param units units of returned distance
  * @return distance between the two points in [units]
- *
  * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
  */
 @JvmOverloads
@@ -397,10 +377,12 @@ public fun distance(from: Position, to: Position, units: Units = Units.Kilometer
  * @return The length of the geometry in [units].
  */
 @ExperimentalTurfApi
-public fun length(lineString: LineString, units: Units): Double = length(lineString.coordinates, units)
+public fun length(lineString: LineString, units: Units): Double =
+    length(lineString.coordinates, units)
 
 /**
- * Calculates the combined length of all [LineString]s from the given [MultiLineString] in the given [Units].
+ * Calculates the combined length of all [LineString]s from the given [MultiLineString] in the given
+ * [Units].
  *
  * @param multiLineString The geometry to measure
  * @param units The unit of measurement to return the length in
@@ -411,8 +393,8 @@ public fun length(multiLineString: MultiLineString, units: Units): Double =
     multiLineString.coordinates.fold(0.0) { acc, coords -> acc + length(coords, units) }
 
 /**
- * Calculates the length of perimeter the given [Polygon] in the given [Units].
- * Any holes in the polygon will be included in the length.
+ * Calculates the length of perimeter the given [Polygon] in the given [Units]. Any holes in the
+ * polygon will be included in the length.
  *
  * @param polygon The geometry to measure
  * @param units The unit of measurement to return the length in
@@ -423,8 +405,8 @@ public fun length(polygon: Polygon, units: Units): Double =
     polygon.coordinates.fold(0.0) { acc, ring -> acc + length(ring, units) }
 
 /**
- * Calculates the combined length of perimeter the [Polygon]s in the [MultiPolygon] in the given [Units].
- * Any holes in the polygons will be included in the length.
+ * Calculates the combined length of perimeter the [Polygon]s in the [MultiPolygon] in the given
+ * [Units]. Any holes in the polygons will be included in the length.
  *
  * @param multiPolygon The geometry to measure
  * @param units The unit of measurement to return the length in
@@ -433,12 +415,7 @@ public fun length(polygon: Polygon, units: Units): Double =
 @ExperimentalTurfApi
 public fun length(multiPolygon: MultiPolygon, units: Units): Double =
     multiPolygon.coordinates.fold(0.0) { total, polygon ->
-        total + polygon.fold(0.0) { acc, ring ->
-            acc + length(
-                ring,
-                units
-            )
-        }
+        total + polygon.fold(0.0) { acc, ring -> acc + length(ring, units) }
     }
 
 @ExperimentalTurfApi
@@ -453,8 +430,8 @@ private fun length(coords: List<Position>, units: Units): Double {
 }
 
 /**
- * Takes two [Position]s and returns a point midway between them.
- * The midpoint is calculated geodesically, meaning the curvature of the earth is taken into account.
+ * Takes two [Position]s and returns a point midway between them. The midpoint is calculated
+ * geodesically, meaning the curvature of the earth is taken into account.
  *
  * @param point1 the first point
  * @param point2 the second point
@@ -469,8 +446,8 @@ public fun midpoint(point1: Position, point2: Position): Position {
 }
 
 /**
- * Takes any kind of [Feature] and returns the center point. It will create a [BoundingBox] around the given
- * [Feature] and calculates the center point of it.
+ * Takes any kind of [Feature] and returns the center point. It will create a [BoundingBox] around
+ * the given [Feature] and calculates the center point of it.
  *
  * @param feature the feature to find the center for
  * @return A [Point] holding the center coordinates
@@ -494,19 +471,24 @@ public fun center(geometry: Geometry): Point {
 }
 
 /**
- * Calculate great circles routes as [LineString]. Raises error when [start] and [end] are antipodes.
+ * Calculate great circles routes as [LineString]. Raises error when [start] and [end] are
+ * antipodes.
  *
  * @param start source position
  * @param end destination position
  * @param pointCount number of positions on the arc (including [start] and [end])
- * @param antimeridianOffset from antimeridian in degrees (default long. = +/- 10deg, geometries within 170deg to
- * -170deg will be split)
- *
+ * @param antimeridianOffset from antimeridian in degrees (default long. = +/- 10deg, geometries
+ *   within 170deg to -170deg will be split)
  */
 @Suppress("CyclomaticComplexMethod")
 @Throws(IllegalArgumentException::class)
 @ExperimentalTurfApi
-public fun greatCircle(start: Position, end: Position, pointCount: Int = 100, antimeridianOffset: Double = 10.0): Geometry {
+public fun greatCircle(
+    start: Position,
+    end: Position,
+    pointCount: Int = 100,
+    antimeridianOffset: Double = 10.0,
+): Geometry {
 
     val deltaLongitude = start.longitude - end.longitude
     val deltaLatitude = start.latitude - end.latitude
@@ -521,7 +503,7 @@ public fun greatCircle(start: Position, end: Position, pointCount: Int = 100, an
 
     /**
      * Calculates the intermediate point on a great circle line
-     *         http://www.edwilliams.org/avform.htm#Intermediate
+     * http://www.edwilliams.org/avform.htm#Intermediate
      */
     fun intermediateCoordinate(fraction: Double): Position {
         val lon1 = radians(start.longitude)
@@ -543,30 +525,37 @@ public fun greatCircle(start: Position, end: Position, pointCount: Int = 100, an
     @Suppress("LongMethod")
     fun createCoordinatesAntimeridianAttended(
         plainArc: List<Position>,
-        antimeridianOffset: Double
+        antimeridianOffset: Double,
     ): List<List<Position>> {
         val borderEast = ANTIMERIDIAN_POS - antimeridianOffset
         val borderWest = ANTIMERIDIAN_NEG + antimeridianOffset
 
-        @Suppress("MagicNumber")
-        val diffSpace = 360.0 - antimeridianOffset
+        @Suppress("MagicNumber") val diffSpace = 360.0 - antimeridianOffset
 
-        val passesAntimeridian = plainArc.zipWithNext { a, b ->
-            val diff = abs(a.longitude - b.longitude)
-            (diff > diffSpace &&
-                    ((a.longitude > borderEast && b.longitude < borderWest) ||
+        val passesAntimeridian =
+            plainArc
+                .zipWithNext { a, b ->
+                    val diff = abs(a.longitude - b.longitude)
+                    (diff > diffSpace &&
+                        ((a.longitude > borderEast && b.longitude < borderWest) ||
                             (b.longitude > borderEast && a.longitude < borderWest)))
-        }.any()
+                }
+                .any()
 
-        val maxSmallDiffLong = plainArc.zipWithNext { a, b -> abs(a.longitude - b.longitude) }
-            .filter { it <= diffSpace } // Filter differences less than or equal to diffSpace
-            .maxByOrNull { it }?.toDouble() ?: 0.0
+        val maxSmallDiffLong =
+            plainArc
+                .zipWithNext { a, b -> abs(a.longitude - b.longitude) }
+                .filter { it <= diffSpace } // Filter differences less than or equal to diffSpace
+                .maxByOrNull { it }
+                ?.toDouble() ?: 0.0
 
         val poMulti = mutableListOf<List<Position>>()
         if (passesAntimeridian && maxSmallDiffLong < antimeridianOffset) {
             var poNewLS = mutableListOf<Position>()
             plainArc.forEachIndexed { k, currentPosition ->
-                if (k > 0 && abs(currentPosition.longitude - plainArc[k - 1].longitude) > diffSpace) {
+                if (
+                    k > 0 && abs(currentPosition.longitude - plainArc[k - 1].longitude) > diffSpace
+                ) {
                     val previousPosition = plainArc[k - 1]
                     var lon1 = previousPosition.longitude
                     var lat1 = previousPosition.latitude
@@ -574,18 +563,19 @@ public fun greatCircle(start: Position, end: Position, pointCount: Int = 100, an
                     var lat2 = currentPosition.latitude
 
                     @Suppress("ComplexCondition")
-                    if (lon1 in (ANTIMERIDIAN_NEG + 1..<borderWest) &&
-                        lon2 == ANTIMERIDIAN_POS &&
-                        k + 1 < plainArc.size
+                    if (
+                        lon1 in (ANTIMERIDIAN_NEG + 1..<borderWest) &&
+                            lon2 == ANTIMERIDIAN_POS &&
+                            k + 1 < plainArc.size
                     ) {
                         poNewLS.add(Position(ANTIMERIDIAN_NEG, currentPosition.latitude))
                         poNewLS.add(Position(plainArc[k + 1].longitude, plainArc[k + 1].latitude))
                         return@forEachIndexed
                     } else if (
                         lon1 > borderEast &&
-                        lon1 < ANTIMERIDIAN_POS &&
-                        lon2 == ANTIMERIDIAN_POS &&
-                        k + 1 < plainArc.size
+                            lon1 < ANTIMERIDIAN_POS &&
+                            lon2 == ANTIMERIDIAN_POS &&
+                            k + 1 < plainArc.size
                     ) {
                         poNewLS.add(Position(ANTIMERIDIAN_POS, currentPosition.latitude))
                         poNewLS.add(Position(plainArc[k + 1].longitude, plainArc[k + 1].latitude))
@@ -609,17 +599,23 @@ public fun greatCircle(start: Position, end: Position, pointCount: Int = 100, an
                         val ratio = (ANTIMERIDIAN_POS - lon1) / (lon2 - lon1)
                         val lat = ratio * lat2 + (1 - ratio) * lat1
                         poNewLS.add(
-                            if (previousPosition.longitude > borderEast) Position(ANTIMERIDIAN_POS, lat)
+                            if (previousPosition.longitude > borderEast)
+                                Position(ANTIMERIDIAN_POS, lat)
                             else Position(ANTIMERIDIAN_NEG, lat)
                         )
                         poMulti.add(poNewLS.toList())
-                        poNewLS = mutableListOf() // Clear poNewLS instead of replacing it with an empty list
+                        poNewLS =
+                            mutableListOf() // Clear poNewLS instead of replacing it with an empty
+                        // list
                         poNewLS.add(
-                            if (previousPosition.longitude > borderEast) Position(ANTIMERIDIAN_NEG, lat)
+                            if (previousPosition.longitude > borderEast)
+                                Position(ANTIMERIDIAN_NEG, lat)
                             else Position(ANTIMERIDIAN_POS, lat)
                         )
                     } else {
-                        poNewLS = mutableListOf() // Clear poNewLS instead of replacing it with an empty list
+                        poNewLS =
+                            mutableListOf() // Clear poNewLS instead of replacing it with an empty
+                        // list
                         poMulti.add(poNewLS.toList())
                     }
                 }
@@ -635,47 +631,39 @@ public fun greatCircle(start: Position, end: Position, pointCount: Int = 100, an
     val arc = buildList {
         add(start)
         (1 until (pointCount - 1)).forEach { i ->
-            add(
-                intermediateCoordinate((i + 1).toDouble() / (pointCount - 2 + 1))
-            )
+            add(intermediateCoordinate((i + 1).toDouble() / (pointCount - 2 + 1)))
         }
         add(end)
     }
 
     val coordinates = createCoordinatesAntimeridianAttended(arc, antimeridianOffset)
     return if (coordinates.size == 1) {
-        LineString(
-            coordinates = coordinates[0],
-            bbox = computeBbox(coordinates[0])
-        )
+        LineString(coordinates = coordinates[0], bbox = computeBbox(coordinates[0]))
     } else {
-        MultiLineString(
-            coordinates = coordinates,
-            bbox = computeBbox(coordinates.flatten())
-        )
+        MultiLineString(coordinates = coordinates, bbox = computeBbox(coordinates.flatten()))
     }
 }
 
 /**
- * Takes any [GeoJson] and returns a [Feature] containing a rectangular [Polygon] that encompasses all vertices.
+ * Takes any [GeoJson] and returns a [Feature] containing a rectangular [Polygon] that encompasses
+ * all vertices.
+ *
  * @param geoJson input containing any coordinates
  * @return a rectangular [Polygon] feature that encompasses all vertices
  */
 @ExperimentalTurfApi
 public fun envelope(geoJson: GeoJson): Feature {
-    val coordinates = when (geoJson) {
-        is Feature -> geoJson.coordAll()
-        is FeatureCollection -> geoJson.coordAll()
-        is GeometryCollection -> geoJson.coordAll()
-        is Geometry -> geoJson.coordAll()
-    }.orEmpty()
+    val coordinates =
+        when (geoJson) {
+            is Feature -> geoJson.coordAll()
+            is FeatureCollection -> geoJson.coordAll()
+            is GeometryCollection -> geoJson.coordAll()
+            is Geometry -> geoJson.coordAll()
+        }.orEmpty()
 
     val bbox = geoJson.bbox ?: computeBbox(coordinates)
 
-    return Feature(
-        geometry = bboxPolygon(bbox),
-        bbox = bbox
-    )
+    return Feature(geometry = bboxPolygon(bbox), bbox = bbox)
 }
 
 /**
@@ -686,29 +674,33 @@ public fun envelope(geoJson: GeoJson): Feature {
  * @param units units of [distance]
  */
 @ExperimentalTurfApi
-public fun pointToLineDistance(point: Position, line: LineString, units: Units = Units.Kilometers): Double {
+public fun pointToLineDistance(
+    point: Position,
+    line: LineString,
+    units: Units = Units.Kilometers,
+): Double {
     var distance = Double.MAX_VALUE
 
-    line.coordinates.drop(1).mapIndexed { idx, position ->
-        line.coordinates[idx] to position
-    }.forEach { (prev, cur) ->
-        val d = distanceToSegment(point, prev, cur, units)
-        if (d < distance) distance = d
-    }
+    line.coordinates
+        .drop(1)
+        .mapIndexed { idx, position -> line.coordinates[idx] to position }
+        .forEach { (prev, cur) ->
+            val d = distanceToSegment(point, prev, cur, units)
+            if (d < distance) distance = d
+        }
 
     return distance
 }
-
 
 @OptIn(ExperimentalTurfApi::class)
 private fun distanceToSegment(
     point: Position,
     start: Position,
     end: Position,
-    units: Units = Units.Meters
+    units: Units = Units.Meters,
 ): Double {
     fun dot(u: Position, v: Position): Double {
-        return u.longitude * v.longitude + u.latitude * v.latitude;
+        return u.longitude * v.longitude + u.latitude * v.latitude
     }
 
     val segmentVector = Position(end.longitude - start.longitude, end.latitude - start.latitude)
@@ -716,39 +708,41 @@ private fun distanceToSegment(
 
     val projectionLengthSquared = dot(pointVector, segmentVector)
     if (projectionLengthSquared <= 0) {
-        return rhumbDistance(point, start, units);
+        return rhumbDistance(point, start, units)
     }
     val segmentLengthSquared = dot(segmentVector, segmentVector)
     if (segmentLengthSquared <= projectionLengthSquared) {
-        return rhumbDistance(point, end, units);
+        return rhumbDistance(point, end, units)
     }
 
-    val projectionRatio = projectionLengthSquared / segmentLengthSquared;
-    val projectedPoint = Position(
-        start.longitude + projectionRatio * segmentVector.longitude,
-        start.latitude + projectionRatio * segmentVector.latitude
-    )
+    val projectionRatio = projectionLengthSquared / segmentLengthSquared
+    val projectedPoint =
+        Position(
+            start.longitude + projectionRatio * segmentVector.longitude,
+            start.latitude + projectionRatio * segmentVector.latitude,
+        )
 
-    return rhumbDistance(point, projectedPoint, units);
+    return rhumbDistance(point, projectedPoint, units)
 }
 
-/**
- * Calculates the distance along a rhumb line between two points.
- */
+/** Calculates the distance along a rhumb line between two points. */
 @OptIn(ExperimentalTurfApi::class)
 public fun rhumbDistance(
     origin: Position,
     destination: Position,
-    units: Units = Units.Meters
+    units: Units = Units.Meters,
 ): Double {
     // compensate the crossing of the 180th meridian
-    val destination = Position(
-        destination.longitude + when {
-            destination.longitude - origin.longitude > 180 -> -360
-            origin.longitude - destination.longitude > 180 -> 360
-            else -> 0
-        }, destination.latitude
-    )
+    val destination =
+        Position(
+            destination.longitude +
+                when {
+                    destination.longitude - origin.longitude > 180 -> -360
+                    origin.longitude - destination.longitude > 180 -> 360
+                    else -> 0
+                },
+            destination.latitude,
+        )
 
     val phi1 = origin.latitude * PI / 180
     val phi2 = destination.latitude * PI / 180

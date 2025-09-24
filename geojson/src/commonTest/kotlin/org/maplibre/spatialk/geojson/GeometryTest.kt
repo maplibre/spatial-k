@@ -1,11 +1,10 @@
 package org.maplibre.spatialk.geojson
 
-
-import org.maplibre.spatialk.geojson.utils.DELTA
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
+import org.maplibre.spatialk.geojson.utils.DELTA
 
 class GeometryTest {
 
@@ -29,7 +28,8 @@ class GeometryTest {
             }
         ]
     }
-    """.trimIndent()
+    """
+                .trimIndent()
 
         val geometry = Geometry.fromJson(json)
         assertTrue(geometry is GeometryCollection)
@@ -37,15 +37,17 @@ class GeometryTest {
 
     @Test
     fun pointFromJson() {
-        val geometry = Geometry.fromJson(
-            """
+        val geometry =
+            Geometry.fromJson(
+                """
             {
                 "coordinates": [2, 3],
                 "type": "Point",
                 "bbox": [1.0, 2.0, 3.0, 4.0]
             }
-            """.trimIndent()
-        )
+            """
+                    .trimIndent()
+            )
 
         assertNotNull(geometry)
         val bbox = geometry.bbox
@@ -61,27 +63,28 @@ class GeometryTest {
 
     @Test
     fun pointToJson() {
-        val geometry: Geometry = Point(
-            2.0, 3.0, bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
-        )
+        val geometry: Geometry = Point(2.0, 3.0, bbox = BoundingBox(1.0, 2.0, 3.0, 4.0))
 
         val actualPoint = Point.fromJson(geometry.json())
-        val expectedPoint = Point.fromJson(
-            """
+        val expectedPoint =
+            Point.fromJson(
+                """
     {
         "coordinates": [2.0, 3.0],
         "type": "Point",
         "bbox": [1.0, 2.0, 3.0, 4.0]
     }
-    """.trimIndent()
-        )
+    """
+                    .trimIndent()
+            )
         assertEquals(expectedPoint, actualPoint)
     }
 
     @Test
     fun lineStringFromJson() {
-        val lineString = Geometry.fromJson(
-            """
+        val lineString =
+            Geometry.fromJson(
+                """
             {
                 "coordinates": [
                     [1, 2],
@@ -91,8 +94,9 @@ class GeometryTest {
                 "type": "LineString",
                 "bbox": [1.0, 2.0, 3.0, 4.0]
             }
-            """.trimIndent()
-        )
+            """
+                    .trimIndent()
+            )
 
         assertNotNull(lineString)
         val bbox = lineString.bbox
@@ -112,18 +116,16 @@ class GeometryTest {
 
     @Test
     fun lineStringToJson() {
-        val geometry: Geometry = LineString(
-            listOf(
-                Position(1.0, 2.0),
-                Position(2.0, 3.0),
-                Position(3.0, 4.0)
-            ),
-            BoundingBox(1.0, 2.0, 3.0, 4.0)
-        )
+        val geometry: Geometry =
+            LineString(
+                listOf(Position(1.0, 2.0), Position(2.0, 3.0), Position(3.0, 4.0)),
+                BoundingBox(1.0, 2.0, 3.0, 4.0),
+            )
 
         val actualLineString = LineString.fromJson(geometry.json())
-        val expectedLineString = LineString.fromJson(
-            """
+        val expectedLineString =
+            LineString.fromJson(
+                """
                     {
                         "coordinates": [
                             [1.0, 2.0],
@@ -133,8 +135,9 @@ class GeometryTest {
                         "type": "LineString",
                         "bbox": [1.0, 2.0, 3.0, 4.0]
                     }
-                    """.trimIndent()
-        )
+                    """
+                    .trimIndent()
+            )
 
         assertEquals(expectedLineString, actualLineString)
     }

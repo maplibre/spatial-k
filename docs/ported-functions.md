@@ -32,8 +32,8 @@ You can view porting progress for the next release [here](https://github.com/map
 - [ ] `cleanCoords`
 - [ ] `flip`
 - [ ] `rewind`
-- [x] `round`  
-Use `round` or `Math.round` from the standard library instead.
+- [x] `round`
+      Use `round` or `Math.round` from the standard library instead.
 - [ ] `truncate`
 
 ## Transformation
@@ -72,7 +72,7 @@ Use `round` or `Math.round` from the standard library instead.
 - [ ] `lineArc`
 - [ ] `lineChunk`
 - [x] [`lineIntersect`](../api/turf/org.maplibre.spatialk.turf/line-intersect.html)
-  Partially implemented.
+      Partially implemented.
 - [ ] `lineOverlap`
 - [ ] `lineSegment`
 - [x] [`lineSlice`](../api/turf/org.maplibre.spatialk.turf/line-slice.html)

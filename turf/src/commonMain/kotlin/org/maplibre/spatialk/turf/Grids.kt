@@ -1,12 +1,12 @@
 package org.maplibre.spatialk.turf
 
+import kotlin.math.abs
+import kotlin.math.floor
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
-import kotlin.math.abs
-import kotlin.math.floor
 
 /**
  * Creates a square grid within a [BoundingBox].
@@ -22,7 +22,7 @@ public fun squareGrid(
     bbox: BoundingBox,
     cellWidth: Double,
     cellHeight: Double,
-    units: Units = Units.Kilometers
+    units: Units = Units.Kilometers,
 ): FeatureCollection {
     val featureList = mutableListOf<Feature>()
     val west = bbox.southwest.longitude
@@ -43,21 +43,20 @@ public fun squareGrid(
     val deltaY = (bboxHeight - rows * cellHeightDeg) / 2
 
     var currentX = west + deltaX
-    repeat (columns.toInt()) {
+    repeat(columns.toInt()) {
         var currentY = south + deltaY
-        repeat (rows.toInt()) {
-            val positions = mutableListOf<Position>().apply {
-                add(Position(currentX, currentY))
-                add(Position(currentX, currentY + cellHeightDeg))
-                add(Position(currentX + cellWidthDeg, currentY + cellHeightDeg))
-                add(Position(currentX + cellWidthDeg, currentY))
-                add(Position(currentX, currentY))
-            }
-            mutableListOf<List<Position>>().apply {
-                add(positions)
-            }.also {
-                featureList.add(Feature(Polygon(it)))
-            }
+        repeat(rows.toInt()) {
+            val positions =
+                mutableListOf<Position>().apply {
+                    add(Position(currentX, currentY))
+                    add(Position(currentX, currentY + cellHeightDeg))
+                    add(Position(currentX + cellWidthDeg, currentY + cellHeightDeg))
+                    add(Position(currentX + cellWidthDeg, currentY))
+                    add(Position(currentX, currentY))
+                }
+            mutableListOf<List<Position>>()
+                .apply { add(positions) }
+                .also { featureList.add(Feature(Polygon(it))) }
             currentY += cellHeightDeg
         }
         currentX += cellWidthDeg

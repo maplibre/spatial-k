@@ -1,6 +1,5 @@
 package org.maplibre.spatialk.geojson.serialization
 
-import org.maplibre.spatialk.geojson.BoundingBox
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -16,6 +15,7 @@ import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.double
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonPrimitive
+import org.maplibre.spatialk.geojson.BoundingBox
 
 public object BoundingBoxSerializer : KSerializer<BoundingBox> {
     private const val ARRAY_SIZE_2D = 4
@@ -26,14 +26,18 @@ public object BoundingBoxSerializer : KSerializer<BoundingBox> {
 
     @Suppress("MagicNumber")
     override fun deserialize(decoder: Decoder): BoundingBox {
-        val input = decoder as? JsonDecoder ?: throw SerializationException("This class can only be loaded from JSON")
+        val input =
+            decoder as? JsonDecoder
+                ?: throw SerializationException("This class can only be loaded from JSON")
         val array = input.decodeJsonElement().jsonArray
 
         return when (array.size) {
             ARRAY_SIZE_2D -> {
                 BoundingBox(
-                    array[0].jsonPrimitive.double, array[1].jsonPrimitive.double,
-                    array[2].jsonPrimitive.double, array[3].jsonPrimitive.double
+                    array[0].jsonPrimitive.double,
+                    array[1].jsonPrimitive.double,
+                    array[2].jsonPrimitive.double,
+                    array[3].jsonPrimitive.double,
                 )
             }
             ARRAY_SIZE_3D -> {
@@ -43,17 +47,20 @@ public object BoundingBoxSerializer : KSerializer<BoundingBox> {
                     array[2].jsonPrimitive.double,
                     array[3].jsonPrimitive.double,
                     array[4].jsonPrimitive.double,
-                    array[5].jsonPrimitive.double
+                    array[5].jsonPrimitive.double,
                 )
             }
             else -> {
-                throw SerializationException("Expected array of size 4 or 6. Got array of size ${array.size}")
+                throw SerializationException(
+                    "Expected array of size 4 or 6. Got array of size ${array.size}"
+                )
             }
         }
     }
 
     override fun serialize(encoder: Encoder, value: BoundingBox) {
-        encoder as? JsonEncoder ?: throw SerializationException("This class can only be saved as JSON")
+        encoder as? JsonEncoder
+            ?: throw SerializationException("This class can only be saved as JSON")
 
         encoder.encodeJsonElement(value.toJsonArray())
     }

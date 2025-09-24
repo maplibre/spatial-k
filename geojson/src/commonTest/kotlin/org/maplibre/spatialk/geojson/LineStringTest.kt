@@ -1,23 +1,18 @@
 package org.maplibre.spatialk.geojson
 
-
-import org.maplibre.spatialk.geojson.utils.DELTA
-import kotlinx.serialization.SerializationException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlinx.serialization.SerializationException
+import org.maplibre.spatialk.geojson.utils.DELTA
 
 class LineStringTest {
 
     @Test
     fun sanity() {
-        val points = listOf(
-            Position(1.0, 1.0),
-            Position(2.0, 2.0),
-            Position(3.0, 3.0),
-        )
+        val points = listOf(Position(1.0, 1.0), Position(2.0, 2.0), Position(3.0, 3.0))
 
         val lineString = LineString(points)
         assertNotNull(lineString)
@@ -25,11 +20,7 @@ class LineStringTest {
 
     @Test
     fun bbox_nullWhenNotSet() {
-        val points = listOf(
-            Position(1.0, 1.0),
-            Position(2.0, 2.0),
-            Position(3.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 1.0), Position(2.0, 2.0), Position(3.0, 3.0))
 
         val lineString = LineString(points)
         assertNull(lineString.bbox)
@@ -37,17 +28,14 @@ class LineStringTest {
 
     @Test
     fun bbox_doesNotSerializeWhenNotPresent() {
-        val points = listOf(
-            Position(1.0, 1.0),
-            Position(2.0, 2.0),
-            Position(3.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 1.0), Position(2.0, 2.0), Position(3.0, 3.0))
 
         val lineString = LineString(points)
 
         val actualLineString = LineString.fromJson(lineString.json())
-        val expectedLineString = LineString.fromJson(
-            """
+        val expectedLineString =
+            LineString.fromJson(
+                """
             {
                 "type": "LineString",
                 "coordinates": [
@@ -56,18 +44,15 @@ class LineStringTest {
                     [3.0, 3.0]
                 ]
             }
-            """.trimIndent()
-        )
+            """
+                    .trimIndent()
+            )
         assertEquals(expectedLineString, actualLineString)
     }
 
     @Test
     fun bbox_returnsCorrectBbox() {
-        val points = listOf(
-            Position(1.0, 1.0),
-            Position(2.0, 2.0),
-            Position(3.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 1.0), Position(2.0, 2.0), Position(3.0, 3.0))
 
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
         val lineString = LineString(points, bbox)
@@ -82,18 +67,15 @@ class LineStringTest {
 
     @Test
     fun bbox_doesSerializeWhenPresent() {
-        val points = listOf(
-            Position(1.0, 1.0),
-            Position(2.0, 2.0),
-            Position(3.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 1.0), Position(2.0, 2.0), Position(3.0, 3.0))
 
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
         val lineString = LineString(points, bbox)
 
         val actualLineString = LineString.fromJson(lineString.json())
-        val expectedLineString = LineString.fromJson(
-            """
+        val expectedLineString =
+            LineString.fromJson(
+                """
             {
                 "type": "LineString",
                 "bbox": [1.0, 2.0, 3.0, 4.0],
@@ -103,16 +85,18 @@ class LineStringTest {
                     [3.0, 3.0]
                 ]
             }
-            """.trimIndent()
-        )
+            """
+                    .trimIndent()
+            )
 
         assertEquals(expectedLineString, actualLineString)
     }
 
     @Test
     fun bbox_doesDeserializeWhenPresent() {
-        val lineString = LineString.fromJson(
-            """
+        val lineString =
+            LineString.fromJson(
+                """
             {
                 "coordinates": [
                     [1, 2],
@@ -122,8 +106,9 @@ class LineStringTest {
                 "type": "LineString",
                 "bbox": [1.0, 2.0, 3.0, 4.0]
             }
-            """.trimIndent()
-        )
+            """
+                    .trimIndent()
+            )
 
         assertNotNull(lineString)
         assertEquals(1.0, lineString.coordinates[0].longitude, DELTA)
@@ -152,7 +137,8 @@ class LineStringTest {
                     [101, 1]
                 ]
             }
-            """.trimIndent()
+            """
+                .trimIndent()
         val geo: LineString = LineString.fromJson(json)
         assertEquals(geo.coordinates.first().longitude, 100.0, 0.0)
         assertEquals(geo.coordinates.first().latitude, 0.0, 0.0)
@@ -170,7 +156,8 @@ class LineStringTest {
                     [101.0, 1.0]
                 ]
             }
-            """.trimIndent()
+            """
+                .trimIndent()
         val geo: LineString = LineString.fromJson(json)
         val geoJsonString = geo.json()
 
@@ -188,7 +175,8 @@ class LineStringTest {
                     "type": "LineString",
                     "coordinates": null
                 }
-                """.trimIndent()
+                """
+                    .trimIndent()
             )
         }
     }

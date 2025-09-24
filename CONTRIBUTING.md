@@ -31,3 +31,23 @@ Run `./gradlew build` to compile and run all checks, including tests across mult
 Tests make use of JSON data loaded from files, so platforms where it's not convenient to load
 files from the file system have their tests disabled. This includes mobile native targets,
 browser targets, etc.
+
+## Make CI happy
+
+A Git pre-commit hook is available to ensure that the code is formatted before
+every commit.
+
+The easiest way to run all formatters is to install [pre-commit](https://pre-commit.com/), and then:
+
+- To run the formatter once on staged files, `pre-commit run`
+- To run the formatter in a git hook, `pre-commit install`
+- To stop running the formatter in a git hook, `pre-commit uninstall`
+
+If you'd like to run formatters in your IDE, see the following plugins for IntelliJ IDEA:
+
+- [ktfmt](https://plugins.jetbrains.com/plugin/14912-ktfmt) formats Kotlin code. Enable it in settings and set the style
+  to `kotlinlang`.
+- [editorconfig](https://plugins.jetbrains.com/plugin/7294-editorconfig) automatically handles things like tab size and
+  line endings.
+- [prettier](https://plugins.jetbrains.com/plugin/10456-prettier) formats JSON, YAML, and Markdown files. Enable it in
+  settings with "automatic configuration" and configure it to run on `**/*.{md,json,yml,yaml}`

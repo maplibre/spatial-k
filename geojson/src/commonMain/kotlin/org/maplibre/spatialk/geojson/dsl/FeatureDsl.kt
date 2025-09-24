@@ -3,12 +3,12 @@
 
 package org.maplibre.spatialk.geojson.dsl
 
+import kotlin.jvm.JvmName
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.Geometry
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
-import kotlin.jvm.JvmName
 
 @GeoJsonDsl
 public class PropertiesBuilder {
@@ -38,5 +38,5 @@ public inline fun feature(
     geometry: Geometry? = null,
     id: String? = null,
     bbox: BoundingBox? = null,
-    properties: PropertiesBuilder.() -> Unit = {}
+    properties: PropertiesBuilder.() -> Unit = {},
 ): Feature = Feature(geometry, PropertiesBuilder().apply(properties).build(), id, bbox)

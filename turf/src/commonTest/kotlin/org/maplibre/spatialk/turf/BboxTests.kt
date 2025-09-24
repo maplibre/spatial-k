@@ -2,6 +2,8 @@
 
 package org.maplibre.spatialk.turf
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.dsl.feature
 import org.maplibre.spatialk.geojson.dsl.featureCollection
@@ -10,8 +12,6 @@ import org.maplibre.spatialk.geojson.dsl.multiLineString
 import org.maplibre.spatialk.geojson.dsl.multiPolygon
 import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 private val point = point(102.0, 0.5)
 private val line = lineString {
@@ -110,15 +110,16 @@ class BboxTests {
 
     @Test
     fun testEmptyFeatures() {
-        val emptyBbox = BoundingBox(
-            Double.POSITIVE_INFINITY,
-            Double.POSITIVE_INFINITY,
-            Double.NEGATIVE_INFINITY,
-            Double.NEGATIVE_INFINITY
-        )
+        val emptyBbox =
+            BoundingBox(
+                Double.POSITIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                Double.NEGATIVE_INFINITY,
+                Double.NEGATIVE_INFINITY,
+            )
 
         assertEquals(emptyBbox, bbox(feature()))
 
-        assertEquals(emptyBbox, bbox(featureCollection { }))
+        assertEquals(emptyBbox, bbox(featureCollection {}))
     }
 }

@@ -1,40 +1,35 @@
 package org.maplibre.spatialk.geojson
 
-import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
-import org.maplibre.spatialk.geojson.serialization.jsonProp
-import org.maplibre.spatialk.geojson.serialization.toBbox
-import org.maplibre.spatialk.geojson.serialization.toPosition
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonPrimitive
-import kotlin.jvm.JvmOverloads
-import kotlin.jvm.JvmStatic
+import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
+import org.maplibre.spatialk.geojson.serialization.jsonProp
+import org.maplibre.spatialk.geojson.serialization.toBbox
+import org.maplibre.spatialk.geojson.serialization.toPosition
 
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @Serializable(with = GeometrySerializer::class)
-public class Point @JvmOverloads constructor(
-    public val coordinates: Position,
-    override val bbox: BoundingBox? = null
-) : Geometry() {
+public class Point
+@JvmOverloads
+constructor(public val coordinates: Position, override val bbox: BoundingBox? = null) : Geometry() {
     @JvmOverloads
-    public constructor(coordinates: DoubleArray, bbox: BoundingBox? = null) : this(
-        Position(
-            coordinates
-        ), bbox
-    )
+    public constructor(
+        coordinates: DoubleArray,
+        bbox: BoundingBox? = null,
+    ) : this(Position(coordinates), bbox)
 
     public constructor(
         longitude: Double,
         latitude: Double,
         altitude: Double? = null,
-        bbox: BoundingBox? = null
-    ) : this(
-        Position(longitude, latitude, altitude),
-        bbox
-    )
+        bbox: BoundingBox? = null,
+    ) : this(Position(longitude, latitude, altitude), bbox)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -63,11 +58,12 @@ public class Point @JvmOverloads constructor(
             fromJson(Json.decodeFromString(JsonObject.serializer(), json))
 
         @JvmStatic
-        public fun fromJsonOrNull(json: String): Point? = try {
-            fromJson(json)
-        } catch (_: Exception) {
-            null
-        }
+        public fun fromJsonOrNull(json: String): Point? =
+            try {
+                fromJson(json)
+            } catch (_: Exception) {
+                null
+            }
 
         @JvmStatic
         public fun fromJson(json: JsonObject): Point {

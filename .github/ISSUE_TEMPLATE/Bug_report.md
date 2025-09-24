@@ -1,7 +1,6 @@
 ---
 name: Bug report
 about: Report a bug
-
 ---
 
 <!--
@@ -19,13 +18,11 @@ Hello! Thanks for contributing.  For the fastest response and resolution, please
 
 **spatial-k version**:
 
-
 ### Steps to Trigger Behavior
 
- 1.
- 2.
- 3.
-
+1.
+2.
+3.
 
 ### Expected Behavior
 

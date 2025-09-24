@@ -1,21 +1,17 @@
 package org.maplibre.spatialk.geojson
 
-
-import org.maplibre.spatialk.geojson.utils.DELTA
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import org.maplibre.spatialk.geojson.utils.DELTA
 
 class GeometryCollectionTest {
 
     @Test
     fun sanity() {
-        val points = listOf(
-            Position(1.0, 2.0),
-            Position(2.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
         val lineString = LineString(points)
         val geometries = listOf(Point(points[0]), lineString)
@@ -26,10 +22,7 @@ class GeometryCollectionTest {
 
     @Test
     fun bbox_nullWhenNotSet() {
-        val points = listOf(
-            Position(1.0, 2.0),
-            Position(2.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
         val lineString = LineString(points)
         val geometries = listOf(Point(points[0]), lineString)
@@ -40,10 +33,7 @@ class GeometryCollectionTest {
 
     @Test
     fun bbox_doesNotSerializeWhenNotPresent() {
-        val points = listOf(
-            Position(1.0, 2.0),
-            Position(2.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
         val lineString = LineString(points)
         val geometries = listOf(Point(points[0]), lineString)
@@ -51,8 +41,9 @@ class GeometryCollectionTest {
         val geometryCollection = GeometryCollection(geometries)
 
         val actualGeometryCollection = GeometryCollection.fromJson(geometryCollection.json())
-        val expectedGeometryCollection = GeometryCollection.fromJson(
-            """
+        val expectedGeometryCollection =
+            GeometryCollection.fromJson(
+                """
             {
                 "type": "GeometryCollection",
                 "geometries": [
@@ -70,16 +61,13 @@ class GeometryCollectionTest {
                 ]
             }
             """
-        )
+            )
         assertEquals(expectedGeometryCollection, actualGeometryCollection)
     }
 
     @Test
     fun bbox_returnsCorrectBbox() {
-        val points = listOf(
-            Position(1.0, 2.0),
-            Position(2.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
         val lineString = LineString(points)
         val geometries = listOf(Point(points[0]), lineString)
@@ -105,10 +93,7 @@ class GeometryCollectionTest {
 
     @Test
     fun bbox_doesSerializeWhenPresent() {
-        val points = listOf(
-            Position(1.0, 2.0),
-            Position(2.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
         val lineString = LineString(points)
         val geometries = listOf(Point(points[0]), lineString)
@@ -117,8 +102,9 @@ class GeometryCollectionTest {
         val geometryCollection = GeometryCollection(geometries, bbox)
 
         val actualGeometryCollection = GeometryCollection.fromJson(geometryCollection.json())
-        val expectedGeometryCollection = GeometryCollection.fromJson(
-            """
+        val expectedGeometryCollection =
+            GeometryCollection.fromJson(
+                """
             {
                 "type": "GeometryCollection",
                 "bbox": [1.0, 2.0, 3.0, 4.0],
@@ -137,7 +123,7 @@ class GeometryCollectionTest {
                 ]
             }
             """
-        )
+            )
         assertEquals(expectedGeometryCollection, actualGeometryCollection)
     }
 
@@ -164,7 +150,8 @@ class GeometryCollectionTest {
                 ],
                 "bbox": [ 120, 40, -120, -40]
             }
-            """.trimIndent()
+            """
+                .trimIndent()
         val geo = GeometryCollection.fromJson(json)
         assertTrue(geo.geometries.first() is Point)
         assertTrue(geo.geometries[1] is LineString)
@@ -194,24 +181,17 @@ class GeometryCollectionTest {
                 ]
             }
             """
-        val geometries = listOf(
-            Point(
-                100.0, 0.0,
-                bbox = BoundingBox(-110.0, -30.0, 110.0, 30.0)
-            ),
-            LineString(
-                listOf(
-                    Position(101.0, 0.0),
-                    Position(102.0, 1.0)
+        val geometries =
+            listOf(
+                Point(100.0, 0.0, bbox = BoundingBox(-110.0, -30.0, 110.0, 30.0)),
+                LineString(
+                    listOf(Position(101.0, 0.0), Position(102.0, 1.0)),
+                    BoundingBox(-110.0, -30.0, 110.0, 30.0),
                 ),
-                BoundingBox(-110.0, -30.0, 110.0, 30.0)
             )
-        )
 
-        val geometryCollection = GeometryCollection(
-            geometries,
-            BoundingBox(-120.0, -40.0, 120.0, 40.0)
-        )
+        val geometryCollection =
+            GeometryCollection(geometries, BoundingBox(-120.0, -40.0, 120.0, 40.0))
 
         val actualGeometryCollection = GeometryCollection.fromJson(geometryCollection.json())
         val expectedGeometryCollection = GeometryCollection.fromJson(jsonOriginal)

@@ -1,26 +1,20 @@
 package org.maplibre.spatialk.geojson
 
-import org.maplibre.spatialk.geojson.utils.DELTA
-import kotlinx.serialization.SerializationException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlinx.serialization.SerializationException
+import org.maplibre.spatialk.geojson.utils.DELTA
 
 class MultiLineStringTest {
 
     @Test
     fun sanity() {
-        val points = arrayOf(
-            Position(1.0, 2.0),
-            Position(2.0, 3.0)
-        )
+        val points = arrayOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
-        val lineStrings = arrayOf(
-            LineString(*points),
-            LineString(*points)
-        )
+        val lineStrings = arrayOf(LineString(*points), LineString(*points))
 
         val multiLineString = MultiLineString(*lineStrings)
         assertNotNull(multiLineString)
@@ -28,15 +22,9 @@ class MultiLineStringTest {
 
     @Test
     fun bbox_nullWhenNotSet() {
-        val points = listOf(
-            Position(1.0, 2.0),
-            Position(2.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
-        val lineStrings = arrayOf(
-            LineString(points),
-            LineString(points)
-        )
+        val lineStrings = arrayOf(LineString(points), LineString(points))
 
         val multiLineString = MultiLineString(*lineStrings)
         assertNull(multiLineString.bbox)
@@ -44,21 +32,16 @@ class MultiLineStringTest {
 
     @Test
     fun bbox_doesNotSerializeWhenNotPresent() {
-        val points = listOf(
-            Position(1.0, 2.0),
-            Position(2.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
-        val lineStrings = arrayOf(
-            LineString(points),
-            LineString(points)
-        )
+        val lineStrings = arrayOf(LineString(points), LineString(points))
 
         val multiLineString = MultiLineString(*lineStrings)
 
         val actualMultiLineString = MultiLineString.fromJson(multiLineString.json())
-        val expectedMultiLineString = MultiLineString.fromJson(
-            """
+        val expectedMultiLineString =
+            MultiLineString.fromJson(
+                """
             {
                 "type": "MultiLineString",
                 "coordinates": [
@@ -72,24 +55,19 @@ class MultiLineStringTest {
                     ]
                 ]
             }
-            """.trimIndent()
-        )
+            """
+                    .trimIndent()
+            )
         assertEquals(expectedMultiLineString, actualMultiLineString)
     }
 
     @Test
     fun bbox_returnsCorrectBbox() {
-        val points = listOf(
-            Position(1.0, 2.0),
-            Position(2.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
 
-        val lineStrings = arrayOf(
-            LineString(points),
-            LineString(points)
-        )
+        val lineStrings = arrayOf(LineString(points), LineString(points))
 
         val multiLineString = MultiLineString(lineStrings = lineStrings, bbox)
         val actualBbox = multiLineString.bbox
@@ -102,10 +80,7 @@ class MultiLineStringTest {
 
     @Test
     fun passingInSingleLineString_doesHandleCorrectly() {
-        val points = listOf(
-            Position(1.0, 2.0),
-            Position(3.0, 4.0)
-        )
+        val points = listOf(Position(1.0, 2.0), Position(3.0, 4.0))
 
         val geometry = LineString(points)
         val multiLineString = MultiLineString(geometry)
@@ -120,22 +95,17 @@ class MultiLineStringTest {
 
     @Test
     fun bbox_doesSerializeWhenPresent() {
-        val points = listOf(
-            Position(1.0, 2.0),
-            Position(2.0, 3.0)
-        )
+        val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
 
-        val lineStrings = arrayOf(
-            LineString(points),
-            LineString(points)
-        )
+        val lineStrings = arrayOf(LineString(points), LineString(points))
 
         val multiLineString = MultiLineString(lineStrings = lineStrings, bbox)
 
         val actualMultiLineString = MultiLineString.fromJson(multiLineString.json())
-        val expectedMultiLineString = MultiLineString.fromJson(
-            """
+        val expectedMultiLineString =
+            MultiLineString.fromJson(
+                """
     {
         "type": "MultiLineString",
         "bbox": [1.0, 2.0, 3.0, 4.0],
@@ -150,14 +120,16 @@ class MultiLineStringTest {
             ]
         ]
     }
-    """.trimIndent()
-        )
+    """
+                    .trimIndent()
+            )
         assertEquals(expectedMultiLineString, actualMultiLineString)
     }
 
     @Test
     fun fromJson() {
-        val json = """
+        val json =
+            """
     {
         "type": "MultiLineString",
         "coordinates": [
@@ -171,7 +143,8 @@ class MultiLineStringTest {
             ]
         ]
     }
-    """.trimIndent()
+    """
+                .trimIndent()
 
         val geo: MultiLineString = MultiLineString.fromJson(json)
         assertEquals(geo.coordinates[0][0].longitude, 100.0, DELTA)
@@ -181,7 +154,8 @@ class MultiLineStringTest {
 
     @Test
     fun toJson() {
-        val json = """
+        val json =
+            """
             {
                 "type": "MultiLineString",
                 "coordinates": [
@@ -195,7 +169,8 @@ class MultiLineStringTest {
                     ]
                 ]
             }
-            """.trimIndent()
+            """
+                .trimIndent()
         val geo = MultiLineString.fromJson(json)
 
         val actualMultiLineString = MultiLineString.fromJson(geo.json())
@@ -212,7 +187,8 @@ class MultiLineStringTest {
                     "type": "MultiLineString",
                     "coordinates": null
                 }
-                """.trimIndent()
+                """
+                    .trimIndent()
             )
         }
     }

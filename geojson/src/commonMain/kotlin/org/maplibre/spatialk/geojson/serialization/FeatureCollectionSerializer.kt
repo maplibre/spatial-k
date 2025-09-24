@@ -1,8 +1,5 @@
 package org.maplibre.spatialk.geojson.serialization
 
-import org.maplibre.spatialk.geojson.FeatureCollection
-import org.maplibre.spatialk.geojson.serialization.BoundingBoxSerializer.toJsonArray
-import org.maplibre.spatialk.geojson.serialization.FeatureSerializer.toJsonObject
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.json.JsonDecoder
@@ -11,6 +8,9 @@ import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.put
+import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.serialization.BoundingBoxSerializer.toJsonArray
+import org.maplibre.spatialk.geojson.serialization.FeatureSerializer.toJsonObject
 
 public object FeatureCollectionSerializer : JsonSerializer<FeatureCollection> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("FeatureCollection")
@@ -23,12 +23,7 @@ public object FeatureCollectionSerializer : JsonSerializer<FeatureCollection> {
         val data = buildJsonObject {
             put("type", "FeatureCollection")
             value.bbox?.let { put("bbox", it.toJsonArray()) }
-            put(
-                "features",
-                buildJsonArray {
-                    value.features.forEach { add(it.toJsonObject()) }
-                }
-            )
+            put("features", buildJsonArray { value.features.forEach { add(it.toJsonObject()) } })
         }
         output.encodeJsonElement(data)
     }

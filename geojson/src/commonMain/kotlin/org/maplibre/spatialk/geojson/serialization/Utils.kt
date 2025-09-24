@@ -1,11 +1,11 @@
 package org.maplibre.spatialk.geojson.serialization
 
-import org.maplibre.spatialk.geojson.BoundingBox
-import org.maplibre.spatialk.geojson.Feature
-import org.maplibre.spatialk.geojson.Position
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.double
 import kotlinx.serialization.json.jsonPrimitive
+import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.Feature
+import org.maplibre.spatialk.geojson.Position
 
 internal fun DoubleArray.jsonJoin(transform: ((Double) -> CharSequence)? = null) =
     joinToString(separator = ",", prefix = "[", postfix = "]", transform = transform)
@@ -22,7 +22,7 @@ internal fun JsonArray.toPosition(): Position =
     Position(
         this[0].jsonPrimitive.double,
         this[1].jsonPrimitive.double,
-        this.getOrNull(2)?.jsonPrimitive?.double
+        this.getOrNull(2)?.jsonPrimitive?.double,
     )
 
 internal fun JsonArray.toBbox(): BoundingBox =

@@ -3,17 +3,10 @@
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-}
-
+plugins { alias(libs.plugins.kotlin.multiplatform) }
 
 kotlin {
-    jvm {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_1_8
-        }
-    }
+    jvm { compilerOptions { jvmTarget = JvmTarget.JVM_1_8 } }
 
     js(IR) {
         browser()
@@ -26,9 +19,7 @@ kotlin {
         d8()
     }
 
-    wasmWasi {
-        nodejs()
-    }
+    wasmWasi { nodejs() }
 
     // native tier 1
     macosArm64()
@@ -90,4 +81,3 @@ kotlin {
         }
     }
 }
-

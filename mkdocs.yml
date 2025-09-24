@@ -4,62 +4,62 @@ repo_name: "spatial-k"
 repo_url: https://github.com/maplibre/spatial-k
 site_description: "Kotlin Multiplatform GeoJson library and Turfjs port"
 site_author: MapLibre
-copyright: 'Copyright &copy; 2025 MapLibre Contributors'
+copyright: "Copyright &copy; 2025 MapLibre Contributors"
 remote_branch: gh-pages
 
 nav:
-  - 'Introduction': index.md
-  - 'GeoJson': geojson.md
-  - 'Turf':
-      - 'Overview':  turf.md
-      - 'Ported Functions': ported-functions.md
-  - 'API':
-      - 'index': api/index.html
-      - 'geojson': api/geojson/index.html
-      - 'turf': api/turf/index.html
+    - "Introduction": index.md
+    - "GeoJson": geojson.md
+    - "Turf":
+          - "Overview": turf.md
+          - "Ported Functions": ported-functions.md
+    - "API":
+          - "index": api/index.html
+          - "geojson": api/geojson/index.html
+          - "turf": api/turf/index.html
 
 theme:
-  name: 'material'
-  favicon: images/logo.png
-  logo: images/logo.png
-  features:
-    - navigation.indexes
-  palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      toggle:
-        icon: material/weather-sunny
-        name: Switch to dark mode
-      primary: 'green'
-      accent: 'blue'
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/weather-night
-        name: Switch to light mode
-      primary: 'green'
-      accent: 'blue'
+    name: "material"
+    favicon: images/logo.png
+    logo: images/logo.png
+    features:
+        - navigation.indexes
+    palette:
+        - media: "(prefers-color-scheme: light)"
+          scheme: default
+          toggle:
+              icon: material/weather-sunny
+              name: Switch to dark mode
+          primary: "green"
+          accent: "blue"
+        - media: "(prefers-color-scheme: dark)"
+          scheme: slate
+          toggle:
+              icon: material/weather-night
+              name: Switch to light mode
+          primary: "green"
+          accent: "blue"
 
 markdown_extensions:
-  - pymdownx.highlight:
-      anchor_linenums: true
-  - pymdownx.snippets
-  - pymdownx.arithmatex
-  - pymdownx.betterem:
-      smart_enable: all
-  - pymdownx.caret
-  - pymdownx.critic
-  - pymdownx.details
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
-  - pymdownx.inlinehilite
-  - pymdownx.magiclink
-  - pymdownx.mark
-  - pymdownx.smartsymbols
-  - pymdownx.superfences
-  - pymdownx.tasklist:
-      custom_checkbox: true
-  - pymdownx.tabbed:
-      alternate_style: true
-  - pymdownx.tilde
+    - pymdownx.highlight:
+          anchor_linenums: true
+    - pymdownx.snippets
+    - pymdownx.arithmatex
+    - pymdownx.betterem:
+          smart_enable: all
+    - pymdownx.caret
+    - pymdownx.critic
+    - pymdownx.details
+    - pymdownx.emoji:
+          emoji_index: !!python/name:materialx.emoji.twemoji
+          emoji_generator: !!python/name:materialx.emoji.to_svg
+    - pymdownx.inlinehilite
+    - pymdownx.magiclink
+    - pymdownx.mark
+    - pymdownx.smartsymbols
+    - pymdownx.superfences
+    - pymdownx.tasklist:
+          custom_checkbox: true
+    - pymdownx.tabbed:
+          alternate_style: true
+    - pymdownx.tilde

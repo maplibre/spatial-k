@@ -1,41 +1,41 @@
 package org.maplibre.spatialk.geojson
 
-import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
-import org.maplibre.spatialk.geojson.serialization.jsonJoin
-import org.maplibre.spatialk.geojson.serialization.jsonProp
-import org.maplibre.spatialk.geojson.serialization.toBbox
-import org.maplibre.spatialk.geojson.serialization.toPosition
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonPrimitive
-import kotlin.jvm.JvmOverloads
-import kotlin.jvm.JvmStatic
+import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
+import org.maplibre.spatialk.geojson.serialization.jsonJoin
+import org.maplibre.spatialk.geojson.serialization.jsonProp
+import org.maplibre.spatialk.geojson.serialization.toBbox
+import org.maplibre.spatialk.geojson.serialization.toPosition
 
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @Serializable(with = GeometrySerializer::class)
-public class LineString @JvmOverloads constructor(
-    public val coordinates: List<Position>,
-    override val bbox: BoundingBox? = null
-) : Geometry() {
+public class LineString
+@JvmOverloads
+constructor(public val coordinates: List<Position>, override val bbox: BoundingBox? = null) :
+    Geometry() {
     @JvmOverloads
     public constructor(
         vararg coordinates: Position,
-        bbox: BoundingBox? = null
+        bbox: BoundingBox? = null,
     ) : this(coordinates.toList(), bbox)
 
     @JvmOverloads
     public constructor(
         vararg points: Point,
-        bbox: BoundingBox? = null
+        bbox: BoundingBox? = null,
     ) : this(points.map { it.coordinates }, bbox)
 
     @JvmOverloads
     public constructor(
         coordinates: Array<DoubleArray>,
-        bbox: BoundingBox? = null
+        bbox: BoundingBox? = null,
     ) : this(coordinates.map(::Position), bbox)
 
     init {
@@ -69,11 +69,12 @@ public class LineString @JvmOverloads constructor(
             fromJson(Json.decodeFromString(JsonObject.serializer(), json))
 
         @JvmStatic
-        public fun fromJsonOrNull(json: String): LineString? = try {
-            fromJson(json)
-        } catch (_: Exception) {
-            null
-        }
+        public fun fromJsonOrNull(json: String): LineString? =
+            try {
+                fromJson(json)
+            } catch (_: Exception) {
+                null
+            }
 
         @JvmStatic
         public fun fromJson(json: JsonObject): LineString {
@@ -81,7 +82,7 @@ public class LineString @JvmOverloads constructor(
                 require(json.getValue("type").jsonPrimitive.content == "LineString") {
                     "Object \"type\" is not \"LineString\"."
                 }
-                
+
                 val coords =
                     json.getValue("coordinates").jsonArray.map { it.jsonArray.toPosition() }
                 val bbox = json["bbox"]?.jsonArray?.toBbox()

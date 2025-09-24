@@ -2,25 +2,24 @@
 
 package org.maplibre.spatialk.turf
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFails
+import kotlin.test.assertIs
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
-import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.geojson.dsl.featureCollection
 import org.maplibre.spatialk.geojson.dsl.geometryCollection
-import org.maplibre.spatialk.geojson.dsl.polygon
-import org.maplibre.spatialk.geojson.dsl.polygon
-import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.lineString
-import org.maplibre.spatialk.turf.utils.assertDoubleEquals
+import org.maplibre.spatialk.geojson.dsl.point
+import org.maplibre.spatialk.geojson.dsl.polygon
 import org.maplibre.spatialk.testutil.readResourceFile
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFails
-import kotlin.test.assertIs
+import org.maplibre.spatialk.turf.utils.assertDoubleEquals
 
 @ExperimentalTurfApi
 class TurfMeasurementTest {
@@ -51,21 +50,18 @@ class TurfMeasurementTest {
     @Test
     fun testBbox() {
         val point = Point.fromJson(readResourceFile("measurement/bbox/point.json"))
-        assertEquals(
-            BoundingBox(point.coordinates, point.coordinates),
-            bbox(point)
-        )
+        assertEquals(BoundingBox(point.coordinates, point.coordinates), bbox(point))
 
         val lineString = LineString.fromJson(readResourceFile("measurement/bbox/lineString.json"))
         assertEquals(
             BoundingBox(-79.376220703125, 43.65197548731187, -73.58642578125, 45.4986468234261),
-            bbox(lineString)
+            bbox(lineString),
         )
 
         val polygon = Polygon.fromJson(readResourceFile("measurement/bbox/polygon.json"))
         assertEquals(
             BoundingBox(-64.44580078125, 45.9511496866914, -61.973876953125, 47.07012182383309),
-            bbox(polygon)
+            bbox(polygon),
         )
     }
 
@@ -186,39 +182,37 @@ class TurfMeasurementTest {
         val start = Position(-122.349358, startLat)
         val antipodal = Position(106.33, startLat)
 
-        assertFails {
-            greatCircle(start, antipodal)
-        }
+        assertFails { greatCircle(start, antipodal) }
     }
 
     @Test
     fun envelopeProcessesFeatureCollection() {
         val fc = featureCollection {
+            feature(geometry = point(102.0, 0.5))
             feature(
-                geometry = point(102.0, 0.5)
-            )
-            feature(
-                geometry = lineString {
-                    point(102.0, -10.0)
-                    point(103.0, 1.0)
-                    point(104.0, 0.0)
-                    point(130.0, 4.0)
-                }
-            )
-            feature(
-                geometry = polygon {
-                    ring {
+                geometry =
+                    lineString {
                         point(102.0, -10.0)
                         point(103.0, 1.0)
                         point(104.0, 0.0)
                         point(130.0, 4.0)
-                        point(20.0, 0.0)
-                        point(101.0, 0.0)
-                        point(101.0, 1.0)
-                        point(100.0, 1.0)
-                        point(100.0, 0.0)
                     }
-                }
+            )
+            feature(
+                geometry =
+                    polygon {
+                        ring {
+                            point(102.0, -10.0)
+                            point(103.0, 1.0)
+                            point(104.0, 0.0)
+                            point(130.0, 4.0)
+                            point(20.0, 0.0)
+                            point(101.0, 0.0)
+                            point(101.0, 1.0)
+                            point(100.0, 1.0)
+                            point(100.0, 0.0)
+                        }
+                    }
             )
         }
 
@@ -236,18 +230,19 @@ class TurfMeasurementTest {
                 )
             ),
             (enveloped.geometry as Polygon).coordinates,
-            "positions should be correct"
+            "positions should be correct",
         )
     }
 
     fun testPointToLineDistance() {
         val point = Position(-0.54931640625, 0.7470491450051796)
-        val line = LineString(
-            Position(1.0, 3.0),
-            Position(2.0, 2.0),
-            Position(2.0, 0.0),
-            Position(-1.5, -1.5)
-        )
+        val line =
+            LineString(
+                Position(1.0, 3.0),
+                Position(2.0, 2.0),
+                Position(2.0, 0.0),
+                Position(-1.5, -1.5),
+            )
 
         val distance = pointToLineDistance(point, line)
         assertDoubleEquals(188.01568693725255, distance, 0.000001)
@@ -255,11 +250,8 @@ class TurfMeasurementTest {
 
     @Test
     fun testRhumbDistance() {
-        val distance = rhumbDistance(
-            Position(-75.343, 39.984),
-            Position(-75.534, 39.123),
-            Units.Kilometers
-        )
+        val distance =
+            rhumbDistance(Position(-75.343, 39.984), Position(-75.534, 39.123), Units.Kilometers)
 
         assertDoubleEquals(97.12923942772163, distance, 0.000001)
     }

@@ -1,8 +1,4 @@
 {
-  "type": "Point",
-  "coordinates": [
-    100,
-    0,
-    200
-  ]
+    "type": "Point",
+    "coordinates": [100, 0, 200]
 }

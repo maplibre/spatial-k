@@ -2,11 +2,11 @@
 
 package org.maplibre.spatialk.turf
 
-import org.maplibre.spatialk.geojson.LineString
-import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.geojson.MultiLineString
 import kotlin.jvm.JvmName
 import kotlin.math.max
+import org.maplibre.spatialk.geojson.LineString
+import org.maplibre.spatialk.geojson.MultiLineString
+import org.maplibre.spatialk.geojson.Position
 
 /**
  * Returns intersecting points between two [LineString]s.
@@ -69,8 +69,8 @@ internal fun intersects(line1: LineString, line2: LineString): Position? {
 }
 
 /**
- * Takes a [LineString], a start and a stop [Position] and returns a subsection of the line
- * between those points. The start and stop points do not need to fall exactly on the line.
+ * Takes a [LineString], a start and a stop [Position] and returns a subsection of the line between
+ * those points. The start and stop points do not need to fall exactly on the line.
  *
  * @param start Start position
  * @param stop Stop position
@@ -83,7 +83,8 @@ public fun lineSlice(start: Position, stop: Position, line: LineString): LineStr
     val stopVertex = nearestPointOnLine(line, stop)
 
     val (startPos, endPos) =
-        if (startVertex.index <= stopVertex.index) startVertex to stopVertex else stopVertex to startVertex
+        if (startVertex.index <= stopVertex.index) startVertex to stopVertex
+        else stopVertex to startVertex
 
     val positions = mutableListOf(startPos.point)
     for (i in startPos.index + 1 until endPos.index + 1) {
@@ -103,7 +104,12 @@ public fun lineSlice(start: Position, stop: Position, line: LineString): LineStr
  * @property index Index of the segment of the line on which [point] lies.
  */
 @ExperimentalTurfApi
-public data class NearestPointOnLineResult(val point: Position, val distance: Double, val location: Double, val index: Int)
+public data class NearestPointOnLineResult(
+    val point: Position,
+    val distance: Double,
+    val location: Double,
+    val index: Int,
+)
 
 /**
  * Finds the closest [Position] along a [LineString] to a given position
@@ -113,7 +119,11 @@ public data class NearestPointOnLineResult(val point: Position, val distance: Do
  * @return The closest position along the line
  */
 @ExperimentalTurfApi
-public fun nearestPointOnLine(line: LineString, point: Position, units: Units = Units.Kilometers): NearestPointOnLineResult {
+public fun nearestPointOnLine(
+    line: LineString,
+    point: Position,
+    units: Units = Units.Kilometers,
+): NearestPointOnLineResult {
     return nearestPointOnLine(listOf(line.coordinates), point, units)
 }
 
@@ -128,7 +138,7 @@ public fun nearestPointOnLine(line: LineString, point: Position, units: Units = 
 public fun nearestPointOnLine(
     lines: MultiLineString,
     point: Position,
-    units: Units = Units.Kilometers
+    units: Units = Units.Kilometers,
 ): NearestPointOnLineResult {
     return nearestPointOnLine(lines.coordinates, point, units)
 }
@@ -138,14 +148,15 @@ public fun nearestPointOnLine(
 internal fun nearestPointOnLine(
     lines: List<List<Position>>,
     point: Position,
-    units: Units = Units.Kilometers
+    units: Units = Units.Kilometers,
 ): NearestPointOnLineResult {
-    var closest = NearestPointOnLineResult(
-        Position(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY),
-        Double.POSITIVE_INFINITY,
-        Double.POSITIVE_INFINITY,
-        -1
-    )
+    var closest =
+        NearestPointOnLineResult(
+            Position(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY),
+            Double.POSITIVE_INFINITY,
+            Double.POSITIVE_INFINITY,
+            -1,
+        )
 
     var length = 0.0
 
@@ -163,29 +174,39 @@ internal fun nearestPointOnLine(
             val perpPoint1 = destination(point, heightDistance, direction + 90, units = units)
             val perpPoint2 = destination(point, heightDistance, direction - 90, units = units)
 
-            val intersect = lineIntersect(LineString(perpPoint1, perpPoint2), LineString(start, stop)).getOrNull(0)
+            val intersect =
+                lineIntersect(LineString(perpPoint1, perpPoint2), LineString(start, stop))
+                    .getOrNull(0)
 
             if (startDistance < closest.distance) {
-                closest = closest.copy(point = start, location = length, distance = startDistance, index = i)
+                closest =
+                    closest.copy(
+                        point = start,
+                        location = length,
+                        distance = startDistance,
+                        index = i,
+                    )
             }
 
             if (stopDistance < closest.distance) {
-                closest = closest.copy(
-                    point = stop,
-                    location = length + sectionLength,
-                    distance = stopDistance,
-                    index = i + 1
-                )
+                closest =
+                    closest.copy(
+                        point = stop,
+                        location = length + sectionLength,
+                        distance = stopDistance,
+                        index = i + 1,
+                    )
             }
 
             if (intersect != null && distance(point, intersect, units = units) < closest.distance) {
                 val intersectDistance = distance(point, intersect, units = units)
-                closest = closest.copy(
-                    point = intersect,
-                    distance = intersectDistance,
-                    location = length + distance(start, intersect, units = units),
-                    index = i
-                )
+                closest =
+                    closest.copy(
+                        point = intersect,
+                        distance = intersectDistance,
+                        location = length + distance(start, intersect, units = units),
+                        index = i,
+                    )
             }
 
             length += sectionLength

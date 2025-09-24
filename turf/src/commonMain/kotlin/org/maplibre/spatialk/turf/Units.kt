@@ -1,7 +1,8 @@
 package org.maplibre.spatialk.turf
 
 /**
- * Radius of the Earth used with the Harvesine formula. Approximated using a spherical (non-ellipsoid) Earth.
+ * Radius of the Earth used with the Harvesine formula. Approximated using a spherical
+ * (non-ellipsoid) Earth.
  */
 public const val EARTH_RADIUS: Double = 6371008.8
 
@@ -17,7 +18,11 @@ internal const val ANTIMERIDIAN_NEG = -180.0
  */
 @ExperimentalTurfApi
 @Suppress("MagicNumber")
-public enum class Units(internal val unitFactor: Double, internal val factor: Double, internal val areaFactor: Double) {
+public enum class Units(
+    internal val unitFactor: Double,
+    internal val factor: Double,
+    internal val areaFactor: Double,
+) {
     Meters(1.0, EARTH_RADIUS, 1.0),
     Millimeters(1000.0, EARTH_RADIUS * 1000, 1_000_000.0),
     Centimeters(100.0, EARTH_RADIUS * 100, 10_000.0),
@@ -29,5 +34,5 @@ public enum class Units(internal val unitFactor: Double, internal val factor: Do
     Yards(1 / 1.0936, EARTH_RADIUS / 1.0936, 1.195_990_046),
     Feet(3.28084, EARTH_RADIUS * 3.28084, 10.763_910_417),
     Radians(1 / EARTH_RADIUS, 1.0, Double.NaN),
-    Degrees(1 / 111325.0, EARTH_RADIUS / 111325, Double.NaN);
+    Degrees(1 / 111325.0, EARTH_RADIUS / 111325, Double.NaN),
 }
