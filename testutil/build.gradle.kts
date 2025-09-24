@@ -77,11 +77,11 @@ kotlin {
         val bundleMain by creating {
             dependsOn(commonMain)
             jsMain.get().dependsOn(this)
+            wasmJsMain.get().dependsOn(this)
         }
 
         val todoMain by creating {
             dependsOn(commonMain)
-            wasmJsMain.get().dependsOn(this)
             wasmWasiMain.get().dependsOn(this)
             iosMain.get().dependsOn(this)
             watchosMain.get().dependsOn(this)

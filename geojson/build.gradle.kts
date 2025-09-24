@@ -121,8 +121,9 @@ kotlin {
 // TODO fix tests on these platforms
 tasks.matching { task ->
     listOf(
-        "jsBrowserTest",
-        "wasm.*Test",
+        ".*BrowserTest",
+        "wasmJsD8Test",
+        "wasmWasi.*Test",
         ".*Simulator.*Test",
     ).any { task.name.matches(it.toRegex()) }
 }.configureEach {
