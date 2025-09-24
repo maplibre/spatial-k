@@ -14,6 +14,7 @@ plugins {
 kotlin {
     explicitApi()
     applyDefaultHierarchyTemplate()
+    compilerOptions { allWarningsAsErrors = true }
 
     jvm {
         compilerOptions { jvmTarget = JvmTarget.JVM_1_8 }

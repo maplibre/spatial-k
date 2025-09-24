@@ -6,6 +6,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins { alias(libs.plugins.kotlin.multiplatform) }
 
 kotlin {
+    applyDefaultHierarchyTemplate()
+    compilerOptions { allWarningsAsErrors = true }
+
     jvm { compilerOptions { jvmTarget = JvmTarget.JVM_1_8 } }
 
     js(IR) {
@@ -57,7 +60,7 @@ kotlin {
 
         val commonMain by getting
 
-        val fsMain by creating {
+        create("fsMain").apply {
             dependsOn(commonMain)
             jvmMain.get().dependsOn(this)
             linuxMain.get().dependsOn(this)
@@ -65,13 +68,13 @@ kotlin {
             macosMain.get().dependsOn(this)
         }
 
-        val bundleMain by creating {
+        create("bundleMain").apply {
             dependsOn(commonMain)
             jsMain.get().dependsOn(this)
             wasmJsMain.get().dependsOn(this)
         }
 
-        val todoMain by creating {
+        create("todoMain").apply {
             dependsOn(commonMain)
             wasmWasiMain.get().dependsOn(this)
             iosMain.get().dependsOn(this)
