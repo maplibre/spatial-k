@@ -25,7 +25,7 @@ You can view porting progress for the next release [here](https://github.com/map
 - [ ] `rhumbDestination`
 - [x] [`rhumbDistance`](../api/turf/org.maplibre.spatialk.turf/rhumb-distance.html)
 - [ ] `square`
-- [ ] `greatCircle`
+- [x] [`greatCircle`](../api/turf/org.maplibre.spatialk.turf/great-circle.html)
 
 ## Coordinate Mutation
 
@@ -39,9 +39,9 @@ You can view porting progress for the next release [here](https://github.com/map
 ## Transformation
 
 - [ ] `bboxClip`
-- [ ] `bezierSpline`
+- [x] [`bezierSpline`](../api/turf/org.maplibre.spatialk.turf/bezier-spline.html)
 - [ ] `buffer`
-- [ ] `circle`
+- [x] [`circle`](../api/turf/org.maplibre.spatialk.turf/circle.html)
 - [ ] `clone`
 - [ ] `concave`
 - [ ] `convex`
@@ -49,7 +49,7 @@ You can view porting progress for the next release [here](https://github.com/map
 - [ ] `dissolve`
 - [ ] `intersect`
 - [ ] `lineOffset`
-- [ ] `simplify`
+- [x] [`simplify`](../api/turf/org.maplibre.spatialk.turf/simplify.html)
 - [ ] `tessellate`
 - [ ] `transformRotate`
 - [ ] `transformTranslate`
