@@ -29,19 +29,32 @@ jobs:
         runs-on: ${{ matrix.runner }}
         steps:
             - uses: actions/checkout@v5
-
             - name: Set up JDK 17
               uses: actions/setup-java@v5
               with:
                   distribution: "zulu"
                   java-version: 17
-
             - name: Build and test with Gradle
               run: ./gradlew ${{ matrix.task }}
 
+    check-format:
+        runs-on: ubuntu-latest
+        permissions:
+            checks: write
+            issues: write
+            pull-requests: write
+        steps:
+            - uses: actions/checkout@v5
+            - uses: pre-commit/action@v3.0.1
+            - if: ${{ github.event_name == 'pull_request' && failure() }}
+              uses: reviewdog/action-suggester@v1
+              with:
+                  tool_name: pre-commit
+                  cleanup: false
+
     # stub to use as a "required" check on github
     all-good:
-        needs: [build]
+        needs: [build, check-format]
         runs-on: ubuntu-latest
         steps:
             - run: echo 'All checks passed!'
