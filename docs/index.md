@@ -1,10 +1,10 @@
-<p align="center">
+<div style="text-align: center;">
     <img width="200" src="images/colour.svg" alt="Spatial K Logo" title="Part of a complete breakfast!">
-</p>
+</div>
 
 # Spatial K
 
-Spatial K is a set of libraries for working with geospatial data in Kotlin including an implementation of GeoJson and
+Spatial K is a set of libraries for working with geospatial data in Kotlin, including an implementation of GeoJson and
 a port of Turfjs written in pure Kotlin. It supports Kotlin Multiplatform projects and also features a
 Kotlin DSL for building GeoJson objects.
 

@@ -244,7 +244,7 @@ A `MultiPolygon` is an array of Polygons.
 
 #### GeometryCollection
 
-A `GeometryCollection` is a collection of different types of Geometry. It implements the `Collection` interface and can be used in any place that a collection can be used.
+A `GeometryCollection` is a collection of multiple geometries. It implements the `Collection` interface and can be used in any place that a collection can be used.
 
 === "Kotlin"
 
@@ -311,7 +311,7 @@ A set of helper methods to get and set properties with the appropriate types dir
 
 ### FeatureCollection
 
-A `FeatureCollection` is a collection of multiple features. `FeatureCollection` implements the `Collection` interface and can be used in any place that a collection can be used.
+A `FeatureCollection` is a collection of multiple features. It implements the `Collection` interface and can be used in any place that a collection can be used.
 
 === "Kotlin"
 
@@ -366,7 +366,7 @@ Bounding boxes also support destructuring.
 
 ## Serialization
 
-### To Json
+### To JSON
 
 Any `GeoJson` object can be serialized to a JSON string using the `json()` function.
 This function converts the object to JSON using string concatenation and is therefore very fast.
@@ -380,10 +380,10 @@ This function converts the object to JSON using string concatenation and is ther
     println(json)
     ```
 
-Spatial-K is also fully compatible with `kotlinx.serialization` to allow for integration into more complex models, however
+Spatial-K is also fully compatible with `kotlinx.serialization` to allow for integration into more complex models, however,
 this is much slower. For encoding directly to JSON strings, prefer to use the `json()` function.
 
-### From Json
+### From JSON
 
 The `fromJson` and `fromJsonOrNull` companion (or static) functions are available on each `GeoJson` class to decode each
 type of object from a JSON string.
@@ -422,7 +422,7 @@ It's recommended to construct GeoJson objects in-code using the GeoJson DSL.
 
 ### Positions
 
-Convenience functions to construct latitude/longitude Position instances is included.
+Convenience functions to construct latitude/longitude Position instances are included.
 These functions will check for valid latitude and longitude values and will throw an `IllegalArgumentException` otherwise.
 
 === "Kotlin"
@@ -470,7 +470,7 @@ A GeoJson object's `bbox` value can be assigned in any of the DSLs.
 #### MultiPoint
 
 The `MultiPoint` DSL creates a `MultiPoint` from many `Point`s, or by using the unary plus operator to add `Position` instances as positions in the geometry.
-`Point` geometries can also be added to the multi point using the unary plus operator.
+`Point` geometries can also be added to the multipoint using the unary plus operator.
 
 === "Kotlin"
 
@@ -560,7 +560,7 @@ create `LineString` objects to add.
 
 The `Polygon` DSL is used by specifying linear rings that make up the polygon's shape and holes.
 The first `ring` is the exterior ring with four or more positions. The last position must be the same as the first position.
-All `ring`s that follow will represent interior rings (i.e. holes) in the polygon.
+All `ring`s that follow will represent interior rings (i.e., holes) in the polygon.
 
 For convenience, the `complete()` function can be used to "complete" a ring.
 It adds the last position in the ring by copying the first position that was added.
