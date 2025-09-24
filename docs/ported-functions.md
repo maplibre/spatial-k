@@ -15,15 +15,15 @@ You can view porting progress for the next release [here](https://github.com/map
 - [ ] `centerOfMass`
 - [x] [`destination`](../api/turf/org.maplibre.spatialk.turf/destination.html)
 - [x] [`distance`](../api/turf/org.maplibre.spatialk.turf/distance.html)
-- [ ] `envelope`
+- [x] [`envelope`](../api/turf/org.maplibre.spatialk.turf/envelope.html)
 - [x] [`length`](../api/turf/org.maplibre.spatialk.turf/length.html)
 - [x] [`midpoint`](../api/turf/org.maplibre.spatialk.turf/midpoint.html)
 - [ ] `pointOnFeature`
 - [ ] `polygonTangents`
-- [ ] `pointToLineDistance`
+- [x] [`pointToLineDistance`](../api/turf/org.maplibre.spatialk.turf/point-to-line-distance.html)
 - [ ] `rhumbBearing`
 - [ ] `rhumbDestination`
-- [ ] `rhumbDistance`
+- [x] [`rhumbDistance`](../api/turf/org.maplibre.spatialk.turf/rhumb-distance.html)
 - [ ] `square`
 - [ ] `greatCircle`
 

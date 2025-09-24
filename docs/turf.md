@@ -15,7 +15,7 @@ The documentation for the ported functions can be found in the [API docs](api/tu
 
     ```kotlin
     dependencies {
-    implementation("org.maplibre.spatialk:turf:<version>")
+        implementation("org.maplibre.spatialk:turf:<version>")
     }
     ```
 
@@ -52,5 +52,5 @@ Units of measurement are represented using the [`Units`](../api/turf/org.maplibr
     val result = convertLength(12.5, from = Units.Kilometers, to = Units.Miles)
     ```
 
-Not all units are valid for every function. For example: acres cannot be used as a measure of distance.
+Not all units are valid for every function. For example, acres cannot be used as a measure of distance.
 Calling a function like `convertLength` with `Units.Acres` as one of the arguments will cause an `IllegalArgumentException`.
