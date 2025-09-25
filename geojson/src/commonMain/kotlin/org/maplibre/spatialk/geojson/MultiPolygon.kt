@@ -31,7 +31,7 @@ constructor(
     /**
      * Create a MultiPolygon by a number of lists (= polygon rings) of lists (= positions).
      *
-     * @throws IllegalArgumentException if any of list does not represent a valid polygon
+     * @throws IllegalArgumentException if any list does not represent a valid polygon
      */
     @JvmOverloads
     public constructor(
@@ -62,6 +62,8 @@ constructor(
 
     init {
         coordinates.forEachIndexed { polygonIndex, polygon ->
+            require(polygon.isNotEmpty()) { "Polygon at index $polygonIndex must not be empty." }
+
             polygon.forEachIndexed { ringIndex, ring ->
                 require(polygon.size >= 4) {
                     "Line string at index $ringIndex of polygon at index $polygonIndex contains " +

@@ -51,7 +51,7 @@ constructor(
      * position is represented by a [DoubleArray].
      *
      * @throws IllegalArgumentException if any of the position lists is not a valid line string or
-     * any of the arrays of doubles does not represent a valid position.
+     *   any of the arrays of doubles does not represent a valid position.
      */
     @JvmOverloads
     public constructor(

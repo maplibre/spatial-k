@@ -34,6 +34,13 @@ class MultiPolygonTest {
     }
 
     @Test
+    fun throwsEmptyPolygonException() {
+        assertFailsWith(IllegalArgumentException::class) {
+            MultiPolygon(listOf(listOf<List<Position>>()))
+        }
+    }
+
+    @Test
     fun throwsNoRingException() {
         assertFailsWith(IllegalArgumentException::class) {
             MultiPolygon(listOf(listOf(
