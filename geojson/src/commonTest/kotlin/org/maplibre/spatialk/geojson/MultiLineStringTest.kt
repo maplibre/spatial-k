@@ -21,6 +21,25 @@ class MultiLineStringTest {
     }
 
     @Test
+    fun throwsInvalidLineStringException() {
+        assertFailsWith(IllegalArgumentException::class) {
+            MultiLineString(listOf(
+                Position(1.0, 1.0)
+            ))
+        }
+    }
+
+    @Test
+    fun throwsInvalidPositionException() {
+        assertFailsWith(IllegalArgumentException::class) {
+            MultiLineString(arrayOf(arrayOf(
+                doubleArrayOf(1.0, 1.0),
+                doubleArrayOf(1.0), // !
+            )))
+        }
+    }
+
+    @Test
     fun bbox_nullWhenNotSet() {
         val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 

@@ -17,32 +17,47 @@ class PolygonTest {
         assertNotNull(polygon)
     }
 
-    //    @Test
-    //    fun fromOuterInner_throwsNotLinearRingException() {
-    //        val points = arrayOf(
-    //            Point(10.0, 2.0),
-    //            Point(5.0, 2.0),
-    //            Point(3.0, 2.0)
-    //        )
-    //
-    //        assertFailsWith(IllegalArgumentException::class) {
-    //            Polygon(LineString(points = points))
-    //        }
-    //    }
+    @Test
+    fun throwsEmptyException() {
+        assertFailsWith(IllegalArgumentException::class) {
+            Polygon(listOf<List<Position>>())
+        }
+    }
 
-    //    @Test
-    //    fun fromOuterInner_throwsNotConnectedLinearRingException() {
-    //        val points = arrayOf(
-    //            Point(10.0, 2.0),
-    //            Point(5.0, 2.0),
-    //            Point(3.0, 2.0),
-    //            Point(5.0, 2.0),
-    //        )
-    //
-    //        assertFailsWith(IllegalArgumentException::class) {
-    //            Polygon(LineString(* points))
-    //        }
-    //    }
+    @Test
+    fun throwsInvalidPositionException() {
+        assertFailsWith(IllegalArgumentException::class) {
+            Polygon(arrayOf(arrayOf(
+                doubleArrayOf(5.0, 2.0),
+                doubleArrayOf(1.0), // !
+                doubleArrayOf(4.0, 3.0),
+                doubleArrayOf(5.0, 2.0),
+            )))
+        }
+    }
+
+    @Test
+    fun throwsNoRingException() {
+        assertFailsWith(IllegalArgumentException::class) {
+            Polygon(listOf(
+                Position(10.0, 2.0),
+                Position(5.0, 2.0),
+                Position(3.0, 2.0)
+            ))
+        }
+    }
+
+    @Test
+    fun throwsRingNotClosedException() {
+        assertFailsWith(IllegalArgumentException::class) {
+            Polygon(listOf(
+                Position(10.0, 2.0),
+                Position(5.0, 2.0),
+                Position(3.0, 2.0),
+                Position(5.0, 2.0),
+            ))
+        }
+    }
 
     @Test
     fun fromOuterInner_handlesSingleLineStringCorrectly() {

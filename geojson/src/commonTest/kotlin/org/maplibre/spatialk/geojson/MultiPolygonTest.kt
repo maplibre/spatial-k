@@ -22,6 +22,41 @@ class MultiPolygonTest {
     }
 
     @Test
+    fun throwsInvalidPositionException() {
+        assertFailsWith(IllegalArgumentException::class) {
+            MultiPolygon(arrayOf(arrayOf(arrayOf(
+                doubleArrayOf(5.0, 2.0),
+                doubleArrayOf(1.0), // !
+                doubleArrayOf(4.0, 3.0),
+                doubleArrayOf(5.0, 2.0),
+            ))))
+        }
+    }
+
+    @Test
+    fun throwsNoRingException() {
+        assertFailsWith(IllegalArgumentException::class) {
+            MultiPolygon(listOf(listOf(
+                Position(10.0, 2.0),
+                Position(5.0, 2.0),
+                Position(3.0, 2.0)
+            )))
+        }
+    }
+
+    @Test
+    fun throwsRingNotClosedException() {
+        assertFailsWith(IllegalArgumentException::class) {
+            MultiPolygon(listOf(listOf(
+                Position(10.0, 2.0),
+                Position(5.0, 2.0),
+                Position(3.0, 2.0),
+                Position(5.0, 2.0),
+            )))
+        }
+    }
+
+    @Test
     fun bbox_nullWhenNotSet() {
         val points =
             listOf(Position(1.0, 2.0), Position(2.0, 3.0), Position(3.0, 4.0), Position(1.0, 2.0))
@@ -82,10 +117,10 @@ class MultiPolygonTest {
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
         val multiPolygon = MultiPolygon(polygons = polygons, bbox)
         assertNotNull(multiPolygon.bbox)
-        assertEquals(1.0, multiPolygon.bbox!!.west, DELTA)
-        assertEquals(2.0, multiPolygon.bbox!!.south, DELTA)
-        assertEquals(3.0, multiPolygon.bbox!!.east, DELTA)
-        assertEquals(4.0, multiPolygon.bbox!!.north, DELTA)
+        assertEquals(1.0, multiPolygon.bbox.west, DELTA)
+        assertEquals(2.0, multiPolygon.bbox.south, DELTA)
+        assertEquals(3.0, multiPolygon.bbox.east, DELTA)
+        assertEquals(4.0, multiPolygon.bbox.north, DELTA)
     }
 
     @Test

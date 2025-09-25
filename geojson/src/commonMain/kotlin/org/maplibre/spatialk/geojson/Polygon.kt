@@ -14,29 +14,74 @@ import org.maplibre.spatialk.geojson.serialization.jsonProp
 import org.maplibre.spatialk.geojson.serialization.toBbox
 import org.maplibre.spatialk.geojson.serialization.toPosition
 
+/**
+ * @throws IllegalArgumentException if the coordinates are empty or any of the positions lists
+ *   representing a line string is either not closed or contains less than 4 positions.
+ */
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @Serializable(with = GeometrySerializer::class)
 public class Polygon
 @JvmOverloads
-constructor(public val coordinates: List<List<Position>>, override val bbox: BoundingBox? = null) :
-    Geometry() {
+constructor(
+    /**
+     * a list (= polygon rings) of lists of [Position]s that represent this polygon. The first ring
+     * represents the exterior ring while any others are interior rings (= holes).
+     */
+    public val coordinates: List<List<Position>>,
+    /** a bounding box */
+    override val bbox: BoundingBox? = null
+) : Geometry() {
+
+    /**
+     * Create a Polygon by a number of lists of [Position]s.
+     *
+     * @throws IllegalArgumentException if no coordinates have been specified or any of the given
+     *   position lists are either not closed or contains less than 4 positions.
+     */
     @JvmOverloads
     public constructor(
         vararg coordinates: List<Position>,
         bbox: BoundingBox? = null,
     ) : this(coordinates.toList(), bbox)
 
+    /**
+     * Create a Polygon by a number of closed [LineString]s.
+     *
+     * @throws IllegalArgumentException if no coordinates have been specified or any of the
+     *   [LineString]s is either not closed or contains less than 4 positions.
+     */
     @JvmOverloads
     public constructor(
         vararg lineStrings: LineString,
         bbox: BoundingBox? = null,
     ) : this(lineStrings.map { it.coordinates }, bbox)
 
+    /**
+     * Create a Polygon by arrays (= polygon rings) of arrays (= positions) where each position is
+     * represented by a [DoubleArray].
+     *
+     * @throws IllegalArgumentException if the outer array is empty or any of the inner arrays does
+     *   not represent a valid closed line string or any of the arrays of doubles does not
+     *   represent a valid position.
+     */
     @JvmOverloads
     public constructor(
         coordinates: Array<Array<DoubleArray>>,
         bbox: BoundingBox? = null,
     ) : this(coordinates.map { it.map(::Position) }, bbox)
+
+    init {
+        require(coordinates.isNotEmpty()) { "A Polygon must not be empty." }
+
+        coordinates.forEachIndexed { i, ring ->
+            require(ring.size >= 4) {
+                "Line string at index $i contains less than 4 positions."
+            }
+            require(ring.first() == ring.last()) {
+                "Line string at at index $i is not closed."
+            }
+        }
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

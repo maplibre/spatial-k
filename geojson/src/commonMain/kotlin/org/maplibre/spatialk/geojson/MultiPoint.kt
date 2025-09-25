@@ -18,14 +18,27 @@ import org.maplibre.spatialk.geojson.serialization.toPosition
 @Serializable(with = GeometrySerializer::class)
 public class MultiPoint
 @JvmOverloads
-constructor(public val coordinates: List<Position>, override val bbox: BoundingBox? = null) :
-    Geometry() {
+constructor(
+    /** a list of [Position]s. */
+    public val coordinates: List<Position>,
+    /** a bounding box */
+    override val bbox: BoundingBox? = null
+) : Geometry() {
+
+    /**
+     * Create a MultiPoint by a number of [Position]s.
+     */
     @JvmOverloads
     public constructor(
         vararg coordinates: Position,
         bbox: BoundingBox? = null,
     ) : this(coordinates.toList(), bbox)
 
+    /**
+     * Create a MultiPoint by an array of [DoubleArray]s that each represent a position.
+     *
+     * @throws IllegalArgumentException if any array of doubles does not represent a valid position
+     */
     @JvmOverloads
     public constructor(
         coordinates: Array<DoubleArray>,

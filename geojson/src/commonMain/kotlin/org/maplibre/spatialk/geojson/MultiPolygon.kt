@@ -16,29 +16,64 @@ import org.maplibre.spatialk.geojson.serialization.toPosition
 
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @Serializable(with = GeometrySerializer::class)
+/**
+ * @throws IllegalArgumentException if any of the lists does not represent a valid polygon
+ */
 public class MultiPolygon
 @JvmOverloads
 constructor(
+    /** a list (= polygons) of lists (= polygon rings) of lists of [Position]s. */
     public val coordinates: List<List<List<Position>>>,
+    /** a bounding box */
     override val bbox: BoundingBox? = null,
 ) : Geometry() {
+
+    /**
+     * Create a MultiPolygon by a number of lists (= polygon rings) of lists (= positions).
+     *
+     * @throws IllegalArgumentException if any of list does not represent a valid polygon
+     */
     @JvmOverloads
     public constructor(
         vararg coordinates: List<List<Position>>,
         bbox: BoundingBox? = null,
     ) : this(coordinates.toList(), bbox)
 
+    /**
+     * Create a MultiPolygon by a number of [Polygon]s.
+     */
     @JvmOverloads
     public constructor(
         vararg polygons: Polygon,
         bbox: BoundingBox? = null,
     ) : this(polygons.map { it.coordinates }, bbox)
 
+    /**
+     * Create a MultiPolygon by an array (= polygons) of arrays (= polygon rings) of arrays (=
+     * positions) where each position is represented by a [DoubleArray].
+     *
+     * @throws IllegalArgumentException if the array does not represent a valid multi polygon
+     */
     @JvmOverloads
     public constructor(
         coordinates: Array<Array<Array<DoubleArray>>>,
         bbox: BoundingBox? = null,
     ) : this(coordinates.map { ring -> ring.map { it.map(::Position) } }, bbox)
+
+    init {
+        coordinates.forEachIndexed { polygonIndex, polygon ->
+            polygon.forEachIndexed { ringIndex, ring ->
+                require(polygon.size >= 4) {
+                    "Line string at index $ringIndex of polygon at index $polygonIndex contains " +
+                    "less than 4 positions."
+                }
+                require(polygon.first() == polygon.last()) {
+                    "Line string at at index $ringIndex of polygon at index $polygonIndex is " +
+                    "not closed."
+                }
+            }
+        }
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

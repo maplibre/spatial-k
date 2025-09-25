@@ -19,6 +19,13 @@ class MultiPointTest {
     }
 
     @Test
+    fun throwsInvalidPositionException() {
+        assertFailsWith(IllegalArgumentException::class) {
+            MultiPoint(arrayOf(doubleArrayOf(1.0)))
+        }
+    }
+
+    @Test
     fun bbox_nullWhenNotSet() {
         val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
@@ -56,10 +63,10 @@ class MultiPointTest {
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
         val multiPoint = MultiPoint(points, bbox)
         assertNotNull(multiPoint.bbox)
-        assertEquals(1.0, multiPoint.bbox!!.west, DELTA)
-        assertEquals(2.0, multiPoint.bbox!!.south, DELTA)
-        assertEquals(3.0, multiPoint.bbox!!.east, DELTA)
-        assertEquals(4.0, multiPoint.bbox!!.north, DELTA)
+        assertEquals(1.0, multiPoint.bbox.west, DELTA)
+        assertEquals(2.0, multiPoint.bbox.south, DELTA)
+        assertEquals(3.0, multiPoint.bbox.east, DELTA)
+        assertEquals(4.0, multiPoint.bbox.north, DELTA)
     }
 
     @Test
