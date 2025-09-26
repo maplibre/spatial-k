@@ -211,6 +211,7 @@ class TurfMeasurementTest {
                             point(101.0, 1.0)
                             point(100.0, 1.0)
                             point(100.0, 0.0)
+                            point(102.0, -10.0)
                         }
                     }
             )
