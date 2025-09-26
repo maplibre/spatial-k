@@ -55,7 +55,8 @@ public class FeatureCollection(
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): FeatureCollection = GeoJson.decodeFromString(json)
+        public fun fromJson(json: String): FeatureCollection =
+            GeoJsonObject.fromJson<FeatureCollection>(json)
 
         @JvmStatic
         public fun fromJsonOrNull(json: String): FeatureCollection? =

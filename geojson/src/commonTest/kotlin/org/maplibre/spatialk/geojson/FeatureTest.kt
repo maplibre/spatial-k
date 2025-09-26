@@ -42,17 +42,17 @@ class FeatureTest {
         val expectedFeature =
             Feature.fromJson(
                 """
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": [
-                        [1.0, 2.0],
-                        [2.0, 3.0]
-                    ]
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [
+                            [1.0, 2.0],
+                            [2.0, 3.0]
+                        ]
+                    }
                 }
-            }
-            """
+                """
                     .trimIndent()
             )
 
@@ -88,18 +88,18 @@ class FeatureTest {
         val expectedFeature =
             Feature.fromJson(
                 """
-            {
-                "type": "Feature",
-                "bbox": [1.0, 2.0, 3.0, 4.0],
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": [
-                        [1.0, 2.0],
-                        [2.0, 3.0]
-                    ]
+                {
+                    "type": "Feature",
+                    "bbox": [1.0, 2.0, 3.0, 4.0],
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [
+                            [1.0, 2.0],
+                            [2.0, 3.0]
+                        ]
+                    }
                 }
-            }
-            """
+                """
                     .trimIndent()
             )
 
@@ -198,21 +198,21 @@ class FeatureTest {
         val expectedFeature =
             Feature.fromJson(
                 """
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": [
-                        [1.0, 1.0],
-                        [2.0, 2.0],
-                        [3.0, 3.0]
-                    ]
-                },
-                "properties": {
-                    "name": "Dinagat Islands"
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [
+                            [1.0, 1.0],
+                            [2.0, 2.0],
+                            [3.0, 3.0]
+                        ]
+                    },
+                    "properties": {
+                        "name": "Dinagat Islands"
+                    }
                 }
-            }
-            """
+                """
                     .trimIndent()
             )
 
@@ -261,24 +261,40 @@ class FeatureTest {
     fun pointFeature_fromJson_toJson() {
         val jsonString =
             """
-                        {
-                            "bbox": [-120.0, -60.0, 120.0, 60.0],
-                            "geometry": {
-                                "bbox": [-110.0, -50.0, 110.0, 50.0],
-                                "coordinates": [100.0, 0.0],
-                                "type": "Point"
-                            },
-                            "type": "Feature",
-                            "properties": {
-                                "prop0": "value0",
-                                "prop1": "value1"
-                            }
-                        }
-                        """
+            {
+                "bbox": [-120.0, -60.0, 120.0, 60.0],
+                "geometry": {
+                    "bbox": [-110.0, -50.0, 110.0, 50.0],
+                    "coordinates": [100.0, 0.0],
+                    "type": "Point"
+                },
+                "type": "Feature",
+                "properties": {
+                    "prop0": "value0",
+                    "prop1": "value1"
+                }
+            }
+            """
                 .trimIndent()
 
         val actualFeature = Feature.fromJson(Feature.fromJson(jsonString).json())
         val expectedFeature = Feature.fromJson(jsonString)
         assertEquals(expectedFeature, actualFeature)
+    }
+
+    @Test
+    fun testMissingType() {
+        assertNull(
+            Feature.fromJsonOrNull(
+                """
+            {
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [125.6, 10.1]
+                }
+            }
+            """
+            )
+        )
     }
 }

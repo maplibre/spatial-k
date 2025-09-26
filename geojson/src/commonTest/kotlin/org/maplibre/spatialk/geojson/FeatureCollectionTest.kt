@@ -39,32 +39,32 @@ class FeatureCollectionTest {
         val expectedFeatureCollection =
             FeatureCollection.fromJson(
                 """
-                    {
-                        "type": "FeatureCollection",
-                        "features": [
-                            {
-                                "type": "Feature",
-                                "geometry": {
-                                    "type": "LineString",
-                                    "coordinates": [
-                                        [1.0, 2.0],
-                                        [2.0, 3.0]
-                                    ]
-                                }
-                            },
-                            {
-                                "type": "Feature",
-                                "geometry": {
-                                    "type": "LineString",
-                                    "coordinates": [
-                                        [1.0, 2.0],
-                                        [2.0, 3.0]
-                                    ]
-                                }
+                {
+                    "type": "FeatureCollection",
+                    "features": [
+                        {
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "LineString",
+                                "coordinates": [
+                                    [1.0, 2.0],
+                                    [2.0, 3.0]
+                                ]
                             }
-                        ]
-                    }
-                    """
+                        },
+                        {
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "LineString",
+                                "coordinates": [
+                                    [1.0, 2.0],
+                                    [2.0, 3.0]
+                                ]
+                            }
+                        }
+                    ]
+                }
+                """
                     .trimIndent()
             )
 
@@ -99,33 +99,33 @@ class FeatureCollectionTest {
         val expectedFeatureCollection =
             FeatureCollection.fromJson(
                 """
-                    {
-                        "type": "FeatureCollection",
-                        "bbox": [1.0, 2.0, 3.0, 4.0],
-                        "features": [
-                            {
-                                "type": "Feature",
-                                "geometry": {
-                                    "type": "LineString",
-                                    "coordinates": [
-                                        [1.0, 2.0],
-                                        [2.0, 3.0]
-                                    ]
-                                }
-                            },
-                            {
-                                "type": "Feature",
-                                "geometry": {
-                                    "type": "LineString",
-                                    "coordinates": [
-                                        [1.0, 2.0],
-                                        [2.0, 3.0]
-                                    ]
-                                }
+                {
+                    "type": "FeatureCollection",
+                    "bbox": [1.0, 2.0, 3.0, 4.0],
+                    "features": [
+                        {
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "LineString",
+                                "coordinates": [
+                                    [1.0, 2.0],
+                                    [2.0, 3.0]
+                                ]
                             }
-                        ]
-                    }
-                    """
+                        },
+                        {
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "LineString",
+                                "coordinates": [
+                                    [1.0, 2.0],
+                                    [2.0, 3.0]
+                                ]
+                            }
+                        }
+                    ]
+                }
+                """
                     .trimIndent()
             )
 
@@ -160,6 +160,11 @@ class FeatureCollectionTest {
         val actualFeatureCollection =
             FeatureCollection.fromJson(FeatureCollection.fromJson(json).json())
         assertEquals(expectedFeatureCollection, actualFeatureCollection)
+    }
+
+    @Test
+    fun testMissingType() {
+        assertNull(Feature.fromJsonOrNull("{\"features\": []}"))
     }
 
     companion object {

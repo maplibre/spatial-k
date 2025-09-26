@@ -115,7 +115,8 @@ public class Feature(
     ): Feature = Feature(geometry, properties, id, bbox)
 
     public companion object {
-        @JvmStatic public fun fromJson(json: String): Feature = GeoJson.decodeFromString(json)
+        @JvmStatic
+        public fun fromJson(json: String): Feature = GeoJsonObject.fromJson<Feature>(json)
 
         @JvmStatic
         public fun fromJsonOrNull(json: String): Feature? =
