@@ -55,7 +55,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotlinx.io.core)
-            api(libs.kotlinx.serialization)
+            api(libs.kotlinx.serialization.json)
         }
 
         val commonMain by getting

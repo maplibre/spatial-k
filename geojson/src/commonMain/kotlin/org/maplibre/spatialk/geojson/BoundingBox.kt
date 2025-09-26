@@ -2,9 +2,9 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
+import kotlinx.serialization.encodeToString
 import org.maplibre.spatialk.geojson.serialization.BoundingBoxSerializer
-import org.maplibre.spatialk.geojson.serialization.jsonJoin
+import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
  * Represents an area bounded by a [northeast] and [southwest] [Position].
@@ -27,7 +27,7 @@ import org.maplibre.spatialk.geojson.serialization.jsonJoin
  */
 @Serializable(with = BoundingBoxSerializer::class)
 @Suppress("MagicNumber")
-public class BoundingBox constructor(public val coordinates: DoubleArray) {
+public class BoundingBox(public val coordinates: DoubleArray) {
     init {
         require(coordinates.size == 4 || coordinates.size == 6) {
             "Bounding Box coordinates must either have 4 or 6 values"
@@ -117,11 +117,12 @@ public class BoundingBox constructor(public val coordinates: DoubleArray) {
         return "BoundingBox(southwest=$southwest, northeast=$northeast)"
     }
 
-    public fun json(): String = coordinates.jsonJoin()
+    public fun json(): String = GeoJson.encodeToString(coordinates)
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): BoundingBox = Json.decodeFromString(serializer(), json)
+        public fun fromJson(json: String): BoundingBox =
+            GeoJson.decodeFromString(serializer(), json)
 
         @JvmStatic
         public fun fromJsonOrNull(json: String): BoundingBox? =

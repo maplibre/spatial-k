@@ -11,13 +11,12 @@ import kotlinx.benchmark.OutputTimeUnit
 import kotlinx.benchmark.Scope
 import kotlinx.benchmark.Setup
 import kotlinx.benchmark.State
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.dsl.featureCollection
 import org.maplibre.spatialk.geojson.dsl.lineString
 import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
+import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
@@ -72,7 +71,7 @@ open class GeoJsonBenchmark {
     fun setup() {
         dataset = generateDataset()
         geojson = dataset.json()
-        jsonObject = Json.decodeFromString(geojson)
+        jsonObject = GeoJson.decodeFromString(geojson)
     }
 
     /** Benchmark serialization using the string concat implementation */
@@ -84,13 +83,13 @@ open class GeoJsonBenchmark {
     /** Benchmark serialization using plain kotlinx.serialization */
     @Benchmark
     fun kotlinxSerialization() {
-        Json.encodeToString(dataset)
+        GeoJson.encodeToString(dataset)
     }
 
     /** Benchmark how fast kotlinx.serialization can encode a GeoJSON structure directly */
     @Benchmark
     fun baselineSerialization() {
-        Json.encodeToString(jsonObject)
+        GeoJson.encodeToString(jsonObject)
     }
 
     @Benchmark

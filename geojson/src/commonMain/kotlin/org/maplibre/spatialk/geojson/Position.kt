@@ -2,8 +2,8 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmSynthetic
 import kotlinx.serialization.Serializable
+import org.maplibre.spatialk.geojson.serialization.GeoJson
 import org.maplibre.spatialk.geojson.serialization.PositionSerializer
-import org.maplibre.spatialk.geojson.serialization.jsonJoin
 
 /**
  * A [Position] is the fundamental geometry construct.
@@ -113,7 +113,7 @@ public class Position(public val coordinates: DoubleArray) {
         return "LngLat(longitude=$longitude, latitude=$latitude, altitude=$altitude)"
     }
 
-    public fun json(): String = coordinates.jsonJoin()
+    public fun json(): String = GeoJson.encodeToString(coordinates)
 }
 
 public val Position.hasAltitude: Boolean

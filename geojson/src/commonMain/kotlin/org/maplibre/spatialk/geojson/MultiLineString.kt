@@ -2,17 +2,10 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonPrimitive
-import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
-import org.maplibre.spatialk.geojson.serialization.jsonJoin
-import org.maplibre.spatialk.geojson.serialization.jsonProp
-import org.maplibre.spatialk.geojson.serialization.toBbox
-import org.maplibre.spatialk.geojson.serialization.toPosition
+import kotlinx.serialization.json.JsonIgnoreUnknownKeys
+import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
  * @throws IllegalArgumentException if any of the position lists is not a valid line string
@@ -20,8 +13,10 @@ import org.maplibre.spatialk.geojson.serialization.toPosition
  *   https://tools.ietf.org/html/rfc7946#section-3.1.5</a>
  * @see LineString
  */
+@Serializable
+@SerialName("MultiLineString")
+@JsonIgnoreUnknownKeys
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
-@Serializable(with = GeometrySerializer::class)
 public class MultiLineString
 @JvmOverloads
 constructor(public val coordinates: List<List<Position>>, override val bbox: BoundingBox? = null) :
@@ -84,43 +79,18 @@ constructor(public val coordinates: List<List<Position>>, override val bbox: Bou
         return result
     }
 
-    override fun json(): String =
-        """{"type":"MultiLineString",${bbox.jsonProp()}"coordinates":${
-            coordinates.jsonJoin {
-                it.jsonJoin(transform = Position::json)
-            }
-        }}"""
+    override fun json(): String = GeoJson.encodeToString(this)
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): MultiLineString =
-            fromJson(Json.decodeFromString(JsonObject.serializer(), json))
+        public fun fromJson(json: String): MultiLineString = fromJson<MultiLineString>(json)
 
         @JvmStatic
         public fun fromJsonOrNull(json: String): MultiLineString? =
             try {
                 fromJson(json)
-            } catch (_: Exception) {
+            } catch (_: IllegalArgumentException) {
                 null
             }
-
-        @JvmStatic
-        public fun fromJson(json: JsonObject): MultiLineString {
-            try {
-                require(json.getValue("type").jsonPrimitive.content == "MultiLineString") {
-                    "Object \"type\" is not \"MultiLineString\"."
-                }
-
-                val coords =
-                    json.getValue("coordinates").jsonArray.map { line ->
-                        line.jsonArray.map { it.jsonArray.toPosition() }
-                    }
-                val bbox = json["bbox"]?.jsonArray?.toBbox()
-
-                return MultiLineString(coords, bbox)
-            } catch (e: IllegalArgumentException) {
-                throw SerializationException(e.message)
-            }
-        }
     }
 }

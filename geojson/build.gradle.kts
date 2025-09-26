@@ -73,13 +73,15 @@ kotlin {
             }
         }
 
-        commonMain { dependencies { api(libs.kotlinx.serialization) } }
+        commonMain { dependencies { api(libs.kotlinx.serialization.json) } }
 
         commonTest {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-annotations-common"))
                 implementation(libs.kotlinx.io.core)
+                api(libs.kotlinx.serialization.protobuf)
+                api(libs.kotlinx.serialization.cbor)
                 implementation(project(":testutil"))
             }
         }

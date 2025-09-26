@@ -2,8 +2,6 @@ package org.maplibre.spatialk.geojson.serialization
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
@@ -32,7 +30,7 @@ class FeatureSerializationTests {
                 .replace("\n", "")
 
         assertEquals(json, feature.json(), "Feature (fast)")
-        assertEquals(json, Json.encodeToString(feature), "Feature (kotlinx)")
+        assertEquals(json, feature.json(), "Feature (kotlinx)")
     }
 
     @Test

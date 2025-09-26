@@ -19,7 +19,7 @@ import kotlin.math.tan
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
-import org.maplibre.spatialk.geojson.GeoJson
+import org.maplibre.spatialk.geojson.GeoJsonObject
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.GeometryCollection
 import org.maplibre.spatialk.geojson.LineString
@@ -55,6 +55,7 @@ public fun along(line: LineString, distance: Double, units: Units = Units.Kilome
                     destination(coordinate, overshot, direction, units)
                 }
             }
+
             else -> travelled += distance(coordinate, line.coordinates[i + 1], units)
         }
     }
@@ -81,6 +82,7 @@ private fun calculateArea(geometry: Geometry): Double {
         is Polygon -> polygonArea(geometry.coordinates)
         is MultiPolygon ->
             geometry.coordinates.fold(0.0) { acc, coords -> acc + polygonArea(coords) }
+
         else -> 0.0
     }
 }
@@ -124,11 +126,13 @@ private fun ringArea(coordinates: List<Position>): Double {
                     middleIndex = coordinates.size - 1
                     upperIndex = 0
                 }
+
                 coordinates.size - 1 -> {
                     lowerIndex = coordinates.size - 1
                     middleIndex = 0
                     upperIndex = 1
                 }
+
                 else -> {
                     lowerIndex = i
                     middleIndex = i + 1
@@ -645,14 +649,14 @@ public fun greatCircle(
 }
 
 /**
- * Takes any [GeoJson] and returns a [Feature] containing a rectangular [Polygon] that encompasses
- * all vertices.
+ * Takes any [GeoJsonObject] and returns a [Feature] containing a rectangular [Polygon] that
+ * encompasses all vertices.
  *
  * @param geoJson input containing any coordinates
  * @return a rectangular [Polygon] feature that encompasses all vertices
  */
 @ExperimentalTurfApi
-public fun envelope(geoJson: GeoJson): Feature {
+public fun envelope(geoJson: GeoJsonObject): Feature {
     val coordinates =
         when (geoJson) {
             is Feature -> geoJson.coordAll()

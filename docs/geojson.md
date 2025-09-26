@@ -28,9 +28,9 @@ See below for constructing GeoJson objects using the DSL.
 
 ## GeoJson Objects
 
-The `GeoJson` interface represents all GeoJson objects. All GeoJson objects can
-have a `bbox` property specified on them which is a `BoundingBox` that
-represents the bounds of that object's geometry.
+The `GeoJsonObject` interface represents all GeoJson objects. All GeoJson
+objects can have a `bbox` property specified on them which is a `BoundingBox`
+that represents the bounds of that object's geometry.
 
 ### Geometry
 
@@ -362,9 +362,9 @@ used.
 ### BoundingBox
 
 The `BoundingBox` class is used to represent the bounding boxes that can be set
-for any `GeoJson` object. Like the `Position` class, bounding boxes are backed
-by a `DoubleArray` with each component accessible by its propery (`southwest`
-and `northeast`). Bounding boxes also support destructuring.
+for any `GeoJsonObject`. Like the `Position` class, bounding boxes are backed by
+a `DoubleArray` with each component accessible by its propery (`southwest` and
+`northeast`). Bounding boxes also support destructuring.
 
 === "Kotlin"
 
@@ -383,7 +383,7 @@ and `northeast`). Bounding boxes also support destructuring.
 
 ### To JSON
 
-Any `GeoJson` object can be serialized to a JSON string using the `json()`
+Any `GeoJsonObject` can be serialized to a JSON string using the `json()`
 function. This function converts the object to JSON using string concatenation
 and is therefore very fast.
 
@@ -396,15 +396,11 @@ and is therefore very fast.
     println(json)
     ```
 
-Spatial-K is also fully compatible with `kotlinx.serialization` to allow for
-integration into more complex models, however, this is much slower. For encoding
-directly to JSON strings, prefer to use the `json()` function.
-
 ### From JSON
 
 The `fromJson` and `fromJsonOrNull` companion (or static) functions are
-available on each `GeoJson` class to decode each type of object from a JSON
-string.
+available on each `GeoJsonObject` class to decode each type of object from a
+JSON string.
 
 === "Kotlin"
 
@@ -427,12 +423,12 @@ string.
     ```
 
 Like with encoding, Spatial-K objects can also be decoded using
-`kotlinx.serialization`.
+`kotlinx.serialization` using the `GeoJson` serializer.
 
 === "Kotlin"
 
     ```kotlin
-    val feature: Feature = Json.decodeFromString(Feature.serializer(), "{...feature...}")
+    val feature: Feature = GeoJson.decodeFromString(Feature.serializer(), "{...feature...}")
     ```
 
 ## GeoJson DSL

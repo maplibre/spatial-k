@@ -1,6 +1,5 @@
 package org.maplibre.spatialk.geojson.serialization
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -19,7 +18,6 @@ import org.maplibre.spatialk.geojson.Position
  * A position's [altitude][Position.altitude] is only included in the array if it is not null.
  */
 public object PositionSerializer : KSerializer<Position> {
-    @OptIn(ExperimentalSerializationApi::class)
     override val descriptor: SerialDescriptor = listSerialDescriptor(Double.serializer().descriptor)
 
     override fun deserialize(decoder: Decoder): Position {
@@ -31,16 +29,14 @@ public object PositionSerializer : KSerializer<Position> {
             )
         }
 
-        return Position(list[0], list[1], if (list.size > 2) list[2] else null)
+        return Position(list[0], list[1], list.getOrNull(2))
     }
 
     override fun serialize(encoder: Encoder, value: Position) {
         ListSerializer(Double.serializer())
             .serialize(
                 encoder,
-                mutableListOf(value.longitude, value.latitude).let { list ->
-                    value.altitude?.let { list.plus(it) } ?: list
-                },
+                mutableListOf(value.longitude, value.latitude, value.altitude).filterNotNull(),
             )
     }
 }

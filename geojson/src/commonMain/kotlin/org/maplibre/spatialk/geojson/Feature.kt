@@ -2,23 +2,16 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmStatic
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.MapSerializer
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.double
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
-import org.maplibre.spatialk.geojson.serialization.idProp
-import org.maplibre.spatialk.geojson.serialization.jsonProp
-import org.maplibre.spatialk.geojson.serialization.toBbox
+import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
  * A feature object represents a spatially bounded thing.
@@ -33,12 +26,14 @@ import org.maplibre.spatialk.geojson.serialization.toBbox
  */
 @Suppress("TooManyFunctions")
 @Serializable(with = FeatureSerializer::class)
+@JsonIgnoreUnknownKeys
+@SerialName("Feature")
 public class Feature(
     public val geometry: Geometry?,
     properties: Map<String, JsonElement> = emptyMap(),
     public val id: String? = null,
     override val bbox: BoundingBox? = null,
-) : GeoJson {
+) : GeoJsonObject {
     private val _properties: MutableMap<String, JsonElement> = properties.toMutableMap()
     public val properties: Map<String, JsonElement>
         get() = _properties
@@ -110,15 +105,7 @@ public class Feature(
 
     override fun toString(): String = json()
 
-    override fun json(): String =
-        """{"type":"Feature",${bbox.jsonProp()}"geometry":${geometry?.json()},${idProp()}"properties":${
-            Json.encodeToString(
-                MapSerializer(
-                    String.serializer(),
-                    JsonElement.serializer(),
-                ), properties,
-            )
-        }}"""
+    override fun json(): String = GeoJson.encodeToString(this)
 
     public fun copy(
         geometry: Geometry? = this.geometry,
@@ -128,9 +115,7 @@ public class Feature(
     ): Feature = Feature(geometry, properties, id, bbox)
 
     public companion object {
-        @JvmStatic
-        public fun fromJson(json: String): Feature =
-            fromJson(Json.decodeFromString(JsonObject.serializer(), json))
+        @JvmStatic public fun fromJson(json: String): Feature = GeoJson.decodeFromString(json)
 
         @JvmStatic
         public fun fromJsonOrNull(json: String): Feature? =
@@ -139,24 +124,5 @@ public class Feature(
             } catch (_: Exception) {
                 null
             }
-
-        @JvmStatic
-        public fun fromJson(json: JsonObject): Feature {
-            try {
-                require(json.getValue("type").jsonPrimitive.content == "Feature") {
-                    "Object \"type\" is not \"Feature\"."
-                }
-
-                val bbox = json["bbox"]?.jsonArray?.toBbox()
-                val id = json["id"]?.jsonPrimitive?.content
-
-                val geom = json["geometry"]?.jsonObject
-                val geometry: Geometry? = if (geom != null) Geometry.fromJson(geom) else null
-
-                return Feature(geometry, json["properties"]?.jsonObject ?: emptyMap(), id, bbox)
-            } catch (e: IllegalArgumentException) {
-                throw SerializationException(e.message)
-            }
-        }
     }
 }

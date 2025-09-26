@@ -3,10 +3,8 @@ package org.maplibre.spatialk.geojson
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonPrimitive
-import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
+import kotlinx.serialization.json.JsonClassDiscriminator
+import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
  * A Geometry object represents points, curves, and surfaces in coordinate space.
@@ -15,16 +13,23 @@ import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
  *   https://tools.ietf.org/html/rfc7946#section-3.1</a>
  * @see GeometryCollection
  */
-@Serializable(with = GeometrySerializer::class)
-public sealed class Geometry() : GeoJson {
+@Serializable
+@JsonClassDiscriminator("type")
+public sealed class Geometry() : GeoJsonObject {
     abstract override val bbox: BoundingBox?
 
     override fun toString(): String = json()
 
     public companion object {
+        @JvmStatic public fun fromJson(json: String): Geometry = GeoJson.decodeFromString(json)
+
         @JvmStatic
-        public fun fromJson(json: String): Geometry =
-            fromJson(Json.decodeFromString(JsonObject.serializer(), json))
+        protected inline fun <reified T> fromJson(json: String): T =
+            try {
+                GeoJson.decodeFromString(serializer(), json) as T
+            } catch (_: ClassCastException) {
+                throw SerializationException("Geometry is not a ${T::class.simpleName}")
+            }
 
         @JvmStatic
         public fun fromJsonOrNull(json: String): Geometry? =
@@ -32,23 +37,6 @@ public sealed class Geometry() : GeoJson {
                 fromJson(json)
             } catch (_: Exception) {
                 null
-            }
-
-        @JvmStatic
-        public fun fromJson(json: JsonObject): Geometry =
-            try {
-                when (val type = json.getValue("type").jsonPrimitive.content) {
-                    "Point" -> Point.fromJson(json)
-                    "MultiPoint" -> MultiPoint.fromJson(json)
-                    "LineString" -> LineString.fromJson(json)
-                    "MultiLineString" -> MultiLineString.fromJson(json)
-                    "Polygon" -> Polygon.fromJson(json)
-                    "MultiPolygon" -> MultiPolygon.fromJson(json)
-                    "GeometryCollection" -> GeometryCollection.fromJson(json)
-                    else -> throw IllegalArgumentException("Unsupported Geometry type \"$type\"")
-                }
-            } catch (e: IllegalArgumentException) {
-                throw SerializationException(e.message)
             }
     }
 }

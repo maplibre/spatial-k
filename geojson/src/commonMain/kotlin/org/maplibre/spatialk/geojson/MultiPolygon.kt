@@ -2,26 +2,20 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonPrimitive
-import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
-import org.maplibre.spatialk.geojson.serialization.jsonJoin
-import org.maplibre.spatialk.geojson.serialization.jsonProp
-import org.maplibre.spatialk.geojson.serialization.toBbox
-import org.maplibre.spatialk.geojson.serialization.toPosition
+import kotlinx.serialization.json.JsonIgnoreUnknownKeys
+import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
+ * @throws IllegalArgumentException if any of the lists does not represent a valid polygon
  * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.1.7">
  *   https://tools.ietf.org/html/rfc7946#section-3.1.7</a>
  * @see Polygon
  */
-@Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
-@Serializable(with = GeometrySerializer::class)
-/** @throws IllegalArgumentException if any of the lists does not represent a valid polygon */
+@Serializable
+@SerialName("MultiPolygon")
+@JsonIgnoreUnknownKeys
 public class MultiPolygon
 @JvmOverloads
 constructor(
@@ -96,47 +90,17 @@ constructor(
         return result
     }
 
-    override fun json(): String =
-        """{"type":"MultiPolygon",${bbox.jsonProp()}"coordinates":${
-            coordinates.jsonJoin { polygon ->
-                polygon.jsonJoin {
-                    it.jsonJoin(transform = Position::json)
-                }
-            }
-        }}"""
+    override fun json(): String = GeoJson.encodeToString(this)
 
     public companion object {
-        @JvmStatic
-        public fun fromJson(json: String): MultiPolygon =
-            fromJson(Json.decodeFromString(JsonObject.serializer(), json))
+        @JvmStatic public fun fromJson(json: String): MultiPolygon = fromJson<MultiPolygon>(json)
 
         @JvmStatic
         public fun fromJsonOrNull(json: String): MultiPolygon? =
             try {
                 fromJson(json)
-            } catch (_: Exception) {
+            } catch (_: IllegalArgumentException) {
                 null
             }
-
-        @JvmStatic
-        public fun fromJson(json: JsonObject): MultiPolygon {
-            try {
-                require(json.getValue("type").jsonPrimitive.content == "MultiPolygon") {
-                    "Object \"type\" is not \"MultiPolygon\"."
-                }
-
-                val coords =
-                    json.getValue("coordinates").jsonArray.map { polygon ->
-                        polygon.jsonArray.map { ring ->
-                            ring.jsonArray.map { it.jsonArray.toPosition() }
-                        }
-                    }
-                val bbox = json["bbox"]?.jsonArray?.toBbox()
-
-                return MultiPolygon(coords, bbox)
-            } catch (e: IllegalArgumentException) {
-                throw SerializationException(e.message)
-            }
-        }
     }
 }

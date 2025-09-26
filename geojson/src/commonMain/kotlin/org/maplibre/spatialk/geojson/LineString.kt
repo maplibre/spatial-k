@@ -2,17 +2,10 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonPrimitive
-import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
-import org.maplibre.spatialk.geojson.serialization.jsonJoin
-import org.maplibre.spatialk.geojson.serialization.jsonProp
-import org.maplibre.spatialk.geojson.serialization.toBbox
-import org.maplibre.spatialk.geojson.serialization.toPosition
+import kotlinx.serialization.json.JsonIgnoreUnknownKeys
+import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
  * @throws IllegalArgumentException if the coordinates contain fewer than two positions
@@ -20,8 +13,10 @@ import org.maplibre.spatialk.geojson.serialization.toPosition
  *   https://tools.ietf.org/html/rfc7946#section-3.1.4</a>
  * @see MultiLineString
  */
+@Serializable
+@SerialName("LineString")
+@JsonIgnoreUnknownKeys
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
-@Serializable(with = GeometrySerializer::class)
 public class LineString
 @JvmOverloads
 constructor(
@@ -87,13 +82,10 @@ constructor(
         return result
     }
 
-    override fun json(): String =
-        """{"type":"LineString",${bbox.jsonProp()}"coordinates":${coordinates.jsonJoin(transform = Position::json)}}"""
+    override fun json(): String = GeoJson.encodeToString(this)
 
     public companion object {
-        @JvmStatic
-        public fun fromJson(json: String): LineString =
-            fromJson(Json.decodeFromString(JsonObject.serializer(), json))
+        @JvmStatic public fun fromJson(json: String): LineString = fromJson<LineString>(json)
 
         @JvmStatic
         public fun fromJsonOrNull(json: String): LineString? =
@@ -102,22 +94,5 @@ constructor(
             } catch (_: Exception) {
                 null
             }
-
-        @JvmStatic
-        public fun fromJson(json: JsonObject): LineString {
-            try {
-                require(json.getValue("type").jsonPrimitive.content == "LineString") {
-                    "Object \"type\" is not \"LineString\"."
-                }
-
-                val coords =
-                    json.getValue("coordinates").jsonArray.map { it.jsonArray.toPosition() }
-                val bbox = json["bbox"]?.jsonArray?.toBbox()
-
-                return LineString(coords, bbox)
-            } catch (e: IllegalArgumentException) {
-                throw SerializationException(e.message)
-            }
-        }
     }
 }

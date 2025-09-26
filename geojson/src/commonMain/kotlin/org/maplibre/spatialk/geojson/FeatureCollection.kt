@@ -1,17 +1,10 @@
 package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmStatic
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
-import org.maplibre.spatialk.geojson.serialization.FeatureCollectionSerializer
-import org.maplibre.spatialk.geojson.serialization.jsonJoin
-import org.maplibre.spatialk.geojson.serialization.jsonProp
-import org.maplibre.spatialk.geojson.serialization.toBbox
+import kotlinx.serialization.json.JsonIgnoreUnknownKeys
+import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
  * A FeatureCollection object is a collection of [Feature] objects. This class implements the
@@ -22,12 +15,13 @@ import org.maplibre.spatialk.geojson.serialization.toBbox
  * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.3">
  *   https://tools.ietf.org/html/rfc7946#section-3.2</a>
  */
-@Serializable(with = FeatureCollectionSerializer::class)
+@Serializable
+@JsonIgnoreUnknownKeys
+@SerialName("FeatureCollection")
 public class FeatureCollection(
     public val features: List<Feature> = emptyList(),
     override val bbox: BoundingBox? = null,
-) : Collection<Feature> by features, GeoJson {
-
+) : Collection<Feature> by features, GeoJsonObject {
     public constructor(
         vararg features: Feature,
         bbox: BoundingBox? = null,
@@ -53,8 +47,7 @@ public class FeatureCollection(
 
     override fun toString(): String = json()
 
-    override fun json(): String =
-        """{"type":"FeatureCollection",${bbox.jsonProp()}"features":${features.jsonJoin { it.json() }}}"""
+    override fun json(): String = GeoJson.encodeToString(this)
 
     public operator fun component1(): List<Feature> = features
 
@@ -62,32 +55,14 @@ public class FeatureCollection(
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): FeatureCollection =
-            fromJson(Json.decodeFromString(JsonObject.serializer(), json))
+        public fun fromJson(json: String): FeatureCollection = GeoJson.decodeFromString(json)
 
         @JvmStatic
         public fun fromJsonOrNull(json: String): FeatureCollection? =
             try {
                 fromJson(json)
-            } catch (_: Exception) {
+            } catch (_: IllegalArgumentException) {
                 null
             }
-
-        @JvmStatic
-        public fun fromJson(json: JsonObject): FeatureCollection {
-            try {
-                require(json.getValue("type").jsonPrimitive.content == "FeatureCollection") {
-                    "Object \"type\" is not \"FeatureCollection\"."
-                }
-
-                val bbox = json["bbox"]?.jsonArray?.toBbox()
-                val features =
-                    json.getValue("features").jsonArray.map { Feature.fromJson(it.jsonObject) }
-
-                return FeatureCollection(features, bbox)
-            } catch (e: IllegalArgumentException) {
-                throw SerializationException(e.message)
-            }
-        }
     }
 }

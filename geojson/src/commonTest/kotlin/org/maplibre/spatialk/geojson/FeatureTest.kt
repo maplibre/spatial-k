@@ -262,7 +262,6 @@ class FeatureTest {
         val jsonString =
             """
                         {
-                            "id": "id0",
                             "bbox": [-120.0, -60.0, 120.0, 60.0],
                             "geometry": {
                                 "bbox": [-110.0, -50.0, 110.0, 50.0],
