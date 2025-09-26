@@ -18,6 +18,9 @@ build:
 dokka-html:
     ./gradlew dokkaGenerateHtml
 
+kover-html:
+    ./gradlew :koverHtmlReport
+
 docs-build: dokka-html
     mkdocs build
 
