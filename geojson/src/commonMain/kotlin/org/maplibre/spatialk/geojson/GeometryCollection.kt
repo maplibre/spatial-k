@@ -14,6 +14,11 @@ import org.maplibre.spatialk.geojson.serialization.jsonJoin
 import org.maplibre.spatialk.geojson.serialization.jsonProp
 import org.maplibre.spatialk.geojson.serialization.toBbox
 
+/**
+ * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.1.8">
+ *   https://tools.ietf.org/html/rfc7946#section-3.1.8</a>
+ * @see Geometry
+ */
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @Serializable(with = GeometrySerializer::class)
 public class GeometryCollection

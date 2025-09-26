@@ -6,8 +6,7 @@ import org.maplibre.spatialk.geojson.serialization.PositionSerializer
 import org.maplibre.spatialk.geojson.serialization.jsonJoin
 
 /**
- * A position is the fundamental geometry construct. Positions are represented by [Position]s in
- * Spatial K
+ * A [Position] is the fundamental geometry construct.
  *
  * In JSON, a position is an array of numbers. There MUST be two or more elements. The first two
  * elements are [longitude] and [latitude], or easting and northing, precisely in that order using
@@ -27,10 +26,12 @@ import org.maplibre.spatialk.geojson.serialization.jsonJoin
  * ```
  *
  * @property latitude The latitude value of this position (or northing value for projected
- *   coordinates)
+ *   coordinates) in degrees.
  * @property longitude The longitude value of this position (or easting value for projected
- *   coordinates)
- * @property altitude Optionally, an altitude or elevation for this position
+ *   coordinates) in degrees.
+ * @property altitude Optionally, an altitude or elevation for this position in meters above or
+ *   below the [WGS84](https://en.wikipedia.org/wiki/World_Geodetic_System#WGS_84) reference
+ *   ellipsoid.
  * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.1.1">
  *   https://tools.ietf.org/html/rfc7946#section-3.1.1</a>
  * @see PositionSerializer
@@ -115,6 +116,5 @@ public class Position(public val coordinates: DoubleArray) {
     public fun json(): String = coordinates.jsonJoin()
 }
 
-@Suppress("MagicNumber")
 public val Position.hasAltitude: Boolean
-    get() = coordinates.size == 3
+    get() = coordinates.size >= 3

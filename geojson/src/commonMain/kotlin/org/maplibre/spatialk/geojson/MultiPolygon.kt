@@ -14,6 +14,11 @@ import org.maplibre.spatialk.geojson.serialization.jsonProp
 import org.maplibre.spatialk.geojson.serialization.toBbox
 import org.maplibre.spatialk.geojson.serialization.toPosition
 
+/**
+ * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.1.7">
+ *   https://tools.ietf.org/html/rfc7946#section-3.1.7</a>
+ * @see Polygon
+ */
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @Serializable(with = GeometrySerializer::class)
 /** @throws IllegalArgumentException if any of the lists does not represent a valid polygon */

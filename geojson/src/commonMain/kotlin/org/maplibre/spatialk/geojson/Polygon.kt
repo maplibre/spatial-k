@@ -15,8 +15,20 @@ import org.maplibre.spatialk.geojson.serialization.toBbox
 import org.maplibre.spatialk.geojson.serialization.toPosition
 
 /**
+ * To specify a constraint specific to [Polygon]s, it is useful to introduce the concept of a linear
+ * ring:
+ * - A linear ring is a closed LineString with four or more positions.
+ * - The first and last positions are equivalent, and they MUST contain identical values; their
+ *   representation SHOULD also be identical.
+ * - A linear ring is the boundary of a surface or the boundary of a hole in a surface.
+ * - A linear ring MUST follow the right-hand rule with respect to the area it bounds, i.e.,
+ *   exterior rings are counterclockwise, and holes are clockwise.
+ *
  * @throws IllegalArgumentException if the coordinates are empty or any of the positions lists
  *   representing a line string is either not closed or contains fewer than 4 positions.
+ * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.1.6">
+ *   https://tools.ietf.org/html/rfc7946#section-3.1.6</a>
+ * @see [MultiPolygon]
  */
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @Serializable(with = GeometrySerializer::class)
@@ -31,13 +43,6 @@ constructor(
     /** a bounding box */
     override val bbox: BoundingBox? = null,
 ) : Geometry() {
-
-    /**
-     * Create a Polygon by a number of lists of [Position]s.
-     *
-     * @throws IllegalArgumentException if no coordinates have been specified or any of the given
-     *   position lists are either not closed or contains fewer than 4 positions.
-     */
     @JvmOverloads
     public constructor(
         vararg coordinates: List<Position>,

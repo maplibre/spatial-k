@@ -27,8 +27,9 @@ import org.maplibre.spatialk.geojson.serialization.toBbox
  * @property properties Additional properties about this feature. When serialized, any non-simple
  *   types will be serialized into JSON objects.
  * @property id An optionally included string that commonly identifies this feature.
- * @see <a
- *   href="https://tools.ietf.org/html/rfc7946#section-3.2">https://tools.ietf.org/html/rfc7946#section-3.2</a>
+ * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.2">
+ *   https://tools.ietf.org/html/rfc7946#section-3.2</a>
+ * @see FeatureCollection
  */
 @Suppress("TooManyFunctions")
 @Serializable(with = FeatureSerializer::class)

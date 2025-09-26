@@ -8,8 +8,15 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
 
+/**
+ * A Geometry object represents points, curves, and surfaces in coordinate space.
+ *
+ * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.1">
+ *   https://tools.ietf.org/html/rfc7946#section-3.1</a>
+ * @see GeometryCollection
+ */
 @Serializable(with = GeometrySerializer::class)
-public sealed class Geometry protected constructor() : GeoJson {
+public sealed class Geometry() : GeoJson {
     abstract override val bbox: BoundingBox?
 
     override fun toString(): String = json()

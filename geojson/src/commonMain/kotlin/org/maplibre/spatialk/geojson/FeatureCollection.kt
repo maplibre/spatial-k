@@ -19,8 +19,8 @@ import org.maplibre.spatialk.geojson.serialization.toBbox
  * in this collection are also accessible through the [features] property.
  *
  * @property features The collection of [Feature] objects stored in this collection
- * @see <a
- *   href="https://tools.ietf.org/html/rfc7946#section-3.3">https://tools.ietf.org/html/rfc7946#section-3.3</a>
+ * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.3">
+ *   https://tools.ietf.org/html/rfc7946#section-3.2</a>
  */
 @Serializable(with = FeatureCollectionSerializer::class)
 public class FeatureCollection(
