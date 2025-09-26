@@ -22,8 +22,8 @@ import org.maplibre.spatialk.geojson.serialization.jsonJoin
  * @property northeast The northeastern corner of the BoundingBox
  * @property southwest The southwestern corner of the BoundingBox
  * @property coordinates The GeoJSON bounding box coordinate array
- * @see <a
- *   href="https://tools.ietf.org/html/rfc7946#section-5">https://tools.ietf.org/html/rfc7946#section-5</a>
+ * @see <a href="https://tools.ietf.org/html/rfc7946#section-5">
+ *   https://tools.ietf.org/html/rfc7946#section-5</a>
  */
 @Serializable(with = BoundingBoxSerializer::class)
 @Suppress("MagicNumber")

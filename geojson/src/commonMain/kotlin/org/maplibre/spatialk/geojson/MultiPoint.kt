@@ -14,6 +14,11 @@ import org.maplibre.spatialk.geojson.serialization.jsonProp
 import org.maplibre.spatialk.geojson.serialization.toBbox
 import org.maplibre.spatialk.geojson.serialization.toPosition
 
+/**
+ * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.1.3">
+ *   https://tools.ietf.org/html/rfc7946#section-3.1.3</a>
+ * @see Point
+ */
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @Serializable(with = GeometrySerializer::class)
 public class MultiPoint

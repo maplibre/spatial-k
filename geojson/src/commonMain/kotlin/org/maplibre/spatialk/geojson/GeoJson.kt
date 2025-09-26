@@ -9,10 +9,6 @@ package org.maplibre.spatialk.geojson
 public sealed interface GeoJson {
     public val bbox: BoundingBox?
 
-    /**
-     * Gets a JSON representation of this object.
-     *
-     * @return JSON representation
-     */
+    /** @return A JSON representation of this object. */
     public fun json(): String
 }
