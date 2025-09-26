@@ -12,7 +12,6 @@ internal object GeoUriParser {
             syntax.matchEntire(uri) ?: throw IllegalArgumentException("Invalid Geo URI: $uri")
 
         result.groups["p"]?.value?.split(";")?.forEach { paramStr ->
-            println(paramStr)
             val value = paramStr.substringAfter('=', "")
             when (paramStr.substringBefore('=')) {
                 // geojson only supports WGS 84
