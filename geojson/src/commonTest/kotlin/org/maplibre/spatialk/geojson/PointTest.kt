@@ -64,10 +64,10 @@ class PointTest {
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
         val lineString = LineString(points, bbox)
         assertNotNull(lineString.bbox)
-        assertEquals(1.0, lineString.bbox!!.west, DELTA)
-        assertEquals(2.0, lineString.bbox!!.south, DELTA)
-        assertEquals(3.0, lineString.bbox!!.east, DELTA)
-        assertEquals(4.0, lineString.bbox!!.north, DELTA)
+        assertEquals(1.0, lineString.bbox.west, DELTA)
+        assertEquals(2.0, lineString.bbox.south, DELTA)
+        assertEquals(3.0, lineString.bbox.east, DELTA)
+        assertEquals(4.0, lineString.bbox.north, DELTA)
     }
 
     @Test
@@ -106,21 +106,21 @@ class PointTest {
         assertEquals(2.0, point.coordinates.longitude, DELTA)
         assertEquals(3.0, point.coordinates.latitude, DELTA)
         assertNotNull(point.bbox)
-        assertEquals(1.0, point.bbox!!.southwest.longitude, DELTA)
-        assertEquals(2.0, point.bbox!!.southwest.latitude, DELTA)
-        assertEquals(3.0, point.bbox!!.northeast.longitude, DELTA)
-        assertEquals(4.0, point.bbox!!.northeast.latitude, DELTA)
+        assertEquals(1.0, point.bbox.southwest.longitude, DELTA)
+        assertEquals(2.0, point.bbox.southwest.latitude, DELTA)
+        assertEquals(3.0, point.bbox.northeast.longitude, DELTA)
+        assertEquals(4.0, point.bbox.northeast.latitude, DELTA)
     }
 
     @Test
     fun fromJson() {
         val json =
             """
-                    {
-                        "type": "Point",
-                        "coordinates": [100, 0]
-                    }
-                    """
+            {
+                "type": "Point",
+                "coordinates": [100, 0]
+            }
+            """
                 .trimIndent()
         val geo: Point = Point.fromJson(json)
 
