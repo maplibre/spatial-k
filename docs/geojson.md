@@ -1,6 +1,7 @@
 # GeoJson
 
-The `geojson` module contains an implementation of the [GeoJson standard](https://tools.ietf.org/html/rfc7946).
+The `geojson` module contains an implementation of the
+[GeoJson standard](https://tools.ietf.org/html/rfc7946).
 
 See below for constructing GeoJson objects using the DSL.
 
@@ -27,13 +28,15 @@ See below for constructing GeoJson objects using the DSL.
 
 ## GeoJson Objects
 
-The `GeoJson` interface represents all GeoJson objects. All GeoJson objects can have a `bbox` property specified on them
-which is a `BoundingBox` that represents the bounds of that object's geometry.
+The `GeoJson` interface represents all GeoJson objects. All GeoJson objects can
+have a `bbox` property specified on them which is a `BoundingBox` that
+represents the bounds of that object's geometry.
 
 ### Geometry
 
-Geometry objects are a sealed hierarchy of classes that inherit from the `Geometry` class. This allows for exhaustive
-type checks in Kotlin using a `when` block.
+Geometry objects are a sealed hierarchy of classes that inherit from the
+`Geometry` class. This allows for exhaustive type checks in Kotlin using a
+`when` block.
 
 === "Kotlin"
 
@@ -51,15 +54,18 @@ type checks in Kotlin using a `when` block.
     }
     ```
 
-All seven types of GeoJSON geometries are implemented and summarized below. Full documentation can be found in the [API pages](../api/geojson/).
+All seven types of GeoJSON geometries are implemented and summarized below. Full
+documentation can be found in the [API pages](../api/geojson/).
 
 #### Position
 
-Positions are implemented as a `DoubleArray`-backed class. Each component (`longitude`, `latitude`, `altitude`) can be accessed by its propery.
-The class also supports destructuring.
+Positions are implemented as a `DoubleArray`-backed class. Each component
+(`longitude`, `latitude`, `altitude`) can be accessed by its propery. The class
+also supports destructuring.
 
-Positions are implemented as an interface where the longitude, latitude, and optionally an altitude are accessible as
-properties. The basic implementation of the `Position` interface is the `LngLat` class.
+Positions are implemented as an interface where the longitude, latitude, and
+optionally an altitude are accessible as properties. The basic implementation of
+the `Position` interface is the `LngLat` class.
 
 === "Kotlin"
 
@@ -166,8 +172,10 @@ A `MultiLineString` is an array of LineStrings.
 
 #### Polygon
 
-A `Polygon` is an array of rings. Each ring is a sequence of points with the last point matching the first point to indicate a closed area.
-The first ring defines the outer shape of the polygon, while all the following rings define "holes" inside the polygon.
+A `Polygon` is an array of rings. Each ring is a sequence of points with the
+last point matching the first point to indicate a closed area. The first ring
+defines the outer shape of the polygon, while all the following rings define
+"holes" inside the polygon.
 
 === "Kotlin"
 
@@ -244,7 +252,9 @@ A `MultiPolygon` is an array of Polygons.
 
 #### GeometryCollection
 
-A `GeometryCollection` is a collection of multiple geometries. It implements the `Collection` interface and can be used in any place that a collection can be used.
+A `GeometryCollection` is a collection of multiple geometries. It implements the
+`Collection` interface and can be used in any place that a collection can be
+used.
 
 === "Kotlin"
 
@@ -277,10 +287,12 @@ A `GeometryCollection` is a collection of multiple geometries. It implements the
 
 ### Feature
 
-A `Feature` can contain a `Geometry` object, as well as a set of data properties, and optionally a commonly used identifier (`id`).
+A `Feature` can contain a `Geometry` object, as well as a set of data
+properties, and optionally a commonly used identifier (`id`).
 
-A feature's properties are stored as a map of `JsonElement` objects from `kotlinx.serialization`.
-A set of helper methods to get and set properties with the appropriate types directly.
+A feature's properties are stored as a map of `JsonElement` objects from
+`kotlinx.serialization`. A set of helper methods to get and set properties with
+the appropriate types directly.
 
 === "Kotlin"
 
@@ -311,7 +323,9 @@ A set of helper methods to get and set properties with the appropriate types dir
 
 ### FeatureCollection
 
-A `FeatureCollection` is a collection of multiple features. It implements the `Collection` interface and can be used in any place that a collection can be used.
+A `FeatureCollection` is a collection of multiple features. It implements the
+`Collection` interface and can be used in any place that a collection can be
+used.
 
 === "Kotlin"
 
@@ -347,9 +361,10 @@ A `FeatureCollection` is a collection of multiple features. It implements the `C
 
 ### BoundingBox
 
-The `BoundingBox` class is used to represent the bounding boxes that can be set for any `GeoJson` object.
-Like the `Position` class, bounding boxes are backed by a `DoubleArray` with each component accessible by its propery (`southwest` and `northeast`).
-Bounding boxes also support destructuring.
+The `BoundingBox` class is used to represent the bounding boxes that can be set
+for any `GeoJson` object. Like the `Position` class, bounding boxes are backed
+by a `DoubleArray` with each component accessible by its propery (`southwest`
+and `northeast`). Bounding boxes also support destructuring.
 
 === "Kotlin"
 
@@ -368,8 +383,9 @@ Bounding boxes also support destructuring.
 
 ### To JSON
 
-Any `GeoJson` object can be serialized to a JSON string using the `json()` function.
-This function converts the object to JSON using string concatenation and is therefore very fast.
+Any `GeoJson` object can be serialized to a JSON string using the `json()`
+function. This function converts the object to JSON using string concatenation
+and is therefore very fast.
 
 === "Kotlin"
 
@@ -380,13 +396,15 @@ This function converts the object to JSON using string concatenation and is ther
     println(json)
     ```
 
-Spatial-K is also fully compatible with `kotlinx.serialization` to allow for integration into more complex models, however,
-this is much slower. For encoding directly to JSON strings, prefer to use the `json()` function.
+Spatial-K is also fully compatible with `kotlinx.serialization` to allow for
+integration into more complex models, however, this is much slower. For encoding
+directly to JSON strings, prefer to use the `json()` function.
 
 ### From JSON
 
-The `fromJson` and `fromJsonOrNull` companion (or static) functions are available on each `GeoJson` class to decode each
-type of object from a JSON string.
+The `fromJson` and `fromJsonOrNull` companion (or static) functions are
+available on each `GeoJson` class to decode each type of object from a JSON
+string.
 
 === "Kotlin"
 
@@ -408,7 +426,8 @@ type of object from a JSON string.
     var nullable = Point.fromJsonOrNull("{...not a point...}")
     ```
 
-Like with encoding, Spatial-K objects can also be decoded using `kotlinx.serialization`.
+Like with encoding, Spatial-K objects can also be decoded using
+`kotlinx.serialization`.
 
 === "Kotlin"
 
@@ -422,8 +441,9 @@ It's recommended to construct GeoJson objects in-code using the GeoJson DSL.
 
 ### Positions
 
-Convenience functions to construct latitude/longitude Position instances are included.
-These functions will check for valid latitude and longitude values and will throw an `IllegalArgumentException` otherwise.
+Convenience functions to construct latitude/longitude Position instances are
+included. These functions will check for valid latitude and longitude values and
+will throw an `IllegalArgumentException` otherwise.
 
 === "Kotlin"
 
@@ -469,8 +489,10 @@ A GeoJson object's `bbox` value can be assigned in any of the DSLs.
 
 #### MultiPoint
 
-The `MultiPoint` DSL creates a `MultiPoint` from many `Point`s, or by using the unary plus operator to add `Position` instances as positions in the geometry.
-`Point` geometries can also be added to the multipoint using the unary plus operator.
+The `MultiPoint` DSL creates a `MultiPoint` from many `Point`s, or by using the
+unary plus operator to add `Position` instances as positions in the geometry.
+`Point` geometries can also be added to the multipoint using the unary plus
+operator.
 
 === "Kotlin"
 
@@ -499,8 +521,10 @@ The `MultiPoint` DSL creates a `MultiPoint` from many `Point`s, or by using the 
 
 #### LineString
 
-A `LineString` contains main points. Like with `MultiPoint`, a `LineString` can also be built using the unary plus operator to add positions as part of the line.
-The order in which positions are added to the `LineString` is the order that the `LineString` will follow.
+A `LineString` contains main points. Like with `MultiPoint`, a `LineString` can
+also be built using the unary plus operator to add positions as part of the
+line. The order in which positions are added to the `LineString` is the order
+that the `LineString` will follow.
 
 === "Kotlin"
 
@@ -522,8 +546,8 @@ The order in which positions are added to the `LineString` is the order that the
 
 #### MultiLineString
 
-The `MultiLineString` DSL uses the unary plus operator to add multiple line strings. The `LineString` DSL can be used to
-create `LineString` objects to add.
+The `MultiLineString` DSL uses the unary plus operator to add multiple line
+strings. The `LineString` DSL can be used to create `LineString` objects to add.
 
 === "Kotlin"
 
@@ -558,12 +582,13 @@ create `LineString` objects to add.
 
 #### Polygon
 
-The `Polygon` DSL is used by specifying linear rings that make up the polygon's shape and holes.
-The first `ring` is the exterior ring with four or more positions. The last position must be the same as the first position.
-All `ring`s that follow will represent interior rings (i.e., holes) in the polygon.
+The `Polygon` DSL is used by specifying linear rings that make up the polygon's
+shape and holes. The first `ring` is the exterior ring with four or more
+positions. The last position must be the same as the first position. All `ring`s
+that follow will represent interior rings (i.e., holes) in the polygon.
 
-For convenience, the `complete()` function can be used to "complete" a ring.
-It adds the last position in the ring by copying the first position that was added.
+For convenience, the `complete()` function can be used to "complete" a ring. It
+adds the last position in the ring by copying the first position that was added.
 
 === "Kotlin"
 
@@ -603,8 +628,8 @@ It adds the last position in the ring by copying the first position that was add
 
 #### MultiPolygon
 
-Like with previous "Multi" geometries, the unary plus operator is used to add multiple `Polygon` objects.
-The `Polygon` DSL can also be used here.
+Like with previous "Multi" geometries, the unary plus operator is used to add
+multiple `Polygon` objects. The `Polygon` DSL can also be used here.
 
 === "Kotlin"
 
@@ -643,7 +668,8 @@ The `Polygon` DSL can also be used here.
 
 #### Geometry Collection
 
-The unary plus operator can be used to add any geometry instance to a `GeometryCollection`.
+The unary plus operator can be used to add any geometry instance to a
+`GeometryCollection`.
 
 === "Kotlin"
 
@@ -686,8 +712,9 @@ The unary plus operator can be used to add any geometry instance to a `GeometryC
 
 ### Feature
 
-The `Feature` DSL can construct a `Feature` object with a geometry, a bounding box, and an id. Properties can be specified
-in the `PropertiesBuilder` block by calling `put(key, value)` to add properties.
+The `Feature` DSL can construct a `Feature` object with a geometry, a bounding
+box, and an id. Properties can be specified in the `PropertiesBuilder` block by
+calling `put(key, value)` to add properties.
 
 === "Kotlin"
 
@@ -720,7 +747,8 @@ in the `PropertiesBuilder` block by calling `put(key, value)` to add properties.
 
 ### Feature Collection
 
-A `FeatureCollection` is constructed by adding multiple `Feature` objects using the unary plus operator.
+A `FeatureCollection` is constructed by adding multiple `Feature` objects using
+the unary plus operator.
 
 === "Kotlin"
 

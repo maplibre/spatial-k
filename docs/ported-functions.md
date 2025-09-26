@@ -2,7 +2,8 @@
 
 The following functions have been ported as of version `0.2.0` of this library.
 
-You can view porting progress for the next release [here](https://github.com/maplibre/spatial-k/milestone/1).
+You can view porting progress for the next release
+[here](https://github.com/maplibre/spatial-k/milestone/1).
 
 ## Measurement
 
@@ -32,8 +33,7 @@ You can view porting progress for the next release [here](https://github.com/map
 - [ ] `cleanCoords`
 - [ ] `flip`
 - [ ] `rewind`
-- [x] `round`
-      Use `round` or `Math.round` from the standard library instead.
+- [x] `round` Use `round` or `Math.round` from the standard library instead.
 - [ ] `truncate`
 
 ## Transformation
