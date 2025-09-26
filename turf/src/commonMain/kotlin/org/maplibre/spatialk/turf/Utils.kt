@@ -1,4 +1,8 @@
+@file:JvmName("TurfUtils")
+
 package org.maplibre.spatialk.turf
+
+import kotlin.jvm.JvmName
 
 /**
  * Convert a distance measurement (assuming a spherical Earth) from radians to a more friendly unit.

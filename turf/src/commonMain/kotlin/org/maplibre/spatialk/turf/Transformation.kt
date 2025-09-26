@@ -1,5 +1,8 @@
+@file:JvmName("TurfTransformation")
+
 package org.maplibre.spatialk.turf
 
+import kotlin.jvm.JvmName
 import kotlin.math.pow
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Point

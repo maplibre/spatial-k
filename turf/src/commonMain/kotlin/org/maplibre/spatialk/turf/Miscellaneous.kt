@@ -1,4 +1,4 @@
-@file:JvmName("TurfMisc")
+@file:JvmName("TurfMiscellaneous")
 
 package org.maplibre.spatialk.turf
 

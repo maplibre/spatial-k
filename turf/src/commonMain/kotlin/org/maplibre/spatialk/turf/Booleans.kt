@@ -1,7 +1,9 @@
+@file:JvmName("TurfBooleans")
 @file:OptIn(ExperimentalTurfApi::class)
 
 package org.maplibre.spatialk.turf
 
+import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.MultiPolygon
