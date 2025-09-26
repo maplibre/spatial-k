@@ -158,4 +158,30 @@ class PointTest {
             )
         }
     }
+
+    @Test
+    fun toGeoUri_withoutAltitude() {
+        assertEquals("geo:1.0,2.0", Point(latitude = 1.0, longitude = 2.0).toGeoUri())
+    }
+
+    @Test
+    fun toGeoUri_withAltitude() {
+        assertEquals(
+            "geo:1.0,2.0,3.0",
+            Point(latitude = 1.0, longitude = 2.0, altitude = 3.0).toGeoUri(),
+        )
+    }
+
+    @Test
+    fun fromGeoUri_withoutAltitude() {
+        assertEquals(Point(latitude = 1.0, longitude = 2.0), Point.fromGeoUri("geo:1.0,2.0"))
+    }
+
+    @Test
+    fun fromGeoUri_withAltitude() {
+        assertEquals(
+            Point(latitude = 1.0, longitude = 2.0, altitude = 3.0),
+            Point.fromGeoUri("geo:1.0,2.0,3.0"),
+        )
+    }
 }
