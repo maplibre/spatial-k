@@ -1,11 +1,10 @@
 package org.maplibre.spatialk.geojson.utils
 
 import kotlin.test.assertEquals
-import kotlinx.serialization.json.Json
+import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 const val DELTA: Double = 1E-10
 
 fun compareJson(expectedJson: String, actualJson: String) {
-    val json = Json { isLenient = true }
-    assertEquals(json.parseToJsonElement(expectedJson), json.parseToJsonElement(actualJson))
+    assertEquals(GeoJson.parseToJsonElement(expectedJson), GeoJson.parseToJsonElement(actualJson))
 }
