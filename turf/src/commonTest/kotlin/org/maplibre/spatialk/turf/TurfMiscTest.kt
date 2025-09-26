@@ -1,4 +1,4 @@
-package io.github.dellisd.spatialk.turf
+package org.maplibre.spatialk.turf
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -8,15 +8,10 @@ import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
-import org.maplibre.spatialk.turf.lineIntersect
-import org.maplibre.spatialk.turf.lineSlice
-import org.maplibre.spatialk.turf.nearestPointOnLine
 import org.maplibre.spatialk.turf.utils.assertDoubleEquals
 import org.maplibre.spatialk.turf.utils.assertPositionEquals
 
 @ExperimentalTurfApi
-@Suppress("MagicNumber")
 class TurfMiscTest {
 
     @Test

@@ -1,7 +1,7 @@
-@file:JvmName("-GeoJsonDslKt")
+@file:JvmSynthetic
 
 package org.maplibre.spatialk.geojson.dsl
 
-import kotlin.jvm.JvmName
+import kotlin.jvm.JvmSynthetic
 
 @DslMarker internal annotation class GeoJsonDsl

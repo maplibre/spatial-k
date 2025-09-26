@@ -9,7 +9,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
 /**
  * A FeatureCollection object is a collection of [Feature] objects. This class implements the
  * [Collection] interface and can be used as a Collection directly. The list of features contained
- * in this collection are also accessible through the [features] property.
+ * in this collection is also accessible through the [features] property.
  *
  * @property features The collection of [Feature] objects stored in this collection
  * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.3">

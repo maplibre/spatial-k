@@ -19,7 +19,7 @@ import org.maplibre.spatialk.geojson.serialization.PositionSerializer
  * LngLat(longitude = -75.0, latitude = 45.0)
  * ```
  *
- * will be serialized as
+ * Will be serialized as
  *
  * ```json
  * [-75.0,45.0]
@@ -100,9 +100,7 @@ public class Position(public val coordinates: DoubleArray) {
 
         other as Position
 
-        if (!coordinates.contentEquals(other.coordinates)) return false
-
-        return true
+        return coordinates.contentEquals(other.coordinates)
     }
 
     override fun hashCode(): Int {

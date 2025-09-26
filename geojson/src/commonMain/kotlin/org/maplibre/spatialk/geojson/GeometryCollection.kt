@@ -4,7 +4,6 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
@@ -14,8 +13,6 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  */
 @Serializable
 @SerialName("GeometryCollection")
-@JsonIgnoreUnknownKeys
-@Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 public class GeometryCollection
 @JvmOverloads
 constructor(public val geometries: List<Geometry>, override val bbox: BoundingBox? = null) :

@@ -1,8 +1,8 @@
-@file:JvmName("-GeometryDslKt")
+@file:JvmSynthetic
 
 package org.maplibre.spatialk.geojson.dsl
 
-import kotlin.jvm.JvmName
+import kotlin.jvm.JvmSynthetic
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.GeometryCollection

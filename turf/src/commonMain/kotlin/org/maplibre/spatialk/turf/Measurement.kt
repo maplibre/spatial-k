@@ -1,5 +1,4 @@
 @file:JvmName("TurfMeasurement")
-@file:Suppress("TooManyFunctions")
 
 package org.maplibre.spatialk.turf
 
@@ -39,7 +38,6 @@ import org.maplibre.spatialk.geojson.Position
  * @return A position [distance] [units] along the line
  */
 @JvmOverloads
-@Suppress("MagicNumber")
 @ExperimentalTurfApi
 public fun along(line: LineString, distance: Double, units: Units = Units.Kilometers): Position {
     var travelled = 0.0
@@ -102,7 +100,7 @@ public const val AREA_EARTH_RADIUS: Int = 6378137
 
 /**
  * Calculates the approximate area of the [polygon][coordinates] were it projected onto the earth.
- * Note that this area will be positive if ring is oriented clockwise, otherwise it will be
+ * Note that this area will be positive if the ring is oriented clockwise, otherwise it will be
  * negative.
  *
  * Reference: Robert. G. Chamberlain and William H. Duquette, "Some Algorithms for Polygons on a
@@ -150,7 +148,7 @@ private fun ringArea(coordinates: List<Position>): Double {
 }
 
 /**
- * Takes a geometry and calculates the bbox of all input features, and returns a bounding box.
+ * Takes a geometry and calculates the bounding box of all input features.
  *
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
@@ -159,7 +157,7 @@ private fun ringArea(coordinates: List<Position>): Double {
 public fun bbox(geometry: Geometry): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
- * Takes a geometry and calculates the bbox of all input features, and returns a bounding box.
+ * Takes a geometry and calculates the bounding box of all input features.
  *
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
@@ -168,7 +166,7 @@ public fun bbox(geometry: Geometry): BoundingBox = computeBbox(geometry.coordAll
 public fun bbox(geometry: Point): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
- * Takes a geometry and calculates the bbox of all input features, and returns a bounding box.
+ * Takes a geometry and calculates the bounding box of all input features.
  *
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
@@ -177,7 +175,7 @@ public fun bbox(geometry: Point): BoundingBox = computeBbox(geometry.coordAll())
 public fun bbox(geometry: MultiPoint): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
- * Takes a geometry and calculates the bbox of all input features, and returns a bounding box.
+ * Takes a geometry and calculates the bounding box of all input features.
  *
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
@@ -186,7 +184,7 @@ public fun bbox(geometry: MultiPoint): BoundingBox = computeBbox(geometry.coordA
 public fun bbox(geometry: LineString): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
- * Takes a geometry and calculates the bbox of all input features, and returns a bounding box.
+ * Takes a geometry and calculates the bounding box of all input features.
  *
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
@@ -195,7 +193,7 @@ public fun bbox(geometry: LineString): BoundingBox = computeBbox(geometry.coordA
 public fun bbox(geometry: MultiLineString): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
- * Takes a geometry and calculates the bbox of all input features, and returns a bounding box.
+ * Takes a geometry and calculates the bounding box of all input features.
  *
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
@@ -204,7 +202,7 @@ public fun bbox(geometry: MultiLineString): BoundingBox = computeBbox(geometry.c
 public fun bbox(geometry: Polygon): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
- * Takes a geometry and calculates the bbox of all input features, and returns a bounding box.
+ * Takes a geometry and calculates the bounding box of all input features.
  *
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
@@ -213,7 +211,7 @@ public fun bbox(geometry: Polygon): BoundingBox = computeBbox(geometry.coordAll(
 public fun bbox(geometry: MultiPolygon): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
- * Takes a feature and calculates the bbox of the feature's geometry, and returns a bounding box.
+ * Takes a feature and calculates the bounding box of the feature's geometry.
  *
  * @param feature The feature to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
@@ -222,7 +220,8 @@ public fun bbox(geometry: MultiPolygon): BoundingBox = computeBbox(geometry.coor
 public fun bbox(feature: Feature): BoundingBox = computeBbox(feature.coordAll() ?: emptyList())
 
 /**
- * Takes a feature collection and calculates a bbox that covers all features in the collection.
+ * Takes a feature collection and calculates a bounding box that covers all features in the
+ * collection.
  *
  * @param featureCollection The collection of features to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
@@ -231,7 +230,6 @@ public fun bbox(feature: Feature): BoundingBox = computeBbox(feature.coordAll() 
 public fun bbox(featureCollection: FeatureCollection): BoundingBox =
     computeBbox(featureCollection.coordAll())
 
-@Suppress("MagicNumber")
 public fun computeBbox(coordinates: List<Position>): BoundingBox {
     val result =
         doubleArrayOf(
@@ -259,7 +257,7 @@ public fun computeBbox(coordinates: List<Position>): BoundingBox {
 }
 
 /**
- * Takes a bbox and returns an equivalent [Polygon].
+ * Takes a bounding box and returns an equivalent [Polygon].
  *
  * @param bbox The bounding box to convert to a Polygon.
  * @return The bounding box as a polygon
@@ -285,7 +283,7 @@ public fun bboxPolygon(bbox: BoundingBox): Polygon {
 @JvmSynthetic @ExperimentalTurfApi public fun BoundingBox.toPolygon(): Polygon = bboxPolygon(this)
 
 /**
- * Takes two positions ([start], [end]) and finds the geographic bearing between them, i.e. the
+ * Takes two positions ([start], [end]) and finds the geographic bearing between them, i.e., the
  * angle measured in degrees from the north line (0 degrees)
  *
  * @param start starting point
@@ -309,7 +307,6 @@ public fun bearing(start: Position, end: Position, final: Boolean = false): Doub
     return degrees(atan2(a, b))
 }
 
-@Suppress("MagicNumber")
 @ExperimentalTurfApi
 internal fun finalBearing(start: Position, end: Position): Double =
     (bearing(end, start) + 180) % 360
@@ -465,7 +462,7 @@ public fun center(feature: Feature): Point {
 }
 
 /**
- * It overloads the center(feature: Feature) method.
+ * It overloads the `center(feature: Feature)` method.
  *
  * @param geometry the [Geometry] to find the center for
  */
@@ -483,9 +480,8 @@ public fun center(geometry: Geometry): Point {
  * @param pointCount number of positions on the arc (including [start] and [end])
  * @param antimeridianOffset from antimeridian in degrees (default long. = +/- 10deg, geometries
  *   within 170deg to -170deg will be split)
+ * @throws IllegalArgumentException if [start] and [end] are diametrically opposite.
  */
-@Suppress("CyclomaticComplexMethod")
-@Throws(IllegalArgumentException::class)
 @ExperimentalTurfApi
 public fun greatCircle(
     start: Position,
@@ -498,7 +494,6 @@ public fun greatCircle(
     val deltaLatitude = start.latitude - end.latitude
 
     // check antipodal positions
-    @Suppress("MagicNumber")
     require(abs(deltaLatitude) != 0.0 && abs(deltaLongitude % 360) - ANTIMERIDIAN_POS != 0.0) {
         "Input $start and $end are diametrically opposite, thus there is no single route but rather infinite"
     }
@@ -550,8 +545,7 @@ public fun greatCircle(
             plainArc
                 .zipWithNext { a, b -> abs(a.longitude - b.longitude) }
                 .filter { it <= diffSpace } // Filter differences less than or equal to diffSpace
-                .maxByOrNull { it }
-                ?.toDouble() ?: 0.0
+                .maxByOrNull { it } ?: 0.0
 
         val poMulti = mutableListOf<List<Position>>()
         if (passesAntimeridian && maxSmallDiffLong < antimeridianOffset) {

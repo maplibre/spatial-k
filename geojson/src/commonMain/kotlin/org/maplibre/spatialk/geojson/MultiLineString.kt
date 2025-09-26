@@ -4,7 +4,6 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
@@ -15,8 +14,6 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  */
 @Serializable
 @SerialName("MultiLineString")
-@JsonIgnoreUnknownKeys
-@Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 public class MultiLineString
 @JvmOverloads
 constructor(public val coordinates: List<List<Position>>, override val bbox: BoundingBox? = null) :
