@@ -17,7 +17,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  * - A linear ring MUST follow the right-hand rule with respect to the area it bounds, i.e.,
  *   exterior rings are counterclockwise, and holes are clockwise.
  *
- * @throws IllegalArgumentException if the coordinates are empty or any of the positions lists
+ * @throws IllegalArgumentException if the coordinates are empty or any of the position lists
  *   representing a line string is either not closed or contains fewer than 4 positions.
  * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.1.6">
  *   https://tools.ietf.org/html/rfc7946#section-3.1.6</a>
@@ -30,7 +30,7 @@ public class Polygon
 @JvmOverloads
 constructor(
     /**
-     * a list (= polygon rings) of lists of [Position]s that represent this polygon. The first ring
+     * A list (= polygon rings) of lists of [Position]s that represent this polygon. The first ring
      * represents the exterior ring while any others are interior rings (= holes).
      */
     public val coordinates: List<List<Position>>,
@@ -59,9 +59,9 @@ constructor(
      * Create a Polygon by arrays (= polygon rings) of arrays (= positions) where each position is
      * represented by a [DoubleArray].
      *
-     * @throws IllegalArgumentException if the outer array is empty or any of the inner arrays does
-     *   not represent a valid closed line string or any of the arrays of doubles does not represent
-     *   a valid position.
+     * @throws IllegalArgumentException if the outer array is empty, or if any of the inner arrays
+     *   does not represent a valid closed line string, or if any of the arrays of doubles does not
+     *   represent a valid position.
      */
     @JvmOverloads
     public constructor(

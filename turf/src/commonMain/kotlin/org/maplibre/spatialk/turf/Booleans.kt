@@ -1,8 +1,9 @@
+@file:JvmName("TurfBooleans")
 @file:OptIn(ExperimentalTurfApi::class)
-@file:Suppress("LongMethod", "MagicNumber", "NestedBlockDepth")
 
 package org.maplibre.spatialk.turf
 
+import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.MultiPolygon
@@ -16,8 +17,8 @@ import org.maplibre.spatialk.geojson.Position
  *
  * @param point input point
  * @param polygon input polygon
- * @param ignoreBoundary True if polygon boundary should be ignored when determining if the point is
- *   inside the polygon otherwise false.
+ * @param ignoreBoundary True if the polygon boundary should be ignored when determining if the
+ *   point is inside the polygon otherwise false.
  * @return `true` if the Position is inside the Polygon; `false` if the Position is not inside the
  *   Polygon
  */
@@ -39,8 +40,8 @@ public fun booleanPointInPolygon(
  *
  * @param point input point
  * @param polygon input multipolygon
- * @param ignoreBoundary True if polygon boundary should be ignored when determining if the point is
- *   inside the polygon otherwise false.
+ * @param ignoreBoundary True if the polygon boundary should be ignored when determining if the
+ *   point is inside the polygon otherwise false.
  * @return `true` if the Position is inside the Polygon; `false` if the Position is not inside the
  *   Polygon
  */
@@ -55,14 +56,13 @@ public fun booleanPointInPolygon(
     return booleanPointInPolygon(point.coordinates, bbox, polys, ignoreBoundary)
 }
 
-@Suppress("ReturnCount")
 private fun booleanPointInPolygon(
     point: Position,
     bbox: BoundingBox,
     polys: List<List<List<Position>>>,
     ignoreBoundary: Boolean,
 ): Boolean {
-    // Quick elimination if point is not inside bbox
+    // Quick elimination if the point is not inside the bbox
     if (!inBBox(point, bbox)) {
         return false
     }
@@ -89,23 +89,20 @@ private fun booleanPointInPolygon(
 private fun inRing(point: Position, ring: List<Position>, ignoreBoundary: Boolean): Boolean {
     val pt = point.coordinates
     var isInside = false
-    @Suppress("NAME_SHADOWING")
-    val ring =
+    val openRing =
         if (
             ring[0].coordinates[0] == ring.last().coordinates[0] &&
                 ring[0].coordinates[1] == ring.last().coordinates[1]
         ) {
             ring.slice(0 until ring.size - 1)
-        } else {
-            ring
-        }
+        } else ring
     var i = 0
-    var j = ring.size - 1
-    while (i < ring.size) {
-        val xi = ring[i].coordinates[0]
-        val yi = ring[i].coordinates[1]
-        val xj = ring[j].coordinates[0]
-        val yj = ring[j].coordinates[1]
+    var j = openRing.size - 1
+    while (i < openRing.size) {
+        val xi = openRing[i].coordinates[0]
+        val yi = openRing[i].coordinates[1]
+        val xj = openRing[j].coordinates[0]
+        val yj = openRing[j].coordinates[1]
         val onBoundary =
             pt[1] * (xi - xj) + yi * (xj - pt[0]) + yj * (pt[0] - xi) == 0.0 &&
                 (xi - pt[0]) * (xj - pt[0]) <= 0 &&

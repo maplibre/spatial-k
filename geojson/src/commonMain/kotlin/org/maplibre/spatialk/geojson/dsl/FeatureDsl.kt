@@ -1,9 +1,8 @@
-@file:JvmName("-FeatureDslKt")
-@file:Suppress("MatchingDeclarationName")
+@file:JvmSynthetic
 
 package org.maplibre.spatialk.geojson.dsl
 
-import kotlin.jvm.JvmName
+import kotlin.jvm.JvmSynthetic
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
 import org.maplibre.spatialk.geojson.BoundingBox

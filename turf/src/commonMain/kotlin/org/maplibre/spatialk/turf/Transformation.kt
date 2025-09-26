@@ -1,5 +1,8 @@
+@file:JvmName("TurfTransformation")
+
 package org.maplibre.spatialk.turf
 
+import kotlin.jvm.JvmName
 import kotlin.math.pow
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Point
@@ -35,7 +38,6 @@ public fun bezierSpline(
  * @param sharpness a measure of how curvy the path should be between splines
  * @return A [List] containing [Position] of a curved line around the positions of the input line
  */
-@Suppress("MagicNumber")
 public fun bezierSpline(
     coords: List<Position>,
     duration: Int = 10_000,
@@ -147,7 +149,7 @@ public fun bezierSpline(
  *
  * @param center center point of circle
  * @param radius radius of the circle defined in [units]
- * @param steps number of steps, must be at least four. Default is 64
+ * @param steps the number of steps must be at least four. Default is 64
  * @param units unit of [radius], default is [Units.Kilometers]
  */
 @ExperimentalTurfApi

@@ -17,7 +17,6 @@ internal const val ANTIMERIDIAN_NEG = -180.0
  * @property areaFactor Area of measurement factors based on 1 square meter.
  */
 @ExperimentalTurfApi
-@Suppress("MagicNumber")
 public enum class Units(
     internal val unitFactor: Double,
     internal val factor: Double,

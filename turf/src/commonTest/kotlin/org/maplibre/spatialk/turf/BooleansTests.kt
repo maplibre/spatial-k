@@ -85,7 +85,6 @@ class BooleansTests {
     }
 
     @Test
-    @Suppress("LongMethod")
     fun testBoundaryTest() {
         val poly1 = polygon {
             ring {

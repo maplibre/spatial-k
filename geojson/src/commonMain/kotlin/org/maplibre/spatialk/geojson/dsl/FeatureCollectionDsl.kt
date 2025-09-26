@@ -1,8 +1,8 @@
-@file:JvmName("-FeatureCollectionDslKt")
+@file:JvmSynthetic
 
 package org.maplibre.spatialk.geojson.dsl
 
-import kotlin.jvm.JvmName
+import kotlin.jvm.JvmSynthetic
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection

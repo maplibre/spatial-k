@@ -4,7 +4,6 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
@@ -15,8 +14,6 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  */
 @Serializable
 @SerialName("LineString")
-@JsonIgnoreUnknownKeys
-@Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 public class LineString
 @JvmOverloads
 constructor(
@@ -51,8 +48,8 @@ constructor(
     /**
      * Create a LineString by an array of [DoubleArray]s that each represent a position.
      *
-     * @throws IllegalArgumentException if the coordinates contain fewer than two positions or any
-     *   array of doubles does not represent a valid position
+     * @throws IllegalArgumentException if the coordinates contain fewer than two positions, or if
+     *   any array of doubles does not represent a valid position
      */
     @JvmOverloads
     public constructor(

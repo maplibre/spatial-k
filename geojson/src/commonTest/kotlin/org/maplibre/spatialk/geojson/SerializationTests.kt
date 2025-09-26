@@ -6,7 +6,6 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.json.Json
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 @Suppress("MagicNumber", "TooManyFunctions")
@@ -38,7 +37,7 @@ class SerializationTests {
         assertEquals(Position(60.2, 23.2354, 100.5), altitude)
 
         val list =
-            Json.decodeFromString(
+            GeoJson.decodeFromString(
                 ListSerializer(Position.serializer()),
                 "[[12.3,45.6],[78.9,12.3]]",
             )
@@ -70,11 +69,11 @@ class SerializationTests {
         assertEquals(BoundingBox(Position(-10.5, -10.5), Position(10.5, 10.5)), bbox)
 
         val bbox3D =
-            Json.decodeFromString(BoundingBox.serializer(), "[-10.5,-10.5,-100.8,10.5,10.5,5.5]")
+            GeoJson.decodeFromString(BoundingBox.serializer(), "[-10.5,-10.5,-100.8,10.5,10.5,5.5]")
         assertEquals(BoundingBox(Position(-10.5, -10.5, -100.8), Position(10.5, 10.5, 5.5)), bbox3D)
 
         assertFailsWith<SerializationException> {
-            Json.decodeFromString(BoundingBox.serializer(), "[12.3]")
+            GeoJson.decodeFromString(BoundingBox.serializer(), "[12.3]")
         }
     }
 

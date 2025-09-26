@@ -6,7 +6,6 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.Geometry
@@ -37,7 +36,6 @@ public object FeatureSerializer : KSerializer<Feature> {
 }
 
 @Serializable
-@JsonIgnoreUnknownKeys
 private data class FeatureSurrogate(
     val bbox: List<Double>? = null,
     val geometry: Geometry?,

@@ -1,5 +1,8 @@
+@file:JvmName("TurfGrids")
+
 package org.maplibre.spatialk.turf
 
+import kotlin.jvm.JvmName
 import kotlin.math.abs
 import kotlin.math.floor
 import org.maplibre.spatialk.geojson.BoundingBox

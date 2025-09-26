@@ -42,18 +42,16 @@ public fun Polygon.coordAll(): List<Position> = coordinates.reduce { acc, list -
 
 @ExperimentalTurfApi
 public fun MultiPolygon.coordAll(): List<Position> =
-    coordinates.fold(emptyList<Position>()) { acc, list ->
+    coordinates.fold(emptyList()) { acc, list ->
         list.reduce { innerAcc, innerList -> innerAcc + innerList } + acc
     }
 
 @ExperimentalTurfApi
 public fun GeometryCollection.coordAll(): List<Position> =
-    geometries.fold(emptyList<Position>()) { acc, geometry -> acc + geometry.coordAll() }
+    geometries.fold(emptyList()) { acc, geometry -> acc + geometry.coordAll() }
 
 @ExperimentalTurfApi public fun Feature.coordAll(): List<Position>? = geometry?.coordAll()
 
 @ExperimentalTurfApi
 public fun FeatureCollection.coordAll(): List<Position> =
-    features.fold(emptyList<Position>()) { acc, feature ->
-        acc + (feature.coordAll() ?: emptyList())
-    }
+    features.fold(emptyList()) { acc, feature -> acc + (feature.coordAll() ?: emptyList()) }

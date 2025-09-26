@@ -1,4 +1,4 @@
-@file:JvmName("TurfMisc")
+@file:JvmName("TurfMiscellaneous")
 
 package org.maplibre.spatialk.turf
 
@@ -33,7 +33,6 @@ public fun lineIntersect(line1: LineString, line2: LineString): List<Position> {
  * @param line2 A [LineString] (must contain exactly 2 coordinates)
  * @return The position of the intersection, or null if the two lines do not intersect.
  */
-@Suppress("ReturnCount")
 @ExperimentalTurfApi
 internal fun intersects(line1: LineString, line2: LineString): Position? {
     require(line1.coordinates.size == 2) { "line1 must contain exactly 2 coordinates" }
@@ -74,7 +73,7 @@ internal fun intersects(line1: LineString, line2: LineString): Position? {
  *
  * @param start Start position
  * @param stop Stop position
- * @param line The line string to slice
+ * @param line The [LineString] to slice
  * @return The sliced subsection of the line
  */
 @ExperimentalTurfApi
@@ -143,7 +142,6 @@ public fun nearestPointOnLine(
     return nearestPointOnLine(lines.coordinates, point, units)
 }
 
-@Suppress("MagicNumber")
 @ExperimentalTurfApi
 internal fun nearestPointOnLine(
     lines: List<List<Position>>,

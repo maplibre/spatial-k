@@ -1,4 +1,8 @@
+@file:JvmName("TurfUtils")
+
 package org.maplibre.spatialk.turf
+
+import kotlin.jvm.JvmName
 
 /**
  * Convert a distance measurement (assuming a spherical Earth) from radians to a more friendly unit.
@@ -77,9 +81,8 @@ public fun convertLength(
  * @param from Original units of the [area]
  * @param to Units to convert the [area] to
  * @return the converted area
- * @exception IllegalArgumentException if the given units are invalid, or if the area is negative
+ * @throws IllegalArgumentException if the given units are invalid, or if the area is negative
  */
-@Suppress("ThrowsCount")
 @ExperimentalTurfApi
 public fun convertArea(
     area: Double,
@@ -100,7 +103,6 @@ public fun convertArea(
  * @param bearing angle, between -180 and +180 degrees
  * @return angle between 0 and 360 degrees
  */
-@Suppress("MagicNumber")
 @ExperimentalTurfApi
 public fun bearingToAzimuth(bearing: Double): Double {
     var angle = bearing % 360

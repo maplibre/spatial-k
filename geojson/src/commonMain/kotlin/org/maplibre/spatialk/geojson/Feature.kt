@@ -5,7 +5,6 @@ import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.double
@@ -24,9 +23,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  *   https://tools.ietf.org/html/rfc7946#section-3.2</a>
  * @see FeatureCollection
  */
-@Suppress("TooManyFunctions")
 @Serializable(with = FeatureSerializer::class)
-@JsonIgnoreUnknownKeys
 @SerialName("Feature")
 public class Feature(
     public val geometry: Geometry?,

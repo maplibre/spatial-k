@@ -1,5 +1,3 @@
-@file:Suppress("MagicNumber")
-
 package org.maplibre.spatialk.turf
 
 import kotlin.test.Test
@@ -52,7 +50,6 @@ class UtilsTests {
     }
 
     @Test
-    @Suppress("LongMethod")
     fun testConvertArea() {
         assertEquals(0.001, convertArea(1000.0))
         assertEquals(0.386, convertArea(1.0, from = Units.Kilometers, to = Units.Miles))

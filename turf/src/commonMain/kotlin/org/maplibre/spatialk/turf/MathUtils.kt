@@ -1,5 +1,3 @@
-@file:Suppress("MagicNumber")
-
 package org.maplibre.spatialk.turf
 
 import kotlin.math.PI

@@ -2,7 +2,6 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import org.maplibre.spatialk.geojson.serialization.BoundingBoxSerializer
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
@@ -14,7 +13,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  *
  * When serialized, a BoundingBox is represented as an array of length 2*n where n is the number of
  * dimensions represented in the contained geometries, with all axes of the most southwesterly point
- * followed by all axes of the northeasterly point. The axes order of a BoundingBox follow the axes
+ * followed by all axes of the northeasterly point. The axes order of a BoundingBox follows the axes
  * order of geometries.
  *
  * For the BoundingBox to be serialized in 3D form, both Positions must have a defined altitude.
@@ -26,7 +25,6 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  *   https://tools.ietf.org/html/rfc7946#section-5</a>
  */
 @Serializable(with = BoundingBoxSerializer::class)
-@Suppress("MagicNumber")
 public class BoundingBox(public val coordinates: DoubleArray) {
     init {
         require(coordinates.size == 4 || coordinates.size == 6) {
@@ -104,9 +102,7 @@ public class BoundingBox(public val coordinates: DoubleArray) {
 
         other as BoundingBox
 
-        if (!coordinates.contentEquals(other.coordinates)) return false
-
-        return true
+        return coordinates.contentEquals(other.coordinates)
     }
 
     override fun hashCode(): Int {
@@ -134,6 +130,5 @@ public class BoundingBox(public val coordinates: DoubleArray) {
     }
 }
 
-@Suppress("MagicNumber")
 public val BoundingBox.hasAltitude: Boolean
     get() = coordinates.size == 6
