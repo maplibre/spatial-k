@@ -29,13 +29,16 @@ jobs:
         runs-on: ${{ matrix.runner }}
         steps:
             - uses: actions/checkout@v5
-            - name: Set up JDK 17
-              uses: actions/setup-java@v5
+            - uses: actions/setup-java@v5
               with:
                   distribution: "zulu"
                   java-version: 17
-            - name: Build and test with Gradle
-              run: ./gradlew ${{ matrix.task }}
+            - run: ./gradlew ${{ matrix.task }}
+            - if: ${{ matrix.task == 'build' }} # Kover only supports JVM
+              name: Generate coverage summary
+              run: |
+                  echo '## Coverage' >> $GITHUB_STEP_SUMMARY
+                  ./gradlew :koverLog >> $GITHUB_STEP_SUMMARY
 
     check-format:
         runs-on: ubuntu-latest

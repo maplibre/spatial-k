@@ -1,6 +1,9 @@
+import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.publish) apply false
+    alias(libs.plugins.kotlinx.kover)
     alias(libs.plugins.dokka)
 }
 
@@ -14,8 +17,21 @@ dokka {
     }
 }
 
+kover {
+    reports {
+        total {
+            log {
+                // default groups by module
+                groupBy = GroupingEntityType.PACKAGE
+            }
+        }
+    }
+}
+
 dependencies {
     dokka(project(":geojson"))
+    kover(project(":geojson"))
+
     dokka(project(":turf"))
-    project(":testutil")
+    kover(project(":turf"))
 }
