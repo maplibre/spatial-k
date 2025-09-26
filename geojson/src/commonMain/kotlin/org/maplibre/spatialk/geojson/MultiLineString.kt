@@ -14,17 +14,13 @@ import org.maplibre.spatialk.geojson.serialization.jsonProp
 import org.maplibre.spatialk.geojson.serialization.toBbox
 import org.maplibre.spatialk.geojson.serialization.toPosition
 
-/**
- * @throws IllegalArgumentException if any of the position lists is not a valid line string
- */
+/** @throws IllegalArgumentException if any of the position lists is not a valid line string */
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @Serializable(with = GeometrySerializer::class)
 public class MultiLineString
 @JvmOverloads
-constructor(
-    public val coordinates: List<List<Position>>,
-    override val bbox: BoundingBox? = null
-) : Geometry() {
+constructor(public val coordinates: List<List<Position>>, override val bbox: BoundingBox? = null) :
+    Geometry() {
 
     /**
      * Create a MultiLineString by a number of lists of [Position]s.
@@ -37,9 +33,7 @@ constructor(
         bbox: BoundingBox? = null,
     ) : this(coordinates.toList(), bbox)
 
-    /**
-     * Create a MultiLineString by a number of [LineString]s.
-     */
+    /** Create a MultiLineString by a number of [LineString]s. */
     @JvmOverloads
     public constructor(
         vararg lineStrings: LineString,
@@ -61,7 +55,9 @@ constructor(
 
     init {
         coordinates.forEachIndexed { index, line ->
-            require(line.size >= 2) { "LineString at index $index contains less than 2 positions." }
+            require(line.size >= 2) {
+                "LineString at index $index contains fewer than 2 positions."
+            }
         }
     }
 

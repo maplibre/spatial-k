@@ -24,12 +24,18 @@ class MultiPolygonTest {
     @Test
     fun throwsInvalidPositionException() {
         assertFailsWith(IllegalArgumentException::class) {
-            MultiPolygon(arrayOf(arrayOf(arrayOf(
-                doubleArrayOf(5.0, 2.0),
-                doubleArrayOf(1.0), // !
-                doubleArrayOf(4.0, 3.0),
-                doubleArrayOf(5.0, 2.0),
-            ))))
+            MultiPolygon(
+                arrayOf(
+                    arrayOf(
+                        arrayOf(
+                            doubleArrayOf(5.0, 2.0),
+                            doubleArrayOf(1.0), // !
+                            doubleArrayOf(4.0, 3.0),
+                            doubleArrayOf(5.0, 2.0),
+                        )
+                    )
+                )
+            )
         }
     }
 
@@ -43,23 +49,25 @@ class MultiPolygonTest {
     @Test
     fun throwsNoRingException() {
         assertFailsWith(IllegalArgumentException::class) {
-            MultiPolygon(listOf(listOf(
-                Position(10.0, 2.0),
-                Position(5.0, 2.0),
-                Position(3.0, 2.0)
-            )))
+            MultiPolygon(
+                listOf(listOf(Position(10.0, 2.0), Position(5.0, 2.0), Position(3.0, 2.0)))
+            )
         }
     }
 
     @Test
     fun throwsRingNotClosedException() {
         assertFailsWith(IllegalArgumentException::class) {
-            MultiPolygon(listOf(listOf(
-                Position(10.0, 2.0),
-                Position(5.0, 2.0),
-                Position(3.0, 2.0),
-                Position(5.0, 2.0),
-            )))
+            MultiPolygon(
+                listOf(
+                    listOf(
+                        Position(10.0, 2.0),
+                        Position(5.0, 2.0),
+                        Position(3.0, 2.0),
+                        Position(5.0, 2.0),
+                    )
+                )
+            )
         }
     }
 

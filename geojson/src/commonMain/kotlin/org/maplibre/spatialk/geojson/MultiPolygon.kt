@@ -16,9 +16,7 @@ import org.maplibre.spatialk.geojson.serialization.toPosition
 
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @Serializable(with = GeometrySerializer::class)
-/**
- * @throws IllegalArgumentException if any of the lists does not represent a valid polygon
- */
+/** @throws IllegalArgumentException if any of the lists does not represent a valid polygon */
 public class MultiPolygon
 @JvmOverloads
 constructor(
@@ -39,9 +37,7 @@ constructor(
         bbox: BoundingBox? = null,
     ) : this(coordinates.toList(), bbox)
 
-    /**
-     * Create a MultiPolygon by a number of [Polygon]s.
-     */
+    /** Create a MultiPolygon by a number of [Polygon]s. */
     @JvmOverloads
     public constructor(
         vararg polygons: Polygon,
@@ -67,11 +63,11 @@ constructor(
             polygon.forEachIndexed { ringIndex, ring ->
                 require(polygon.size >= 4) {
                     "Line string at index $ringIndex of polygon at index $polygonIndex contains " +
-                    "less than 4 positions."
+                        "fewer than 4 positions."
                 }
                 require(polygon.first() == polygon.last()) {
                     "Line string at at index $ringIndex of polygon at index $polygonIndex is " +
-                    "not closed."
+                        "not closed."
                 }
             }
         }

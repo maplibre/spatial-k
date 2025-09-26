@@ -16,7 +16,7 @@ import org.maplibre.spatialk.geojson.serialization.toPosition
 
 /**
  * @throws IllegalArgumentException if the coordinates are empty or any of the positions lists
- *   representing a line string is either not closed or contains less than 4 positions.
+ *   representing a line string is either not closed or contains fewer than 4 positions.
  */
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @Serializable(with = GeometrySerializer::class)
@@ -29,14 +29,14 @@ constructor(
      */
     public val coordinates: List<List<Position>>,
     /** a bounding box */
-    override val bbox: BoundingBox? = null
+    override val bbox: BoundingBox? = null,
 ) : Geometry() {
 
     /**
      * Create a Polygon by a number of lists of [Position]s.
      *
      * @throws IllegalArgumentException if no coordinates have been specified or any of the given
-     *   position lists are either not closed or contains less than 4 positions.
+     *   position lists are either not closed or contains fewer than 4 positions.
      */
     @JvmOverloads
     public constructor(
@@ -48,7 +48,7 @@ constructor(
      * Create a Polygon by a number of closed [LineString]s.
      *
      * @throws IllegalArgumentException if no coordinates have been specified or any of the
-     *   [LineString]s is either not closed or contains less than 4 positions.
+     *   [LineString]s is either not closed or contains fewer than 4 positions.
      */
     @JvmOverloads
     public constructor(
@@ -61,8 +61,8 @@ constructor(
      * represented by a [DoubleArray].
      *
      * @throws IllegalArgumentException if the outer array is empty or any of the inner arrays does
-     *   not represent a valid closed line string or any of the arrays of doubles does not
-     *   represent a valid position.
+     *   not represent a valid closed line string or any of the arrays of doubles does not represent
+     *   a valid position.
      */
     @JvmOverloads
     public constructor(
@@ -74,12 +74,8 @@ constructor(
         require(coordinates.isNotEmpty()) { "A Polygon must not be empty." }
 
         coordinates.forEachIndexed { i, ring ->
-            require(ring.size >= 4) {
-                "Line string at index $i contains less than 4 positions."
-            }
-            require(ring.first() == ring.last()) {
-                "Line string at at index $i is not closed."
-            }
+            require(ring.size >= 4) { "Line string at index $i contains fewer than 4 positions." }
+            require(ring.first() == ring.last()) { "Line string at at index $i is not closed." }
         }
     }
 

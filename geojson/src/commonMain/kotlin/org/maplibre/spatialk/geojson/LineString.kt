@@ -14,9 +14,7 @@ import org.maplibre.spatialk.geojson.serialization.jsonProp
 import org.maplibre.spatialk.geojson.serialization.toBbox
 import org.maplibre.spatialk.geojson.serialization.toPosition
 
-/**
- * @throws IllegalArgumentException if the coordinates contain less than two positions
- */
+/** @throws IllegalArgumentException if the coordinates contain fewer than two positions */
 @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @Serializable(with = GeometrySerializer::class)
 public class LineString
@@ -25,13 +23,13 @@ constructor(
     /** a list of [Position]s. */
     public val coordinates: List<Position>,
     /** a bounding box */
-    override val bbox: BoundingBox? = null
+    override val bbox: BoundingBox? = null,
 ) : Geometry() {
 
     /**
      * Create a LineString by a number of [Position]s.
      *
-     * @throws IllegalArgumentException if less than two coordinates have been specified
+     * @throws IllegalArgumentException if fewer than two coordinates have been specified
      */
     @JvmOverloads
     public constructor(
@@ -42,7 +40,7 @@ constructor(
     /**
      * Create a LineString by the positions of a number of [Point]s.
      *
-     * @throws IllegalArgumentException if less than two points have been specified
+     * @throws IllegalArgumentException if fewer than two points have been specified
      */
     @JvmOverloads
     public constructor(
@@ -53,7 +51,7 @@ constructor(
     /**
      * Create a LineString by an array of [DoubleArray]s that each represent a position.
      *
-     * @throws IllegalArgumentException if the coordinates contain less than two positions or any
+     * @throws IllegalArgumentException if the coordinates contain fewer than two positions or any
      *   array of doubles does not represent a valid position
      */
     @JvmOverloads

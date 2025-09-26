@@ -20,20 +20,18 @@ class LineStringTest {
 
     @Test
     fun throwsInvalidLineStringException() {
-        assertFailsWith(IllegalArgumentException::class) {
-            LineString(listOf(
-                Position(1.0, 1.0)
-            ))
-        }
+        assertFailsWith(IllegalArgumentException::class) { LineString(listOf(Position(1.0, 1.0))) }
     }
 
     @Test
     fun throwsInvalidPositionException() {
         assertFailsWith(IllegalArgumentException::class) {
-            LineString(arrayOf(
-                doubleArrayOf(1.0, 1.0),
-                doubleArrayOf(1.0), // !
-            ))
+            LineString(
+                arrayOf(
+                    doubleArrayOf(1.0, 1.0),
+                    doubleArrayOf(1.0), // !
+                )
+            )
         }
     }
 

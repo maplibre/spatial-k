@@ -23,19 +23,21 @@ class MultiLineStringTest {
     @Test
     fun throwsInvalidLineStringException() {
         assertFailsWith(IllegalArgumentException::class) {
-            MultiLineString(listOf(
-                Position(1.0, 1.0)
-            ))
+            MultiLineString(listOf(Position(1.0, 1.0)))
         }
     }
 
     @Test
     fun throwsInvalidPositionException() {
         assertFailsWith(IllegalArgumentException::class) {
-            MultiLineString(arrayOf(arrayOf(
-                doubleArrayOf(1.0, 1.0),
-                doubleArrayOf(1.0), // !
-            )))
+            MultiLineString(
+                arrayOf(
+                    arrayOf(
+                        doubleArrayOf(1.0, 1.0),
+                        doubleArrayOf(1.0), // !
+                    )
+                )
+            )
         }
     }
 

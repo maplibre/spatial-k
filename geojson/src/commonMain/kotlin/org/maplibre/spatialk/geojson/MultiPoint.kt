@@ -22,12 +22,10 @@ constructor(
     /** a list of [Position]s. */
     public val coordinates: List<Position>,
     /** a bounding box */
-    override val bbox: BoundingBox? = null
+    override val bbox: BoundingBox? = null,
 ) : Geometry() {
 
-    /**
-     * Create a MultiPoint by a number of [Position]s.
-     */
+    /** Create a MultiPoint by a number of [Position]s. */
     @JvmOverloads
     public constructor(
         vararg coordinates: Position,

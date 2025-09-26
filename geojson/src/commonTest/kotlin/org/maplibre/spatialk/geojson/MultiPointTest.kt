@@ -20,9 +20,7 @@ class MultiPointTest {
 
     @Test
     fun throwsInvalidPositionException() {
-        assertFailsWith(IllegalArgumentException::class) {
-            MultiPoint(arrayOf(doubleArrayOf(1.0)))
-        }
+        assertFailsWith(IllegalArgumentException::class) { MultiPoint(arrayOf(doubleArrayOf(1.0))) }
     }
 
     @Test

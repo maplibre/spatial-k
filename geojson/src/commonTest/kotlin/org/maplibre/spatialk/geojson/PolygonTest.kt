@@ -19,43 +19,43 @@ class PolygonTest {
 
     @Test
     fun throwsEmptyException() {
-        assertFailsWith(IllegalArgumentException::class) {
-            Polygon(listOf<List<Position>>())
-        }
+        assertFailsWith(IllegalArgumentException::class) { Polygon(listOf<List<Position>>()) }
     }
 
     @Test
     fun throwsInvalidPositionException() {
         assertFailsWith(IllegalArgumentException::class) {
-            Polygon(arrayOf(arrayOf(
-                doubleArrayOf(5.0, 2.0),
-                doubleArrayOf(1.0), // !
-                doubleArrayOf(4.0, 3.0),
-                doubleArrayOf(5.0, 2.0),
-            )))
+            Polygon(
+                arrayOf(
+                    arrayOf(
+                        doubleArrayOf(5.0, 2.0),
+                        doubleArrayOf(1.0), // !
+                        doubleArrayOf(4.0, 3.0),
+                        doubleArrayOf(5.0, 2.0),
+                    )
+                )
+            )
         }
     }
 
     @Test
     fun throwsNoRingException() {
         assertFailsWith(IllegalArgumentException::class) {
-            Polygon(listOf(
-                Position(10.0, 2.0),
-                Position(5.0, 2.0),
-                Position(3.0, 2.0)
-            ))
+            Polygon(listOf(Position(10.0, 2.0), Position(5.0, 2.0), Position(3.0, 2.0)))
         }
     }
 
     @Test
     fun throwsRingNotClosedException() {
         assertFailsWith(IllegalArgumentException::class) {
-            Polygon(listOf(
-                Position(10.0, 2.0),
-                Position(5.0, 2.0),
-                Position(3.0, 2.0),
-                Position(5.0, 2.0),
-            ))
+            Polygon(
+                listOf(
+                    Position(10.0, 2.0),
+                    Position(5.0, 2.0),
+                    Position(3.0, 2.0),
+                    Position(5.0, 2.0),
+                )
+            )
         }
     }
 
