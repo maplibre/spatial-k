@@ -66,11 +66,11 @@ constructor(
             require(polygon.isNotEmpty()) { "Polygon at index $polygonIndex must not be empty." }
 
             polygon.forEachIndexed { ringIndex, ring ->
-                require(polygon.size >= 4) {
+                require(ring.size >= 4) {
                     "Line string at index $ringIndex of polygon at index $polygonIndex contains " +
                         "fewer than 4 positions."
                 }
-                require(polygon.first() == polygon.last()) {
+                require(ring.first() == ring.last()) {
                     "Line string at at index $ringIndex of polygon at index $polygonIndex is " +
                         "not closed."
                 }
