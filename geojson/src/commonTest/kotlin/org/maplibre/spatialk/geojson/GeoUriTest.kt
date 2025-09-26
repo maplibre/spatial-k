@@ -41,7 +41,7 @@ class GeoUriTest {
     }
 
     @Test
-    fun parsePosition_ignoresParams() {
+    fun parsePosition_acceptsParams() {
         assertEquals(
             Position(latitude = 1.0, longitude = 2.0, altitude = 3.0),
             GeoUriParser.parsePosition("geo:1.0,2.0,3.0;foo=bar;x=y;u"),

@@ -161,14 +161,14 @@ class PointTest {
 
     @Test
     fun toGeoUri_withoutAltitude() {
-        assertEquals("geo:1.0,2.0", Point(latitude = 1.0, longitude = 2.0).toGeoUri())
+        assertEquals("geo:1.1,2.2", Point(latitude = 1.1, longitude = 2.2).toGeoUri())
     }
 
     @Test
     fun toGeoUri_withAltitude() {
         assertEquals(
-            "geo:1.0,2.0,3.0",
-            Point(latitude = 1.0, longitude = 2.0, altitude = 3.0).toGeoUri(),
+            "geo:1.1,2.2,3.3",
+            Point(latitude = 1.1, longitude = 2.2, altitude = 3.3).toGeoUri(),
         )
     }
 

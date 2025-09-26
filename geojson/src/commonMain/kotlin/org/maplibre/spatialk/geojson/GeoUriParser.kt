@@ -2,27 +2,24 @@ package org.maplibre.spatialk.geojson
 
 internal object GeoUriParser {
     // geo uri syntax as defined at https://datatracker.ietf.org/doc/html/rfc5870#section-3.3
-
-    private val coord = "-?(\\d+(\\.\\d+)?)".toRegex()
-    private val unreservedChar = $"[-_.!~*'()\\[\\]:&+$0-9a-zA-Z]".toRegex()
-    private val pctEncodedChar = "%[0-9A-Fa-f]{2}".toRegex()
-    private val parameter = ";([-0-9a-zA-Z]+)(=(($unreservedChar)|($pctEncodedChar))+)?".toRegex()
-    private val geoUri =
-        "^([gG])([eE])([oO]):(?<lat>$coord),(?<lon>$coord)(,(?<alt>$coord))?(?<p>($parameter)*)$"
+    // I'd make it cleaner with free spacing mode, but JS doesn't support it.
+    private val syntax =
+        "^([gG])([eE])([oO]):(?<lat>-?(\\d+(\\.\\d+)?)),(?<lon>-?(\\d+(\\.\\d+)?))(,(?<alt>-?(\\d+(\\.\\d+)?)))?(?<p>(;([-0-9a-zA-Z]+)(=((${$"[-_.!~*'()\\[\\]:&+$0-9a-zA-Z]"})|(%[0-9A-Fa-f]{2}))+)?)*)$"
             .toRegex()
 
     fun parsePosition(uri: String): Position {
         val result =
-            geoUri.matchEntire(uri) ?: throw IllegalArgumentException("Invalid Geo URI: $uri")
+            syntax.matchEntire(uri) ?: throw IllegalArgumentException("Invalid Geo URI: $uri")
 
         result.groups["p"]?.value?.split(";")?.forEach { paramStr ->
             println(paramStr)
             val value = paramStr.substringAfter('=', "")
             when (paramStr.substringBefore('=')) {
                 // geojson only supports WGS 84
-                "crs" -> require(value.isEmpty() || value.lowercase() == "wgs84")
+                "crs" ->
+                    require(value.isEmpty() || value.lowercase() == "wgs84") { "crs must be wgs84" }
                 // geojson doesn't support uncertainty
-                "u" -> require(value.isEmpty() || value.toDouble() == 0.0)
+                "u" -> require(value.isEmpty() || value.toDouble() == 0.0) { "u must be zero" }
             }
             // all other properties are ignored
         }
