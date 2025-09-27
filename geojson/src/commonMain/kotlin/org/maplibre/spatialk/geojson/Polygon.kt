@@ -5,6 +5,7 @@ import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonIgnoreUnknownKeys
+import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
@@ -99,10 +100,11 @@ constructor(
     override fun json(): String = GeoJson.encodeToString(this)
 
     public companion object {
-        @JvmStatic public fun fromJson(json: String): Polygon = fromJson<Polygon>(json)
+        @JvmStatic
+        public fun fromJson(@Language("json") json: String): Polygon = fromJson<Polygon>(json)
 
         @JvmStatic
-        public fun fromJsonOrNull(json: String): Polygon? =
+        public fun fromJsonOrNull(@Language("json") json: String): Polygon? =
             try {
                 fromJson(json)
             } catch (_: IllegalArgumentException) {

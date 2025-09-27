@@ -9,6 +9,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.double
 import kotlinx.serialization.json.jsonPrimitive
+import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
@@ -113,10 +114,11 @@ public class Feature(
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): Feature = GeoJsonObject.fromJson<Feature>(json)
+        public fun fromJson(@Language("json") json: String): Feature =
+            GeoJsonObject.fromJson<Feature>(json)
 
         @JvmStatic
-        public fun fromJsonOrNull(json: String): Feature? =
+        public fun fromJsonOrNull(@Language("json") json: String): Feature? =
             try {
                 fromJson(json)
             } catch (_: Exception) {

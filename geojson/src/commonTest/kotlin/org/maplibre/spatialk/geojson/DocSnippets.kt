@@ -258,7 +258,7 @@ class DocSnippets {
                 val lineString = LineString(Position(-75.0, 45.0), Position(-79.0, 44.0))
                 val geometryCollection = GeometryCollection(point, lineString)
 
-                // Can be iterated over, and used in any way a Collection<T> can be
+                // Can be iterated over and used in any way a Collection<T> can be
                 geometryCollection.forEach { geometry ->
                     // ...
                 }

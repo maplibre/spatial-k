@@ -4,6 +4,7 @@ import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonIgnoreUnknownKeys
+import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
@@ -55,11 +56,11 @@ public class FeatureCollection(
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): FeatureCollection =
+        public fun fromJson(@Language("json") json: String): FeatureCollection =
             GeoJsonObject.fromJson<FeatureCollection>(json)
 
         @JvmStatic
-        public fun fromJsonOrNull(json: String): FeatureCollection? =
+        public fun fromJsonOrNull(@Language("json") json: String): FeatureCollection? =
             try {
                 fromJson(json)
             } catch (_: IllegalArgumentException) {

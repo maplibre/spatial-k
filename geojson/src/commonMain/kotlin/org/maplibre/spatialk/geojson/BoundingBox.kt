@@ -2,6 +2,7 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
+import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.BoundingBoxSerializer
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
@@ -117,11 +118,11 @@ public class BoundingBox(public val coordinates: DoubleArray) {
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): BoundingBox =
+        public fun fromJson(@Language("json") json: String): BoundingBox =
             GeoJson.decodeFromString(serializer(), json)
 
         @JvmStatic
-        public fun fromJsonOrNull(json: String): BoundingBox? =
+        public fun fromJsonOrNull(@Language("json") json: String): BoundingBox? =
             try {
                 fromJson(json)
             } catch (_: Exception) {

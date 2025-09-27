@@ -74,7 +74,12 @@ kotlin {
             }
         }
 
-        commonMain { dependencies { api(libs.kotlinx.serialization.json) } }
+        commonMain {
+            dependencies {
+                implementation(libs.jetbrains.annotations)
+                api(libs.kotlinx.serialization.json)
+            }
+        }
 
         commonTest {
             dependencies {
@@ -83,7 +88,6 @@ kotlin {
                 implementation(libs.kotlinx.io.core)
                 implementation(libs.kotlinx.serialization.protobuf)
                 implementation(libs.kotlinx.serialization.cbor)
-                implementation(libs.jetbrains.annotations)
                 implementation(project(":testutil"))
             }
         }

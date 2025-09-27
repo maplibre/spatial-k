@@ -4,6 +4,7 @@ import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonIgnoreUnknownKeys
+import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
@@ -22,10 +23,12 @@ public sealed interface GeoJsonObject {
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): GeoJsonObject =
+        public fun fromJson(@Language("json") json: String): GeoJsonObject =
             GeoJson.decodeFromString(serializer(), json)
 
-        internal inline fun <reified T : GeoJsonObject> fromJson(json: String): T =
+        internal inline fun <reified T : GeoJsonObject> fromJson(
+            @Language("json") json: String
+        ): T =
             try {
                 GeoJson.decodeFromString(serializer(), json) as T
             } catch (_: ClassCastException) {

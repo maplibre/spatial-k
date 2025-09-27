@@ -4,6 +4,7 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
@@ -80,10 +81,11 @@ constructor(public val coordinates: List<List<Position>>, override val bbox: Bou
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): MultiLineString = fromJson<MultiLineString>(json)
+        public fun fromJson(@Language("json") json: String): MultiLineString =
+            fromJson<MultiLineString>(json)
 
         @JvmStatic
-        public fun fromJsonOrNull(json: String): MultiLineString? =
+        public fun fromJsonOrNull(@Language("json") json: String): MultiLineString? =
             try {
                 fromJson(json)
             } catch (_: IllegalArgumentException) {

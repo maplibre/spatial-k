@@ -4,6 +4,7 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
@@ -45,10 +46,11 @@ constructor(public val geometries: List<Geometry>, override val bbox: BoundingBo
 
     public companion object {
         @JvmStatic
-        public fun fromJson(json: String): GeometryCollection = fromJson<GeometryCollection>(json)
+        public fun fromJson(@Language("json") json: String): GeometryCollection =
+            fromJson<GeometryCollection>(json)
 
         @JvmStatic
-        public fun fromJsonOrNull(json: String): GeometryCollection? =
+        public fun fromJsonOrNull(@Language("json") json: String): GeometryCollection? =
             try {
                 fromJson(json)
             } catch (_: IllegalArgumentException) {
