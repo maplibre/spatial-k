@@ -41,17 +41,7 @@ Geometry objects are a sealed hierarchy of classes that inherit from the
 === "Kotlin"
 
     ```kotlin
-    val geometry: Geometry = getSomeGeometry()
-
-    val type = when (geometry) {
-        is Point -> "Point"
-        is MultiPoint -> "MultiPoint"
-        is LineString -> "LineString"
-        is MultiLineString -> "MultiLineString"
-        is Polygon -> "Polygon"
-        is MultiPolygon -> "MultiPolygon"
-        is GeometryCollection -> "GeometryCollection"
-    }
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:geometryExhaustiveTypeChecks"
     ```
 
 All seven types of GeoJSON geometries are implemented and summarized below. Full
@@ -70,19 +60,13 @@ the `Position` interface is the `LngLat` class.
 === "Kotlin"
 
     ```kotlin
-    val position: Position = Position(-75.0, 45.0)
-    val (longitude, latitude, altitude) = position
-
-    // Access values
-    position.longitude
-    position.latitude
-    position.altitude // null if unspecified
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:positionKt"
     ```
 
 === "JSON"
 
     ```json
-    [-75, 45]
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:positionJson"
     ```
 
 #### Point

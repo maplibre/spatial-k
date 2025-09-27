@@ -43,7 +43,8 @@ theme:
 markdown_extensions:
     - pymdownx.highlight:
           anchor_linenums: true
-    - pymdownx.snippets
+    - pymdownx.snippets:
+          dedent_subsections: true
     - pymdownx.arithmatex
     - pymdownx.betterem:
           smart_enable: all
