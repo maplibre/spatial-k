@@ -7,7 +7,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.dsl.*
 import org.maplibre.spatialk.geojson.serialization.GeoJson
@@ -39,10 +38,10 @@ class DocSnippets {
 
     private inline fun kotlinAndJsonExample(kotlin: () -> String, @Language("json5") json: String) {
         val jsonC = Json { allowComments = true }
-        assertEquals<JsonElement>(
-            expected = jsonC.decodeFromString(json),
-            actual = jsonC.decodeFromString(kotlin()),
-        )
+        // round trip to normalize property order across platforms
+        val normalizedJsonExample = jsonC.encodeToString(jsonC.parseToJsonElement(json))
+        val normalizedKotlinExample = jsonC.encodeToString(jsonC.parseToJsonElement(kotlin()))
+        assertEquals(expected = normalizedKotlinExample, actual = normalizedJsonExample)
     }
 
     @Test
@@ -754,18 +753,18 @@ class DocSnippets {
                 """
                 // --8<-- [start:dslFeatureJson]
                 {
-                  "type": "Feature",
-                  "id": "point1",
-                  "bbox": [-76.9, 44.1, -74.2, 45.7],
-                  "properties": {
-                    "name": "Hello World",
-                    "value": 13,
-                    "cool": true
-                  },
-                  "geometry": {
-                    "type": "Point",
-                    "coordinates": [-75.0, 45.0]
-                  }
+                    "type": "Feature",
+                    "bbox": [-76.9, 44.1, -74.2, 45.7],
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-75.0, 45.0]
+                    },
+                    "id": "point1",
+                    "properties": {
+                        "name": "Hello World",
+                        "value": 13,
+                        "cool": true
+                    }
                 }
                 // --8<-- [end:dslFeatureJson]
             """,
