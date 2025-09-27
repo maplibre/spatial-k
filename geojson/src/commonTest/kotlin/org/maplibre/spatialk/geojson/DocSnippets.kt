@@ -4,10 +4,13 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.dsl.*
+import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 // These snippets are primarily intended to be included in docs/geojson.md. Though they exist as
 // part of the test suite, they are not intended to be comprehensive tests.
@@ -371,5 +374,57 @@ class DocSnippets {
                     // --8<-- [end:boundingBoxJson]
                 """,
         )
+    }
+
+    @Test
+    fun serializationToJsonExample() {
+        // --8<-- [start:serializationToJson]
+        val point = Point(Position(-75.0, 45.0))
+        val feature = Feature(point)
+        val featureCollection = FeatureCollection(feature)
+
+        val json = featureCollection.json()
+        println(json)
+        // --8<-- [end:serializationToJson]
+    }
+
+    @Test
+    fun serializationFromJsonExample() {
+        assertFailsWith<SerializationException> {
+            // --8<-- [start:serializationFromJson1]
+            // Throws exception if the JSON cannot be deserialized to a Point
+            val myPoint: Point =
+                Point.fromJson("""{"type": "MultiPoint", "coordinates": [[-75.0, 45.0]]}""")
+            // --8<-- [end:serializationFromJson1]
+        }
+
+        // --8<-- [start:serializationFromJson2]
+        // Returns null if an error occurs
+        val nullable: Point? =
+            Point.fromJsonOrNull("""{"type": "MultiPoint", "coordinates": [[-75.0, 45.0]]}""")
+        // --8<-- [end:serializationFromJson2]
+        assertEquals(null, nullable)
+    }
+
+    @Test
+    fun kotlinxSerializationExample() {
+        // --8<-- [start:kotlinxSerialization]
+        val feature: Feature =
+            GeoJson.decodeFromString(
+                Feature.serializer(),
+                """
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [102.0, 20.0]
+                    },
+                    "properties": {
+                        "name": "point name"
+                    }
+                }
+                """,
+            )
+        // --8<-- [end:kotlinxSerialization]
     }
 }

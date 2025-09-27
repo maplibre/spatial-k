@@ -255,10 +255,7 @@ and is therefore very fast.
 === "Kotlin"
 
     ```kotlin
-    val featureCollection: FeatureCollection = getFeatureCollection()
-
-    val json = featureCollection.json()
-    println(json)
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:serializationToJson"
     ```
 
 ### From JSON
@@ -270,21 +267,9 @@ JSON string.
 === "Kotlin"
 
     ```kotlin
-    // Throws exception if the JSON cannot be deserialized to a Point
-    val myPoint = Point.fromJson("{...geojson...}")
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:serializationFromJson1"
 
-    // Returns null if an error occurs
-    val nullable = Point.fromJsonOrNull("{...not a point...}")
-    ```
-
-=== "Java"
-
-    ```java
-    // Throws exception if the JSON cannot be deserialized to a Point
-    var myPoint = Point.fromJson("{...geojson...}")
-
-    // Returns null if an error occurs
-    var nullable = Point.fromJsonOrNull("{...not a point...}")
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:serializationFromJson2"
     ```
 
 Like with encoding, Spatial-K objects can also be decoded using
@@ -293,7 +278,7 @@ Like with encoding, Spatial-K objects can also be decoded using
 === "Kotlin"
 
     ```kotlin
-    val feature: Feature = GeoJson.decodeFromString(Feature.serializer(), "{...feature...}")
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:kotlinxSerialization"
     ```
 
 ## GeoJson DSL
