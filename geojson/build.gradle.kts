@@ -81,8 +81,9 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-annotations-common"))
                 implementation(libs.kotlinx.io.core)
-                api(libs.kotlinx.serialization.protobuf)
-                api(libs.kotlinx.serialization.cbor)
+                implementation(libs.kotlinx.serialization.protobuf)
+                implementation(libs.kotlinx.serialization.cbor)
+                implementation(libs.jetbrains.annotations)
                 implementation(project(":testutil"))
             }
         }

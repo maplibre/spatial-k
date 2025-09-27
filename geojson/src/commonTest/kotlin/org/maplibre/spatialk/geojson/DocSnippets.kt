@@ -6,6 +6,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
+import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.dsl.*
 
 // These snippets are primarily intended to be included in docs/geojson.md. Though they exist as
@@ -33,7 +34,7 @@ class DocSnippets {
         // --8<-- [end:geometryExhaustiveTypeChecks]
     }
 
-    private inline fun kotlinAndJsonExample(kotlin: () -> String, json: String) {
+    private inline fun kotlinAndJsonExample(kotlin: () -> String, @Language("json5") json: String) {
         val jsonC = Json { allowComments = true }
         assertEquals<JsonElement>(
             expected = jsonC.decodeFromString(json),
@@ -84,7 +85,7 @@ class DocSnippets {
                 // --8<-- [start:pointJson]
                 {
                     "type": "Point",
-                    "coordinates": [-75, 45]
+                    "coordinates": [-75.0, 45.0]
                 }
                 // --8<-- [end:pointJson]
             """,
@@ -126,7 +127,7 @@ class DocSnippets {
                 // --8<-- [start:lineStringJson]
                 {
                     "type": "LineString",
-                    "coordinates": [[-75, 45], [-79, 44]]
+                    "coordinates": [[-75.0, 45.0], [-79.0, 44.0]]
                 }
                 // --8<-- [end:lineStringJson]
             """,
@@ -271,11 +272,11 @@ class DocSnippets {
                     "geometries": [
                         {
                             "type": "Point",
-                            "coordinates": [-75, 45]
+                            "coordinates": [-75.0, 45.0]
                         },
                         {
                             "type": "LineString",
-                            "coordinates": [[-75, 45], [-79, 44]]
+                            "coordinates": [[-75.0, 45.0], [-79.0, 44.0]]
                         }
                     ]
                 }
@@ -304,13 +305,11 @@ class DocSnippets {
                 // --8<-- [start:featureJson]
                 {
                     "type": "Feature",
-                    "geometry":
-                    {
+                    "geometry": {
                         "type": "Point",
-                        "coordinates": [-75, 45]
+                        "coordinates": [-75.0, 45.0]
                     },
-                    "properties":
-                    {
+                    "properties": {
                         "size": 9999
                     }
                 }
@@ -343,13 +342,9 @@ class DocSnippets {
                     "features": [
                         {
                             "type": "Feature",
-                            "geometry":
-                            {
+                            "geometry": {
                                 "type": "Point",
-                                "coordinates": [-75, 45]
-                            },
-                            "properties":
-                            {
+                                "coordinates": [-75.0, 45.0]
                             }
                         }
                     ]
@@ -361,11 +356,20 @@ class DocSnippets {
 
     @Test
     fun boundingBoxExample() {
-        // --8<-- [start:boundingBoxKt]
-        val bbox = BoundingBox(west = 11.6, south = 45.1, east = 12.7, north = 45.7)
-        val (southwest, northeast) = bbox // Two Positions
-        // --8<-- [end:boundingBoxKt]
-
-        assertEquals("[11.6,45.1,12.7,45.7]", bbox.json())
+        kotlinAndJsonExample(
+            kotlin = {
+                // --8<-- [start:boundingBoxKt]
+                val bbox = BoundingBox(west = 11.6, south = 45.1, east = 12.7, north = 45.7)
+                val (southwest, northeast) = bbox // Two Positions
+                // --8<-- [end:boundingBoxKt]
+                bbox.json()
+            },
+            json =
+                """
+                    // --8<-- [start:boundingBoxJson]
+                    [11.6,45.1,12.7,45.7]
+                    // --8<-- [end:boundingBoxJson]
+                """,
+        )
     }
 }

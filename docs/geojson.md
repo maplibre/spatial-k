@@ -241,7 +241,7 @@ a `DoubleArray` with each component accessible by its propery (`southwest` and
 === "JSON"
 
     ```json
-    [11.6, 45.1, 12.7, 45.7]
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:boundingBoxJson"
     ```
 
 ## Serialization
