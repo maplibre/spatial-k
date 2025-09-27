@@ -76,19 +76,13 @@ A Point is a single Position.
 === "Kotlin"
 
     ```kotlin
-    val point = Point(Position(-75.0, 45.0))
-
-    println(point.longitude)
-    // Prints: -75.0
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:pointKt"
     ```
 
 === "JSON"
 
     ```json
-    {
-        "type": "Point",
-        "coordinates": [-75, 45]
-    }
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:pointJson"
     ```
 
 #### MultiPoint
@@ -98,16 +92,13 @@ A `MultiPoint` is an array of Positions.
 === "Kotlin"
 
     ```kotlin
-    val multiPoint = MultiPoint(Position(-75.0, 45.0), Position(-79.0, 44.0))
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:multiPointKt"
     ```
 
 === "JSON"
 
     ```json
-    {
-        "type": "MultiPoint",
-        "coordinates": [[-75, 45], [-79, 44]]
-    }
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:multiPointJson"
     ```
 
 #### LineString
@@ -117,16 +108,13 @@ A `LineString` is a sequence of two or more Positions.
 === "Kotlin"
 
     ```kotlin
-    val lineString = LineString(Position(-75.0, 45.0), Position(-79.0, 44.0))
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:lineStringKt"
     ```
 
 === "JSON"
 
     ```json
-    {
-        "type": "LineString",
-        "coordinates": [[-75, 45], [-79, 44]]
-    }
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:lineStringJson"
     ```
 
 #### MultiLineString
@@ -136,22 +124,13 @@ A `MultiLineString` is an array of LineStrings.
 === "Kotlin"
 
     ```kotlin
-    val multiLineString = MultiLineString(
-        listOf(Position(12.3, 45.6), Position(78.9, 12.3)),
-        listOf(Position(87.6, 54.3), Position(21.9, 56.4))
-    )
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:multiLineStringKt"
     ```
 
 === "JSON"
 
     ```json
-    {
-        "type": "MultiLineString",
-        "coordinates": [
-            [[12.3, 45.6], [78.9, 12.3]],
-            [[87.6, 54.3], [21.9, 56.4]]
-        ]
-    }
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:multiLineStringJson"
     ```
 
 #### Polygon
@@ -164,33 +143,13 @@ defines the outer shape of the polygon, while all the following rings define
 === "Kotlin"
 
     ```kotlin
-    val polygon = Polygon(
-        listOf(
-            Position(-79.87, 43.42),
-            Position(-78.89, 43.49),
-            Position(-79.07, 44.02),
-            Position(-79.95, 43.87),
-            Position(-79.87, 43.42)
-        ),
-        listOf(
-            Position(-79.75, 43.81),
-            Position(-79.56, 43.85),
-            Position(-79.7, 43.88),
-            Position(-79.75, 43.81)
-        )
-    )
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:polygonKt"
     ```
 
 === "JSON"
 
     ```json
-    {
-        "type": "Polygon",
-        "coordinates": [
-            [[-79.87, 43.42], [-78.89, 43.49], [-79.07, 44.02], [-79.95, 43.87], [-79.87, 43.42]],
-            [[-79.75, 43.81], [-79.56, 43.85], [-79.7, 43.88], [-79.75, 43.81]]
-        ]
-    }
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:polygonJson"
     ```
 
 #### MultiPolygon
@@ -200,38 +159,13 @@ A `MultiPolygon` is an array of Polygons.
 === "Kotlin"
 
     ```kotlin
-    val polygon = listOf(
-        Position(-79.87, 43.42),
-        Position(-78.89, 43.49),
-        Position(-79.07, 44.02),
-        Position(-79.95, 43.87),
-        Position(-79.87, 43.42)
-    ),
-    listOf(
-        Position(-79.75, 43.81),
-        Position(-79.56, 43.85),
-        Position(-79.7, 43.88),
-        Position(-79.75, 43.81)
-    )
-    val multiPolygon = MultiPolygon(polygon, polygon)
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:multiPolygonKt"
     ```
 
 === "JSON"
 
     ```json
-    {
-        "type": "MultiPolygon",
-        "coordinates": [
-            [
-                [[-79.87, 43.42], [-78.89, 43.49], [-79.07, 44.02], [-79.95, 43.87], [-79.87, 43.42]],
-                [[-79.75, 43.81], [-79.56, 43.85], [-79.7, 43.88], [-79.75, 43.81]]
-            ],
-            [
-                [[-79.87, 43.42], [-78.89, 43.49], [-79.07, 44.02], [-79.95, 43.87], [-79.87, 43.42]],
-                [[-79.75, 43.81], [-79.56, 43.85], [-79.7, 43.88], [-79.75, 43.81]]
-            ]
-        ]
-    }
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:multiPolygonJson"
     ```
 
 #### GeometryCollection
@@ -243,30 +177,13 @@ used.
 === "Kotlin"
 
     ```kotlin
-    val geometryCollection = GeometryCollection(point, lineString)
-
-    // Can be iterated over, and used in any way a Collection<T> can be
-    geometryCollection.forEach { geometry ->
-        // ...
-    }
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:geometryCollectionKt"
     ```
 
 === "JSON"
 
     ```json
-    {
-        "type": "GeometryCollection",
-        "coordinates": [
-            {
-                "type": "Point",
-                "coordinates": [-75, 45]
-            },
-            {
-                "type": "LineString",
-                "coordinates": [[-75, 45], [-79, 44]]
-            }
-        ]
-    }
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:geometryCollectionJson"
     ```
 
 ### Feature
@@ -281,28 +198,13 @@ the appropriate types directly.
 === "Kotlin"
 
     ```kotlin
-    val feature = Feature(point)
-    feature.setNumberProperty("size", 9999)
-
-    val size: Number? = feature.getNumberProperty("size") // 9999
-    val geometry: Geometry? = feature.geometry // point
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:featureKt"
     ```
 
 === "JSON"
 
     ```json
-    {
-        "type": "Feature",
-        "geometry":
-        {
-            "type": "Point",
-            "coordinates": [-75, 45]
-        },
-        "properties":
-        {
-            "size": 9999
-        }
-    }
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:featureJson"
     ```
 
 ### FeatureCollection
@@ -314,33 +216,13 @@ used.
 === "Kotlin"
 
     ```kotlin
-    val featureCollection = FeatureCollection(pointFeature)
-
-    featureCollection.forEach { feature ->
-        // ...
-    }
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:featureCollectionKt"
     ```
 
 === "JSON"
 
     ```json
-    {
-        "type": "FeatureCollection",
-        "features": [
-            {
-                "type": "Feature",
-                "geometry":
-                {
-                    "type": "Point",
-                    "coordinates": [-75, 45]
-                },
-                "properties":
-                {
-                    "size": 9999
-                }
-            }
-        ]
-    }
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:featureCollectionJson"
     ```
 
 ### BoundingBox
@@ -353,8 +235,7 @@ a `DoubleArray` with each component accessible by its propery (`southwest` and
 === "Kotlin"
 
     ```kotlin
-    val bbox = BoundingBox(west = 11.6, south = 45.1, east = 12.7, north = 45.7)
-    val (southwest, northeast) = bbox // Two Positions
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:boundingBoxKt"
     ```
 
 === "JSON"
