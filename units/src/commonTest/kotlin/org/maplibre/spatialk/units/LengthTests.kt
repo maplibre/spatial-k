@@ -2,6 +2,7 @@ package org.maplibre.spatialk.units
 
 import kotlin.test.Test
 import org.maplibre.spatialk.testutil.assertDoubleEquals
+import org.maplibre.spatialk.units.LengthUnit.Geodesy.*
 import org.maplibre.spatialk.units.LengthUnit.Imperial.NauticalMiles
 import org.maplibre.spatialk.units.LengthUnit.International.Centimeters
 
