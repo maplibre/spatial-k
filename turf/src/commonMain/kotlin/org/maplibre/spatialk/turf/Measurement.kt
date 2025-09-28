@@ -28,33 +28,36 @@ import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.units.Area
+import org.maplibre.spatialk.units.Length
+import org.maplibre.spatialk.units.earthRadians
+import org.maplibre.spatialk.units.inEarthRadians
+import org.maplibre.spatialk.units.times
 
 /**
  * Takes a [LineString] and returns a [position][Position] at a specified distance along the line.
  *
  * @param line input line
  * @param distance distance along the line
- * @param units units of [distance]
- * @return A position [distance] [units] along the line
+ * @return A position [distance] along the line
  */
-@JvmOverloads
 @ExperimentalTurfApi
-public fun along(line: LineString, distance: Double, units: Units = Units.Kilometers): Position {
-    var travelled = 0.0
+public fun along(line: LineString, distance: Length): Position {
+    var travelled = Length.ZERO
 
     line.coordinates.forEachIndexed { i, coordinate ->
         when {
             distance >= travelled && i == line.coordinates.size - 1 -> {}
             travelled >= distance -> {
                 val overshot = distance - travelled
-                return if (overshot == 0.0) coordinate
+                return if (overshot.isZero) coordinate
                 else {
                     val direction = bearing(coordinate, line.coordinates[i - 1]) - 180
-                    destination(coordinate, overshot, direction, units)
+                    destination(coordinate, overshot, direction)
                 }
             }
 
-            else -> travelled += distance(coordinate, line.coordinates[i + 1], units)
+            else -> travelled += distance(coordinate, line.coordinates[i + 1])
         }
     }
 
@@ -62,41 +65,39 @@ public fun along(line: LineString, distance: Double, units: Units = Units.Kilome
 }
 
 /**
- * Takes a geometry and returns its area in square meters.
+ * Takes a geometry and returns its area.
  *
  * @param geometry input geometry
  * @return area in square meters
  */
 @ExperimentalTurfApi
-public fun area(geometry: Geometry): Double {
+public fun area(geometry: Geometry): Area {
     return when (geometry) {
-        is GeometryCollection -> geometry.geometries.fold(0.0) { acc, geom -> acc + area(geom) }
+        is GeometryCollection ->
+            geometry.geometries.fold(Area.ZERO) { acc, geom -> acc + area(geom) }
         else -> calculateArea(geometry)
     }
 }
 
-private fun calculateArea(geometry: Geometry): Double {
+private fun calculateArea(geometry: Geometry): Area {
     return when (geometry) {
         is Polygon -> polygonArea(geometry.coordinates)
         is MultiPolygon ->
-            geometry.coordinates.fold(0.0) { acc, coords -> acc + polygonArea(coords) }
-
-        else -> 0.0
+            geometry.coordinates.fold(Area.ZERO) { acc, coords -> acc + polygonArea(coords) }
+        else -> Area.ZERO
     }
 }
 
-private fun polygonArea(coordinates: List<List<Position>>): Double {
-    var total = 0.0
+private fun polygonArea(coordinates: List<List<Position>>): Area {
+    var total = Area.ZERO
     if (coordinates.isNotEmpty()) {
-        total += abs(ringArea(coordinates[0]))
+        total += ringArea(coordinates[0]).absoluteValue
         for (i in 1 until coordinates.size) {
-            total -= abs(ringArea(coordinates[i]))
+            total -= ringArea(coordinates[i]).absoluteValue
         }
     }
     return total
 }
-
-public const val AREA_EARTH_RADIUS: Int = 6378137
 
 /**
  * Calculates the approximate area of the [polygon][coordinates] were it projected onto the earth.
@@ -107,7 +108,7 @@ public const val AREA_EARTH_RADIUS: Int = 6378137
  * Sphere", JPL Publication 07-03, Jet Propulsion Laboratory, Pasadena, CA, June 2007
  * https://trs.jpl.nasa.gov/handle/2014/40409
  */
-private fun ringArea(coordinates: List<Position>): Double {
+private fun ringArea(coordinates: List<Position>): Area {
     var p1: Position
     var p2: Position
     var p3: Position
@@ -142,9 +143,9 @@ private fun ringArea(coordinates: List<Position>): Double {
             p3 = coordinates[upperIndex]
             total += (radians(p3.longitude) - radians(p1.longitude)) * sin(radians(p2.latitude))
         }
-        total = total * AREA_EARTH_RADIUS * AREA_EARTH_RADIUS / 2
+        return (total * EARTH_EQUATOR_RADIUS * EARTH_EQUATOR_RADIUS / 2)
     }
-    return total
+    return Area.ZERO
 }
 
 /**
@@ -319,22 +320,15 @@ internal fun finalBearing(start: Position, end: Position): Double =
  * @param origin starting point
  * @param distance distance from the origin point
  * @param bearing ranging from -180 to 180
- * @param units Unit of [distance]
  * @return destination position
  * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
  */
-@JvmOverloads
 @ExperimentalTurfApi
-public fun destination(
-    origin: Position,
-    distance: Double,
-    bearing: Double,
-    units: Units = Units.Kilometers,
-): Position {
+public fun destination(origin: Position, distance: Length, bearing: Double): Position {
     val longitude1 = radians(origin.longitude)
     val latitude1 = radians(origin.latitude)
     val bearingRad = radians(bearing)
-    val radians = lengthToRadians(distance, units)
+    val radians = distance.inEarthRadians
 
     val latitude2 =
         asin(sin(latitude1) * cos(radians) + cos(latitude1) * sin(radians) * cos(bearingRad))
@@ -354,77 +348,69 @@ public fun destination(
  *
  * @param from origin point
  * @param to destination point
- * @param units units of returned distance
- * @return distance between the two points in [units]
+ * @return distance between the two points
  * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
  */
-@JvmOverloads
 @ExperimentalTurfApi
-public fun distance(from: Position, to: Position, units: Units = Units.Kilometers): Double {
+public fun distance(from: Position, to: Position): Length {
     val dLat = radians(to.latitude - from.latitude)
     val dLon = radians(to.longitude - from.longitude)
     val lat1 = radians(from.latitude)
     val lat2 = radians(to.latitude)
 
     val a = sin(dLat / 2).pow(2) + sin(dLon / 2).pow(2) * cos(lat1) * cos(lat2)
-    return radiansToLength(2 * atan2(sqrt(a), sqrt(1 - a)), units)
+    return 2 * atan2(sqrt(a), sqrt(1 - a)).earthRadians
 }
 
 /**
- * Calculates the length of the given [LineString] in the given [Units].
+ * Calculates the length of the given [LineString].
  *
  * @param lineString The geometry to measure
- * @param units The unit of measurement to return the length in
- * @return The length of the geometry in [units].
+ * @return The length of the geometry
  */
 @ExperimentalTurfApi
-public fun length(lineString: LineString, units: Units): Double =
-    length(lineString.coordinates, units)
+public fun length(lineString: LineString): Length = length(lineString.coordinates)
 
 /**
- * Calculates the combined length of all [LineString]s from the given [MultiLineString] in the given
- * [Units].
+ * Calculates the combined length of all [LineString]s from the given [MultiLineString].
  *
  * @param multiLineString The geometry to measure
- * @param units The unit of measurement to return the length in
- * @return The length of the geometry in [units].
+ * @return The length of the geometry
  */
 @ExperimentalTurfApi
-public fun length(multiLineString: MultiLineString, units: Units): Double =
-    multiLineString.coordinates.fold(0.0) { acc, coords -> acc + length(coords, units) }
+public fun length(multiLineString: MultiLineString): Length =
+    multiLineString.coordinates.fold(Length.ZERO) { acc, coords -> acc + length(coords) }
 
 /**
- * Calculates the length of perimeter the given [Polygon] in the given [Units]. Any holes in the
- * polygon will be included in the length.
+ * Calculates the length of perimeter the given [Polygon]. Any holes in the polygon will be included
+ * in the length.
  *
  * @param polygon The geometry to measure
- * @param units The unit of measurement to return the length in
- * @return The length of the geometry in [units].
+ * @return The length of the geometry
  */
 @ExperimentalTurfApi
-public fun length(polygon: Polygon, units: Units): Double =
-    polygon.coordinates.fold(0.0) { acc, ring -> acc + length(ring, units) }
+public fun length(polygon: Polygon): Length =
+    polygon.coordinates.fold(Length.ZERO) { acc, ring -> acc + length(ring) }
 
 /**
- * Calculates the combined length of perimeter the [Polygon]s in the [MultiPolygon] in the given
- * [Units]. Any holes in the polygons will be included in the length.
+ * Calculates the combined length of perimeter the [Polygon]s in the [MultiPolygon]. Any holes in
+ * the polygons will be included in the length.
  *
  * @param multiPolygon The geometry to measure
- * @param units The unit of measurement to return the length in
- * @return The length of the geometry in [units].
+ * @return The length of the geometry
  */
 @ExperimentalTurfApi
-public fun length(multiPolygon: MultiPolygon, units: Units): Double =
-    multiPolygon.coordinates.fold(0.0) { total, polygon ->
-        total + polygon.fold(0.0) { acc, ring -> acc + length(ring, units) }
+public fun length(multiPolygon: MultiPolygon): Length =
+    multiPolygon.coordinates.fold(Length.ZERO) { total, polygon ->
+        total + polygon.fold(Length.ZERO) { acc, ring -> acc + length(ring) }
     }
 
 @ExperimentalTurfApi
-private fun length(coords: List<Position>, units: Units): Double {
-    var travelled = 0.0
+private fun length(coords: List<Position>): Length {
+    var travelled = Length.ZERO
     var prevCoords = coords[0]
     for (i in 1 until coords.size) {
-        travelled += distance(prevCoords, coords[i], units)
+        travelled += distance(prevCoords, coords[i])
         prevCoords = coords[i]
     }
     return travelled
@@ -498,7 +484,7 @@ public fun greatCircle(
         "Input $start and $end are diametrically opposite, thus there is no single route but rather infinite"
     }
 
-    val distance = distance(start, end, Units.Radians)
+    val distance = distance(start, end).inEarthRadians
 
     /**
      * Calculates the intermediate point on a great circle line
@@ -669,21 +655,16 @@ public fun envelope(geoJson: GeoJsonObject): Feature {
  *
  * @param point point to calculate from
  * @param line line to calculate to
- * @param units units of [distance]
  */
 @ExperimentalTurfApi
-public fun pointToLineDistance(
-    point: Position,
-    line: LineString,
-    units: Units = Units.Kilometers,
-): Double {
-    var distance = Double.MAX_VALUE
+public fun pointToLineDistance(point: Position, line: LineString): Length {
+    var distance = Length.MAX_VALUE
 
     line.coordinates
         .drop(1)
         .mapIndexed { idx, position -> line.coordinates[idx] to position }
         .forEach { (prev, cur) ->
-            val d = distanceToSegment(point, prev, cur, units)
+            val d = distanceToSegment(point, prev, cur)
             if (d < distance) distance = d
         }
 
@@ -691,12 +672,7 @@ public fun pointToLineDistance(
 }
 
 @OptIn(ExperimentalTurfApi::class)
-private fun distanceToSegment(
-    point: Position,
-    start: Position,
-    end: Position,
-    units: Units = Units.Meters,
-): Double {
+private fun distanceToSegment(point: Position, start: Position, end: Position): Length {
     fun dot(u: Position, v: Position): Double {
         return u.longitude * v.longitude + u.latitude * v.latitude
     }
@@ -706,11 +682,11 @@ private fun distanceToSegment(
 
     val projectionLengthSquared = dot(pointVector, segmentVector)
     if (projectionLengthSquared <= 0) {
-        return rhumbDistance(point, start, units)
+        return rhumbDistance(point, start)
     }
     val segmentLengthSquared = dot(segmentVector, segmentVector)
     if (segmentLengthSquared <= projectionLengthSquared) {
-        return rhumbDistance(point, end, units)
+        return rhumbDistance(point, end)
     }
 
     val projectionRatio = projectionLengthSquared / segmentLengthSquared
@@ -720,16 +696,12 @@ private fun distanceToSegment(
             start.latitude + projectionRatio * segmentVector.latitude,
         )
 
-    return rhumbDistance(point, projectedPoint, units)
+    return rhumbDistance(point, projectedPoint)
 }
 
 /** Calculates the distance along a rhumb line between two points. */
 @OptIn(ExperimentalTurfApi::class)
-public fun rhumbDistance(
-    origin: Position,
-    destination: Position,
-    units: Units = Units.Meters,
-): Double {
+public fun rhumbDistance(origin: Position, destination: Position): Length {
     // compensate the crossing of the 180th meridian
     val destination =
         Position(
@@ -755,7 +727,7 @@ public fun rhumbDistance(
     val q = if (abs(deltaPsi) > 10e-12) deltaPhi / deltaPsi else cos(phi1)
 
     val delta = sqrt(deltaPhi * deltaPhi + q * q * deltaLambda * deltaLambda)
-    val dist = delta * units.factor
+    val dist = delta.earthRadians
 
     return dist
 }

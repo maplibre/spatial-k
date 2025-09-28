@@ -18,6 +18,9 @@ import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
 import org.maplibre.spatialk.testutil.readResourceFile
 import org.maplibre.spatialk.turf.utils.assertDoubleEquals
+import org.maplibre.spatialk.units.inKilometers
+import org.maplibre.spatialk.units.inSquareMeters
+import org.maplibre.spatialk.units.kilometers
 
 @ExperimentalTurfApi
 class TurfMeasurementTest {
@@ -26,23 +29,34 @@ class TurfMeasurementTest {
     fun testAlong() {
         val geometry = LineString.fromJson(readResourceFile("measurement/along/lineString.json"))
 
-        assertEquals(Position(-79.4179672644524, 43.636029126566484), along(geometry, 1.0))
-        assertEquals(Position(-79.39973865844715, 43.63797943080659), along(geometry, 2.5))
-        assertEquals(Position(-79.37493324279785, 43.64470906117713), along(geometry, 100.0))
-        assertEquals(geometry.coordinates.last(), along(geometry, 100.0))
+        assertEquals(Position(-79.4179672644524, 43.636029126566484), along(geometry, 1.kilometers))
+        assertEquals(
+            Position(-79.39973865844715, 43.63797943080659),
+            along(geometry, 2.5.kilometers),
+        )
+        assertEquals(
+            Position(-79.37493324279785, 43.64470906117713),
+            along(geometry, 100.kilometers),
+        )
+        assertEquals(geometry.coordinates.last(), along(geometry, 100.kilometers))
     }
 
     @Test
     fun testArea() {
         val geometry = Polygon.fromJson(readResourceFile("measurement/area/polygon.json"))
-        assertDoubleEquals(236446.506, area(geometry), 0.001, "Single polygon")
+        assertDoubleEquals(236446.506, area(geometry).inSquareMeters, 0.001, "Single polygon")
 
         val other = Polygon.fromJson(readResourceFile("measurement/area/other.json"))
         val collection = geometryCollection {
             +geometry
             +other
         }
-        assertDoubleEquals(4173831.866, area(collection), 0.001, "Geometry Collection")
+        assertDoubleEquals(
+            4173831.866,
+            area(collection).inSquareMeters,
+            0.001,
+            "Geometry Collection",
+        )
     }
 
     @Test
@@ -92,7 +106,7 @@ class TurfMeasurementTest {
     @Test
     fun testDestination() {
         val point0 = Position(-75.0, 38.10096062273525)
-        val (longitude, latitude) = destination(point0, 100.0, 0.0)
+        val (longitude, latitude) = destination(point0, 100.kilometers, 0.0)
 
         assertDoubleEquals(-75.0, longitude, 0.1)
         assertDoubleEquals(39.000281, latitude, 0.000001)
@@ -103,14 +117,14 @@ class TurfMeasurementTest {
         val a = Position(-73.67, 45.48)
         val b = Position(-79.48, 43.68)
 
-        assertEquals(501.64563403765925, distance(a, b))
+        assertEquals(501.64563403765925, distance(a, b).inKilometers)
     }
 
     @Test
     fun testLength() {
         val geometry = LineString.fromJson(readResourceFile("measurement/length/lineString.json"))
 
-        assertEquals(42.560767589197006, length(geometry, Units.Kilometers))
+        assertEquals(42.560767589197006, length(geometry).inKilometers)
     }
 
     @Test
@@ -245,14 +259,13 @@ class TurfMeasurementTest {
             )
 
         val distance = pointToLineDistance(point, line)
-        assertDoubleEquals(188.01568693725255, distance, 0.000001)
+        assertDoubleEquals(188.01568693725255, distance.inKilometers, 0.000001)
     }
 
     @Test
     fun testRhumbDistance() {
-        val distance =
-            rhumbDistance(Position(-75.343, 39.984), Position(-75.534, 39.123), Units.Kilometers)
+        val distance = rhumbDistance(Position(-75.343, 39.984), Position(-75.534, 39.123))
 
-        assertDoubleEquals(97.12923942772163, distance, 0.000001)
+        assertDoubleEquals(97.12923942772163, distance.inKilometers, 0.000001)
     }
 }

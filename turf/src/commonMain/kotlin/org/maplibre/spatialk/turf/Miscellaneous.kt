@@ -3,10 +3,10 @@
 package org.maplibre.spatialk.turf
 
 import kotlin.jvm.JvmName
-import kotlin.math.max
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.units.Length
 
 /**
  * Returns intersecting points between two [LineString]s.
@@ -105,8 +105,8 @@ public fun lineSlice(start: Position, stop: Position, line: LineString): LineStr
 @ExperimentalTurfApi
 public data class NearestPointOnLineResult(
     val point: Position,
-    val distance: Double,
-    val location: Double,
+    val distance: Length,
+    val location: Length,
     val index: Int,
 )
 
@@ -118,12 +118,8 @@ public data class NearestPointOnLineResult(
  * @return The closest position along the line
  */
 @ExperimentalTurfApi
-public fun nearestPointOnLine(
-    line: LineString,
-    point: Position,
-    units: Units = Units.Kilometers,
-): NearestPointOnLineResult {
-    return nearestPointOnLine(listOf(line.coordinates), point, units)
+public fun nearestPointOnLine(line: LineString, point: Position): NearestPointOnLineResult {
+    return nearestPointOnLine(listOf(line.coordinates), point)
 }
 
 /**
@@ -134,43 +130,38 @@ public fun nearestPointOnLine(
  * @return The closest position along the lines
  */
 @ExperimentalTurfApi
-public fun nearestPointOnLine(
-    lines: MultiLineString,
-    point: Position,
-    units: Units = Units.Kilometers,
-): NearestPointOnLineResult {
-    return nearestPointOnLine(lines.coordinates, point, units)
+public fun nearestPointOnLine(lines: MultiLineString, point: Position): NearestPointOnLineResult {
+    return nearestPointOnLine(lines.coordinates, point)
 }
 
 @ExperimentalTurfApi
 internal fun nearestPointOnLine(
     lines: List<List<Position>>,
     point: Position,
-    units: Units = Units.Kilometers,
 ): NearestPointOnLineResult {
     var closest =
         NearestPointOnLineResult(
             Position(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY),
-            Double.POSITIVE_INFINITY,
-            Double.POSITIVE_INFINITY,
+            Length.POSITIVE_INFINITY,
+            Length.POSITIVE_INFINITY,
             -1,
         )
 
-    var length = 0.0
+    var length = Length.ZERO
 
     lines.forEach { coords ->
         for (i in 0 until coords.size - 1) {
             val start = coords[i]
-            val startDistance = distance(point, coords[i], units = units)
+            val startDistance = distance(point, coords[i])
             val stop = coords[i + 1]
-            val stopDistance = distance(point, coords[i + 1], units = units)
+            val stopDistance = distance(point, coords[i + 1])
 
-            val sectionLength = distance(start, stop, units = units)
+            val sectionLength = distance(start, stop)
 
-            val heightDistance = max(startDistance, stopDistance)
+            val heightDistance = maxOf(startDistance, stopDistance)
             val direction = bearing(start, stop)
-            val perpPoint1 = destination(point, heightDistance, direction + 90, units = units)
-            val perpPoint2 = destination(point, heightDistance, direction - 90, units = units)
+            val perpPoint1 = destination(point, heightDistance, direction + 90)
+            val perpPoint2 = destination(point, heightDistance, direction - 90)
 
             val intersect =
                 lineIntersect(LineString(perpPoint1, perpPoint2), LineString(start, stop))
@@ -196,13 +187,13 @@ internal fun nearestPointOnLine(
                     )
             }
 
-            if (intersect != null && distance(point, intersect, units = units) < closest.distance) {
-                val intersectDistance = distance(point, intersect, units = units)
+            if (intersect != null && distance(point, intersect) < closest.distance) {
+                val intersectDistance = distance(point, intersect)
                 closest =
                     closest.copy(
                         point = intersect,
                         distance = intersectDistance,
-                        location = length + distance(start, intersect, units = units),
+                        location = length + distance(start, intersect),
                         index = i,
                     )
             }

@@ -59,7 +59,10 @@ kotlin {
     sourceSets {
         all { with(languageSettings) { optIn("kotlin.RequiresOptIn") } }
 
-        commonMain.dependencies { api(project(":geojson")) }
+        commonMain.dependencies {
+            api(project(":geojson"))
+            api(project(":units"))
+        }
 
         commonTest.dependencies {
             implementation(kotlin("test"))
@@ -79,7 +82,7 @@ tasks
                 "wasmJsD8Test",
                 "wasmWasi.*Test",
                 ".*Simulator.*Test",
-                // runs, but fails some tests
+                // runs but fails some tests
                 "wasmJsNodeTest",
             )
             .any { task.name.matches(it.toRegex()) }

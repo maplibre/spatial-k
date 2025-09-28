@@ -10,23 +10,19 @@ import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.units.Length
+import org.maplibre.spatialk.units.inEarthDegrees
 
 /**
  * Creates a square grid within a [BoundingBox].
  *
  * @param bbox [BoundingBox] bbox extent
- * @param cellWidth of each cell, in units
- * @param cellHeight of each cell, in units
- * @param units The unit of measurement of the cellSide length
+ * @param cellWidth of each cell
+ * @param cellHeight of each cell
  * @return a [FeatureCollection] grid of polygons
  */
 @ExperimentalTurfApi
-public fun squareGrid(
-    bbox: BoundingBox,
-    cellWidth: Double,
-    cellHeight: Double,
-    units: Units = Units.Kilometers,
-): FeatureCollection {
+public fun squareGrid(bbox: BoundingBox, cellWidth: Length, cellHeight: Length): FeatureCollection {
     val featureList = mutableListOf<Feature>()
     val west = bbox.southwest.longitude
     val south = bbox.southwest.latitude
@@ -34,10 +30,10 @@ public fun squareGrid(
     val north = bbox.northeast.latitude
 
     val bboxWidth = east - west
-    val cellWidthDeg = convertLength(cellWidth, units, Units.Degrees)
+    val cellWidthDeg = cellWidth.inEarthDegrees
 
     val bboxHeight = north - south
-    val cellHeightDeg = convertLength(cellHeight, units, Units.Degrees)
+    val cellHeightDeg = cellHeight.inEarthDegrees
 
     val columns = floor(abs(bboxWidth) / cellWidthDeg)
     val rows = floor(abs(bboxHeight) / cellHeightDeg)

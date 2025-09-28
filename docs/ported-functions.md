@@ -173,13 +173,8 @@ Use the [GeoJson DSL](./geojson.md#geojson-dsl) instead.
 
 ## Unit Conversion
 
+For converting between units, see the [Units](./units.md) module.
+
 - [x] [`bearingToAzimuth`](./api/turf/org.maplibre.spatialk.turf/bearing-to-azimuth.html)
-- [x] [`convertArea`](./api/turf/org.maplibre.spatialk.turf/convert-area.html)
-- [x] [`convertLength`](./api/turf/org.maplibre.spatialk.turf/convert-length.html)
-- [ ] `degreesToRadians`
-- [x] [`lengthToRadians`](./api/turf/org.maplibre.spatialk.turf/length-to-radians.html)
-- [x] [`lengthToDegrees`](./api/turf/org.maplibre.spatialk.turf/length-to-degrees.html)
-- [x] [`radiansToLength`](./api/turf/org.maplibre.spatialk.turf/radians-to-length.html)
-- [ ] `radiansToDegrees`
 - [ ] `toMercator`
 - [ ] `toWgs84`

@@ -1,6 +1,7 @@
 package org.maplibre.spatialk.units
 
 import kotlin.jvm.JvmInline
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 import org.maplibre.spatialk.units.AreaUnit.International.SquareMeters
@@ -9,6 +10,26 @@ import org.maplibre.spatialk.units.LengthUnit.International.Meters
 @JvmInline
 public value class Area private constructor(private val valueInMetersSquared: Double) :
     Comparable<Area> {
+
+    public val absoluteValue: Area
+        get() = Area(valueInMetersSquared.absoluteValue)
+
+    public val isInfinite: Boolean
+        get() =
+            valueInMetersSquared == Double.POSITIVE_INFINITY ||
+                valueInMetersSquared == Double.POSITIVE_INFINITY
+
+    public val isFinite: Boolean
+        get() = !isInfinite
+
+    public val isPositive: Boolean
+        get() = valueInMetersSquared > 0
+
+    public val isNegative: Boolean
+        get() = valueInMetersSquared < 0
+
+    public val isZero: Boolean
+        get() = valueInMetersSquared == 0.0
 
     public fun toDouble(unit: AreaUnit): Double = valueInMetersSquared / unit.metersSquaredPerUnit
 
@@ -20,6 +41,10 @@ public value class Area private constructor(private val valueInMetersSquared: Do
 
     public operator fun plus(other: Area): Area =
         Area(valueInMetersSquared + other.valueInMetersSquared)
+
+    public operator fun unaryMinus(): Area = Area(-valueInMetersSquared)
+
+    public operator fun unaryPlus(): Area = Area(valueInMetersSquared)
 
     public operator fun minus(other: Area): Area =
         Area(valueInMetersSquared - other.valueInMetersSquared)
@@ -33,12 +58,6 @@ public value class Area private constructor(private val valueInMetersSquared: Do
 
     public operator fun div(other: Area): Double = valueInMetersSquared / other.valueInMetersSquared
 
-    public fun isInfinite(): Boolean =
-        valueInMetersSquared == Double.POSITIVE_INFINITY ||
-            valueInMetersSquared == Double.POSITIVE_INFINITY
-
-    public fun isFinite(): Boolean = !isInfinite()
-
     public override fun toString(): String = toString(SquareMeters)
 
     public fun toString(unit: AreaUnit, decimalPlaces: Int = Int.MAX_VALUE): String =
@@ -47,7 +66,14 @@ public value class Area private constructor(private val valueInMetersSquared: Do
     override fun compareTo(other: Area): Int =
         valueInMetersSquared.compareTo(other.valueInMetersSquared)
 
-    internal companion object {
-        fun of(value: Number, unit: AreaUnit) = Area(value.toDouble() * unit.metersSquaredPerUnit)
+    public companion object {
+        public val ZERO: Area = Area(0.0)
+        public val MAX_VALUE: Area = Area(Double.MAX_VALUE)
+        public val MIN_VALUE: Area = Area(Double.MIN_VALUE)
+        public val POSITIVE_INFINITY: Area = Area(Double.POSITIVE_INFINITY)
+        public val NEGATIVE_INFINITY: Area = Area(Double.NEGATIVE_INFINITY)
+
+        internal fun of(value: Number, unit: AreaUnit) =
+            Area(value.toDouble() * unit.metersSquaredPerUnit)
     }
 }

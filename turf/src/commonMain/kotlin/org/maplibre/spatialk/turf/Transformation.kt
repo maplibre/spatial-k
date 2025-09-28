@@ -8,6 +8,7 @@ import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.units.Length
 
 /**
  * Takes a [LineString] and returns a curved version by applying a Bezier spline algorithm.
@@ -148,22 +149,16 @@ public fun bezierSpline(
  * kilometers; and steps for precision.
  *
  * @param center center point of circle
- * @param radius radius of the circle defined in [units]
+ * @param radius radius of the circle
  * @param steps the number of steps must be at least four. Default is 64
- * @param units unit of [radius], default is [Units.Kilometers]
  */
 @ExperimentalTurfApi
-public fun circle(
-    center: Point,
-    radius: Double,
-    steps: Int = 64,
-    units: Units = Units.Kilometers,
-): Polygon {
+public fun circle(center: Point, radius: Length, steps: Int = 64): Polygon {
     require(steps >= 4) { "circle needs to have four or more coordinates." }
-    require(radius > 0) { "radius must be a positive value" }
+    require(radius.isPositive) { "radius must be a positive value" }
     val coordinates =
         (0..steps).map { step ->
-            destination(center.coordinates, radius, (step * -360) / steps.toDouble(), units)
+            destination(center.coordinates, radius, (step * -360) / steps.toDouble())
         }
     val ring = coordinates.plus(coordinates.first())
     return Polygon(coordinates = listOf(ring), bbox = computeBbox(ring))

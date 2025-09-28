@@ -8,6 +8,9 @@ import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.readResourceFile
+import org.maplibre.spatialk.turf.utils.assertPositionEquals
+import org.maplibre.spatialk.units.kilometers
+import org.maplibre.spatialk.units.meters
 
 class GridsTest {
 
@@ -23,29 +26,16 @@ class GridsTest {
     @OptIn(ExperimentalTurfApi::class)
     @Test
     fun testSquareGrid() {
-        squareGrid(bbox = box, cellWidth = 200.0, cellHeight = 200.0, units = Units.Meters).also {
+        squareGrid(bbox = box, cellWidth = 200.meters, cellHeight = 200.meters).also {
             verifyValidGrid(it)
         }
-    }
-
-    @OptIn(ExperimentalTurfApi::class)
-    @Test
-    fun testSquareGridSameCellSizeButDifferentUnitWillHaveSameResult() {
-        squareGrid(bbox = box, cellWidth = 0.2, cellHeight = 0.2, units = Units.Kilometers).also {
-            verifyValidGrid(it)
-        }
-    }
-
-    @OptIn(ExperimentalTurfApi::class)
-    @Test
-    fun defaultUnitsValueIsKilometers() {
-        squareGrid(bbox = box, cellWidth = 0.2, cellHeight = 0.2).also { verifyValidGrid(it) }
     }
 
     @OptIn(ExperimentalTurfApi::class)
     private fun verifyValidGrid(grid: FeatureCollection) {
         assertEquals(16, grid.features.size)
-        val expectedFistItem =
+
+        val expectedFirstItem =
             mutableListOf(
                 Position(13.170147683370761, 52.515969323342695),
                 Position(13.170147683370761, 52.517765865),
@@ -53,7 +43,13 @@ class GridsTest {
                 Position(13.17194422502807, 52.515969323342695),
                 Position(13.170147683370761, 52.515969323342695),
             )
-        assertEquals(expectedFistItem, grid.features.first().geometry!!.coordAll())
+        val actualFirstItem = grid.features.first().geometry!!.coordAll()
+
+        assertEquals(expectedFirstItem.size, actualFirstItem.size)
+        expectedFirstItem.forEachIndexed { index, position ->
+            assertPositionEquals(expectedFirstItem[index], actualFirstItem[index])
+        }
+
         val expectedLastItem =
             mutableListOf(
                 Position(13.18272347497193, 52.517765865),
@@ -62,13 +58,18 @@ class GridsTest {
                 Position(13.18452001662924, 52.517765865),
                 Position(13.18272347497193, 52.517765865),
             )
-        assertEquals(expectedLastItem, grid.features.last().geometry!!.coordAll())
+        val actualLastItem = grid.features.last().geometry!!.coordAll()
+
+        assertEquals(expectedLastItem.size, actualLastItem.size)
+        expectedFirstItem.forEachIndexed { index, position ->
+            assertPositionEquals(expectedLastItem[index], actualLastItem[index])
+        }
     }
 
     @OptIn(ExperimentalTurfApi::class)
     @Test
     fun cellSizeBiggerThanBboxExtendLeadIntoEmptyGrid() {
-        squareGrid(bbox = box, cellWidth = 2000.0, cellHeight = 2000.0, units = Units.Meters).also {
+        squareGrid(bbox = box, cellWidth = 2000.meters, cellHeight = 2000.meters).also {
             assertEquals(0, it.features.size)
         }
     }
@@ -76,7 +77,7 @@ class GridsTest {
     @OptIn(ExperimentalTurfApi::class)
     @Test
     fun smallerCellSizeWillOutputMoreCellsInGrid() {
-        squareGrid(bbox = box, cellWidth = 0.1, cellHeight = 0.1).also {
+        squareGrid(bbox = box, cellWidth = 0.1.kilometers, cellHeight = 0.1.kilometers).also {
             assertEquals(85, it.features.size)
         }
     }
@@ -84,7 +85,7 @@ class GridsTest {
     @OptIn(ExperimentalTurfApi::class)
     @Test
     fun increasedCellSizeWillOutputLessCellsInGrid() {
-        squareGrid(bbox = box, cellWidth = 0.3, cellHeight = 0.3).also {
+        squareGrid(bbox = box, cellWidth = 0.3.kilometers, cellHeight = 0.3.kilometers).also {
             assertEquals(5, it.features.size)
         }
     }

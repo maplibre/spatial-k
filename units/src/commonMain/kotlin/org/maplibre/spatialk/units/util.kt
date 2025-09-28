@@ -3,6 +3,7 @@ package org.maplibre.spatialk.units
 import org.maplibre.spatialk.units.AreaUnit.Imperial.*
 import org.maplibre.spatialk.units.AreaUnit.International.*
 import org.maplibre.spatialk.units.AreaUnit.Metric.*
+import org.maplibre.spatialk.units.LengthUnit.Geodesy.*
 import org.maplibre.spatialk.units.LengthUnit.Imperial.*
 import org.maplibre.spatialk.units.LengthUnit.International.*
 
@@ -23,20 +24,20 @@ public inline val Number.kilometers: Length
 public inline val Number.feet: Length
     get() = toLength(Feet)
 
-public inline val Number.yards: Length
-    get() = toLength(Yards)
-
 public inline val Number.miles: Length
     get() = toLength(Miles)
+
+public inline val Number.earthRadians: Length
+    get() = toLength(Radians)
+
+public inline val Number.earthDegrees: Length
+    get() = toLength(Degrees)
 
 public inline val Number.squareMeters: Area
     get() = toArea(SquareMeters)
 
 public inline val Number.squareKilometers: Area
     get() = toArea(SquareKilometers)
-
-public inline val Number.hectares: Area
-    get() = toArea(Hectares)
 
 public inline val Number.squareFeet: Area
     get() = toArea(SquareFeet)
@@ -46,6 +47,39 @@ public inline val Number.squareMiles: Area
 
 public inline val Number.acres: Area
     get() = toArea(Acres)
+
+public inline val Length.inMeters: Double
+    get() = toDouble(Meters)
+
+public inline val Length.inKilometers: Double
+    get() = toDouble(Kilometers)
+
+public inline val Length.inFeet: Double
+    get() = toDouble(Feet)
+
+public inline val Length.inMiles: Double
+    get() = toDouble(Miles)
+
+public inline val Length.inEarthRadians: Double
+    get() = toDouble(Radians)
+
+public inline val Length.inEarthDegrees: Double
+    get() = toDouble(Degrees)
+
+public inline val Area.inSquareMeters: Double
+    get() = toDouble(SquareMeters)
+
+public inline val Area.inSquareKilometers: Double
+    get() = toDouble(SquareKilometers)
+
+public inline val Area.inSquareFeet: Double
+    get() = toDouble(SquareFeet)
+
+public inline val Area.inSquareMiles: Double
+    get() = toDouble(SquareMiles)
+
+public inline val Area.inAcres: Double
+    get() = toDouble(Acres)
 
 internal fun Double.toRoundedString(decimalPlaces: Int): String {
     val str = toString().split('.', limit = 1)

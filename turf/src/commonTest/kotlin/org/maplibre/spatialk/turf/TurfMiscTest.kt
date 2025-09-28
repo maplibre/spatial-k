@@ -10,6 +10,7 @@ import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.readResourceFile
 import org.maplibre.spatialk.turf.utils.assertDoubleEquals
 import org.maplibre.spatialk.turf.utils.assertPositionEquals
+import org.maplibre.spatialk.units.inKilometers
 
 @ExperimentalTurfApi
 class TurfMiscTest {
@@ -58,8 +59,8 @@ class TurfMiscTest {
             )
         assertDoubleEquals(123.924613, result.point.longitude, 0.00001)
         assertDoubleEquals(-19.025117, result.point.latitude, 0.00001)
-        assertDoubleEquals(120.886021, result.distance, 0.00001)
-        assertDoubleEquals(214.548785, result.location, 0.00001)
+        assertDoubleEquals(120.886021, result.distance.inKilometers, 0.00001)
+        assertDoubleEquals(214.548785, result.location.inKilometers, 0.00001)
         assertEquals(0, result.index)
     }
 }
