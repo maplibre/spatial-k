@@ -2,9 +2,15 @@ package org.maplibre.spatialk.units
 
 import kotlin.math.PI
 
-public interface LengthUnit : Comparable<LengthUnit> {
-    public val metersPerUnit: Double
+public sealed interface UnitOfMeasure {
     public val symbol: String
+
+    public fun format(value: Double, decimalPlaces: Int = Int.MAX_VALUE): String =
+        "${value.toRoundedString(decimalPlaces)} $symbol"
+}
+
+public interface LengthUnit : UnitOfMeasure, Comparable<LengthUnit> {
+    public val metersPerUnit: Double
 
     override fun compareTo(other: LengthUnit): Int = metersPerUnit.compareTo(other.metersPerUnit)
 
@@ -57,7 +63,10 @@ public interface LengthUnit : Comparable<LengthUnit> {
         LengthUnit {
         public data object Radians : Geodesy(6_371_008.8, "rad")
 
-        public data object Degrees : Geodesy(Radians.metersPerUnit * PI / 180, "°")
+        public data object Degrees : Geodesy(Radians.metersPerUnit * PI / 180, "°") {
+            override fun format(value: Double, decimalPlaces: Int): String =
+                "${value.toRoundedString(decimalPlaces)}$symbol"
+        }
 
         public data object Minutes : Geodesy(Degrees.metersPerUnit * PI / (180 * 60), "arcmin")
 

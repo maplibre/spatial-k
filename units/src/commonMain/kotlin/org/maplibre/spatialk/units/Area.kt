@@ -61,7 +61,7 @@ public value class Area private constructor(private val valueInMetersSquared: Do
     public override fun toString(): String = toString(SquareMeters)
 
     public fun toString(unit: AreaUnit, decimalPlaces: Int = Int.MAX_VALUE): String =
-        "${toDouble(unit).toRoundedString(decimalPlaces)} ${unit.symbol}"
+        unit.format(toDouble(unit), decimalPlaces)
 
     override fun compareTo(other: Area): Int =
         valueInMetersSquared.compareTo(other.valueInMetersSquared)

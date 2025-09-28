@@ -54,7 +54,7 @@ public value class Length private constructor(private val valueInMeters: Double)
     override fun toString(): String = toString(Meters)
 
     public fun toString(unit: LengthUnit, decimalPlaces: Int = Int.MAX_VALUE): String =
-        "${toDouble(unit).toRoundedString(decimalPlaces)} ${unit.symbol}"
+        unit.format(toDouble(unit), decimalPlaces)
 
     override fun compareTo(other: Length): Int = valueInMeters.compareTo(other.valueInMeters)
 

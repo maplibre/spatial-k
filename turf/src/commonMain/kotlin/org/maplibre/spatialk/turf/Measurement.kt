@@ -313,9 +313,9 @@ internal fun finalBearing(start: Position, end: Position): Double =
     (bearing(end, start) + 180) % 360
 
 /**
- * Takes a [position][origin] and calculates the location of a destination position given a distance
- * in degrees, radians, miles, or kilometers; and bearing in degrees. This uses the Haversine
- * formula to account for global curvature.
+ * Takes an [origin] [Position] and calculates the location of a destination position given a
+ * distance [Length] and bearing in degrees. This uses the Haversine formula to account for global
+ * curvature.
  *
  * @param origin starting point
  * @param distance distance from the origin point

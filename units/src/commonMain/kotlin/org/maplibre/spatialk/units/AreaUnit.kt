@@ -1,8 +1,7 @@
 package org.maplibre.spatialk.units
 
-public interface AreaUnit : Comparable<AreaUnit> {
+public interface AreaUnit : UnitOfMeasure, Comparable<AreaUnit> {
     public val metersSquaredPerUnit: Double
-    public val symbol: String
 
     override fun compareTo(other: AreaUnit): Int =
         metersSquaredPerUnit.compareTo(other.metersSquaredPerUnit)
