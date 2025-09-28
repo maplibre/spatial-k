@@ -7,6 +7,7 @@ import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.Length
+import org.maplibre.spatialk.units.meters
 
 /**
  * Returns intersecting points between two [LineString]s.
@@ -142,12 +143,12 @@ internal fun nearestPointOnLine(
     var closest =
         NearestPointOnLineResult(
             Position(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY),
-            Length.POSITIVE_INFINITY,
-            Length.POSITIVE_INFINITY,
+            Double.POSITIVE_INFINITY.meters,
+            Double.POSITIVE_INFINITY.meters,
             -1,
         )
 
-    var length = Length.ZERO
+    var length = 0.meters
 
     lines.forEach { coords ->
         for (i in 0 until coords.size - 1) {

@@ -31,6 +31,8 @@ import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.Area
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit.Geodesy.Radians
+import org.maplibre.spatialk.units.meters
+import org.maplibre.spatialk.units.squareMeters
 import org.maplibre.spatialk.units.times
 import org.maplibre.spatialk.units.toLength
 
@@ -43,7 +45,7 @@ import org.maplibre.spatialk.units.toLength
  */
 @ExperimentalTurfApi
 public fun along(line: LineString, distance: Length): Position {
-    var travelled = Length.ZERO
+    var travelled = 0.meters
 
     line.coordinates.forEachIndexed { i, coordinate ->
         when {
@@ -74,7 +76,7 @@ public fun along(line: LineString, distance: Length): Position {
 public fun area(geometry: Geometry): Area {
     return when (geometry) {
         is GeometryCollection ->
-            geometry.geometries.fold(Area.ZERO) { acc, geom -> acc + area(geom) }
+            geometry.geometries.fold(0.squareMeters) { acc, geom -> acc + area(geom) }
         else -> calculateArea(geometry)
     }
 }
@@ -83,13 +85,13 @@ private fun calculateArea(geometry: Geometry): Area {
     return when (geometry) {
         is Polygon -> polygonArea(geometry.coordinates)
         is MultiPolygon ->
-            geometry.coordinates.fold(Area.ZERO) { acc, coords -> acc + polygonArea(coords) }
-        else -> Area.ZERO
+            geometry.coordinates.fold(0.squareMeters) { acc, coords -> acc + polygonArea(coords) }
+        else -> 0.squareMeters
     }
 }
 
 private fun polygonArea(coordinates: List<List<Position>>): Area {
-    var total = Area.ZERO
+    var total = 0.squareMeters
     if (coordinates.isNotEmpty()) {
         total += ringArea(coordinates[0]).absoluteValue
         for (i in 1 until coordinates.size) {
@@ -145,7 +147,7 @@ private fun ringArea(coordinates: List<Position>): Area {
         }
         return (total * EARTH_EQUATOR_RADIUS * EARTH_EQUATOR_RADIUS / 2)
     }
-    return Area.ZERO
+    return 0.squareMeters
 }
 
 /**
@@ -379,7 +381,7 @@ public fun length(lineString: LineString): Length = length(lineString.coordinate
  */
 @ExperimentalTurfApi
 public fun length(multiLineString: MultiLineString): Length =
-    multiLineString.coordinates.fold(Length.ZERO) { acc, coords -> acc + length(coords) }
+    multiLineString.coordinates.fold(0.meters) { acc, coords -> acc + length(coords) }
 
 /**
  * Calculates the length of perimeter the given [Polygon]. Any holes in the polygon will be included
@@ -390,7 +392,7 @@ public fun length(multiLineString: MultiLineString): Length =
  */
 @ExperimentalTurfApi
 public fun length(polygon: Polygon): Length =
-    polygon.coordinates.fold(Length.ZERO) { acc, ring -> acc + length(ring) }
+    polygon.coordinates.fold(0.meters) { acc, ring -> acc + length(ring) }
 
 /**
  * Calculates the combined length of perimeter the [Polygon]s in the [MultiPolygon]. Any holes in
@@ -401,13 +403,13 @@ public fun length(polygon: Polygon): Length =
  */
 @ExperimentalTurfApi
 public fun length(multiPolygon: MultiPolygon): Length =
-    multiPolygon.coordinates.fold(Length.ZERO) { total, polygon ->
-        total + polygon.fold(Length.ZERO) { acc, ring -> acc + length(ring) }
+    multiPolygon.coordinates.fold(0.meters) { total, polygon ->
+        total + polygon.fold(0.meters) { acc, ring -> acc + length(ring) }
     }
 
 @ExperimentalTurfApi
 private fun length(coords: List<Position>): Length {
-    var travelled = Length.ZERO
+    var travelled = 0.meters
     var prevCoords = coords[0]
     for (i in 1 until coords.size) {
         travelled += distance(prevCoords, coords[i])
@@ -658,7 +660,7 @@ public fun envelope(geoJson: GeoJsonObject): Feature {
  */
 @ExperimentalTurfApi
 public fun pointToLineDistance(point: Position, line: LineString): Length {
-    var distance = Length.MAX_VALUE
+    var distance = Double.MAX_VALUE.meters
 
     line.coordinates
         .drop(1)

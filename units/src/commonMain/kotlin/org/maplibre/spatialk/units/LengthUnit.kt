@@ -2,35 +2,17 @@ package org.maplibre.spatialk.units
 
 import kotlin.math.PI
 
-public sealed interface UnitOfMeasure {
-    public val symbol: String
+public abstract class LengthUnit(metersPerUnit: Double) : Unit<Dimension.Length>() {
+    final override val magnitude: Double = metersPerUnit
 
-    public fun format(value: Double, decimalPlaces: Int = Int.MAX_VALUE): String =
-        "${value.toRoundedString(decimalPlaces)} $symbol"
-}
-
-public interface LengthUnit : UnitOfMeasure, Comparable<LengthUnit> {
-    public val metersPerUnit: Double
-
-    override fun compareTo(other: LengthUnit): Int = metersPerUnit.compareTo(other.metersPerUnit)
-
-    /** Create an [AreaUnit] by multiplying this [LengthUnit] by the given [LengthUnit]. */
-    public operator fun times(other: LengthUnit): AreaUnit {
-        return object : AreaUnit {
-            override val metersSquaredPerUnit: Double =
-                this@LengthUnit.metersPerUnit * other.metersPerUnit
-
-            override val symbol: String =
-                if (this@LengthUnit == other) "${this@LengthUnit.symbol}²"
-                else "${this@LengthUnit.symbol}-${other.symbol}"
+    public open operator fun times(other: LengthUnit): AreaUnit =
+        object : AreaUnit(magnitude * other.magnitude) {
+            override val symbol: String = "${this@LengthUnit.symbol}-${other.symbol}"
         }
-    }
 
     /** SI units of length. */
-    public sealed class International(
-        override val metersPerUnit: Double,
-        override val symbol: String,
-    ) : LengthUnit {
+    public sealed class International(metersPerUnit: Double, final override val symbol: String) :
+        LengthUnit(metersPerUnit) {
         public data object Millimeters : International(0.001, "mm") {
             override fun times(other: LengthUnit): AreaUnit =
                 if (other is Millimeters) AreaUnit.International.SquareMillimeters
@@ -59,24 +41,23 @@ public interface LengthUnit : UnitOfMeasure, Comparable<LengthUnit> {
      * Angular units measuring the length of an arc on the surface of the earth; approximated using
      * the average radius of the Earth (= 6,371.0088 km).
      */
-    public sealed class Geodesy(override val metersPerUnit: Double, override val symbol: String) :
-        LengthUnit {
+    public sealed class Geodesy(metersPerUnit: Double, final override val symbol: String) :
+        LengthUnit(metersPerUnit) {
         public data object Radians : Geodesy(6_371_008.8, "rad")
 
-        public data object Degrees : Geodesy(Radians.metersPerUnit * PI / 180, "°") {
+        public data object Degrees : Geodesy(Radians.magnitude * PI / 180, "°") {
             override fun format(value: Double, decimalPlaces: Int): String =
                 "${value.toRoundedString(decimalPlaces)}$symbol"
         }
 
-        public data object Minutes : Geodesy(Degrees.metersPerUnit * PI / (180 * 60), "arcmin")
+        public data object Minutes : Geodesy(Degrees.magnitude * PI / (180 * 60), "arcmin")
 
-        public data object Seconds :
-            Geodesy(Minutes.metersPerUnit * PI / (180 * 60 * 60), "arcsec")
+        public data object Seconds : Geodesy(Minutes.magnitude * PI / (180 * 60 * 60), "arcsec")
     }
 
     /** British Imperial and US Customary units of length. */
-    public sealed class Imperial(override val metersPerUnit: Double, override val symbol: String) :
-        LengthUnit {
+    public sealed class Imperial(metersPerUnit: Double, final override val symbol: String) :
+        LengthUnit(metersPerUnit) {
         public data object Inches : Imperial(.0254, "in") {
             override fun times(other: LengthUnit): AreaUnit =
                 if (other is Inches) AreaUnit.Imperial.SquareInches else super.times(other)

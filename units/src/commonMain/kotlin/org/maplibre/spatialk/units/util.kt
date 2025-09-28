@@ -5,13 +5,21 @@ import org.maplibre.spatialk.units.AreaUnit.International.*
 import org.maplibre.spatialk.units.LengthUnit.Imperial.*
 import org.maplibre.spatialk.units.LengthUnit.International.*
 
-public operator fun Number.times(other: Length): Length = other * this
+public typealias Length = Measurement<Dimension.Length>
 
-public operator fun Number.times(other: Area): Area = other * this
+public typealias Area = Measurement<Dimension.Area>
 
-public fun Number.toLength(unit: LengthUnit): Length = Length.of(this, unit)
+public operator fun <D : Dimension> Number.times(other: Measurement<D>): Measurement<D> =
+    other * this
 
-public fun Number.toArea(unit: AreaUnit): Area = Area.of(this, unit)
+public operator fun Length.times(other: Length): Area =
+    (this.inMeters * other.inMeters).squareMeters
+
+public operator fun Area.div(other: Length): Length = (this.inSquareMeters / other.inMeters).meters
+
+public fun Number.toLength(unit: LengthUnit): Length = Length(this.toDouble() * unit.magnitude)
+
+public fun Number.toArea(unit: AreaUnit): Area = Area(this.toDouble() * unit.magnitude)
 
 public inline val Number.meters: Length
     get() = toLength(Meters)

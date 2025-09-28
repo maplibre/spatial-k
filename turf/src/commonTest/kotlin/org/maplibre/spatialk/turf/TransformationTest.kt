@@ -13,8 +13,8 @@ import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.kilometers
+import org.maplibre.spatialk.units.meters
 
 @ExperimentalTurfApi
 class TransformationTest {
@@ -65,8 +65,7 @@ class TransformationTest {
         val circle =
             circle(
                 center = point.geometry as Point,
-                radius =
-                    point.properties["radius"]?.jsonPrimitive?.double?.kilometers ?: Length.ZERO,
+                radius = point.properties["radius"]?.jsonPrimitive?.double?.kilometers ?: 0.meters,
             )
 
         val allCoordinates = expectedCircle.geometry?.coordAll().orEmpty()

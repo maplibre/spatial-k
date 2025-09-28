@@ -1,15 +1,12 @@
 package org.maplibre.spatialk.units
 
-public interface AreaUnit : UnitOfMeasure, Comparable<AreaUnit> {
-    public val metersSquaredPerUnit: Double
-
-    override fun compareTo(other: AreaUnit): Int =
-        metersSquaredPerUnit.compareTo(other.metersSquaredPerUnit)
+public abstract class AreaUnit(metersSquaredPerUnit: Double) : Unit<Dimension.Area>() {
+    final override val magnitude: Double = metersSquaredPerUnit
 
     public sealed class International(
-        override val metersSquaredPerUnit: Double,
-        override val symbol: String,
-    ) : AreaUnit {
+        metersSquaredPerUnit: Double,
+        public final override val symbol: String,
+    ) : AreaUnit(metersSquaredPerUnit) {
         public data object SquareMillimeters : International(0.000001, "mm²")
 
         public data object SquareCentimeters : International(0.0001, "cm²")
@@ -19,10 +16,8 @@ public interface AreaUnit : UnitOfMeasure, Comparable<AreaUnit> {
         public data object SquareKilometers : International(1_000_000.0, "km²")
     }
 
-    public sealed class Metric(
-        override val metersSquaredPerUnit: Double,
-        override val symbol: String,
-    ) : AreaUnit {
+    public sealed class Metric(metersSquaredPerUnit: Double, override final val symbol: String) :
+        AreaUnit(metersSquaredPerUnit) {
         public data object Centiares : Metric(1.0, "ca")
 
         public data object Deciares : Metric(10.0, "da")
@@ -34,10 +29,8 @@ public interface AreaUnit : UnitOfMeasure, Comparable<AreaUnit> {
         public data object Hectares : Metric(10_000.0, "ha")
     }
 
-    public sealed class Imperial(
-        override val metersSquaredPerUnit: Double,
-        override val symbol: String,
-    ) : AreaUnit {
+    public sealed class Imperial(metersSquaredPerUnit: Double, override final val symbol: String) :
+        AreaUnit(metersSquaredPerUnit) {
         public data object SquareInches : Imperial(.00064516, "in²")
 
         public data object SquareFeet : Imperial(0.09290304, "ft²")
