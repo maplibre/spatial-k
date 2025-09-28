@@ -11,7 +11,6 @@ import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.Length
-import org.maplibre.spatialk.units.inEarthDegrees
 
 /**
  * Creates a square grid within a [BoundingBox].
@@ -30,10 +29,10 @@ public fun squareGrid(bbox: BoundingBox, cellWidth: Length, cellHeight: Length):
     val north = bbox.northeast.latitude
 
     val bboxWidth = east - west
-    val cellWidthDeg = cellWidth.inEarthDegrees
+    val cellWidthDeg = cellWidth.toDouble(Degrees)
 
     val bboxHeight = north - south
-    val cellHeightDeg = cellHeight.inEarthDegrees
+    val cellHeightDeg = cellHeight.toDouble(Degrees)
 
     val columns = floor(abs(bboxWidth) / cellWidthDeg)
     val rows = floor(abs(bboxHeight) / cellHeightDeg)

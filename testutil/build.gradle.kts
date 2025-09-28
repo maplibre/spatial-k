@@ -54,8 +54,10 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(kotlin("test"))
             implementation(libs.kotlinx.io.core)
             api(libs.kotlinx.serialization.json)
+            implementation(project(":geojson"))
         }
 
         val commonMain by getting

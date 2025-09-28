@@ -7,6 +7,7 @@ import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
 import org.maplibre.spatialk.turf.utils.assertPositionEquals
 import org.maplibre.spatialk.units.kilometers
@@ -46,7 +47,7 @@ class GridsTest {
         val actualFirstItem = grid.features.first().geometry!!.coordAll()
 
         assertEquals(expectedFirstItem.size, actualFirstItem.size)
-        expectedFirstItem.forEachIndexed { index, position ->
+        expectedFirstItem.forEachIndexed { index, _ ->
             assertPositionEquals(expectedFirstItem[index], actualFirstItem[index])
         }
 
@@ -61,7 +62,7 @@ class GridsTest {
         val actualLastItem = grid.features.last().geometry!!.coordAll()
 
         assertEquals(expectedLastItem.size, actualLastItem.size)
-        expectedFirstItem.forEachIndexed { index, position ->
+        expectedFirstItem.forEachIndexed { index, _ ->
             assertPositionEquals(expectedLastItem[index], actualLastItem[index])
         }
     }

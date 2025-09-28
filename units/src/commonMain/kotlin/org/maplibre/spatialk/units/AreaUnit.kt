@@ -11,13 +11,13 @@ public interface AreaUnit : Comparable<AreaUnit> {
         override val metersSquaredPerUnit: Double,
         override val symbol: String,
     ) : AreaUnit {
-        public data object SquareMillimeters : International(1.0, "mm²")
+        public data object SquareMillimeters : International(0.000001, "mm²")
 
-        public data object SquareCentimeters : International(100.0, "cm²")
+        public data object SquareCentimeters : International(0.0001, "cm²")
 
-        public data object SquareMeters : International(1_000_000.0, "m²")
+        public data object SquareMeters : International(1.0, "m²")
 
-        public data object SquareKilometers : International(1_000_000_000_000.0, "km²")
+        public data object SquareKilometers : International(1_000_000.0, "km²")
     }
 
     public sealed class Metric(

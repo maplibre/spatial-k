@@ -82,7 +82,7 @@ tasks
                 "wasmJsD8Test",
                 "wasmWasi.*Test",
                 ".*Simulator.*Test",
-                // runs but fails some tests
+                // runs but fails bezier spline tests
                 "wasmJsNodeTest",
             )
             .any { task.name.matches(it.toRegex()) }

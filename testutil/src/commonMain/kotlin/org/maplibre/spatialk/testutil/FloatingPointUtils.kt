@@ -1,4 +1,4 @@
-package org.maplibre.spatialk.turf.utils
+package org.maplibre.spatialk.testutil
 
 import kotlin.math.abs
 import kotlin.test.asserter
@@ -7,7 +7,7 @@ import org.maplibre.spatialk.geojson.Position
 fun assertDoubleEquals(
     expected: Double,
     actual: Double?,
-    epsilon: Double,
+    epsilon: Double = 0.0001,
     message: String? = null,
 ) {
     asserter.assertNotNull(null, actual)

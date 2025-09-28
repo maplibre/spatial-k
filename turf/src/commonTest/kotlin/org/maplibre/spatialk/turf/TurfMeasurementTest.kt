@@ -16,8 +16,8 @@ import org.maplibre.spatialk.geojson.dsl.geometryCollection
 import org.maplibre.spatialk.geojson.dsl.lineString
 import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
+import org.maplibre.spatialk.testutil.assertDoubleEquals
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.turf.utils.assertDoubleEquals
 import org.maplibre.spatialk.units.inKilometers
 import org.maplibre.spatialk.units.inSquareMeters
 import org.maplibre.spatialk.units.kilometers

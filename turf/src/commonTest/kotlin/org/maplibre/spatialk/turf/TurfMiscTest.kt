@@ -7,9 +7,9 @@ import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.testutil.assertDoubleEquals
+import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.turf.utils.assertDoubleEquals
-import org.maplibre.spatialk.turf.utils.assertPositionEquals
 import org.maplibre.spatialk.units.inKilometers
 
 @ExperimentalTurfApi

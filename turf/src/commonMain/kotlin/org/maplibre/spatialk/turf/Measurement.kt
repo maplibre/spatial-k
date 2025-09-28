@@ -30,9 +30,8 @@ import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.Area
 import org.maplibre.spatialk.units.Length
-import org.maplibre.spatialk.units.earthRadians
-import org.maplibre.spatialk.units.inEarthRadians
 import org.maplibre.spatialk.units.times
+import org.maplibre.spatialk.units.toLength
 
 /**
  * Takes a [LineString] and returns a [position][Position] at a specified distance along the line.
@@ -328,7 +327,7 @@ public fun destination(origin: Position, distance: Length, bearing: Double): Pos
     val longitude1 = radians(origin.longitude)
     val latitude1 = radians(origin.latitude)
     val bearingRad = radians(bearing)
-    val radians = distance.inEarthRadians
+    val radians = distance.toDouble(Radians)
 
     val latitude2 =
         asin(sin(latitude1) * cos(radians) + cos(latitude1) * sin(radians) * cos(bearingRad))
@@ -359,7 +358,7 @@ public fun distance(from: Position, to: Position): Length {
     val lat2 = radians(to.latitude)
 
     val a = sin(dLat / 2).pow(2) + sin(dLon / 2).pow(2) * cos(lat1) * cos(lat2)
-    return 2 * atan2(sqrt(a), sqrt(1 - a)).earthRadians
+    return 2 * atan2(sqrt(a), sqrt(1 - a)).toLength(Radians)
 }
 
 /**
@@ -484,7 +483,7 @@ public fun greatCircle(
         "Input $start and $end are diametrically opposite, thus there is no single route but rather infinite"
     }
 
-    val distance = distance(start, end).inEarthRadians
+    val distance = distance(start, end).toDouble(Radians)
 
     /**
      * Calculates the intermediate point on a great circle line
@@ -727,7 +726,7 @@ public fun rhumbDistance(origin: Position, destination: Position): Length {
     val q = if (abs(deltaPsi) > 10e-12) deltaPhi / deltaPsi else cos(phi1)
 
     val delta = sqrt(deltaPhi * deltaPhi + q * q * deltaLambda * deltaLambda)
-    val dist = delta.earthRadians
+    val dist = delta.toLength(Radians)
 
     return dist
 }

@@ -2,8 +2,6 @@ package org.maplibre.spatialk.units
 
 import org.maplibre.spatialk.units.AreaUnit.Imperial.*
 import org.maplibre.spatialk.units.AreaUnit.International.*
-import org.maplibre.spatialk.units.AreaUnit.Metric.*
-import org.maplibre.spatialk.units.LengthUnit.Geodesy.*
 import org.maplibre.spatialk.units.LengthUnit.Imperial.*
 import org.maplibre.spatialk.units.LengthUnit.International.*
 
@@ -26,12 +24,6 @@ public inline val Number.feet: Length
 
 public inline val Number.miles: Length
     get() = toLength(Miles)
-
-public inline val Number.earthRadians: Length
-    get() = toLength(Radians)
-
-public inline val Number.earthDegrees: Length
-    get() = toLength(Degrees)
 
 public inline val Number.squareMeters: Area
     get() = toArea(SquareMeters)
@@ -59,12 +51,6 @@ public inline val Length.inFeet: Double
 
 public inline val Length.inMiles: Double
     get() = toDouble(Miles)
-
-public inline val Length.inEarthRadians: Double
-    get() = toDouble(Radians)
-
-public inline val Length.inEarthDegrees: Double
-    get() = toDouble(Degrees)
 
 public inline val Area.inSquareMeters: Double
     get() = toDouble(SquareMeters)
