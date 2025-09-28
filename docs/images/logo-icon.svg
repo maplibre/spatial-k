@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xhtml" width="512" height="490" fill="none"
+     viewBox="0 0 512 490">
+    <style>
+        path{
+            stroke: white;
+        }
+        circle{
+            fill: white;
+        }
+    </style>
+    <path stroke="currentColor" stroke-linejoin="round" stroke-width="15" d="m181.847 57.282 75.108-5.092 2.546 1.273m77.017-10.82L349.884 14l82.746 1.273-9.547 22.278"/>
+    <path stroke="currentColor" stroke-linejoin="round" stroke-width="15" d="M401.441 86.562 460 35.005l-194.771 12.73-61.104 58.558-38.191-81.472-87.2-1.273 38.826 78.29"/>
+    <path stroke="currentColor" stroke-linejoin="round" stroke-width="15" d="m204.125 105.657-87.838-5.729 10.253 359.627 83.95 16.548"/>
+    <path stroke="currentColor" stroke-linejoin="round" stroke-width="15" d="m401.442 86.562-197.317 19.095 6.365 370.446 189.679-56.579zM117.56 101.838 52 66.193l45.828-3.182"/>
+    <path stroke="currentColor" stroke-linejoin="round" stroke-width="10" d="m281.674 161.166-17.756 3.382 1.691 224.059 17.756-5.073v-76.941l14.374-27.902 41.429 89.624 20.293-5.919-49.885-108.224 44.812-104.843-19.447 2.536-51.576 112.453z"/>
+    <circle cx="262" cy="165" r="10"/>
+    <circle cx="284" cy="265" r="10"/>
+    <circle cx="284" cy="162" r="10"/>
+    <circle cx="284" cy="382" r="10"/>
+    <circle cx="264" cy="389" r="10"/>
+    <circle cx="284" cy="307" r="10"/>
+    <circle cx="297" cy="281" r="10"/>
+    <circle cx="332" cy="152" r="10"/>
+    <circle cx="354" cy="149" r="10"/>
+    <circle cx="312" cy="255" r="10"/>
+    <circle cx="361" cy="362" r="10"/>
+    <circle cx="339" cy="369" r="10"/>
+</svg>

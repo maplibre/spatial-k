@@ -18,11 +18,11 @@ build:
 coverage:
     ./gradlew :koverHtmlReport
 
-_build-dokka:
+build-dokka:
     ./gradlew :dokkaGenerateHtml
 
-build-docs: _build-dokka
+build-docs: build-dokka
     mkdocs build
 
-serve-docs: _build-dokka
+serve-docs: build-dokka
     mkdocs serve

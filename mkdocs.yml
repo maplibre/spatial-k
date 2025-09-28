@@ -20,8 +20,8 @@ nav:
 
 theme:
     name: "material"
-    favicon: images/logo.png
-    logo: images/logo.png
+    favicon: images/logo-icon.svg
+    logo: images/logo-icon.svg
     features:
         - navigation.indexes
     palette:

@@ -1,5 +1,6 @@
-<div style="text-align: center;">
-    <img width="200" src="images/colour.svg" alt="Spatial K Logo" title="Part of a complete breakfast!">
+<div style="text-align: center; width: 100%; height: 200px; background-color: transparent">
+    <div style="width: 100%; height: 100%; background-color: #4CAE4F; mask-image: url('./images/logo-icon.svg');
+                mask-size: contain; mask-repeat: no-repeat; mask-position: center"></div>
 </div>
 
 # Spatial K

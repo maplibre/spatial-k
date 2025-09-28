@@ -11,8 +11,7 @@ dokka {
     moduleName = "Spatial K"
     dokkaPublications.html { outputDirectory = rootDir.absoluteFile.resolve("docs/api") }
     pluginsConfiguration.html {
-        customStyleSheets.from(file("docs/css/logo-styles.css"))
-        customAssets.from(file("docs/images/logo.png"))
+        customAssets.from(file("docs/images/logo-icon.svg"))
         footerMessage = "Copyright &copy; 2025 MapLibre Contributors"
     }
 }
