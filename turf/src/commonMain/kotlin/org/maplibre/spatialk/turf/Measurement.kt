@@ -30,6 +30,7 @@ import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.Area
 import org.maplibre.spatialk.units.Length
+import org.maplibre.spatialk.units.LengthUnit.Geodesy.Radians
 import org.maplibre.spatialk.units.times
 import org.maplibre.spatialk.units.toLength
 

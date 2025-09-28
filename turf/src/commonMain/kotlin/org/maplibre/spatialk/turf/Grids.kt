@@ -11,6 +11,7 @@ import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.Length
+import org.maplibre.spatialk.units.LengthUnit.Geodesy.*
 
 /**
  * Creates a square grid within a [BoundingBox].
