@@ -23,8 +23,8 @@ repos:
     - repo: local
       hooks:
           - id: prettier
-            name: format markdown, json, yaml
+            name: format markdown, json, yaml, css
             language: node
             entry: prettier --write
             additional_dependencies: [prettier]
-            types_or: [markdown, json, yaml]
+            types_or: [markdown, json, yaml, css]

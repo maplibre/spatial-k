@@ -143,6 +143,6 @@ benchmark {
 dokka {
     dokkaSourceSets { configureEach { includes.from("MODULE.md") } }
     pluginsConfiguration {
-        html { customStyleSheets.from(rootProject.file("docs/css/dokka-extra.css")) }
+        html { customStyleSheets.from(rootProject.file("docs/styles/dokka-extra.css")) }
     }
 }
