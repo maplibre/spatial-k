@@ -7,26 +7,26 @@ You can view porting progress for the next release
 
 ## Measurement
 
-- [x] [`along`](../api/turf/org.maplibre.spatialk.turf/along.html)
-- [x] [`area`](../api/turf/org.maplibre.spatialk.turf/area.html)
-- [x] [`bbox`](../api/turf/org.maplibre.spatialk.turf/bbox.html)
-- [x] [`bboxPolygon`](../api/turf/org.maplibre.spatialk.turf/bbox-polygon.html)
-- [x] [`bearing`](../api/turf/org.maplibre.spatialk.turf/bearing.html)
-- [x] [`center`](../api/turf/org.maplibre.spatialk.turf/center.html)
+- [x] [`along`](./api/turf/org.maplibre.spatialk.turf/along.html)
+- [x] [`area`](./api/turf/org.maplibre.spatialk.turf/area.html)
+- [x] [`bbox`](./api/turf/org.maplibre.spatialk.turf/bbox.html)
+- [x] [`bboxPolygon`](./api/turf/org.maplibre.spatialk.turf/bbox-polygon.html)
+- [x] [`bearing`](./api/turf/org.maplibre.spatialk.turf/bearing.html)
+- [x] [`center`](./api/turf/org.maplibre.spatialk.turf/center.html)
 - [ ] `centerOfMass`
-- [x] [`destination`](../api/turf/org.maplibre.spatialk.turf/destination.html)
-- [x] [`distance`](../api/turf/org.maplibre.spatialk.turf/distance.html)
-- [x] [`envelope`](../api/turf/org.maplibre.spatialk.turf/envelope.html)
-- [x] [`length`](../api/turf/org.maplibre.spatialk.turf/length.html)
-- [x] [`midpoint`](../api/turf/org.maplibre.spatialk.turf/midpoint.html)
+- [x] [`destination`](./api/turf/org.maplibre.spatialk.turf/destination.html)
+- [x] [`distance`](./api/turf/org.maplibre.spatialk.turf/distance.html)
+- [x] [`envelope`](./api/turf/org.maplibre.spatialk.turf/envelope.html)
+- [x] [`length`](./api/turf/org.maplibre.spatialk.turf/length.html)
+- [x] [`midpoint`](./api/turf/org.maplibre.spatialk.turf/midpoint.html)
 - [ ] `pointOnFeature`
 - [ ] `polygonTangents`
-- [x] [`pointToLineDistance`](../api/turf/org.maplibre.spatialk.turf/point-to-line-distance.html)
+- [x] [`pointToLineDistance`](./api/turf/org.maplibre.spatialk.turf/point-to-line-distance.html)
 - [ ] `rhumbBearing`
 - [ ] `rhumbDestination`
-- [x] [`rhumbDistance`](../api/turf/org.maplibre.spatialk.turf/rhumb-distance.html)
+- [x] [`rhumbDistance`](./api/turf/org.maplibre.spatialk.turf/rhumb-distance.html)
 - [ ] `square`
-- [x] [`greatCircle`](../api/turf/org.maplibre.spatialk.turf/great-circle.html)
+- [x] [`greatCircle`](./api/turf/org.maplibre.spatialk.turf/great-circle.html)
 
 ## Coordinate Mutation
 
@@ -39,9 +39,9 @@ You can view porting progress for the next release
 ## Transformation
 
 - [ ] `bboxClip`
-- [x] [`bezierSpline`](../api/turf/org.maplibre.spatialk.turf/bezier-spline.html)
+- [x] [`bezierSpline`](./api/turf/org.maplibre.spatialk.turf/bezier-spline.html)
 - [ ] `buffer`
-- [x] [`circle`](../api/turf/org.maplibre.spatialk.turf/circle.html)
+- [x] [`circle`](./api/turf/org.maplibre.spatialk.turf/circle.html)
 - [ ] `clone`
 - [ ] `concave`
 - [ ] `convex`
@@ -49,7 +49,7 @@ You can view porting progress for the next release
 - [ ] `dissolve`
 - [ ] `intersect`
 - [ ] `lineOffset`
-- [x] [`simplify`](../api/turf/org.maplibre.spatialk.turf/simplify.html)
+- [x] [`simplify`](./api/turf/org.maplibre.spatialk.turf/simplify.html)
 - [ ] `tessellate`
 - [ ] `transformRotate`
 - [ ] `transformTranslate`
@@ -71,22 +71,22 @@ You can view porting progress for the next release
 - [ ] `kinks`
 - [ ] `lineArc`
 - [ ] `lineChunk`
-- [x] [`lineIntersect`](../api/turf/org.maplibre.spatialk.turf/line-intersect.html)
+- [x] [`lineIntersect`](./api/turf/org.maplibre.spatialk.turf/line-intersect.html)
       Partially implemented.
 - [ ] `lineOverlap`
 - [ ] `lineSegment`
-- [x] [`lineSlice`](../api/turf/org.maplibre.spatialk.turf/line-slice.html)
+- [x] [`lineSlice`](./api/turf/org.maplibre.spatialk.turf/line-slice.html)
 - [ ] `lineSliceAlong`
 - [ ] `lineSplit`
 - [ ] `mask`
-- [x] [`nearestPointOnLine`](../api/turf/org.maplibre.spatialk.turf/nearest-point-on-line.html)
+- [x] [`nearestPointOnLine`](./api/turf/org.maplibre.spatialk.turf/nearest-point-on-line.html)
 - [ ] `sector`
 - [ ] `shortestPath`
 - [ ] `unkinkPolygon`
 
 ## Helper
 
-Use the [GeoJson DSL](../geojson/#geojson-dsl) instead.
+Use the [GeoJson DSL](./geojson.md#geojson-dsl) instead.
 
 ## Random
 
@@ -116,7 +116,7 @@ Use the [GeoJson DSL](../geojson/#geojson-dsl) instead.
 
 - [ ] `hexGrid`
 - [ ] `pointGrid`
-- [x] [`squareGrid`](../api/turf/org.maplibre.spatialk.turf/squareGrid.html)
+- [x] [`squareGrid`](./api/turf/org.maplibre.spatialk.turf/square-grid.html)
 - [ ] `triangleGrid`
 
 ## Classification
@@ -167,19 +167,19 @@ Use the [GeoJson DSL](../geojson/#geojson-dsl) instead.
 - [ ] `booleanEqual`
 - [ ] `booleanOverlap`
 - [ ] `booleanParallel`
-- [x] [`booleanPointInPolygon`](../api/turf/org.maplibre.spatialk.turf/boolean-point-in-polygon.html)
+- [x] [`booleanPointInPolygon`](./api/turf/org.maplibre.spatialk.turf/boolean-point-in-polygon.html)
 - [ ] `booleanPointOnLine`
 - [ ] `booleanWithin`
 
 ## Unit Conversion
 
-- [x] [`bearingToAzimuth`](../api/turf/org.maplibre.spatialk.turf/bearing-to-azimuth.html)
-- [x] [`convertArea`](../api/turf/org.maplibre.spatialk.turf/convert-area.html)
-- [x] [`convertLength`](../api/turf/org.maplibre.spatialk.turf/convert-length.html)
+- [x] [`bearingToAzimuth`](./api/turf/org.maplibre.spatialk.turf/bearing-to-azimuth.html)
+- [x] [`convertArea`](./api/turf/org.maplibre.spatialk.turf/convert-area.html)
+- [x] [`convertLength`](./api/turf/org.maplibre.spatialk.turf/convert-length.html)
 - [ ] `degreesToRadians`
-- [x] [`lengthToRadians`](../api/turf/org.maplibre.spatialk.turf/length-to-radians.html)
-- [x] [`lengthToDegrees`](../api/turf/org.maplibre.spatialk.turf/length-to-degrees.html)
-- [x] [`radiansToLength`](../api/turf/org.maplibre.spatialk.turf/radians-to-length.html)
+- [x] [`lengthToRadians`](./api/turf/org.maplibre.spatialk.turf/length-to-radians.html)
+- [x] [`lengthToDegrees`](./api/turf/org.maplibre.spatialk.turf/length-to-degrees.html)
+- [x] [`radiansToLength`](./api/turf/org.maplibre.spatialk.turf/radians-to-length.html)
 - [ ] `radiansToDegrees`
 - [ ] `toMercator`
 - [ ] `toWgs84`

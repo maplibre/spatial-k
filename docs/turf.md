@@ -4,12 +4,12 @@
 applications and the `turf` module contains a Kotlin port of it with support for
 Kotlin Multiplatform projects.
 
-This module makes use of the classes defined in the [`geojson`](geojson/) module
-as the GeoJson inputs to many of the turf functions.
+This module makes use of the classes defined in the [`geojson`](./geojson.md)
+module as the GeoJson inputs to many of the turf functions.
 
 The documentation for the ported functions can be found in the
-[API docs](api/turf/), while more details on each function can be found on the
-[Turfjs](https://turfjs.org) site.
+[API docs](./api/turf/index.html), while more details on each function can be
+found on the [Turfjs](https://turfjs.org) site.
 
 ## Installation
 
@@ -47,14 +47,14 @@ member functions in Java.
 ## Turf Functions
 
 A list of all turf functions and their current status in the port can be found
-on [this page](../ported-functions/).
+on [this page](./ported-functions.md).
 
 ## Units of Measurement
 
 Units of measurement are represented using the
-[`Units`](../api/turf/org.maplibre.spatialk.turf/-units/) enum. These enum
-values can be passed into functions to specify the units used by other values
-passed into the function.
+[`Units`](./api/turf/org.maplibre.spatialk.turf/-units/index.html) enum. These
+enum values can be passed into functions to specify the units used by other
+values passed into the function.
 
 === "Kotlin"
 

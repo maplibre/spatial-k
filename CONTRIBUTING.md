@@ -33,6 +33,15 @@ Tests make use of JSON data loaded from files, so platforms where it's not
 convenient to load files from the file system have their tests disabled. This
 includes mobile native targets, browser targets, etc.
 
+## Editing documentation
+
+The content of the documentation website is written in Markdown using
+[Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) and is
+located in the `docs` directory. Run `./gradlew dokkaGenerateHtml` to generate
+and write the Dokka API reference into the docs directory, and then
+`mkdocs serve` to run a local server to view the docs. The server will
+automatically reload when you make changes to the docs.
+
 ## Make CI happy
 
 A Git pre-commit hook is available to ensure that the code is formatted before

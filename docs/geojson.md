@@ -45,7 +45,7 @@ Geometry objects are a sealed hierarchy of classes that inherit from the
     ```
 
 All seven types of GeoJSON geometries are implemented and summarized below. Full
-documentation can be found in the [API pages](../api/geojson/).
+documentation can be found in the [API pages](./api/geojson/index.html).
 
 #### Position
 

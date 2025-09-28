@@ -15,14 +15,14 @@ format:
 build:
     ./gradlew build
 
-dokka-html:
-    ./gradlew dokkaGenerateHtml
-
-kover-html:
+coverage:
     ./gradlew :koverHtmlReport
 
-docs-build: dokka-html
+_build-dokka:
+    ./gradlew :dokkaGenerateHtml
+
+build-docs: _build-dokka
     mkdocs build
 
-docs-serve: dokka-html
+serve-docs: _build-dokka
     mkdocs serve
