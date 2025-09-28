@@ -57,8 +57,6 @@ kotlin {
     watchosDeviceArm64()
 
     sourceSets {
-        all { with(languageSettings) { optIn("kotlin.RequiresOptIn") } }
-
         commonMain.dependencies {
             api(project(":geojson"))
             api(project(":units"))

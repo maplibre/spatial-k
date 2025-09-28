@@ -3,7 +3,6 @@ package org.maplibre.spatialk.geojson
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
@@ -17,7 +16,6 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  *   https://tools.ietf.org/html/rfc7946#section-3.2</a>
  */
 @Serializable
-@JsonIgnoreUnknownKeys
 @SerialName("FeatureCollection")
 public class FeatureCollection(
     public val features: List<Feature> = emptyList(),

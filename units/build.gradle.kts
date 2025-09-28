@@ -57,8 +57,6 @@ kotlin {
     watchosDeviceArm64()
 
     sourceSets {
-        all { with(languageSettings) { optIn("kotlin.RequiresOptIn") } }
-
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(kotlin("test-annotations-common"))

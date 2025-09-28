@@ -1,6 +1,7 @@
 package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmStatic
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonClassDiscriminator
 import org.intellij.lang.annotations.Language
@@ -14,6 +15,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  * @see GeometryCollection
  */
 @Serializable
+@OptIn(ExperimentalSerializationApi::class)
 @JsonClassDiscriminator("type")
 public sealed class Geometry() : GeoJsonObject {
     abstract override val bbox: BoundingBox?
