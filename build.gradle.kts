@@ -9,7 +9,7 @@ plugins {
 
 dokka {
     moduleName = "Spatial K"
-    dokkaPublications.html { outputDirectory = rootDir.absoluteFile.resolve("docs/api") }
+    dokkaPublications { html { outputDirectory = rootDir.absoluteFile.resolve("docs/api") } }
     pluginsConfiguration {
         html {
             customStyleSheets.from(file("docs/styles/dokka-extra.css"))
