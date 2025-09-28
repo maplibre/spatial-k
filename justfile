@@ -22,7 +22,7 @@ build-dokka:
     ./gradlew :dokkaGenerateHtml
 
 build-docs: build-dokka
-    mkdocs build
+    mkdocs build -s
 
 serve-docs: build-dokka
     mkdocs serve
