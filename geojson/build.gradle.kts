@@ -149,6 +149,11 @@ dokka {
                 remoteUrl("https://github.com/maplibre/spatial-k/tree/main/")
                 localDirectory = rootDir
             }
+            externalDocumentationLinks {
+                create("kotlinx-serialization") {
+                    url("https://kotlinlang.org/api/kotlinx.serialization/")
+                }
+            }
         }
     }
     pluginsConfiguration {
