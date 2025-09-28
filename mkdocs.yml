@@ -13,6 +13,7 @@ nav:
     - "Turf":
           - "Overview": turf.md
           - "Ported Functions": ported-functions.md
+    - "Units": units.md
     - "API":
           - "index": api/index.html
           - "geojson": api/geojson/index.html

@@ -40,28 +40,10 @@ member functions in Java.
 === "Kotlin"
 
     ```kotlin
-    val point = LngLat(-75.0, 45.0)
-    val (longitude, latitude) = destination(point, 100.0, 0.0)
+    --8<-- "turf/src/commonTest/kotlin/org/maplibre/spatialk/turf/DocSnippets.kt:example"
     ```
 
 ## Turf Functions
 
 A list of all turf functions and their current status in the port can be found
 on [this page](./ported-functions.md).
-
-## Units of Measurement
-
-Units of measurement are represented using the
-[`Units`](./api/turf/org.maplibre.spatialk.turf/-units/index.html) enum. These
-enum values can be passed into functions to specify the units used by other
-values passed into the function.
-
-=== "Kotlin"
-
-    ```kotlin
-    val result = convertLength(12.5, from = Units.Kilometers, to = Units.Miles)
-    ```
-
-Not all units are valid for every function. For example, acres cannot be used as
-a measure of distance. Calling a function like `convertLength` with
-`Units.Acres` as one of the arguments will cause an `IllegalArgumentException`.

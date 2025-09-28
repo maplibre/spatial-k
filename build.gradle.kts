@@ -34,6 +34,9 @@ dependencies {
     dokka(project(":geojson"))
     kover(project(":geojson"))
 
+    dokka(project(":units"))
+    kover(project(":units"))
+
     dokka(project(":turf"))
     kover(project(":turf"))
 }
