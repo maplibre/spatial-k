@@ -126,7 +126,7 @@ class FeatureTest {
         val point = feature.geometry as Point
         assertEquals(point.coordinates.longitude, 125.6, DELTA)
         assertEquals(point.coordinates.latitude, 10.1, DELTA)
-        assertEquals(feature.properties["name"]!!.jsonPrimitive.content, "Dinagat Islands")
+        assertEquals(feature.properties!!["name"]!!.jsonPrimitive.content, "Dinagat Islands")
     }
 
     @Test
@@ -157,7 +157,7 @@ class FeatureTest {
         assertEquals(4, points.size.toLong())
         assertEquals(105.0, points[3].longitude, DELTA)
         assertEquals(5.0, points[3].latitude, DELTA)
-        assertEquals("line name", feature.properties["name"]!!.jsonPrimitive.content)
+        assertEquals("line name", feature.properties!!["name"]!!.jsonPrimitive.content)
     }
 
     @Test

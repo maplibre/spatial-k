@@ -3,6 +3,8 @@
 package org.maplibre.spatialk.geojson.dsl
 
 import kotlin.jvm.JvmSynthetic
+import kotlinx.serialization.json.JsonObjectBuilder
+import kotlinx.serialization.json.buildJsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
@@ -23,9 +25,9 @@ public class FeatureCollectionDsl(
         geometry: Geometry? = null,
         id: String? = null,
         bbox: BoundingBox? = null,
-        properties: PropertiesBuilder.() -> Unit = {},
+        properties: (JsonObjectBuilder.() -> Unit)? = null,
     ) {
-        +Feature(geometry, PropertiesBuilder().apply(properties).build(), id, bbox)
+        +Feature(geometry, properties?.let { buildJsonObject { it() } }, id, bbox)
     }
 }
 

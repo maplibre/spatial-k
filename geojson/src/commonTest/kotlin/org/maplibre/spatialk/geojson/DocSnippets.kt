@@ -8,6 +8,10 @@ import kotlin.test.assertFailsWith
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.doubleOrNull
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.put
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.dsl.*
 import org.maplibre.spatialk.geojson.serialization.GeoJson
@@ -297,10 +301,10 @@ class DocSnippets {
             kotlin = {
                 // --8<-- [start:featureKt]
                 val point = Point(Position(-75.0, 45.0))
-                val feature = Feature(point)
-                feature.setNumberProperty("size", 9999)
+                val feature = Feature(point, properties = buildJsonObject { put("size", 9999) })
 
-                val size: Number? = feature.getNumberProperty("size") // 9999
+                val size: Number? =
+                    feature.properties?.get("size")?.jsonPrimitive?.doubleOrNull // 9999
                 val geometry: Geometry? = feature.geometry // point
                 // --8<-- [end:featureKt]
 
@@ -758,17 +762,17 @@ class DocSnippets {
                 // --8<-- [start:dslFeatureJson]
                 {
                     "type": "Feature",
-                    "bbox": [-76.9, 44.1, -74.2, 45.7],
                     "geometry": {
                         "type": "Point",
                         "coordinates": [-75.0, 45.0]
                     },
-                    "id": "point1",
                     "properties": {
                         "name": "Hello World",
                         "value": 13,
                         "cool": true
-                    }
+                    },
+                    "id": "point1",
+                    "bbox": [-76.9, 44.1, -74.2, 45.7]
                 }
                 // --8<-- [end:dslFeatureJson]
             """,

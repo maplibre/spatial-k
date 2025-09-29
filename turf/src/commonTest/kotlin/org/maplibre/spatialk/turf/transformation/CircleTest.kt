@@ -30,7 +30,8 @@ class CircleTest {
             circle(
                 center = point.geometry as Point,
                 radius =
-                    point.properties["radius"]?.jsonPrimitive?.double?.kilometers ?: Length.ZERO,
+                    point.properties?.get("radius")?.jsonPrimitive?.double?.kilometers
+                        ?: Length.ZERO,
             )
 
         val allCoordinates = expectedCircle.geometry?.coordAll().orEmpty()

@@ -2,7 +2,8 @@ package org.maplibre.spatialk.geojson.serialization
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Point
@@ -17,14 +18,18 @@ class FeatureCollectionSerializationTests {
         val feature =
             Feature(
                 geometry,
-                mapOf("size" to JsonPrimitive(45.1), "name" to JsonPrimitive("Nowhere")),
+                buildJsonObject {
+                    put("size", 45.1)
+                    put("name", "Nowhere")
+                },
             )
         val collection = FeatureCollection(feature, feature)
 
         val json =
-            """{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":
-                |[12.3,45.6]},"properties":{"size":45.1,"name":"Nowhere"}},{"type":"Feature","geometry":{"type":"Point",
-                |"coordinates":[12.3,45.6]},"properties":{"size":45.1,"name":"Nowhere"}}]}"""
+            """
+            |{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":
+            |[12.3,45.6]},"properties":{"size":45.1,"name":"Nowhere"}},{"type":"Feature","geometry":{"type":"Point",
+            |"coordinates":[12.3,45.6]},"properties":{"size":45.1,"name":"Nowhere"}}]}"""
                 .trimMargin()
                 .replace("\n", "")
 
@@ -39,14 +44,18 @@ class FeatureCollectionSerializationTests {
             Feature(
                 geometry,
                 properties =
-                    mapOf("size" to JsonPrimitive(45.1), "name" to JsonPrimitive("Nowhere")),
+                    buildJsonObject {
+                        put("size", 45.1)
+                        put("name", "Nowhere")
+                    },
             )
         val collection = FeatureCollection(feature, feature)
 
         assertEquals(
             collection,
             FeatureCollection.fromJson(
-                """{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":
+                """
+                |{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":
                 |[12.3,45.6]},"properties":{"size":45.1,"name":"Nowhere"}},{"type":"Feature","geometry":{"type":"Point",
                 |"coordinates":[12.3,45.6]},"properties":{"size":45.1,"name":"Nowhere"}}]}"""
                     .trimMargin()
