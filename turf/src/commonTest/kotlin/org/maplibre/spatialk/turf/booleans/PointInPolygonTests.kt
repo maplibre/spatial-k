@@ -1,20 +1,17 @@
-package org.maplibre.spatialk.turf
+package org.maplibre.spatialk.turf.booleans
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlinx.serialization.ExperimentalSerializationApi
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.turf.booleans.pointInPolygon
 
-@ExperimentalSerializationApi
-class BooleansTests {
+class PointInPolygonTests {
 
     @Test
     fun testFeatureCollection() {

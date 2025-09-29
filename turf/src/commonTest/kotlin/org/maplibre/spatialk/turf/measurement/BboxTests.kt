@@ -1,4 +1,4 @@
-package org.maplibre.spatialk.turf
+package org.maplibre.spatialk.turf.measurement
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -10,7 +10,7 @@ import org.maplibre.spatialk.geojson.dsl.multiLineString
 import org.maplibre.spatialk.geojson.dsl.multiPolygon
 import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
-import org.maplibre.spatialk.turf.measurement.bbox
+import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
 private val point = point(102.0, 0.5)
 private val line = lineString {
