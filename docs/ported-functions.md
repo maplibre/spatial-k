@@ -175,6 +175,7 @@ Use the [GeoJson DSL](./geojson.md#geojson-dsl) instead.
 
 For converting between units, see the [Units](./units.md) module.
 
+- [x] [`azimuthToBearing`](./api/turf/org.maplibre.spatialk.turf.unitconversion/azimuth-to-bearing.html)
 - [x] [`bearingToAzimuth`](./api/turf/org.maplibre.spatialk.turf.unitconversion/bearing-to-azimuth.html)
 - [ ] `toMercator`
 - [ ] `toWgs84`
