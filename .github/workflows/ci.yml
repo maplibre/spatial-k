@@ -79,7 +79,7 @@ jobs:
 
     # stub to use as a "required" check on github
     all-good:
-        needs: [build, check-format, docs]
+        needs: [build, check-format, docs, benchmark]
         runs-on: ubuntu-latest
         steps:
             - run: echo 'All checks passed!'
