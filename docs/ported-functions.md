@@ -14,6 +14,7 @@ You can view porting progress for the next release
 - [x] [`bearing`](./api/turf/org.maplibre.spatialk.turf.measurement/bearing.html)
 - [x] [`center`](./api/turf/org.maplibre.spatialk.turf.measurement/center.html)
 - [ ] `centerOfMass`
+- [ ] `centroid`
 - [x] [`destination`](./api/turf/org.maplibre.spatialk.turf.measurement/destination.html)
 - [x] [`distance`](./api/turf/org.maplibre.spatialk.turf.measurement/distance.html)
 - [x] [`envelope`](./api/turf/org.maplibre.spatialk.turf.measurement/envelope.html)
@@ -26,7 +27,7 @@ You can view porting progress for the next release
 - [ ] `rhumbBearing`
 - [ ] `rhumbDestination`
 - [x] [`rhumbDistance`](./api/turf/org.maplibre.spatialk.turf.measurement/rhumb-distance.html)
-- [ ] `square`
+- [x] [`square`](./api/turf/org.maplibre.spatialk.turf.measurement/square.html)
 
 ## Coordinate Mutation
 
