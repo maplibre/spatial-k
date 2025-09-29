@@ -1,4 +1,4 @@
-package org.maplibre.spatialk.turf
+package org.maplibre.spatialk.turf.grids
 
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -9,13 +9,13 @@ import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.turf.grids.squareGrid
+import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.measurement.computeBbox
 import org.maplibre.spatialk.turf.meta.coordAll
 import org.maplibre.spatialk.units.kilometers
 import org.maplibre.spatialk.units.meters
 
-class GridsTest {
+class SquareGridTest {
 
     private lateinit var box: BoundingBox
 
