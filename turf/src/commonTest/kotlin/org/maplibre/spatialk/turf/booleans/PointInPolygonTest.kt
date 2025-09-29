@@ -11,7 +11,7 @@ import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
 import org.maplibre.spatialk.testutil.readResourceFile
 
-class PointInPolygonTests {
+class PointInPolygonTest {
 
     @Test
     fun testFeatureCollection() {

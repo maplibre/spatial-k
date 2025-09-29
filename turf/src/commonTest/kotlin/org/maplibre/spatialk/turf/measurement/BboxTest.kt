@@ -3,6 +3,9 @@ package org.maplibre.spatialk.turf.measurement
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.LineString
+import org.maplibre.spatialk.geojson.Point
+import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.dsl.feature
 import org.maplibre.spatialk.geojson.dsl.featureCollection
 import org.maplibre.spatialk.geojson.dsl.lineString
@@ -10,6 +13,7 @@ import org.maplibre.spatialk.geojson.dsl.multiLineString
 import org.maplibre.spatialk.geojson.dsl.multiPolygon
 import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
+import org.maplibre.spatialk.testutil.readResourceFile
 import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
 private val point = point(102.0, 0.5)
@@ -75,7 +79,7 @@ private val featureCollection = featureCollection {
 }
 
 @ExperimentalTurfApi
-class BboxTests {
+class BboxTest {
 
     @Test
     fun testFeatureCollectionBbox() {
@@ -120,5 +124,23 @@ class BboxTests {
         assertEquals(emptyBbox, bbox(feature()))
 
         assertEquals(emptyBbox, bbox(featureCollection {}))
+    }
+
+    @Test
+    fun testBbox() {
+        val point = Point.fromJson(readResourceFile("measurement/bbox/point.json"))
+        assertEquals(BoundingBox(point.coordinates, point.coordinates), bbox(point))
+
+        val lineString = LineString.fromJson(readResourceFile("measurement/bbox/lineString.json"))
+        assertEquals(
+            BoundingBox(-79.376220703125, 43.65197548731187, -73.58642578125, 45.4986468234261),
+            bbox(lineString),
+        )
+
+        val polygon = Polygon.fromJson(readResourceFile("measurement/bbox/polygon.json"))
+        assertEquals(
+            BoundingBox(-64.44580078125, 45.9511496866914, -61.973876953125, 47.07012182383309),
+            bbox(polygon),
+        )
     }
 }

@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
 @ExperimentalTurfApi
-class AnglesTests {
+class AnglesTest {
     @Test
     fun testBearingToAzimuth() {
         assertEquals(40.0, bearingToAzimuth(40.0))
