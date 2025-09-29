@@ -79,13 +79,7 @@ open class GeoJsonBenchmark {
         jsonObject = GeoJson.decodeFromString(geojson)
     }
 
-    /** Benchmark serialization using the string concat implementation */
-    @Benchmark
-    fun fastSerialization() {
-        dataset.json()
-    }
-
-    /** Benchmark serialization using plain kotlinx.serialization */
+    /** Benchmark serialization using kotlinx.serialization */
     @Benchmark
     fun kotlinxSerialization() {
         GeoJson.encodeToString(dataset)
