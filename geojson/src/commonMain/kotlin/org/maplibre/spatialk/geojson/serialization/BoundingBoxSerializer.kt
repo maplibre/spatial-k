@@ -1,5 +1,6 @@
 package org.maplibre.spatialk.geojson.serialization
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -14,6 +15,7 @@ public object BoundingBoxSerializer : KSerializer<BoundingBox> {
     private const val ARRAY_SIZE_2D = 4
     private const val ARRAY_SIZE_3D = 6
 
+    @OptIn(ExperimentalSerializationApi::class)
     override val descriptor: SerialDescriptor = listSerialDescriptor(Double.serializer().descriptor)
 
     override fun deserialize(decoder: Decoder): BoundingBox {

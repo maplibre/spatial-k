@@ -65,15 +65,6 @@ kotlin {
     watchosDeviceArm64()
 
     sourceSets {
-        all {
-            with(languageSettings) {
-                optIn("kotlin.RequiresOptIn")
-                optIn("kotlin.js.ExperimentalJsExport")
-                optIn("kotlinx.serialization.InternalSerializationApi")
-                optIn("kotlinx.serialization.ExperimentalSerializationApi")
-            }
-        }
-
         commonMain {
             dependencies {
                 implementation(libs.jetbrains.annotations)

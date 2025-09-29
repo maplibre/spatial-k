@@ -3,7 +3,6 @@ package org.maplibre.spatialk.geojson
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoJson
 
@@ -14,7 +13,6 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  * @property bbox An optional bounding box used to represent the limits of the object's geometry.
  */
 @Serializable
-@JsonIgnoreUnknownKeys
 public sealed interface GeoJsonObject {
     public val bbox: BoundingBox?
 

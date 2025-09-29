@@ -3,6 +3,7 @@ package org.maplibre.spatialk.geojson.serialization
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.cbor.Cbor
 import kotlinx.serialization.protobuf.ProtoBuf
 import org.maplibre.spatialk.geojson.GeometryCollection
@@ -55,6 +56,7 @@ class ProtoBufSerializationTests {
     @Test
     fun testProtoBufSerialization() {
         assertFormat { obj ->
+            @OptIn(ExperimentalSerializationApi::class)
             ProtoBuf.decodeFromByteArray(
                 GeometryCollection.serializer(),
                 ProtoBuf.encodeToByteArray(GeometryCollection.serializer(), obj),
@@ -65,6 +67,7 @@ class ProtoBufSerializationTests {
     @Test
     fun testCborSerialization() {
         assertFormat { obj ->
+            @OptIn(ExperimentalSerializationApi::class)
             Cbor.decodeFromByteArray(
                 GeometryCollection.serializer(),
                 Cbor.encodeToByteArray(GeometryCollection.serializer(), obj),

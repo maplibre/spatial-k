@@ -5,6 +5,7 @@ package org.maplibre.spatialk.geojson
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import org.intellij.lang.annotations.Language
@@ -37,7 +38,10 @@ class DocSnippets {
     }
 
     private inline fun kotlinAndJsonExample(kotlin: () -> String, @Language("json5") json: String) {
-        val jsonC = Json { allowComments = true }
+        val jsonC = Json {
+            @OptIn(ExperimentalSerializationApi::class)
+            allowComments = true
+        }
         // round trip to normalize property order across platforms
         val normalizedJsonExample = jsonC.encodeToString(jsonC.parseToJsonElement(json))
         val normalizedKotlinExample = jsonC.encodeToString(jsonC.parseToJsonElement(kotlin()))
