@@ -18,6 +18,9 @@ build:
 coverage:
     ./gradlew :koverHtmlReport
 
+benchmark:
+    ./gradlew :geojson:benchmark
+
 build-dokka:
     ./gradlew :dokkaGenerateHtml
 

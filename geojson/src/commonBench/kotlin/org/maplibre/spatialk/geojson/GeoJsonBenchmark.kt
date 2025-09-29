@@ -52,12 +52,19 @@ open class GeoJsonBenchmark {
                     geometry =
                         polygon {
                             ring {
-                                repeat(10) {
+                                val start =
+                                    Position(
+                                        random.nextDouble(360.0) - 180,
+                                        random.nextDouble(360.0) - 180,
+                                    )
+                                +start
+                                repeat(8) {
                                     +Position(
                                         random.nextDouble(360.0) - 180,
                                         random.nextDouble(360.0) - 180,
                                     )
                                 }
+                                +start
                             }
                         }
                 )
