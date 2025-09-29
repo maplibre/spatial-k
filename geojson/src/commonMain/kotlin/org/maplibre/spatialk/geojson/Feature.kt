@@ -1,11 +1,11 @@
 package org.maplibre.spatialk.geojson
 
-import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoJson
+import kotlin.jvm.JvmStatic
 
 /**
  * A feature object represents a spatially bounded thing.
@@ -20,8 +20,8 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  */
 @Serializable
 @SerialName("Feature")
-public class Feature(
-    public val geometry: Geometry?,
+public class Feature<out T : Geometry>(
+    public val geometry: T?,
     public val properties: JsonObject? = null,
     public val id: String? = null,
     override val bbox: BoundingBox? = null,
@@ -30,7 +30,7 @@ public class Feature(
         if (this === other) return true
         if (other == null || this::class != other::class) return false
 
-        other as Feature
+        other as Feature<*>
 
         if (geometry != other.geometry) return false
         if (id != other.id) return false
@@ -60,24 +60,25 @@ public class Feature(
 
     override fun json(): String = GeoJson.encodeToString(this)
 
-    public fun copy(
+    @Suppress("UNCHECKED_CAST")
+    public fun <T : Geometry> xcopy(
         geometry: Geometry? = this.geometry,
         properties: JsonObject? = this.properties,
         id: String? = this.id,
         bbox: BoundingBox? = this.bbox,
-    ): Feature = Feature(geometry, properties, id, bbox)
+    ): Feature<T> = Feature(geometry as T, properties, id, bbox)
 
     public companion object {
         @JvmStatic
-        public fun fromJson(@Language("json") json: String): Feature =
-            GeoJsonObject.fromJson<Feature>(json)
+        public fun <T : Geometry> fromJson(@Language("json") json: String): Feature<T> =
+            GeoJsonObject.fromJson<Feature<T>>(json)
+
 
         @JvmStatic
-        public fun fromJsonOrNull(@Language("json") json: String): Feature? =
-            try {
-                fromJson(json)
-            } catch (_: Exception) {
-                null
-            }
+        public fun <T : Geometry> fromJsonOrNull(json: String): Feature<T>? = try {
+            fromJson(json)
+        } catch (_: Exception) {
+            null
+        }
     }
 }

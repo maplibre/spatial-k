@@ -1,10 +1,10 @@
 package org.maplibre.spatialk.geojson
 
-import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoJson
+import kotlin.jvm.JvmStatic
 
 /**
  * A FeatureCollection object is a collection of [Feature] objects. This class implements the
@@ -18,11 +18,11 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
 @Serializable
 @SerialName("FeatureCollection")
 public class FeatureCollection(
-    public val features: List<Feature> = emptyList(),
+    public val features: List<Feature<Geometry>> = emptyList(),
     override val bbox: BoundingBox? = null,
-) : Collection<Feature> by features, GeoJsonObject {
+) : Collection<Feature<Geometry>> by features, GeoJsonObject {
     public constructor(
-        vararg features: Feature,
+        vararg features: Feature<Geometry>,
         bbox: BoundingBox? = null,
     ) : this(features.toMutableList(), bbox)
 
@@ -48,7 +48,7 @@ public class FeatureCollection(
 
     override fun json(): String = GeoJson.encodeToString(this)
 
-    public operator fun component1(): List<Feature> = features
+    public operator fun component1(): List<Feature<Geometry>> = features
 
     public operator fun component2(): BoundingBox? = bbox
 

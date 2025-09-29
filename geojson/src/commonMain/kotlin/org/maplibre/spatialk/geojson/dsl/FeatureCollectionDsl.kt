@@ -2,20 +2,20 @@
 
 package org.maplibre.spatialk.geojson.dsl
 
-import kotlin.jvm.JvmSynthetic
 import kotlinx.serialization.json.JsonObjectBuilder
 import kotlinx.serialization.json.buildJsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
+import kotlin.jvm.JvmSynthetic
 
 @GeoJsonDsl
 public class FeatureCollectionDsl(
-    private val features: MutableList<Feature> = mutableListOf(),
+    private val features: MutableList<Feature<Geometry>> = mutableListOf(),
     public var bbox: BoundingBox? = null,
 ) {
-    public operator fun Feature.unaryPlus() {
+    public operator fun Feature<Geometry>.unaryPlus() {
         features.add(this)
     }
 

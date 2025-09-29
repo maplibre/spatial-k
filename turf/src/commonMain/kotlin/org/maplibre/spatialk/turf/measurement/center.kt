@@ -15,7 +15,7 @@ import org.maplibre.spatialk.turf.ExperimentalTurfApi
  * @return A [Point] holding the center coordinates
  */
 @ExperimentalTurfApi
-public fun center(feature: Feature): Point {
+public fun center(feature: Feature<Geometry>): Point {
     val ext = bbox(feature)
     val x = (ext.southwest.longitude + ext.northeast.longitude) / 2
     val y = (ext.southwest.latitude + ext.northeast.latitude) / 2
