@@ -33,7 +33,7 @@ You can view porting progress for the next release
 - [ ] `cleanCoords`
 - [ ] `flip`
 - [ ] `rewind`
-- [ ] `round`
+- [x] [`round`](./api/turf/org.maplibre.spatialk.turf.coordinatemution/round.html)
 - [ ] `truncate`
 
 ## Transformation
