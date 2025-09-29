@@ -10,6 +10,9 @@ import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.assertDoubleEquals
 import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
+import org.maplibre.spatialk.turf.misc.lineIntersect
+import org.maplibre.spatialk.turf.misc.lineSlice
+import org.maplibre.spatialk.turf.misc.nearestPointOnLine
 import org.maplibre.spatialk.units.inKilometers
 
 @ExperimentalTurfApi

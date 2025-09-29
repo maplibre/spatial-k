@@ -2,6 +2,7 @@ package org.maplibre.spatialk.turf
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import org.maplibre.spatialk.turf.unitconversion.bearingToAzimuth
 
 @ExperimentalTurfApi
 class UtilsTests {

@@ -1,8 +1,5 @@
-@file:JvmName("TurfMeta")
+package org.maplibre.spatialk.turf.meta
 
-package org.maplibre.spatialk.turf
-
-import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
@@ -14,6 +11,7 @@ import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
 @ExperimentalTurfApi
 public fun Geometry.coordAll(): List<Position> =

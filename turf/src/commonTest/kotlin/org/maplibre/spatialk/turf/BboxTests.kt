@@ -10,6 +10,7 @@ import org.maplibre.spatialk.geojson.dsl.multiLineString
 import org.maplibre.spatialk.geojson.dsl.multiPolygon
 import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
+import org.maplibre.spatialk.turf.measurement.bbox
 
 private val point = point(102.0, 0.5)
 private val line = lineString {

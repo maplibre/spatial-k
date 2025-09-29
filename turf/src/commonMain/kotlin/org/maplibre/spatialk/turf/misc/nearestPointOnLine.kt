@@ -1,98 +1,13 @@
-@file:JvmName("TurfMiscellaneous")
+package org.maplibre.spatialk.turf.misc
 
-package org.maplibre.spatialk.turf
-
-import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.turf.ExperimentalTurfApi
+import org.maplibre.spatialk.turf.measurement.bearing
+import org.maplibre.spatialk.turf.measurement.destination
+import org.maplibre.spatialk.turf.measurement.distance
 import org.maplibre.spatialk.units.Length
-
-/**
- * Returns intersecting points between two [LineString]s.
- *
- * Currently only supports primitive LineStrings containing exactly two points each!
- *
- * @return A list containing any intersections between [line1] and [line2]
- * @throws NotImplementedError if either LineString does not contain exactly two points
- */
-@ExperimentalTurfApi
-public fun lineIntersect(line1: LineString, line2: LineString): List<Position> {
-    if (line1.coordinates.size == 2 && line2.coordinates.size == 2) {
-        val intersect = intersects(line1, line2)
-        return if (intersect != null) listOf(intersect) else emptyList()
-    } else {
-        throw NotImplementedError("Complex GeoJSON intersections are currently unsupported")
-    }
-}
-
-/**
- * Find a point that intersects LineStrings with two coordinates each
- *
- * @param line1 A [LineString] (must contain exactly 2 coordinates)
- * @param line2 A [LineString] (must contain exactly 2 coordinates)
- * @return The position of the intersection, or null if the two lines do not intersect.
- */
-@ExperimentalTurfApi
-internal fun intersects(line1: LineString, line2: LineString): Position? {
-    require(line1.coordinates.size == 2) { "line1 must contain exactly 2 coordinates" }
-    require(line2.coordinates.size == 2) { "line2 must contain exactly 2 coordinates" }
-
-    val x1 = line1.coordinates[0].longitude
-    val y1 = line1.coordinates[0].latitude
-    val x2 = line1.coordinates[1].longitude
-    val y2 = line1.coordinates[1].latitude
-    val x3 = line2.coordinates[0].longitude
-    val y3 = line2.coordinates[0].latitude
-    val x4 = line2.coordinates[1].longitude
-    val y4 = line2.coordinates[1].latitude
-
-    val denom = ((y4 - y3) * (x2 - x1)) - ((x4 - x3) * (y2 - y1))
-    val numeA = ((x4 - x3) * (y1 - y3)) - ((y4 - y3) * (x1 - x3))
-    val numeB = ((x2 - x1) * (y1 - y3)) - ((y2 - y1) * (x1 - x3))
-
-    if (denom == 0.0 || numeA == 0.0 && numeB == 0.0) {
-        return null
-    }
-
-    val uA = numeA / denom
-    val uB = numeB / denom
-
-    if (uA in 0.0..1.0 && uB in 0.0..1.0) {
-        val x = x1 + (uA * (x2 - x1))
-        val y = y1 + (uA * (y2 - y1))
-        return Position(x, y)
-    }
-
-    return null
-}
-
-/**
- * Takes a [LineString], a start and a stop [Position] and returns a subsection of the line between
- * those points. The start and stop points do not need to fall exactly on the line.
- *
- * @param start Start position
- * @param stop Stop position
- * @param line The [LineString] to slice
- * @return The sliced subsection of the line
- */
-@ExperimentalTurfApi
-public fun lineSlice(start: Position, stop: Position, line: LineString): LineString {
-    val startVertex = nearestPointOnLine(line, start)
-    val stopVertex = nearestPointOnLine(line, stop)
-
-    val (startPos, endPos) =
-        if (startVertex.index <= stopVertex.index) startVertex to stopVertex
-        else stopVertex to startVertex
-
-    val positions = mutableListOf(startPos.point)
-    for (i in startPos.index + 1 until endPos.index + 1) {
-        positions.add(line.coordinates[i])
-    }
-    positions.add(endPos.point)
-
-    return LineString(positions)
-}
 
 /**
  * Result values from [nearestPointOnLine].

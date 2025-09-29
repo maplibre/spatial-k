@@ -1,8 +1,6 @@
-@file:JvmName("TurfUtils")
+package org.maplibre.spatialk.turf.unitconversion
 
-package org.maplibre.spatialk.turf
-
-import kotlin.jvm.JvmName
+import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
 /**
  * Converts any bearing angle from the north line direction (positive clockwise) and returns an

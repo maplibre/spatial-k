@@ -1,8 +1,5 @@
-@file:JvmName("TurfConstants")
+package org.maplibre.spatialk.turf.constants
 
-package org.maplibre.spatialk.turf
-
-import kotlin.jvm.JvmName
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.meters
 

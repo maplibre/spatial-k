@@ -11,6 +11,7 @@ import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
 import org.maplibre.spatialk.testutil.readResourceFile
+import org.maplibre.spatialk.turf.booleans.pointInPolygon
 
 @ExperimentalSerializationApi
 class BooleansTests {
@@ -29,8 +30,8 @@ class BooleansTests {
         val ptIn = point(50.0, 50.0)
         val ptOut = point(140.0, 150.0)
 
-        assertTrue(booleanPointInPolygon(ptIn, poly), "point inside simple polygon")
-        assertFalse(booleanPointInPolygon(ptOut, poly), "point outside simple polygon")
+        assertTrue(pointInPolygon(ptIn, poly), "point inside simple polygon")
+        assertFalse(pointInPolygon(ptOut, poly), "point outside simple polygon")
 
         // test for a concave polygon
         val concavePoly = polygon {
@@ -46,11 +47,8 @@ class BooleansTests {
         val ptConcaveIn = point(75.0, 75.0)
         val ptConcaveOut = point(25.0, 50.0)
 
-        assertTrue(booleanPointInPolygon(ptConcaveIn, concavePoly), "point inside concave polygon")
-        assertFalse(
-            booleanPointInPolygon(ptConcaveOut, concavePoly),
-            "point outside concave polygon",
-        )
+        assertTrue(pointInPolygon(ptConcaveIn, concavePoly), "point inside concave polygon")
+        assertFalse(pointInPolygon(ptConcaveOut, concavePoly), "point outside concave polygon")
     }
 
     @Test
@@ -62,9 +60,9 @@ class BooleansTests {
             Feature.fromJson(readResourceFile("booleans/in/poly-with-hole.geojson")).geometry
                 as Polygon
 
-        assertFalse(booleanPointInPolygon(ptInHole, polyHole))
-        assertTrue(booleanPointInPolygon(ptInPoly, polyHole))
-        assertFalse(booleanPointInPolygon(ptOutsidePoly, polyHole))
+        assertFalse(pointInPolygon(ptInHole, polyHole))
+        assertTrue(pointInPolygon(ptInPoly, polyHole))
+        assertFalse(pointInPolygon(ptOutsidePoly, polyHole))
     }
 
     @Test
@@ -77,11 +75,11 @@ class BooleansTests {
             Feature.fromJson(readResourceFile("booleans/in/multipoly-with-hole.geojson")).geometry
                 as MultiPolygon
 
-        assertFalse(booleanPointInPolygon(ptInHole, multiPolyHole))
-        assertTrue(booleanPointInPolygon(ptInPoly, multiPolyHole))
-        assertTrue(booleanPointInPolygon(ptInPoly2, multiPolyHole))
-        assertTrue(booleanPointInPolygon(ptInPoly, multiPolyHole))
-        assertFalse(booleanPointInPolygon(ptOutsidePoly, multiPolyHole))
+        assertFalse(pointInPolygon(ptInHole, multiPolyHole))
+        assertTrue(pointInPolygon(ptInPoly, multiPolyHole))
+        assertTrue(pointInPolygon(ptInPoly2, multiPolyHole))
+        assertTrue(pointInPolygon(ptInPoly, multiPolyHole))
+        assertFalse(pointInPolygon(ptOutsidePoly, multiPolyHole))
     }
 
     @Test
@@ -191,7 +189,7 @@ class BooleansTests {
             val testTitle = "Boundary " + (if (ignoreBoundary) "ignored " else "") + "test number "
             tests.forEachIndexed { i, item ->
                 assertEquals(
-                    booleanPointInPolygon(item.second, item.first, ignoreBoundary),
+                    pointInPolygon(item.second, item.first, ignoreBoundary),
                     item.third,
                     testTitle + i,
                 )
@@ -218,6 +216,6 @@ class BooleansTests {
                 )
             )
 
-        assertTrue(booleanPointInPolygon(pt1, poly))
+        assertTrue(pointInPolygon(pt1, poly))
     }
 }

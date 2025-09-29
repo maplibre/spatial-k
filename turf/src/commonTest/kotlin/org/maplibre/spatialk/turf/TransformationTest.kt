@@ -13,6 +13,10 @@ import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
+import org.maplibre.spatialk.turf.meta.coordAll
+import org.maplibre.spatialk.turf.transformation.bezierSpline
+import org.maplibre.spatialk.turf.transformation.circle
+import org.maplibre.spatialk.turf.transformation.simplify
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.kilometers
 

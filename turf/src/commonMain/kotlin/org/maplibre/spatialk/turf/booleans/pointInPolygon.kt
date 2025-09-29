@@ -1,15 +1,15 @@
-@file:JvmName("TurfBooleans")
 @file:OptIn(ExperimentalTurfApi::class)
 
-package org.maplibre.spatialk.turf
+package org.maplibre.spatialk.turf.booleans
 
-import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.turf.ExperimentalTurfApi
+import org.maplibre.spatialk.turf.measurement.bbox
 
 /**
  * Takes a [Point] and a [Polygon] and determines if the point resides inside the polygon. The
@@ -23,7 +23,7 @@ import org.maplibre.spatialk.geojson.Position
  *   Polygon
  */
 @JvmOverloads
-public fun booleanPointInPolygon(
+public fun pointInPolygon(
     point: Point,
     polygon: Polygon,
     ignoreBoundary: Boolean = false,
@@ -31,7 +31,7 @@ public fun booleanPointInPolygon(
     val bbox = bbox(polygon)
     // normalize to multipolygon
     val polys = listOf(polygon.coordinates)
-    return booleanPointInPolygon(point.coordinates, bbox, polys, ignoreBoundary)
+    return pointInPolygon(point.coordinates, bbox, polys, ignoreBoundary)
 }
 
 /**
@@ -46,17 +46,17 @@ public fun booleanPointInPolygon(
  *   Polygon
  */
 @JvmOverloads
-public fun booleanPointInPolygon(
+public fun pointInPolygon(
     point: Point,
     polygon: MultiPolygon,
     ignoreBoundary: Boolean = false,
 ): Boolean {
     val bbox = bbox(polygon)
     val polys = polygon.coordinates
-    return booleanPointInPolygon(point.coordinates, bbox, polys, ignoreBoundary)
+    return pointInPolygon(point.coordinates, bbox, polys, ignoreBoundary)
 }
 
-private fun booleanPointInPolygon(
+private fun pointInPolygon(
     point: Position,
     bbox: BoundingBox,
     polys: List<List<List<Position>>>,
@@ -126,3 +126,5 @@ private fun inBBox(point: Position, boundingBox: BoundingBox): Boolean {
     val bbox = boundingBox.coordinates
     return bbox[0] <= pt[0] && bbox[1] <= pt[1] && bbox[2] >= pt[0] && bbox[3] >= pt[1]
 }
+
+public operator fun Polygon.contains(point: Point): Boolean = pointInPolygon(point, this)

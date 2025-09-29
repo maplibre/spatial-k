@@ -17,6 +17,7 @@ You can view porting progress for the next release
 - [x] [`destination`](./api/turf/org.maplibre.spatialk.turf/destination.html)
 - [x] [`distance`](./api/turf/org.maplibre.spatialk.turf/distance.html)
 - [x] [`envelope`](./api/turf/org.maplibre.spatialk.turf/envelope.html)
+- [x] [`greatCircle`](./api/turf/org.maplibre.spatialk.turf/great-circle.html)
 - [x] [`length`](./api/turf/org.maplibre.spatialk.turf/length.html)
 - [x] [`midpoint`](./api/turf/org.maplibre.spatialk.turf/midpoint.html)
 - [ ] `pointOnFeature`
@@ -26,14 +27,13 @@ You can view porting progress for the next release
 - [ ] `rhumbDestination`
 - [x] [`rhumbDistance`](./api/turf/org.maplibre.spatialk.turf/rhumb-distance.html)
 - [ ] `square`
-- [x] [`greatCircle`](./api/turf/org.maplibre.spatialk.turf/great-circle.html)
 
 ## Coordinate Mutation
 
 - [ ] `cleanCoords`
 - [ ] `flip`
 - [ ] `rewind`
-- [x] `round` Use `round` or `Math.round` from the standard library instead.
+- [ ] `round`
 - [ ] `truncate`
 
 ## Transformation
@@ -131,7 +131,7 @@ Use the [GeoJson DSL](./geojson.md#geojson-dsl) instead.
 
 ## Meta
 
-- [ ] `coordAll`
+- [x] `coordAll`
 - [ ] `coordEach`
 - [ ] `coordReduce`
 - [ ] `featureEach`
