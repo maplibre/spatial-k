@@ -8,14 +8,11 @@ plugins {
     id("org.jetbrains.kotlinx.benchmark")
 }
 
-afterEvaluate {
-    kotlin {
-        // benchmark compilations
-        targets.forEach { target ->
-            if (target.name in listOf("jvm", "js", "linuxX64", "macosArm64", "mingwX64")) {
-                target.compilations.create("bench") {
-                    associateWith(target.compilations.getByName("main"))
-                }
+kotlin {
+    targets.forEach { target ->
+        if (target.name in listOf("jvm", "js", "linuxX64", "macosArm64", "mingwX64")) {
+            target.compilations.create("bench") {
+                associateWith(target.compilations.getByName("main"))
             }
         }
     }
