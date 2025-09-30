@@ -22,13 +22,14 @@ public sealed interface GeoJsonObject {
     public companion object {
         @JvmStatic
         public fun fromJson(@Language("json") json: String): GeoJsonObject =
-            GeoJson.decodeFromString(serializer(), json)
+            GeoJson.decodeFromString(json)
 
+        @PublishedApi
         internal inline fun <reified T : GeoJsonObject> fromJson(
             @Language("json") json: String
         ): T =
             try {
-                GeoJson.decodeFromString(serializer(), json) as T
+                GeoJson.decodeFromString<T>(json)
             } catch (_: ClassCastException) {
                 throw SerializationException("Object is not a ${T::class.simpleName}")
             }

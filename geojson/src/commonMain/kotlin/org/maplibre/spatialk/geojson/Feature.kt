@@ -30,11 +30,14 @@ public data class Feature<out T : Geometry>(
 
     public companion object {
         @JvmStatic
-        public fun <T : Geometry> fromJson(@Language("json") json: String): Feature<T> =
-            GeoJsonObject.fromJson<Feature<T>>(json)
+        public inline fun <reified T : Geometry> fromJson(
+            @Language("json") json: String
+        ): Feature<T> = GeoJsonObject.fromJson<Feature<T>>(json)
 
         @JvmStatic
-        public fun <T : Geometry> fromJsonOrNull(@Language("json") json: String): Feature<T>? =
+        public inline fun <reified T : Geometry> fromJsonOrNull(
+            @Language("json") json: String
+        ): Feature<T>? =
             try {
                 fromJson(json)
             } catch (_: Exception) {
