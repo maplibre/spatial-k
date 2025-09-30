@@ -11,6 +11,7 @@ import kotlinx.benchmark.Setup
 import kotlinx.benchmark.State
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.put
 import org.maplibre.spatialk.geojson.dsl.featureCollection
 import org.maplibre.spatialk.geojson.dsl.lineString
 import org.maplibre.spatialk.geojson.dsl.point
@@ -57,18 +58,22 @@ open class GeoJsonBenchmark {
                                     Position(
                                         random.nextDouble(360.0) - 180,
                                         random.nextDouble(360.0) - 180,
+                                        random.nextDouble(100.0),
                                     )
                                 +start
                                 repeat(8) {
                                     +Position(
                                         random.nextDouble(360.0) - 180,
                                         random.nextDouble(360.0) - 180,
+                                        random.nextDouble(100.0),
                                     )
                                 }
                                 +start
                             }
                         }
-                )
+                ) {
+                    put("example", "value")
+                }
             }
         }
     }
