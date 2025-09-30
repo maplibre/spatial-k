@@ -291,7 +291,6 @@ class FeatureTest {
                 """
             {
                 "geometry": {
-                    "type": "Point",
                     "coordinates": [125.6, 10.1]
                 }
             }

@@ -26,7 +26,7 @@ public data class Feature<out T : Geometry>(
     public val id: String? = null,
     override val bbox: BoundingBox? = null,
 ) : GeoJsonObject {
-    override fun json(): String = GeoJson.encodeToString(this)
+    override fun json(): String = GeoJson.encodeToString(serializer(Geometry.serializer()), this)
 
     public companion object {
         @JvmStatic
