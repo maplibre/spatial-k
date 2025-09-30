@@ -25,7 +25,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  */
 @Serializable
 @SerialName("Polygon")
-public class Polygon
+public data class Polygon
 @JvmOverloads
 constructor(
     /**
@@ -75,24 +75,6 @@ constructor(
             require(ring.size >= 4) { "Line string at index $i contains fewer than 4 positions." }
             require(ring.first() == ring.last()) { "Line string at at index $i is not closed." }
         }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this::class != other::class) return false
-
-        other as Polygon
-
-        if (coordinates != other.coordinates) return false
-        if (bbox != other.bbox) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = coordinates.hashCode()
-        result = 31 * result + (bbox?.hashCode() ?: 0)
-        return result
     }
 
     override fun json(): String = GeoJson.encodeToString(this)

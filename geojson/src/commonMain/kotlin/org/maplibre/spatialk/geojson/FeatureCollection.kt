@@ -17,7 +17,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  */
 @Serializable
 @SerialName("FeatureCollection")
-public class FeatureCollection(
+public data class FeatureCollection(
     public val features: List<Feature> = emptyList(),
     override val bbox: BoundingBox? = null,
 ) : Collection<Feature> by features, GeoJsonObject {
@@ -26,31 +26,7 @@ public class FeatureCollection(
         bbox: BoundingBox? = null,
     ) : this(features.toMutableList(), bbox)
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this::class != other::class) return false
-
-        other as FeatureCollection
-
-        if (features != other.features) return false
-        if (bbox != other.bbox) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = features.hashCode()
-        result = 31 * result + (bbox?.hashCode() ?: 0)
-        return result
-    }
-
-    override fun toString(): String = json()
-
     override fun json(): String = GeoJson.encodeToString(this)
-
-    public operator fun component1(): List<Feature> = features
-
-    public operator fun component2(): BoundingBox? = bbox
 
     public companion object {
         @JvmStatic

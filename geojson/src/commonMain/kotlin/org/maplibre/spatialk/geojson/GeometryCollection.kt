@@ -14,33 +14,16 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  */
 @Serializable
 @SerialName("GeometryCollection")
-public class GeometryCollection
+public data class GeometryCollection
 @JvmOverloads
 constructor(public val geometries: List<Geometry>, override val bbox: BoundingBox? = null) :
     Geometry(), Collection<Geometry> by geometries {
+
     @JvmOverloads
     public constructor(
         vararg geometries: Geometry,
         bbox: BoundingBox? = null,
     ) : this(geometries.toList(), bbox)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this::class != other::class) return false
-
-        other as GeometryCollection
-
-        if (geometries != other.geometries) return false
-        if (bbox != other.bbox) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = geometries.hashCode()
-        result = 31 * result + (bbox?.hashCode() ?: 0)
-        return result
-    }
 
     override fun json(): String = GeoJson.encodeToString(this)
 

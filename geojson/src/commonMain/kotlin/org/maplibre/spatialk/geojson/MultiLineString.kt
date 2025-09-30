@@ -15,7 +15,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  */
 @Serializable
 @SerialName("MultiLineString")
-public class MultiLineString
+public data class MultiLineString
 @JvmOverloads
 constructor(public val coordinates: List<List<Position>>, override val bbox: BoundingBox? = null) :
     Geometry() {
@@ -57,24 +57,6 @@ constructor(public val coordinates: List<List<Position>>, override val bbox: Bou
                 "LineString at index $index contains fewer than 2 positions."
             }
         }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this::class != other::class) return false
-
-        other as MultiLineString
-
-        if (coordinates != other.coordinates) return false
-        if (bbox != other.bbox) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = coordinates.hashCode()
-        result = 31 * result + (bbox?.hashCode() ?: 0)
-        return result
     }
 
     override fun json(): String = GeoJson.encodeToString(this)
