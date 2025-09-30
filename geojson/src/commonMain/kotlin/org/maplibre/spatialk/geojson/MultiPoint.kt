@@ -14,7 +14,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  */
 @Serializable
 @SerialName("MultiPoint")
-public class MultiPoint
+public data class MultiPoint
 @JvmOverloads
 constructor(
     /** a list of [Position]s. */
@@ -40,24 +40,6 @@ constructor(
         coordinates: Array<DoubleArray>,
         bbox: BoundingBox? = null,
     ) : this(coordinates.map(::Position), bbox)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this::class != other::class) return false
-
-        other as MultiPoint
-
-        if (coordinates != other.coordinates) return false
-        if (bbox != other.bbox) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = coordinates.hashCode()
-        result = 31 * result + (bbox?.hashCode() ?: 0)
-        return result
-    }
 
     override fun json(): String = GeoJson.encodeToString(this)
 
