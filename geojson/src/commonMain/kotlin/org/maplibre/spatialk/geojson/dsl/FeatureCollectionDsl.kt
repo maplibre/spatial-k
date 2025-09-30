@@ -12,10 +12,10 @@ import org.maplibre.spatialk.geojson.Geometry
 
 @GeoJsonDsl
 public class FeatureCollectionDsl(
-    private val features: MutableList<Feature<Geometry>> = mutableListOf(),
+    private val features: MutableList<Feature<*>> = mutableListOf(),
     public var bbox: BoundingBox? = null,
 ) {
-    public operator fun Feature<Geometry>.unaryPlus() {
+    public operator fun Feature<*>.unaryPlus() {
         features.add(this)
     }
 

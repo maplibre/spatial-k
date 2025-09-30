@@ -34,7 +34,7 @@ public data class Feature<out T : Geometry>(
             GeoJsonObject.fromJson<Feature<T>>(json)
 
         @JvmStatic
-        public fun <T : Geometry> fromJsonOrNull(json: String): Feature<T>? =
+        public fun <T : Geometry> fromJsonOrNull(@Language("json") json: String): Feature<T>? =
             try {
                 fromJson(json)
             } catch (_: Exception) {

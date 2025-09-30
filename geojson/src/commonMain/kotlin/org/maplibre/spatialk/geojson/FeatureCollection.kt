@@ -18,11 +18,11 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
 @Serializable
 @SerialName("FeatureCollection")
 public data class FeatureCollection(
-    public val features: List<Feature<Geometry>> = emptyList(),
+    public val features: List<Feature<*>> = emptyList(),
     override val bbox: BoundingBox? = null,
-) : Collection<Feature<Geometry>> by features, GeoJsonObject {
+) : Collection<Feature<*>> by features, GeoJsonObject {
     public constructor(
-        vararg features: Feature<Geometry>,
+        vararg features: Feature<*>,
         bbox: BoundingBox? = null,
     ) : this(features.toMutableList(), bbox)
 
