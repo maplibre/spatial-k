@@ -13,7 +13,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  * @see Point
  */
 @Serializable
-@SerialName(MultiPoint.JSON_NAME)
+@SerialName("MultiPoint")
 public data class MultiPoint
 @JvmOverloads
 constructor(
@@ -54,7 +54,5 @@ constructor(
             } catch (_: Exception) {
                 null
             }
-
-        internal const val JSON_NAME = "MultiPoint"
     }
 }

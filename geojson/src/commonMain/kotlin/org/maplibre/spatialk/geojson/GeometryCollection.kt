@@ -13,7 +13,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  * @see Geometry
  */
 @Serializable
-@SerialName(GeometryCollection.JSON_NAME)
+@SerialName("GeometryCollection")
 public data class GeometryCollection
 @JvmOverloads
 constructor(public val geometries: List<Geometry>, override val bbox: BoundingBox? = null) :
@@ -39,7 +39,5 @@ constructor(public val geometries: List<Geometry>, override val bbox: BoundingBo
             } catch (_: IllegalArgumentException) {
                 null
             }
-
-        internal const val JSON_NAME = "GeometryCollection"
     }
 }
