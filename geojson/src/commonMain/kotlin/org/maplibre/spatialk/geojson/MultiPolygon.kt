@@ -14,7 +14,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  * @see Polygon
  */
 @Serializable
-@SerialName("MultiPolygon")
+@SerialName(MultiPolygon.JSON_NAME)
 public data class MultiPolygon
 @JvmOverloads
 constructor(
@@ -85,5 +85,7 @@ constructor(
             } catch (_: IllegalArgumentException) {
                 null
             }
+
+        internal const val JSON_NAME = "MultiPolygon"
     }
 }

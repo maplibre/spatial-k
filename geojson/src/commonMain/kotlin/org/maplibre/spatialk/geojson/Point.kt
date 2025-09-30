@@ -13,7 +13,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  * @see MultiPoint
  */
 @Serializable
-@SerialName("Point")
+@SerialName(Point.JSON_NAME)
 public data class Point
 @JvmOverloads
 constructor(public val coordinates: Position, override val bbox: BoundingBox? = null) : Geometry() {
@@ -57,5 +57,7 @@ constructor(public val coordinates: Position, override val bbox: BoundingBox? = 
 
         @JvmStatic
         public fun fromGeoUri(uri: String): Point = Point(GeoUriParser.parsePosition(uri))
+
+        internal const val JSON_NAME = "Point"
     }
 }

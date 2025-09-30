@@ -14,7 +14,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  * @see LineString
  */
 @Serializable
-@SerialName("MultiLineString")
+@SerialName(MultiLineString.JSON_NAME)
 public data class MultiLineString
 @JvmOverloads
 constructor(public val coordinates: List<List<Position>>, override val bbox: BoundingBox? = null) :
@@ -73,5 +73,7 @@ constructor(public val coordinates: List<List<Position>>, override val bbox: Bou
             } catch (_: IllegalArgumentException) {
                 null
             }
+
+        internal const val JSON_NAME = "MultiLineString"
     }
 }
