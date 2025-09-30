@@ -15,13 +15,6 @@ import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 
-public val GeoJson: Json = Json {
-    @OptIn(ExperimentalSerializationApi::class)
-    classDiscriminatorMode = ClassDiscriminatorMode.ALL_JSON_OBJECTS
-    ignoreUnknownKeys = true
-    serializersModule = GeometrySerializersModule
-}
-
 private val GeometrySerializersModule = SerializersModule {
     polymorphic(Geometry::class) {
         subclass(GeometryCollection::class)
@@ -32,4 +25,11 @@ private val GeometrySerializersModule = SerializersModule {
         subclass(Point::class)
         subclass(Polygon::class)
     }
+}
+
+public val GeoJson: Json = Json {
+    @OptIn(ExperimentalSerializationApi::class)
+    classDiscriminatorMode = ClassDiscriminatorMode.ALL_JSON_OBJECTS
+    ignoreUnknownKeys = true
+    serializersModule = GeometrySerializersModule
 }
