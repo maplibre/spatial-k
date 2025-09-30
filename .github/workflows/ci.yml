@@ -48,7 +48,7 @@ jobs:
             - name: Run benchmark
               run: |
                   echo '## Benchmark' >> $GITHUB_STEP_SUMMARY
-                  ./gradlew -q :geojson:benchmark >> $GITHUB_STEP_SUMMARY
+                  ./gradlew -q benchmark >> $GITHUB_STEP_SUMMARY
 
     docs:
         runs-on: ubuntu-latest
