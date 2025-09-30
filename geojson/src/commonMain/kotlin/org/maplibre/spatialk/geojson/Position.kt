@@ -38,7 +38,7 @@ import org.maplibre.spatialk.geojson.serialization.PositionSerializer
  * @see PositionSerializer
  */
 @Serializable(with = PositionSerializer::class)
-public class Position(public val coordinates: DoubleArray) {
+public class Position(internal val coordinates: DoubleArray) {
     init {
         require(coordinates.size >= 2) { "At least two coordinates must be provided" }
     }

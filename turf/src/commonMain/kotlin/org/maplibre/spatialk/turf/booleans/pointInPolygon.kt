@@ -87,31 +87,30 @@ private fun pointInPolygon(
 }
 
 private fun inRing(point: Position, ring: List<Position>, ignoreBoundary: Boolean): Boolean {
-    val pt = point.coordinates
+    val (ptLon, ptLat) = point
     var isInside = false
     val openRing =
         if (
-            ring[0].coordinates[0] == ring.last().coordinates[0] &&
-                ring[0].coordinates[1] == ring.last().coordinates[1]
+            ring[0].longitude == ring.last().longitude && ring[0].latitude == ring.last().latitude
         ) {
             ring.slice(0 until ring.size - 1)
         } else ring
     var i = 0
     var j = openRing.size - 1
     while (i < openRing.size) {
-        val xi = openRing[i].coordinates[0]
-        val yi = openRing[i].coordinates[1]
-        val xj = openRing[j].coordinates[0]
-        val yj = openRing[j].coordinates[1]
+        val xi = openRing[i].longitude
+        val yi = openRing[i].latitude
+        val xj = openRing[j].longitude
+        val yj = openRing[j].latitude
         val onBoundary =
-            pt[1] * (xi - xj) + yi * (xj - pt[0]) + yj * (pt[0] - xi) == 0.0 &&
-                (xi - pt[0]) * (xj - pt[0]) <= 0 &&
-                (yi - pt[1]) * (yj - pt[1]) <= 0
+            ptLat * (xi - xj) + yi * (xj - ptLon) + yj * (ptLon - xi) == 0.0 &&
+                (xi - ptLon) * (xj - ptLon) <= 0 &&
+                (yi - ptLat) * (yj - ptLat) <= 0
         if (onBoundary) {
             return !ignoreBoundary
         }
         val intersect =
-            yi > pt[1] != yj > pt[1] && pt[0] < ((xj - xi) * (pt[1] - yi)) / (yj - yi) + xi
+            yi > ptLat != yj > ptLat && ptLon < ((xj - xi) * (ptLat - yi)) / (yj - yi) + xi
         if (intersect) {
             isInside = !isInside
         }
@@ -122,9 +121,10 @@ private fun inRing(point: Position, ring: List<Position>, ignoreBoundary: Boolea
 }
 
 private fun inBBox(point: Position, boundingBox: BoundingBox): Boolean {
-    val pt = point.coordinates
-    val bbox = boundingBox.coordinates
-    return bbox[0] <= pt[0] && bbox[1] <= pt[1] && bbox[2] >= pt[0] && bbox[3] >= pt[1]
+    return boundingBox.west <= point.longitude &&
+        boundingBox.south <= point.latitude &&
+        boundingBox.east >= point.longitude &&
+        boundingBox.north >= point.latitude
 }
 
 public operator fun Polygon.contains(point: Point): Boolean = pointInPolygon(point, this)

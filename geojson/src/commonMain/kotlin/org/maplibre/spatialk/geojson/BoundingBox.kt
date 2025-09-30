@@ -26,7 +26,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  *   https://tools.ietf.org/html/rfc7946#section-5</a>
  */
 @Serializable(with = BoundingBoxSerializer::class)
-public class BoundingBox(public val coordinates: DoubleArray) {
+public class BoundingBox(internal val coordinates: DoubleArray) {
     init {
         require(coordinates.size == 4 || coordinates.size == 6) {
             "Bounding Box coordinates must either have 4 or 6 values"
