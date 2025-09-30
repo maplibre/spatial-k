@@ -15,7 +15,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  */
 @Serializable
 @SerialName("LineString")
-public class LineString
+public data class LineString
 @JvmOverloads
 constructor(
     /** a list of [Position]s. */
@@ -60,24 +60,6 @@ constructor(
 
     init {
         require(coordinates.size >= 2) { "LineString must contain at least two positions" }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this::class != other::class) return false
-
-        other as LineString
-
-        if (coordinates != other.coordinates) return false
-        if (bbox != other.bbox) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = coordinates.hashCode()
-        result = 31 * result + (bbox?.hashCode() ?: 0)
-        return result
     }
 
     override fun json(): String = GeoJson.encodeToString(this)

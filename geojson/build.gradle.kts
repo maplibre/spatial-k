@@ -19,13 +19,15 @@ kotlin {
 
     jvm {
         compilerOptions { jvmTarget = JvmTarget.JVM_1_8 }
-        compilations.create("bench") { associateWith(this@jvm.compilations.getByName("main")) }
+        val main by compilations.getting
+        compilations.create("bench") { associateWith(main) }
     }
 
     js(IR) {
         browser()
         nodejs()
-        compilations.create("bench") { associateWith(this@js.compilations.getByName("main")) }
+        val main by compilations.getting
+        compilations.create("bench") { associateWith(main) }
     }
 
     wasmJs {
@@ -37,7 +39,10 @@ kotlin {
     wasmWasi { nodejs() }
 
     // native tier 1
-    macosArm64()
+    macosArm64 {
+        val main by compilations.getting
+        compilations.create("bench") { associateWith(main) }
+    }
     iosSimulatorArm64()
     iosArm64()
 
@@ -45,7 +50,8 @@ kotlin {
     macosX64()
     iosX64()
     linuxX64 {
-        compilations.create("bench") { associateWith(this@linuxX64.compilations.getByName("main")) }
+        val main by compilations.getting
+        compilations.create("bench") { associateWith(main) }
     }
     linuxArm64()
     watchosSimulatorArm64()
@@ -57,7 +63,10 @@ kotlin {
     tvosArm64()
 
     // native tier 3
-    mingwX64()
+    mingwX64 {
+        val main by compilations.getting
+        compilations.create("bench") { associateWith(main) }
+    }
     androidNativeArm32()
     androidNativeArm64()
     androidNativeX86()
@@ -83,13 +92,12 @@ kotlin {
             }
         }
 
-        val commonBench by creating { dependencies { implementation(libs.kotlinx.benchmark) } }
-
-        getByName("jsBench") { dependsOn(commonBench) }
-
-        getByName("jvmBench") { dependsOn(commonBench) }
-
-        getByName("linuxX64Bench") { dependsOn(commonBench) }
+        create("commonBench").apply {
+            listOf("jvm", "js", "linuxX64", "macosArm64", "mingwX64").forEach {
+                getByName("${it}Bench").dependsOn(this@apply)
+            }
+            dependencies { implementation(libs.kotlinx.benchmark) }
+        }
     }
 }
 
@@ -128,6 +136,8 @@ benchmark {
         register("jvmBench")
         register("jsBench")
         register("linuxX64Bench")
+        register("macosArm64Bench")
+        register("mingwX64")
     }
 }
 

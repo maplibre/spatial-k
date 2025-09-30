@@ -15,7 +15,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  */
 @Serializable
 @SerialName("MultiPolygon")
-public class MultiPolygon
+public data class MultiPolygon
 @JvmOverloads
 constructor(
     /** a list (= polygons) of lists (= polygon rings) of lists of [Position]s. */
@@ -69,24 +69,6 @@ constructor(
                 }
             }
         }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this::class != other::class) return false
-
-        other as MultiPolygon
-
-        if (coordinates != other.coordinates) return false
-        if (bbox != other.bbox) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = coordinates.hashCode()
-        result = 31 * result + (bbox?.hashCode() ?: 0)
-        return result
     }
 
     override fun json(): String = GeoJson.encodeToString(this)
