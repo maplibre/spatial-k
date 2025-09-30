@@ -3,6 +3,7 @@ package org.maplibre.spatialk.turf.measurement
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
@@ -121,7 +122,7 @@ class BboxTest {
                 Double.NEGATIVE_INFINITY,
             )
 
-        assertEquals(emptyBbox, bbox(feature()))
+        assertEquals(emptyBbox, bbox(feature<Geometry>()))
 
         assertEquals(emptyBbox, bbox(featureCollection {}))
     }
