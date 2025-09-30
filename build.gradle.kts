@@ -1,10 +1,8 @@
 import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType
 
 plugins {
-    alias(libs.plugins.kotlin.multiplatform) apply false
-    alias(libs.plugins.publish) apply false
-    alias(libs.plugins.kotlinx.kover)
-    alias(libs.plugins.dokka)
+    id("org.jetbrains.kotlinx.kover")
+    id("org.jetbrains.dokka")
 }
 
 dokka {
