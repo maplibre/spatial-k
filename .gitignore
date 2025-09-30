@@ -6,3 +6,4 @@
 
 /site
 /docs/api
+.claude/*.local.json

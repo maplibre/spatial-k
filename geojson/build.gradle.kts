@@ -41,7 +41,7 @@ kotlin {
 
         create("commonBench").apply {
             listOf("jvm", "js", "linuxX64", "macosArm64", "mingwX64").forEach {
-                findByName("${it}Bench")?.dependsOn(this@apply)
+                getByName("${it}Bench").dependsOn(this@apply)
             }
             dependencies { implementation(libs.kotlinx.benchmark) }
         }
