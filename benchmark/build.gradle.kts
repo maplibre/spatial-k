@@ -31,7 +31,11 @@ kotlin {
 }
 
 benchmark {
-    configurations { named("main") { iterations = 5 } }
+    configurations {
+        named("main") {
+            iterations = project.findProperty("benchmarkIterations")?.toString()?.toInt() ?: 5
+        }
+    }
 
     targets {
         register("jvm")
