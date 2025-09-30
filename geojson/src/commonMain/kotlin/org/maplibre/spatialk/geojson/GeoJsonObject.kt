@@ -25,7 +25,7 @@ public sealed interface GeoJsonObject {
             GeoJson.decodeFromString(json)
 
         @PublishedApi
-        internal inline fun <reified T : GeoJsonObject> fromJson(
+        internal inline fun <reified T : GeoJsonObject> fromJsonInternal(
             @Language("json") json: String
         ): T =
             try {

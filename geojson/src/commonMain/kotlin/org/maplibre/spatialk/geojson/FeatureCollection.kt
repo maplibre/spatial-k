@@ -31,7 +31,7 @@ public data class FeatureCollection(
     public companion object {
         @JvmStatic
         public fun fromJson(@Language("json") json: String): FeatureCollection =
-            GeoJsonObject.fromJson<FeatureCollection>(json)
+            GeoJsonObject.fromJsonInternal<FeatureCollection>(json)
 
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): FeatureCollection? =

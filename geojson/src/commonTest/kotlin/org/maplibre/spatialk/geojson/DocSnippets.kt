@@ -416,9 +416,8 @@ class DocSnippets {
     @Test
     fun kotlinxSerializationExample() {
         // --8<-- [start:kotlinxSerialization]
-        val feature: Feature =
+        val feature: Feature<*> =
             GeoJson.decodeFromString(
-                Feature.serializer(),
                 """
                 {
                     "type": "Feature",
@@ -430,7 +429,7 @@ class DocSnippets {
                         "name": "point name"
                     }
                 }
-                """,
+                """
             )
         // --8<-- [end:kotlinxSerialization]
     }

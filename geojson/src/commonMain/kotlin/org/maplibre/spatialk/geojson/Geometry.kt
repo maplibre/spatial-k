@@ -30,7 +30,7 @@ public sealed class Geometry() : GeoJsonObject {
 
         @JvmStatic
         internal inline fun <reified T : Geometry> fromJson(@Language("json") json: String): T =
-            GeoJsonObject.fromJson<T>(json)
+            GeoJsonObject.fromJsonInternal<T>(json)
 
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): Geometry? =

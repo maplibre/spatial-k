@@ -164,7 +164,7 @@ class FeatureCollectionTest {
 
     @Test
     fun testMissingType() {
-        assertNull(Feature.fromJsonOrNull("{\"features\": []}"))
+        assertNull(Feature.fromJsonOrNull<Geometry>("{\"features\": []}"))
     }
 
     companion object {

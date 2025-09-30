@@ -32,7 +32,7 @@ public data class Feature<out T : Geometry>(
         @JvmStatic
         public inline fun <reified T : Geometry> fromJson(
             @Language("json") json: String
-        ): Feature<T> = GeoJsonObject.fromJson<Feature<T>>(json)
+        ): Feature<T> = GeoJsonObject.fromJsonInternal<Feature<T>>(json)
 
         @JvmStatic
         public inline fun <reified T : Geometry> fromJsonOrNull(
