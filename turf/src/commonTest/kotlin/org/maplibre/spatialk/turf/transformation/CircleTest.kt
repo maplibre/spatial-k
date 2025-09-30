@@ -20,7 +20,8 @@ class CircleTest {
 
     @Test
     fun testCircle() {
-        val point = Feature.fromJson<Point>(readResourceFile("transformation/circle/in/circle1.json"))
+        val point =
+            Feature.fromJson<Point>(readResourceFile("transformation/circle/in/circle1.json"))
         val expectedOut =
             FeatureCollection.fromJson(readResourceFile("transformation/circle/out/circle1.json"))
 

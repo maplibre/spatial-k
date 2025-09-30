@@ -1,10 +1,10 @@
 package org.maplibre.spatialk.geojson
 
+import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoJson
-import kotlin.jvm.JvmStatic
 
 /**
  * A FeatureCollection object is a collection of [Feature] objects. This class implements the

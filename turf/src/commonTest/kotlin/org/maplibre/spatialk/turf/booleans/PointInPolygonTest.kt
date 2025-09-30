@@ -1,16 +1,16 @@
 package org.maplibre.spatialk.turf.booleans
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
 import org.maplibre.spatialk.testutil.readResourceFile
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 class PointInPolygonTest {
 
@@ -54,7 +54,9 @@ class PointInPolygonTest {
         val ptInHole = point(-86.69208526611328, 36.20373274711739)
         val ptInPoly = point(-86.72229766845702, 36.20258997094334)
         val ptOutsidePoly = point(-86.75079345703125, 36.18527313913089)
-        val polyHole = Feature.fromJson<Polygon>(readResourceFile("booleans/in/poly-with-hole.geojson")).geometry
+        val polyHole =
+            Feature.fromJson<Polygon>(readResourceFile("booleans/in/poly-with-hole.geojson"))
+                .geometry
 
         assertNotNull(polyHole)
         assertFalse(pointInPolygon(ptInHole, polyHole))
@@ -68,7 +70,11 @@ class PointInPolygonTest {
         val ptInPoly = point(-86.72229766845702, 36.20258997094334)
         val ptInPoly2 = point(-86.75079345703125, 36.18527313913089)
         val ptOutsidePoly = point(-86.75302505493164, 36.23015046460186)
-        val multiPolyHole = Feature.fromJson<MultiPolygon>(readResourceFile("booleans/in/multipoly-with-hole.geojson")).geometry
+        val multiPolyHole =
+            Feature.fromJson<MultiPolygon>(
+                    readResourceFile("booleans/in/multipoly-with-hole.geojson")
+                )
+                .geometry
 
         assertNotNull(multiPolyHole)
         assertFalse(pointInPolygon(ptInHole, multiPolyHole))

@@ -1,11 +1,11 @@
 package org.maplibre.spatialk.geojson
 
+import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoJson
-import kotlin.jvm.JvmStatic
 
 /**
  * A feature object represents a spatially bounded thing.
@@ -73,12 +73,12 @@ public class Feature<out T : Geometry>(
         public fun <T : Geometry> fromJson(@Language("json") json: String): Feature<T> =
             GeoJsonObject.fromJson<Feature<T>>(json)
 
-
         @JvmStatic
-        public fun <T : Geometry> fromJsonOrNull(json: String): Feature<T>? = try {
-            fromJson(json)
-        } catch (_: Exception) {
-            null
-        }
+        public fun <T : Geometry> fromJsonOrNull(json: String): Feature<T>? =
+            try {
+                fromJson(json)
+            } catch (_: Exception) {
+                null
+            }
     }
 }

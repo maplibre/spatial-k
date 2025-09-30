@@ -2,13 +2,13 @@
 
 package org.maplibre.spatialk.geojson.dsl
 
+import kotlin.jvm.JvmSynthetic
 import kotlinx.serialization.json.JsonObjectBuilder
 import kotlinx.serialization.json.buildJsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
-import kotlin.jvm.JvmSynthetic
 
 @GeoJsonDsl
 public class FeatureCollectionDsl(
