@@ -1,6 +1,7 @@
 @file:OptIn(ExperimentalWasmDsl::class)
 
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -11,7 +12,7 @@ kotlin {
     applyDefaultHierarchyTemplate()
     compilerOptions { allWarningsAsErrors = true }
 
-    jvm()
+    jvm { compilerOptions { jvmTarget = JvmTarget.JVM_1_8 } }
 
     js(IR) {
         browser()

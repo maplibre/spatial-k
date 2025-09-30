@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "spatial-k"
 
-include(":geojson", ":units", ":turf", ":testutil")
+include(":geojson", ":units", ":turf", ":testutil", ":benchmark")

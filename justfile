@@ -15,11 +15,11 @@ format:
 build:
     ./gradlew build
 
+benchmark:
+    ./gradlew benchmark
+
 coverage:
     ./gradlew :koverHtmlReport
-
-benchmark:
-    ./gradlew :geojson:benchmark
 
 build-dokka:
     ./gradlew :dokkaGenerateHtml

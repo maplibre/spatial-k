@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins { `kotlin-dsl` }
 
 repositories {
@@ -14,3 +16,5 @@ dependencies {
     implementation(libs.gradle.benchmark)
     implementation(libs.gradle.kover)
 }
+
+kotlin { compilerOptions { jvmTarget = JvmTarget.JVM_1_8 } }
