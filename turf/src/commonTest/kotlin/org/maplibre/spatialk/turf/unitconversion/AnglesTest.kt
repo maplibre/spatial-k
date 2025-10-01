@@ -2,9 +2,7 @@ package org.maplibre.spatialk.turf.unitconversion
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
-@ExperimentalTurfApi
 class AnglesTest {
     @Test
     fun testBearingToAzimuth() {

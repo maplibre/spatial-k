@@ -6,9 +6,7 @@ import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
-@ExperimentalTurfApi
 class LineSliceTest {
 
     @Test

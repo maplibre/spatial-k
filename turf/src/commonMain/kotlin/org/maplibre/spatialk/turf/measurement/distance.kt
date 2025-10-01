@@ -1,12 +1,16 @@
+@file:JvmName("Measurement")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.measurement
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit.Geodesy.Radians
@@ -22,7 +26,6 @@ import org.maplibre.spatialk.units.toLength
  * @return distance between the two points
  * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
  */
-@ExperimentalTurfApi
 public fun distance(from: Position, to: Position): Length {
     val dLat = degreesToRadians(to.latitude - from.latitude)
     val dLon = degreesToRadians(to.longitude - from.longitude)

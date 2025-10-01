@@ -1,7 +1,11 @@
+@file:JvmName("UnitConversion")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.unitconversion
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import kotlin.math.PI
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
 /** Converts an angle in radians to degrees */
 public fun radiansToDegrees(radians: Double): Double = radians * 180.0 / PI
@@ -16,7 +20,6 @@ public fun degreesToRadians(degrees: Double): Double = degrees * PI / 180.0
  * @param bearing angle, between -180 and +180 degrees
  * @return angle between 0 and 360 degrees
  */
-@ExperimentalTurfApi
 public fun bearingToAzimuth(bearing: Double): Double {
     var angle = bearing % 360
     if (angle < 0) {
@@ -32,7 +35,6 @@ public fun bearingToAzimuth(bearing: Double): Double {
  * @param azimuth between 0 and 360 degrees
  * @return bearing angle, between -180 and +180 degrees
  */
-@ExperimentalTurfApi
 public fun azimuthToBearing(azimuth: Double): Double {
     // Ignore full revolutions (multiples of 360)
     val angle = azimuth % 360

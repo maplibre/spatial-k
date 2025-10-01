@@ -1,5 +1,10 @@
+@file:JvmName("Meta")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.meta
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
@@ -11,9 +16,7 @@ import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
-@ExperimentalTurfApi
 public fun Geometry.coordAll(): List<Position> =
     when (this) {
         is Point -> this.coordAll()
@@ -25,31 +28,26 @@ public fun Geometry.coordAll(): List<Position> =
         is GeometryCollection -> this.coordAll()
     }
 
-@ExperimentalTurfApi public fun Point.coordAll(): List<Position> = listOf(coordinates)
+public fun Point.coordAll(): List<Position> = listOf(coordinates)
 
-@ExperimentalTurfApi public fun MultiPoint.coordAll(): List<Position> = coordinates
+public fun MultiPoint.coordAll(): List<Position> = coordinates
 
-@ExperimentalTurfApi public fun LineString.coordAll(): List<Position> = coordinates
+public fun LineString.coordAll(): List<Position> = coordinates
 
-@ExperimentalTurfApi
 public fun MultiLineString.coordAll(): List<Position> =
     coordinates.reduce { acc, list -> acc + list }
 
-@ExperimentalTurfApi
 public fun Polygon.coordAll(): List<Position> = coordinates.reduce { acc, list -> acc + list }
 
-@ExperimentalTurfApi
 public fun MultiPolygon.coordAll(): List<Position> =
     coordinates.fold(emptyList()) { acc, list ->
         list.reduce { innerAcc, innerList -> innerAcc + innerList } + acc
     }
 
-@ExperimentalTurfApi
 public fun GeometryCollection.coordAll(): List<Position> =
     geometries.fold(emptyList()) { acc, geometry -> acc + geometry.coordAll() }
 
-@ExperimentalTurfApi public fun Feature.coordAll(): List<Position>? = geometry?.coordAll()
+public fun Feature.coordAll(): List<Position>? = geometry?.coordAll()
 
-@ExperimentalTurfApi
 public fun FeatureCollection.coordAll(): List<Position> =
     features.fold(emptyList()) { acc, feature -> acc + (feature.coordAll() ?: emptyList()) }

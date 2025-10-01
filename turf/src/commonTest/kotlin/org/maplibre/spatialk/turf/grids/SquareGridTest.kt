@@ -9,7 +9,6 @@ import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.measurement.computeBbox
 import org.maplibre.spatialk.turf.meta.coordAll
 import org.maplibre.spatialk.units.kilometers
@@ -26,7 +25,6 @@ class SquareGridTest {
         }
     }
 
-    @OptIn(ExperimentalTurfApi::class)
     @Test
     fun testSquareGrid() {
         squareGrid(bbox = box, cellWidth = 200.meters, cellHeight = 200.meters).also {
@@ -34,7 +32,6 @@ class SquareGridTest {
         }
     }
 
-    @OptIn(ExperimentalTurfApi::class)
     private fun verifyValidGrid(grid: FeatureCollection) {
         assertEquals(16, grid.features.size)
 
@@ -69,7 +66,6 @@ class SquareGridTest {
         }
     }
 
-    @OptIn(ExperimentalTurfApi::class)
     @Test
     fun cellSizeBiggerThanBboxExtendLeadIntoEmptyGrid() {
         squareGrid(bbox = box, cellWidth = 2000.meters, cellHeight = 2000.meters).also {
@@ -77,7 +73,6 @@ class SquareGridTest {
         }
     }
 
-    @OptIn(ExperimentalTurfApi::class)
     @Test
     fun smallerCellSizeWillOutputMoreCellsInGrid() {
         squareGrid(bbox = box, cellWidth = 0.1.kilometers, cellHeight = 0.1.kilometers).also {
@@ -85,7 +80,6 @@ class SquareGridTest {
         }
     }
 
-    @OptIn(ExperimentalTurfApi::class)
     @Test
     fun increasedCellSizeWillOutputLessCellsInGrid() {
         squareGrid(bbox = box, cellWidth = 0.3.kilometers, cellHeight = 0.3.kilometers).also {

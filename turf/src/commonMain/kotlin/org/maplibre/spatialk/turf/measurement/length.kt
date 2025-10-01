@@ -1,11 +1,15 @@
+@file:JvmName("Measurement")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.measurement
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.units.Length
 
 /**
@@ -14,7 +18,6 @@ import org.maplibre.spatialk.units.Length
  * @param lineString The geometry to measure
  * @return The length of the geometry
  */
-@ExperimentalTurfApi
 public fun length(lineString: LineString): Length = length(lineString.coordinates)
 
 /**
@@ -23,7 +26,6 @@ public fun length(lineString: LineString): Length = length(lineString.coordinate
  * @param multiLineString The geometry to measure
  * @return The length of the geometry
  */
-@ExperimentalTurfApi
 public fun length(multiLineString: MultiLineString): Length =
     multiLineString.coordinates.fold(Length.ZERO) { acc, coords -> acc + length(coords) }
 
@@ -34,7 +36,6 @@ public fun length(multiLineString: MultiLineString): Length =
  * @param polygon The geometry to measure
  * @return The length of the geometry
  */
-@ExperimentalTurfApi
 public fun length(polygon: Polygon): Length =
     polygon.coordinates.fold(Length.ZERO) { acc, ring -> acc + length(ring) }
 
@@ -45,13 +46,11 @@ public fun length(polygon: Polygon): Length =
  * @param multiPolygon The geometry to measure
  * @return The length of the geometry
  */
-@ExperimentalTurfApi
 public fun length(multiPolygon: MultiPolygon): Length =
     multiPolygon.coordinates.fold(Length.ZERO) { total, polygon ->
         total + polygon.fold(Length.ZERO) { acc, ring -> acc + length(ring) }
     }
 
-@ExperimentalTurfApi
 private fun length(coords: List<Position>): Length {
     var travelled = Length.ZERO
     var prevCoords = coords[0]

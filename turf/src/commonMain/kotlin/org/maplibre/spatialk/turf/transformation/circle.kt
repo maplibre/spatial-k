@@ -1,8 +1,12 @@
+@file:JvmName("Transformation")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.transformation
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.measurement.computeBbox
 import org.maplibre.spatialk.turf.measurement.destination
 import org.maplibre.spatialk.units.Length
@@ -15,7 +19,6 @@ import org.maplibre.spatialk.units.Length
  * @param radius radius of the circle
  * @param steps the number of steps must be at least four. Default is 64
  */
-@ExperimentalTurfApi
 public fun circle(center: Point, radius: Length, steps: Int = 64): Polygon {
     require(steps >= 4) { "circle needs to have four or more coordinates." }
     require(radius.isPositive) { "radius must be a positive value" }

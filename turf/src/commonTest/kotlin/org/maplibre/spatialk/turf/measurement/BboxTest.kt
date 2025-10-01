@@ -14,7 +14,6 @@ import org.maplibre.spatialk.geojson.dsl.multiPolygon
 import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
 private val point = point(102.0, 0.5)
 private val line = lineString {
@@ -78,7 +77,6 @@ private val featureCollection = featureCollection {
     feature(geometry = multiPolygon)
 }
 
-@ExperimentalTurfApi
 class BboxTest {
 
     @Test

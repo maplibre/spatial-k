@@ -1,13 +1,17 @@
+@file:JvmName("Measurement")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.measurement
 
 import kotlin.collections.orEmpty
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.GeoJsonObject
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.GeometryCollection
 import org.maplibre.spatialk.geojson.Polygon
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.meta.coordAll
 
 /**
@@ -17,7 +21,6 @@ import org.maplibre.spatialk.turf.meta.coordAll
  * @param geoJson input containing any coordinates
  * @return a rectangular [Polygon] feature that encompasses all vertices
  */
-@ExperimentalTurfApi
 public fun envelope(geoJson: GeoJsonObject): Feature {
     val coordinates =
         when (geoJson) {

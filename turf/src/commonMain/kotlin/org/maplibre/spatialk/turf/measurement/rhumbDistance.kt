@@ -1,5 +1,10 @@
+@file:JvmName("Measurement")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.measurement
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.cos
@@ -7,13 +12,11 @@ import kotlin.math.ln
 import kotlin.math.sqrt
 import kotlin.math.tan
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit.Geodesy.Radians
 import org.maplibre.spatialk.units.toLength
 
 /** Calculates the distance along a rhumb line between two points. */
-@OptIn(ExperimentalTurfApi::class)
 public fun rhumbDistance(origin: Position, destination: Position): Length {
     // compensate the crossing of the 180th meridian
     val destination =

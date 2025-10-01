@@ -1,8 +1,12 @@
+@file:JvmName("Miscellaneous")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.misc
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
 /**
  * Takes a [LineString], a start and a stop [Position] and returns a subsection of the line between
@@ -13,7 +17,6 @@ import org.maplibre.spatialk.turf.ExperimentalTurfApi
  * @param line The [LineString] to slice
  * @return The sliced subsection of the line
  */
-@ExperimentalTurfApi
 public fun lineSlice(start: Position, stop: Position, line: LineString): LineString {
     val startVertex = nearestPointOnLine(line, start)
     val stopVertex = nearestPointOnLine(line, stop)

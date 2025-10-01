@@ -1,9 +1,13 @@
+@file:JvmName("Miscellaneous")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.misc
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.measurement.bearing
 import org.maplibre.spatialk.turf.measurement.destination
 import org.maplibre.spatialk.turf.measurement.distance
@@ -17,7 +21,6 @@ import org.maplibre.spatialk.units.Length
  * @property location Distance along the line from the stat to the [point]
  * @property index Index of the segment of the line on which [point] lies.
  */
-@ExperimentalTurfApi
 public data class NearestPointOnLineResult(
     val point: Position,
     val distance: Length,
@@ -32,7 +35,6 @@ public data class NearestPointOnLineResult(
  * @param point The [Position] given to find the closest point along the [line]
  * @return The closest position along the line
  */
-@ExperimentalTurfApi
 public fun nearestPointOnLine(line: LineString, point: Position): NearestPointOnLineResult {
     return nearestPointOnLine(listOf(line.coordinates), point)
 }
@@ -44,12 +46,10 @@ public fun nearestPointOnLine(line: LineString, point: Position): NearestPointOn
  * @param point The [Position] given to find the closest point along the [lines]
  * @return The closest position along the lines
  */
-@ExperimentalTurfApi
 public fun nearestPointOnLine(lines: MultiLineString, point: Position): NearestPointOnLineResult {
     return nearestPointOnLine(lines.coordinates, point)
 }
 
-@ExperimentalTurfApi
 internal fun nearestPointOnLine(
     lines: List<List<Position>>,
     point: Position,

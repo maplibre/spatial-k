@@ -3,10 +3,8 @@ package org.maplibre.spatialk.turf.measurement
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.units.inKilometers
 
-@ExperimentalTurfApi
 class DistanceTest {
 
     @Test

@@ -1,15 +1,18 @@
+@file:JvmName("Measurement")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.measurement
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
 /**
  * Takes a bounding box and calculates the minimum square bounding box that would contain the input.
  *
  * @return [BoundingBox] a square surrounding [boundingBox]
  */
-@ExperimentalTurfApi
 public fun square(boundingBox: BoundingBox): BoundingBox {
     val (east, north) = boundingBox.northeast
     val (west, south) = boundingBox.southwest

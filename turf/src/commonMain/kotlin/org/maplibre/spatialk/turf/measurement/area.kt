@@ -1,12 +1,16 @@
+@file:JvmName("Measurement")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.measurement
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import kotlin.math.sin
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.GeometryCollection
 import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.constants.EARTH_EQUATOR_RADIUS
 import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
 import org.maplibre.spatialk.units.Area
@@ -18,7 +22,6 @@ import org.maplibre.spatialk.units.times
  * @param geometry input geometry
  * @return area in square meters
  */
-@ExperimentalTurfApi
 public fun area(geometry: Geometry): Area {
     return when (geometry) {
         is GeometryCollection ->

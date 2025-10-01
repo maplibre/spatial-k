@@ -5,9 +5,7 @@ import kotlin.test.assertEquals
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.geojson.dsl.polygon
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
-@ExperimentalTurfApi
 class BboxPolygonTest {
     @Test
     fun testBboxPolygon() {

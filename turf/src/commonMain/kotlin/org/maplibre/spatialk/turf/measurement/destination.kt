@@ -1,11 +1,15 @@
+@file:JvmName("Measurement")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.measurement
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import kotlin.math.asin
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
 import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
 import org.maplibre.spatialk.units.Length
@@ -22,7 +26,6 @@ import org.maplibre.spatialk.units.LengthUnit.Geodesy.Radians
  * @return destination position
  * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
  */
-@ExperimentalTurfApi
 public fun destination(origin: Position, distance: Length, bearing: Double): Position {
     val longitude1 = degreesToRadians(origin.longitude)
     val latitude1 = degreesToRadians(origin.latitude)

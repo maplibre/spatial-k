@@ -3,9 +3,7 @@ package org.maplibre.spatialk.turf.measurement
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.maplibre.spatialk.geojson.BoundingBox
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
-@ExperimentalTurfApi
 class SquareTest {
 
     @Test

@@ -1,11 +1,15 @@
+@file:JvmName("Measurement")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.measurement
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
 import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
 
@@ -19,7 +23,6 @@ import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
  * @return bearing in decimal degrees, between -180 and 180 degrees (positive clockwise)
  */
 @JvmOverloads
-@ExperimentalTurfApi
 public fun bearing(start: Position, end: Position, final: Boolean = false): Double {
     if (final) return finalBearing(start, end)
 
@@ -34,6 +37,5 @@ public fun bearing(start: Position, end: Position, final: Boolean = false): Doub
     return radiansToDegrees(atan2(a, b))
 }
 
-@ExperimentalTurfApi
 internal fun finalBearing(start: Position, end: Position): Double =
     (bearing(end, start) + 180) % 360

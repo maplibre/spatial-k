@@ -12,7 +12,6 @@ import org.maplibre.spatialk.units.kilometers
 
 class DocSnippets {
     @Test
-    @OptIn(ExperimentalTurfApi::class)
     fun example() {
         // --8<-- [start:example]
         val point = Position(-75.0, 45.0)

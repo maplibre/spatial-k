@@ -1,0 +1,423 @@
+// Klib ABI Dump
+// Targets: [androidNativeArm32, androidNativeArm64, androidNativeX64, androidNativeX86, iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, wasmWasi, watchosArm32, watchosArm64, watchosDeviceArm64, watchosSimulatorArm64, watchosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <spatial-k:units>
+abstract interface org.maplibre.spatialk.units/AreaUnit : kotlin/Comparable<org.maplibre.spatialk.units/AreaUnit>, org.maplibre.spatialk.units/UnitOfMeasure { // org.maplibre.spatialk.units/AreaUnit|null[0]
+    abstract val metersSquaredPerUnit // org.maplibre.spatialk.units/AreaUnit.metersSquaredPerUnit|{}metersSquaredPerUnit[0]
+        abstract fun <get-metersSquaredPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/AreaUnit.metersSquaredPerUnit.<get-metersSquaredPerUnit>|<get-metersSquaredPerUnit>(){}[0]
+
+    open fun compareTo(org.maplibre.spatialk.units/AreaUnit): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.compareTo|compareTo(org.maplibre.spatialk.units.AreaUnit){}[0]
+
+    sealed class Imperial : org.maplibre.spatialk.units/AreaUnit { // org.maplibre.spatialk.units/AreaUnit.Imperial|null[0]
+        open val metersSquaredPerUnit // org.maplibre.spatialk.units/AreaUnit.Imperial.metersSquaredPerUnit|{}metersSquaredPerUnit[0]
+            open fun <get-metersSquaredPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/AreaUnit.Imperial.metersSquaredPerUnit.<get-metersSquaredPerUnit>|<get-metersSquaredPerUnit>(){}[0]
+        open val symbol // org.maplibre.spatialk.units/AreaUnit.Imperial.symbol|{}symbol[0]
+            open fun <get-symbol>(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.Imperial.symbol.<get-symbol>|<get-symbol>(){}[0]
+
+        final object Acres : org.maplibre.spatialk.units/AreaUnit.Imperial { // org.maplibre.spatialk.units/AreaUnit.Imperial.Acres|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.Imperial.Acres.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.Imperial.Acres.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.Imperial.Acres.toString|toString(){}[0]
+        }
+
+        final object SquareFeet : org.maplibre.spatialk.units/AreaUnit.Imperial { // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareFeet|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareFeet.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareFeet.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareFeet.toString|toString(){}[0]
+        }
+
+        final object SquareInches : org.maplibre.spatialk.units/AreaUnit.Imperial { // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareInches|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareInches.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareInches.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareInches.toString|toString(){}[0]
+        }
+
+        final object SquareMiles : org.maplibre.spatialk.units/AreaUnit.Imperial { // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareMiles|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareMiles.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareMiles.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareMiles.toString|toString(){}[0]
+        }
+
+        final object SquareRods : org.maplibre.spatialk.units/AreaUnit.Imperial { // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareRods|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareRods.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareRods.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareRods.toString|toString(){}[0]
+        }
+
+        final object SquareYards : org.maplibre.spatialk.units/AreaUnit.Imperial { // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareYards|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareYards.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareYards.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.Imperial.SquareYards.toString|toString(){}[0]
+        }
+    }
+
+    sealed class International : org.maplibre.spatialk.units/AreaUnit { // org.maplibre.spatialk.units/AreaUnit.International|null[0]
+        open val metersSquaredPerUnit // org.maplibre.spatialk.units/AreaUnit.International.metersSquaredPerUnit|{}metersSquaredPerUnit[0]
+            open fun <get-metersSquaredPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/AreaUnit.International.metersSquaredPerUnit.<get-metersSquaredPerUnit>|<get-metersSquaredPerUnit>(){}[0]
+        open val symbol // org.maplibre.spatialk.units/AreaUnit.International.symbol|{}symbol[0]
+            open fun <get-symbol>(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.International.symbol.<get-symbol>|<get-symbol>(){}[0]
+
+        final object SquareCentimeters : org.maplibre.spatialk.units/AreaUnit.International { // org.maplibre.spatialk.units/AreaUnit.International.SquareCentimeters|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.International.SquareCentimeters.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.International.SquareCentimeters.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.International.SquareCentimeters.toString|toString(){}[0]
+        }
+
+        final object SquareKilometers : org.maplibre.spatialk.units/AreaUnit.International { // org.maplibre.spatialk.units/AreaUnit.International.SquareKilometers|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.International.SquareKilometers.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.International.SquareKilometers.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.International.SquareKilometers.toString|toString(){}[0]
+        }
+
+        final object SquareMeters : org.maplibre.spatialk.units/AreaUnit.International { // org.maplibre.spatialk.units/AreaUnit.International.SquareMeters|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.International.SquareMeters.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.International.SquareMeters.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.International.SquareMeters.toString|toString(){}[0]
+        }
+
+        final object SquareMillimeters : org.maplibre.spatialk.units/AreaUnit.International { // org.maplibre.spatialk.units/AreaUnit.International.SquareMillimeters|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.International.SquareMillimeters.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.International.SquareMillimeters.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.International.SquareMillimeters.toString|toString(){}[0]
+        }
+    }
+
+    sealed class Metric : org.maplibre.spatialk.units/AreaUnit { // org.maplibre.spatialk.units/AreaUnit.Metric|null[0]
+        open val metersSquaredPerUnit // org.maplibre.spatialk.units/AreaUnit.Metric.metersSquaredPerUnit|{}metersSquaredPerUnit[0]
+            open fun <get-metersSquaredPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/AreaUnit.Metric.metersSquaredPerUnit.<get-metersSquaredPerUnit>|<get-metersSquaredPerUnit>(){}[0]
+        open val symbol // org.maplibre.spatialk.units/AreaUnit.Metric.symbol|{}symbol[0]
+            open fun <get-symbol>(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.Metric.symbol.<get-symbol>|<get-symbol>(){}[0]
+
+        final object Ares : org.maplibre.spatialk.units/AreaUnit.Metric { // org.maplibre.spatialk.units/AreaUnit.Metric.Ares|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.Metric.Ares.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.Metric.Ares.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.Metric.Ares.toString|toString(){}[0]
+        }
+
+        final object Centiares : org.maplibre.spatialk.units/AreaUnit.Metric { // org.maplibre.spatialk.units/AreaUnit.Metric.Centiares|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.Metric.Centiares.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.Metric.Centiares.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.Metric.Centiares.toString|toString(){}[0]
+        }
+
+        final object Decares : org.maplibre.spatialk.units/AreaUnit.Metric { // org.maplibre.spatialk.units/AreaUnit.Metric.Decares|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.Metric.Decares.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.Metric.Decares.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.Metric.Decares.toString|toString(){}[0]
+        }
+
+        final object Deciares : org.maplibre.spatialk.units/AreaUnit.Metric { // org.maplibre.spatialk.units/AreaUnit.Metric.Deciares|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.Metric.Deciares.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.Metric.Deciares.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.Metric.Deciares.toString|toString(){}[0]
+        }
+
+        final object Hectares : org.maplibre.spatialk.units/AreaUnit.Metric { // org.maplibre.spatialk.units/AreaUnit.Metric.Hectares|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/AreaUnit.Metric.Hectares.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.Metric.Hectares.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.Metric.Hectares.toString|toString(){}[0]
+        }
+    }
+}
+
+abstract interface org.maplibre.spatialk.units/LengthUnit : kotlin/Comparable<org.maplibre.spatialk.units/LengthUnit>, org.maplibre.spatialk.units/UnitOfMeasure { // org.maplibre.spatialk.units/LengthUnit|null[0]
+    abstract val metersPerUnit // org.maplibre.spatialk.units/LengthUnit.metersPerUnit|{}metersPerUnit[0]
+        abstract fun <get-metersPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/LengthUnit.metersPerUnit.<get-metersPerUnit>|<get-metersPerUnit>(){}[0]
+
+    open fun compareTo(org.maplibre.spatialk.units/LengthUnit): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.compareTo|compareTo(org.maplibre.spatialk.units.LengthUnit){}[0]
+    open fun times(org.maplibre.spatialk.units/LengthUnit): org.maplibre.spatialk.units/AreaUnit // org.maplibre.spatialk.units/LengthUnit.times|times(org.maplibre.spatialk.units.LengthUnit){}[0]
+
+    sealed class Geodesy : org.maplibre.spatialk.units/LengthUnit { // org.maplibre.spatialk.units/LengthUnit.Geodesy|null[0]
+        open val metersPerUnit // org.maplibre.spatialk.units/LengthUnit.Geodesy.metersPerUnit|{}metersPerUnit[0]
+            open fun <get-metersPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/LengthUnit.Geodesy.metersPerUnit.<get-metersPerUnit>|<get-metersPerUnit>(){}[0]
+        open val symbol // org.maplibre.spatialk.units/LengthUnit.Geodesy.symbol|{}symbol[0]
+            open fun <get-symbol>(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Geodesy.symbol.<get-symbol>|<get-symbol>(){}[0]
+
+        final object Degrees : org.maplibre.spatialk.units/LengthUnit.Geodesy { // org.maplibre.spatialk.units/LengthUnit.Geodesy.Degrees|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Geodesy.Degrees.equals|equals(kotlin.Any?){}[0]
+            final fun format(kotlin/Double, kotlin/Int): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Geodesy.Degrees.format|format(kotlin.Double;kotlin.Int){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Geodesy.Degrees.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Geodesy.Degrees.toString|toString(){}[0]
+        }
+
+        final object Minutes : org.maplibre.spatialk.units/LengthUnit.Geodesy { // org.maplibre.spatialk.units/LengthUnit.Geodesy.Minutes|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Geodesy.Minutes.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Geodesy.Minutes.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Geodesy.Minutes.toString|toString(){}[0]
+        }
+
+        final object Radians : org.maplibre.spatialk.units/LengthUnit.Geodesy { // org.maplibre.spatialk.units/LengthUnit.Geodesy.Radians|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Geodesy.Radians.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Geodesy.Radians.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Geodesy.Radians.toString|toString(){}[0]
+        }
+
+        final object Seconds : org.maplibre.spatialk.units/LengthUnit.Geodesy { // org.maplibre.spatialk.units/LengthUnit.Geodesy.Seconds|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Geodesy.Seconds.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Geodesy.Seconds.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Geodesy.Seconds.toString|toString(){}[0]
+        }
+    }
+
+    sealed class Imperial : org.maplibre.spatialk.units/LengthUnit { // org.maplibre.spatialk.units/LengthUnit.Imperial|null[0]
+        open val metersPerUnit // org.maplibre.spatialk.units/LengthUnit.Imperial.metersPerUnit|{}metersPerUnit[0]
+            open fun <get-metersPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/LengthUnit.Imperial.metersPerUnit.<get-metersPerUnit>|<get-metersPerUnit>(){}[0]
+        open val symbol // org.maplibre.spatialk.units/LengthUnit.Imperial.symbol|{}symbol[0]
+            open fun <get-symbol>(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Imperial.symbol.<get-symbol>|<get-symbol>(){}[0]
+
+        final object Cables : org.maplibre.spatialk.units/LengthUnit.Imperial { // org.maplibre.spatialk.units/LengthUnit.Imperial.Cables|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Imperial.Cables.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Imperial.Cables.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Imperial.Cables.toString|toString(){}[0]
+        }
+
+        final object Chains : org.maplibre.spatialk.units/LengthUnit.Imperial { // org.maplibre.spatialk.units/LengthUnit.Imperial.Chains|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Imperial.Chains.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Imperial.Chains.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Imperial.Chains.toString|toString(){}[0]
+        }
+
+        final object Fathoms : org.maplibre.spatialk.units/LengthUnit.Imperial { // org.maplibre.spatialk.units/LengthUnit.Imperial.Fathoms|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Imperial.Fathoms.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Imperial.Fathoms.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Imperial.Fathoms.toString|toString(){}[0]
+        }
+
+        final object Feet : org.maplibre.spatialk.units/LengthUnit.Imperial { // org.maplibre.spatialk.units/LengthUnit.Imperial.Feet|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Imperial.Feet.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Imperial.Feet.hashCode|hashCode(){}[0]
+            final fun times(org.maplibre.spatialk.units/LengthUnit): org.maplibre.spatialk.units/AreaUnit // org.maplibre.spatialk.units/LengthUnit.Imperial.Feet.times|times(org.maplibre.spatialk.units.LengthUnit){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Imperial.Feet.toString|toString(){}[0]
+        }
+
+        final object Furlongs : org.maplibre.spatialk.units/LengthUnit.Imperial { // org.maplibre.spatialk.units/LengthUnit.Imperial.Furlongs|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Imperial.Furlongs.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Imperial.Furlongs.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Imperial.Furlongs.toString|toString(){}[0]
+        }
+
+        final object Inches : org.maplibre.spatialk.units/LengthUnit.Imperial { // org.maplibre.spatialk.units/LengthUnit.Imperial.Inches|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Imperial.Inches.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Imperial.Inches.hashCode|hashCode(){}[0]
+            final fun times(org.maplibre.spatialk.units/LengthUnit): org.maplibre.spatialk.units/AreaUnit // org.maplibre.spatialk.units/LengthUnit.Imperial.Inches.times|times(org.maplibre.spatialk.units.LengthUnit){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Imperial.Inches.toString|toString(){}[0]
+        }
+
+        final object Leagues : org.maplibre.spatialk.units/LengthUnit.Imperial { // org.maplibre.spatialk.units/LengthUnit.Imperial.Leagues|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Imperial.Leagues.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Imperial.Leagues.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Imperial.Leagues.toString|toString(){}[0]
+        }
+
+        final object Links : org.maplibre.spatialk.units/LengthUnit.Imperial { // org.maplibre.spatialk.units/LengthUnit.Imperial.Links|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Imperial.Links.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Imperial.Links.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Imperial.Links.toString|toString(){}[0]
+        }
+
+        final object Miles : org.maplibre.spatialk.units/LengthUnit.Imperial { // org.maplibre.spatialk.units/LengthUnit.Imperial.Miles|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Imperial.Miles.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Imperial.Miles.hashCode|hashCode(){}[0]
+            final fun times(org.maplibre.spatialk.units/LengthUnit): org.maplibre.spatialk.units/AreaUnit // org.maplibre.spatialk.units/LengthUnit.Imperial.Miles.times|times(org.maplibre.spatialk.units.LengthUnit){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Imperial.Miles.toString|toString(){}[0]
+        }
+
+        final object NauticalMiles : org.maplibre.spatialk.units/LengthUnit.Imperial { // org.maplibre.spatialk.units/LengthUnit.Imperial.NauticalMiles|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Imperial.NauticalMiles.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Imperial.NauticalMiles.hashCode|hashCode(){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Imperial.NauticalMiles.toString|toString(){}[0]
+        }
+
+        final object Rods : org.maplibre.spatialk.units/LengthUnit.Imperial { // org.maplibre.spatialk.units/LengthUnit.Imperial.Rods|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Imperial.Rods.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Imperial.Rods.hashCode|hashCode(){}[0]
+            final fun times(org.maplibre.spatialk.units/LengthUnit): org.maplibre.spatialk.units/AreaUnit // org.maplibre.spatialk.units/LengthUnit.Imperial.Rods.times|times(org.maplibre.spatialk.units.LengthUnit){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Imperial.Rods.toString|toString(){}[0]
+        }
+
+        final object Yards : org.maplibre.spatialk.units/LengthUnit.Imperial { // org.maplibre.spatialk.units/LengthUnit.Imperial.Yards|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.Imperial.Yards.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.Imperial.Yards.hashCode|hashCode(){}[0]
+            final fun times(org.maplibre.spatialk.units/LengthUnit): org.maplibre.spatialk.units/AreaUnit // org.maplibre.spatialk.units/LengthUnit.Imperial.Yards.times|times(org.maplibre.spatialk.units.LengthUnit){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.Imperial.Yards.toString|toString(){}[0]
+        }
+    }
+
+    sealed class International : org.maplibre.spatialk.units/LengthUnit { // org.maplibre.spatialk.units/LengthUnit.International|null[0]
+        open val metersPerUnit // org.maplibre.spatialk.units/LengthUnit.International.metersPerUnit|{}metersPerUnit[0]
+            open fun <get-metersPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/LengthUnit.International.metersPerUnit.<get-metersPerUnit>|<get-metersPerUnit>(){}[0]
+        open val symbol // org.maplibre.spatialk.units/LengthUnit.International.symbol|{}symbol[0]
+            open fun <get-symbol>(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.International.symbol.<get-symbol>|<get-symbol>(){}[0]
+
+        final object Centimeters : org.maplibre.spatialk.units/LengthUnit.International { // org.maplibre.spatialk.units/LengthUnit.International.Centimeters|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.International.Centimeters.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.International.Centimeters.hashCode|hashCode(){}[0]
+            final fun times(org.maplibre.spatialk.units/LengthUnit): org.maplibre.spatialk.units/AreaUnit // org.maplibre.spatialk.units/LengthUnit.International.Centimeters.times|times(org.maplibre.spatialk.units.LengthUnit){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.International.Centimeters.toString|toString(){}[0]
+        }
+
+        final object Kilometers : org.maplibre.spatialk.units/LengthUnit.International { // org.maplibre.spatialk.units/LengthUnit.International.Kilometers|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.International.Kilometers.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.International.Kilometers.hashCode|hashCode(){}[0]
+            final fun times(org.maplibre.spatialk.units/LengthUnit): org.maplibre.spatialk.units/AreaUnit // org.maplibre.spatialk.units/LengthUnit.International.Kilometers.times|times(org.maplibre.spatialk.units.LengthUnit){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.International.Kilometers.toString|toString(){}[0]
+        }
+
+        final object Meters : org.maplibre.spatialk.units/LengthUnit.International { // org.maplibre.spatialk.units/LengthUnit.International.Meters|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.International.Meters.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.International.Meters.hashCode|hashCode(){}[0]
+            final fun times(org.maplibre.spatialk.units/LengthUnit): org.maplibre.spatialk.units/AreaUnit // org.maplibre.spatialk.units/LengthUnit.International.Meters.times|times(org.maplibre.spatialk.units.LengthUnit){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.International.Meters.toString|toString(){}[0]
+        }
+
+        final object Millimeters : org.maplibre.spatialk.units/LengthUnit.International { // org.maplibre.spatialk.units/LengthUnit.International.Millimeters|null[0]
+            final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/LengthUnit.International.Millimeters.equals|equals(kotlin.Any?){}[0]
+            final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.International.Millimeters.hashCode|hashCode(){}[0]
+            final fun times(org.maplibre.spatialk.units/LengthUnit): org.maplibre.spatialk.units/AreaUnit // org.maplibre.spatialk.units/LengthUnit.International.Millimeters.times|times(org.maplibre.spatialk.units.LengthUnit){}[0]
+            final fun toString(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.International.Millimeters.toString|toString(){}[0]
+        }
+    }
+}
+
+sealed interface org.maplibre.spatialk.units/UnitOfMeasure { // org.maplibre.spatialk.units/UnitOfMeasure|null[0]
+    abstract val symbol // org.maplibre.spatialk.units/UnitOfMeasure.symbol|{}symbol[0]
+        abstract fun <get-symbol>(): kotlin/String // org.maplibre.spatialk.units/UnitOfMeasure.symbol.<get-symbol>|<get-symbol>(){}[0]
+
+    open fun format(kotlin/Double, kotlin/Int = ...): kotlin/String // org.maplibre.spatialk.units/UnitOfMeasure.format|format(kotlin.Double;kotlin.Int){}[0]
+}
+
+final value class org.maplibre.spatialk.units/Area : kotlin/Comparable<org.maplibre.spatialk.units/Area> { // org.maplibre.spatialk.units/Area|null[0]
+    final val absoluteValue // org.maplibre.spatialk.units/Area.absoluteValue|{}absoluteValue[0]
+        final fun <get-absoluteValue>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.absoluteValue.<get-absoluteValue>|<get-absoluteValue>(){}[0]
+    final val isFinite // org.maplibre.spatialk.units/Area.isFinite|{}isFinite[0]
+        final fun <get-isFinite>(): kotlin/Boolean // org.maplibre.spatialk.units/Area.isFinite.<get-isFinite>|<get-isFinite>(){}[0]
+    final val isInfinite // org.maplibre.spatialk.units/Area.isInfinite|{}isInfinite[0]
+        final fun <get-isInfinite>(): kotlin/Boolean // org.maplibre.spatialk.units/Area.isInfinite.<get-isInfinite>|<get-isInfinite>(){}[0]
+    final val isNegative // org.maplibre.spatialk.units/Area.isNegative|{}isNegative[0]
+        final fun <get-isNegative>(): kotlin/Boolean // org.maplibre.spatialk.units/Area.isNegative.<get-isNegative>|<get-isNegative>(){}[0]
+    final val isPositive // org.maplibre.spatialk.units/Area.isPositive|{}isPositive[0]
+        final fun <get-isPositive>(): kotlin/Boolean // org.maplibre.spatialk.units/Area.isPositive.<get-isPositive>|<get-isPositive>(){}[0]
+    final val isZero // org.maplibre.spatialk.units/Area.isZero|{}isZero[0]
+        final fun <get-isZero>(): kotlin/Boolean // org.maplibre.spatialk.units/Area.isZero.<get-isZero>|<get-isZero>(){}[0]
+
+    final fun compareTo(org.maplibre.spatialk.units/Area): kotlin/Int // org.maplibre.spatialk.units/Area.compareTo|compareTo(org.maplibre.spatialk.units.Area){}[0]
+    final fun div(kotlin/Number): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.div|div(kotlin.Number){}[0]
+    final fun div(org.maplibre.spatialk.units/Area): kotlin/Double // org.maplibre.spatialk.units/Area.div|div(org.maplibre.spatialk.units.Area){}[0]
+    final fun div(org.maplibre.spatialk.units/Length): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Area.div|div(org.maplibre.spatialk.units.Length){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/Area.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/Area.hashCode|hashCode(){}[0]
+    final fun minus(org.maplibre.spatialk.units/Area): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.minus|minus(org.maplibre.spatialk.units.Area){}[0]
+    final fun plus(org.maplibre.spatialk.units/Area): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.plus|plus(org.maplibre.spatialk.units.Area){}[0]
+    final fun roundToInt(org.maplibre.spatialk.units/AreaUnit): kotlin/Int // org.maplibre.spatialk.units/Area.roundToInt|roundToInt(org.maplibre.spatialk.units.AreaUnit){}[0]
+    final fun roundToLong(org.maplibre.spatialk.units/AreaUnit): kotlin/Long // org.maplibre.spatialk.units/Area.roundToLong|roundToLong(org.maplibre.spatialk.units.AreaUnit){}[0]
+    final fun times(kotlin/Number): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.times|times(kotlin.Number){}[0]
+    final fun toDouble(org.maplibre.spatialk.units/AreaUnit): kotlin/Double // org.maplibre.spatialk.units/Area.toDouble|toDouble(org.maplibre.spatialk.units.AreaUnit){}[0]
+    final fun toFloat(org.maplibre.spatialk.units/AreaUnit): kotlin/Float // org.maplibre.spatialk.units/Area.toFloat|toFloat(org.maplibre.spatialk.units.AreaUnit){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.units/Area.toString|toString(){}[0]
+    final fun toString(org.maplibre.spatialk.units/AreaUnit, kotlin/Int = ...): kotlin/String // org.maplibre.spatialk.units/Area.toString|toString(org.maplibre.spatialk.units.AreaUnit;kotlin.Int){}[0]
+    final fun unaryMinus(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.unaryMinus|unaryMinus(){}[0]
+    final fun unaryPlus(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.unaryPlus|unaryPlus(){}[0]
+
+    final object Companion { // org.maplibre.spatialk.units/Area.Companion|null[0]
+        final val MAX_VALUE // org.maplibre.spatialk.units/Area.Companion.MAX_VALUE|{}MAX_VALUE[0]
+            final fun <get-MAX_VALUE>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.Companion.MAX_VALUE.<get-MAX_VALUE>|<get-MAX_VALUE>(){}[0]
+        final val MIN_VALUE // org.maplibre.spatialk.units/Area.Companion.MIN_VALUE|{}MIN_VALUE[0]
+            final fun <get-MIN_VALUE>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.Companion.MIN_VALUE.<get-MIN_VALUE>|<get-MIN_VALUE>(){}[0]
+        final val NEGATIVE_INFINITY // org.maplibre.spatialk.units/Area.Companion.NEGATIVE_INFINITY|{}NEGATIVE_INFINITY[0]
+            final fun <get-NEGATIVE_INFINITY>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.Companion.NEGATIVE_INFINITY.<get-NEGATIVE_INFINITY>|<get-NEGATIVE_INFINITY>(){}[0]
+        final val POSITIVE_INFINITY // org.maplibre.spatialk.units/Area.Companion.POSITIVE_INFINITY|{}POSITIVE_INFINITY[0]
+            final fun <get-POSITIVE_INFINITY>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.Companion.POSITIVE_INFINITY.<get-POSITIVE_INFINITY>|<get-POSITIVE_INFINITY>(){}[0]
+        final val ZERO // org.maplibre.spatialk.units/Area.Companion.ZERO|{}ZERO[0]
+            final fun <get-ZERO>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.Companion.ZERO.<get-ZERO>|<get-ZERO>(){}[0]
+    }
+}
+
+final value class org.maplibre.spatialk.units/Length : kotlin/Comparable<org.maplibre.spatialk.units/Length> { // org.maplibre.spatialk.units/Length|null[0]
+    final val absoluteValue // org.maplibre.spatialk.units/Length.absoluteValue|{}absoluteValue[0]
+        final fun <get-absoluteValue>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.absoluteValue.<get-absoluteValue>|<get-absoluteValue>(){}[0]
+    final val isFinite // org.maplibre.spatialk.units/Length.isFinite|{}isFinite[0]
+        final fun <get-isFinite>(): kotlin/Boolean // org.maplibre.spatialk.units/Length.isFinite.<get-isFinite>|<get-isFinite>(){}[0]
+    final val isInfinite // org.maplibre.spatialk.units/Length.isInfinite|{}isInfinite[0]
+        final fun <get-isInfinite>(): kotlin/Boolean // org.maplibre.spatialk.units/Length.isInfinite.<get-isInfinite>|<get-isInfinite>(){}[0]
+    final val isNegative // org.maplibre.spatialk.units/Length.isNegative|{}isNegative[0]
+        final fun <get-isNegative>(): kotlin/Boolean // org.maplibre.spatialk.units/Length.isNegative.<get-isNegative>|<get-isNegative>(){}[0]
+    final val isPositive // org.maplibre.spatialk.units/Length.isPositive|{}isPositive[0]
+        final fun <get-isPositive>(): kotlin/Boolean // org.maplibre.spatialk.units/Length.isPositive.<get-isPositive>|<get-isPositive>(){}[0]
+    final val isZero // org.maplibre.spatialk.units/Length.isZero|{}isZero[0]
+        final fun <get-isZero>(): kotlin/Boolean // org.maplibre.spatialk.units/Length.isZero.<get-isZero>|<get-isZero>(){}[0]
+
+    final fun compareTo(org.maplibre.spatialk.units/Length): kotlin/Int // org.maplibre.spatialk.units/Length.compareTo|compareTo(org.maplibre.spatialk.units.Length){}[0]
+    final fun div(kotlin/Number): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.div|div(kotlin.Number){}[0]
+    final fun div(org.maplibre.spatialk.units/Length): kotlin/Number // org.maplibre.spatialk.units/Length.div|div(org.maplibre.spatialk.units.Length){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units/Length.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units/Length.hashCode|hashCode(){}[0]
+    final fun minus(org.maplibre.spatialk.units/Length): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.minus|minus(org.maplibre.spatialk.units.Length){}[0]
+    final fun plus(org.maplibre.spatialk.units/Length): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.plus|plus(org.maplibre.spatialk.units.Length){}[0]
+    final fun roundToInt(org.maplibre.spatialk.units/LengthUnit): kotlin/Int // org.maplibre.spatialk.units/Length.roundToInt|roundToInt(org.maplibre.spatialk.units.LengthUnit){}[0]
+    final fun roundToLong(org.maplibre.spatialk.units/LengthUnit): kotlin/Long // org.maplibre.spatialk.units/Length.roundToLong|roundToLong(org.maplibre.spatialk.units.LengthUnit){}[0]
+    final fun times(kotlin/Number): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.times|times(kotlin.Number){}[0]
+    final fun times(org.maplibre.spatialk.units/Length): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Length.times|times(org.maplibre.spatialk.units.Length){}[0]
+    final fun toDouble(org.maplibre.spatialk.units/LengthUnit): kotlin/Double // org.maplibre.spatialk.units/Length.toDouble|toDouble(org.maplibre.spatialk.units.LengthUnit){}[0]
+    final fun toFloat(org.maplibre.spatialk.units/LengthUnit): kotlin/Float // org.maplibre.spatialk.units/Length.toFloat|toFloat(org.maplibre.spatialk.units.LengthUnit){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.units/Length.toString|toString(){}[0]
+    final fun toString(org.maplibre.spatialk.units/LengthUnit, kotlin/Int = ...): kotlin/String // org.maplibre.spatialk.units/Length.toString|toString(org.maplibre.spatialk.units.LengthUnit;kotlin.Int){}[0]
+
+    final object Companion { // org.maplibre.spatialk.units/Length.Companion|null[0]
+        final val MAX_VALUE // org.maplibre.spatialk.units/Length.Companion.MAX_VALUE|{}MAX_VALUE[0]
+            final fun <get-MAX_VALUE>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.Companion.MAX_VALUE.<get-MAX_VALUE>|<get-MAX_VALUE>(){}[0]
+        final val MIN_VALUE // org.maplibre.spatialk.units/Length.Companion.MIN_VALUE|{}MIN_VALUE[0]
+            final fun <get-MIN_VALUE>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.Companion.MIN_VALUE.<get-MIN_VALUE>|<get-MIN_VALUE>(){}[0]
+        final val NEGATIVE_INFINITY // org.maplibre.spatialk.units/Length.Companion.NEGATIVE_INFINITY|{}NEGATIVE_INFINITY[0]
+            final fun <get-NEGATIVE_INFINITY>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.Companion.NEGATIVE_INFINITY.<get-NEGATIVE_INFINITY>|<get-NEGATIVE_INFINITY>(){}[0]
+        final val POSITIVE_INFINITY // org.maplibre.spatialk.units/Length.Companion.POSITIVE_INFINITY|{}POSITIVE_INFINITY[0]
+            final fun <get-POSITIVE_INFINITY>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.Companion.POSITIVE_INFINITY.<get-POSITIVE_INFINITY>|<get-POSITIVE_INFINITY>(){}[0]
+        final val ZERO // org.maplibre.spatialk.units/Length.Companion.ZERO|{}ZERO[0]
+            final fun <get-ZERO>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.Companion.ZERO.<get-ZERO>|<get-ZERO>(){}[0]
+    }
+}
+
+final val org.maplibre.spatialk.units/acres // org.maplibre.spatialk.units/acres|@kotlin.Number{}acres[0]
+    final inline fun (kotlin/Number).<get-acres>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/acres.<get-acres>|<get-acres>@kotlin.Number(){}[0]
+final val org.maplibre.spatialk.units/feet // org.maplibre.spatialk.units/feet|@kotlin.Number{}feet[0]
+    final inline fun (kotlin/Number).<get-feet>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/feet.<get-feet>|<get-feet>@kotlin.Number(){}[0]
+final val org.maplibre.spatialk.units/inAcres // org.maplibre.spatialk.units/inAcres|@org.maplibre.spatialk.units.Area{}inAcres[0]
+    final inline fun (org.maplibre.spatialk.units/Area).<get-inAcres>(): kotlin/Double // org.maplibre.spatialk.units/inAcres.<get-inAcres>|<get-inAcres>@org.maplibre.spatialk.units.Area(){}[0]
+final val org.maplibre.spatialk.units/inFeet // org.maplibre.spatialk.units/inFeet|@org.maplibre.spatialk.units.Length{}inFeet[0]
+    final inline fun (org.maplibre.spatialk.units/Length).<get-inFeet>(): kotlin/Double // org.maplibre.spatialk.units/inFeet.<get-inFeet>|<get-inFeet>@org.maplibre.spatialk.units.Length(){}[0]
+final val org.maplibre.spatialk.units/inKilometers // org.maplibre.spatialk.units/inKilometers|@org.maplibre.spatialk.units.Length{}inKilometers[0]
+    final inline fun (org.maplibre.spatialk.units/Length).<get-inKilometers>(): kotlin/Double // org.maplibre.spatialk.units/inKilometers.<get-inKilometers>|<get-inKilometers>@org.maplibre.spatialk.units.Length(){}[0]
+final val org.maplibre.spatialk.units/inMeters // org.maplibre.spatialk.units/inMeters|@org.maplibre.spatialk.units.Length{}inMeters[0]
+    final inline fun (org.maplibre.spatialk.units/Length).<get-inMeters>(): kotlin/Double // org.maplibre.spatialk.units/inMeters.<get-inMeters>|<get-inMeters>@org.maplibre.spatialk.units.Length(){}[0]
+final val org.maplibre.spatialk.units/inMiles // org.maplibre.spatialk.units/inMiles|@org.maplibre.spatialk.units.Length{}inMiles[0]
+    final inline fun (org.maplibre.spatialk.units/Length).<get-inMiles>(): kotlin/Double // org.maplibre.spatialk.units/inMiles.<get-inMiles>|<get-inMiles>@org.maplibre.spatialk.units.Length(){}[0]
+final val org.maplibre.spatialk.units/inSquareFeet // org.maplibre.spatialk.units/inSquareFeet|@org.maplibre.spatialk.units.Area{}inSquareFeet[0]
+    final inline fun (org.maplibre.spatialk.units/Area).<get-inSquareFeet>(): kotlin/Double // org.maplibre.spatialk.units/inSquareFeet.<get-inSquareFeet>|<get-inSquareFeet>@org.maplibre.spatialk.units.Area(){}[0]
+final val org.maplibre.spatialk.units/inSquareKilometers // org.maplibre.spatialk.units/inSquareKilometers|@org.maplibre.spatialk.units.Area{}inSquareKilometers[0]
+    final inline fun (org.maplibre.spatialk.units/Area).<get-inSquareKilometers>(): kotlin/Double // org.maplibre.spatialk.units/inSquareKilometers.<get-inSquareKilometers>|<get-inSquareKilometers>@org.maplibre.spatialk.units.Area(){}[0]
+final val org.maplibre.spatialk.units/inSquareMeters // org.maplibre.spatialk.units/inSquareMeters|@org.maplibre.spatialk.units.Area{}inSquareMeters[0]
+    final inline fun (org.maplibre.spatialk.units/Area).<get-inSquareMeters>(): kotlin/Double // org.maplibre.spatialk.units/inSquareMeters.<get-inSquareMeters>|<get-inSquareMeters>@org.maplibre.spatialk.units.Area(){}[0]
+final val org.maplibre.spatialk.units/inSquareMiles // org.maplibre.spatialk.units/inSquareMiles|@org.maplibre.spatialk.units.Area{}inSquareMiles[0]
+    final inline fun (org.maplibre.spatialk.units/Area).<get-inSquareMiles>(): kotlin/Double // org.maplibre.spatialk.units/inSquareMiles.<get-inSquareMiles>|<get-inSquareMiles>@org.maplibre.spatialk.units.Area(){}[0]
+final val org.maplibre.spatialk.units/kilometers // org.maplibre.spatialk.units/kilometers|@kotlin.Number{}kilometers[0]
+    final inline fun (kotlin/Number).<get-kilometers>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/kilometers.<get-kilometers>|<get-kilometers>@kotlin.Number(){}[0]
+final val org.maplibre.spatialk.units/meters // org.maplibre.spatialk.units/meters|@kotlin.Number{}meters[0]
+    final inline fun (kotlin/Number).<get-meters>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/meters.<get-meters>|<get-meters>@kotlin.Number(){}[0]
+final val org.maplibre.spatialk.units/miles // org.maplibre.spatialk.units/miles|@kotlin.Number{}miles[0]
+    final inline fun (kotlin/Number).<get-miles>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/miles.<get-miles>|<get-miles>@kotlin.Number(){}[0]
+final val org.maplibre.spatialk.units/squareFeet // org.maplibre.spatialk.units/squareFeet|@kotlin.Number{}squareFeet[0]
+    final inline fun (kotlin/Number).<get-squareFeet>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/squareFeet.<get-squareFeet>|<get-squareFeet>@kotlin.Number(){}[0]
+final val org.maplibre.spatialk.units/squareKilometers // org.maplibre.spatialk.units/squareKilometers|@kotlin.Number{}squareKilometers[0]
+    final inline fun (kotlin/Number).<get-squareKilometers>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/squareKilometers.<get-squareKilometers>|<get-squareKilometers>@kotlin.Number(){}[0]
+final val org.maplibre.spatialk.units/squareMeters // org.maplibre.spatialk.units/squareMeters|@kotlin.Number{}squareMeters[0]
+    final inline fun (kotlin/Number).<get-squareMeters>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/squareMeters.<get-squareMeters>|<get-squareMeters>@kotlin.Number(){}[0]
+final val org.maplibre.spatialk.units/squareMiles // org.maplibre.spatialk.units/squareMiles|@kotlin.Number{}squareMiles[0]
+    final inline fun (kotlin/Number).<get-squareMiles>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/squareMiles.<get-squareMiles>|<get-squareMiles>@kotlin.Number(){}[0]
+
+final fun (kotlin/Number).org.maplibre.spatialk.units/times(org.maplibre.spatialk.units/Area): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/times|times@kotlin.Number(org.maplibre.spatialk.units.Area){}[0]
+final fun (kotlin/Number).org.maplibre.spatialk.units/times(org.maplibre.spatialk.units/Length): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/times|times@kotlin.Number(org.maplibre.spatialk.units.Length){}[0]
+final fun (kotlin/Number).org.maplibre.spatialk.units/toArea(org.maplibre.spatialk.units/AreaUnit): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/toArea|toArea@kotlin.Number(org.maplibre.spatialk.units.AreaUnit){}[0]
+final fun (kotlin/Number).org.maplibre.spatialk.units/toLength(org.maplibre.spatialk.units/LengthUnit): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/toLength|toLength@kotlin.Number(org.maplibre.spatialk.units.LengthUnit){}[0]
