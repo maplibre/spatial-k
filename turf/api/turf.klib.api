@@ -6,10 +6,6 @@
 // - Show declarations: true
 
 // Library unique name: <spatial-k:turf>
-open annotation class org.maplibre.spatialk.turf/ExperimentalTurfApi : kotlin/Annotation { // org.maplibre.spatialk.turf/ExperimentalTurfApi|null[0]
-    constructor <init>() // org.maplibre.spatialk.turf/ExperimentalTurfApi.<init>|<init>(){}[0]
-}
-
 final class org.maplibre.spatialk.turf.misc/NearestPointOnLineResult { // org.maplibre.spatialk.turf.misc/NearestPointOnLineResult|null[0]
     constructor <init>(org.maplibre.spatialk.geojson/Position, org.maplibre.spatialk.units/Length, org.maplibre.spatialk.units/Length, kotlin/Int) // org.maplibre.spatialk.turf.misc/NearestPointOnLineResult.<init>|<init>(org.maplibre.spatialk.geojson.Position;org.maplibre.spatialk.units.Length;org.maplibre.spatialk.units.Length;kotlin.Int){}[0]
 

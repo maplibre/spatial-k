@@ -1,23 +1,28 @@
-public final class org/maplibre/spatialk/geojson/BoundingBox {
+public final class org/maplibre/spatialk/geojson/BoundingBox : java/lang/Iterable, kotlin/jvm/internal/markers/KMappedMarker {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/BoundingBox$Companion;
 	public fun <init> (DDDD)V
 	public fun <init> (DDDDDD)V
-	public fun <init> (Ljava/util/List;)V
+	public fun <init> (DDDDDD[D)V
 	public fun <init> (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)V
-	public fun <init> ([D)V
-	public final fun component1 ()Lorg/maplibre/spatialk/geojson/Position;
-	public final fun component2 ()Lorg/maplibre/spatialk/geojson/Position;
+	public final synthetic fun component1 ()Lorg/maplibre/spatialk/geojson/Position;
+	public final synthetic fun component2 ()Lorg/maplibre/spatialk/geojson/Position;
 	public fun equals (Ljava/lang/Object;)Z
 	public static final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public static final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/BoundingBox;
-	public final fun getCoordinates ()[D
+	public final fun get (I)D
 	public final fun getEast ()D
+	public final fun getHasAltitude ()Z
+	public final fun getMaxAltitude ()Ljava/lang/Double;
+	public final fun getMinAltitude ()Ljava/lang/Double;
 	public final fun getNorth ()D
 	public final fun getNortheast ()Lorg/maplibre/spatialk/geojson/Position;
+	public final fun getOrNull (I)Ljava/lang/Double;
+	public final fun getSize ()I
 	public final fun getSouth ()D
 	public final fun getSouthwest ()Lorg/maplibre/spatialk/geojson/Position;
 	public final fun getWest ()D
 	public fun hashCode ()I
+	public fun iterator ()Ljava/util/Iterator;
 	public final fun json ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
 }
@@ -26,10 +31,6 @@ public final class org/maplibre/spatialk/geojson/BoundingBox$Companion {
 	public final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class org/maplibre/spatialk/geojson/BoundingBoxKt {
-	public static final fun getHasAltitude (Lorg/maplibre/spatialk/geojson/BoundingBox;)Z
 }
 
 public abstract interface annotation class org/maplibre/spatialk/geojson/ExperimentalGeoJsonApi : java/lang/annotation/Annotation {
@@ -479,21 +480,26 @@ public final class org/maplibre/spatialk/geojson/Polygon$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class org/maplibre/spatialk/geojson/Position {
+public final class org/maplibre/spatialk/geojson/Position : java/lang/Iterable, kotlin/jvm/internal/markers/KMappedMarker {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/Position$Companion;
 	public fun <init> (DD)V
+	public fun <init> (DDD)V
+	public fun <init> (DDD[D)V
 	public fun <init> (DDLjava/lang/Double;)V
 	public synthetic fun <init> (DDLjava/lang/Double;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun <init> ([D)V
 	public final synthetic fun component1 ()D
 	public final synthetic fun component2 ()D
 	public final synthetic fun component3 ()Ljava/lang/Double;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (I)D
 	public final fun getAltitude ()Ljava/lang/Double;
-	public final fun getCoordinates ()[D
+	public final fun getHasAltitude ()Z
 	public final fun getLatitude ()D
 	public final fun getLongitude ()D
+	public final fun getOrNull (I)Ljava/lang/Double;
+	public final fun getSize ()I
 	public fun hashCode ()I
+	public fun iterator ()Ljava/util/Iterator;
 	public final fun json ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
 }
@@ -502,8 +508,7 @@ public final class org/maplibre/spatialk/geojson/Position$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class org/maplibre/spatialk/geojson/PositionKt {
-	public static final fun getHasAltitude (Lorg/maplibre/spatialk/geojson/Position;)Z
+public abstract interface annotation class org/maplibre/spatialk/geojson/SensitiveGeoJsonApi : java/lang/annotation/Annotation {
 }
 
 public final class org/maplibre/spatialk/geojson/dsl/FeatureCollectionDsl {

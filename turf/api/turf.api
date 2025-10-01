@@ -1,7 +1,4 @@
-public abstract interface annotation class org/maplibre/spatialk/turf/ExperimentalTurfApi : java/lang/annotation/Annotation {
-}
-
-public final class org/maplibre/spatialk/turf/booleans/PointInPolygonKt {
+public final class org/maplibre/spatialk/turf/booleans/Booleans {
 	public static final fun contains (Lorg/maplibre/spatialk/geojson/Polygon;Lorg/maplibre/spatialk/geojson/Point;)Z
 	public static final fun pointInPolygon (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/MultiPolygon;)Z
 	public static final fun pointInPolygon (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/MultiPolygon;Z)Z
@@ -11,29 +8,23 @@ public final class org/maplibre/spatialk/turf/booleans/PointInPolygonKt {
 	public static synthetic fun pointInPolygon$default (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Polygon;ZILjava/lang/Object;)Z
 }
 
-public final class org/maplibre/spatialk/turf/constants/ConstantsKt {
+public final class org/maplibre/spatialk/turf/constants/Constants {
 	public static final fun getEARTH_AVERAGE_RADIUS ()D
 	public static final fun getEARTH_EQUATOR_RADIUS ()D
 }
 
-public final class org/maplibre/spatialk/turf/coordinatemutation/RoundKt {
+public final class org/maplibre/spatialk/turf/coordinatemutation/CoordinateMutation {
 	public static final fun round (DI)D
 	public static synthetic fun round$default (DIILjava/lang/Object;)D
 }
 
-public final class org/maplibre/spatialk/turf/grids/SquareGridKt {
+public final class org/maplibre/spatialk/turf/grids/Grids {
 	public static final fun squareGrid-O-OAdmI (Lorg/maplibre/spatialk/geojson/BoundingBox;DD)Lorg/maplibre/spatialk/geojson/FeatureCollection;
 }
 
-public final class org/maplibre/spatialk/turf/measurement/AlongKt {
+public final class org/maplibre/spatialk/turf/measurement/Measurement {
 	public static final fun along-NY0MKA4 (Lorg/maplibre/spatialk/geojson/LineString;D)Lorg/maplibre/spatialk/geojson/Position;
-}
-
-public final class org/maplibre/spatialk/turf/measurement/AreaKt {
 	public static final fun area (Lorg/maplibre/spatialk/geojson/Geometry;)D
-}
-
-public final class org/maplibre/spatialk/turf/measurement/BboxKt {
 	public static final fun bbox (Lorg/maplibre/spatialk/geojson/Feature;)Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public static final fun bbox (Lorg/maplibre/spatialk/geojson/FeatureCollection;)Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public static final fun bbox (Lorg/maplibre/spatialk/geojson/Geometry;)Lorg/maplibre/spatialk/geojson/BoundingBox;
@@ -43,65 +34,29 @@ public final class org/maplibre/spatialk/turf/measurement/BboxKt {
 	public static final fun bbox (Lorg/maplibre/spatialk/geojson/MultiPolygon;)Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public static final fun bbox (Lorg/maplibre/spatialk/geojson/Point;)Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public static final fun bbox (Lorg/maplibre/spatialk/geojson/Polygon;)Lorg/maplibre/spatialk/geojson/BoundingBox;
-}
-
-public final class org/maplibre/spatialk/turf/measurement/BboxPolygonKt {
 	public static final fun bboxPolygon (Lorg/maplibre/spatialk/geojson/BoundingBox;)Lorg/maplibre/spatialk/geojson/Polygon;
-	public static final synthetic fun toPolygon (Lorg/maplibre/spatialk/geojson/BoundingBox;)Lorg/maplibre/spatialk/geojson/Polygon;
-}
-
-public final class org/maplibre/spatialk/turf/measurement/BearingKt {
 	public static final fun bearing (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
 	public static final fun bearing (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Z)D
 	public static synthetic fun bearing$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;ZILjava/lang/Object;)D
-}
-
-public final class org/maplibre/spatialk/turf/measurement/CenterKt {
 	public static final fun center (Lorg/maplibre/spatialk/geojson/Feature;)Lorg/maplibre/spatialk/geojson/Point;
 	public static final fun center (Lorg/maplibre/spatialk/geojson/Geometry;)Lorg/maplibre/spatialk/geojson/Point;
-}
-
-public final class org/maplibre/spatialk/turf/measurement/DestinationKt {
 	public static final fun destination-RJZUCfk (Lorg/maplibre/spatialk/geojson/Position;DD)Lorg/maplibre/spatialk/geojson/Position;
-}
-
-public final class org/maplibre/spatialk/turf/measurement/DistanceKt {
 	public static final fun distance (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
-}
-
-public final class org/maplibre/spatialk/turf/measurement/EnvelopeKt {
 	public static final fun envelope (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Lorg/maplibre/spatialk/geojson/Feature;
-}
-
-public final class org/maplibre/spatialk/turf/measurement/GreatCircleKt {
 	public static final fun greatCircle (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;ID)Lorg/maplibre/spatialk/geojson/Geometry;
 	public static synthetic fun greatCircle$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;IDILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Geometry;
-}
-
-public final class org/maplibre/spatialk/turf/measurement/LengthKt {
 	public static final fun length (Lorg/maplibre/spatialk/geojson/LineString;)D
 	public static final fun length (Lorg/maplibre/spatialk/geojson/MultiLineString;)D
 	public static final fun length (Lorg/maplibre/spatialk/geojson/MultiPolygon;)D
 	public static final fun length (Lorg/maplibre/spatialk/geojson/Polygon;)D
-}
-
-public final class org/maplibre/spatialk/turf/measurement/MidpointKt {
 	public static final fun midpoint (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)Lorg/maplibre/spatialk/geojson/Position;
-}
-
-public final class org/maplibre/spatialk/turf/measurement/PointToLineDistanceKt {
 	public static final fun pointToLineDistance (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/LineString;)D
-}
-
-public final class org/maplibre/spatialk/turf/measurement/RhumbDistanceKt {
 	public static final fun rhumbDistance (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
-}
-
-public final class org/maplibre/spatialk/turf/measurement/SquareKt {
 	public static final fun square (Lorg/maplibre/spatialk/geojson/BoundingBox;)Lorg/maplibre/spatialk/geojson/BoundingBox;
+	public static final synthetic fun toPolygon (Lorg/maplibre/spatialk/geojson/BoundingBox;)Lorg/maplibre/spatialk/geojson/Polygon;
 }
 
-public final class org/maplibre/spatialk/turf/meta/CoordAllKt {
+public final class org/maplibre/spatialk/turf/meta/Meta {
 	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/Feature;)Ljava/util/List;
 	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/FeatureCollection;)Ljava/util/List;
 	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/Geometry;)Ljava/util/List;
@@ -114,15 +69,9 @@ public final class org/maplibre/spatialk/turf/meta/CoordAllKt {
 	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/Polygon;)Ljava/util/List;
 }
 
-public final class org/maplibre/spatialk/turf/misc/LineIntersectKt {
+public final class org/maplibre/spatialk/turf/misc/Miscellaneous {
 	public static final fun lineIntersect (Lorg/maplibre/spatialk/geojson/LineString;Lorg/maplibre/spatialk/geojson/LineString;)Ljava/util/List;
-}
-
-public final class org/maplibre/spatialk/turf/misc/LineSliceKt {
 	public static final fun lineSlice (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/LineString;)Lorg/maplibre/spatialk/geojson/LineString;
-}
-
-public final class org/maplibre/spatialk/turf/misc/NearestPointOnLineKt {
 	public static final fun nearestPointOnLine (Lorg/maplibre/spatialk/geojson/LineString;Lorg/maplibre/spatialk/geojson/Position;)Lorg/maplibre/spatialk/turf/misc/NearestPointOnLineResult;
 	public static final fun nearestPointOnLine (Lorg/maplibre/spatialk/geojson/MultiLineString;Lorg/maplibre/spatialk/geojson/Position;)Lorg/maplibre/spatialk/turf/misc/NearestPointOnLineResult;
 }
@@ -144,24 +93,18 @@ public final class org/maplibre/spatialk/turf/misc/NearestPointOnLineResult {
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class org/maplibre/spatialk/turf/transformation/BezierSplineKt {
+public final class org/maplibre/spatialk/turf/transformation/Transformation {
 	public static final fun bezierSpline (Ljava/util/List;ID)Ljava/util/List;
 	public static final fun bezierSpline (Lorg/maplibre/spatialk/geojson/LineString;ID)Lorg/maplibre/spatialk/geojson/LineString;
 	public static synthetic fun bezierSpline$default (Ljava/util/List;IDILjava/lang/Object;)Ljava/util/List;
 	public static synthetic fun bezierSpline$default (Lorg/maplibre/spatialk/geojson/LineString;IDILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/LineString;
-}
-
-public final class org/maplibre/spatialk/turf/transformation/CircleKt {
 	public static final fun circle-RJZUCfk (Lorg/maplibre/spatialk/geojson/Point;DI)Lorg/maplibre/spatialk/geojson/Polygon;
 	public static synthetic fun circle-RJZUCfk$default (Lorg/maplibre/spatialk/geojson/Point;DIILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Polygon;
-}
-
-public final class org/maplibre/spatialk/turf/transformation/SimplifyKt {
 	public static final fun simplify (Lorg/maplibre/spatialk/geojson/LineString;Ljava/lang/Double;Z)Lorg/maplibre/spatialk/geojson/LineString;
 	public static synthetic fun simplify$default (Lorg/maplibre/spatialk/geojson/LineString;Ljava/lang/Double;ZILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/LineString;
 }
 
-public final class org/maplibre/spatialk/turf/unitconversion/AnglesKt {
+public final class org/maplibre/spatialk/turf/unitconversion/UnitConversion {
 	public static final fun azimuthToBearing (D)D
 	public static final fun bearingToAzimuth (D)D
 	public static final fun degreesToRadians (D)D
