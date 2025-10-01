@@ -14,9 +14,7 @@ class NearestPointOnLineTest {
     @Test
     fun testNearestPointOnLine() {
         val (multiLine, point) =
-            FeatureCollection.Companion.fromJson(
-                    readResourceFile("misc/nearestPointOnLine/multiLine.json")
-                )
+            FeatureCollection.fromJson(readResourceFile("misc/nearestPointOnLine/multiLine.json"))
                 .features
 
         val result =

@@ -80,7 +80,7 @@ public fun bbox(geometry: MultiPolygon): BoundingBox = computeBbox(geometry.coor
  * @param feature The feature to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
  */
-public fun bbox(feature: Feature): BoundingBox = computeBbox(feature.coordAll() ?: emptyList())
+public fun bbox(feature: Feature<*>): BoundingBox = computeBbox(feature.coordAll() ?: emptyList())
 
 /**
  * Takes a feature collection and calculates a bounding box that covers all features in the

@@ -13,10 +13,14 @@ class SimplifyTest {
     @Test
     fun testSimplifyLineString() {
         val feature =
-            Feature.fromJson(readResourceFile("transformation/simplify/in/linestring.json"))
+            Feature.fromJson<LineString>(
+                readResourceFile("transformation/simplify/in/linestring.json")
+            )
         val expected =
-            Feature.fromJson(readResourceFile("transformation/simplify/out/linestring.json"))
-        val simplified = simplify(feature.geometry as LineString, 0.01, false)
+            Feature.fromJson<LineString>(
+                readResourceFile("transformation/simplify/out/linestring.json")
+            )
+        val simplified = simplify(feature.geometry!!, 0.01, false)
         val roundedSimplified =
             LineString(
                 simplified.coordinates.map { position ->
@@ -26,6 +30,6 @@ class SimplifyTest {
                     )
                 }
             )
-        assertEquals(expected.geometry as LineString, roundedSimplified)
+        assertEquals(expected.geometry!!, roundedSimplified)
     }
 }

@@ -4,7 +4,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlinx.serialization.json.Json
-import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 class BoundingBoxTest {
     @Test
@@ -35,7 +34,7 @@ class BoundingBoxTest {
     @Test
     fun json_serializing_without_altitude() {
         val boundingBox = BoundingBox(Position(1.1, 2.2), Position(3.3, 4.4))
-        val json = boundingBox.json()
+        val json = boundingBox.toJson()
 
         assertEquals(Json.parseToJsonElement(json), Json.parseToJsonElement("[1.1, 2.2, 3.3, 4.4]"))
     }
@@ -43,11 +42,11 @@ class BoundingBoxTest {
     @Test
     fun json_serializing_with_altitude() {
         val boundingBox = BoundingBox(Position(1.1, 2.2, 3.3), Position(4.4, 5.5, 6.6))
-        val json = boundingBox.json()
+        val json = boundingBox.toJson()
 
         assertEquals(
-            GeoJson.parseToJsonElement(json),
-            GeoJson.parseToJsonElement("[1.1, 2.2, 3.3, 4.4, 5.5, 6.6]"),
+            Json.parseToJsonElement(json),
+            Json.parseToJsonElement("[1.1, 2.2, 3.3, 4.4, 5.5, 6.6]"),
         )
     }
 

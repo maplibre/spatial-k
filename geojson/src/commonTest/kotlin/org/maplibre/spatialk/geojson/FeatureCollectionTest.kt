@@ -35,7 +35,8 @@ class FeatureCollectionTest {
 
         val features = listOf(feature, feature)
 
-        val actualFeatureCollection = FeatureCollection.fromJson(FeatureCollection(features).json())
+        val actualFeatureCollection =
+            FeatureCollection.fromJson(FeatureCollection(features).toJson())
         val expectedFeatureCollection =
             FeatureCollection.fromJson(
                 """
@@ -95,7 +96,7 @@ class FeatureCollectionTest {
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
 
         val actualFeatureCollection =
-            FeatureCollection.fromJson(FeatureCollection(features, bbox).json())
+            FeatureCollection.fromJson(FeatureCollection(features, bbox).toJson())
         val expectedFeatureCollection =
             FeatureCollection.fromJson(
                 """
@@ -158,13 +159,13 @@ class FeatureCollectionTest {
         val json = readResourceFile(SAMPLE_FEATURECOLLECTION_BBOX)
         val expectedFeatureCollection = FeatureCollection.fromJson(json)
         val actualFeatureCollection =
-            FeatureCollection.fromJson(FeatureCollection.fromJson(json).json())
+            FeatureCollection.fromJson(FeatureCollection.fromJson(json).toJson())
         assertEquals(expectedFeatureCollection, actualFeatureCollection)
     }
 
     @Test
     fun testMissingType() {
-        assertNull(Feature.fromJsonOrNull("{\"features\": []}"))
+        assertNull(Feature.fromJsonOrNull<Geometry>("{\"features\": []}"))
     }
 
     companion object {

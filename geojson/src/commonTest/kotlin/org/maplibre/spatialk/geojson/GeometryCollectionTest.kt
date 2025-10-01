@@ -40,7 +40,7 @@ class GeometryCollectionTest {
 
         val geometryCollection = GeometryCollection(geometries)
 
-        val actualGeometryCollection = GeometryCollection.fromJson(geometryCollection.json())
+        val actualGeometryCollection = GeometryCollection.fromJson(geometryCollection.toJson())
         val expectedGeometryCollection =
             GeometryCollection.fromJson(
                 """
@@ -101,7 +101,7 @@ class GeometryCollectionTest {
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
         val geometryCollection = GeometryCollection(geometries, bbox)
 
-        val actualGeometryCollection = GeometryCollection.fromJson(geometryCollection.json())
+        val actualGeometryCollection = GeometryCollection.fromJson(geometryCollection.toJson())
         val expectedGeometryCollection =
             GeometryCollection.fromJson(
                 """
@@ -193,7 +193,7 @@ class GeometryCollectionTest {
         val geometryCollection =
             GeometryCollection(geometries, BoundingBox(-120.0, -40.0, 120.0, 40.0))
 
-        val actualGeometryCollection = GeometryCollection.fromJson(geometryCollection.json())
+        val actualGeometryCollection = GeometryCollection.fromJson(geometryCollection.toJson())
         val expectedGeometryCollection = GeometryCollection.fromJson(jsonOriginal)
         assertEquals(expectedGeometryCollection, actualGeometryCollection)
     }

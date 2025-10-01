@@ -49,19 +49,19 @@ class LineStringTest {
 
         val lineString = LineString(points)
 
-        val actualLineString = LineString.fromJson(lineString.json())
+        val actualLineString = LineString.fromJson(lineString.toJson())
         val expectedLineString =
             LineString.fromJson(
                 """
-            {
-                "type": "LineString",
-                "coordinates": [
-                    [1.0, 1.0],
-                    [2.0, 2.0],
-                    [3.0, 3.0]
-                ]
-            }
-            """
+                {
+                    "type": "LineString",
+                    "coordinates": [
+                        [1.0, 1.0],
+                        [2.0, 2.0],
+                        [3.0, 3.0]
+                    ]
+                }
+                """
                     .trimIndent()
             )
         assertEquals(expectedLineString, actualLineString)
@@ -89,20 +89,20 @@ class LineStringTest {
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
         val lineString = LineString(points, bbox)
 
-        val actualLineString = LineString.fromJson(lineString.json())
+        val actualLineString = LineString.fromJson(lineString.toJson())
         val expectedLineString =
             LineString.fromJson(
                 """
-            {
-                "type": "LineString",
-                "bbox": [1.0, 2.0, 3.0, 4.0],
-                "coordinates": [
-                    [1.0, 1.0],
-                    [2.0, 2.0],
-                    [3.0, 3.0]
-                ]
-            }
-            """
+                {
+                    "type": "LineString",
+                    "bbox": [1.0, 2.0, 3.0, 4.0],
+                    "coordinates": [
+                        [1.0, 1.0],
+                        [2.0, 2.0],
+                        [3.0, 3.0]
+                    ]
+                }
+                """
                     .trimIndent()
             )
 
@@ -114,16 +114,16 @@ class LineStringTest {
         val lineString =
             LineString.fromJson(
                 """
-            {
-                "coordinates": [
-                    [1, 2],
-                    [2, 3],
-                    [3, 4]
-                ],
-                "type": "LineString",
-                "bbox": [1.0, 2.0, 3.0, 4.0]
-            }
-            """
+                {
+                    "coordinates": [
+                        [1, 2],
+                        [2, 3],
+                        [3, 4]
+                    ],
+                    "type": "LineString",
+                    "bbox": [1.0, 2.0, 3.0, 4.0]
+                }
+                """
                     .trimIndent()
             )
 
@@ -176,7 +176,7 @@ class LineStringTest {
             """
                 .trimIndent()
         val geo: LineString = LineString.fromJson(json)
-        val geoJsonString = geo.json()
+        val geoJsonString = geo.toJson()
 
         val actualLineString = LineString.fromJson(geoJsonString)
         val expectedLineString = LineString.fromJson(json)

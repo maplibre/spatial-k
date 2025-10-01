@@ -21,10 +21,10 @@ import org.maplibre.spatialk.turf.meta.coordAll
  * @param geoJson input containing any coordinates
  * @return a rectangular [Polygon] feature that encompasses all vertices
  */
-public fun envelope(geoJson: GeoJsonObject): Feature {
+public fun envelope(geoJson: GeoJsonObject): Feature<Polygon> {
     val coordinates =
         when (geoJson) {
-            is Feature -> geoJson.coordAll()
+            is Feature<*> -> geoJson.coordAll()
             is FeatureCollection -> geoJson.coordAll()
             is GeometryCollection -> geoJson.coordAll()
             is Geometry -> geoJson.coordAll()

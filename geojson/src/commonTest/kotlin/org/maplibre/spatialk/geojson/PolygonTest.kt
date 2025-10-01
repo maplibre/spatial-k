@@ -143,7 +143,7 @@ class PolygonTest {
         val innerLines = listOf(LineString(*points), LineString(*points))
         val polygon = Polygon(*(listOf(outerLine) + innerLines).toTypedArray())
 
-        val actualPolygon = Polygon.fromJson(polygon.json())
+        val actualPolygon = Polygon.fromJson(polygon.toJson())
         val expectedPolygon =
             Polygon.fromJson(
                 """
@@ -303,7 +303,7 @@ class PolygonTest {
             """
                 .trimIndent()
 
-        val actualPolygon = Polygon.fromJson(Polygon.fromJson(json).json())
+        val actualPolygon = Polygon.fromJson(Polygon.fromJson(json).toJson())
         val expectedPolygon = Polygon.fromJson(json)
         assertEquals(expectedPolygon, actualPolygon)
     }
@@ -312,29 +312,29 @@ class PolygonTest {
     fun toJsonHoles() {
         val json =
             """
-                {
-                    "type": "Polygon",
-                    "coordinates": [
-                        [
-                            [100.0, 0.0],
-                            [101.0, 0.0],
-                            [101.0, 1.0],
-                            [100.0, 1.0],
-                            [100.0, 0.0]
-                        ],
-                        [
-                            [100.8, 0.8],
-                            [100.8, 0.2],
-                            [100.2, 0.2],
-                            [100.2, 0.8],
-                            [100.8, 0.8]
-                        ]
+            {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.0, 0.0],
+                        [101.0, 0.0],
+                        [101.0, 1.0],
+                        [100.0, 1.0],
+                        [100.0, 0.0]
+                    ],
+                    [
+                        [100.8, 0.8],
+                        [100.8, 0.2],
+                        [100.2, 0.2],
+                        [100.2, 0.8],
+                        [100.8, 0.8]
                     ]
-                }
-                """
+                ]
+            }
+            """
                 .trimIndent()
 
-        val actualPolygon = Polygon.fromJson(Polygon.fromJson(json).json())
+        val actualPolygon = Polygon.fromJson(Polygon.fromJson(json).toJson())
         val expectedPolygon = Polygon.fromJson(json)
         assertEquals(expectedPolygon, actualPolygon)
     }

@@ -24,7 +24,7 @@ import org.maplibre.spatialk.units.LengthUnit.Geodesy.*
  * @return a [FeatureCollection] grid of polygons
  */
 public fun squareGrid(bbox: BoundingBox, cellWidth: Length, cellHeight: Length): FeatureCollection {
-    val featureList = mutableListOf<Feature>()
+    val featureList = mutableListOf<Feature<Polygon>>()
     val west = bbox.southwest.longitude
     val south = bbox.southwest.latitude
     val east = bbox.northeast.longitude

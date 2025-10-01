@@ -5,7 +5,6 @@ import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
-import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
  * @throws IllegalArgumentException if the coordinates contain fewer than two positions
@@ -62,18 +61,15 @@ constructor(
         require(coordinates.size >= 2) { "LineString must contain at least two positions" }
     }
 
-    override fun json(): String = GeoJson.encodeToString(this)
-
     public companion object {
         @JvmStatic
-        public fun fromJson(@Language("json") json: String): LineString = fromJson<LineString>(json)
+        @OptIn(SensitiveGeoJsonApi::class)
+        public fun fromJson(@Language("json") json: String): LineString =
+            GeoJson.decodeFromString(json)
 
         @JvmStatic
+        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJsonOrNull(@Language("json") json: String): LineString? =
-            try {
-                fromJson(json)
-            } catch (_: Exception) {
-                null
-            }
+            GeoJson.decodeFromStringOrNull(json)
     }
 }

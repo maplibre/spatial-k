@@ -16,7 +16,6 @@ import org.maplibre.spatialk.geojson.dsl.featureCollection
 import org.maplibre.spatialk.geojson.dsl.lineString
 import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
-import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
@@ -81,14 +80,14 @@ open class GeoJsonBenchmark {
     @Setup
     fun setup() {
         featureCollection = generateDataset()
-        jsonString = featureCollection.json()
-        jsonObject = GeoJson.decodeFromString(jsonString)
+        jsonString = featureCollection.toJson()
+        jsonObject = Json.decodeFromString(jsonString)
     }
 
     /** Benchmark serialization using kotlinx.serialization */
     @Benchmark
     fun serialization() {
-        featureCollection.json()
+        featureCollection.toJson()
     }
 
     /** Benchmark how fast kotlinx.serialization can encode a GeoJSON structure directly */

@@ -9,7 +9,7 @@ import kotlinx.serialization.encoding.Encoder
 import org.maplibre.spatialk.geojson.BoundingBox
 
 /** Serializes a [BoundingBox] by invoking [DoubleArraySerializer] on the coordinates. */
-public object BoundingBoxSerializer : KSerializer<BoundingBox> {
+internal object BoundingBoxSerializer : KSerializer<BoundingBox> {
 
     private val delegate = DoubleArraySerializer()
 

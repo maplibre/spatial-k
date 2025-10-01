@@ -10,9 +10,9 @@ import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.Geometry
 
 @GeoJsonDsl
-public fun feature(
-    geometry: Geometry? = null,
+public fun <T : Geometry> feature(
+    geometry: T? = null,
     id: String? = null,
     bbox: BoundingBox? = null,
     properties: (JsonObjectBuilder.() -> Unit)? = null,
-): Feature = Feature(geometry, properties?.let { buildJsonObject { properties() } }, id, bbox)
+): Feature<T> = Feature(geometry, properties?.let { buildJsonObject { properties() } }, id, bbox)

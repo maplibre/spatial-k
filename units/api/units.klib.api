@@ -5,7 +5,7 @@
 // - Show manifest properties: true
 // - Show declarations: true
 
-// Library unique name: <spatial-k:units>
+// Library unique name: <org.maplibre.spatialk:units>
 abstract interface org.maplibre.spatialk.units/AreaUnit : kotlin/Comparable<org.maplibre.spatialk.units/AreaUnit>, org.maplibre.spatialk.units/UnitOfMeasure { // org.maplibre.spatialk.units/AreaUnit|null[0]
     abstract val metersSquaredPerUnit // org.maplibre.spatialk.units/AreaUnit.metersSquaredPerUnit|{}metersSquaredPerUnit[0]
         abstract fun <get-metersSquaredPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/AreaUnit.metersSquaredPerUnit.<get-metersSquaredPerUnit>|<get-metersSquaredPerUnit>(){}[0]

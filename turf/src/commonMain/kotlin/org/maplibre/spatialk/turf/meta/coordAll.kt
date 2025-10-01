@@ -47,7 +47,7 @@ public fun MultiPolygon.coordAll(): List<Position> =
 public fun GeometryCollection.coordAll(): List<Position> =
     geometries.fold(emptyList()) { acc, geometry -> acc + geometry.coordAll() }
 
-public fun Feature.coordAll(): List<Position>? = geometry?.coordAll()
+public fun Feature<*>.coordAll(): List<Position>? = geometry?.coordAll()
 
 public fun FeatureCollection.coordAll(): List<Position> =
     features.fold(emptyList()) { acc, feature -> acc + (feature.coordAll() ?: emptyList()) }

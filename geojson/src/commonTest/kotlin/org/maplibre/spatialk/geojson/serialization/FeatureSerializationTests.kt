@@ -2,10 +2,13 @@ package org.maplibre.spatialk.geojson.serialization
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
+import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 
@@ -33,8 +36,8 @@ class FeatureSerializationTests {
                 .trimMargin()
                 .replace("\n", "")
 
-        assertEquals(json, feature.json(), "Feature (fast)")
-        assertEquals(json, feature.json(), "Feature (kotlinx)")
+        assertEquals(json, feature.toJson(), "Feature (fast)")
+        assertEquals(json, feature.toJson(), "Feature (kotlinx)")
     }
 
     @Test
@@ -70,5 +73,13 @@ class FeatureSerializationTests {
                     .replace("\n", "")
             ),
         )
+    }
+
+    @Test
+    fun testDeserializeIncorrectType() {
+        val feature = Feature(geometry = Point(longitude = 12.3, latitude = 45.6))
+        val json = feature.toJson()
+        assertEquals(feature, Feature.fromJson<Point>(json))
+        assertFailsWith<SerializationException> { Feature.fromJson<LineString>(json) }
     }
 }

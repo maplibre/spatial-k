@@ -5,7 +5,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonClassDiscriminator
 import org.intellij.lang.annotations.Language
-import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
  * A Geometry object represents points, curves, and surfaces in coordinate space.
@@ -20,23 +19,15 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
 public sealed class Geometry() : GeoJsonObject {
     abstract override val bbox: BoundingBox?
 
-    override fun toString(): String = json()
-
     public companion object {
         @JvmStatic
+        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJson(@Language("json") json: String): Geometry =
             GeoJson.decodeFromString(json)
 
         @JvmStatic
-        internal inline fun <reified T : Geometry> fromJson(@Language("json") json: String): T =
-            GeoJsonObject.fromJson<T>(json)
-
-        @JvmStatic
+        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJsonOrNull(@Language("json") json: String): Geometry? =
-            try {
-                fromJson(json)
-            } catch (_: Exception) {
-                null
-            }
+            GeoJson.decodeFromStringOrNull(json)
     }
 }

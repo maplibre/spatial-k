@@ -11,9 +11,8 @@ class LineSliceTest {
 
     @Test
     fun testLineSlice() {
-        val features =
-            FeatureCollection.Companion.fromJson(readResourceFile("misc/lineSlice/route.json"))
-        val slice = LineString.Companion.fromJson(readResourceFile("misc/lineSlice/slice.json"))
+        val features = FeatureCollection.fromJson(readResourceFile("misc/lineSlice/route.json"))
+        val slice = LineString.fromJson(readResourceFile("misc/lineSlice/slice.json"))
 
         val (lineString, start, stop) = features.features
 

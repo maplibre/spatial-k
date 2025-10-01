@@ -11,21 +11,29 @@ class BezierSplineTest {
     @Test
     fun testBezierSplineIn() {
         val feature =
-            Feature.fromJson(readResourceFile("transformation/bezierspline/in/bezierIn.json"))
+            Feature.fromJson<LineString>(
+                readResourceFile("transformation/bezierspline/in/bezierIn.json")
+            )
         val expectedOut =
-            Feature.fromJson(readResourceFile("transformation/bezierspline/out/bezierIn.json"))
+            Feature.fromJson<LineString>(
+                readResourceFile("transformation/bezierspline/out/bezierIn.json")
+            )
 
-        assertEquals(expectedOut.geometry, bezierSpline(feature.geometry as LineString))
+        assertEquals(expectedOut.geometry, bezierSpline(feature.geometry!!))
     }
 
     @Test
     fun testBezierSplineSimple() {
         val feature =
-            Feature.fromJson(readResourceFile("transformation/bezierspline/in/simple.json"))
+            Feature.fromJson<LineString>(
+                readResourceFile("transformation/bezierspline/in/simple.json")
+            )
         val expectedOut =
-            Feature.fromJson(readResourceFile("transformation/bezierspline/out/simple.json"))
+            Feature.fromJson<LineString>(
+                readResourceFile("transformation/bezierspline/out/simple.json")
+            )
 
-        assertEquals(expectedOut.geometry, bezierSpline(feature.geometry as LineString))
+        assertEquals(expectedOut.geometry, bezierSpline(feature.geometry!!))
     }
 
     /**
@@ -36,10 +44,14 @@ class BezierSplineTest {
     @Test
     fun testBezierSplineAcrossPacific() {
         val feature =
-            Feature.fromJson(readResourceFile("transformation/bezierspline/in/issue-#1063.json"))
+            Feature.fromJson<LineString>(
+                readResourceFile("transformation/bezierspline/in/issue-#1063.json")
+            )
         val expectedOut =
-            Feature.fromJson(readResourceFile("transformation/bezierspline/out/issue-#1063.json"))
+            Feature.fromJson<LineString>(
+                readResourceFile("transformation/bezierspline/out/issue-#1063.json")
+            )
 
-        assertEquals(expectedOut.geometry, bezierSpline(feature.geometry as LineString))
+        assertEquals(expectedOut.geometry, bezierSpline(feature.geometry!!))
     }
 }

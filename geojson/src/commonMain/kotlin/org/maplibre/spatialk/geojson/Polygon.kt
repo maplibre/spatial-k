@@ -5,7 +5,6 @@ import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
-import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
  * To specify a constraint specific to [Polygon]s, it is useful to introduce the concept of a linear
@@ -77,18 +76,15 @@ constructor(
         }
     }
 
-    override fun json(): String = GeoJson.encodeToString(this)
-
     public companion object {
         @JvmStatic
-        public fun fromJson(@Language("json") json: String): Polygon = fromJson<Polygon>(json)
+        @OptIn(SensitiveGeoJsonApi::class)
+        public fun fromJson(@Language("json") json: String): Polygon =
+            GeoJson.decodeFromString(json)
 
         @JvmStatic
+        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJsonOrNull(@Language("json") json: String): Polygon? =
-            try {
-                fromJson(json)
-            } catch (_: IllegalArgumentException) {
-                null
-            }
+            GeoJson.decodeFromStringOrNull(json)
     }
 }

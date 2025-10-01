@@ -18,7 +18,7 @@ import org.maplibre.spatialk.geojson.Position
  * @param feature the feature to find the center for
  * @return A [Point] holding the center coordinates
  */
-public fun center(feature: Feature): Point {
+public fun center(feature: Feature<*>): Point {
     val ext = bbox(feature)
     val x = (ext.southwest.longitude + ext.northeast.longitude) / 2
     val y = (ext.southwest.latitude + ext.northeast.latitude) / 2

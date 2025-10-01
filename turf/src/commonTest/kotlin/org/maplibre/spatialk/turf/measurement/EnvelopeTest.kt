@@ -57,7 +57,7 @@ class EnvelopeTest {
                     Position(20.0, -10.0),
                 )
             ),
-            (enveloped.geometry as Polygon).coordinates,
+            (enveloped.geometry!!).coordinates,
             "positions should be correct",
         )
     }

@@ -12,9 +12,7 @@ class LineIntersectTest {
     @Test
     fun testLineIntersect() {
         val features =
-            FeatureCollection.Companion.fromJson(
-                readResourceFile("misc/lineIntersect/twoPoints.json")
-            )
+            FeatureCollection.fromJson(readResourceFile("misc/lineIntersect/twoPoints.json"))
         val intersect =
             lineIntersect(
                 features.features[0].geometry as LineString,

@@ -9,7 +9,7 @@ import kotlinx.serialization.encoding.Encoder
 import org.maplibre.spatialk.geojson.Position
 
 /** Serializes a [Position] by invoking [DoubleArraySerializer] on the coordinates. */
-public object PositionSerializer : KSerializer<Position> {
+internal object PositionSerializer : KSerializer<Position> {
     private val delegate = DoubleArraySerializer()
 
     override val descriptor: SerialDescriptor = delegate.descriptor

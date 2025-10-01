@@ -3,6 +3,7 @@ package org.maplibre.spatialk.geojson
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import org.maplibre.spatialk.geojson.serialization.GeoUriParser
 
 class GeoUriTest {
     @Test

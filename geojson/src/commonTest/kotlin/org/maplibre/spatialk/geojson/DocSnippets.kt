@@ -7,14 +7,15 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
+import kotlinx.serialization.serializer
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.dsl.*
-import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 // These snippets are primarily intended to be included in docs/geojson.md. Though they exist as
 // part of the test suite, they are not intended to be comprehensive tests.
@@ -66,7 +67,7 @@ class DocSnippets {
                 position.altitude
                 // --8<-- [end:positionKt]
 
-                position.json()
+                position.toJson()
             },
             json =
                 """
@@ -88,7 +89,7 @@ class DocSnippets {
                 // Prints: -75.0
                 // --8<-- [end:pointKt]
 
-                point.json()
+                point.toJson()
             },
             json =
                 """
@@ -109,7 +110,7 @@ class DocSnippets {
                 // --8<-- [start:multiPointKt]
                 val multiPoint = MultiPoint(Position(-75.0, 45.0), Position(-79.0, 44.0))
                 // --8<-- [end:multiPointKt]
-                multiPoint.json()
+                multiPoint.toJson()
             },
             json =
                 """
@@ -130,7 +131,7 @@ class DocSnippets {
                 // --8<-- [start:lineStringKt]
                 val lineString = LineString(Position(-75.0, 45.0), Position(-79.0, 44.0))
                 // --8<-- [end:lineStringKt]
-                lineString.json()
+                lineString.toJson()
             },
             json =
                 """
@@ -155,7 +156,7 @@ class DocSnippets {
                         listOf(Position(87.6, 54.3), Position(21.9, 56.4)),
                     )
                 // --8<-- [end:multiLineStringKt]
-                multiLineString.json()
+                multiLineString.toJson()
             },
             json =
                 """
@@ -194,7 +195,7 @@ class DocSnippets {
                         ),
                     )
                 // --8<-- [end:polygonKt]
-                polygon.json()
+                polygon.toJson()
             },
             json =
                 """
@@ -234,7 +235,7 @@ class DocSnippets {
                     )
                 val multiPolygon = MultiPolygon(polygon, polygon)
                 // --8<-- [end:multiPolygonKt]
-                multiPolygon.json()
+                multiPolygon.toJson()
             },
             json =
                 """
@@ -272,7 +273,7 @@ class DocSnippets {
                 }
                 // --8<-- [end:geometryCollectionKt]
 
-                geometryCollection.json()
+                geometryCollection.toJson()
             },
             json =
                 """
@@ -308,7 +309,7 @@ class DocSnippets {
                 val geometry: Geometry? = feature.geometry // point
                 // --8<-- [end:featureKt]
 
-                feature.json()
+                feature.toJson()
             },
             json =
                 """
@@ -342,7 +343,7 @@ class DocSnippets {
                 }
                 // --8<-- [end:featureCollectionKt]
 
-                featureCollection.json()
+                featureCollection.toJson()
             },
             json =
                 """
@@ -372,7 +373,7 @@ class DocSnippets {
                 val bbox = BoundingBox(west = 11.6, south = 45.1, east = 12.7, north = 45.7)
                 val (southwest, northeast) = bbox // Two Positions
                 // --8<-- [end:boundingBoxKt]
-                bbox.json()
+                bbox.toJson()
             },
             json =
                 """
@@ -390,7 +391,7 @@ class DocSnippets {
         val feature = Feature(point)
         val featureCollection = FeatureCollection(feature)
 
-        val json = featureCollection.json()
+        val json = featureCollection.toJson()
         println(json)
         // --8<-- [end:serializationToJson]
     }
@@ -416,9 +417,10 @@ class DocSnippets {
     @Test
     fun kotlinxSerializationExample() {
         // --8<-- [start:kotlinxSerialization]
-        val feature: Feature =
-            GeoJson.decodeFromString(
-                Feature.serializer(),
+        @OptIn(SensitiveGeoJsonApi::class)
+        val feature: Feature<*> =
+            GeoJson.json.decodeFromString(
+                serializer<Feature<Geometry>>(),
                 """
                 {
                     "type": "Feature",
@@ -443,7 +445,7 @@ class DocSnippets {
                 val position = lngLat(longitude = -75.0, latitude = 45.0)
                 // --8<-- [end:dslLngLatKt]
 
-                position.json()
+                position.toJson()
             },
             json =
                 """
@@ -469,7 +471,7 @@ class DocSnippets {
                 val point = point(longitude = -75.0, latitude = 45.0, altitude = 100.0)
                 // --8<-- [end:dslPointKt]
 
-                point.json()
+                point.toJson()
             },
             json =
                 """
@@ -497,7 +499,7 @@ class DocSnippets {
                 }
                 // --8<-- [end:dslMultiPointKt]
 
-                multiPoint.json()
+                multiPoint.toJson()
             },
             json =
                 """
@@ -526,7 +528,7 @@ class DocSnippets {
                 }
                 // --8<-- [end:dslLineStringKt]
 
-                lineString.json()
+                lineString.toJson()
             },
             json =
                 """
@@ -561,7 +563,7 @@ class DocSnippets {
                 }
                 // --8<-- [end:dslMultiLineStringKt]
 
-                multiLineString.json()
+                multiLineString.toJson()
             },
             json =
                 """
@@ -604,7 +606,7 @@ class DocSnippets {
                 }
                 // --8<-- [end:dslPolygonKt]
 
-                polygon.json()
+                polygon.toJson()
             },
             json =
                 """
@@ -655,7 +657,7 @@ class DocSnippets {
                 }
                 // --8<-- [end:dslMultiPolygonKt]
 
-                multiPolygon.json()
+                multiPolygon.toJson()
             },
             json =
                 """
@@ -708,7 +710,7 @@ class DocSnippets {
                 }
                 // --8<-- [end:dslGeometryCollectionKt]
 
-                geometryCollection.json()
+                geometryCollection.toJson()
             },
             json =
                 """
@@ -755,7 +757,7 @@ class DocSnippets {
                     }
                 // --8<-- [end:dslFeatureKt]
 
-                feature.json()
+                feature.toJson()
             },
             json =
                 """
@@ -787,7 +789,7 @@ class DocSnippets {
                 val featureCollection = featureCollection { feature(geometry = point(-75.0, 45.0)) }
                 // --8<-- [end:dslFeatureCollectionKt]
 
-                featureCollection.json()
+                featureCollection.toJson()
             },
             json =
                 """

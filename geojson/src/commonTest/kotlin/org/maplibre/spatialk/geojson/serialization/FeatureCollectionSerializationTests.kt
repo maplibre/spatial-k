@@ -33,8 +33,8 @@ class FeatureCollectionSerializationTests {
                 .trimMargin()
                 .replace("\n", "")
 
-        assertEquals(json, collection.json(), "FeatureCollection (fast)")
-        assertEquals(json, collection.json(), "FeatureCollection (kotlinx)")
+        assertEquals(json, collection.toJson(), "FeatureCollection (fast)")
+        assertEquals(json, collection.toJson(), "FeatureCollection (kotlinx)")
     }
 
     @Test

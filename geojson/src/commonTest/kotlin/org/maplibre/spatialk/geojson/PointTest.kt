@@ -44,7 +44,7 @@ class PointTest {
     fun bbox_doesSerializeWhenNotPresent() {
         val point = Point(1.0, 2.0)
 
-        val actualPoint = Point.fromJson(point.json())
+        val actualPoint = Point.fromJson(point.toJson())
         val expectedPoint =
             Point.fromJson(
                 """
@@ -75,7 +75,7 @@ class PointTest {
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
         val point = Point(2.0, 2.0, bbox = bbox)
 
-        val actualPoint = Point.fromJson(point.json())
+        val actualPoint = Point.fromJson(point.toJson())
         val expectedPoint =
             Point.fromJson(
                 """
@@ -140,7 +140,7 @@ class PointTest {
             """
                 .trimIndent()
 
-        val actualPoint = Point.fromJson(Point.fromJson(json).json())
+        val actualPoint = Point.fromJson(Point.fromJson(json).toJson())
         val expectedPoint = Point.fromJson(json)
         assertEquals(expectedPoint, actualPoint)
     }

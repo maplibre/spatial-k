@@ -59,24 +59,24 @@ class MultiLineStringTest {
 
         val multiLineString = MultiLineString(*lineStrings)
 
-        val actualMultiLineString = MultiLineString.fromJson(multiLineString.json())
+        val actualMultiLineString = MultiLineString.fromJson(multiLineString.toJson())
         val expectedMultiLineString =
             MultiLineString.fromJson(
                 """
-            {
-                "type": "MultiLineString",
-                "coordinates": [
-                    [
-                        [1.0, 2.0],
-                        [2.0, 3.0]
-                    ],
-                    [
-                        [1.0, 2.0],
-                        [2.0, 3.0]
+                {
+                    "type": "MultiLineString",
+                    "coordinates": [
+                        [
+                            [1.0, 2.0],
+                            [2.0, 3.0]
+                        ],
+                        [
+                            [1.0, 2.0],
+                            [2.0, 3.0]
+                        ]
                     ]
-                ]
-            }
-            """
+                }
+                """
                     .trimIndent()
             )
         assertEquals(expectedMultiLineString, actualMultiLineString)
@@ -123,25 +123,25 @@ class MultiLineStringTest {
 
         val multiLineString = MultiLineString(lineStrings = lineStrings, bbox)
 
-        val actualMultiLineString = MultiLineString.fromJson(multiLineString.json())
+        val actualMultiLineString = MultiLineString.fromJson(multiLineString.toJson())
         val expectedMultiLineString =
             MultiLineString.fromJson(
                 """
-    {
-        "type": "MultiLineString",
-        "bbox": [1.0, 2.0, 3.0, 4.0],
-        "coordinates": [
-            [
-                [1.0, 2.0],
-                [2.0, 3.0]
-            ],
-            [
-                [1.0, 2.0],
-                [2.0, 3.0]
-            ]
-        ]
-    }
-    """
+                {
+                    "type": "MultiLineString",
+                    "bbox": [1.0, 2.0, 3.0, 4.0],
+                    "coordinates": [
+                        [
+                            [1.0, 2.0],
+                            [2.0, 3.0]
+                        ],
+                        [
+                            [1.0, 2.0],
+                            [2.0, 3.0]
+                        ]
+                    ]
+                }
+                """
                     .trimIndent()
             )
         assertEquals(expectedMultiLineString, actualMultiLineString)
@@ -151,20 +151,20 @@ class MultiLineStringTest {
     fun fromJson() {
         val json =
             """
-    {
-        "type": "MultiLineString",
-        "coordinates": [
-            [
-                [100.0, 0.0],
-                [101.0, 1.0]
-            ],
-            [
-                [102.0, 2.0],
-                [103.0, 3.0]
-            ]
-        ]
-    }
-    """
+            {
+                "type": "MultiLineString",
+                "coordinates": [
+                    [
+                        [100.0, 0.0],
+                        [101.0, 1.0]
+                    ],
+                    [
+                        [102.0, 2.0],
+                        [103.0, 3.0]
+                    ]
+                ]
+            }
+            """
                 .trimIndent()
 
         val geo: MultiLineString = MultiLineString.fromJson(json)
@@ -194,7 +194,7 @@ class MultiLineStringTest {
                 .trimIndent()
         val geo = MultiLineString.fromJson(json)
 
-        val actualMultiLineString = MultiLineString.fromJson(geo.json())
+        val actualMultiLineString = MultiLineString.fromJson(geo.toJson())
         val expectedMultiLineString = MultiLineString.fromJson(json)
         assertEquals(expectedMultiLineString, actualMultiLineString)
     }

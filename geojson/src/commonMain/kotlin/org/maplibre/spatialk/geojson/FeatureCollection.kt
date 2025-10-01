@@ -4,7 +4,6 @@ import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
-import org.maplibre.spatialk.geojson.serialization.GeoJson
 
 /**
  * A FeatureCollection object is a collection of [Feature] objects. This class implements the
@@ -18,27 +17,23 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
 @Serializable
 @SerialName("FeatureCollection")
 public data class FeatureCollection(
-    public val features: List<Feature> = emptyList(),
+    public val features: List<Feature<*>> = emptyList(),
     override val bbox: BoundingBox? = null,
-) : Collection<Feature> by features, GeoJsonObject {
+) : Collection<Feature<*>> by features, GeoJsonObject {
     public constructor(
-        vararg features: Feature,
+        vararg features: Feature<*>,
         bbox: BoundingBox? = null,
     ) : this(features.toMutableList(), bbox)
 
-    override fun json(): String = GeoJson.encodeToString(this)
-
     public companion object {
         @JvmStatic
+        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJson(@Language("json") json: String): FeatureCollection =
-            GeoJsonObject.fromJson<FeatureCollection>(json)
+            GeoJson.decodeFromString(json)
 
         @JvmStatic
+        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJsonOrNull(@Language("json") json: String): FeatureCollection? =
-            try {
-                fromJson(json)
-            } catch (_: IllegalArgumentException) {
-                null
-            }
+            GeoJson.decodeFromStringOrNull(json)
     }
 }

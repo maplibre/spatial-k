@@ -1,4 +1,7 @@
-package org.maplibre.spatialk.geojson
+package org.maplibre.spatialk.geojson.serialization
+
+import kotlin.text.get
+import org.maplibre.spatialk.geojson.Position
 
 internal object GeoUriParser {
     // geo uri syntax as defined at https://datatracker.ietf.org/doc/html/rfc5870#section-3.3
