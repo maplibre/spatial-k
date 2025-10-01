@@ -2,7 +2,6 @@ package org.maplibre.spatialk.turf.misc
 
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
 /**
  * Returns intersecting points between two [LineString]s.
@@ -12,7 +11,6 @@ import org.maplibre.spatialk.turf.ExperimentalTurfApi
  * @return A list containing any intersections between [line1] and [line2]
  * @throws NotImplementedError if either LineString does not contain exactly two points
  */
-@ExperimentalTurfApi
 public fun lineIntersect(line1: LineString, line2: LineString): List<Position> {
     if (line1.coordinates.size == 2 && line2.coordinates.size == 2) {
         val intersect = intersects(line1, line2)
@@ -29,7 +27,6 @@ public fun lineIntersect(line1: LineString, line2: LineString): List<Position> {
  * @param line2 A [LineString] (must contain exactly 2 coordinates)
  * @return The position of the intersection, or null if the two lines do not intersect.
  */
-@ExperimentalTurfApi
 internal fun intersects(line1: LineString, line2: LineString): Position? {
     require(line1.coordinates.size == 2) { "line1 must contain exactly 2 coordinates" }
     require(line2.coordinates.size == 2) { "line2 must contain exactly 2 coordinates" }

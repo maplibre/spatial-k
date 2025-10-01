@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalTurfApi::class)
-
 package org.maplibre.spatialk.turf.booleans
 
 import kotlin.jvm.JvmOverloads
@@ -8,7 +6,6 @@ import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.measurement.bbox
 
 /**

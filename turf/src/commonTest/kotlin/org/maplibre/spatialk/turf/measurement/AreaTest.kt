@@ -5,10 +5,8 @@ import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.dsl.geometryCollection
 import org.maplibre.spatialk.testutil.assertDoubleEquals
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.units.inSquareMeters
 
-@ExperimentalTurfApi
 class AreaTest {
 
     @Test

@@ -7,10 +7,8 @@ import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.testutil.assertDoubleEquals
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.units.inKilometers
 
-@ExperimentalTurfApi
 class NearestPointOnLineTest {
 
     @Test

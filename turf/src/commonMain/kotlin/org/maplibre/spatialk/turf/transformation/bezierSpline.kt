@@ -2,7 +2,6 @@ package org.maplibre.spatialk.turf.transformation
 
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.meta.coordAll
 
 /**
@@ -16,7 +15,6 @@ import org.maplibre.spatialk.turf.meta.coordAll
  * @param sharpness a measure of how curvy the path should be between splines
  * @return A [LineString] containing a curved line around the positions of the input line
  */
-@ExperimentalTurfApi
 public fun bezierSpline(
     line: LineString,
     duration: Int = 10_000,

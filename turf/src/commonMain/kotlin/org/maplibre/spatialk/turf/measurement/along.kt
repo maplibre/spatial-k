@@ -2,7 +2,6 @@ package org.maplibre.spatialk.turf.measurement
 
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.units.Length
 
 /**
@@ -12,7 +11,6 @@ import org.maplibre.spatialk.units.Length
  * @param distance distance along the line
  * @return A position [distance] along the line
  */
-@ExperimentalTurfApi
 public fun along(line: LineString, distance: Length): Position {
     var travelled = Length.ZERO
 

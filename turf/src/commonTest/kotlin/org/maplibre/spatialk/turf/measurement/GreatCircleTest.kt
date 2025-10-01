@@ -7,10 +7,8 @@ import kotlin.test.assertIs
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.meta.coordAll
 
-@ExperimentalTurfApi
 class GreatCircleTest {
 
     @Test

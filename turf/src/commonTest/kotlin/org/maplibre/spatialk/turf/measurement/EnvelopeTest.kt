@@ -9,9 +9,7 @@ import org.maplibre.spatialk.geojson.dsl.featureCollection
 import org.maplibre.spatialk.geojson.dsl.lineString
 import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
-@ExperimentalTurfApi
 class EnvelopeTest {
 
     @Test

@@ -5,9 +5,7 @@ import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.testutil.assertDoubleEquals
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 
-@ExperimentalTurfApi
 class CenterTest {
 
     @Test

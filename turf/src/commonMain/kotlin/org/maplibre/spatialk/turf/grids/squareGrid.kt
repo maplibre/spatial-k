@@ -7,7 +7,6 @@ import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit.Geodesy.*
 
@@ -19,7 +18,6 @@ import org.maplibre.spatialk.units.LengthUnit.Geodesy.*
  * @param cellHeight of each cell
  * @return a [FeatureCollection] grid of polygons
  */
-@ExperimentalTurfApi
 public fun squareGrid(bbox: BoundingBox, cellWidth: Length, cellHeight: Length): FeatureCollection {
     val featureList = mutableListOf<Feature>()
     val west = bbox.southwest.longitude

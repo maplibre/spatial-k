@@ -11,7 +11,6 @@ import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.meta.coordAll
 
 /**
@@ -20,7 +19,6 @@ import org.maplibre.spatialk.turf.meta.coordAll
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
  */
-@ExperimentalTurfApi
 public fun bbox(geometry: Geometry): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
@@ -29,7 +27,6 @@ public fun bbox(geometry: Geometry): BoundingBox = computeBbox(geometry.coordAll
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
  */
-@ExperimentalTurfApi
 public fun bbox(geometry: Point): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
@@ -38,7 +35,6 @@ public fun bbox(geometry: Point): BoundingBox = computeBbox(geometry.coordAll())
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
  */
-@ExperimentalTurfApi
 public fun bbox(geometry: MultiPoint): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
@@ -47,7 +43,6 @@ public fun bbox(geometry: MultiPoint): BoundingBox = computeBbox(geometry.coordA
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
  */
-@ExperimentalTurfApi
 public fun bbox(geometry: LineString): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
@@ -56,7 +51,6 @@ public fun bbox(geometry: LineString): BoundingBox = computeBbox(geometry.coordA
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
  */
-@ExperimentalTurfApi
 public fun bbox(geometry: MultiLineString): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
@@ -65,7 +59,6 @@ public fun bbox(geometry: MultiLineString): BoundingBox = computeBbox(geometry.c
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
  */
-@ExperimentalTurfApi
 public fun bbox(geometry: Polygon): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
@@ -74,7 +67,6 @@ public fun bbox(geometry: Polygon): BoundingBox = computeBbox(geometry.coordAll(
  * @param geometry The geometry to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
  */
-@ExperimentalTurfApi
 public fun bbox(geometry: MultiPolygon): BoundingBox = computeBbox(geometry.coordAll())
 
 /**
@@ -83,7 +75,6 @@ public fun bbox(geometry: MultiPolygon): BoundingBox = computeBbox(geometry.coor
  * @param feature The feature to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
  */
-@ExperimentalTurfApi
 public fun bbox(feature: Feature): BoundingBox = computeBbox(feature.coordAll() ?: emptyList())
 
 /**
@@ -93,7 +84,6 @@ public fun bbox(feature: Feature): BoundingBox = computeBbox(feature.coordAll() 
  * @param featureCollection The collection of features to compute a bounding box for.
  * @return A [BoundingBox] that covers the geometry.
  */
-@ExperimentalTurfApi
 public fun bbox(featureCollection: FeatureCollection): BoundingBox =
     computeBbox(featureCollection.coordAll())
 

@@ -11,7 +11,6 @@ import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.ExperimentalTurfApi
 import org.maplibre.spatialk.turf.constants.ANTIMERIDIAN_NEG
 import org.maplibre.spatialk.turf.constants.ANTIMERIDIAN_POS
 import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
@@ -29,7 +28,6 @@ import org.maplibre.spatialk.units.LengthUnit.Geodesy.Radians
  *   within 170deg to -170deg will be split)
  * @throws IllegalArgumentException if [start] and [end] are diametrically opposite.
  */
-@ExperimentalTurfApi
 public fun greatCircle(
     start: Position,
     end: Position,
