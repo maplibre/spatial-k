@@ -37,7 +37,8 @@ import org.maplibre.spatialk.geojson.serialization.PositionSerializer
  * @see PositionSerializer
  */
 @Serializable(with = PositionSerializer::class)
-public class Position(internal val coordinates: DoubleArray) : Iterable<Double> {
+public class Position internal constructor(internal val coordinates: DoubleArray) :
+    Iterable<Double> {
     init {
         require(coordinates.size >= 2) { "At least two coordinates must be provided" }
     }
@@ -68,12 +69,11 @@ public class Position(internal val coordinates: DoubleArray) : Iterable<Double> 
     /**
      * Construct a [Position] with more than the standard three axes ([longitude], [latitude],
      * [altitude]).
-     *
-     * Implementations SHOULD NOT extend positions beyond three elements because the semantics of
-     * extra elements are unspecified and ambiguous. Historically, some implementations have used a
-     * fourth element to carry a linear referencing measure (sometimes denoted as "M") or a
-     * numerical timestamp, but in most situations a parser will not be able to properly interpret
-     * these values.
+     * > Implementations SHOULD NOT extend positions beyond three elements because the semantics of
+     * > extra elements are unspecified and ambiguous. Historically, some implementations have used
+     * > a fourth element to carry a linear referencing measure (sometimes denoted as "M") or a
+     * > numerical timestamp, but in most situations a parser will not be able to properly interpret
+     * > these values.
      *
      * @see <a href="https://datatracker.ietf.org/doc/html/rfc7946#section-3.1.1">
      *   https://datatracker.ietf.org/doc/html/rfc7946#section-3.1.1</a>

@@ -98,27 +98,20 @@ public fun bbox(featureCollection: FeatureCollection): BoundingBox =
     computeBbox(featureCollection.coordAll())
 
 internal fun computeBbox(coordinates: List<Position>): BoundingBox {
-    val result =
-        doubleArrayOf(
-            Double.POSITIVE_INFINITY,
-            Double.POSITIVE_INFINITY,
-            Double.NEGATIVE_INFINITY,
-            Double.NEGATIVE_INFINITY,
-        )
-    coordinates.forEach { (longitude, latitude) ->
-        if (result[0] > longitude) {
-            result[0] = longitude
+    val coordinates =
+        coordinates.fold(
+            doubleArrayOf(
+                Double.POSITIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                Double.NEGATIVE_INFINITY,
+                Double.NEGATIVE_INFINITY,
+            )
+        ) { result, (longitude, latitude) ->
+            if (result[0] > longitude) result[0] = longitude
+            if (result[1] > latitude) result[1] = latitude
+            if (result[2] < longitude) result[2] = longitude
+            if (result[3] < latitude) result[3] = latitude
+            result
         }
-        if (result[1] > latitude) {
-            result[1] = latitude
-        }
-        if (result[2] < longitude) {
-            result[2] = longitude
-        }
-        if (result[3] < latitude) {
-            result[3] = latitude
-        }
-    }
-
-    return BoundingBox(result)
+    return BoundingBox(coordinates[0], coordinates[1], coordinates[2], coordinates[3])
 }

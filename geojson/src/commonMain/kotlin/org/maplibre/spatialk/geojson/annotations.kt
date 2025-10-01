@@ -1,7 +1,7 @@
 package org.maplibre.spatialk.geojson
 
 @RequiresOptIn(
-    level = RequiresOptIn.Level.WARNING,
+    level = RequiresOptIn.Level.ERROR,
     message = "This API should be used with caution; please check the documentation.",
 )
 @Retention(AnnotationRetention.BINARY)

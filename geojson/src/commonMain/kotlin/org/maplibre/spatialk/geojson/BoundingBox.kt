@@ -28,7 +28,8 @@ import org.maplibre.spatialk.geojson.serialization.GeoJson
  *   https://tools.ietf.org/html/rfc7946#section-5</a>
  */
 @Serializable(with = BoundingBoxSerializer::class)
-public class BoundingBox(internal val coordinates: DoubleArray) : Iterable<Double> {
+public class BoundingBox internal constructor(internal val coordinates: DoubleArray) :
+    Iterable<Double> {
     init {
         require(coordinates.size >= 4 && coordinates.size % 2 == 0) {
             "Bounding Box coordinates must either at least 4 and an even number of values"
@@ -68,15 +69,15 @@ public class BoundingBox(internal val coordinates: DoubleArray) : Iterable<Doubl
 
     /**
      * Construct a [BoundingBox] with more than the standard three axes (`longitude`, `latitude`,
-     * `altitude`) per corner.
+     * `altitude`) per corner. Such additional axes are discouraged but allowed by the GeoJson
+     * specification:
+     * > Implementations SHOULD NOT extend positions beyond three elements because the semantics of
+     * > extra elements are unspecified and ambiguous. Historically, some implementations have used
+     * > a fourth element to carry a linear referencing measure (sometimes denoted as "M") or a
+     * > numerical timestamp, but in most situations a parser will not be able to properly interpret
+     * > these values.
      *
-     * Implementations SHOULD NOT extend positions beyond three elements because the semantics of
-     * extra elements are unspecified and ambiguous. Historically, some implementations have used a
-     * fourth element to carry a linear referencing measure (sometimes denoted as "M") or a
-     * numerical timestamp, but in most situations a parser will not be able to properly interpret
-     * these values.
-     *
-     * @param additionalElements MUST contain an even number of elements
+     * @param additionalElements must contain an even number of elements
      * @see <a href="https://datatracker.ietf.org/doc/html/rfc7946#section-3.1.1">
      *   https://datatracker.ietf.org/doc/html/rfc7946#section-3.1.1</a>
      */
