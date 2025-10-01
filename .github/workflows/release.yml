@@ -11,19 +11,18 @@ permissions:
     contents: read
 
 jobs:
-    release:
-        runs-on: macos-latest
-
+    publish-maven:
+        runs-on: ubuntu-latest
+        environment:
+            name: maven-central
+            url: https://central.sonatype.com/namespace/org.maplibre.spatialk
         steps:
             - uses: actions/checkout@v5
-
-            - name: Set up JDK 17
-              uses: actions/setup-java@v5
+            - uses: actions/setup-java@v5
               with:
-                  distribution: "zulu"
-                  java-version: 17
-
-            - name: Publish Artifacts
+                  distribution: temurin
+                  java-version: 21
+            - run: ./gradlew publishAndReleaseToMavenCentral
               env:
                   ORG_GRADLE_PROJECT_mavenCentralUsername:
                       ${{ secrets.SONATYPE_NEXUS_USERNAME }}
@@ -33,5 +32,24 @@ jobs:
                       ${{ secrets.SIGNING_KEY }}
                   ORG_GRADLE_PROJECT_signingInMemoryKeyId:
                       ${{ secrets.SIGNING_KEY_ID }}
-              run: |
-                  ./gradlew publishAllPublicationsToMavenCentralRepository --no-daemon --no-parallel
+
+    publish-pages:
+        runs-on: ubuntu-latest
+        permissions:
+            pages: write
+            id-token: write
+        environment:
+            name: github-pages
+            url: ${{ steps.deploy-pages.outputs.page_url }}
+        steps:
+            - uses: actions/checkout@v5
+            - uses: actions/setup-java@v5
+              with:
+                  distribution: temurin
+                  java-version: 21
+            - run: ./gradlew :mkdocsBuild
+            - uses: actions/upload-pages-artifact@v4
+              with:
+                  path: build/docs
+            - uses: actions/deploy-pages@v4
+              id: deploy-pages

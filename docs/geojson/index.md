@@ -1,30 +1,29 @@
 # GeoJson
 
-The `geojson` module contains an implementation of the
-[GeoJson standard](https://tools.ietf.org/html/rfc7946).
+The `geojson` module contains an implementation of
+[RFC 7946: The GeoJSON Format](https://tools.ietf.org/html/rfc7946).
 
 See below for constructing GeoJson objects using the DSL.
 
 ## Installation
 
-![Maven Central](https://img.shields.io/maven-central/v/org.maplibre.spatialk/geojson)
-![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/org.maplibre.spatialk/geojson?server=https%3A%2F%2Foss.sonatype.org)
+#### Kotlin Multiplatform
 
-=== "Kotlin"
-
-    ```kotlin
+```kotlin
+commonMain {
     dependencies {
-        implementation("org.maplibre.spatialk:geojson:<version>")
+        implementation("org.maplibre.spatialk:geojson:{{ gradle.project_version }}")
     }
-    ```
+}
+```
 
-=== "Groovy"
+#### Java and Kotlin/JVM
 
-    ```groovy
-    dependencies {
-        implementation "org.maplibre.spatialk:geojson:<version>"
-    }
-    ```
+```kotlin
+dependencies {
+    implementation("org.maplibre.spatialk:geojson-jvm:{{ gradle.project_version }}")
+}
+```
 
 ## GeoJson Objects
 

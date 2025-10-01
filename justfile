@@ -30,8 +30,8 @@ dump-abi:
 build-dokka:
     ./gradlew :dokkaGenerateHtml
 
-build-docs: build-dokka
-    mkdocs build -s
+build-docs:
+    ./gradlew :mkdocsBuild
 
-serve-docs: build-dokka
-    mkdocs serve
+serve-docs:
+    ./gradlew :mkdocsServe

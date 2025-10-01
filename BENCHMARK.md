@@ -5,7 +5,7 @@ Benchmarks are set up for GeoJSON serialization and deserialization.
 ## Running Benchmarks
 
 ```shell
-./gradlew :geojson:benchmark
+./gradlew :benchmark:benchmark
 ```
 
 This will run benchmarks on the JVM, NodeJS, and Kotlin/Native.

@@ -1,31 +1,30 @@
 # Units
 
 The `units` module contains utilities for working with units of measure, like
-[Length](api/units/org.maplibre.spatialk.units/-length/index.html) and
-[Area](api/units/org.maplibre.spatialk.units/-area/index.html).
+[Length](../api/units/org.maplibre.spatialk.units/-length/index.html) and
+[Area](../api/units/org.maplibre.spatialk.units/-area/index.html).
 
-Details can be found in the [API reference](./api/units/index.html).
+Details can be found in the [API reference](../api/units/index.html).
 
 ## Installation
 
-![Maven Central](https://img.shields.io/maven-central/v/org.maplibre.spatialk/units)
-![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/org.maplibre.spatialk/units?server=https%3A%2F%2Foss.sonatype.org)
+#### Kotlin Multiplatform
 
-=== "Kotlin"
-
-    ```kotlin
+```kotlin
+commonMain {
     dependencies {
-        implementation("org.maplibre.spatialk:units:<version>")
+        implementation("org.maplibre.spatialk:units:{{ gradle.project_version }}")
     }
-    ```
+}
+```
 
-=== "Groovy"
+#### Kotlin/JVM
 
-    ```groovy
-    dependencies {
-        implementation "org.maplibre.spatialk:units:<version>"
-    }
-    ````
+```kotlin
+dependencies {
+    implementation("org.maplibre.spatialk:units-jvm:{{ gradle.project_version }}")
+}
+```
 
 ## Simple unit conversion
 

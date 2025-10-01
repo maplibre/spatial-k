@@ -1,67 +1,103 @@
 site_name: "Spatial K"
+
+site_description: "Kotlin Multiplatform GeoJson library and Turfjs port"
 site_url: https://maplibre.github.io/spatial-k
+site_author: MapLibre
+
 repo_name: "spatial-k"
 repo_url: https://github.com/maplibre/spatial-k
-site_description: "Kotlin Multiplatform GeoJson library and Turfjs port"
-site_author: MapLibre
+edit_uri: edit/main/docs/docs/
+
 copyright: "Copyright &copy; 2025 MapLibre Contributors"
-remote_branch: gh-pages
 
 nav:
-    - "Introduction": index.md
-    - "GeoJson": geojson.md
-    - "Turf":
-          - "Overview": turf.md
-          - "Ported Functions": ported-functions.md
-    - "Units": units.md
-    - "API":
-          - "index": api/index.html
-          - "geojson": api/geojson/index.html
-          - "turf": api/turf/index.html
+    - "Getting Started": index.md
+    - "Modules":
+          - "GeoJson": geojson.md
+          - "Turf":
+                - turf/index.md
+                - "Ported Functions": turf/ported-functions.md
+          - "Units": units.md
+    - "API Reference": api/index.html
 
 theme:
     name: "material"
     favicon: images/logo-icon.svg
     logo: images/logo-icon.svg
+    icon:
+        repo: fontawesome/brands/github
     features:
+        - content.code.copy
+        - content.code.annotate
+        - navigation.instant
+        - navigation.instant.prefetch
+        - navigation.instant.progress
+        - navigation.instant.preview
+        - navigation.tracking
+        - navigation.path
         - navigation.indexes
+        - toc.follow
+        - content.action.edit
+        - content.tabs.link
     palette:
+        - media: (prefers-color-scheme)
+          toggle:
+              icon: material/brightness-auto
+              name: Switch to light mode
+          primary: "green"
+          accent: "blue"
         - media: "(prefers-color-scheme: light)"
           scheme: default
           toggle:
-              icon: material/weather-sunny
+              icon: material/brightness-7
               name: Switch to dark mode
           primary: "green"
           accent: "blue"
         - media: "(prefers-color-scheme: dark)"
           scheme: slate
           toggle:
-              icon: material/weather-night
-              name: Switch to light mode
+              icon: material/brightness-4
+              name: Switch to system preference
           primary: "green"
           accent: "blue"
 
+plugins:
+    - search
+    - markdownextradata
+
 markdown_extensions:
-    - pymdownx.highlight:
-          anchor_linenums: true
-    - pymdownx.snippets:
-          dedent_subsections: true
-    - pymdownx.arithmatex
+    # Python Markdown
+    - abbr
+    - admonition
+    - attr_list
+    - def_list
+    - footnotes
+    - meta
+    - md_in_html
+    - toc:
+          permalink: true
+    - tables
+
+    # Python Markdown Extensions
+    - pymdownx.arithmatex:
+          generic: true
     - pymdownx.betterem:
           smart_enable: all
     - pymdownx.caret
-    - pymdownx.critic
     - pymdownx.details
     - pymdownx.emoji:
           emoji_index: !!python/name:material.extensions.emoji.twemoji
           emoji_generator: !!python/name:material.extensions.emoji.to_svg
+    - pymdownx.highlight
     - pymdownx.inlinehilite
-    - pymdownx.magiclink
+    - pymdownx.keys
     - pymdownx.mark
     - pymdownx.smartsymbols
+    - pymdownx.snippets:
+          dedent_subsections: true
     - pymdownx.superfences
-    - pymdownx.tasklist:
-          custom_checkbox: true
     - pymdownx.tabbed:
           alternate_style: true
+    - pymdownx.tasklist:
+          custom_checkbox: true
     - pymdownx.tilde

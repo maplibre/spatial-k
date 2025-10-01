@@ -59,9 +59,7 @@ jobs:
               with:
                   distribution: temurin
                   java-version: 21
-            - run: pip3 install mkdocs-material
-            - run: ./gradlew :dokkaGenerateHtml
-            - run: mkdocs build -s
+            - run: ./gradlew :mkdocsBuild
 
     check-format:
         runs-on: ubuntu-latest

@@ -5,7 +5,6 @@ plugins { `kotlin-dsl` }
 repositories {
     mavenCentral()
     gradlePluginPortal()
-    google()
 }
 
 dependencies {
@@ -16,6 +15,7 @@ dependencies {
     implementation(libs.gradle.benchmark)
     implementation(libs.gradle.kover)
     implementation(libs.gradle.semver)
+    implementation(libs.gradle.mkdocs.build)
 }
 
 kotlin { compilerOptions { jvmTarget = JvmTarget.JVM_1_8 } }

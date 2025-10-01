@@ -10,8 +10,6 @@ plugins {
 
 group = "org.maplibre.spatialk"
 
-semver { tagPrefix = "v" }
-
 kotlin {
     explicitApi()
     abiValidation {

@@ -1,8 +1,11 @@
 import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType
+import ru.vyarus.gradle.plugin.mkdocs.task.MkdocsTask
 
 plugins {
     id("org.jetbrains.kotlinx.kover")
     id("org.jetbrains.dokka")
+    id("com.javiersc.semver")
+    id("ru.vyarus.mkdocs-build")
 }
 
 dokka {
@@ -16,6 +19,17 @@ dokka {
         }
     }
 }
+
+mkdocs {
+    sourcesDir = "."
+    strict = true
+    publish {
+        docPath = null // single version site
+    }
+    extras = mapOf("project_version" to project.version.toString())
+}
+
+tasks.withType<MkdocsTask>().configureEach { dependsOn("dokkaGenerateHtml") }
 
 kover {
     reports {

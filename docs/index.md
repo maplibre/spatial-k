@@ -10,35 +10,21 @@ including an implementation of GeoJson and a port of Turfjs written in pure
 Kotlin. It supports Kotlin Multiplatform projects and also features a Kotlin DSL
 for building GeoJson objects.
 
-## Installation
+## Modules
 
-#### Java and Kotlin/JVM
-
-```groovy
-dependencies {
-    implementation "org.maplibre.spatialk:geojson:<version>"
-    implementation "org.maplibre.spatialk:turf:<version>"
-}
-```
-
-#### Kotlin Multiplatform
-
-```groovy
-commonMain {
-    dependencies {
-        implementation "org.maplibre.spatialk:geojson:<version>"
-        implementation "org.maplibre.spatialk:turf:<version>"
-    }
-}
-```
+- [`geojson`](./geojson/index.md) - GeoJson implementation
+- [`turf`](./turf/index.md) - Turf.js port
+- [`units`](./units/index.md) - Units of measure
 
 ### Snapshots
 
 Snapshot builds are available on Sonatype.
 
-```groovy
+```kotlin
 repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven {
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
 }
 ```
 
@@ -46,22 +32,78 @@ repositories {
 
 **Legend:**
 
-- ✅ Published and tested in CI
-- ⚠️ Published but not tested in CI
-- ❌ Not published
+- ✅ Available and tested in CI
+- ☑️ Available but not tested in CI
+- ❌ Not available
 
-| Target            | Platform                      | Support |
-| ----------------- | ----------------------------- | ------- |
-| **Kotlin/JVM**    | N/A                           | ✅      |
-| **Kotlin/JS**     | Browser                       | ⚠️      |
-| **Kotlin/JS**     | Node.js                       | ✅      |
-| **Kotlin/WASM**   | Browser, D8                   | ⚠️      |
-| **Kotlin/WASM**   | Node.js                       | ✅      |
-| **Kotlin/WASM**   | Node.js (WASI)                | ⚠️      |
-| **Kotlin/Native** | macOS (ARM64, x64)            | ✅      |
-| **Kotlin/Native** | Linux (x64, ARM64)            | ✅      |
-| **Kotlin/Native** | Windows x64                   | ✅      |
-| **Kotlin/Native** | iOS (all variants)            | ⚠️      |
-| **Kotlin/Native** | watchOS (all variants)        | ⚠️      |
-| **Kotlin/Native** | tvOS (all variants)           | ⚠️      |
-| **Kotlin/Native** | Android Native (all variants) | ⚠️      |
+<table>
+  <thead>
+    <tr>
+      <th>Target</th>
+      <th>Platform</th>
+      <th>Support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="2"><b>Kotlin/JVM</b></td>
+      <td>JVM</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Android</td>
+      <td>☑️</td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Kotlin/JS</b></td>
+      <td>Browser</td>
+      <td>☑️</td>
+    </tr>
+    <tr>
+      <td>Node.js</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Kotlin/WASM</b></td>
+      <td>Browser, D8</td>
+      <td>☑️</td>
+    </tr>
+    <tr>
+      <td>Node.js</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Node.js (WASI)</td>
+      <td>☑️</td>
+    </tr>
+    <tr>
+      <td rowspan="7"><b>Kotlin/Native</b></td>
+      <td>macOS (ARM64, x64)</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Linux (x64, ARM64)</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Windows (x64)</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>iOS (all variants)</td>
+      <td>☑️</td>
+    </tr>
+    <tr>
+      <td>watchOS (all variants)</td>
+      <td>☑️</td>
+    </tr>
+    <tr>
+      <td>tvOS (all variants)</td>
+      <td>☑️</td>
+    </tr>
+    <tr>
+      <td>Android Native (all variants)</td>
+      <td>☑️</td>
+    </tr>
+  </tbody>
+</table>

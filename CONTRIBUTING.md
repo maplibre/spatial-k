@@ -37,10 +37,9 @@ includes mobile native targets, browser targets, etc.
 
 The content of the documentation website is written in Markdown using
 [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) and is
-located in the `docs` directory. Run `./gradlew dokkaGenerateHtml` to generate
-and write the Dokka API reference into the docs directory, and then
-`mkdocs serve` to run a local server to view the docs. The server will
-automatically reload when you make changes to the docs.
+located in the `docs` directory. Run `./gradlew :mkdocsServe` to run a local
+server to view the docs. The server will automatically reload when you make
+changes to the docs.
 
 ## Make CI happy
 
