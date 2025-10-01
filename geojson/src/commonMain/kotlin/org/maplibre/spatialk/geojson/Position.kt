@@ -110,10 +110,13 @@ public class Position internal constructor(internal val coordinates: DoubleArray
 
     public override fun iterator(): Iterator<Double> = coordinates.iterator()
 
+    /** @return [longitude] */
     @JvmSynthetic public operator fun component1(): Double = longitude
 
+    /** @return [latitude] */
     @JvmSynthetic public operator fun component2(): Double = latitude
 
+    /** @return [altitude] */
     @JvmSynthetic public operator fun component3(): Double? = altitude
 
     override fun equals(other: Any?): Boolean {

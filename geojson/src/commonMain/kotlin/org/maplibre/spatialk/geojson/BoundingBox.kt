@@ -32,7 +32,7 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
     Iterable<Double> {
     init {
         require(coordinates.size >= 4 && coordinates.size % 2 == 0) {
-            "Bounding Box coordinates must either at least 4 and an even number of values"
+            "Bounding Box coordinates must have at least 4 and an even number of values"
         }
     }
 
@@ -53,8 +53,8 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
     ) : this(doubleArrayOf(west, south, minAltitude, east, north, maxAltitude))
 
     /**
-     * Construct a [BoundingBox] from a [Position] that represents the southwest corner and a
-     * [Position] that represents the northeast corner.
+     * Construct a [BoundingBox] from two [Position]s that represent the southwest corner and
+     * northeast corners.
      *
      * If one corner has more elements than the other, the extra elements are ignored.
      */
@@ -131,8 +131,10 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
 
     override fun iterator(): Iterator<Double> = coordinates.iterator()
 
+    /** @return [southwest] */
     @JvmSynthetic public operator fun component1(): Position = southwest
 
+    /** @return [northeast] */
     @JvmSynthetic public operator fun component2(): Position = northeast
 
     override fun equals(other: Any?): Boolean {
