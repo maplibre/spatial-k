@@ -30,6 +30,7 @@ jobs:
               with:
                   distribution: temurin
                   java-version: 21
+            - run: ./gradlew printSemver # TODO: remove this once we're confident in our config
             - run: ./gradlew ${{ matrix.task }}
             - if: ${{ matrix.task == 'build' }} # Kover only supports JVM
               name: Generate coverage summary

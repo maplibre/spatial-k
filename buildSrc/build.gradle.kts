@@ -15,6 +15,7 @@ dependencies {
     implementation(libs.gradle.publish)
     implementation(libs.gradle.benchmark)
     implementation(libs.gradle.kover)
+    implementation(libs.gradle.semver)
 }
 
 kotlin { compilerOptions { jvmTarget = JvmTarget.JVM_1_8 } }

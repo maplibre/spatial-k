@@ -7,6 +7,7 @@ kotlinx-serialization = "1.9.0"
 vanniktech-publish = "0.34.0"
 dokka = "2.1.0-Beta"
 kotlinx-io = "0.8.0"
+semver = "0.8.0"
 
 [libraries]
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref="jetbrains-annotations"}
@@ -21,3 +22,4 @@ gradle-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref
 gradle-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktech-publish" }
 gradle-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-plugin", version.ref = "kotlinx-benchmark" }
 gradle-kover = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kotlinx-kover" }
+gradle-semver = { module = "com.javiersc.semver:com.javiersc.semver.gradle.plugin", version.ref = "semver" }
