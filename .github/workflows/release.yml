@@ -50,6 +50,6 @@ jobs:
             - run: ./gradlew :mkdocsBuild
             - uses: actions/upload-pages-artifact@v4
               with:
-                  path: build/docs
+                  path: build/mkdocs
             - uses: actions/deploy-pages@v4
               id: deploy-pages

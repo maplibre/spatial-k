@@ -13,11 +13,11 @@ copyright: "Copyright &copy; 2025 MapLibre Contributors"
 nav:
     - "Getting Started": index.md
     - "Modules":
-          - "GeoJson": geojson.md
+          - "GeoJson": geojson/index.md
           - "Turf":
                 - turf/index.md
                 - "Ported Functions": turf/ported-functions.md
-          - "Units": units.md
+          - "Units": units/index.md
     - "API Reference": api/index.html
 
 theme:
