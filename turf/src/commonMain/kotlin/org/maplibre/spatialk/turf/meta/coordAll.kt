@@ -1,5 +1,10 @@
+@file:JvmName("Meta")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.meta
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry

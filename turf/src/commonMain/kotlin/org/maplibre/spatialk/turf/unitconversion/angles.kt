@@ -1,5 +1,10 @@
+@file:JvmName("UnitConversion")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.unitconversion
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import kotlin.math.PI
 
 /** Converts an angle in radians to degrees */

@@ -1,5 +1,10 @@
+@file:JvmName("Booleans")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.booleans
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.MultiPolygon

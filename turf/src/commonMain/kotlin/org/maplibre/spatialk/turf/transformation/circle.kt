@@ -1,5 +1,10 @@
+@file:JvmName("Transformation")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.transformation
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.turf.measurement.computeBbox

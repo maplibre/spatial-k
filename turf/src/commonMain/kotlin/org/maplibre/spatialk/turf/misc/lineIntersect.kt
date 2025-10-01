@@ -1,5 +1,10 @@
+@file:JvmName("Miscellaneous")
+@file:JvmMultifileClass
+
 package org.maplibre.spatialk.turf.misc
 
+import kotlin.jvm.JvmMultifileClass
+import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Position
 
