@@ -7,7 +7,6 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.geojson.serialization.PositionSerializer.delegate
 
 /** Serializes a [Position] by invoking [DoubleArraySerializer] on the coordinates. */
 public object PositionSerializer : KSerializer<Position> {
