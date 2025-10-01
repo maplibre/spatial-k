@@ -1,0 +1,457 @@
+public final class org/maplibre/spatialk/units/Area : java/lang/Comparable {
+	public static final field Companion Lorg/maplibre/spatialk/units/Area$Companion;
+	public static final synthetic fun box-impl (D)Lorg/maplibre/spatialk/units/Area;
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo-g7vxaWU (D)I
+	public static fun compareTo-g7vxaWU (DD)I
+	public static final fun div-OWkeucc (DLjava/lang/Number;)D
+	public static final fun div-g7vxaWU (DD)D
+	public static final fun div-kw6D2l4 (DD)D
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (DLjava/lang/Object;)Z
+	public static final fun equals-impl0 (DD)Z
+	public static final fun getAbsoluteValue-Od-tmbY (D)D
+	public fun hashCode ()I
+	public static fun hashCode-impl (D)I
+	public static final fun isFinite-impl (D)Z
+	public static final fun isInfinite-impl (D)Z
+	public static final fun isNegative-impl (D)Z
+	public static final fun isPositive-impl (D)Z
+	public static final fun isZero-impl (D)Z
+	public static final fun minus-t9y-CaE (DD)D
+	public static final fun plus-t9y-CaE (DD)D
+	public static final fun roundToInt-impl (DLorg/maplibre/spatialk/units/AreaUnit;)I
+	public static final fun roundToLong-impl (DLorg/maplibre/spatialk/units/AreaUnit;)J
+	public static final fun times-OWkeucc (DLjava/lang/Number;)D
+	public static final fun toDouble-impl (DLorg/maplibre/spatialk/units/AreaUnit;)D
+	public static final fun toFloat-impl (DLorg/maplibre/spatialk/units/AreaUnit;)F
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (D)Ljava/lang/String;
+	public static final fun toString-impl (DLorg/maplibre/spatialk/units/AreaUnit;I)Ljava/lang/String;
+	public static synthetic fun toString-impl$default (DLorg/maplibre/spatialk/units/AreaUnit;IILjava/lang/Object;)Ljava/lang/String;
+	public static final fun unaryMinus-Od-tmbY (D)D
+	public static final fun unaryPlus-Od-tmbY (D)D
+	public final synthetic fun unbox-impl ()D
+}
+
+public final class org/maplibre/spatialk/units/Area$Companion {
+	public final fun getMAX_VALUE-Od-tmbY ()D
+	public final fun getMIN_VALUE-Od-tmbY ()D
+	public final fun getNEGATIVE_INFINITY-Od-tmbY ()D
+	public final fun getPOSITIVE_INFINITY-Od-tmbY ()D
+	public final fun getZERO-Od-tmbY ()D
+}
+
+public abstract interface class org/maplibre/spatialk/units/AreaUnit : java/lang/Comparable, org/maplibre/spatialk/units/UnitOfMeasure {
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lorg/maplibre/spatialk/units/AreaUnit;)I
+	public abstract fun getMetersSquaredPerUnit ()D
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$DefaultImpls {
+	public static fun compareTo (Lorg/maplibre/spatialk/units/AreaUnit;Lorg/maplibre/spatialk/units/AreaUnit;)I
+	public static fun format (Lorg/maplibre/spatialk/units/AreaUnit;DI)Ljava/lang/String;
+}
+
+public abstract class org/maplibre/spatialk/units/AreaUnit$Imperial : org/maplibre/spatialk/units/AreaUnit {
+	public synthetic fun <init> (DLjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lorg/maplibre/spatialk/units/AreaUnit;)I
+	public fun format (DI)Ljava/lang/String;
+	public fun getMetersSquaredPerUnit ()D
+	public fun getSymbol ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$Imperial$Acres : org/maplibre/spatialk/units/AreaUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$Imperial$Acres;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$Imperial$SquareFeet : org/maplibre/spatialk/units/AreaUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$Imperial$SquareFeet;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$Imperial$SquareInches : org/maplibre/spatialk/units/AreaUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$Imperial$SquareInches;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$Imperial$SquareMiles : org/maplibre/spatialk/units/AreaUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$Imperial$SquareMiles;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$Imperial$SquareRods : org/maplibre/spatialk/units/AreaUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$Imperial$SquareRods;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$Imperial$SquareYards : org/maplibre/spatialk/units/AreaUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$Imperial$SquareYards;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class org/maplibre/spatialk/units/AreaUnit$International : org/maplibre/spatialk/units/AreaUnit {
+	public synthetic fun <init> (DLjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lorg/maplibre/spatialk/units/AreaUnit;)I
+	public fun format (DI)Ljava/lang/String;
+	public fun getMetersSquaredPerUnit ()D
+	public fun getSymbol ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$International$SquareCentimeters : org/maplibre/spatialk/units/AreaUnit$International {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$International$SquareCentimeters;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$International$SquareKilometers : org/maplibre/spatialk/units/AreaUnit$International {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$International$SquareKilometers;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$International$SquareMeters : org/maplibre/spatialk/units/AreaUnit$International {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$International$SquareMeters;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$International$SquareMillimeters : org/maplibre/spatialk/units/AreaUnit$International {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$International$SquareMillimeters;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class org/maplibre/spatialk/units/AreaUnit$Metric : org/maplibre/spatialk/units/AreaUnit {
+	public synthetic fun <init> (DLjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lorg/maplibre/spatialk/units/AreaUnit;)I
+	public fun format (DI)Ljava/lang/String;
+	public fun getMetersSquaredPerUnit ()D
+	public fun getSymbol ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$Metric$Ares : org/maplibre/spatialk/units/AreaUnit$Metric {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$Metric$Ares;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$Metric$Centiares : org/maplibre/spatialk/units/AreaUnit$Metric {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$Metric$Centiares;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$Metric$Decares : org/maplibre/spatialk/units/AreaUnit$Metric {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$Metric$Decares;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$Metric$Deciares : org/maplibre/spatialk/units/AreaUnit$Metric {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$Metric$Deciares;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/AreaUnit$Metric$Hectares : org/maplibre/spatialk/units/AreaUnit$Metric {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/AreaUnit$Metric$Hectares;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/Length : java/lang/Comparable {
+	public static final field Companion Lorg/maplibre/spatialk/units/Length$Companion;
+	public static final synthetic fun box-impl (D)Lorg/maplibre/spatialk/units/Length;
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo-z3ishhw (D)I
+	public static fun compareTo-z3ishhw (DD)I
+	public static final fun div-Z9QLXes (DLjava/lang/Number;)D
+	public static final fun div-z3ishhw (DD)Ljava/lang/Number;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (DLjava/lang/Object;)Z
+	public static final fun equals-impl0 (DD)Z
+	public static final fun getAbsoluteValue-_8uq4Z0 (D)D
+	public fun hashCode ()I
+	public static fun hashCode-impl (D)I
+	public static final fun isFinite-impl (D)Z
+	public static final fun isInfinite-impl (D)Z
+	public static final fun isNegative-impl (D)Z
+	public static final fun isPositive-impl (D)Z
+	public static final fun isZero-impl (D)Z
+	public static final fun minus-kw6D2l4 (DD)D
+	public static final fun plus-kw6D2l4 (DD)D
+	public static final fun roundToInt-impl (DLorg/maplibre/spatialk/units/LengthUnit;)I
+	public static final fun roundToLong-impl (DLorg/maplibre/spatialk/units/LengthUnit;)J
+	public static final fun times-QXbdlf8 (DD)D
+	public static final fun times-Z9QLXes (DLjava/lang/Number;)D
+	public static final fun toDouble-impl (DLorg/maplibre/spatialk/units/LengthUnit;)D
+	public static final fun toFloat-impl (DLorg/maplibre/spatialk/units/LengthUnit;)F
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (D)Ljava/lang/String;
+	public static final fun toString-impl (DLorg/maplibre/spatialk/units/LengthUnit;I)Ljava/lang/String;
+	public static synthetic fun toString-impl$default (DLorg/maplibre/spatialk/units/LengthUnit;IILjava/lang/Object;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()D
+}
+
+public final class org/maplibre/spatialk/units/Length$Companion {
+	public final fun getMAX_VALUE-_8uq4Z0 ()D
+	public final fun getMIN_VALUE-_8uq4Z0 ()D
+	public final fun getNEGATIVE_INFINITY-_8uq4Z0 ()D
+	public final fun getPOSITIVE_INFINITY-_8uq4Z0 ()D
+	public final fun getZERO-_8uq4Z0 ()D
+}
+
+public abstract interface class org/maplibre/spatialk/units/LengthUnit : java/lang/Comparable, org/maplibre/spatialk/units/UnitOfMeasure {
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lorg/maplibre/spatialk/units/LengthUnit;)I
+	public abstract fun getMetersPerUnit ()D
+	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$DefaultImpls {
+	public static fun compareTo (Lorg/maplibre/spatialk/units/LengthUnit;Lorg/maplibre/spatialk/units/LengthUnit;)I
+	public static fun format (Lorg/maplibre/spatialk/units/LengthUnit;DI)Ljava/lang/String;
+	public static fun times (Lorg/maplibre/spatialk/units/LengthUnit;Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+}
+
+public abstract class org/maplibre/spatialk/units/LengthUnit$Geodesy : org/maplibre/spatialk/units/LengthUnit {
+	public synthetic fun <init> (DLjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lorg/maplibre/spatialk/units/LengthUnit;)I
+	public fun format (DI)Ljava/lang/String;
+	public fun getMetersPerUnit ()D
+	public fun getSymbol ()Ljava/lang/String;
+	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Geodesy$Degrees : org/maplibre/spatialk/units/LengthUnit$Geodesy {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Geodesy$Degrees;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun format (DI)Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Geodesy$Minutes : org/maplibre/spatialk/units/LengthUnit$Geodesy {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Geodesy$Minutes;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Geodesy$Radians : org/maplibre/spatialk/units/LengthUnit$Geodesy {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Geodesy$Radians;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Geodesy$Seconds : org/maplibre/spatialk/units/LengthUnit$Geodesy {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Geodesy$Seconds;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class org/maplibre/spatialk/units/LengthUnit$Imperial : org/maplibre/spatialk/units/LengthUnit {
+	public synthetic fun <init> (DLjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lorg/maplibre/spatialk/units/LengthUnit;)I
+	public fun format (DI)Ljava/lang/String;
+	public fun getMetersPerUnit ()D
+	public fun getSymbol ()Ljava/lang/String;
+	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Imperial$Cables : org/maplibre/spatialk/units/LengthUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Imperial$Cables;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Imperial$Chains : org/maplibre/spatialk/units/LengthUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Imperial$Chains;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Imperial$Fathoms : org/maplibre/spatialk/units/LengthUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Imperial$Fathoms;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Imperial$Feet : org/maplibre/spatialk/units/LengthUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Imperial$Feet;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Imperial$Furlongs : org/maplibre/spatialk/units/LengthUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Imperial$Furlongs;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Imperial$Inches : org/maplibre/spatialk/units/LengthUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Imperial$Inches;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Imperial$Leagues : org/maplibre/spatialk/units/LengthUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Imperial$Leagues;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Imperial$Links : org/maplibre/spatialk/units/LengthUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Imperial$Links;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Imperial$Miles : org/maplibre/spatialk/units/LengthUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Imperial$Miles;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Imperial$NauticalMiles : org/maplibre/spatialk/units/LengthUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Imperial$NauticalMiles;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Imperial$Rods : org/maplibre/spatialk/units/LengthUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Imperial$Rods;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$Imperial$Yards : org/maplibre/spatialk/units/LengthUnit$Imperial {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$Imperial$Yards;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class org/maplibre/spatialk/units/LengthUnit$International : org/maplibre/spatialk/units/LengthUnit {
+	public synthetic fun <init> (DLjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lorg/maplibre/spatialk/units/LengthUnit;)I
+	public fun format (DI)Ljava/lang/String;
+	public fun getMetersPerUnit ()D
+	public fun getSymbol ()Ljava/lang/String;
+	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$International$Centimeters : org/maplibre/spatialk/units/LengthUnit$International {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$International$Centimeters;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$International$Kilometers : org/maplibre/spatialk/units/LengthUnit$International {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$International$Kilometers;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$International$Meters : org/maplibre/spatialk/units/LengthUnit$International {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$International$Meters;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/LengthUnit$International$Millimeters : org/maplibre/spatialk/units/LengthUnit$International {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/LengthUnit$International$Millimeters;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class org/maplibre/spatialk/units/UnitOfMeasure {
+	public fun format (DI)Ljava/lang/String;
+	public static synthetic fun format$default (Lorg/maplibre/spatialk/units/UnitOfMeasure;DIILjava/lang/Object;)Ljava/lang/String;
+	public abstract fun getSymbol ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/UnitOfMeasure$DefaultImpls {
+	public static fun format (Lorg/maplibre/spatialk/units/UnitOfMeasure;DI)Ljava/lang/String;
+	public static synthetic fun format$default (Lorg/maplibre/spatialk/units/UnitOfMeasure;DIILjava/lang/Object;)Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/UtilKt {
+	public static final fun getAcres (Ljava/lang/Number;)D
+	public static final fun getFeet (Ljava/lang/Number;)D
+	public static final fun getInAcres-g7vxaWU (D)D
+	public static final fun getInFeet-z3ishhw (D)D
+	public static final fun getInKilometers-z3ishhw (D)D
+	public static final fun getInMeters-z3ishhw (D)D
+	public static final fun getInMiles-z3ishhw (D)D
+	public static final fun getInSquareFeet-g7vxaWU (D)D
+	public static final fun getInSquareKilometers-g7vxaWU (D)D
+	public static final fun getInSquareMeters-g7vxaWU (D)D
+	public static final fun getInSquareMiles-g7vxaWU (D)D
+	public static final fun getKilometers (Ljava/lang/Number;)D
+	public static final fun getMeters (Ljava/lang/Number;)D
+	public static final fun getMiles (Ljava/lang/Number;)D
+	public static final fun getSquareFeet (Ljava/lang/Number;)D
+	public static final fun getSquareKilometers (Ljava/lang/Number;)D
+	public static final fun getSquareMeters (Ljava/lang/Number;)D
+	public static final fun getSquareMiles (Ljava/lang/Number;)D
+	public static final fun times-DQw0L0M (Ljava/lang/Number;D)D
+	public static final fun times-NY0MKA4 (Ljava/lang/Number;D)D
+	public static final fun toArea (Ljava/lang/Number;Lorg/maplibre/spatialk/units/AreaUnit;)D
+	public static final fun toLength (Ljava/lang/Number;Lorg/maplibre/spatialk/units/LengthUnit;)D
+}

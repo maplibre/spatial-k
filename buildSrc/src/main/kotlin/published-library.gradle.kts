@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
+
 plugins {
     id("base-module")
     id("org.jetbrains.dokka")
@@ -5,7 +7,13 @@ plugins {
     id("org.jetbrains.kotlinx.kover")
 }
 
-kotlin { explicitApi() }
+kotlin {
+    explicitApi()
+    abiValidation {
+        @OptIn(ExperimentalAbiValidation::class)
+        enabled = true
+    }
+}
 
 dokka {
     dokkaSourceSets {

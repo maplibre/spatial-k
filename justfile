@@ -10,7 +10,7 @@ pre-commit-uninstall:
     pre-commit uninstall
 
 format:
-    pre-commit run --all-files
+    pre-commit run --all-files || true
 
 build:
     ./gradlew build
@@ -20,6 +20,9 @@ benchmark:
 
 coverage:
     ./gradlew :koverHtmlReport
+
+dump-abi:
+    ./gradlew updateLegacyAbi
 
 build-dokka:
     ./gradlew :dokkaGenerateHtml
