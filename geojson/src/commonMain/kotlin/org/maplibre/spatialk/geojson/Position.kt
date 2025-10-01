@@ -1,6 +1,5 @@
 package org.maplibre.spatialk.geojson
 
-import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmSynthetic
 import kotlinx.serialization.Serializable
 import org.maplibre.spatialk.geojson.serialization.GeoJson
@@ -38,22 +37,54 @@ import org.maplibre.spatialk.geojson.serialization.PositionSerializer
  * @see PositionSerializer
  */
 @Serializable(with = PositionSerializer::class)
-public class Position(internal val coordinates: DoubleArray) {
+public class Position(internal val coordinates: DoubleArray) : Iterable<Double> {
     init {
         require(coordinates.size >= 2) { "At least two coordinates must be provided" }
     }
 
-    @JvmOverloads
+    // We need to manually write our overloads to prevent Position(0.0, 0.0, 0.0) from calling the
+    // sensitive constructor with zero varargs.
+
+    public constructor(
+        longitude: Double,
+        latitude: Double,
+    ) : this(doubleArrayOf(longitude, latitude))
+
+    public constructor(
+        longitude: Double,
+        latitude: Double,
+        altitude: Double,
+    ) : this(doubleArrayOf(longitude, latitude, altitude))
+
     public constructor(
         longitude: Double,
         latitude: Double,
         altitude: Double? = null,
     ) : this(
-        when (altitude) {
-            null -> doubleArrayOf(longitude, latitude)
-            else -> doubleArrayOf(longitude, latitude, altitude)
-        }
+        if (altitude == null) doubleArrayOf(longitude, latitude)
+        else doubleArrayOf(longitude, latitude, altitude)
     )
+
+    /**
+     * Construct a [Position] with more than the standard three axes ([longitude], [latitude],
+     * [altitude]).
+     *
+     * Implementations SHOULD NOT extend positions beyond three elements because the semantics of
+     * extra elements are unspecified and ambiguous. Historically, some implementations have used a
+     * fourth element to carry a linear referencing measure (sometimes denoted as "M") or a
+     * numerical timestamp, but in most situations a parser will not be able to properly interpret
+     * these values.
+     *
+     * @see <a href="https://datatracker.ietf.org/doc/html/rfc7946#section-3.1.1">
+     *   https://datatracker.ietf.org/doc/html/rfc7946#section-3.1.1</a>
+     */
+    @SensitiveGeoJsonApi
+    public constructor(
+        longitude: Double,
+        latitude: Double,
+        altitude: Double,
+        vararg additionalElements: Double,
+    ) : this(doubleArrayOf(longitude, latitude, altitude, *additionalElements))
 
     public val longitude: Double
         get() = coordinates[0]
@@ -62,27 +93,27 @@ public class Position(internal val coordinates: DoubleArray) {
         get() = coordinates[1]
 
     public val altitude: Double?
-        get() = coordinates.getOrNull(2)
+        get() = if (hasAltitude) coordinates[2] else null
 
-    /**
-     * Component function for getting the [longitude]
-     *
-     * @return [longitude]
-     */
+    /** @return the coordinate at the given index. */
+    public operator fun get(index: Int): Double = coordinates[index]
+
+    /** @return the coordinate at the given index or null if the index is out of range. */
+    public fun getOrNull(index: Int): Double? = coordinates.getOrNull(index)
+
+    /** @return the number of elements in the coordinates array. */
+    public val size: Int
+        get() = coordinates.size
+
+    public val hasAltitude: Boolean
+        get() = size >= 3
+
+    public override fun iterator(): Iterator<Double> = coordinates.iterator()
+
     @JvmSynthetic public operator fun component1(): Double = longitude
 
-    /**
-     * Component function for getting the [latitude]
-     *
-     * @return [latitude]
-     */
     @JvmSynthetic public operator fun component2(): Double = latitude
 
-    /**
-     * Component function for getting the [altitude]
-     *
-     * @return [altitude]
-     */
     @JvmSynthetic public operator fun component3(): Double? = altitude
 
     override fun equals(other: Any?): Boolean {
@@ -104,6 +135,3 @@ public class Position(internal val coordinates: DoubleArray) {
 
     public fun json(): String = GeoJson.encodeToString(coordinates)
 }
-
-public val Position.hasAltitude: Boolean
-    get() = coordinates.size >= 3
