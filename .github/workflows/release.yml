@@ -1,9 +1,11 @@
 name: Publish Release
 
 on:
-    push:
-        tags:
-            - "v*"
+    workflow_dispatch:
+    # TODO: temporarily disabled so I can push old tags without releasing anything
+    # push:
+    #     tags:
+    #         - "v*"
 
 permissions:
     contents: read
