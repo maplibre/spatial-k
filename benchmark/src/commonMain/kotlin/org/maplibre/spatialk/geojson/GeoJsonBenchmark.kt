@@ -87,7 +87,7 @@ open class GeoJsonBenchmark {
 
     /** Benchmark serialization using kotlinx.serialization */
     @Benchmark
-    fun kotlinxSerialization() {
+    fun serialization() {
         featureCollection.json()
     }
 
