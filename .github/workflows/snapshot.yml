@@ -46,9 +46,9 @@ jobs:
                   ORG_GRADLE_PROJECT_mavenCentralPassword:
                       ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
                   ORG_GRADLE_PROJECT_signingInMemoryKey:
-                      ${{ secrets.SIGNING_KEY }}
+                      ${{ secrets.GPG_SIGNING_KEY }}
                   ORG_GRADLE_PROJECT_signingInMemoryKeyId:
-                      ${{ secrets.SIGNING_KEY_ID }}
+                      ${{ secrets.GPG_SIGNING_KEY_ID }}
 
     dryrun-pages:
         needs: [check-last-run]
