@@ -3,9 +3,9 @@ import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 plugins {
     id("base-module")
     id("org.jetbrains.dokka")
-    id("com.javiersc.semver")
     id("com.vanniktech.maven.publish")
     id("org.jetbrains.kotlinx.kover")
+    id("com.javiersc.semver")
 }
 
 group = "org.maplibre.spatialk"
@@ -25,8 +25,7 @@ dokka {
         configureEach {
             includes.from("MODULE.md")
             sourceLink {
-                // TODO link to version (git tag) using jgitver
-                remoteUrl("https://github.com/maplibre/spatial-k/tree/main/")
+                remoteUrl("https://github.com/maplibre/spatial-k/tree/${project.version}/")
                 localDirectory = rootDir
             }
             externalDocumentationLinks {
