@@ -26,3 +26,10 @@ kotlin {
         }
     }
 }
+
+mavenPublishing {
+    pom {
+        name = "Spatial K GeoJSON"
+        description = "A Kotlin Multiplatform implementation of the GeoJSON format."
+    }
+}
