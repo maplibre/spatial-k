@@ -6,10 +6,10 @@ import kotlin.math.PI
 import kotlin.test.Test
 import org.maplibre.spatialk.units.extensions.*
 
-// These snippets are primarily intended to be included in docs/turf.md. Though they exist as
+// These snippets are primarily intended to be included in documentation. Though they exist as
 // part of the test suite, they are not intended to be comprehensive tests.
 
-class DocSnippets {
+class KotlinDocsTest {
     @Test
     fun conversion() {
         // --8<-- [start:conversion]
@@ -30,22 +30,15 @@ class DocSnippets {
         // --8<-- [end:arithmetic]
     }
 
-    // --8<-- [start:customUnits1]
-    data object AmericanFootballField : AreaUnit {
-        override val metersSquaredPerUnit: Double = 109.728 * 48.8
-        override val symbol: String = "football fields"
-    }
-
-    // --8<-- [end:customUnits1]
-
     @Test
     fun customUnits() {
-        // --8<-- [start:customUnits2]
+        // --8<-- [start:customUnits]
         // how many football fields could fit on the earth's oceans?
+        val americanFootballField = AreaUnit(109.728 * 48.8, "football fields")
         val earthRadius: Length = 6371.kilometers
         val earthSurface: Area = 4 * PI * earthRadius * earthRadius
         val oceanSurface: Area = 0.7 * earthSurface
-        oceanSurface.roundToLong(AmericanFootballField)
-        // --8<-- [end:customUnits2]
+        val result = oceanSurface.roundToLong(americanFootballField)
+        // --8<-- [end:customUnits]
     }
 }

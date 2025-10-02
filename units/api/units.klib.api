@@ -6,21 +6,6 @@
 // - Show declarations: true
 
 // Library unique name: <org.maplibre.spatialk:units>
-abstract interface org.maplibre.spatialk.units/AreaUnit : kotlin/Comparable<org.maplibre.spatialk.units/AreaUnit>, org.maplibre.spatialk.units/UnitOfMeasure { // org.maplibre.spatialk.units/AreaUnit|null[0]
-    abstract val metersSquaredPerUnit // org.maplibre.spatialk.units/AreaUnit.metersSquaredPerUnit|{}metersSquaredPerUnit[0]
-        abstract fun <get-metersSquaredPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/AreaUnit.metersSquaredPerUnit.<get-metersSquaredPerUnit>|<get-metersSquaredPerUnit>(){}[0]
-
-    open fun compareTo(org.maplibre.spatialk.units/AreaUnit): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.compareTo|compareTo(org.maplibre.spatialk.units.AreaUnit){}[0]
-}
-
-abstract interface org.maplibre.spatialk.units/LengthUnit : kotlin/Comparable<org.maplibre.spatialk.units/LengthUnit>, org.maplibre.spatialk.units/UnitOfMeasure { // org.maplibre.spatialk.units/LengthUnit|null[0]
-    abstract val metersPerUnit // org.maplibre.spatialk.units/LengthUnit.metersPerUnit|{}metersPerUnit[0]
-        abstract fun <get-metersPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/LengthUnit.metersPerUnit.<get-metersPerUnit>|<get-metersPerUnit>(){}[0]
-
-    open fun compareTo(org.maplibre.spatialk.units/LengthUnit): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.compareTo|compareTo(org.maplibre.spatialk.units.LengthUnit){}[0]
-    open fun times(org.maplibre.spatialk.units/LengthUnit): org.maplibre.spatialk.units/AreaUnit // org.maplibre.spatialk.units/LengthUnit.times|times(org.maplibre.spatialk.units.LengthUnit){}[0]
-}
-
 sealed interface org.maplibre.spatialk.units/UnitOfMeasure { // org.maplibre.spatialk.units/UnitOfMeasure|null[0]
     abstract val symbol // org.maplibre.spatialk.units/UnitOfMeasure.symbol|{}symbol[0]
         abstract fun <get-symbol>(): kotlin/String // org.maplibre.spatialk.units/UnitOfMeasure.symbol.<get-symbol>|<get-symbol>(){}[0]
@@ -116,6 +101,29 @@ final value class org.maplibre.spatialk.units/Length : kotlin/Comparable<org.map
         final val ZERO // org.maplibre.spatialk.units/Length.Companion.ZERO|{}ZERO[0]
             final fun <get-ZERO>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.Companion.ZERO.<get-ZERO>|<get-ZERO>(){}[0]
     }
+}
+
+open class org.maplibre.spatialk.units/AreaUnit : kotlin/Comparable<org.maplibre.spatialk.units/AreaUnit>, org.maplibre.spatialk.units/UnitOfMeasure { // org.maplibre.spatialk.units/AreaUnit|null[0]
+    constructor <init>(kotlin/Double, kotlin/String) // org.maplibre.spatialk.units/AreaUnit.<init>|<init>(kotlin.Double;kotlin.String){}[0]
+
+    final val metersSquaredPerUnit // org.maplibre.spatialk.units/AreaUnit.metersSquaredPerUnit|{}metersSquaredPerUnit[0]
+        final fun <get-metersSquaredPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/AreaUnit.metersSquaredPerUnit.<get-metersSquaredPerUnit>|<get-metersSquaredPerUnit>(){}[0]
+    open val symbol // org.maplibre.spatialk.units/AreaUnit.symbol|{}symbol[0]
+        open fun <get-symbol>(): kotlin/String // org.maplibre.spatialk.units/AreaUnit.symbol.<get-symbol>|<get-symbol>(){}[0]
+
+    final fun compareTo(org.maplibre.spatialk.units/AreaUnit): kotlin/Int // org.maplibre.spatialk.units/AreaUnit.compareTo|compareTo(org.maplibre.spatialk.units.AreaUnit){}[0]
+}
+
+open class org.maplibre.spatialk.units/LengthUnit : kotlin/Comparable<org.maplibre.spatialk.units/LengthUnit>, org.maplibre.spatialk.units/UnitOfMeasure { // org.maplibre.spatialk.units/LengthUnit|null[0]
+    constructor <init>(kotlin/Double, kotlin/String, org.maplibre.spatialk.units/AreaUnit? = ...) // org.maplibre.spatialk.units/LengthUnit.<init>|<init>(kotlin.Double;kotlin.String;org.maplibre.spatialk.units.AreaUnit?){}[0]
+
+    final val metersPerUnit // org.maplibre.spatialk.units/LengthUnit.metersPerUnit|{}metersPerUnit[0]
+        final fun <get-metersPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/LengthUnit.metersPerUnit.<get-metersPerUnit>|<get-metersPerUnit>(){}[0]
+    open val symbol // org.maplibre.spatialk.units/LengthUnit.symbol|{}symbol[0]
+        open fun <get-symbol>(): kotlin/String // org.maplibre.spatialk.units/LengthUnit.symbol.<get-symbol>|<get-symbol>(){}[0]
+
+    final fun compareTo(org.maplibre.spatialk.units/LengthUnit): kotlin/Int // org.maplibre.spatialk.units/LengthUnit.compareTo|compareTo(org.maplibre.spatialk.units.LengthUnit){}[0]
+    final fun times(org.maplibre.spatialk.units/LengthUnit): org.maplibre.spatialk.units/AreaUnit // org.maplibre.spatialk.units/LengthUnit.times|times(org.maplibre.spatialk.units.LengthUnit){}[0]
 }
 
 final object org.maplibre.spatialk.units/Geodesy { // org.maplibre.spatialk.units/Geodesy|null[0]

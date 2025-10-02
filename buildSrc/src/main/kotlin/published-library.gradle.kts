@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
-    id("base-module")
+    id("multiplatform-module")
     id("org.jetbrains.dokka")
     id("com.vanniktech.maven.publish")
     id("org.jetbrains.kotlinx.kover")

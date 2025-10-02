@@ -1,6 +1,7 @@
 package org.maplibre.spatialk.units
 
 import kotlin.jvm.JvmInline
+import kotlin.jvm.JvmSynthetic
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -73,6 +74,7 @@ public value class Length private constructor(private val valueInMeters: Double)
         public val POSITIVE_INFINITY: Length = Length(Double.POSITIVE_INFINITY)
         public val NEGATIVE_INFINITY: Length = Length(Double.NEGATIVE_INFINITY)
 
+        @JvmSynthetic
         internal fun of(value: Double, unit: LengthUnit) = Length(value * unit.metersPerUnit)
     }
 }

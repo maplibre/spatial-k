@@ -1,15 +1,10 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id("base-module")
     id("org.jetbrains.kotlinx.benchmark")
 }
 
 kotlin {
-    applyDefaultHierarchyTemplate()
-    compilerOptions { allWarningsAsErrors = true }
-
-    jvm { compilerOptions { jvmTarget = JvmTarget.JVM_1_8 } }
+    jvm()
     js(IR) { nodejs() }
     linuxX64()
     macosArm64()
@@ -21,11 +16,6 @@ kotlin {
             implementation(project(":units"))
             implementation(project(":turf"))
             implementation(libs.kotlinx.benchmark)
-        }
-
-        commonTest.dependencies {
-            implementation(kotlin("test"))
-            implementation(kotlin("test-annotations-common"))
         }
     }
 }

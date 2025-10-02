@@ -20,6 +20,9 @@ repos:
           - id: pretty-format-kotlin
             name: format kotlin
             args: [--autofix, --ktfmt, --ktfmt-style=kotlinlang]
+          - id: pretty-format-java
+            name: format java
+            args: [--autofix]
     - repo: local
       hooks:
           - id: prettier

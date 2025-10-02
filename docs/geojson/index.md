@@ -7,23 +7,23 @@ See below for constructing GeoJson objects using the DSL.
 
 ## Installation
 
-#### Kotlin Multiplatform
+=== "Multiplatform"
 
-```kotlin
-commonMain {
-    dependencies {
-        implementation("org.maplibre.spatialk:geojson:{{ gradle.project_version }}")
+    ```kotlin
+    commonMain {
+        dependencies {
+            implementation("org.maplibre.spatialk:geojson:{{ gradle.project_version }}")
+        }
     }
-}
-```
+    ```
 
-#### Java and Kotlin/JVM
+=== "JVM"
 
-```kotlin
-dependencies {
-    implementation("org.maplibre.spatialk:geojson-jvm:{{ gradle.project_version }}")
-}
-```
+    ```kotlin
+    dependencies {
+        implementation("org.maplibre.spatialk:geojson-jvm:{{ gradle.project_version }}")
+    }
+    ```
 
 ## GeoJson Objects
 
@@ -40,7 +40,7 @@ Geometry objects are a sealed hierarchy of classes that inherit from the
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:geometryExhaustiveTypeChecks"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:geometryExhaustiveTypeChecks"
     ```
 
 All seven types of GeoJSON geometries are implemented and summarized below. Full
@@ -59,13 +59,19 @@ the `Position` interface is the `LngLat` class.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:positionKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:positionKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:positionJava"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:positionJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:positionJson"
     ```
 
 #### Point
@@ -75,13 +81,19 @@ A Point is a single Position.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:pointKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:pointKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:pointJava"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:pointJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:pointJson"
     ```
 
 #### MultiPoint
@@ -91,13 +103,19 @@ A `MultiPoint` is an array of Positions.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:multiPointKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:multiPointKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:multiPointJava"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:multiPointJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:multiPointJson"
     ```
 
 #### LineString
@@ -107,13 +125,19 @@ A `LineString` is a sequence of two or more Positions.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:lineStringKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:lineStringKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:lineStringJava"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:lineStringJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:lineStringJson"
     ```
 
 #### MultiLineString
@@ -123,13 +147,19 @@ A `MultiLineString` is an array of LineStrings.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:multiLineStringKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:multiLineStringKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:multiLineStringJava"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:multiLineStringJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:multiLineStringJson"
     ```
 
 #### Polygon
@@ -142,13 +172,19 @@ defines the outer shape of the polygon, while all the following rings define
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:polygonKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:polygonKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:polygonJava"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:polygonJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:polygonJson"
     ```
 
 #### MultiPolygon
@@ -158,13 +194,19 @@ A `MultiPolygon` is an array of Polygons.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:multiPolygonKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:multiPolygonKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:multiPolygonJava"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:multiPolygonJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:multiPolygonJson"
     ```
 
 #### GeometryCollection
@@ -176,13 +218,19 @@ used.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:geometryCollectionKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:geometryCollectionKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:geometryCollectionJava"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:geometryCollectionJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:geometryCollectionJson"
     ```
 
 ### Feature
@@ -197,13 +245,19 @@ the appropriate types directly.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:featureKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:featureKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:featureJava"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:featureJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:featureJson"
     ```
 
 ### FeatureCollection
@@ -215,13 +269,19 @@ used.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:featureCollectionKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:featureCollectionKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:featureCollectionJava"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:featureCollectionJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:featureCollectionJson"
     ```
 
 ### BoundingBox
@@ -234,13 +294,19 @@ a `DoubleArray` with each component accessible by its propery (`southwest` and
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:boundingBoxKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:boundingBoxKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:boundingBoxJava"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:boundingBoxJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:boundingBoxJson"
     ```
 
 ## Serialization
@@ -254,7 +320,13 @@ and is therefore very fast.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:serializationToJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:serializationToJson"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:serializationToJsonJava"
     ```
 
 ### From JSON
@@ -266,9 +338,17 @@ JSON string.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:serializationFromJson1"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:serializationFromJson1"
 
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:serializationFromJson2"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:serializationFromJson2"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:serializationFromJsonJava1"
+
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:serializationFromJsonJava2"
     ```
 
 Like with encoding, Spatial-K objects can also be decoded using
@@ -277,7 +357,7 @@ Like with encoding, Spatial-K objects can also be decoded using
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:kotlinxSerialization"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:kotlinxSerialization"
     ```
 
 ## GeoJson DSL
@@ -293,15 +373,15 @@ will throw an `IllegalArgumentException` otherwise.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslLngLatKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslLngLatKt"
 
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslLngLatException"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslLngLatException"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslLngLatJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslLngLatJson"
     ```
 
 ### Geometry
@@ -315,13 +395,13 @@ A GeoJson object's `bbox` value can be assigned in any of the DSLs.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslPointKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslPointKt"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslPointJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslPointJson"
     ```
 
 #### MultiPoint
@@ -334,13 +414,13 @@ operator.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslMultiPointKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiPointKt"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslMultiPointJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiPointJson"
     ```
 
 #### LineString
@@ -353,13 +433,13 @@ that the `LineString` will follow.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslLineStringKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslLineStringKt"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslLineStringJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslLineStringJson"
     ```
 
 #### MultiLineString
@@ -370,13 +450,13 @@ strings. The `LineString` DSL can be used to create `LineString` objects to add.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslMultiLineStringKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiLineStringKt"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslMultiLineStringJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiLineStringJson"
     ```
 
 #### Polygon
@@ -392,13 +472,13 @@ adds the last position in the ring by copying the first position that was added.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslPolygonKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslPolygonKt"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslPolygonJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslPolygonJson"
     ```
 
 #### MultiPolygon
@@ -409,13 +489,13 @@ multiple `Polygon` objects. The `Polygon` DSL can also be used here.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslMultiPolygonKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiPolygonKt"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslMultiPolygonJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiPolygonJson"
     ```
 
 #### Geometry Collection
@@ -426,13 +506,13 @@ The unary plus operator can be used to add any geometry instance to a
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslGeometryCollectionKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslGeometryCollectionKt"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslGeometryCollectionJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslGeometryCollectionJson"
     ```
 
 ### Feature
@@ -444,13 +524,13 @@ calling `put(key, value)` to add properties.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslFeatureKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslFeatureKt"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslFeatureJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslFeatureJson"
     ```
 
 ### Feature Collection
@@ -461,11 +541,11 @@ the unary plus operator.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslFeatureCollectionKt"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslFeatureCollectionKt"
     ```
 
 === "JSON"
 
     ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/DocSnippets.kt:dslFeatureCollectionJson"
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslFeatureCollectionJson"
     ```

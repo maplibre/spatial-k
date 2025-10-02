@@ -1,6 +1,7 @@
 package org.maplibre.spatialk.units
 
 import kotlin.jvm.JvmInline
+import kotlin.jvm.JvmSynthetic
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -75,12 +76,14 @@ public value class Area private constructor(private val valueInMetersSquared: Do
         valueInMetersSquared.compareTo(other.valueInMetersSquared)
 
     public companion object {
+
         public val ZERO: Area = Area(0.0)
         public val MAX_VALUE: Area = Area(Double.MAX_VALUE)
         public val MIN_VALUE: Area = Area(Double.MIN_VALUE)
         public val POSITIVE_INFINITY: Area = Area(Double.POSITIVE_INFINITY)
         public val NEGATIVE_INFINITY: Area = Area(Double.NEGATIVE_INFINITY)
 
+        @JvmSynthetic
         internal fun of(value: Double, unit: AreaUnit) = Area(value * unit.metersSquaredPerUnit)
     }
 }

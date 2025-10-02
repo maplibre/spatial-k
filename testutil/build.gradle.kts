@@ -1,4 +1,4 @@
-plugins { id("base-module") }
+plugins { id("multiplatform-module") }
 
 kotlin {
     sourceSets {

@@ -7,19 +7,15 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.doubleOrNull
-import kotlinx.serialization.json.jsonPrimitive
-import kotlinx.serialization.json.put
+import kotlinx.serialization.json.*
 import kotlinx.serialization.serializer
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.dsl.*
 
-// These snippets are primarily intended to be included in docs/geojson.md. Though they exist as
+// These snippets are primarily intended to be included in documentation. Though they exist as
 // part of the test suite, they are not intended to be comprehensive tests.
 
-class DocSnippets {
+class KotlinDocsTest {
 
     @Test
     fun geometryExhaustiveTypeChecks() {
@@ -305,7 +301,7 @@ class DocSnippets {
 
                 val size: Number? =
                     feature.properties?.get("size")?.jsonPrimitive?.doubleOrNull // 9999
-                val geometry: Geometry? = feature.geometry // point
+                val geometry: Point? = feature.geometry
                 // --8<-- [end:featureKt]
 
                 feature.toJson()

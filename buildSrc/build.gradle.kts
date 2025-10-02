@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins { `kotlin-dsl` }
 
 repositories {
@@ -18,4 +16,4 @@ dependencies {
     implementation(libs.gradle.mkdocs.build)
 }
 
-kotlin { compilerOptions { jvmTarget = JvmTarget.JVM_1_8 } }
+kotlin { jvmToolchain(21) }

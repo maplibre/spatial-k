@@ -8,44 +8,53 @@ Details can be found in the [API reference](../api/units/index.html).
 
 ## Installation
 
-#### Kotlin Multiplatform
+=== "Multiplatform"
 
-```kotlin
-commonMain {
-    dependencies {
-        implementation("org.maplibre.spatialk:units:{{ gradle.project_version }}")
+    ```kotlin
+    commonMain {
+        dependencies {
+            implementation("org.maplibre.spatialk:units:{{ gradle.project_version }}")
+        }
     }
-}
-```
+    ```
 
-#### Kotlin/JVM
+=== "JVM"
 
-```kotlin
-dependencies {
-    implementation("org.maplibre.spatialk:units-jvm:{{ gradle.project_version }}")
-}
-```
+    ```kotlin
+    dependencies {
+        implementation("org.maplibre.spatialk:units-jvm:{{ gradle.project_version }}")
+    }
+    ```
 
 ## Simple unit conversion
 
-`Length` and `Area` measurements are type safe wrappers around `Double` values,
-and can be converted to/from numbers with unit conversion.
+`Length` and `Area` measurements are type safe inline wrappers around `Double`
+values, and can be converted to/from numbers with unit conversion.
+
+Java has no support for inline classes, so we provide a `convert` method to
+convert a `Double` between units.
 
 === "Kotlin"
 
     ```kotlin
-    --8<-- "units/src/commonTest/kotlin/org/maplibre/spatialk/units/DocSnippets.kt:conversion"
+    --8<-- "units/src/commonTest/kotlin/org/maplibre/spatialk/units/KotlinDocsTest.kt:conversion"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "units/src/jvmTest/java/org/maplibre/spatialk/units/JavaDocsTest.java:conversion"
     ```
 
 ## Arithmetic
 
-Measurements support common arithmetic operations, and will convert between
-scalars, lengths, and areas as needed.
+`Area` and `Length` support common arithmetic operations, and will convert
+between scalars, lengths, and areas as needed.
 
 === "Kotlin"
 
     ```kotlin
-    --8<-- "units/src/commonTest/kotlin/org/maplibre/spatialk/units/DocSnippets.kt:arithmetic"
+    --8<-- "units/src/commonTest/kotlin/org/maplibre/spatialk/units/KotlinDocsTest.kt:arithmetic"
     ```
 
 ## Custom units
@@ -56,6 +65,11 @@ with other units, you can define your own.
 === "Kotlin"
 
     ```kotlin
-    --8<-- "units/src/commonTest/kotlin/org/maplibre/spatialk/units/DocSnippets.kt:customUnits1"
-    --8<-- "units/src/commonTest/kotlin/org/maplibre/spatialk/units/DocSnippets.kt:customUnits2"
+    --8<-- "units/src/commonTest/kotlin/org/maplibre/spatialk/units/KotlinDocsTest.kt:customUnits"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "units/src/jvmTest/java/org/maplibre/spatialk/units/JavaDocsTest.java:customUnits"
     ```

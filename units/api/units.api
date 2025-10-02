@@ -42,15 +42,13 @@ public final class org/maplibre/spatialk/units/Area$Companion {
 	public final fun getZERO-Od-tmbY ()D
 }
 
-public abstract interface class org/maplibre/spatialk/units/AreaUnit : java/lang/Comparable, org/maplibre/spatialk/units/UnitOfMeasure {
+public class org/maplibre/spatialk/units/AreaUnit : java/lang/Comparable, org/maplibre/spatialk/units/UnitOfMeasure {
+	public fun <init> (DLjava/lang/String;)V
 	public synthetic fun compareTo (Ljava/lang/Object;)I
-	public fun compareTo (Lorg/maplibre/spatialk/units/AreaUnit;)I
-	public abstract fun getMetersSquaredPerUnit ()D
-}
-
-public final class org/maplibre/spatialk/units/AreaUnit$DefaultImpls {
-	public static fun compareTo (Lorg/maplibre/spatialk/units/AreaUnit;Lorg/maplibre/spatialk/units/AreaUnit;)I
-	public static fun format (Lorg/maplibre/spatialk/units/AreaUnit;DI)Ljava/lang/String;
+	public final fun compareTo (Lorg/maplibre/spatialk/units/AreaUnit;)I
+	public fun format (DI)Ljava/lang/String;
+	public final fun getMetersSquaredPerUnit ()D
+	public fun getSymbol ()Ljava/lang/String;
 }
 
 public final class org/maplibre/spatialk/units/Geodesy {
@@ -146,17 +144,16 @@ public final class org/maplibre/spatialk/units/Length$Companion {
 	public final fun getZERO-_8uq4Z0 ()D
 }
 
-public abstract interface class org/maplibre/spatialk/units/LengthUnit : java/lang/Comparable, org/maplibre/spatialk/units/UnitOfMeasure {
+public class org/maplibre/spatialk/units/LengthUnit : java/lang/Comparable, org/maplibre/spatialk/units/UnitOfMeasure {
+	public fun <init> (DLjava/lang/String;)V
+	public fun <init> (DLjava/lang/String;Lorg/maplibre/spatialk/units/AreaUnit;)V
+	public synthetic fun <init> (DLjava/lang/String;Lorg/maplibre/spatialk/units/AreaUnit;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun compareTo (Ljava/lang/Object;)I
-	public fun compareTo (Lorg/maplibre/spatialk/units/LengthUnit;)I
-	public abstract fun getMetersPerUnit ()D
-	public fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
-}
-
-public final class org/maplibre/spatialk/units/LengthUnit$DefaultImpls {
-	public static fun compareTo (Lorg/maplibre/spatialk/units/LengthUnit;Lorg/maplibre/spatialk/units/LengthUnit;)I
-	public static fun format (Lorg/maplibre/spatialk/units/LengthUnit;DI)Ljava/lang/String;
-	public static fun times (Lorg/maplibre/spatialk/units/LengthUnit;Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
+	public final fun compareTo (Lorg/maplibre/spatialk/units/LengthUnit;)I
+	public fun format (DI)Ljava/lang/String;
+	public final fun getMetersPerUnit ()D
+	public fun getSymbol ()Ljava/lang/String;
+	public final fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
 }
 
 public final class org/maplibre/spatialk/units/Metric {
