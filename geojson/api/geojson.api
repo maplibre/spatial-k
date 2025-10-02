@@ -1,4 +1,4 @@
-public final class org/maplibre/spatialk/geojson/BoundingBox : java/lang/Iterable, kotlin/jvm/internal/markers/KMappedMarker {
+public final class org/maplibre/spatialk/geojson/BoundingBox : java/lang/Iterable, kotlin/jvm/internal/markers/KMappedMarker, org/maplibre/spatialk/geojson/GeoJsonElement {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/BoundingBox$Companion;
 	public fun <init> (DDDD)V
 	public fun <init> (DDDDDD)V
@@ -23,7 +23,7 @@ public final class org/maplibre/spatialk/geojson/BoundingBox : java/lang/Iterabl
 	public final fun hasAltitude ()Z
 	public fun hashCode ()I
 	public fun iterator ()Ljava/util/Iterator;
-	public final fun toJson ()Ljava/lang/String;
+	public fun toJson ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -135,7 +135,11 @@ public final class org/maplibre/spatialk/geojson/GeoJson {
 	public fun toString ()Ljava/lang/String;
 }
 
-public abstract interface class org/maplibre/spatialk/geojson/GeoJsonObject {
+public abstract interface class org/maplibre/spatialk/geojson/GeoJsonElement {
+	public abstract fun toJson ()Ljava/lang/String;
+}
+
+public abstract interface class org/maplibre/spatialk/geojson/GeoJsonObject : org/maplibre/spatialk/geojson/GeoJsonElement {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/GeoJsonObject$Companion;
 	public static fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/GeoJsonObject;
 	public static fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/GeoJsonObject;
@@ -491,7 +495,7 @@ public final class org/maplibre/spatialk/geojson/Polygon$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class org/maplibre/spatialk/geojson/Position : java/lang/Iterable, kotlin/jvm/internal/markers/KMappedMarker {
+public final class org/maplibre/spatialk/geojson/Position : java/lang/Iterable, kotlin/jvm/internal/markers/KMappedMarker, org/maplibre/spatialk/geojson/GeoJsonElement {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/Position$Companion;
 	public fun <init> (DD)V
 	public fun <init> (DDD)V
@@ -513,7 +517,7 @@ public final class org/maplibre/spatialk/geojson/Position : java/lang/Iterable, 
 	public final fun hasAltitude ()Z
 	public fun hashCode ()I
 	public fun iterator ()Ljava/util/Iterator;
-	public final fun toJson ()Ljava/lang/String;
+	public fun toJson ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
 }
 

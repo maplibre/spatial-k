@@ -10,7 +10,11 @@ open annotation class org.maplibre.spatialk.geojson/SensitiveGeoJsonApi : kotlin
     constructor <init>() // org.maplibre.spatialk.geojson/SensitiveGeoJsonApi.<init>|<init>(){}[0]
 }
 
-sealed interface org.maplibre.spatialk.geojson/GeoJsonObject { // org.maplibre.spatialk.geojson/GeoJsonObject|null[0]
+sealed interface org.maplibre.spatialk.geojson/GeoJsonElement { // org.maplibre.spatialk.geojson/GeoJsonElement|null[0]
+    abstract fun toJson(): kotlin/String // org.maplibre.spatialk.geojson/GeoJsonElement.toJson|toJson(){}[0]
+}
+
+sealed interface org.maplibre.spatialk.geojson/GeoJsonObject : org.maplibre.spatialk.geojson/GeoJsonElement { // org.maplibre.spatialk.geojson/GeoJsonObject|null[0]
     abstract val bbox // org.maplibre.spatialk.geojson/GeoJsonObject.bbox|{}bbox[0]
         abstract fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/GeoJsonObject.bbox.<get-bbox>|<get-bbox>(){}[0]
 
@@ -167,7 +171,7 @@ final class org.maplibre.spatialk.geojson.dsl/PolygonDsl : org.maplibre.spatialk
     }
 }
 
-final class org.maplibre.spatialk.geojson/BoundingBox : kotlin.collections/Iterable<kotlin/Double> { // org.maplibre.spatialk.geojson/BoundingBox|null[0]
+final class org.maplibre.spatialk.geojson/BoundingBox : kotlin.collections/Iterable<kotlin/Double>, org.maplibre.spatialk.geojson/GeoJsonElement { // org.maplibre.spatialk.geojson/BoundingBox|null[0]
     constructor <init>(kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double) // org.maplibre.spatialk.geojson/BoundingBox.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double){}[0]
     constructor <init>(kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double) // org.maplibre.spatialk.geojson/BoundingBox.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double){}[0]
     constructor <init>(kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double, kotlin/DoubleArray...) // org.maplibre.spatialk.geojson/BoundingBox.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double;kotlin.DoubleArray...){}[0]
@@ -505,7 +509,7 @@ final class org.maplibre.spatialk.geojson/Polygon : org.maplibre.spatialk.geojso
     }
 }
 
-final class org.maplibre.spatialk.geojson/Position : kotlin.collections/Iterable<kotlin/Double> { // org.maplibre.spatialk.geojson/Position|null[0]
+final class org.maplibre.spatialk.geojson/Position : kotlin.collections/Iterable<kotlin/Double>, org.maplibre.spatialk.geojson/GeoJsonElement { // org.maplibre.spatialk.geojson/Position|null[0]
     constructor <init>(kotlin/Double, kotlin/Double) // org.maplibre.spatialk.geojson/Position.<init>|<init>(kotlin.Double;kotlin.Double){}[0]
     constructor <init>(kotlin/Double, kotlin/Double, kotlin/Double) // org.maplibre.spatialk.geojson/Position.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double){}[0]
     constructor <init>(kotlin/Double, kotlin/Double, kotlin/Double, kotlin/DoubleArray...) // org.maplibre.spatialk.geojson/Position.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double;kotlin.DoubleArray...){}[0]

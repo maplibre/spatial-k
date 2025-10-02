@@ -11,11 +11,10 @@ import org.intellij.lang.annotations.Language
  * @property bbox An optional bounding box used to represent the limits of the object's geometry.
  */
 @Serializable
-public sealed interface GeoJsonObject {
+public sealed interface GeoJsonObject : GeoJsonElement {
     public val bbox: BoundingBox?
 
-    /** @return A GeoJSON representation of this object. */
-    public fun toJson(): String = GeoJson.encodeToString(this)
+    public override fun toJson(): String = GeoJson.encodeToString(this)
 
     public companion object {
         @JvmStatic
