@@ -1,5 +1,7 @@
 package org.maplibre.spatialk.units
 
+import org.maplibre.spatialk.units.extensions.toRoundedString
+
 public sealed interface UnitOfMeasure {
     public val symbol: String
 

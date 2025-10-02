@@ -19,5 +19,5 @@ public fun midpoint(point1: Position, point2: Position): Position {
     val dist = distance(point1, point2)
     val heading = bearing(point1, point2)
 
-    return destination(point1, dist / 2, heading)
+    return destination(point1, dist / 2.0, heading)
 }

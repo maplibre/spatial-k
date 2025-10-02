@@ -4,8 +4,8 @@ import kotlin.jvm.JvmInline
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
-import org.maplibre.spatialk.units.SI.Meters
-import org.maplibre.spatialk.units.SI.SquareMeters
+import org.maplibre.spatialk.units.International.Meters
+import org.maplibre.spatialk.units.International.SquareMeters
 
 /**
  * Represents an area, internally stored as a [Double] of square meters.
@@ -57,9 +57,9 @@ public value class Area private constructor(private val valueInMetersSquared: Do
     public operator fun minus(other: Area): Area =
         Area(valueInMetersSquared - other.valueInMetersSquared)
 
-    public operator fun times(other: Number): Area = Area(valueInMetersSquared * other.toDouble())
+    public operator fun times(other: Double): Area = Area(valueInMetersSquared * other.toDouble())
 
-    public operator fun div(other: Number): Area = Area(valueInMetersSquared / other.toDouble())
+    public operator fun div(other: Double): Area = Area(valueInMetersSquared / other.toDouble())
 
     public operator fun div(other: Length): Length =
         Length.of(valueInMetersSquared / other.toDouble(Meters), Meters)
@@ -81,7 +81,6 @@ public value class Area private constructor(private val valueInMetersSquared: Do
         public val POSITIVE_INFINITY: Area = Area(Double.POSITIVE_INFINITY)
         public val NEGATIVE_INFINITY: Area = Area(Double.NEGATIVE_INFINITY)
 
-        internal fun of(value: Number, unit: AreaUnit) =
-            Area(value.toDouble() * unit.metersSquaredPerUnit)
+        internal fun of(value: Double, unit: AreaUnit) = Area(value * unit.metersSquaredPerUnit)
     }
 }

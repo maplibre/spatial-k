@@ -11,8 +11,8 @@ import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
 import org.maplibre.spatialk.turf.measurement.computeBbox
 import org.maplibre.spatialk.turf.meta.coordAll
-import org.maplibre.spatialk.units.kilometers
-import org.maplibre.spatialk.units.meters
+import org.maplibre.spatialk.units.extensions.kilometers
+import org.maplibre.spatialk.units.extensions.meters
 
 class SquareGridTest {
 
@@ -27,7 +27,7 @@ class SquareGridTest {
 
     @Test
     fun testSquareGrid() {
-        squareGrid(bbox = box, cellWidth = 200.meters, cellHeight = 200.meters).also {
+        squareGrid(bbox = box, cellWidth = 200.0.meters, cellHeight = 200.0.meters).also {
             verifyValidGrid(it)
         }
     }
@@ -68,7 +68,7 @@ class SquareGridTest {
 
     @Test
     fun cellSizeBiggerThanBboxExtendLeadIntoEmptyGrid() {
-        squareGrid(bbox = box, cellWidth = 2000.meters, cellHeight = 2000.meters).also {
+        squareGrid(bbox = box, cellWidth = 2000.0.meters, cellHeight = 2000.0.meters).also {
             assertEquals(0, it.features.size)
         }
     }

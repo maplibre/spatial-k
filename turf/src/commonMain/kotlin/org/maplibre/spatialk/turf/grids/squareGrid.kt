@@ -7,13 +7,9 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.math.abs
 import kotlin.math.floor
-import org.maplibre.spatialk.geojson.BoundingBox
-import org.maplibre.spatialk.geojson.Feature
-import org.maplibre.spatialk.geojson.FeatureCollection
-import org.maplibre.spatialk.geojson.Polygon
-import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.geojson.*
 import org.maplibre.spatialk.units.Length
-import org.maplibre.spatialk.units.LengthUnit.Geodesy.*
+import org.maplibre.spatialk.units.extensions.inEarthDegrees
 
 /**
  * Creates a square grid within a [BoundingBox].
@@ -31,10 +27,10 @@ public fun squareGrid(bbox: BoundingBox, cellWidth: Length, cellHeight: Length):
     val north = bbox.northeast.latitude
 
     val bboxWidth = east - west
-    val cellWidthDeg = cellWidth.toDouble(Degrees)
+    val cellWidthDeg = cellWidth.inEarthDegrees
 
     val bboxHeight = north - south
-    val cellHeightDeg = cellHeight.toDouble(Degrees)
+    val cellHeightDeg = cellHeight.inEarthDegrees
 
     val columns = floor(abs(bboxWidth) / cellWidthDeg)
     val rows = floor(abs(bboxHeight) / cellHeightDeg)

@@ -4,8 +4,8 @@ import kotlin.jvm.JvmInline
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
-import org.maplibre.spatialk.units.SI.Meters
-import org.maplibre.spatialk.units.SI.SquareMeters
+import org.maplibre.spatialk.units.International.Meters
+import org.maplibre.spatialk.units.International.SquareMeters
 
 /**
  * Represents an length or distance, internally stored as a [Double] of meters.
@@ -50,14 +50,14 @@ public value class Length private constructor(private val valueInMeters: Double)
 
     public operator fun minus(other: Length): Length = Length(valueInMeters - other.valueInMeters)
 
-    public operator fun times(other: Number): Length = Length(valueInMeters * other.toDouble())
+    public operator fun times(other: Double): Length = Length(valueInMeters * other.toDouble())
 
     public operator fun times(other: Length): Area =
         Area.of(valueInMeters * other.valueInMeters, SquareMeters)
 
-    public operator fun div(other: Number): Length = Length(valueInMeters / other.toDouble())
+    public operator fun div(other: Double): Length = Length(valueInMeters / other.toDouble())
 
-    public operator fun div(other: Length): Number = valueInMeters / other.valueInMeters
+    public operator fun div(other: Length): Double = valueInMeters / other.valueInMeters
 
     override fun toString(): String = toString(Meters)
 
@@ -73,7 +73,6 @@ public value class Length private constructor(private val valueInMeters: Double)
         public val POSITIVE_INFINITY: Length = Length(Double.POSITIVE_INFINITY)
         public val NEGATIVE_INFINITY: Length = Length(Double.NEGATIVE_INFINITY)
 
-        internal fun of(value: Number, unit: LengthUnit) =
-            Length(value.toDouble() * unit.metersPerUnit)
+        internal fun of(value: Double, unit: LengthUnit) = Length(value * unit.metersPerUnit)
     }
 }

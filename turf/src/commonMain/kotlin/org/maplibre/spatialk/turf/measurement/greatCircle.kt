@@ -3,15 +3,9 @@
 
 package org.maplibre.spatialk.turf.measurement
 
-import kotlin.collections.zipWithNext
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
-import kotlin.math.abs
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.pow
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.*
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
@@ -20,7 +14,7 @@ import org.maplibre.spatialk.turf.constants.ANTIMERIDIAN_NEG
 import org.maplibre.spatialk.turf.constants.ANTIMERIDIAN_POS
 import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
 import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
-import org.maplibre.spatialk.units.LengthUnit.Geodesy.Radians
+import org.maplibre.spatialk.units.extensions.inEarthRadians
 
 /**
  * Calculate great circles routes as [LineString]. Raises error when [start] and [end] are
@@ -48,7 +42,7 @@ public fun greatCircle(
         "Input $start and $end are diametrically opposite, thus there is no single route but rather infinite"
     }
 
-    val distance = distance(start, end).toDouble(Radians)
+    val distance = distance(start, end).inEarthRadians
 
     /**
      * Calculates the intermediate point on a great circle line

@@ -13,7 +13,7 @@ import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
 import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
 import org.maplibre.spatialk.units.Length
-import org.maplibre.spatialk.units.LengthUnit.Geodesy.Radians
+import org.maplibre.spatialk.units.extensions.inEarthRadians
 
 /**
  * Takes an [origin] [Position] and calculates the location of a destination position given a
@@ -30,7 +30,7 @@ public fun destination(origin: Position, distance: Length, bearing: Double): Pos
     val longitude1 = degreesToRadians(origin.longitude)
     val latitude1 = degreesToRadians(origin.latitude)
     val bearingRad = degreesToRadians(bearing)
-    val radians = distance.toDouble(Radians)
+    val radians = distance.inEarthRadians
 
     val latitude2 =
         asin(sin(latitude1) * cos(radians) + cos(latitude1) * sin(radians) * cos(bearingRad))

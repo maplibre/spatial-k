@@ -3,7 +3,7 @@ package org.maplibre.spatialk.turf.measurement
 import kotlin.test.Test
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.assertDoubleEquals
-import org.maplibre.spatialk.units.inKilometers
+import org.maplibre.spatialk.units.extensions.inKilometers
 
 class RhumbDistanceTest {
 

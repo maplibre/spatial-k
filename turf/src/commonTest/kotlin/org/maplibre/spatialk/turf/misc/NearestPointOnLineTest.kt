@@ -7,7 +7,7 @@ import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.testutil.assertDoubleEquals
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.units.inKilometers
+import org.maplibre.spatialk.units.extensions.inKilometers
 
 class NearestPointOnLineTest {
 

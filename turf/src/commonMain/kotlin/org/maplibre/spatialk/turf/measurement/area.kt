@@ -6,15 +6,11 @@ package org.maplibre.spatialk.turf.measurement
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.math.sin
-import org.maplibre.spatialk.geojson.Geometry
-import org.maplibre.spatialk.geojson.GeometryCollection
-import org.maplibre.spatialk.geojson.MultiPolygon
-import org.maplibre.spatialk.geojson.Polygon
-import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.geojson.*
 import org.maplibre.spatialk.turf.constants.EARTH_EQUATOR_RADIUS
 import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
 import org.maplibre.spatialk.units.Area
-import org.maplibre.spatialk.units.times
+import org.maplibre.spatialk.units.extensions.times
 
 /**
  * Takes a geometry and returns its area.
@@ -96,7 +92,7 @@ private fun ringArea(coordinates: List<Position>): Area {
                 (degreesToRadians(p3.longitude) - degreesToRadians(p1.longitude)) *
                     sin(degreesToRadians(p2.latitude))
         }
-        return (total * EARTH_EQUATOR_RADIUS * EARTH_EQUATOR_RADIUS / 2)
+        return (total * EARTH_EQUATOR_RADIUS * EARTH_EQUATOR_RADIUS / 2.0)
     }
     return Area.ZERO
 }

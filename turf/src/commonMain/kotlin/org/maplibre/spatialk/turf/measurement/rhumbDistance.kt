@@ -5,16 +5,10 @@ package org.maplibre.spatialk.turf.measurement
 
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
-import kotlin.math.PI
-import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.ln
-import kotlin.math.sqrt
-import kotlin.math.tan
+import kotlin.math.*
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.Length
-import org.maplibre.spatialk.units.LengthUnit.Geodesy.Radians
-import org.maplibre.spatialk.units.toLength
+import org.maplibre.spatialk.units.extensions.earthRadians
 
 /** Calculates the distance along a rhumb line between two points. */
 public fun rhumbDistance(origin: Position, destination: Position): Length {
@@ -43,7 +37,7 @@ public fun rhumbDistance(origin: Position, destination: Position): Length {
     val q = if (abs(deltaPsi) > 10e-12) deltaPhi / deltaPsi else cos(phi1)
 
     val delta = sqrt(deltaPhi * deltaPhi + q * q * deltaLambda * deltaLambda)
-    val dist = delta.toLength(Radians)
+    val dist = delta.earthRadians
 
     return dist
 }
