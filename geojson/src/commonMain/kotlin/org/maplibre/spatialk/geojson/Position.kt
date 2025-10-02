@@ -2,7 +2,6 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmStatic
-import kotlin.jvm.JvmSynthetic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.intellij.lang.annotations.Language
@@ -115,13 +114,13 @@ public class Position internal constructor(internal val coordinates: DoubleArray
     public override fun iterator(): Iterator<Double> = coordinates.iterator()
 
     /** @return [longitude] */
-    @JvmSynthetic public operator fun component1(): Double = longitude
+    public operator fun component1(): Double = longitude
 
     /** @return [latitude] */
-    @JvmSynthetic public operator fun component2(): Double = latitude
+    public operator fun component2(): Double = latitude
 
     /** @return [altitude] */
-    @JvmSynthetic public operator fun component3(): Double? = altitude
+    public operator fun component3(): Double? = altitude
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -137,10 +136,10 @@ public class Position internal constructor(internal val coordinates: DoubleArray
     }
 
     override fun toString(): String {
-        return "LngLat(longitude=$longitude, latitude=$latitude, altitude=$altitude)"
+        return "Position(longitude=$longitude, latitude=$latitude, altitude=$altitude)"
     }
 
-    public override fun toJson(): String = Json.encodeToString(serializer(), this)
+    public override fun toJson(): String = Json.encodeToString(this)
 
     public companion object {
         @JvmStatic

@@ -3,7 +3,6 @@ package org.maplibre.spatialk.geojson
 import kotlin.coroutines.EmptyCoroutineContext.get
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmStatic
-import kotlin.jvm.JvmSynthetic
 import kotlin.math.min
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -135,10 +134,10 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
     override fun iterator(): Iterator<Double> = coordinates.iterator()
 
     /** @return [southwest] */
-    @JvmSynthetic public operator fun component1(): Position = southwest
+    public operator fun component1(): Position = southwest
 
     /** @return [northeast] */
-    @JvmSynthetic public operator fun component2(): Position = northeast
+    public operator fun component2(): Position = northeast
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -157,7 +156,7 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
         return "BoundingBox(southwest=$southwest, northeast=$northeast)"
     }
 
-    public override fun toJson(): String = Json.encodeToString(serializer(), this)
+    public override fun toJson(): String = Json.encodeToString(this)
 
     public companion object {
         @JvmStatic
