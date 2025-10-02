@@ -1,5 +1,8 @@
+@file:JvmSynthetic
+
 package org.maplibre.spatialk.units
 
+import kotlin.jvm.JvmSynthetic
 import org.maplibre.spatialk.units.AreaUnit.Imperial.*
 import org.maplibre.spatialk.units.AreaUnit.International.*
 import org.maplibre.spatialk.units.LengthUnit.Imperial.*

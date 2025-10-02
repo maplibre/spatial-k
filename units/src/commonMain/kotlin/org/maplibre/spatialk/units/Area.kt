@@ -7,6 +7,14 @@ import kotlin.math.roundToLong
 import org.maplibre.spatialk.units.AreaUnit.International.SquareMeters
 import org.maplibre.spatialk.units.LengthUnit.International.Meters
 
+/**
+ * Represents an area, internally stored as a [Double] of square meters.
+ *
+ * Most arithmetic operations are supported, and will automatically result in a scalar, [Length], or
+ * [Area] depending on the operation.
+ *
+ * @see [AreaUnit]
+ */
 @JvmInline
 public value class Area private constructor(private val valueInMetersSquared: Double) :
     Comparable<Area> {

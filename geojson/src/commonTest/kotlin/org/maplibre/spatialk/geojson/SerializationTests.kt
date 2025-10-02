@@ -6,7 +6,6 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlinx.serialization.SerializationException
 
-@Suppress("MagicNumber", "TooManyFunctions")
 class SerializationTests {
 
     @Test

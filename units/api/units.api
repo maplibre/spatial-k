@@ -431,7 +431,7 @@ public final class org/maplibre/spatialk/units/UnitOfMeasure$DefaultImpls {
 	public static synthetic fun format$default (Lorg/maplibre/spatialk/units/UnitOfMeasure;DIILjava/lang/Object;)Ljava/lang/String;
 }
 
-public final class org/maplibre/spatialk/units/UtilKt {
+public final synthetic class org/maplibre/spatialk/units/UtilKt {
 	public static final fun getAcres (Ljava/lang/Number;)D
 	public static final fun getFeet (Ljava/lang/Number;)D
 	public static final fun getInAcres-g7vxaWU (D)D

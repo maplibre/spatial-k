@@ -2,13 +2,6 @@ package org.maplibre.spatialk.units
 
 import kotlin.math.PI
 
-public sealed interface UnitOfMeasure {
-    public val symbol: String
-
-    public fun format(value: Double, decimalPlaces: Int = Int.MAX_VALUE): String =
-        "${value.toRoundedString(decimalPlaces)} $symbol"
-}
-
 public interface LengthUnit : UnitOfMeasure, Comparable<LengthUnit> {
     public val metersPerUnit: Double
 

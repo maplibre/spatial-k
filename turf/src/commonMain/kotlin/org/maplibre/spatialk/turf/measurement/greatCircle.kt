@@ -71,7 +71,6 @@ public fun greatCircle(
         return Position(lon, lat)
     }
 
-    @Suppress("LongMethod")
     fun createCoordinatesAntimeridianAttended(
         plainArc: List<Position>,
         antimeridianOffset: Double,
@@ -79,7 +78,7 @@ public fun greatCircle(
         val borderEast = ANTIMERIDIAN_POS - antimeridianOffset
         val borderWest = ANTIMERIDIAN_NEG + antimeridianOffset
 
-        @Suppress("MagicNumber") val diffSpace = 360.0 - antimeridianOffset
+        val diffSpace = 360.0 - antimeridianOffset
 
         val passesAntimeridian =
             plainArc
@@ -139,7 +138,6 @@ public fun greatCircle(
                         lat2 = tmpY
                     }
                     if (lon1 > borderEast && lon2 < borderWest) {
-                        @Suppress("MagicNumber")
                         lon2 += 360.0
                     }
 

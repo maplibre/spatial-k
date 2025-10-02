@@ -12,7 +12,6 @@ import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 
-@Suppress("MagicNumber")
 class FeatureSerializationTests {
 
     @Test

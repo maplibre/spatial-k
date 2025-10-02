@@ -9,7 +9,6 @@ import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 
-@Suppress("EXPERIMENTAL_API_USAGE", "MagicNumber")
 class FeatureCollectionSerializationTests {
 
     @Test

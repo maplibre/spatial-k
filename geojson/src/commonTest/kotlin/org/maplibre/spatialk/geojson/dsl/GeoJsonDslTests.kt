@@ -10,7 +10,6 @@ import org.maplibre.spatialk.geojson.MultiPoint
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 
-@Suppress("MagicNumber")
 class GeoJsonDslTests {
 
     private val collectionDsl = featureCollection {
