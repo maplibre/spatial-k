@@ -184,21 +184,37 @@ public final class org/maplibre/spatialk/units/UnitOfMeasure$DefaultImpls {
 
 public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt {
 	public static final fun getAcres (D)D
+	public static final fun getAcres (I)D
 	public static final fun getAres (D)D
+	public static final fun getAres (I)D
 	public static final fun getCables (D)D
+	public static final fun getCables (I)D
 	public static final fun getCentiares (D)D
+	public static final fun getCentiares (I)D
 	public static final fun getCentimeters (D)D
+	public static final fun getCentimeters (I)D
 	public static final fun getChains (D)D
+	public static final fun getChains (I)D
 	public static final fun getDecares (D)D
+	public static final fun getDecares (I)D
 	public static final fun getDeciares (D)D
+	public static final fun getDeciares (I)D
 	public static final fun getEarthDegrees (D)D
+	public static final fun getEarthDegrees (I)D
 	public static final fun getEarthMinutes (D)D
+	public static final fun getEarthMinutes (I)D
 	public static final fun getEarthRadians (D)D
+	public static final fun getEarthRadians (I)D
 	public static final fun getEarthSeconds (D)D
+	public static final fun getEarthSeconds (I)D
 	public static final fun getFathoms (D)D
+	public static final fun getFathoms (I)D
 	public static final fun getFeet (D)D
+	public static final fun getFeet (I)D
 	public static final fun getFurlongs (D)D
+	public static final fun getFurlongs (I)D
 	public static final fun getHectares (D)D
+	public static final fun getHectares (I)D
 	public static final fun getInAcres-g7vxaWU (D)D
 	public static final fun getInAres-g7vxaWU (D)D
 	public static final fun getInCables-z3ishhw (D)D
@@ -235,24 +251,43 @@ public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt 
 	public static final fun getInSquareYards-g7vxaWU (D)D
 	public static final fun getInYards-z3ishhw (D)D
 	public static final fun getInches (D)D
+	public static final fun getInches (I)D
 	public static final fun getKilometers (D)D
+	public static final fun getKilometers (I)D
 	public static final fun getLeagues (D)D
+	public static final fun getLeagues (I)D
 	public static final fun getLinks (D)D
+	public static final fun getLinks (I)D
 	public static final fun getMeters (D)D
+	public static final fun getMeters (I)D
 	public static final fun getMiles (D)D
+	public static final fun getMiles (I)D
 	public static final fun getMillimeters (D)D
+	public static final fun getMillimeters (I)D
 	public static final fun getNauticalMiles (D)D
+	public static final fun getNauticalMiles (I)D
 	public static final fun getRods (D)D
+	public static final fun getRods (I)D
 	public static final fun getSquareCentimeters (D)D
+	public static final fun getSquareCentimeters (I)D
 	public static final fun getSquareFeet (D)D
+	public static final fun getSquareFeet (I)D
 	public static final fun getSquareInches (D)D
+	public static final fun getSquareInches (I)D
 	public static final fun getSquareKilometers (D)D
+	public static final fun getSquareKilometers (I)D
 	public static final fun getSquareMeters (D)D
+	public static final fun getSquareMeters (I)D
 	public static final fun getSquareMiles (D)D
+	public static final fun getSquareMiles (I)D
 	public static final fun getSquareMillimeters (D)D
+	public static final fun getSquareMillimeters (I)D
 	public static final fun getSquareRods (D)D
+	public static final fun getSquareRods (I)D
 	public static final fun getSquareYards (D)D
+	public static final fun getSquareYards (I)D
 	public static final fun getYards (D)D
+	public static final fun getYards (I)D
 	public static final fun times-DQw0L0M (DD)D
 	public static final fun times-NY0MKA4 (DD)D
 	public static final fun toArea (DLorg/maplibre/spatialk/units/AreaUnit;)D
