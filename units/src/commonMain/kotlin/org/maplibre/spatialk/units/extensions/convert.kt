@@ -8,6 +8,18 @@ import kotlin.jvm.JvmName
 import org.maplibre.spatialk.units.AreaUnit
 import org.maplibre.spatialk.units.LengthUnit
 
+/**
+ * Convert a value from one [LengthUnit] to another.
+ *
+ * This method is intended for the convenience of Java users. If you're using Kotlin, you probably
+ * don't need this method, as you can directly write like `5.meters.inFeet`.
+ */
 public fun Double.convert(from: LengthUnit, to: LengthUnit): Double = toLength(from).toDouble(to)
 
+/**
+ * Convert a value from one [AreaUnit] to another.
+ *
+ * This method is intended for the convenience of Java users. If you're using Kotlin, you probably
+ * don't need this method, as you can directly write like `5.squareMeters.inSquareFeet`.
+ */
 public fun Double.convert(from: AreaUnit, to: AreaUnit): Double = toArea(from).toDouble(to)
