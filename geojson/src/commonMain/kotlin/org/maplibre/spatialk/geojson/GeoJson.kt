@@ -14,11 +14,11 @@ public data object GeoJson {
     /**
      * The default Json configuration for GeoJson objects.
      *
-     * Using the [kotlinx.serialization.json.Json] methods directly can bypass some type safety with
-     * generics; prefer the `toJson` and `fromJson` methods defined on all [GeoJsonObject] types.
+     * Using the [Json] methods directly can bypass some type safety with generics; prefer the
+     * `toJson` and `fromJson` methods defined on all [GeoJsonObject] types.
      */
     @SensitiveGeoJsonApi
-    public val json: Json = Json {
+    public val jsonFormat: Json = Json {
         @OptIn(ExperimentalSerializationApi::class)
         classDiscriminatorMode = ClassDiscriminatorMode.ALL_JSON_OBJECTS
         ignoreUnknownKeys = true
@@ -46,7 +46,7 @@ public data object GeoJson {
     public inline fun <reified T : GeoJsonObject> decodeFromString(
         @Language("json") string: String
     ): T =
-        json.decodeFromString(serializer<GeoJsonObject>(), string) as? T
+        jsonFormat.decodeFromString(serializer<GeoJsonObject>(), string) as? T
             ?: throw SerializationException("Object is not a ${T::class.simpleName}")
 
     /**
@@ -66,5 +66,5 @@ public data object GeoJson {
     /** Encode [value] into a GeoJSON [String]. */
     @OptIn(SensitiveGeoJsonApi::class)
     public inline fun <reified T : GeoJsonObject> encodeToString(value: T): String =
-        json.encodeToString(serializer<T>(), value)
+        jsonFormat.encodeToString(serializer<T>(), value)
 }

@@ -17,7 +17,7 @@ import org.intellij.lang.annotations.Language
 public data class MultiLineString
 @JvmOverloads
 constructor(public val coordinates: List<List<Position>>, override val bbox: BoundingBox? = null) :
-    Geometry() {
+    Geometry {
 
     /**
      * Create a MultiLineString by a number of lists of [Position]s.

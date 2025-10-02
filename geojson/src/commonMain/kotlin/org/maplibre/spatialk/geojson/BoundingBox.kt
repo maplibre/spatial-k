@@ -1,5 +1,6 @@
 package org.maplibre.spatialk.geojson
 
+import kotlin.jvm.JvmName
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 import kotlin.math.min
@@ -126,6 +127,7 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
     public val size: Int
         get() = coordinates.size
 
+    @get:JvmName("hasAltitude")
     public val hasAltitude: Boolean
         get() = coordinates.size >= 6
 

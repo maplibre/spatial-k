@@ -7,7 +7,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.doubleOrNull
@@ -419,7 +418,7 @@ class DocSnippets {
         // --8<-- [start:kotlinxSerialization]
         @OptIn(SensitiveGeoJsonApi::class)
         val feature: Feature<*> =
-            GeoJson.json.decodeFromString(
+            GeoJson.jsonFormat.decodeFromString(
                 serializer<Feature<Geometry>>(),
                 """
                 {

@@ -11,7 +11,6 @@ public final class org/maplibre/spatialk/geojson/BoundingBox : java/lang/Iterabl
 	public static final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public final fun get (I)D
 	public final fun getEast ()D
-	public final fun getHasAltitude ()Z
 	public final fun getMaxAltitude ()Ljava/lang/Double;
 	public final fun getMinAltitude ()Ljava/lang/Double;
 	public final fun getNorth ()D
@@ -21,6 +20,7 @@ public final class org/maplibre/spatialk/geojson/BoundingBox : java/lang/Iterabl
 	public final fun getSouth ()D
 	public final fun getSouthwest ()Lorg/maplibre/spatialk/geojson/Position;
 	public final fun getWest ()D
+	public final fun hasAltitude ()Z
 	public fun hashCode ()I
 	public fun iterator ()Ljava/util/Iterator;
 	public final fun toJson ()Ljava/lang/String;
@@ -130,7 +130,7 @@ public final class org/maplibre/spatialk/geojson/FeatureCollection$Companion {
 public final class org/maplibre/spatialk/geojson/GeoJson {
 	public static final field INSTANCE Lorg/maplibre/spatialk/geojson/GeoJson;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getJson ()Lkotlinx/serialization/json/Json;
+	public final fun getJsonFormat ()Lkotlinx/serialization/json/Json;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -153,14 +153,10 @@ public final class org/maplibre/spatialk/geojson/GeoJsonObject$DefaultImpls {
 	public static fun toJson (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Ljava/lang/String;
 }
 
-public abstract class org/maplibre/spatialk/geojson/Geometry : org/maplibre/spatialk/geojson/GeoJsonObject {
+public abstract interface class org/maplibre/spatialk/geojson/Geometry : org/maplibre/spatialk/geojson/GeoJsonObject {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/Geometry$Companion;
-	public synthetic fun <init> (ILkotlinx/serialization/internal/SerializationConstructorMarker;)V
-	public static final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/Geometry;
-	public static final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/Geometry;
-	public abstract fun getBbox ()Lorg/maplibre/spatialk/geojson/BoundingBox;
-	public fun toJson ()Ljava/lang/String;
-	public static final synthetic fun write$Self (Lorg/maplibre/spatialk/geojson/Geometry;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/Geometry;
+	public static fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/Geometry;
 }
 
 public final class org/maplibre/spatialk/geojson/Geometry$Companion {
@@ -169,7 +165,11 @@ public final class org/maplibre/spatialk/geojson/Geometry$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class org/maplibre/spatialk/geojson/GeometryCollection : org/maplibre/spatialk/geojson/Geometry, java/util/Collection, kotlin/jvm/internal/markers/KMappedMarker {
+public final class org/maplibre/spatialk/geojson/Geometry$DefaultImpls {
+	public static fun toJson (Lorg/maplibre/spatialk/geojson/Geometry;)Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/geojson/GeometryCollection : java/util/Collection, kotlin/jvm/internal/markers/KMappedMarker, org/maplibre/spatialk/geojson/Geometry {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/GeometryCollection$Companion;
 	public fun <init> (Ljava/util/List;)V
 	public fun <init> (Ljava/util/List;Lorg/maplibre/spatialk/geojson/BoundingBox;)V
@@ -204,6 +204,7 @@ public final class org/maplibre/spatialk/geojson/GeometryCollection : org/maplib
 	public final fun size ()I
 	public fun toArray ()[Ljava/lang/Object;
 	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
+	public fun toJson ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -248,6 +249,7 @@ public final class org/maplibre/spatialk/geojson/LineString : org/maplibre/spati
 	public fun getBbox ()Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public final fun getCoordinates ()Ljava/util/List;
 	public fun hashCode ()I
+	public fun toJson ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -292,6 +294,7 @@ public final class org/maplibre/spatialk/geojson/MultiLineString : org/maplibre/
 	public fun getBbox ()Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public final fun getCoordinates ()Ljava/util/List;
 	public fun hashCode ()I
+	public fun toJson ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -333,6 +336,7 @@ public final class org/maplibre/spatialk/geojson/MultiPoint : org/maplibre/spati
 	public fun getBbox ()Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public final fun getCoordinates ()Ljava/util/List;
 	public fun hashCode ()I
+	public fun toJson ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -377,6 +381,7 @@ public final class org/maplibre/spatialk/geojson/MultiPolygon : org/maplibre/spa
 	public fun getBbox ()Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public final fun getCoordinates ()Ljava/util/List;
 	public fun hashCode ()I
+	public fun toJson ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -419,6 +424,7 @@ public final class org/maplibre/spatialk/geojson/Point : org/maplibre/spatialk/g
 	public final fun getCoordinates ()Lorg/maplibre/spatialk/geojson/Position;
 	public fun hashCode ()I
 	public final fun toGeoUri ()Ljava/lang/String;
+	public fun toJson ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -464,6 +470,7 @@ public final class org/maplibre/spatialk/geojson/Polygon : org/maplibre/spatialk
 	public fun getBbox ()Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public final fun getCoordinates ()Ljava/util/List;
 	public fun hashCode ()I
+	public fun toJson ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -499,11 +506,11 @@ public final class org/maplibre/spatialk/geojson/Position : java/lang/Iterable, 
 	public static final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/Position;
 	public final fun get (I)D
 	public final fun getAltitude ()Ljava/lang/Double;
-	public final fun getHasAltitude ()Z
 	public final fun getLatitude ()D
 	public final fun getLongitude ()D
 	public final fun getOrNull (I)Ljava/lang/Double;
 	public final fun getSize ()I
+	public final fun hasAltitude ()Z
 	public fun hashCode ()I
 	public fun iterator ()Ljava/util/Iterator;
 	public final fun toJson ()Ljava/lang/String;

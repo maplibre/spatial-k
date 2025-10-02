@@ -21,7 +21,7 @@ constructor(
     public val coordinates: List<Position>,
     /** a bounding box */
     override val bbox: BoundingBox? = null,
-) : Geometry() {
+) : Geometry {
 
     /**
      * Create a LineString by a number of [Position]s.

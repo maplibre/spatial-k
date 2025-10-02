@@ -34,7 +34,7 @@ constructor(
     public val coordinates: List<List<Position>>,
     /** a bounding box */
     override val bbox: BoundingBox? = null,
-) : Geometry() {
+) : Geometry {
     @JvmOverloads
     public constructor(
         vararg coordinates: List<Position>,

@@ -21,7 +21,7 @@ constructor(
     public val coordinates: List<List<List<Position>>>,
     /** a bounding box */
     override val bbox: BoundingBox? = null,
-) : Geometry() {
+) : Geometry {
 
     /**
      * Create a MultiPolygon by a number of lists (= polygon rings) of lists (= positions).

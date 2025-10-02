@@ -16,7 +16,7 @@ import org.intellij.lang.annotations.Language
 public data class GeometryCollection
 @JvmOverloads
 constructor(public val geometries: List<Geometry>, override val bbox: BoundingBox? = null) :
-    Geometry(), Collection<Geometry> by geometries {
+    Geometry, Collection<Geometry> by geometries {
 
     @JvmOverloads
     public constructor(

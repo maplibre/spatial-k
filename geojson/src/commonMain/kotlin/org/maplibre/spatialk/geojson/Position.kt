@@ -1,5 +1,6 @@
 package org.maplibre.spatialk.geojson
 
+import kotlin.jvm.JvmName
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 import kotlinx.serialization.Serializable
@@ -107,6 +108,7 @@ public class Position internal constructor(internal val coordinates: DoubleArray
     public val size: Int
         get() = coordinates.size
 
+    @get:JvmName("hasAltitude")
     public val hasAltitude: Boolean
         get() = size >= 3
 

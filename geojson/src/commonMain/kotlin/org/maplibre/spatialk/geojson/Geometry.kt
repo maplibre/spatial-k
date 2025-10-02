@@ -16,8 +16,7 @@ import org.intellij.lang.annotations.Language
 @Serializable
 @OptIn(ExperimentalSerializationApi::class)
 @JsonClassDiscriminator("type")
-public sealed class Geometry() : GeoJsonObject {
-    abstract override val bbox: BoundingBox?
+public sealed interface Geometry : GeoJsonObject {
 
     public companion object {
         @JvmStatic
