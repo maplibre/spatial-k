@@ -27,7 +27,7 @@ class SquareGridTest {
 
     @Test
     fun testSquareGrid() {
-        squareGrid(bbox = box, cellWidth = 200.0.meters, cellHeight = 200.0.meters).also {
+        squareGrid(bbox = box, cellWidth = 200.meters, cellHeight = 200.meters).also {
             verifyValidGrid(it)
         }
     }
@@ -68,7 +68,7 @@ class SquareGridTest {
 
     @Test
     fun cellSizeBiggerThanBboxExtendLeadIntoEmptyGrid() {
-        squareGrid(bbox = box, cellWidth = 2000.0.meters, cellHeight = 2000.0.meters).also {
+        squareGrid(bbox = box, cellWidth = 2000.meters, cellHeight = 2000.meters).also {
             assertEquals(0, it.features.size)
         }
     }

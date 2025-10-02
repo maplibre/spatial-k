@@ -13,10 +13,10 @@ class DocSnippets {
     @Test
     fun conversion() {
         // --8<-- [start:conversion]
-        val distance: Length = 123.0.miles
+        val distance: Length = 123.miles
         println(distance.inKilometers)
 
-        val area: Area = 45.0.acres
+        val area: Area = 45.acres
         println(area.inSquareMeters)
         // --8<-- [end:conversion]
     }
@@ -24,8 +24,8 @@ class DocSnippets {
     @Test
     fun arithmetic() {
         // --8<-- [start:arithmetic]
-        val manhattanBlock: Area = (1.0.miles / 20.0) * (1.0.miles / 7.0)
-        val chicagoBlock: Area = 330.0.feet * 660.0.feet
+        val manhattanBlock: Area = (1.miles / 20.0) * (1.miles / 7.0)
+        val chicagoBlock: Area = 330.feet * 660.feet
         val ratio: Double = manhattanBlock / chicagoBlock
         // --8<-- [end:arithmetic]
     }
@@ -42,7 +42,7 @@ class DocSnippets {
     fun customUnits() {
         // --8<-- [start:customUnits2]
         // how many football fields could fit on the earth's oceans?
-        val earthRadius: Length = 6371.0.kilometers
+        val earthRadius: Length = 6371.kilometers
         val earthSurface: Area = 4 * PI * earthRadius * earthRadius
         val oceanSurface: Area = 0.7 * earthSurface
         oceanSurface.roundToLong(AmericanFootballField)

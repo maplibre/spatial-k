@@ -15,7 +15,7 @@ class AlongTest {
 
         assertEquals(
             Position(-79.4179672644524, 43.636029126566484),
-            along(geometry, 1.0.kilometers),
+            along(geometry, 1.kilometers),
         )
         assertEquals(
             Position(-79.39973865844715, 43.63797943080659),
@@ -23,8 +23,8 @@ class AlongTest {
         )
         assertEquals(
             Position(-79.37493324279785, 43.64470906117713),
-            along(geometry, 100.0.kilometers),
+            along(geometry, 100.kilometers),
         )
-        assertEquals(geometry.coordinates.last(), along(geometry, 100.0.kilometers))
+        assertEquals(geometry.coordinates.last(), along(geometry, 100.kilometers))
     }
 }

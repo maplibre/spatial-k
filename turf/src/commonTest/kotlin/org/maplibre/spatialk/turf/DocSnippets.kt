@@ -15,7 +15,7 @@ class DocSnippets {
     fun example() {
         // --8<-- [start:example]
         val point = Position(-75.0, 45.0)
-        val (longitude, latitude) = destination(point, 100.0.kilometers, 0.0)
+        val (longitude, latitude) = destination(point, 100.kilometers, 0.0)
         // --8<-- [end:example]
     }
 }

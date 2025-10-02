@@ -11,31 +11,31 @@ class LengthTests {
 
     @Test
     fun testRadiansToLength() {
-        assertDoubleEquals(1.0, 1.0.earthRadians.inEarthRadians)
-        assertDoubleEquals(EARTH_RADIUS / 1000, 1.0.earthRadians.inKilometers)
-        assertDoubleEquals(EARTH_RADIUS / 1609.344, 1.0.earthRadians.inMiles)
+        assertDoubleEquals(1.0, 1.earthRadians.inEarthRadians)
+        assertDoubleEquals(EARTH_RADIUS / 1000, 1.earthRadians.inKilometers)
+        assertDoubleEquals(EARTH_RADIUS / 1609.344, 1.earthRadians.inMiles)
     }
 
     @Test
     fun testLengthToRadians() {
-        assertDoubleEquals(1.0, 1.0.earthRadians.inEarthRadians)
+        assertDoubleEquals(1.0, 1.earthRadians.inEarthRadians)
         assertDoubleEquals(1.0, (EARTH_RADIUS / 1000).kilometers.inEarthRadians)
         assertDoubleEquals(1.0, (EARTH_RADIUS / 1609.344).miles.inEarthRadians)
     }
 
     @Test
     fun testLengthToDegrees() {
-        assertDoubleEquals(57.2958, 1.0.earthRadians.inEarthDegrees)
-        assertDoubleEquals(0.8993, 100.0.kilometers.inEarthDegrees)
-        assertDoubleEquals(0.1447, 10.0.miles.inEarthDegrees)
+        assertDoubleEquals(57.2958, 1.earthRadians.inEarthDegrees)
+        assertDoubleEquals(0.8993, 100.kilometers.inEarthDegrees)
+        assertDoubleEquals(0.1447, 10.miles.inEarthDegrees)
     }
 
     @Test
     fun testConvertLength() {
-        assertDoubleEquals(1.0, 1000.0.meters.inKilometers)
-        assertDoubleEquals(0.6214, 1.0.kilometers.inMiles)
-        assertDoubleEquals(1.6093, 1.0.miles.inKilometers)
-        assertDoubleEquals(1.852, 1.0.nauticalMiles.inKilometers)
-        assertDoubleEquals(100.0, 1.0.meters.inCentimeters)
+        assertDoubleEquals(1.0, 1000.meters.inKilometers)
+        assertDoubleEquals(0.6214, 1.kilometers.inMiles)
+        assertDoubleEquals(1.6093, 1.miles.inKilometers)
+        assertDoubleEquals(1.852, 1.nauticalMiles.inKilometers)
+        assertDoubleEquals(100.0, 1.meters.inCentimeters)
     }
 }
