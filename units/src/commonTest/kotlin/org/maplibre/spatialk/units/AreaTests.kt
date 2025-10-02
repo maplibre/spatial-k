@@ -2,8 +2,8 @@ package org.maplibre.spatialk.units
 
 import kotlin.test.Test
 import org.maplibre.spatialk.testutil.assertDoubleEquals
-import org.maplibre.spatialk.units.AreaUnit.Imperial.SquareYards
-import org.maplibre.spatialk.units.AreaUnit.International.SquareCentimeters
+import org.maplibre.spatialk.units.Imperial.SquareYards
+import org.maplibre.spatialk.units.SI.SquareCentimeters
 
 class AreaTests {
     @Test

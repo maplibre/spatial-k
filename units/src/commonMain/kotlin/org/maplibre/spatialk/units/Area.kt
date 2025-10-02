@@ -4,8 +4,8 @@ import kotlin.jvm.JvmInline
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
-import org.maplibre.spatialk.units.AreaUnit.International.SquareMeters
-import org.maplibre.spatialk.units.LengthUnit.International.Meters
+import org.maplibre.spatialk.units.SI.Meters
+import org.maplibre.spatialk.units.SI.SquareMeters
 
 /**
  * Represents an area, internally stored as a [Double] of square meters.
