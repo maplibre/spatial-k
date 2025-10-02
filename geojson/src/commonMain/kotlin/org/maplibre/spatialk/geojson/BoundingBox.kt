@@ -1,6 +1,5 @@
 package org.maplibre.spatialk.geojson
 
-import kotlin.coroutines.EmptyCoroutineContext.get
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmStatic
 import kotlin.math.min
@@ -160,13 +159,15 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
 
     public companion object {
         @JvmStatic
+        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJson(@Language("json") json: String): BoundingBox =
-            Json.decodeFromString(json)
+            GeoJson.jsonFormat.decodeFromString(json)
 
         @JvmStatic
+        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJsonOrNull(@Language("json") json: String): BoundingBox? =
             try {
-                Json.decodeFromString(json)
+                GeoJson.jsonFormat.decodeFromString(json)
             } catch (_: IllegalArgumentException) {
                 null
             }

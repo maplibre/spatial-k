@@ -143,12 +143,15 @@ public class Position internal constructor(internal val coordinates: DoubleArray
 
     public companion object {
         @JvmStatic
-        public fun fromJson(@Language("json") json: String): Position = Json.decodeFromString(json)
+        @OptIn(SensitiveGeoJsonApi::class)
+        public fun fromJson(@Language("json") json: String): Position =
+            GeoJson.jsonFormat.decodeFromString(json)
 
         @JvmStatic
+        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJsonOrNull(@Language("json") json: String): Position? =
             try {
-                Json.decodeFromString(json)
+                GeoJson.jsonFormat.decodeFromString(json)
             } catch (_: IllegalArgumentException) {
                 null
             }

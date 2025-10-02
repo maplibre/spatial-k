@@ -32,7 +32,7 @@ public data class Feature<out T : Geometry>(
 
     public companion object {
         @JvmSynthetic // See below for Java-facing API
-        @JvmName("!fromJson") // Prevent clash with Java-facing API
+        @JvmName("__fromJson") // Prevent clash with Java-facing API
         @OptIn(SensitiveGeoJsonApi::class)
         public inline fun <reified T : Geometry> fromJson(json: String): Feature<T> {
             @Suppress("UNCHECKED_CAST") // checked in `.also` block
@@ -43,7 +43,7 @@ public data class Feature<out T : Geometry>(
         }
 
         @JvmSynthetic // See below for Java-facing API
-        @JvmName("!fromJsonOrNull") // Prevent clash with Java-facing API
+        @JvmName("__fromJsonOrNull") // Prevent clash with Java-facing API
         @OptIn(SensitiveGeoJsonApi::class)
         public inline fun <reified T : Geometry> fromJsonOrNull(json: String): Feature<T>? {
             @Suppress("UNCHECKED_CAST") // checked in `.also` block
@@ -57,7 +57,7 @@ public data class Feature<out T : Geometry>(
         @JvmStatic
         @Suppress("FunctionName", "Unused")
         @OptIn(SensitiveGeoJsonApi::class)
-        internal fun `!fromJson`(json: String): Feature<*> =
+        internal fun __fromJson(json: String): Feature<*> =
             GeoJson.decodeFromString<Feature<Geometry>>(json)
 
         @PublishedApi // Publish for Java; Kotlin should use the inline reified version
@@ -65,7 +65,7 @@ public data class Feature<out T : Geometry>(
         @JvmStatic
         @Suppress("FunctionName", "Unused")
         @OptIn(SensitiveGeoJsonApi::class)
-        internal fun `!fromJsonOrNull`(json: String): Feature<*>? =
+        internal fun __fromJsonOrNull(json: String): Feature<*>? =
             GeoJson.decodeFromStringOrNull<Feature<Geometry>>(json)
     }
 }

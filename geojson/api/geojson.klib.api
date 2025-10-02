@@ -85,9 +85,9 @@ final class <#A: out org.maplibre.spatialk.geojson/Geometry> org.maplibre.spatia
         final val $cachedDescriptor // org.maplibre.spatialk.geojson/Feature.Companion.$cachedDescriptor|{}$cachedDescriptor[0]
             final fun <get-$cachedDescriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.geojson/Feature.Companion.$cachedDescriptor.<get-$cachedDescriptor>|<get-$cachedDescriptor>(){}[0]
 
-        final fun !fromJson(kotlin/String): org.maplibre.spatialk.geojson/Feature<*> // org.maplibre.spatialk.geojson/Feature.Companion.!fromJson|!fromJson(kotlin.String){}[0]
-        final fun !fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/Feature<*>? // org.maplibre.spatialk.geojson/Feature.Companion.!fromJsonOrNull|!fromJsonOrNull(kotlin.String){}[0]
         final fun <#A2: kotlin/Any?> serializer(kotlinx.serialization/KSerializer<#A2>): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/Feature<#A2>> // org.maplibre.spatialk.geojson/Feature.Companion.serializer|serializer(kotlinx.serialization.KSerializer<0:0>){0§<kotlin.Any?>}[0]
+        final fun __fromJson(kotlin/String): org.maplibre.spatialk.geojson/Feature<*> // org.maplibre.spatialk.geojson/Feature.Companion.__fromJson|__fromJson(kotlin.String){}[0]
+        final fun __fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/Feature<*>? // org.maplibre.spatialk.geojson/Feature.Companion.__fromJsonOrNull|__fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // org.maplibre.spatialk.geojson/Feature.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
         final inline fun <#A2: reified org.maplibre.spatialk.geojson/Geometry> fromJson(kotlin/String): org.maplibre.spatialk.geojson/Feature<#A2> // org.maplibre.spatialk.geojson/Feature.Companion.fromJson|fromJson(kotlin.String){0§<org.maplibre.spatialk.geojson.Geometry>}[0]
         final inline fun <#A2: reified org.maplibre.spatialk.geojson/Geometry> fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/Feature<#A2>? // org.maplibre.spatialk.geojson/Feature.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){0§<org.maplibre.spatialk.geojson.Geometry>}[0]
