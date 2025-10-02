@@ -13,10 +13,7 @@ class AlongTest {
     fun testAlong() {
         val geometry = LineString.fromJson(readResourceFile("measurement/along/lineString.json"))
 
-        assertEquals(
-            Position(-79.4179672644524, 43.636029126566484),
-            along(geometry, 1.kilometers),
-        )
+        assertEquals(Position(-79.4179672644524, 43.636029126566484), along(geometry, 1.kilometers))
         assertEquals(
             Position(-79.39973865844715, 43.63797943080659),
             along(geometry, 2.5.kilometers),
