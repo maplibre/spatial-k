@@ -43,6 +43,12 @@ member functions in Java.
     --8<-- "turf/src/commonTest/kotlin/org/maplibre/spatialk/turf/KotlinDocsTest.kt:example"
     ```
 
+=== "Java"
+
+    ```java
+    --8<-- "turf/src/jvmTest/java/org/maplibre/spatialk/turf/JavaDocsTest.java:example"
+    ```
+
 ## Turf Functions
 
 See [the list of turf functions that have been ported](./ported-functions.md).

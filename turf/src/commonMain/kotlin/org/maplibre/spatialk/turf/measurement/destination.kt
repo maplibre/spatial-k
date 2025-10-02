@@ -13,7 +13,9 @@ import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
 import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
 import org.maplibre.spatialk.units.Length
+import org.maplibre.spatialk.units.LengthUnit
 import org.maplibre.spatialk.units.extensions.inEarthRadians
+import org.maplibre.spatialk.units.extensions.toLength
 
 /**
  * Takes an [origin] [Position] and calculates the location of a destination position given a
@@ -43,3 +45,11 @@ public fun destination(origin: Position, distance: Length, bearing: Double): Pos
 
     return Position(radiansToDegrees(longitude2), radiansToDegrees(latitude2))
 }
+
+@PublishedApi
+internal fun destination(
+    origin: Position,
+    distance: Double,
+    unit: LengthUnit,
+    bearing: Int,
+): Position = destination(origin, distance.toLength(unit), bearing.toDouble())

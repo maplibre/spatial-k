@@ -40,6 +40,7 @@ public final class org/maplibre/spatialk/turf/measurement/Measurement {
 	public static synthetic fun bearing$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;ZILjava/lang/Object;)D
 	public static final fun center (Lorg/maplibre/spatialk/geojson/Feature;)Lorg/maplibre/spatialk/geojson/Point;
 	public static final fun center (Lorg/maplibre/spatialk/geojson/Geometry;)Lorg/maplibre/spatialk/geojson/Point;
+	public static final fun destination (Lorg/maplibre/spatialk/geojson/Position;DLorg/maplibre/spatialk/units/LengthUnit;I)Lorg/maplibre/spatialk/geojson/Position;
 	public static final fun destination-RJZUCfk (Lorg/maplibre/spatialk/geojson/Position;DD)Lorg/maplibre/spatialk/geojson/Position;
 	public static final fun distance (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
 	public static final fun envelope (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Lorg/maplibre/spatialk/geojson/Feature;

@@ -10,7 +10,7 @@ import org.maplibre.spatialk.units.extensions.kilometers
 // These snippets are primarily intended to be included in documentation. Though they exist as
 // part of the test suite, they are not intended to be comprehensive tests.
 
-class JavaDocsTest {
+class KotlinDocsTest {
     @Test
     fun example() {
         // --8<-- [start:example]
