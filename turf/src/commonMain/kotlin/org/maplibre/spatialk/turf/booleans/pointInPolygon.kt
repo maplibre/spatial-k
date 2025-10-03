@@ -8,7 +8,7 @@ import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmSynthetic
 import org.maplibre.spatialk.geojson.*
-import org.maplibre.spatialk.turf.measurement.calculateBbox
+import org.maplibre.spatialk.turf.measurement.computeBbox
 
 @JvmSynthetic
 public operator fun Polygon.contains(point: Point): Boolean = pointInPolygon(point, this)
@@ -33,7 +33,7 @@ public fun pointInPolygon(
     polygon: Polygon,
     ignoreBoundary: Boolean = false,
 ): Boolean {
-    val bbox = polygon.calculateBbox()
+    val bbox = polygon.computeBbox()
     // normalize to multipolygon
     val polys = listOf(polygon.coordinates)
     return pointInPolygon(point.coordinates, bbox, polys, ignoreBoundary)
@@ -56,7 +56,7 @@ public fun pointInPolygon(
     polygon: MultiPolygon,
     ignoreBoundary: Boolean = false,
 ): Boolean {
-    val bbox = polygon.calculateBbox()
+    val bbox = polygon.computeBbox()
     val polys = polygon.coordinates
     return pointInPolygon(point.coordinates, bbox, polys, ignoreBoundary)
 }

@@ -8,24 +8,27 @@ import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.*
 
 /**
- * Takes any kind of [Feature] and returns the center point. It will create a [BoundingBox] around
- * the given [Feature] and calculates the center point of it.
+ * Takes any kind of [GeoJsonObject] and returns the center point. It will create a [BoundingBox]
+ * around the given [GeoJsonObject] and calculate the center point of it.
  *
- * @param this@center the feature to find the center for
- * @return A [Point] holding the center coordinates
+ * @return A [Point] holding the center coordinates, or null if the feature contains no geometry.
  */
-public fun Feature<*>.center(): Point {
-    val ext = this.calculateBbox()
+public fun GeoJsonObject.center(): Point? {
+    val ext = this.computeBbox() ?: return null
     val x = (ext.southwest.longitude + ext.northeast.longitude) / 2
     val y = (ext.southwest.latitude + ext.northeast.latitude) / 2
     return Point(Position(longitude = x, latitude = y))
 }
 
 /**
- * It overloads the `center(feature: Feature)` method.
+ * Takes any kind of [Geometry] and returns the center point. It will create a [BoundingBox] around
+ * the given [Geometry] and calculate the center point of it.
  *
- * @param this@center the [Geometry] to find the center for
+ * @return A [Point] holding the center coordinates.
  */
 public fun Geometry.center(): Point {
-    return Feature(geometry = this).center()
+    val ext = this.computeBbox()
+    val x = (ext.southwest.longitude + ext.northeast.longitude) / 2
+    val y = (ext.southwest.latitude + ext.northeast.latitude) / 2
+    return Point(Position(longitude = x, latitude = y))
 }

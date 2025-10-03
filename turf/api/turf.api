@@ -44,17 +44,11 @@ public final class org/maplibre/spatialk/turf/measurement/Measurement {
 	public static final fun bearing (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
 	public static final fun bearing (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Z)D
 	public static synthetic fun bearing$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;ZILjava/lang/Object;)D
-	public static final fun calculateBbox (Lorg/maplibre/spatialk/geojson/Feature;)Lorg/maplibre/spatialk/geojson/BoundingBox;
-	public static final fun calculateBbox (Lorg/maplibre/spatialk/geojson/FeatureCollection;)Lorg/maplibre/spatialk/geojson/BoundingBox;
-	public static final fun calculateBbox (Lorg/maplibre/spatialk/geojson/Geometry;)Lorg/maplibre/spatialk/geojson/BoundingBox;
-	public static final fun calculateBbox (Lorg/maplibre/spatialk/geojson/LineString;)Lorg/maplibre/spatialk/geojson/BoundingBox;
-	public static final fun calculateBbox (Lorg/maplibre/spatialk/geojson/MultiLineString;)Lorg/maplibre/spatialk/geojson/BoundingBox;
-	public static final fun calculateBbox (Lorg/maplibre/spatialk/geojson/MultiPoint;)Lorg/maplibre/spatialk/geojson/BoundingBox;
-	public static final fun calculateBbox (Lorg/maplibre/spatialk/geojson/MultiPolygon;)Lorg/maplibre/spatialk/geojson/BoundingBox;
-	public static final fun calculateBbox (Lorg/maplibre/spatialk/geojson/Point;)Lorg/maplibre/spatialk/geojson/BoundingBox;
-	public static final fun calculateBbox (Lorg/maplibre/spatialk/geojson/Polygon;)Lorg/maplibre/spatialk/geojson/BoundingBox;
-	public static final fun center (Lorg/maplibre/spatialk/geojson/Feature;)Lorg/maplibre/spatialk/geojson/Point;
+	public static final fun center (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Lorg/maplibre/spatialk/geojson/Point;
 	public static final fun center (Lorg/maplibre/spatialk/geojson/Geometry;)Lorg/maplibre/spatialk/geojson/Point;
+	public static final fun computeBbox (Ljava/util/List;)Lorg/maplibre/spatialk/geojson/BoundingBox;
+	public static final fun computeBbox (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Lorg/maplibre/spatialk/geojson/BoundingBox;
+	public static final fun computeBbox (Lorg/maplibre/spatialk/geojson/Geometry;)Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public static final fun destination (Lorg/maplibre/spatialk/geojson/Position;DI)Lorg/maplibre/spatialk/geojson/Position;
 	public static final fun destination (Lorg/maplibre/spatialk/geojson/Position;DLorg/maplibre/spatialk/units/LengthUnit;I)Lorg/maplibre/spatialk/geojson/Position;
 	public static synthetic fun destination$default (Lorg/maplibre/spatialk/geojson/Position;DLorg/maplibre/spatialk/units/LengthUnit;IILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Position;
@@ -80,16 +74,8 @@ public final class org/maplibre/spatialk/turf/measurement/Measurement {
 }
 
 public final class org/maplibre/spatialk/turf/meta/Meta {
-	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/Feature;)Ljava/util/List;
-	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/FeatureCollection;)Ljava/util/List;
+	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Ljava/util/List;
 	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/Geometry;)Ljava/util/List;
-	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/GeometryCollection;)Ljava/util/List;
-	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/LineString;)Ljava/util/List;
-	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/MultiLineString;)Ljava/util/List;
-	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/MultiPoint;)Ljava/util/List;
-	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/MultiPolygon;)Ljava/util/List;
-	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/Point;)Ljava/util/List;
-	public static final fun coordAll (Lorg/maplibre/spatialk/geojson/Polygon;)Ljava/util/List;
 }
 
 public final class org/maplibre/spatialk/turf/misc/Miscellaneous {

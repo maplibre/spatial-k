@@ -4,8 +4,8 @@
 
 - [x] [`along`](../api/turf/org.maplibre.spatialk.turf.measurement/along.html)
 - [x] [`area`](../api/turf/org.maplibre.spatialk.turf.measurement/area.html)
-- [x] [`bbox`](../api/turf/org.maplibre.spatialk.turf.measurement/bbox.html)
-- [x] [`bboxPolygon`](../api/turf/org.maplibre.spatialk.turf.measurement/bbox-polygon.html)
+- [x] [`bbox`](../api/turf/org.maplibre.spatialk.turf.measurement/compute-bbox.html)
+- [x] [`bboxPolygon`](../api/turf/org.maplibre.spatialk.turf.measurement/to-polygon.html)
 - [x] [`bearing`](../api/turf/org.maplibre.spatialk.turf.measurement/bearing.html)
 - [x] [`center`](../api/turf/org.maplibre.spatialk.turf.measurement/center.html)
 - [ ] `centerOfMass`
@@ -71,7 +71,7 @@
       Partially implemented.
 - [ ] `lineOverlap`
 - [ ] `lineSegment`
-- [x] [`lineSlice`](../api/turf/org.maplibre.spatialk.turf.misc/line-slice.html)
+- [x] [`lineSlice`](../api/turf/org.maplibre.spatialk.turf.misc/slice.html)
 - [ ] `lineSliceAlong`
 - [ ] `lineSplit`
 - [ ] `mask`

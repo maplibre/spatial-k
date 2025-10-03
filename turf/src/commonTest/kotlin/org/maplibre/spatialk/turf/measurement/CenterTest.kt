@@ -12,7 +12,7 @@ class CenterTest {
     fun testCenterFromFeature() {
         val geometry = Polygon.fromJson(readResourceFile("measurement/area/other.json"))
 
-        val centerPoint = Feature(geometry).center()
+        val centerPoint = Feature(geometry).center()!!
 
         assertDoubleEquals(-75.71805238723755, centerPoint.coordinates.longitude, 0.0001)
         assertDoubleEquals(45.3811030151199, centerPoint.coordinates.latitude, 0.0001)
