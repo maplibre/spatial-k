@@ -63,8 +63,13 @@ final class <#A: out org.maplibre.spatialk.geojson/Geometry> org.maplibre.spatia
     final fun component2(): kotlinx.serialization.json/JsonObject? // org.maplibre.spatialk.geojson/Feature.component2|component2(){}[0]
     final fun component3(): kotlin/String? // org.maplibre.spatialk.geojson/Feature.component3|component3(){}[0]
     final fun component4(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/Feature.component4|component4(){}[0]
+    final fun containsProperty(kotlin/String): kotlin/Boolean // org.maplibre.spatialk.geojson/Feature.containsProperty|containsProperty(kotlin.String){}[0]
     final fun copy(#A? = ..., kotlinx.serialization.json/JsonObject? = ..., kotlin/String? = ..., org.maplibre.spatialk.geojson/BoundingBox? = ...): org.maplibre.spatialk.geojson/Feature<#A> // org.maplibre.spatialk.geojson/Feature.copy|copy(1:0?;kotlinx.serialization.json.JsonObject?;kotlin.String?;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.geojson/Feature.equals|equals(kotlin.Any?){}[0]
+    final fun getBooleanProperty(kotlin/String): kotlin/Boolean? // org.maplibre.spatialk.geojson/Feature.getBooleanProperty|getBooleanProperty(kotlin.String){}[0]
+    final fun getDoubleProperty(kotlin/String): kotlin/Double? // org.maplibre.spatialk.geojson/Feature.getDoubleProperty|getDoubleProperty(kotlin.String){}[0]
+    final fun getIntProperty(kotlin/String): kotlin/Int? // org.maplibre.spatialk.geojson/Feature.getIntProperty|getIntProperty(kotlin.String){}[0]
+    final fun getStringProperty(kotlin/String): kotlin/String? // org.maplibre.spatialk.geojson/Feature.getStringProperty|getStringProperty(kotlin.String){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.geojson/Feature.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/Feature.toString|toString(){}[0]
 
