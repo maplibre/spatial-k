@@ -21,32 +21,31 @@ import org.maplibre.spatialk.units.LengthUnit
  * If the geometry is a [MultiPoint], [MultiLineString], [MultiPolygon], or [GeometryCollection],
  * the length is the sum of the lengths of the individual geometries.
  *
- * @param geometry The geometry to measure
  * @return The length of the geometry
  */
 @JvmSynthetic
 @JvmName("__length")
-public fun length(geometry: Geometry): Length =
-    when (geometry) {
+public fun Geometry.length(): Length =
+    when (this) {
         is Point -> Length.Zero
         is MultiPoint -> Length.Zero
-        is LineString -> length(geometry.coordinates)
+        is LineString -> length(this.coordinates)
         is MultiLineString ->
-            geometry.coordinates.fold(Length.Zero) { acc, coords -> acc + length(coords) }
-        is Polygon -> geometry.coordinates.fold(Length.Zero) { acc, ring -> acc + length(ring) }
+            this.coordinates.fold(Length.Zero) { acc, coords -> acc + length(coords) }
+        is Polygon -> this.coordinates.fold(Length.Zero) { acc, ring -> acc + length(ring) }
         is MultiPolygon ->
-            geometry.coordinates.fold(Length.Zero) { total, polygon ->
+            this.coordinates.fold(Length.Zero) { total, polygon ->
                 total + polygon.fold(Length.Zero) { acc, ring -> acc + length(ring) }
             }
         is GeometryCollection ->
-            geometry.geometries.fold(Length.Zero) { acc, geom -> acc + length(geom) }
+            this.geometries.fold(Length.Zero) { acc, geom -> acc + geom.length() }
     }
 
 @PublishedApi
 @Suppress("unused")
 @JvmOverloads
 internal fun length(geometry: Geometry, unit: LengthUnit = Meters): Double =
-    length(geometry).toDouble(unit)
+    geometry.length().toDouble(unit)
 
 private fun length(coords: List<Position>): Length {
     var travelled = Length.Zero

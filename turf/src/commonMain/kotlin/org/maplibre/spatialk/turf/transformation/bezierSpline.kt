@@ -15,16 +15,12 @@ import org.maplibre.spatialk.turf.meta.coordAll
  * The bezier spline implementation is a port of the implementation by
  * [Leszek Rybicki](http://leszek.rybicki.cc/) used in turfjs.
  *
- * @param line the input [LineString]
  * @param duration time in milliseconds between points in the output data
  * @param sharpness a measure of how curvy the path should be between splines
  * @return A [LineString] containing a curved line around the positions of the input line
  */
-public fun bezierSpline(
-    line: LineString,
-    duration: Int = 10_000,
-    sharpness: Double = 0.85,
-): LineString = LineString(bezierSpline(line.coordAll(), duration, sharpness))
+public fun LineString.bezierSpline(duration: Int = 10_000, sharpness: Double = 0.85): LineString =
+    LineString(bezierSpline(this.coordAll(), duration, sharpness))
 
 /**
  * Takes a list of [Position] and returns a curved version by applying a Bezier spline algorithm.

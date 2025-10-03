@@ -12,7 +12,7 @@ class AreaTest {
     @Test
     fun testArea() {
         val geometry = Polygon.fromJson(readResourceFile("measurement/area/polygon.json"))
-        assertDoubleEquals(236446.506, area(geometry).inSquareMeters, 0.001, "Single polygon")
+        assertDoubleEquals(236446.506, geometry.area().inSquareMeters, 0.001, "Single polygon")
 
         val other = Polygon.fromJson(readResourceFile("measurement/area/other.json"))
         val collection = geometryCollection {
@@ -21,7 +21,7 @@ class AreaTest {
         }
         assertDoubleEquals(
             4173831.866,
-            area(collection).inSquareMeters,
+            collection.area().inSquareMeters,
             0.001,
             "Geometry Collection",
         )

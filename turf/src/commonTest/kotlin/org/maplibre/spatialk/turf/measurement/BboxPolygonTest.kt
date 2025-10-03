@@ -21,6 +21,6 @@ class BboxPolygonTest {
             }
         }
 
-        assertEquals(polygon, bboxPolygon(bbox))
+        assertEquals(polygon, bbox.toPolygon())
     }
 }

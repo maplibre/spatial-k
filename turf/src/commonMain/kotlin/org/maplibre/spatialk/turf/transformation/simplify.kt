@@ -9,6 +9,30 @@ import kotlin.math.pow
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Position
 
+/**
+ * Reduces the number of points in a LineString while preserving its general shape.
+ *
+ * @param tolerance The tolerance for simplification (in the units of the coordinates). A higher
+ *   tolerance results in more simplification (fewer points). If `null`, a default tolerance of
+ *   `1.0` is used.
+ * @param highestQuality If `true`, the radial distance simplification step is skipped, potentially
+ *   resulting in a higher quality simplification at the cost of performance.
+ * @return A new, simplified LineString.
+ */
+public fun LineString.simplify(
+    tolerance: Double? = null,
+    highestQuality: Boolean = false,
+): LineString {
+    if (coordinates.size <= 2) return this
+
+    val sqTolerance = tolerance?.pow(2) ?: 1.0
+
+    val simplifiedPoints =
+        if (highestQuality) coordinates else simplifyRadialDist(coordinates, sqTolerance)
+
+    return LineString(simplifyDouglasPeucker(simplifiedPoints, sqTolerance))
+}
+
 private fun getSqDist(p1: Position, p2: Position): Double {
     val dx = p1.longitude - p2.longitude
     val dy = p1.latitude - p2.latitude
@@ -96,31 +120,4 @@ private fun simplifyDouglasPeucker(points: List<Position>, sqTolerance: Double):
     simplified.add(points[last])
 
     return simplified
-}
-
-/**
- * Reduces the number of points in a LineString while preserving its general shape.
- *
- * @param lineString The LineString to simplify.
- * @param tolerance The tolerance for simplification (in the units of the coordinates). A higher
- *   tolerance results in more simplification (fewer points). If `null`, a default tolerance of
- *   `1.0` is used.
- * @param highestQuality If `true`, the radial distance simplification step is skipped, potentially
- *   resulting in a higher quality simplification at the cost of performance.
- * @return A new, simplified LineString.
- */
-public fun simplify(
-    lineString: LineString,
-    tolerance: Double? = null,
-    highestQuality: Boolean = false,
-): LineString {
-    if (lineString.coordinates.size <= 2) return lineString
-
-    val sqTolerance = tolerance?.pow(2) ?: 1.0
-
-    val simplifiedPoints =
-        if (highestQuality) lineString.coordinates
-        else simplifyRadialDist(lineString.coordinates, sqTolerance)
-
-    return LineString(simplifyDouglasPeucker(simplifiedPoints, sqTolerance))
 }

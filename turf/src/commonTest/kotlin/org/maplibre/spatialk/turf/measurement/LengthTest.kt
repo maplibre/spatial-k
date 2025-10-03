@@ -12,6 +12,6 @@ class LengthTest {
     fun testLength() {
         val geometry = LineString.fromJson(readResourceFile("measurement/length/lineString.json"))
 
-        assertEquals(42.560767589197006, length(geometry).inKilometers)
+        assertEquals(42.560767589197006, geometry.length().inKilometers)
     }
 }

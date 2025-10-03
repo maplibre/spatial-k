@@ -11,8 +11,8 @@ class SquareTest {
         val bbox1 = BoundingBox(0.0, 0.0, 5.0, 10.0)
         val bbox2 = BoundingBox(0.0, 0.0, 10.0, 5.0)
 
-        val square1 = square(bbox1)
-        val square2 = square(bbox2)
+        val square1 = bbox1.square()
+        val square2 = bbox2.square()
 
         assertEquals(BoundingBox(-2.5, 0.0, 7.5, 10.0), square1)
         assertEquals(BoundingBox(0.0, -2.5, 10.0, 7.5), square2)

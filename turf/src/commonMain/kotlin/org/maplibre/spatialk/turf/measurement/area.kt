@@ -19,16 +19,14 @@ import org.maplibre.spatialk.units.extensions.times
 /**
  * Takes a geometry and returns its area.
  *
- * @param geometry input geometry
  * @return area in square meters
  */
 @JvmSynthetic
 @JvmName("__area")
-public fun area(geometry: Geometry): Area {
-    return when (geometry) {
-        is GeometryCollection ->
-            geometry.geometries.fold(Area.Zero) { acc, geom -> acc + area(geom) }
-        else -> calculateArea(geometry)
+public fun Geometry.area(): Area {
+    return when (this) {
+        is GeometryCollection -> this.geometries.fold(Area.Zero) { acc, geom -> acc + geom.area() }
+        else -> calculateArea(this)
     }
 }
 
@@ -36,7 +34,7 @@ public fun area(geometry: Geometry): Area {
 @Suppress("unused")
 @JvmOverloads
 internal fun area(geometry: Geometry, unit: AreaUnit = SquareMeters): Double =
-    area(geometry).toDouble(unit)
+    geometry.area().toDouble(unit)
 
 private fun calculateArea(geometry: Geometry): Area {
     return when (geometry) {

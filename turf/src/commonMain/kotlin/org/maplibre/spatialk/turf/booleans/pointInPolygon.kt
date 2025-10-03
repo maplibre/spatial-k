@@ -6,12 +6,15 @@ package org.maplibre.spatialk.turf.booleans
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
-import org.maplibre.spatialk.geojson.BoundingBox
-import org.maplibre.spatialk.geojson.MultiPolygon
-import org.maplibre.spatialk.geojson.Point
-import org.maplibre.spatialk.geojson.Polygon
-import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.measurement.bbox
+import kotlin.jvm.JvmSynthetic
+import org.maplibre.spatialk.geojson.*
+import org.maplibre.spatialk.turf.measurement.calculateBbox
+
+@JvmSynthetic
+public operator fun Polygon.contains(point: Point): Boolean = pointInPolygon(point, this)
+
+@JvmSynthetic
+public operator fun MultiPolygon.contains(point: Point): Boolean = pointInPolygon(point, this)
 
 /**
  * Takes a [Point] and a [Polygon] and determines if the point resides inside the polygon. The
@@ -30,7 +33,7 @@ public fun pointInPolygon(
     polygon: Polygon,
     ignoreBoundary: Boolean = false,
 ): Boolean {
-    val bbox = bbox(polygon)
+    val bbox = polygon.calculateBbox()
     // normalize to multipolygon
     val polys = listOf(polygon.coordinates)
     return pointInPolygon(point.coordinates, bbox, polys, ignoreBoundary)
@@ -53,7 +56,7 @@ public fun pointInPolygon(
     polygon: MultiPolygon,
     ignoreBoundary: Boolean = false,
 ): Boolean {
-    val bbox = bbox(polygon)
+    val bbox = polygon.calculateBbox()
     val polys = polygon.coordinates
     return pointInPolygon(point.coordinates, bbox, polys, ignoreBoundary)
 }
@@ -128,5 +131,3 @@ private fun inBBox(point: Position, boundingBox: BoundingBox): Boolean {
         boundingBox.east >= point.longitude &&
         boundingBox.north >= point.latitude
 }
-
-public operator fun Polygon.contains(point: Point): Boolean = pointInPolygon(point, this)

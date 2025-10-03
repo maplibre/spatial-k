@@ -17,10 +17,9 @@ class LineSliceTest {
         val (lineString, start, stop) = features.features
 
         val result =
-            lineSlice(
+            (lineString.geometry as LineString).slice(
                 (start.geometry as Point).coordinates,
                 (stop.geometry as Point).coordinates,
-                lineString.geometry as LineString,
             )
         slice.coordinates.forEachIndexed { i, position ->
             assertPositionEquals(position, result.coordinates[i])
