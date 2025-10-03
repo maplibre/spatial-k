@@ -22,14 +22,14 @@ import nl.adaptivity.xmlutil.serialization.XmlElement
  */
 @Serializable
 public data class Track(
-    @XmlElement(true) val name: String?,
-    @XmlElement(true) val cmt: String?,
-    @XmlElement(true) val desc: String?,
-    @XmlElement(true) val src: String?,
-    @XmlElement(true) val link: String?,
-    @XmlElement(true) val number: Int?,
-    @XmlElement(true) val type: String?,
-    @SerialName("trkseg") @XmlElement(true) val trkseg: List<TrackSegment>,
+    @XmlElement val name: String?,
+    @XmlElement val cmt: String?,
+    @XmlElement val desc: String?,
+    @XmlElement val src: String?,
+    @XmlElement val link: String?,
+    @XmlElement val number: Int?,
+    @XmlElement val type: String?,
+    @SerialName("trkseg") @XmlElement val trkseg: List<TrackSegment>,
 )
 
 /**
@@ -41,4 +41,4 @@ public data class Track(
  *
  * @property trkpt A list of track points.
  */
-@Serializable public data class TrackSegment(@XmlElement(true) val trkpt: List<Waypoint>)
+@Serializable public data class TrackSegment(@XmlElement val trkpt: List<Waypoint>)

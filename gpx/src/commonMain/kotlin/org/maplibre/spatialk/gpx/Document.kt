@@ -27,10 +27,10 @@ public data class Document(
         "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd",
     @Required val version: String = "1.1",
     @Required val creator: String = "org.maplibre.spatialk.gpx",
-    @XmlSerialName("metadata") @XmlElement(true) val metadata: Metadata? = null,
-    @XmlElement(true) val trk: List<Track> = listOf(),
-    @XmlElement(true) val rte: List<Route> = listOf(),
-    @XmlElement(true) val wpt: List<Waypoint> = listOf(),
+    @XmlSerialName("metadata") @XmlElement val metadata: Metadata? = null,
+    @XmlElement val trk: List<Track> = listOf(),
+    @XmlElement val rte: List<Route> = listOf(),
+    @XmlElement val wpt: List<Waypoint> = listOf(),
 )
 
 /**
@@ -51,14 +51,14 @@ public data class Document(
  */
 @Serializable
 public data class Metadata(
-    @XmlSerialName("name") @XmlElement(true) val name: String? = null,
-    @XmlElement(true) val desc: String? = null,
-    @XmlSerialName("author") @XmlElement(true) val author: Author? = null,
-    @XmlSerialName("copyright") @XmlElement(true) val copyright: Copyright? = null,
-    @XmlElement(true) val link: List<Link> = listOf(),
-    @XmlElement(true) val time: String? = null,
-    @XmlElement(true) val keywords: String? = null,
-    @XmlElement(true) val bounds: Bounds? = null,
+    @XmlSerialName("name") @XmlElement val name: String? = null,
+    @XmlElement val desc: String? = null,
+    @XmlSerialName("author") @XmlElement val author: Author? = null,
+    @XmlSerialName("copyright") @XmlElement val copyright: Copyright? = null,
+    @XmlElement val link: List<Link> = listOf(),
+    @XmlElement val time: String? = null,
+    @XmlElement val keywords: String? = null,
+    @XmlElement val bounds: Bounds? = null,
     // val extensions: Extensions?,
 )
 
@@ -73,9 +73,9 @@ public data class Metadata(
  */
 @Serializable
 public data class Author(
-    @XmlElement(true) val name: String? = null,
-    @XmlElement(true) val email: Email? = null,
-    @XmlElement(true) val link: Link? = null,
+    @XmlElement val name: String? = null,
+    @XmlElement val email: Email? = null,
+    @XmlElement val link: Link? = null,
 )
 
 /**
@@ -88,8 +88,8 @@ public data class Author(
  */
 @Serializable
 public data class Copyright(
-    @XmlElement(true) val year: String? = null,
-    @XmlElement(true) val license: String? = null,
+    @XmlElement val year: String? = null,
+    @XmlElement val license: String? = null,
 )
 
 @Serializable public data class Email(val id: String, val domain: String)
@@ -97,8 +97,8 @@ public data class Copyright(
 @Serializable
 public data class Link(
     val href: String,
-    @XmlElement(true) val text: String? = null,
-    @XmlElement(true) val type: String? = null,
+    @XmlElement val text: String? = null,
+    @XmlElement val type: String? = null,
 )
 
 @Serializable
