@@ -4,7 +4,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 
 import kotlinx.serialization.SerializationException;
-import kotlinx.serialization.json.JsonElement;
 import kotlinx.serialization.json.JsonElementBuildersKt;
 import kotlinx.serialization.json.JsonObjectBuilder;
 import org.junit.Test;
@@ -112,11 +111,12 @@ public class JavaDocsTest {
   public void featureExample() {
     // --8<-- [start:featureJava]
     Point point = new Point(new Position(-75.0, 45.0));
+
     JsonObjectBuilder properties = new JsonObjectBuilder();
     JsonElementBuildersKt.put(properties, "size", 9999);
     Feature<Point> feature = new Feature<>(point, properties.build(), null, null);
 
-    JsonElement size = feature.getProperties().get("size");
+    Integer size = feature.getIntProperty("size");
     Point geometry = feature.getGeometry(); // point
     // --8<-- [end:featureJava]
   }

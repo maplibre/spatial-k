@@ -1,5 +1,6 @@
 package org.maplibre.spatialk.geojson
 
+import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -16,7 +17,9 @@ import org.intellij.lang.annotations.Language
  */
 @Serializable
 @SerialName("FeatureCollection")
-public data class FeatureCollection(
+public data class FeatureCollection
+@JvmOverloads
+constructor(
     public val features: List<Feature<*>> = emptyList(),
     override val bbox: BoundingBox? = null,
 ) : Collection<Feature<*>> by features, GeoJsonObject {

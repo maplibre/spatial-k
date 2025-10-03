@@ -1,12 +1,15 @@
 package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmName
+import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.decodeFromJsonElement
 
 /**
  * A feature object represents a spatially bounded thing.
@@ -21,7 +24,9 @@ import kotlinx.serialization.json.JsonObject
  */
 @Serializable
 @SerialName("Feature")
-public data class Feature<out T : Geometry>(
+public data class Feature<out T : Geometry>
+@JvmOverloads
+constructor(
     // It would be ideal if nullability was expressed in the generic T, but kotlinx.serialization
     // doesn't support that. See https://github.com/Kotlin/kotlinx.serialization/issues/2828.
     public val geometry: T?,
@@ -29,6 +34,20 @@ public data class Feature<out T : Geometry>(
     public val id: String? = null,
     override val bbox: BoundingBox? = null,
 ) : GeoJsonObject {
+
+    public fun containsProperty(key: String): Boolean = properties?.containsKey(key) ?: false
+
+    public fun getStringProperty(key: String): String? =
+        properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
+
+    public fun getDoubleProperty(key: String): Double? =
+        properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
+
+    public fun getIntProperty(key: String): Int? =
+        properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
+
+    public fun getBooleanProperty(key: String): Boolean? =
+        properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
 
     public companion object {
         @JvmSynthetic // See below for Java-facing API
