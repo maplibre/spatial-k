@@ -85,6 +85,10 @@ jobs:
               with:
                   fetch-depth: 0
                   fetch-tags: true
+            - uses: actions/setup-java@v5
+              with:
+                  distribution: temurin
+                  java-version: 21
             - uses: pre-commit/action@v3.0.1
             - if: ${{ github.event_name == 'pull_request' && failure() }}
               uses: reviewdog/action-suggester@v1
