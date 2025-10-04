@@ -24,9 +24,6 @@ benchmark:
 coverage:
     ./gradlew :koverHtmlReport
 
-dump-abi:
-    ./gradlew updateLegacyAbi
-
 build-dokka:
     ./gradlew :dokkaGenerateHtml
 

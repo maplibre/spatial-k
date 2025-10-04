@@ -19,6 +19,7 @@ class BboxPolygonTest {
                 +Position(12.1, 78.7)
                 complete()
             }
+            this.bbox = bbox
         }
 
         assertEquals(polygon, bbox.toPolygon())

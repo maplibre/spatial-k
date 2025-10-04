@@ -5,29 +5,15 @@ package org.maplibre.spatialk.turf.measurement
 
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
-import org.maplibre.spatialk.geojson.BoundingBox
-import org.maplibre.spatialk.geojson.GeoJsonObject
-import org.maplibre.spatialk.geojson.Geometry
-import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.geojson.*
 import org.maplibre.spatialk.turf.meta.flattenCoordinates
 
 /**
- * Takes a geometry and calculates the bounding box of all input features.
+ * Takes a [Geometry] and calculates the bounding box of all input features.
  *
  * @return A [BoundingBox] that covers the geometry.
  */
 public fun Geometry.computeBbox(): BoundingBox = computeBbox(this.flattenCoordinates())
-
-/**
- * Takes any GeoJSON object and calculates a bounding box that covers all features or geometries in
- * the object.
- *
- * @return A [BoundingBox] that covers the geometry, or `null` if the object contains no geometry.
- */
-public fun GeoJsonObject.computeBbox(): BoundingBox? {
-    val coords = this.flattenCoordinates()
-    return if (coords.isNotEmpty()) computeBbox(coords) else null
-}
 
 public fun computeBbox(coordinates: List<Position>): BoundingBox {
     require(coordinates.isNotEmpty()) { "coordinates must not be empty" }
@@ -51,3 +37,18 @@ public fun computeBbox(coordinates: List<Position>): BoundingBox {
         }
     return BoundingBox(coordinates[0], coordinates[1], coordinates[2], coordinates[3])
 }
+
+public inline fun <reified T : GeoJsonObject> T.withComputedBbox(): T =
+    when (this) {
+        is FeatureCollection -> {
+            val coords = flattenCoordinates()
+            copy(bbox = if (coords.isNotEmpty()) computeBbox(coords) else null)
+        }
+        is GeometryCollection -> {
+            val coords = flattenCoordinates()
+            copy(bbox = if (coords.isNotEmpty()) computeBbox(coords) else null)
+        }
+        is Feature<*> -> copy(bbox = geometry?.computeBbox())
+        else -> this
+    }
+        as T

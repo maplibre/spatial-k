@@ -31,3 +31,11 @@ repos:
             entry: prettier --write
             additional_dependencies: [prettier]
             types_or: [markdown, json, yaml, css]
+          - id: dump-abi
+            name: dump jvm and klib abi
+            language: system
+            entry: ./gradlew updateLegacyAbi
+            types_or: [kotlin]
+            pass_filenames: false
+
+exclude: '^.*\.api$' # ignore formatting for generated files

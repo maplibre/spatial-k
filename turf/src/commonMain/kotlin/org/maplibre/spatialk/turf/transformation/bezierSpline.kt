@@ -22,22 +22,7 @@ import org.maplibre.spatialk.turf.meta.flattenCoordinates
 public fun LineString.bezierSpline(duration: Int = 10_000, sharpness: Double = 0.85): LineString =
     LineString(bezierSpline(this.flattenCoordinates(), duration, sharpness))
 
-/**
- * Takes a list of [Position] and returns a curved version by applying a Bezier spline algorithm.
- *
- * The bezier spline implementation is a port of the implementation by
- * [Leszek Rybicki](http://leszek.rybicki.cc/) used in turfjs.
- *
- * @param coords the input list of [Position].
- * @param duration time in milliseconds between points in the output data
- * @param sharpness a measure of how curvy the path should be between splines
- * @return A [List] containing [Position] of a curved line around the positions of the input line
- */
-public fun bezierSpline(
-    coords: List<Position>,
-    duration: Int = 10_000,
-    sharpness: Double = 0.85,
-): List<Position> {
+private fun bezierSpline(coords: List<Position>, duration: Int, sharpness: Double): List<Position> {
     // utility function to ensure a given altitude
     fun Position.altitude() = altitude ?: 0.0
 

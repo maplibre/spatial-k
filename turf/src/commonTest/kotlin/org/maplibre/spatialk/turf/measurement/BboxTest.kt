@@ -75,8 +75,17 @@ private val featureCollection = featureCollection {
 class BboxTest {
 
     @Test
+    fun testEmptyFeatures() {
+        assertNull(feature<Nothing>().withComputedBbox().bbox)
+        assertNull(featureCollection {}.withComputedBbox().bbox)
+    }
+
+    @Test
     fun testFeatureCollectionBbox() {
-        assertEquals(BoundingBox(100.0, -10.0, 130.0, 4.0), featureCollection.computeBbox())
+        assertEquals(
+            BoundingBox(100.0, -10.0, 130.0, 4.0),
+            featureCollection.withComputedBbox().bbox,
+        )
     }
 
     @Test
@@ -102,12 +111,6 @@ class BboxTest {
     @Test
     fun testMultiPolygonBbox() {
         assertEquals(BoundingBox(100.0, 0.0, 103.0, 3.0), multiPolygon.computeBbox())
-    }
-
-    @Test
-    fun testEmptyFeatures() {
-        assertNull(feature<Nothing>().computeBbox())
-        assertNull(featureCollection {}.computeBbox())
     }
 
     @Test

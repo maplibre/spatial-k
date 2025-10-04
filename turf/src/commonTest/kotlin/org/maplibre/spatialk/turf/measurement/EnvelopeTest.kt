@@ -2,13 +2,13 @@ package org.maplibre.spatialk.turf.measurement
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertIs
-import org.maplibre.spatialk.geojson.Polygon
+import org.maplibre.spatialk.geojson.MultiPoint
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.geojson.dsl.featureCollection
 import org.maplibre.spatialk.geojson.dsl.lineString
 import org.maplibre.spatialk.geojson.dsl.point
 import org.maplibre.spatialk.geojson.dsl.polygon
+import org.maplibre.spatialk.turf.meta.flattenCoordinates
 
 class EnvelopeTest {
 
@@ -44,9 +44,8 @@ class EnvelopeTest {
             )
         }
 
-        val enveloped = fc.envelope()!!
+        val envelope = MultiPoint(fc.flattenCoordinates()).envelope()
 
-        assertIs<Polygon>(enveloped.geometry, "geometry type should be Polygon")
         assertEquals(
             listOf(
                 listOf(
@@ -57,7 +56,7 @@ class EnvelopeTest {
                     Position(20.0, -10.0),
                 )
             ),
-            (enveloped.geometry!!).coordinates,
+            envelope.coordinates,
             "positions should be correct",
         )
     }

@@ -7,6 +7,7 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.*
 
+/** @return A list of all the coordinates of all the geometry contained in this object. */
 public fun GeoJsonObject.flattenCoordinates(): List<Position> =
     when (this) {
         is Point -> listOf(coordinates)

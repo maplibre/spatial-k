@@ -26,6 +26,7 @@ public fun BoundingBox.toPolygon(): Polygon {
             northeast,
             Position(southwest.longitude, northeast.latitude),
             southwest,
-        )
+        ),
+        bbox = this,
     )
 }

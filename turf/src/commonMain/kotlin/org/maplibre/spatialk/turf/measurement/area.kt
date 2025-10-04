@@ -26,7 +26,13 @@ import org.maplibre.spatialk.units.extensions.times
 public fun Geometry.area(): Area {
     return when (this) {
         is GeometryCollection -> this.geometries.fold(Area.Zero) { acc, geom -> acc + geom.area() }
-        else -> calculateArea(this)
+        is Polygon -> polygonArea(this.coordinates)
+        is MultiPolygon ->
+            this.coordinates.fold(Area.Zero) { acc, coords -> acc + polygonArea(coords) }
+        is LineString,
+        is MultiLineString,
+        is Point,
+        is MultiPoint -> Area.Zero
     }
 }
 
@@ -35,15 +41,6 @@ public fun Geometry.area(): Area {
 @JvmOverloads
 internal fun area(geometry: Geometry, unit: AreaUnit = SquareMeters): Double =
     geometry.area().toDouble(unit)
-
-private fun calculateArea(geometry: Geometry): Area {
-    return when (geometry) {
-        is Polygon -> polygonArea(geometry.coordinates)
-        is MultiPolygon ->
-            geometry.coordinates.fold(Area.Zero) { acc, coords -> acc + polygonArea(coords) }
-        else -> Area.Zero
-    }
-}
 
 private fun polygonArea(coordinates: List<List<Position>>): Area {
     var total = Area.Zero

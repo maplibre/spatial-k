@@ -93,33 +93,9 @@ jobs:
                   fail_level: any
                   filter_mode: diff_context
 
-    check-api:
-        runs-on: ubuntu-latest
-        permissions:
-            contents: read
-            checks: write
-            issues: write
-            pull-requests: write
-        steps:
-            - uses: actions/checkout@v5
-              with:
-                  fetch-depth: 0
-                  fetch-tags: true
-            - uses: actions/setup-java@v5
-              with:
-                  distribution: temurin
-                  java-version: 21
-            - run: ./gradlew updateLegacyAbi
-            - if: ${{ github.event_name == 'pull_request' }}
-              uses: reviewdog/action-suggester@v1
-              with:
-                  tool_name: api-dump
-                  fail_level: any
-                  filter_mode: added
-
     # stub to use as a "required" check on github
     all-good:
-        needs: [build, check-format, build-docs, benchmark, check-api]
+        needs: [build, check-format, build-docs, benchmark]
         runs-on: ubuntu-latest
         steps:
             - run: echo 'All checks passed!'

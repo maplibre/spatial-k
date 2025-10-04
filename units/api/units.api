@@ -295,3 +295,4 @@ public final class org/maplibre/spatialk/units/extensions/Utils {
 	public static final fun convert (DLorg/maplibre/spatialk/units/AreaUnit;Lorg/maplibre/spatialk/units/AreaUnit;)D
 	public static final fun convert (DLorg/maplibre/spatialk/units/LengthUnit;Lorg/maplibre/spatialk/units/LengthUnit;)D
 }
+
