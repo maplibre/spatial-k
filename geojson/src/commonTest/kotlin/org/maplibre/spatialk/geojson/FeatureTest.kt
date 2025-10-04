@@ -298,4 +298,21 @@ class FeatureTest {
             )
         )
     }
+
+    @Test
+    fun testNullGeometry() {
+        val feature =
+            Feature.fromJson<Geometry>(
+                """
+            {
+                "type": "Feature",
+                "geometry": null
+            }
+            """
+            )
+        assertEquals(null, feature.geometry)
+
+        val json = feature.toJson()
+        assertTrue(json.contains("\"geometry\":null"))
+    }
 }
