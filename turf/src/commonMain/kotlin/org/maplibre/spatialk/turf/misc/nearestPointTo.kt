@@ -8,7 +8,7 @@ import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.measurement.bearing
+import org.maplibre.spatialk.turf.measurement.bearingTo
 import org.maplibre.spatialk.turf.measurement.distance
 import org.maplibre.spatialk.turf.measurement.offset
 import org.maplibre.spatialk.units.Length
@@ -79,7 +79,7 @@ private fun findNearestPointOnLine(
             val sectionLength = distance(start, stop)
 
             val heightDistance = maxOf(startDistance, stopDistance)
-            val direction = bearing(start, stop)
+            val direction = start.bearingTo(stop)
             val perpPoint1 = point.offset(heightDistance, direction + 90)
             val perpPoint2 = point.offset(heightDistance, direction - 90)
 

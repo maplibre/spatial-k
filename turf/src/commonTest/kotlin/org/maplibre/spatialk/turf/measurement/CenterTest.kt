@@ -12,19 +12,19 @@ class CenterTest {
     fun testCenterFromFeature() {
         val geometry = Polygon.fromJson(readResourceFile("measurement/area/other.json"))
 
-        val centerPoint = Feature(geometry).center()!!
+        val centerPoint = Feature(geometry).computeBbox()!!.center()
 
-        assertDoubleEquals(-75.71805238723755, centerPoint.coordinates.longitude, 0.0001)
-        assertDoubleEquals(45.3811030151199, centerPoint.coordinates.latitude, 0.0001)
+        assertDoubleEquals(-75.71805238723755, centerPoint.longitude, 0.0001)
+        assertDoubleEquals(45.3811030151199, centerPoint.latitude, 0.0001)
     }
 
     @Test
     fun testCenterFromGeometry() {
         val geometry = Polygon.fromJson(readResourceFile("measurement/area/other.json"))
 
-        val centerPoint = geometry.center()
+        val centerPoint = geometry.computeBbox().center()
 
-        assertDoubleEquals(-75.71805238723755, centerPoint.coordinates.longitude, 0.0001)
-        assertDoubleEquals(45.3811030151199, centerPoint.coordinates.latitude, 0.0001)
+        assertDoubleEquals(-75.71805238723755, centerPoint.longitude, 0.0001)
+        assertDoubleEquals(45.3811030151199, centerPoint.latitude, 0.0001)
     }
 }

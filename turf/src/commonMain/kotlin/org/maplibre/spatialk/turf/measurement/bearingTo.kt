@@ -14,21 +14,20 @@ import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
 import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
 
 /**
- * Takes two positions ([from], [to]) and finds the geographic bearing between them, i.e., the angle
- * measured in degrees from the north line (0 degrees)
+ * Takes two positions and finds the geographic bearing between them, i.e., the angle measured in
+ * degrees from the north line (0 degrees)
  *
- * @param from starting point
  * @param to ending point
  * @param final calculates the final bearing if true
  * @return bearing in decimal degrees, between -180 and 180 degrees (positive clockwise)
  */
 @JvmOverloads
-public fun bearing(from: Position, to: Position, final: Boolean = false): Double {
-    if (final) return finalBearing(from, to)
+public fun Position.bearingTo(to: Position, final: Boolean = false): Double {
+    if (final) return finalBearing(this, to)
 
-    val lon1 = degreesToRadians(from.longitude)
+    val lon1 = degreesToRadians(longitude)
     val lon2 = degreesToRadians(to.longitude)
-    val lat1 = degreesToRadians(from.latitude)
+    val lat1 = degreesToRadians(latitude)
     val lat2 = degreesToRadians(to.latitude)
 
     val a = sin(lon2 - lon1) * cos(lat2)
@@ -37,5 +36,5 @@ public fun bearing(from: Position, to: Position, final: Boolean = false): Double
     return radiansToDegrees(atan2(a, b))
 }
 
-internal fun finalBearing(start: Position, end: Position): Double =
-    (bearing(end, start) + 180) % 360
+private fun finalBearing(start: Position, end: Position): Double =
+    (end.bearingTo(start) + 180) % 360

@@ -6,7 +6,7 @@
 - [x] [`area`](../api/turf/org.maplibre.spatialk.turf.measurement/area.html)
 - [x] [`bbox`](../api/turf/org.maplibre.spatialk.turf.measurement/compute-bbox.html)
 - [x] [`bboxPolygon`](../api/turf/org.maplibre.spatialk.turf.measurement/to-polygon.html)
-- [x] [`bearing`](../api/turf/org.maplibre.spatialk.turf.measurement/bearing.html)
+- [x] [`bearing`](../api/turf/org.maplibre.spatialk.turf.measurement/bearing-to.html)
 - [x] [`center`](../api/turf/org.maplibre.spatialk.turf.measurement/center.html)
 - [ ] `centerOfMass`
 - [ ] `centroid`

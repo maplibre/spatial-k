@@ -1,8 +1,8 @@
 public final class org/maplibre/spatialk/turf/booleans/Booleans {
-	public static final fun contains (Lorg/maplibre/spatialk/geojson/MultiPolygon;Lorg/maplibre/spatialk/geojson/Point;)Z
-	public static final fun contains (Lorg/maplibre/spatialk/geojson/MultiPolygon;Lorg/maplibre/spatialk/geojson/Point;Z)Z
-	public static final fun contains (Lorg/maplibre/spatialk/geojson/Polygon;Lorg/maplibre/spatialk/geojson/Point;)Z
-	public static final fun contains (Lorg/maplibre/spatialk/geojson/Polygon;Lorg/maplibre/spatialk/geojson/Point;Z)Z
+	public static final fun contains (Lorg/maplibre/spatialk/geojson/MultiPolygon;Lorg/maplibre/spatialk/geojson/Position;)Z
+	public static final fun contains (Lorg/maplibre/spatialk/geojson/MultiPolygon;Lorg/maplibre/spatialk/geojson/Position;Z)Z
+	public static final fun contains (Lorg/maplibre/spatialk/geojson/Polygon;Lorg/maplibre/spatialk/geojson/Position;)Z
+	public static final fun contains (Lorg/maplibre/spatialk/geojson/Polygon;Lorg/maplibre/spatialk/geojson/Position;Z)Z
 }
 
 public final class org/maplibre/spatialk/turf/constants/Constants {
@@ -29,11 +29,10 @@ public final class org/maplibre/spatialk/turf/measurement/Measurement {
 	public static final fun area (Lorg/maplibre/spatialk/geojson/Geometry;Lorg/maplibre/spatialk/units/AreaUnit;)D
 	public static synthetic fun area$default (Lorg/maplibre/spatialk/geojson/Geometry;Lorg/maplibre/spatialk/units/AreaUnit;ILjava/lang/Object;)D
 	public static final synthetic fun areaAsArea (Lorg/maplibre/spatialk/geojson/Geometry;)D
-	public static final fun bearing (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
-	public static final fun bearing (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Z)D
-	public static synthetic fun bearing$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;ZILjava/lang/Object;)D
-	public static final fun center (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Lorg/maplibre/spatialk/geojson/Point;
-	public static final fun center (Lorg/maplibre/spatialk/geojson/Geometry;)Lorg/maplibre/spatialk/geojson/Point;
+	public static final fun bearingTo (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
+	public static final fun bearingTo (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Z)D
+	public static synthetic fun bearingTo$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;ZILjava/lang/Object;)D
+	public static final fun center (Lorg/maplibre/spatialk/geojson/BoundingBox;)Lorg/maplibre/spatialk/geojson/Position;
 	public static final fun computeBbox (Ljava/util/List;)Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public static final fun computeBbox (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public static final fun computeBbox (Lorg/maplibre/spatialk/geojson/Geometry;)Lorg/maplibre/spatialk/geojson/BoundingBox;
