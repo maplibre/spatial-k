@@ -90,7 +90,7 @@ jobs:
                   distribution: temurin
                   java-version: 21
             - uses: pre-commit/action@v3.0.1
-            - if: ${{ github.event_name == 'pull_request' && failure() }}
+            - if: ${{ github.event_name == 'pull_request' && always() }}
               uses: reviewdog/action-suggester@v1
               with:
                   tool_name: format
