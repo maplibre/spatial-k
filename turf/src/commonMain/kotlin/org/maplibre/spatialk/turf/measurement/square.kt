@@ -11,7 +11,7 @@ import org.maplibre.spatialk.geojson.Position
 /**
  * Takes a bounding box and calculates the minimum square bounding box that would contain the input.
  *
- * @return [BoundingBox] a square surrounding [this@square]
+ * @return A square [BoundingBox] surrounding the input.
  */
 public fun BoundingBox.square(): BoundingBox {
     val (east, north) = northeast

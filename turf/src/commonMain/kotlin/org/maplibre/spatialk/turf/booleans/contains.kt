@@ -17,7 +17,6 @@ public operator fun MultiPolygon.contains(point: Point): Boolean = this.contains
  * polygon can be convex or concave. The function accounts for holes.
  *
  * @param point input point
- * @param this@contains input polygon
  * @param ignoreBoundary True if the polygon boundary should be ignored when determining if the
  *   point is inside the polygon otherwise false.
  * @return `true` if the Position is inside the Polygon; `false` if the Position is not inside the
@@ -35,7 +34,6 @@ public fun Polygon.contains(point: Point, ignoreBoundary: Boolean): Boolean {
  * polygon can be convex or concave. The function accounts for holes.
  *
  * @param point input point
- * @param this@contains input multipolygon
  * @param ignoreBoundary True if the polygon boundary should be ignored when determining if the
  *   point is inside the polygon otherwise false.
  * @return `true` if the Position is inside the Polygon; `false` if the Position is not inside the

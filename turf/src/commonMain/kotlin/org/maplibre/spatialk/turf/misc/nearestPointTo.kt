@@ -40,7 +40,7 @@ public data class NearestPointOnLineResult(
 /**
  * Finds the closest [Position] along a [LineString] to a given position
  *
- * @param point The [Position] given to find the closest point along the [this@nearestPointOnLine]
+ * @param point The [Position] given to find the closest point along the [LineString]
  * @return The closest position along the line
  */
 public fun LineString.nearestPointTo(point: Position): NearestPointOnLineResult =
@@ -49,7 +49,7 @@ public fun LineString.nearestPointTo(point: Position): NearestPointOnLineResult 
 /**
  * Finds the closest [Position] along a [MultiLineString] to a given position
  *
- * @param point The [Position] given to find the closest point along the [this@nearestPointOnLine]
+ * @param point The [Position] given to find the closest point along the [MultiLineString]
  * @return The closest position along the lines
  */
 public fun MultiLineString.nearestPointTo(point: Position): NearestPointOnLineResult =
