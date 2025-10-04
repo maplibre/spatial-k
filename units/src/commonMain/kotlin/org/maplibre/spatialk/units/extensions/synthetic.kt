@@ -2,6 +2,8 @@
 
 package org.maplibre.spatialk.units.extensions
 
+import kotlin.experimental.ExperimentalTypeInference
+import kotlin.jvm.JvmName
 import kotlin.jvm.JvmSynthetic
 import org.maplibre.spatialk.units.Area
 import org.maplibre.spatialk.units.AreaUnit
@@ -57,6 +59,23 @@ public operator fun Double.times(other: Area): Area = other * this
 public fun Double.toLength(unit: LengthUnit): Length = Length.of(this, unit)
 
 public fun Double.toArea(unit: AreaUnit): Area = Area.of(this, unit)
+
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+@JvmName("sumOfLength")
+public inline fun <T> Iterable<T>.sumOf(selector: (T) -> Length): Length =
+    fold(Length.Zero) { acc, t -> acc + selector(t) }
+
+@JvmName("sumLength")
+public fun Iterable<Length>.sum(): Length = fold(Length.Zero) { acc, t -> acc + t }
+
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+@JvmName("sumOfArea")
+public inline fun <T> Iterable<T>.sumOf(selector: (T) -> Area): Area =
+    fold(Area.Zero) { acc, t -> acc + selector(t) }
+
+@JvmName("sumArea") public fun Iterable<Area>.sum(): Area = fold(Area.Zero) { acc, t -> acc + t }
 
 // SI units - Length
 

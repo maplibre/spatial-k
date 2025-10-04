@@ -51,12 +51,12 @@ public value class Length private constructor(private val valueInMeters: Double)
 
     public operator fun minus(other: Length): Length = Length(valueInMeters - other.valueInMeters)
 
-    public operator fun times(other: Double): Length = Length(valueInMeters * other.toDouble())
+    public operator fun times(other: Double): Length = Length(valueInMeters * other)
 
     public operator fun times(other: Length): Area =
         Area.of(valueInMeters * other.valueInMeters, SquareMeters)
 
-    public operator fun div(other: Double): Length = Length(valueInMeters / other.toDouble())
+    public operator fun div(other: Double): Length = Length(valueInMeters / other)
 
     public operator fun div(other: Length): Double = valueInMeters / other.valueInMeters
 

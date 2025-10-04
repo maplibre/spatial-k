@@ -285,6 +285,10 @@ public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt 
 	public static final fun getSquareYards (I)D
 	public static final fun getYards (D)D
 	public static final fun getYards (I)D
+	public static final fun sumArea (Ljava/lang/Iterable;)D
+	public static final fun sumLength (Ljava/lang/Iterable;)D
+	public static final fun sumOfArea (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;)D
+	public static final fun sumOfLength (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;)D
 	public static final fun times-DQw0L0M (DD)D
 	public static final fun times-NY0MKA4 (DD)D
 	public static final fun toArea (DLorg/maplibre/spatialk/units/AreaUnit;)D

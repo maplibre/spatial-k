@@ -1,6 +1,7 @@
 package org.maplibre.spatialk.units
 
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import org.maplibre.spatialk.testutil.assertDoubleEquals
 import org.maplibre.spatialk.units.extensions.*
 
@@ -37,5 +38,12 @@ class LengthTests {
         assertDoubleEquals(1.6093, 1.miles.inKilometers)
         assertDoubleEquals(1.852, 1.nauticalMiles.inKilometers)
         assertDoubleEquals(100.0, 1.meters.inCentimeters)
+    }
+
+    @Test
+    fun testSumLength() {
+        val lengths = listOf(2.meters, 3.kilometers)
+        assertEquals(3002.meters, lengths.sum())
+        assertEquals(3002.meters, lengths.sumOf { it })
     }
 }

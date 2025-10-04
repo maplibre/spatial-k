@@ -58,9 +58,9 @@ public value class Area private constructor(private val valueInMetersSquared: Do
     public operator fun minus(other: Area): Area =
         Area(valueInMetersSquared - other.valueInMetersSquared)
 
-    public operator fun times(other: Double): Area = Area(valueInMetersSquared * other.toDouble())
+    public operator fun times(other: Double): Area = Area(valueInMetersSquared * other)
 
-    public operator fun div(other: Double): Area = Area(valueInMetersSquared / other.toDouble())
+    public operator fun div(other: Double): Area = Area(valueInMetersSquared / other)
 
     public operator fun div(other: Length): Length =
         Length.of(valueInMetersSquared / other.toDouble(Meters), Meters)
