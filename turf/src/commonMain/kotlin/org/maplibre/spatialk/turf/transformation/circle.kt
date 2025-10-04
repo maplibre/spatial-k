@@ -10,7 +10,7 @@ import kotlin.jvm.JvmSynthetic
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.turf.measurement.computeBbox
-import org.maplibre.spatialk.turf.measurement.destination
+import org.maplibre.spatialk.turf.measurement.offset
 import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
@@ -31,9 +31,9 @@ public fun circle(center: Point, radius: Length, steps: Int = 64): Polygon {
 
     val ring = buildList {
         (0..steps).map { step ->
-            add(destination(center.coordinates, radius, (step * -360) / steps.toDouble()))
+            add(center.coordinates.offset(radius, (step * -360) / steps.toDouble()))
         }
-        add(destination(center.coordinates, radius, 0.0))
+        add(center.coordinates.offset(radius, 0.0))
     }
 
     return Polygon(coordinates = listOf(ring), bbox = computeBbox(ring))

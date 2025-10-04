@@ -10,7 +10,7 @@ class DestinationTest {
     @Test
     fun testDestination() {
         val point0 = Position(-75.0, 38.10096062273525)
-        val (longitude, latitude) = destination(point0, 100.kilometers, 0.0)
+        val (longitude, latitude) = point0.offset(100.kilometers, 0.0)
 
         assertDoubleEquals(-75.0, longitude, 0.1)
         assertDoubleEquals(39.000281, latitude, 0.000001)

@@ -2,7 +2,7 @@
 
 ## Measurement
 
-- [x] [`along`](../api/turf/org.maplibre.spatialk.turf.measurement/along.html)
+- [x] [`along`](../api/turf/org.maplibre.spatialk.turf.measurement/locate-along.html)
 - [x] [`area`](../api/turf/org.maplibre.spatialk.turf.measurement/area.html)
 - [x] [`bbox`](../api/turf/org.maplibre.spatialk.turf.measurement/compute-bbox.html)
 - [x] [`bboxPolygon`](../api/turf/org.maplibre.spatialk.turf.measurement/to-polygon.html)
@@ -10,7 +10,7 @@
 - [x] [`center`](../api/turf/org.maplibre.spatialk.turf.measurement/center.html)
 - [ ] `centerOfMass`
 - [ ] `centroid`
-- [x] [`destination`](../api/turf/org.maplibre.spatialk.turf.measurement/destination.html)
+- [x] [`destination`](../api/turf/org.maplibre.spatialk.turf.measurement/offset.html)
 - [x] [`distance`](../api/turf/org.maplibre.spatialk.turf.measurement/distance.html)
 - [x] [`envelope`](../api/turf/org.maplibre.spatialk.turf.measurement/envelope.html)
 - [x] [`greatCircle`](../api/turf/org.maplibre.spatialk.turf.measurement/great-circle.html)
@@ -18,7 +18,7 @@
 - [x] [`midpoint`](../api/turf/org.maplibre.spatialk.turf.measurement/midpoint.html)
 - [ ] `pointOnFeature`
 - [ ] `polygonTangents`
-- [x] [`pointToLineDistance`](../api/turf/org.maplibre.spatialk.turf.measurement/point-to-line-distance.html)
+- [x] [`pointToLineDistance`](../api/turf/org.maplibre.spatialk.turf.measurement/distance.html)
 - [ ] `rhumbBearing`
 - [ ] `rhumbDestination`
 - [x] [`rhumbDistance`](../api/turf/org.maplibre.spatialk.turf.measurement/rhumb-distance.html)
@@ -67,7 +67,7 @@
 - [ ] `kinks`
 - [ ] `lineArc`
 - [ ] `lineChunk`
-- [x] [`lineIntersect`](../api/turf/org.maplibre.spatialk.turf.misc/line-intersect.html)
+- [x] [`lineIntersect`](../api/turf/org.maplibre.spatialk.turf.misc/intersect.html)
       Partially implemented.
 - [ ] `lineOverlap`
 - [ ] `lineSegment`
@@ -75,7 +75,7 @@
 - [ ] `lineSliceAlong`
 - [ ] `lineSplit`
 - [ ] `mask`
-- [x] [`nearestPointOnLine`](../api/turf/org.maplibre.spatialk.turf.misc/nearest-point-on-line.html)
+- [x] [`nearestPointOnLine`](../api/turf/org.maplibre.spatialk.turf.misc/nearest-point-to.html)
 - [ ] `sector`
 - [ ] `shortestPath`
 - [ ] `unkinkPolygon`
@@ -127,7 +127,7 @@ Use the [GeoJson DSL](../geojson/index.md#geojson-dsl) instead.
 
 ## Meta
 
-- [x] [`coordAll`](../api/turf/org.maplibre.spatialk.turf.meta/coord-all.html)
+- [x] [`coordAll`](../api/turf/org.maplibre.spatialk.turf.meta/flatten-coordinates.html)
 - [ ] `coordEach`
 - [ ] `coordReduce`
 - [ ] `featureEach`
@@ -163,7 +163,7 @@ Use the [GeoJson DSL](../geojson/index.md#geojson-dsl) instead.
 - [ ] `booleanEqual`
 - [ ] `booleanOverlap`
 - [ ] `booleanParallel`
-- [x] [`booleanPointInPolygon`](../api/turf/org.maplibre.spatialk.turf.booleans/point-in-polygon.html)
+- [x] [`booleanPointInPolygon`](../api/turf/org.maplibre.spatialk.turf.booleans/contains.html)
 - [ ] `booleanPointOnLine`
 - [ ] `booleanWithin`
 

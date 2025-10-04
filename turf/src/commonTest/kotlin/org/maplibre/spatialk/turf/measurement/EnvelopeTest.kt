@@ -44,7 +44,7 @@ class EnvelopeTest {
             )
         }
 
-        val enveloped = fc.envelope()
+        val enveloped = fc.envelope()!!
 
         assertIs<Polygon>(enveloped.geometry, "geometry type should be Polygon")
         assertEquals(

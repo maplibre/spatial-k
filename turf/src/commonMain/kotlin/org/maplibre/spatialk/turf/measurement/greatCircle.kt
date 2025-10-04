@@ -17,42 +17,41 @@ import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
 import org.maplibre.spatialk.units.extensions.inEarthRadians
 
 /**
- * Calculate great circles routes as [LineString]. Raises error when [start] and [end] are
- * antipodes.
+ * Calculate great circles routes as [LineString]. Raises error when [from] and [to] are antipodes.
  *
- * @param start source position
- * @param end destination position
- * @param pointCount number of positions on the arc (including [start] and [end])
+ * @param from source position
+ * @param to destination position
+ * @param pointCount number of positions on the arc (including [from] and [to])
  * @param antimeridianOffset from antimeridian in degrees (default long. = +/- 10deg, geometries
  *   within 170deg to -170deg will be split)
- * @throws IllegalArgumentException if [start] and [end] are diametrically opposite.
+ * @throws IllegalArgumentException if [from] and [to] are diametrically opposite.
  */
 public fun greatCircle(
-    start: Position,
-    end: Position,
+    from: Position,
+    to: Position,
     pointCount: Int = 100,
     antimeridianOffset: Double = 10.0,
 ): Geometry {
 
-    val deltaLongitude = start.longitude - end.longitude
-    val deltaLatitude = start.latitude - end.latitude
+    val deltaLongitude = from.longitude - to.longitude
+    val deltaLatitude = from.latitude - to.latitude
 
     // check antipodal positions
     require(abs(deltaLatitude) != 0.0 && abs(deltaLongitude % 360) - PositiveAntimeridian != 0.0) {
-        "Input $start and $end are diametrically opposite, thus there is no single route but rather infinite"
+        "Input $from and $to are diametrically opposite, thus there is no single route but rather infinite"
     }
 
-    val distance = distance(start, end).inEarthRadians
+    val distance = distance(from, to).inEarthRadians
 
     /**
      * Calculates the intermediate point on a great circle line
      * http://www.edwilliams.org/avform.htm#Intermediate
      */
     fun intermediateCoordinate(fraction: Double): Position {
-        val lon1 = degreesToRadians(start.longitude)
-        val lon2 = degreesToRadians(end.longitude)
-        val lat1 = degreesToRadians(start.latitude)
-        val lat2 = degreesToRadians(end.latitude)
+        val lon1 = degreesToRadians(from.longitude)
+        val lon2 = degreesToRadians(to.longitude)
+        val lat1 = degreesToRadians(from.latitude)
+        val lat2 = degreesToRadians(to.latitude)
 
         val a = sin((1 - fraction) * distance) / sin(distance)
         val b = sin(fraction * distance) / sin(distance)
@@ -169,11 +168,11 @@ public fun greatCircle(
     }
 
     val arc = buildList {
-        add(start)
+        add(from)
         (1 until (pointCount - 1)).forEach { i ->
             add(intermediateCoordinate((i + 1).toDouble() / (pointCount - 2 + 1)))
         }
-        add(end)
+        add(to)
     }
 
     val coordinates = createCoordinatesAntimeridianAttended(arc, antimeridianOffset)

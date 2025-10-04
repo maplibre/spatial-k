@@ -10,7 +10,7 @@ import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
 import org.maplibre.spatialk.turf.measurement.computeBbox
-import org.maplibre.spatialk.turf.meta.coordAll
+import org.maplibre.spatialk.turf.meta.flattenCoordinates
 import org.maplibre.spatialk.units.extensions.kilometers
 import org.maplibre.spatialk.units.extensions.meters
 
@@ -43,7 +43,7 @@ class SquareGridTest {
                 Position(13.17194422502807, 52.515969323342695),
                 Position(13.170147683370761, 52.515969323342695),
             )
-        val actualFirstItem = grid.features.first().geometry!!.coordAll()
+        val actualFirstItem = grid.features.first().flattenCoordinates()
 
         assertEquals(expectedFirstItem.size, actualFirstItem.size)
         expectedFirstItem.forEachIndexed { index, _ ->
@@ -58,7 +58,7 @@ class SquareGridTest {
                 Position(13.18452001662924, 52.517765865),
                 Position(13.18272347497193, 52.517765865),
             )
-        val actualLastItem = grid.features.last().geometry!!.coordAll()
+        val actualLastItem = grid.features.last().flattenCoordinates()
 
         assertEquals(expectedLastItem.size, actualLastItem.size)
         expectedFirstItem.forEachIndexed { index, _ ->

@@ -27,8 +27,8 @@ class PointInPolygonTest {
         val ptIn = point(50.0, 50.0)
         val ptOut = point(140.0, 150.0)
 
-        assertTrue(pointInPolygon(ptIn, poly), "point inside simple polygon")
-        assertFalse(pointInPolygon(ptOut, poly), "point outside simple polygon")
+        assertTrue(poly.contains(ptIn), "point inside simple polygon")
+        assertFalse(poly.contains(ptOut), "point outside simple polygon")
 
         // test for a concave polygon
         val concavePoly = polygon {
@@ -44,8 +44,8 @@ class PointInPolygonTest {
         val ptConcaveIn = point(75.0, 75.0)
         val ptConcaveOut = point(25.0, 50.0)
 
-        assertTrue(pointInPolygon(ptConcaveIn, concavePoly), "point inside concave polygon")
-        assertFalse(pointInPolygon(ptConcaveOut, concavePoly), "point outside concave polygon")
+        assertTrue(concavePoly.contains(ptConcaveIn), "point inside concave polygon")
+        assertFalse(concavePoly.contains(ptConcaveOut), "point outside concave polygon")
     }
 
     @Test
@@ -57,9 +57,9 @@ class PointInPolygonTest {
             Feature.fromJson<Polygon>(readResourceFile("booleans/in/poly-with-hole.geojson"))
                 .geometry!!
 
-        assertFalse(pointInPolygon(ptInHole, polyHole))
-        assertTrue(pointInPolygon(ptInPoly, polyHole))
-        assertFalse(pointInPolygon(ptOutsidePoly, polyHole))
+        assertFalse(polyHole.contains(ptInHole))
+        assertTrue(polyHole.contains(ptInPoly))
+        assertFalse(polyHole.contains(ptOutsidePoly))
     }
 
     @Test
@@ -74,11 +74,11 @@ class PointInPolygonTest {
                 )
                 .geometry!!
 
-        assertFalse(pointInPolygon(ptInHole, multiPolyHole))
-        assertTrue(pointInPolygon(ptInPoly, multiPolyHole))
-        assertTrue(pointInPolygon(ptInPoly2, multiPolyHole))
-        assertTrue(pointInPolygon(ptInPoly, multiPolyHole))
-        assertFalse(pointInPolygon(ptOutsidePoly, multiPolyHole))
+        assertFalse(multiPolyHole.contains(ptInHole))
+        assertTrue(multiPolyHole.contains(ptInPoly))
+        assertTrue(multiPolyHole.contains(ptInPoly2))
+        assertTrue(multiPolyHole.contains(ptInPoly))
+        assertFalse(multiPolyHole.contains(ptOutsidePoly))
     }
 
     @Test
@@ -188,7 +188,7 @@ class PointInPolygonTest {
             val testTitle = "Boundary " + (if (ignoreBoundary) "ignored " else "") + "test number "
             tests.forEachIndexed { i, item ->
                 assertEquals(
-                    pointInPolygon(item.second, item.first, ignoreBoundary),
+                    item.first.contains(item.second, ignoreBoundary),
                     item.third,
                     testTitle + i,
                 )
@@ -215,6 +215,6 @@ class PointInPolygonTest {
                 )
             )
 
-        assertTrue(pointInPolygon(pt1, poly))
+        assertTrue(poly.contains(pt1))
     }
 }

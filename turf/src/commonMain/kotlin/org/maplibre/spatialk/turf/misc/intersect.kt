@@ -16,7 +16,7 @@ import org.maplibre.spatialk.geojson.Position
  * @return A list containing any intersections between [line1] and [line2]
  * @throws NotImplementedError if either LineString does not contain exactly two points
  */
-public fun lineIntersect(line1: LineString, line2: LineString): List<Position> {
+public fun intersect(line1: LineString, line2: LineString): List<Position> {
     if (line1.coordinates.size == 2 && line2.coordinates.size == 2) {
         val intersect = intersects(line1, line2)
         return if (intersect != null) listOf(intersect) else emptyList()

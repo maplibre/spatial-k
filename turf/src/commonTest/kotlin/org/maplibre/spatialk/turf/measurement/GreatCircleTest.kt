@@ -7,7 +7,7 @@ import kotlin.test.assertIs
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.meta.coordAll
+import org.maplibre.spatialk.turf.meta.flattenCoordinates
 
 class GreatCircleTest {
 
@@ -23,7 +23,7 @@ class GreatCircleTest {
 
         val greatCircle = greatCircle(start, end, pointCount = 99)
 
-        assertEquals(99, greatCircle.coordAll().size)
+        assertEquals(99, greatCircle.flattenCoordinates().size)
         assertIs<LineString>(greatCircle)
     }
 

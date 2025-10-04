@@ -22,7 +22,7 @@ import org.maplibre.spatialk.units.extensions.times
  * @return area in square meters
  */
 @JvmSynthetic
-@JvmName("__area")
+@JvmName("areaAsArea")
 public fun Geometry.area(): Area {
     return when (this) {
         is GeometryCollection -> this.geometries.fold(Area.Zero) { acc, geom -> acc + geom.area() }

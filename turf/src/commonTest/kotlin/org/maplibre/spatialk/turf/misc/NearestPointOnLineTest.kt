@@ -18,9 +18,8 @@ class NearestPointOnLineTest {
                 .features
 
         val result =
-            nearestPointOnLine(
-                multiLine.geometry as MultiLineString,
-                (point.geometry as Point).coordinates,
+            (multiLine.geometry as MultiLineString).nearestPointTo(
+                (point.geometry as Point).coordinates
             )
         assertDoubleEquals(123.924613, result.point.longitude, 0.00001)
         assertDoubleEquals(-19.025117, result.point.latitude, 0.00001)

@@ -16,24 +16,24 @@ import org.maplibre.spatialk.units.extensions.earthRadians
 
 /** Calculates the distance along a rhumb line between two points. */
 @JvmSynthetic
-@JvmName("__rhumbDistance")
-public fun rhumbDistance(origin: Position, destination: Position): Length {
+@JvmName("rhumbDistanceAsLength")
+public fun rhumbDistance(from: Position, to: Position): Length {
     // compensate the crossing of the 180th meridian
     val destination =
         Position(
-            destination.longitude +
+            to.longitude +
                 when {
-                    destination.longitude - origin.longitude > 180 -> -360
-                    origin.longitude - destination.longitude > 180 -> 360
+                    to.longitude - from.longitude > 180 -> -360
+                    from.longitude - to.longitude > 180 -> 360
                     else -> 0
                 },
-            destination.latitude,
+            to.latitude,
         )
 
-    val phi1 = origin.latitude * PI / 180
+    val phi1 = from.latitude * PI / 180
     val phi2 = destination.latitude * PI / 180
     val deltaPhi = phi2 - phi1
-    var deltaLambda = abs(destination.longitude - origin.longitude) * PI / 180
+    var deltaLambda = abs(destination.longitude - from.longitude) * PI / 180
 
     if (deltaLambda > PI) {
         deltaLambda -= 2 * PI

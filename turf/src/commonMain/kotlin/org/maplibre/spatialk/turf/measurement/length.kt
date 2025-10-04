@@ -24,7 +24,7 @@ import org.maplibre.spatialk.units.LengthUnit
  * @return The length of the geometry
  */
 @JvmSynthetic
-@JvmName("__length")
+@JvmName("lengthAsLength")
 public fun Geometry.length(): Length =
     when (this) {
         is Point -> Length.Zero

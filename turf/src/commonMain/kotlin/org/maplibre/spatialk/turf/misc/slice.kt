@@ -17,8 +17,8 @@ import org.maplibre.spatialk.geojson.Position
  * @return The sliced subsection of the line
  */
 public fun LineString.slice(start: Position, stop: Position): LineString {
-    val startVertex = nearestPointOnLine(this, start)
-    val stopVertex = nearestPointOnLine(this, stop)
+    val startVertex = this.nearestPointTo(start)
+    val stopVertex = this.nearestPointTo(stop)
 
     val (startPos, endPos) =
         if (startVertex.index <= stopVertex.index) startVertex to stopVertex

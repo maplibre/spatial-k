@@ -7,7 +7,7 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.*
 
-public fun Geometry.coordAll(): List<Position> =
+public fun GeoJsonObject.flattenCoordinates(): List<Position> =
     when (this) {
         is Point -> listOf(coordinates)
         is MultiPoint -> coordinates
@@ -15,12 +15,7 @@ public fun Geometry.coordAll(): List<Position> =
         is MultiLineString -> coordinates.flatten()
         is Polygon -> coordinates.flatten()
         is MultiPolygon -> coordinates.flatMap { it.flatten() }
-        is GeometryCollection -> geometries.flatMap { it.coordAll() }
-    }
-
-public fun GeoJsonObject.coordAll(): List<Position>? =
-    when (this) {
-        is Geometry -> this.coordAll()
-        is Feature<*> -> this.geometry?.coordAll()
-        is FeatureCollection -> features.mapNotNull { it.coordAll() }.ifEmpty { null }?.flatten()
+        is GeometryCollection -> geometries.flatMap { it.flattenCoordinates() }
+        is Feature<*> -> this.geometry?.flattenCoordinates().orEmpty()
+        is FeatureCollection -> features.flatMap { it.flattenCoordinates() }
     }

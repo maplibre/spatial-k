@@ -10,7 +10,7 @@ import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.turf.meta.coordAll
+import org.maplibre.spatialk.turf.meta.flattenCoordinates
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.extensions.kilometers
 
@@ -33,11 +33,11 @@ class CircleTest {
                         ?: Length.Zero,
             )
 
-        val allCoordinates = expectedCircle.geometry?.coordAll().orEmpty()
+        val allCoordinates = expectedCircle.geometry?.flattenCoordinates().orEmpty()
         assertTrue(allCoordinates.isNotEmpty())
-        assertEquals(allCoordinates.size, circle.coordAll().size)
+        assertEquals(allCoordinates.size, circle.flattenCoordinates().size)
         allCoordinates.forEachIndexed { i, position ->
-            assertPositionEquals(position, circle.coordAll()[i])
+            assertPositionEquals(position, circle.flattenCoordinates()[i])
         }
     }
 }

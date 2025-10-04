@@ -9,14 +9,14 @@ import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.GeoJsonObject
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.meta.coordAll
+import org.maplibre.spatialk.turf.meta.flattenCoordinates
 
 /**
  * Takes a geometry and calculates the bounding box of all input features.
  *
  * @return A [BoundingBox] that covers the geometry.
  */
-public fun Geometry.computeBbox(): BoundingBox = computeBbox(this.coordAll())
+public fun Geometry.computeBbox(): BoundingBox = computeBbox(this.flattenCoordinates())
 
 /**
  * Takes any GeoJSON object and calculates a bounding box that covers all features or geometries in
@@ -24,9 +24,13 @@ public fun Geometry.computeBbox(): BoundingBox = computeBbox(this.coordAll())
  *
  * @return A [BoundingBox] that covers the geometry, or `null` if the object contains no geometry.
  */
-public fun GeoJsonObject.computeBbox(): BoundingBox? = this.coordAll()?.let { computeBbox(it) }
+public fun GeoJsonObject.computeBbox(): BoundingBox? {
+    val coords = this.flattenCoordinates()
+    return if (coords.isNotEmpty()) computeBbox(coords) else null
+}
 
 public fun computeBbox(coordinates: List<Position>): BoundingBox {
+    require(coordinates.isNotEmpty()) { "coordinates must not be empty" }
     val coordinates =
         coordinates.fold(
             doubleArrayOf(
@@ -36,6 +40,9 @@ public fun computeBbox(coordinates: List<Position>): BoundingBox {
                 Double.NEGATIVE_INFINITY,
             )
         ) { result, (longitude, latitude) ->
+            require(longitude.isFinite() && latitude.isFinite()) {
+                "coordinates must be finite but got ($longitude, $latitude)"
+            }
             if (result[0] > longitude) result[0] = longitude
             if (result[1] > latitude) result[1] = latitude
             if (result[2] < longitude) result[2] = longitude

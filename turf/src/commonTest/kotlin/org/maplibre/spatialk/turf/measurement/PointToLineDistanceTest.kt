@@ -19,7 +19,7 @@ class PointToLineDistanceTest {
                 Position(-1.5, -1.5),
             )
 
-        val distance = pointToLineDistance(point, line)
+        val distance = distance(point, line)
         assertDoubleEquals(188.01568693725255, distance.inKilometers, 0.000001)
     }
 }

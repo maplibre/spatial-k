@@ -9,12 +9,13 @@ import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.turf.measurement.bearing
-import org.maplibre.spatialk.turf.measurement.destination
 import org.maplibre.spatialk.turf.measurement.distance
+import org.maplibre.spatialk.turf.measurement.offset
 import org.maplibre.spatialk.units.Length
+import org.maplibre.spatialk.units.LengthUnit
 
 /**
- * Result values from [nearestPointOnLine].
+ * Result values from [findNearestPointOnLine].
  *
  * @property point The point on the line nearest to the input position
  * @property distance Distance between the input position and [point]
@@ -26,31 +27,35 @@ public data class NearestPointOnLineResult(
     val distance: Length,
     val location: Length,
     val index: Int,
-)
+) {
+    @PublishedApi
+    @Suppress("unused")
+    internal fun getDistance(unit: LengthUnit): Double = distance.toDouble(unit)
+
+    @PublishedApi
+    @Suppress("unused")
+    internal fun getLocation(unit: LengthUnit): Double = location.toDouble(unit)
+}
 
 /**
  * Finds the closest [Position] along a [LineString] to a given position
  *
- * @param line The [LineString] to find a position along
- * @param point The [Position] given to find the closest point along the [line]
+ * @param point The [Position] given to find the closest point along the [this@nearestPointOnLine]
  * @return The closest position along the line
  */
-public fun nearestPointOnLine(line: LineString, point: Position): NearestPointOnLineResult {
-    return nearestPointOnLine(listOf(line.coordinates), point)
-}
+public fun LineString.nearestPointTo(point: Position): NearestPointOnLineResult =
+    findNearestPointOnLine(listOf(coordinates), point)
 
 /**
  * Finds the closest [Position] along a [MultiLineString] to a given position
  *
- * @param lines The [MultiLineString] to find a position along
- * @param point The [Position] given to find the closest point along the [lines]
+ * @param point The [Position] given to find the closest point along the [this@nearestPointOnLine]
  * @return The closest position along the lines
  */
-public fun nearestPointOnLine(lines: MultiLineString, point: Position): NearestPointOnLineResult {
-    return nearestPointOnLine(lines.coordinates, point)
-}
+public fun MultiLineString.nearestPointTo(point: Position): NearestPointOnLineResult =
+    findNearestPointOnLine(coordinates, point)
 
-internal fun nearestPointOnLine(
+private fun findNearestPointOnLine(
     lines: List<List<Position>>,
     point: Position,
 ): NearestPointOnLineResult {
@@ -75,12 +80,11 @@ internal fun nearestPointOnLine(
 
             val heightDistance = maxOf(startDistance, stopDistance)
             val direction = bearing(start, stop)
-            val perpPoint1 = destination(point, heightDistance, direction + 90)
-            val perpPoint2 = destination(point, heightDistance, direction - 90)
+            val perpPoint1 = point.offset(heightDistance, direction + 90)
+            val perpPoint2 = point.offset(heightDistance, direction - 90)
 
             val intersect =
-                lineIntersect(LineString(perpPoint1, perpPoint2), LineString(start, stop))
-                    .getOrNull(0)
+                intersect(LineString(perpPoint1, perpPoint2), LineString(start, stop)).getOrNull(0)
 
             if (startDistance < closest.distance) {
                 closest =

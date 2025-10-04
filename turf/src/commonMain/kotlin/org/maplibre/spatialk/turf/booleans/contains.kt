@@ -5,37 +5,28 @@ package org.maplibre.spatialk.turf.booleans
 
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
-import kotlin.jvm.JvmOverloads
-import kotlin.jvm.JvmSynthetic
 import org.maplibre.spatialk.geojson.*
 import org.maplibre.spatialk.turf.measurement.computeBbox
 
-@JvmSynthetic
-public operator fun Polygon.contains(point: Point): Boolean = pointInPolygon(point, this)
+public operator fun Polygon.contains(point: Point): Boolean = this.contains(point, false)
 
-@JvmSynthetic
-public operator fun MultiPolygon.contains(point: Point): Boolean = pointInPolygon(point, this)
+public operator fun MultiPolygon.contains(point: Point): Boolean = this.contains(point, false)
 
 /**
  * Takes a [Point] and a [Polygon] and determines if the point resides inside the polygon. The
  * polygon can be convex or concave. The function accounts for holes.
  *
  * @param point input point
- * @param polygon input polygon
+ * @param this@contains input polygon
  * @param ignoreBoundary True if the polygon boundary should be ignored when determining if the
  *   point is inside the polygon otherwise false.
  * @return `true` if the Position is inside the Polygon; `false` if the Position is not inside the
  *   Polygon
  */
-@JvmOverloads
-public fun pointInPolygon(
-    point: Point,
-    polygon: Polygon,
-    ignoreBoundary: Boolean = false,
-): Boolean {
-    val bbox = polygon.computeBbox()
+public fun Polygon.contains(point: Point, ignoreBoundary: Boolean): Boolean {
+    val bbox = this.computeBbox()
     // normalize to multipolygon
-    val polys = listOf(polygon.coordinates)
+    val polys = listOf(coordinates)
     return pointInPolygon(point.coordinates, bbox, polys, ignoreBoundary)
 }
 
@@ -44,20 +35,15 @@ public fun pointInPolygon(
  * polygon can be convex or concave. The function accounts for holes.
  *
  * @param point input point
- * @param polygon input multipolygon
+ * @param this@contains input multipolygon
  * @param ignoreBoundary True if the polygon boundary should be ignored when determining if the
  *   point is inside the polygon otherwise false.
  * @return `true` if the Position is inside the Polygon; `false` if the Position is not inside the
  *   Polygon
  */
-@JvmOverloads
-public fun pointInPolygon(
-    point: Point,
-    polygon: MultiPolygon,
-    ignoreBoundary: Boolean = false,
-): Boolean {
-    val bbox = polygon.computeBbox()
-    val polys = polygon.coordinates
+public fun MultiPolygon.contains(point: Point, ignoreBoundary: Boolean): Boolean {
+    val bbox = this.computeBbox()
+    val polys = coordinates
     return pointInPolygon(point.coordinates, bbox, polys, ignoreBoundary)
 }
 
