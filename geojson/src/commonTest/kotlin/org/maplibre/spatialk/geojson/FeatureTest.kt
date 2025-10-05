@@ -295,18 +295,14 @@ class FeatureTest {
 
     @Test
     fun testNullGeometry() {
-        val feature =
-            Feature.fromJson<Geometry?>(
-                """
-            {
-                "type": "Feature",
-                "geometry": null
-            }
-            """
-            )
-        assertEquals(null, feature.geometry)
+        val nullJson = """{"type": "Feature", "geometry": null}"""
+        assertNull(Feature.fromJson<Geometry?>(nullJson).geometry)
+        assertNull(Feature.fromJson<MultiPoint?>(nullJson).geometry)
+        assertNull(Feature.fromJson<Nothing?>(nullJson).geometry)
+        assertFailsWith<SerializationException> { Feature.fromJson<Geometry>(nullJson) }
+        assertFailsWith<SerializationException> { Feature.fromJson<MultiPoint>(nullJson) }
 
-        val json = Json.decodeFromString(JsonObject.serializer(), feature.toJson())
+        val json = Json.decodeFromString<JsonObject>(Feature.fromJson<Geometry?>(nullJson).toJson())
         assertTrue(json.containsKey("geometry"))
         assertEquals(JsonNull, json["geometry"])
     }
@@ -330,13 +326,5 @@ class FeatureTest {
         assertIs<MultiPoint>(Feature.fromJson<MultiPoint?>(multipointJson).geometry)
         assertFailsWith<SerializationException> { Feature.fromJson<LineString>(multipointJson) }
         assertFailsWith<SerializationException> { Feature.fromJson<Nothing?>(multipointJson) }
-
-        val nullJson = """{"type": "Feature", "geometry": null}"""
-
-        assertNull(Feature.fromJson<Geometry?>(nullJson).geometry)
-        assertNull(Feature.fromJson<MultiPoint?>(nullJson).geometry)
-        assertNull(Feature.fromJson<Nothing?>(nullJson).geometry)
-        assertFailsWith<SerializationException> { Feature.fromJson<Geometry>(nullJson) }
-        assertFailsWith<SerializationException> { Feature.fromJson<MultiPoint>(nullJson) }
     }
 }
