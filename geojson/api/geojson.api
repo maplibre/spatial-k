@@ -556,7 +556,9 @@ public final synthetic class org/maplibre/spatialk/geojson/dsl/FeatureCollection
 }
 
 public final synthetic class org/maplibre/spatialk/geojson/dsl/FeatureDslKt {
+	public static final fun feature (Ljava/lang/String;Lorg/maplibre/spatialk/geojson/BoundingBox;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/Feature;
 	public static final fun feature (Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/String;Lorg/maplibre/spatialk/geojson/BoundingBox;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/Feature;
+	public static synthetic fun feature$default (Ljava/lang/String;Lorg/maplibre/spatialk/geojson/BoundingBox;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Feature;
 	public static synthetic fun feature$default (Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/String;Lorg/maplibre/spatialk/geojson/BoundingBox;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Feature;
 }
 
