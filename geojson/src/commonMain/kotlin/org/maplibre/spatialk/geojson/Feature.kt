@@ -10,6 +10,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
+import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.FeatureGeometrySerializer
 
 /**
@@ -53,7 +54,9 @@ constructor(
         @JvmSynthetic // See below for Java-facing API
         @JvmName("__fromJson") // Prevent clash with Java-facing API
         @OptIn(SensitiveGeoJsonApi::class)
-        public inline fun <reified T : Geometry?> fromJson(json: String): Feature<T> {
+        public inline fun <reified T : Geometry?> fromJson(
+            @Language("json") json: String
+        ): Feature<T> {
             @Suppress("UNCHECKED_CAST") // checked in `.also` block
             return GeoJson.decodeFromString<Feature<*>>(json).also {
                 if (it.geometry !is T?)
@@ -64,7 +67,9 @@ constructor(
         @JvmSynthetic // See below for Java-facing API
         @JvmName("__fromJsonOrNull") // Prevent clash with Java-facing API
         @OptIn(SensitiveGeoJsonApi::class)
-        public inline fun <reified T : Geometry?> fromJsonOrNull(json: String): Feature<T>? {
+        public inline fun <reified T : Geometry?> fromJsonOrNull(
+            @Language("json") json: String
+        ): Feature<T>? {
             @Suppress("UNCHECKED_CAST") // checked in `.also` block
             return GeoJson.decodeFromStringOrNull<Feature<*>>(json).also {
                 if (it?.geometry !is T?) return null
