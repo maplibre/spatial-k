@@ -1,17 +1,8 @@
 package org.maplibre.spatialk.geojson
 
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonNull
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.*
 import org.maplibre.spatialk.geojson.utils.DELTA
 import org.maplibre.spatialk.geojson.utils.assertJsonEquals
 
@@ -323,34 +314,19 @@ class FeatureTest {
     @OptIn(SensitiveGeoJsonApi::class)
     @Test
     fun testIncorrectGeometry() {
-        assertFailsWith<SerializationException> {
-            Feature.fromJson<LineString>(
-                """
-                {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [125.6, 10.1]
-                    }
+        val json =
+            """
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "MultiPoint",
+                    "coordinates": [[125.6, 10.1], [125.6, 10.1]]
                 }
-                """
-            )
-        }
+            }
+            """
 
-        // TODO there's no type validation when using GeoJson
-        // assertFailsWith<SerializationException> {
-        //    val feat =
-        //        GeoJson.decodeFromString<Feature<LineString>>(
-        //            """
-        //        {
-        //            "type": "Feature",
-        //            "geometry": {
-        //                "type": "Point",
-        //                "coordinates": [125.6, 10.1]
-        //            }
-        //        }
-        //        """
-        //        )
-        // }
+        val feat: Feature<*> = Feature.fromJson<Geometry?>(json)
+        assertIs<MultiPoint>(feat.geometry)
+        assertFailsWith<SerializationException> { Feature.fromJson<LineString>(json) }
     }
 }
