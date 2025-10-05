@@ -19,7 +19,7 @@ class BezierSplineTest {
                 readResourceFile("transformation/bezierspline/out/bezierIn.json")
             )
 
-        assertEquals(expectedOut.geometry, feature.geometry!!.bezierSpline())
+        assertEquals(expectedOut.geometry, feature.geometry.bezierSpline())
     }
 
     @Test
@@ -33,7 +33,7 @@ class BezierSplineTest {
                 readResourceFile("transformation/bezierspline/out/simple.json")
             )
 
-        assertEquals(expectedOut.geometry, feature.geometry!!.bezierSpline())
+        assertEquals(expectedOut.geometry, feature.geometry.bezierSpline())
     }
 
     /**
@@ -52,6 +52,6 @@ class BezierSplineTest {
                 readResourceFile("transformation/bezierspline/out/issue-#1063.json")
             )
 
-        assertEquals(expectedOut.geometry, feature.geometry!!.bezierSpline())
+        assertEquals(expectedOut.geometry, feature.geometry.bezierSpline())
     }
 }

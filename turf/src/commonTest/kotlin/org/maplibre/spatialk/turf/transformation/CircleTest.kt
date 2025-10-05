@@ -27,7 +27,7 @@ class CircleTest {
 
         val circle =
             circle(
-                center = pointFeature.geometry!!.coordinates,
+                center = pointFeature.geometry.coordinates,
                 radius =
                     pointFeature.properties?.get("radius")?.jsonPrimitive?.double?.kilometers
                         ?: Length.Zero,

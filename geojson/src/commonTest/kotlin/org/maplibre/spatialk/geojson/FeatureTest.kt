@@ -125,9 +125,8 @@ class FeatureTest {
             """
                 .trimIndent()
         val feature = Feature.fromJson<Point>(json)
-        val point = feature.geometry!!
-        assertEquals(point.coordinates.longitude, 125.6, DELTA)
-        assertEquals(point.coordinates.latitude, 10.1, DELTA)
+        assertEquals(feature.geometry.coordinates.longitude, 125.6, DELTA)
+        assertEquals(feature.geometry.coordinates.latitude, 10.1, DELTA)
         assertEquals(feature.properties!!["name"]!!.jsonPrimitive.content, "Dinagat Islands")
     }
 
@@ -153,7 +152,7 @@ class FeatureTest {
             """
                 .trimIndent()
         val feature = Feature.fromJson<LineString>(json)
-        val points = feature.geometry!!.coordinates
+        val points = feature.geometry.coordinates
         assertNotNull(points)
         assertEquals(4, points.size.toLong())
         assertEquals(105.0, points[3].longitude, DELTA)
@@ -304,7 +303,7 @@ class FeatureTest {
     @Test
     fun testNullGeometry() {
         val feature =
-            Feature.fromJson<Geometry>(
+            Feature.fromJson<Geometry?>(
                 """
             {
                 "type": "Feature",

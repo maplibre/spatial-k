@@ -15,4 +15,4 @@ public fun <T : Geometry> feature(
     id: String? = null,
     bbox: BoundingBox? = null,
     properties: (JsonObjectBuilder.() -> Unit)? = null,
-): Feature<T> = Feature(geometry, properties?.let { buildJsonObject { properties() } }, id, bbox)
+): Feature<T?> = Feature(geometry, properties?.let { buildJsonObject { properties() } }, id, bbox)
