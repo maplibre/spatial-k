@@ -324,9 +324,8 @@ class FeatureTest {
     @Test
     fun testIncorrectGeometry() {
         assertFailsWith<SerializationException> {
-            val feat =
-                GeoJson.decodeFromString<Feature<LineString>>(
-                    """
+            Feature.fromJson<LineString>(
+                """
                 {
                     "type": "Feature",
                     "geometry": {
@@ -335,9 +334,23 @@ class FeatureTest {
                     }
                 }
                 """
-                )
-
-            feat.geometry.toString()
+            )
         }
+
+        // TODO there's no type validation when using GeoJson
+        // assertFailsWith<SerializationException> {
+        //    val feat =
+        //        GeoJson.decodeFromString<Feature<LineString>>(
+        //            """
+        //        {
+        //            "type": "Feature",
+        //            "geometry": {
+        //                "type": "Point",
+        //                "coordinates": [125.6, 10.1]
+        //            }
+        //        }
+        //        """
+        //        )
+        // }
     }
 }

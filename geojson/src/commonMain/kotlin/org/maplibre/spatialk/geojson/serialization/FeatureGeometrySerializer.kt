@@ -1,7 +1,6 @@
 package org.maplibre.spatialk.geojson.serialization
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
@@ -15,13 +14,7 @@ internal class FeatureGeometrySerializer<T : Geometry?> : KSerializer<T> {
 
     @Suppress("UNCHECKED_CAST")
     override fun deserialize(decoder: Decoder): T {
-        val value = delegate.deserialize(decoder)
-
-        try {
-            return value as T
-        } catch (e: ClassCastException) {
-            throw SerializationException("Unexpected geometry type: ${e.message}")
-        }
+        return delegate.deserialize(decoder) as T
     }
 
     override fun serialize(encoder: Encoder, value: T): Unit = delegate.serialize(encoder, value)
