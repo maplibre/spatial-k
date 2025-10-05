@@ -25,12 +25,13 @@ import org.maplibre.spatialk.geojson.serialization.FeatureGeometrySerializer
  * @see FeatureCollection
  */
 @Serializable
-@Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @SerialName("Feature")
 public data class Feature<out T : Geometry?>
 @JvmOverloads
 constructor(
-    @Serializable(with = FeatureGeometrySerializer::class) public val geometry: T,
+    @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
+    @Serializable(with = FeatureGeometrySerializer::class)
+    public val geometry: T,
     public val properties: JsonObject? = null,
     public val id: String? = null,
     override val bbox: BoundingBox? = null,
