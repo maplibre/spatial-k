@@ -2,30 +2,37 @@ package org.maplibre.spatialk.geojson.serialization
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.cbor.Cbor
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.protobuf.ProtoBuf
+import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.GeometryCollection
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Point
-import org.maplibre.spatialk.geojson.Position
 
-class ProtoBufSerializationTests {
-    fun assertFormat(serialize: (GeometryCollection) -> GeometryCollection) {
+class SerializationFormatTests {
+    fun assertFormat(serialize: (Feature<GeometryCollection>) -> Feature<GeometryCollection>) {
         val points = arrayOf(Point(1.0, 2.0), Point(2.0, 3.0))
 
         val lineString = LineString(*points)
         val geometries = listOf(points[0], lineString)
-
         val geometryCollection = GeometryCollection(geometries)
+        val feature =
+            Feature(
+                geometryCollection,
+                JsonObject(mapOf("name" to JsonPrimitive("Dinagat Islands"))),
+            )
 
-        val actualGeometryCollection = serialize(geometryCollection)
+        val actualFeature = serialize(feature)
 
-        val expectedGeometryCollection =
-            GeometryCollection.fromJson(
+        val expectedFeature =
+            Feature.fromJson<GeometryCollection>(
                 """
             {
+              "type": "Feature",
+              "geometry": {
                 "type": "GeometryCollection",
                 "geometries": [
                     {
@@ -40,38 +47,33 @@ class ProtoBufSerializationTests {
                         ]
                     }
                 ]
+                },
+                "properties": {
+                    "name": "Dinagat Islands"
+                }
             }
             """
             )
-        assertEquals(expectedGeometryCollection, actualGeometryCollection)
-
-        val point = actualGeometryCollection.geometries[0]
-        assertTrue(point is Point)
-        assertEquals(Position(1.0, 2.0), point.coordinates)
-
-        val ls = actualGeometryCollection.geometries[1]
-        assertTrue(ls is LineString)
+        assertEquals(expectedFeature, actualFeature)
     }
 
+    private val serializer = Feature.serializer(GeometryCollection.serializer())
+
+    @OptIn(ExperimentalSerializationApi::class)
     @Test
     fun testProtoBufSerialization() {
         assertFormat { obj ->
             @OptIn(ExperimentalSerializationApi::class)
-            ProtoBuf.decodeFromByteArray(
-                GeometryCollection.serializer(),
-                ProtoBuf.encodeToByteArray(GeometryCollection.serializer(), obj),
-            )
+            ProtoBuf.decodeFromByteArray(serializer, ProtoBuf.encodeToByteArray(serializer, obj))
         }
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     @Test
     fun testCborSerialization() {
         assertFormat { obj ->
             @OptIn(ExperimentalSerializationApi::class)
-            Cbor.decodeFromByteArray(
-                GeometryCollection.serializer(),
-                Cbor.encodeToByteArray(GeometryCollection.serializer(), obj),
-            )
+            Cbor.decodeFromByteArray(serializer, Cbor.encodeToByteArray(serializer, obj))
         }
     }
 }
