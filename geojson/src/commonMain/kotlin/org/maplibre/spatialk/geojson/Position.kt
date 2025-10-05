@@ -5,6 +5,12 @@ import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.PositionSerializer
+import org.maplibre.spatialk.units.Length
+import org.maplibre.spatialk.units.Rotation
+import org.maplibre.spatialk.units.extensions.degrees
+import org.maplibre.spatialk.units.extensions.inDegrees
+import org.maplibre.spatialk.units.extensions.inMeters
+import org.maplibre.spatialk.units.extensions.meters
 
 /**
  * A [Position] is the fundamental geometry construct.
@@ -44,32 +50,32 @@ public class Position internal constructor(internal val coordinates: DoubleArray
         require(coordinates.size >= 2) { "At least two coordinates must be provided" }
     }
 
-    // We need to manually write our overloads to prevent Position(0.0, 0.0, 0.0) from calling the
+    // We manually write our overloads to prevent Position(0.0, 0.0, 0.0) from calling the
     // sensitive constructor with zero varargs.
 
     public constructor(
-        longitude: Double,
-        latitude: Double,
-    ) : this(doubleArrayOf(longitude, latitude))
+        longitude: Rotation,
+        latitude: Rotation,
+    ) : this(doubleArrayOf(longitude.inDegrees, latitude.inDegrees))
 
     public constructor(
-        longitude: Double,
-        latitude: Double,
-        altitude: Double,
-    ) : this(doubleArrayOf(longitude, latitude, altitude))
+        longitude: Rotation,
+        latitude: Rotation,
+        altitude: Length,
+    ) : this(doubleArrayOf(longitude.inDegrees, latitude.inDegrees, altitude.inMeters))
 
     public constructor(
-        longitude: Double,
-        latitude: Double,
-        altitude: Double? = null,
+        longitude: Rotation,
+        latitude: Rotation,
+        altitude: Length? = null,
     ) : this(
-        if (altitude == null) doubleArrayOf(longitude, latitude)
-        else doubleArrayOf(longitude, latitude, altitude)
+        if (altitude == null) doubleArrayOf(longitude.inDegrees, latitude.inDegrees)
+        else doubleArrayOf(longitude.inDegrees, latitude.inDegrees, altitude.inMeters)
     )
 
     /**
-     * Construct a [Position] with more than the standard three axes ([longitude], [latitude],
-     * [altitude]).
+     * Construct a [Position] with more than the standard three axes ([longitudeDegrees],
+     * [latitudeDegrees], [altitudeMeters]).
      * > Implementations SHOULD NOT extend positions beyond three elements because the semantics of
      * > extra elements are unspecified and ambiguous. Historically, some implementations have used
      * > a fourth element to carry a linear referencing measure (sometimes denoted as "M") or a
@@ -81,20 +87,20 @@ public class Position internal constructor(internal val coordinates: DoubleArray
      */
     @SensitiveGeoJsonApi
     public constructor(
-        longitude: Double,
-        latitude: Double,
-        altitude: Double,
+        longitudeDegrees: Double,
+        latitudeDegrees: Double,
+        altitudeMeters: Double,
         vararg additionalElements: Double,
-    ) : this(doubleArrayOf(longitude, latitude, altitude, *additionalElements))
+    ) : this(doubleArrayOf(longitudeDegrees, latitudeDegrees, altitudeMeters, *additionalElements))
 
-    public val longitude: Double
-        get() = coordinates[0]
+    public val longitude: Rotation
+        get() = coordinates[0].degrees
 
-    public val latitude: Double
-        get() = coordinates[1]
+    public val latitude: Rotation
+        get() = coordinates[1].degrees
 
-    public val altitude: Double?
-        get() = if (hasAltitude) coordinates[2] else null
+    public val altitude: Length?
+        get() = if (hasAltitude) coordinates[2].meters else null
 
     /** @return the coordinate at the given index. */
     public operator fun get(index: Int): Double = coordinates[index]
@@ -113,13 +119,13 @@ public class Position internal constructor(internal val coordinates: DoubleArray
     public override fun iterator(): Iterator<Double> = coordinates.iterator()
 
     /** @return [longitude] */
-    public operator fun component1(): Double = longitude
+    public operator fun component1(): Rotation = longitude
 
     /** @return [latitude] */
-    public operator fun component2(): Double = latitude
+    public operator fun component2(): Rotation = latitude
 
     /** @return [altitude] */
-    public operator fun component3(): Double? = altitude
+    public operator fun component3(): Length? = altitude
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

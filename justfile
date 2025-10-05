@@ -10,7 +10,7 @@ pre-commit-uninstall:
     pre-commit uninstall
 
 format:
-    pre-commit run --all-files || true
+    pre-commit run --all-files --hook-stage manual || true
 
 test-jvm:
     ./gradlew jvmTest

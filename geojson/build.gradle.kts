@@ -13,6 +13,7 @@ kotlin {
             dependencies {
                 implementation(libs.jetbrains.annotations)
                 api(libs.kotlinx.serialization.json)
+                api(project(":units"))
             }
         }
 

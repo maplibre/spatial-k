@@ -12,5 +12,5 @@ import org.maplibre.spatialk.geojson.Position
 public fun BoundingBox.center(): Position {
     val x = (southwest.longitude + northeast.longitude) / 2
     val y = (southwest.latitude + northeast.latitude) / 2
-    return Position(longitude = x, latitude = y)
+    return Position(longitudeDegrees = x, latitudeDegrees = y)
 }
