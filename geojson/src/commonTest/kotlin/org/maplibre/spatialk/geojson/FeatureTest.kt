@@ -2,9 +2,11 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
@@ -316,5 +318,26 @@ class FeatureTest {
         val json = Json.decodeFromString(JsonObject.serializer(), feature.toJson())
         assertTrue(json.containsKey("geometry"))
         assertEquals(JsonNull, json["geometry"])
+    }
+
+    @OptIn(SensitiveGeoJsonApi::class)
+    @Test
+    fun testIncorrectGeometry() {
+        assertFailsWith<SerializationException> {
+            val feat =
+                GeoJson.decodeFromString<Feature<LineString>>(
+                    """
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [125.6, 10.1]
+                    }
+                }
+                """
+                )
+
+            feat.geometry.toString()
+        }
     }
 }

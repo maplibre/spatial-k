@@ -17,7 +17,11 @@ internal class FeatureGeometrySerializer<T : Geometry?> : KSerializer<T> {
     override fun deserialize(decoder: Decoder): T {
         val value = delegate.deserialize(decoder)
 
-        return value as? T ?: throw SerializationException("Unexpected geometry type")
+        try {
+            return value as T
+        } catch (e: ClassCastException) {
+            throw SerializationException("Unexpected geometry type: ${e.message}")
+        }
     }
 
     override fun serialize(encoder: Encoder, value: T): Unit = delegate.serialize(encoder, value)

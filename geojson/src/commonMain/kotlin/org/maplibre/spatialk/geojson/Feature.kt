@@ -10,7 +10,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
-import org.maplibre.spatialk.geojson.serialization.FeatureGeometrySerializer
+import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
 
 /**
  * A feature object represents a spatially bounded thing.
@@ -23,13 +23,14 @@ import org.maplibre.spatialk.geojson.serialization.FeatureGeometrySerializer
  *   https://tools.ietf.org/html/rfc7946#section-3.2</a>
  * @see FeatureCollection
  */
-@Serializable
-@Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
+@Serializable(with = FeatureSerializer::class)
+// @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @SerialName("Feature")
 public data class Feature<out T : Geometry?>
 @JvmOverloads
 constructor(
-    @Serializable(with = FeatureGeometrySerializer::class) public val geometry: T,
+    // @Serializable(with = FeatureGeometrySerializer::class)
+    public val geometry: T,
     public val properties: JsonObject? = null,
     public val id: String? = null,
     override val bbox: BoundingBox? = null,
