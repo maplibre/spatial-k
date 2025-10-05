@@ -10,11 +10,12 @@ import kotlin.jvm.JvmSynthetic
 import kotlin.math.*
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
 import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
+import org.maplibre.spatialk.units.extensions.degrees
 import org.maplibre.spatialk.units.extensions.earthRadians
+import org.maplibre.spatialk.units.extensions.inRadians
 import org.maplibre.spatialk.units.extensions.times
 
 /**
@@ -29,10 +30,10 @@ import org.maplibre.spatialk.units.extensions.times
 @JvmSynthetic
 @JvmName("distanceAsLength")
 public fun distance(from: Position, to: Position): Length {
-    val dLat = degreesToRadians(to.latitude - from.latitude)
-    val dLon = degreesToRadians(to.longitude - from.longitude)
-    val lat1 = degreesToRadians(from.latitude)
-    val lat2 = degreesToRadians(to.latitude)
+    val dLat = (to.latitude - from.latitude).degrees.inRadians
+    val dLon = (to.longitude - from.longitude).degrees.inRadians
+    val lat1 = from.latitude.degrees.inRadians
+    val lat2 = to.latitude.degrees.inRadians
 
     val a = sin(dLat / 2).pow(2) + sin(dLon / 2).pow(2) * cos(lat1) * cos(lat2)
     return 2.0 * atan2(sqrt(a), sqrt(1 - a)).earthRadians

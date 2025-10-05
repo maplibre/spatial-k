@@ -24,4 +24,6 @@ public data object International {
 
     @JvmField
     public val Kilometers: LengthUnit = LengthUnit(1_000.0, "km", squaredUnit = SquareKilometers)
+
+    @JvmField public val Radians: RotationUnit = RotationUnit(1.0, "rad")
 }

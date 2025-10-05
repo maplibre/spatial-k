@@ -10,11 +10,16 @@ import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.constants.NegativeAntimeridian
-import org.maplibre.spatialk.turf.constants.PositiveAntimeridian
-import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
-import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
+import org.maplibre.spatialk.units.Rotation
+import org.maplibre.spatialk.units.extensions.degrees
+import org.maplibre.spatialk.units.extensions.inDegrees
 import org.maplibre.spatialk.units.extensions.inEarthRadians
+import org.maplibre.spatialk.units.extensions.inRadians
+import org.maplibre.spatialk.units.extensions.radians
+
+private const val PositiveAntimeridian = 180.0 // degrees
+
+private const val NegativeAntimeridian = -180.0 // degrees
 
 /**
  * Calculate great circles routes as [LineString]. Raises error when [from] and [to] are antipodes.
@@ -22,22 +27,24 @@ import org.maplibre.spatialk.units.extensions.inEarthRadians
  * @param from source position
  * @param to destination position
  * @param pointCount number of positions on the arc (including [from] and [to])
- * @param antimeridianOffset from antimeridian in degrees (default long. = +/- 10deg, geometries
- *   within 170deg to -170deg will be split)
+ * @param antimeridianOffset from antimeridian (default longitude = +/- 10deg, geometries within
+ *   170deg to -170deg will be split)
  * @throws IllegalArgumentException if [from] and [to] are diametrically opposite.
  */
 public fun greatCircle(
     from: Position,
     to: Position,
     pointCount: Int = 100,
-    antimeridianOffset: Double = 10.0,
+    antimeridianOffset: Rotation = 10.degrees,
 ): Geometry {
 
     val deltaLongitude = from.longitude - to.longitude
     val deltaLatitude = from.latitude - to.latitude
 
     // check antipodal positions
-    require(abs(deltaLatitude) != 0.0 && abs(deltaLongitude % 360) - PositiveAntimeridian != 0.0) {
+    require(
+        abs(deltaLatitude) != 0.0 && abs(deltaLongitude % 360.0) - PositiveAntimeridian != 0.0
+    ) {
         "Input $from and $to are diametrically opposite, thus there is no single route but rather infinite"
     }
 
@@ -48,10 +55,10 @@ public fun greatCircle(
      * http://www.edwilliams.org/avform.htm#Intermediate
      */
     fun intermediateCoordinate(fraction: Double): Position {
-        val lon1 = degreesToRadians(from.longitude)
-        val lon2 = degreesToRadians(to.longitude)
-        val lat1 = degreesToRadians(from.latitude)
-        val lat2 = degreesToRadians(to.latitude)
+        val lon1 = from.longitude.degrees.inRadians
+        val lon2 = to.longitude.degrees.inRadians
+        val lat1 = from.latitude.degrees.inRadians
+        val lat2 = to.latitude.degrees.inRadians
 
         val a = sin((1 - fraction) * distance) / sin(distance)
         val b = sin(fraction * distance) / sin(distance)
@@ -59,19 +66,19 @@ public fun greatCircle(
         val y = a * cos(lat1) * sin(lon1) + b * cos(lat2) * sin(lon2)
         val z = a * sin(lat1) + b * sin(lat2)
 
-        val lat = radiansToDegrees(atan2(z, sqrt(x.pow(2) + y.pow(2))))
-        val lon = radiansToDegrees(atan2(y, x))
+        val lat = atan2(z, sqrt(x.pow(2) + y.pow(2))).radians.inDegrees
+        val lon = atan2(y, x).radians.inDegrees
         return Position(lon, lat)
     }
 
     fun createCoordinatesAntimeridianAttended(
         plainArc: List<Position>,
-        antimeridianOffset: Double,
+        antimeridianOffsetDeg: Double,
     ): List<List<Position>> {
-        val borderEast = PositiveAntimeridian - antimeridianOffset
-        val borderWest = NegativeAntimeridian + antimeridianOffset
+        val borderEast = PositiveAntimeridian - antimeridianOffsetDeg
+        val borderWest = NegativeAntimeridian + antimeridianOffsetDeg
 
-        val diffSpace = 360.0 - antimeridianOffset
+        val diffSpace = 360 - antimeridianOffsetDeg
 
         val passesAntimeridian =
             plainArc
@@ -90,7 +97,7 @@ public fun greatCircle(
                 .maxByOrNull { it } ?: 0.0
 
         val poMulti = mutableListOf<List<Position>>()
-        if (passesAntimeridian && maxSmallDiffLong < antimeridianOffset) {
+        if (passesAntimeridian && maxSmallDiffLong < antimeridianOffsetDeg) {
             var poNewLS = mutableListOf<Position>()
             plainArc.forEachIndexed { k, currentPosition ->
                 if (
@@ -175,7 +182,7 @@ public fun greatCircle(
         add(to)
     }
 
-    val coordinates = createCoordinatesAntimeridianAttended(arc, antimeridianOffset)
+    val coordinates = createCoordinatesAntimeridianAttended(arc, antimeridianOffset.inDegrees)
     return if (coordinates.size == 1) {
         LineString(coordinates = coordinates[0], bbox = computeBbox(coordinates[0]))
     } else {

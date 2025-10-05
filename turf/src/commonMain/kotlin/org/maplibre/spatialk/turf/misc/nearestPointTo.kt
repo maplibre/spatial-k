@@ -13,6 +13,7 @@ import org.maplibre.spatialk.turf.measurement.distance
 import org.maplibre.spatialk.turf.measurement.offset
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
+import org.maplibre.spatialk.units.extensions.degrees
 
 /**
  * Result values from [findNearestPointOnLine].
@@ -80,8 +81,8 @@ private fun findNearestPointOnLine(
 
             val heightDistance = maxOf(startDistance, stopDistance)
             val direction = start.bearingTo(stop)
-            val perpPoint1 = point.offset(heightDistance, direction + 90)
-            val perpPoint2 = point.offset(heightDistance, direction - 90)
+            val perpPoint1 = point.offset(heightDistance, direction + 90.degrees)
+            val perpPoint2 = point.offset(heightDistance, direction - 90.degrees)
 
             val intersect =
                 intersect(LineString(perpPoint1, perpPoint2), LineString(start, stop)).getOrNull(0)

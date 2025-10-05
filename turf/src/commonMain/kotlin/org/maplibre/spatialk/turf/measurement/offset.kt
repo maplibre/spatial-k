@@ -12,28 +12,27 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
-import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
+import org.maplibre.spatialk.units.Bearing
+import org.maplibre.spatialk.units.Bearing.Companion.North
 import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
-import org.maplibre.spatialk.units.extensions.inEarthRadians
-import org.maplibre.spatialk.units.extensions.toLength
+import org.maplibre.spatialk.units.extensions.*
 
 /**
  * Takes a [Position] and calculates the location of a destination position given a distance
- * [Length] and bearing in degrees. This uses the Haversine formula to account for global curvature.
+ * [Length] and bearing. This uses the Haversine formula to account for global curvature.
  *
  * @param distance distance from the origin point
- * @param bearing ranging from -180 to 180
+ * @param bearing the direction to offset from the origin
  * @return destination position
  * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
  */
 @JvmSynthetic
-public fun Position.offset(distance: Length, bearing: Double): Position {
-    val longitude1 = degreesToRadians(longitude)
-    val latitude1 = degreesToRadians(latitude)
-    val bearingRad = degreesToRadians(bearing)
+public fun Position.offset(distance: Length, bearing: Bearing): Position {
+    val longitude1 = longitude.degrees.inRadians
+    val latitude1 = latitude.degrees.inRadians
+    val bearingRad = North.smallestRotationTo(bearing).inRadians
     val radians = distance.inEarthRadians
 
     val latitude2 =
@@ -45,7 +44,7 @@ public fun Position.offset(distance: Length, bearing: Double): Position {
                 cos(radians) - sin(latitude1) * sin(latitude2),
             )
 
-    return Position(radiansToDegrees(longitude2), radiansToDegrees(latitude2))
+    return Position(longitude2.radians.inDegrees, latitude2.radians.inDegrees)
 }
 
 @PublishedApi
@@ -55,5 +54,5 @@ internal fun offset(
     origin: Position,
     distance: Double,
     unit: LengthUnit = Meters,
-    bearing: Int,
-): Position = origin.offset(distance.toLength(unit), bearing.toDouble())
+    bearingDegrees: Double,
+): Position = origin.offset(distance.toLength(unit), North + bearingDegrees.degrees)
