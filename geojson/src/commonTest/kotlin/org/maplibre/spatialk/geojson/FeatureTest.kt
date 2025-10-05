@@ -314,7 +314,7 @@ class FeatureTest {
     @OptIn(SensitiveGeoJsonApi::class)
     @Test
     fun testIncorrectGeometry() {
-        val json =
+        val multipointJson =
             """
             {
                 "type": "Feature",
@@ -325,8 +325,18 @@ class FeatureTest {
             }
             """
 
-        val feat: Feature<*> = Feature.fromJson<Geometry?>(json)
-        assertIs<MultiPoint>(feat.geometry)
-        assertFailsWith<SerializationException> { Feature.fromJson<LineString>(json) }
+        assertIs<MultiPoint>(Feature.fromJson<Geometry?>(multipointJson).geometry)
+        assertIs<MultiPoint>(Feature.fromJson<Geometry>(multipointJson).geometry)
+        assertIs<MultiPoint>(Feature.fromJson<MultiPoint?>(multipointJson).geometry)
+        assertFailsWith<SerializationException> { Feature.fromJson<LineString>(multipointJson) }
+        assertFailsWith<SerializationException> { Feature.fromJson<Nothing?>(multipointJson) }
+
+        val nullJson = """{"type": "Feature", "geometry": null}"""
+
+        assertNull(Feature.fromJson<Geometry?>(nullJson).geometry)
+        assertNull(Feature.fromJson<MultiPoint?>(nullJson).geometry)
+        assertNull(Feature.fromJson<Nothing?>(nullJson).geometry)
+        assertFailsWith<SerializationException> { Feature.fromJson<Geometry>(nullJson) }
+        assertFailsWith<SerializationException> { Feature.fromJson<MultiPoint>(nullJson) }
     }
 }

@@ -60,7 +60,7 @@ constructor(
         ): Feature<T> {
             @Suppress("UNCHECKED_CAST") // checked in `.also` block
             return GeoJson.decodeFromString<Feature<*>>(json).also {
-                if (it.geometry !is T?)
+                if (it.geometry !is T)
                     throw SerializationException("Object is not a Feature<${T::class.simpleName}>")
             } as Feature<T>
         }
@@ -73,7 +73,7 @@ constructor(
         ): Feature<T>? {
             @Suppress("UNCHECKED_CAST") // checked in `.also` block
             return GeoJson.decodeFromStringOrNull<Feature<*>>(json).also {
-                if (it?.geometry !is T?) return null
+                if (it?.geometry !is T) return null
             } as Feature<T>?
         }
 
