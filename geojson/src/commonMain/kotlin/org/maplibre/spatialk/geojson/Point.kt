@@ -2,7 +2,6 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoUriParser
@@ -14,7 +13,6 @@ import org.maplibre.spatialk.geojson.serialization.PointSerializer
  * @see MultiPoint
  */
 @Serializable(with = PointSerializer::class)
-@SerialName("Point")
 public data class Point
 @JvmOverloads
 constructor(public val coordinates: Position, override val bbox: BoundingBox? = null) : Geometry {
@@ -47,11 +45,9 @@ constructor(public val coordinates: Position, override val bbox: BoundingBox? = 
         public fun fromGeoUri(uri: String): Point = Point(GeoUriParser.parsePosition(uri))
 
         @JvmStatic
-        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJson(@Language("json") json: String): Point = GeoJson.decodeFromString2(json)
 
         @JvmStatic
-        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJsonOrNull(@Language("json") json: String): Point? =
             GeoJson.decodeFromStringOrNull2(json)
     }

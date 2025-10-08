@@ -319,18 +319,7 @@ final class org.maplibre.spatialk.geojson/LineString : org.maplibre.spatialk.geo
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.geojson/LineString.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/LineString.toString|toString(){}[0]
 
-    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.geojson/LineString> { // org.maplibre.spatialk.geojson/LineString.$serializer|null[0]
-        final val descriptor // org.maplibre.spatialk.geojson/LineString.$serializer.descriptor|{}descriptor[0]
-            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.geojson/LineString.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.geojson/LineString.$serializer.childSerializers|childSerializers(){}[0]
-        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.geojson/LineString // org.maplibre.spatialk.geojson/LineString.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.geojson/LineString) // org.maplibre.spatialk.geojson/LineString.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.geojson.LineString){}[0]
-    }
-
     final object Companion { // org.maplibre.spatialk.geojson/LineString.Companion|null[0]
-        final val $childSerializers // org.maplibre.spatialk.geojson/LineString.Companion.$childSerializers|{}$childSerializers[0]
-
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/LineString // org.maplibre.spatialk.geojson/LineString.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/LineString? // org.maplibre.spatialk.geojson/LineString.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/LineString> // org.maplibre.spatialk.geojson/LineString.Companion.serializer|serializer(){}[0]
@@ -355,18 +344,7 @@ final class org.maplibre.spatialk.geojson/MultiLineString : org.maplibre.spatial
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.geojson/MultiLineString.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/MultiLineString.toString|toString(){}[0]
 
-    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.geojson/MultiLineString> { // org.maplibre.spatialk.geojson/MultiLineString.$serializer|null[0]
-        final val descriptor // org.maplibre.spatialk.geojson/MultiLineString.$serializer.descriptor|{}descriptor[0]
-            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.geojson/MultiLineString.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.geojson/MultiLineString.$serializer.childSerializers|childSerializers(){}[0]
-        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.geojson/MultiLineString // org.maplibre.spatialk.geojson/MultiLineString.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.geojson/MultiLineString) // org.maplibre.spatialk.geojson/MultiLineString.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.geojson.MultiLineString){}[0]
-    }
-
     final object Companion { // org.maplibre.spatialk.geojson/MultiLineString.Companion|null[0]
-        final val $childSerializers // org.maplibre.spatialk.geojson/MultiLineString.Companion.$childSerializers|{}$childSerializers[0]
-
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/MultiLineString // org.maplibre.spatialk.geojson/MultiLineString.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/MultiLineString? // org.maplibre.spatialk.geojson/MultiLineString.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/MultiLineString> // org.maplibre.spatialk.geojson/MultiLineString.Companion.serializer|serializer(){}[0]
@@ -390,18 +368,7 @@ final class org.maplibre.spatialk.geojson/MultiPoint : org.maplibre.spatialk.geo
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.geojson/MultiPoint.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/MultiPoint.toString|toString(){}[0]
 
-    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.geojson/MultiPoint> { // org.maplibre.spatialk.geojson/MultiPoint.$serializer|null[0]
-        final val descriptor // org.maplibre.spatialk.geojson/MultiPoint.$serializer.descriptor|{}descriptor[0]
-            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.geojson/MultiPoint.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.geojson/MultiPoint.$serializer.childSerializers|childSerializers(){}[0]
-        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.geojson/MultiPoint // org.maplibre.spatialk.geojson/MultiPoint.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.geojson/MultiPoint) // org.maplibre.spatialk.geojson/MultiPoint.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.geojson.MultiPoint){}[0]
-    }
-
     final object Companion { // org.maplibre.spatialk.geojson/MultiPoint.Companion|null[0]
-        final val $childSerializers // org.maplibre.spatialk.geojson/MultiPoint.Companion.$childSerializers|{}$childSerializers[0]
-
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/MultiPoint // org.maplibre.spatialk.geojson/MultiPoint.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/MultiPoint? // org.maplibre.spatialk.geojson/MultiPoint.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/MultiPoint> // org.maplibre.spatialk.geojson/MultiPoint.Companion.serializer|serializer(){}[0]
@@ -426,18 +393,7 @@ final class org.maplibre.spatialk.geojson/MultiPolygon : org.maplibre.spatialk.g
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.geojson/MultiPolygon.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/MultiPolygon.toString|toString(){}[0]
 
-    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.geojson/MultiPolygon> { // org.maplibre.spatialk.geojson/MultiPolygon.$serializer|null[0]
-        final val descriptor // org.maplibre.spatialk.geojson/MultiPolygon.$serializer.descriptor|{}descriptor[0]
-            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.geojson/MultiPolygon.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.geojson/MultiPolygon.$serializer.childSerializers|childSerializers(){}[0]
-        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.geojson/MultiPolygon // org.maplibre.spatialk.geojson/MultiPolygon.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.geojson/MultiPolygon) // org.maplibre.spatialk.geojson/MultiPolygon.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.geojson.MultiPolygon){}[0]
-    }
-
     final object Companion { // org.maplibre.spatialk.geojson/MultiPolygon.Companion|null[0]
-        final val $childSerializers // org.maplibre.spatialk.geojson/MultiPolygon.Companion.$childSerializers|{}$childSerializers[0]
-
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/MultiPolygon // org.maplibre.spatialk.geojson/MultiPolygon.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/MultiPolygon? // org.maplibre.spatialk.geojson/MultiPolygon.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/MultiPolygon> // org.maplibre.spatialk.geojson/MultiPolygon.Companion.serializer|serializer(){}[0]
@@ -488,18 +444,7 @@ final class org.maplibre.spatialk.geojson/Polygon : org.maplibre.spatialk.geojso
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.geojson/Polygon.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/Polygon.toString|toString(){}[0]
 
-    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.geojson/Polygon> { // org.maplibre.spatialk.geojson/Polygon.$serializer|null[0]
-        final val descriptor // org.maplibre.spatialk.geojson/Polygon.$serializer.descriptor|{}descriptor[0]
-            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.geojson/Polygon.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.geojson/Polygon.$serializer.childSerializers|childSerializers(){}[0]
-        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.geojson/Polygon // org.maplibre.spatialk.geojson/Polygon.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.geojson/Polygon) // org.maplibre.spatialk.geojson/Polygon.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.geojson.Polygon){}[0]
-    }
-
     final object Companion { // org.maplibre.spatialk.geojson/Polygon.Companion|null[0]
-        final val $childSerializers // org.maplibre.spatialk.geojson/Polygon.Companion.$childSerializers|{}$childSerializers[0]
-
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/Polygon // org.maplibre.spatialk.geojson/Polygon.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/Polygon? // org.maplibre.spatialk.geojson/Polygon.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/Polygon> // org.maplibre.spatialk.geojson/Polygon.Companion.serializer|serializer(){}[0]

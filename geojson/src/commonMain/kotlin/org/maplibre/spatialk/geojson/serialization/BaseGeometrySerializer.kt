@@ -30,8 +30,9 @@ internal abstract class BaseGeometrySerializer<G : Geometry, C>(
 
     override fun serialize(encoder: Encoder, value: G) {
         encoder.encodeStructure(descriptor) {
-            encodeSerializableElement(descriptor, 0, typeSerializer, "Point")
-            encodeSerializableElement(descriptor, 1, bboxSerializer, value.bbox)
+            encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
+            if (value.bbox != null)
+                encodeSerializableElement(descriptor, 1, bboxSerializer, value.bbox)
             encodeSerializableElement(descriptor, 2, coordinatesSerializer, getCoordinates(value))
         }
     }

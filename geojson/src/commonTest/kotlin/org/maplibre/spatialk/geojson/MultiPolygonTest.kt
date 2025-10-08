@@ -3,6 +3,7 @@ package org.maplibre.spatialk.geojson
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertIs
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlinx.serialization.SerializationException
@@ -291,5 +292,33 @@ class MultiPolygonTest {
                     .trimIndent()
             )
         }
+    }
+
+    @Test
+    fun wrongType() {
+        assertIs<MultiPolygon>(
+            MultiPolygon.fromJsonOrNull(
+                """{"type":"MultiPolygon","coordinates":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]]]}"""
+            )
+        )
+        assertNull(
+            MultiPolygon.fromJsonOrNull(
+                """{"type":"Polygon","coordinates":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]]]}"""
+            )
+        )
+    }
+
+    @Test
+    fun missingType() {
+        assertIs<MultiPolygon>(
+            MultiPolygon.fromJsonOrNull(
+                """{"type":"MultiPolygon","coordinates":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]]]}"""
+            )
+        )
+        assertNull(
+            MultiPolygon.fromJsonOrNull(
+                """{"coordinates":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]]]}"""
+            )
+        )
     }
 }

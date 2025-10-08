@@ -3,6 +3,7 @@ package org.maplibre.spatialk.geojson
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertIs
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlinx.serialization.SerializationException
@@ -146,5 +147,21 @@ class MultiPointTest {
                     .trimIndent()
             )
         }
+    }
+
+    @Test
+    fun wrongType() {
+        assertIs<MultiPoint>(
+            MultiPoint.fromJsonOrNull("""{"type":"MultiPoint","coordinates":[[1.0,2.0]]}""")
+        )
+        assertNull(MultiPoint.fromJsonOrNull("""{"type":"LineString","coordinates":[[1.0,2.0]]}"""))
+    }
+
+    @Test
+    fun missingType() {
+        assertIs<MultiPoint>(
+            MultiPoint.fromJsonOrNull("""{"type":"MultiPoint","coordinates":[[1.0,2.0]]}""")
+        )
+        assertNull(MultiPoint.fromJsonOrNull("""{"coordinates":[[1.0,2.0]]}"""))
     }
 }

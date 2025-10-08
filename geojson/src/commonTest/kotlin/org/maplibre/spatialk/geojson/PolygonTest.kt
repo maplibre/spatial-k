@@ -3,7 +3,9 @@ package org.maplibre.spatialk.geojson
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertIs
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlinx.serialization.SerializationException
 
 class PolygonTest {
@@ -344,5 +346,33 @@ class PolygonTest {
         assertFailsWith(SerializationException::class) {
             Polygon.fromJson("{\"type\":\"Polygon\",\"coordinates\":null}")
         }
+    }
+
+    @Test
+    fun wrongType() {
+        assertIs<Polygon>(
+            Polygon.fromJsonOrNull(
+                """{"type":"Polygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
+            )
+        )
+        assertNull(
+            Polygon.fromJsonOrNull(
+                """{"type":"MultiPolygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
+            )
+        )
+    }
+
+    @Test
+    fun missingType() {
+        assertIs<Polygon>(
+            Polygon.fromJsonOrNull(
+                """{"type":"Polygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
+            )
+        )
+        assertNull(
+            Polygon.fromJsonOrNull(
+                """{"coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
+            )
+        )
     }
 }

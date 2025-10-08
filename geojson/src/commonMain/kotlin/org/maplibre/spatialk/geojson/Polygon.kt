@@ -2,9 +2,9 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
+import org.maplibre.spatialk.geojson.serialization.PolygonSerializer
 
 /**
  * To specify a constraint specific to [Polygon]s, it is useful to introduce the concept of a linear
@@ -22,8 +22,7 @@ import org.intellij.lang.annotations.Language
  *   https://tools.ietf.org/html/rfc7946#section-3.1.6</a>
  * @see [MultiPolygon]
  */
-@Serializable
-@SerialName("Polygon")
+@Serializable(PolygonSerializer::class)
 public data class Polygon
 @JvmOverloads
 constructor(
@@ -78,13 +77,11 @@ constructor(
 
     public companion object {
         @JvmStatic
-        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJson(@Language("json") json: String): Polygon =
-            GeoJson.decodeFromString(json)
+            GeoJson.decodeFromString2(json)
 
         @JvmStatic
-        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJsonOrNull(@Language("json") json: String): Polygon? =
-            GeoJson.decodeFromStringOrNull(json)
+            GeoJson.decodeFromStringOrNull2(json)
     }
 }

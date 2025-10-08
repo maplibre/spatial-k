@@ -2,9 +2,9 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
+import org.maplibre.spatialk.geojson.serialization.MultiPolygonSerializer
 
 /**
  * @throws IllegalArgumentException if any of the lists does not represent a valid polygon
@@ -12,8 +12,7 @@ import org.intellij.lang.annotations.Language
  *   https://tools.ietf.org/html/rfc7946#section-3.1.7</a>
  * @see Polygon
  */
-@Serializable
-@SerialName("MultiPolygon")
+@Serializable(MultiPolygonSerializer::class)
 public data class MultiPolygon
 @JvmOverloads
 constructor(
@@ -72,13 +71,11 @@ constructor(
 
     public companion object {
         @JvmStatic
-        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJson(@Language("json") json: String): MultiPolygon =
-            GeoJson.decodeFromString(json)
+            GeoJson.decodeFromString2(json)
 
         @JvmStatic
-        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJsonOrNull(@Language("json") json: String): MultiPolygon? =
-            GeoJson.decodeFromStringOrNull(json)
+            GeoJson.decodeFromStringOrNull2(json)
     }
 }
