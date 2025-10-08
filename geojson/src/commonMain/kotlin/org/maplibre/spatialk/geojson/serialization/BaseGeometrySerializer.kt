@@ -1,0 +1,65 @@
+package org.maplibre.spatialk.geojson.serialization
+
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.nullable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
+import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.Geometry
+
+internal abstract class BaseGeometrySerializer<G : Geometry, C>(
+    private val serialName: String,
+    private val coordinatesSerializer: KSerializer<C>,
+) : KSerializer<G> {
+    private val typeSerializer = String.Companion.serializer()
+    private val bboxSerializer = BoundingBox.Companion.serializer().nullable
+
+    override val descriptor: SerialDescriptor =
+        buildClassSerialDescriptor(serialName) {
+            element("type", typeSerializer.descriptor)
+            element("bbox", bboxSerializer.descriptor)
+            element("coordinates", coordinatesSerializer.descriptor)
+        }
+
+    override fun serialize(encoder: Encoder, value: G) {
+        encoder.encodeStructure(descriptor) {
+            encodeSerializableElement(descriptor, 0, typeSerializer, "Point")
+            encodeSerializableElement(descriptor, 1, bboxSerializer, value.bbox)
+            encodeSerializableElement(descriptor, 2, coordinatesSerializer, getCoordinates(value))
+        }
+    }
+
+    override fun deserialize(decoder: Decoder): G {
+        return decoder.decodeStructure(descriptor) {
+            var type: String? = null
+            var bbox: BoundingBox? = null
+            var coordinates: C? = null
+
+            while (true) when (val index = decodeElementIndex(descriptor)) {
+                CompositeDecoder.Companion.DECODE_DONE -> break
+                0 -> type = decodeSerializableElement(descriptor, 0, typeSerializer)
+                1 -> bbox = decodeSerializableElement(descriptor, 1, bboxSerializer)
+                2 -> coordinates = decodeSerializableElement(descriptor, 2, coordinatesSerializer)
+                else -> throw SerializationException("Unknown index $index")
+            }
+
+            if (type != serialName)
+                throw SerializationException("Expected type $serialName but found $type")
+            if (coordinates == null)
+                throw SerializationException("Expected coordinates to be present")
+
+            construct(coordinates, bbox)
+        }
+    }
+
+    protected abstract fun getCoordinates(value: G): C
+
+    protected abstract fun construct(coordinates: C, bbox: BoundingBox?): G
+}

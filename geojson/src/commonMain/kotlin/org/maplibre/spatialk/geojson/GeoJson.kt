@@ -4,9 +4,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.ClassDiscriminatorMode
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.polymorphic
-import kotlinx.serialization.modules.subclass
 import kotlinx.serialization.serializer
 import org.intellij.lang.annotations.Language
 
@@ -20,19 +17,8 @@ public data object GeoJson {
     @SensitiveGeoJsonApi
     public val jsonFormat: Json = Json {
         @OptIn(ExperimentalSerializationApi::class)
-        classDiscriminatorMode = ClassDiscriminatorMode.ALL_JSON_OBJECTS
+        classDiscriminatorMode = ClassDiscriminatorMode.NONE
         ignoreUnknownKeys = true
-        serializersModule = SerializersModule {
-            polymorphic(Geometry::class) {
-                subclass(Point::class)
-                subclass(MultiPoint::class)
-                subclass(LineString::class)
-                subclass(MultiLineString::class)
-                subclass(Polygon::class)
-                subclass(MultiPolygon::class)
-                subclass(GeometryCollection::class)
-            }
-        }
     }
 
     /**
@@ -67,4 +53,19 @@ public data object GeoJson {
     @OptIn(SensitiveGeoJsonApi::class)
     public inline fun <reified T : GeoJsonObject> encodeToString(value: T): String =
         jsonFormat.encodeToString(serializer<T>(), value)
+
+    @OptIn(SensitiveGeoJsonApi::class)
+    public inline fun <reified T : GeoJsonElement?> decodeFromString2(
+        @Language("json") string: String
+    ): T = jsonFormat.decodeFromString(serializer<T>(), string)
+
+    @OptIn(SensitiveGeoJsonApi::class)
+    public inline fun <reified T : GeoJsonElement?> decodeFromStringOrNull2(
+        @Language("json") string: String
+    ): T? =
+        try {
+            decodeFromString2<T>(string)
+        } catch (_: IllegalArgumentException) {
+            null
+        }
 }

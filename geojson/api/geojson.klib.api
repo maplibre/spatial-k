@@ -462,15 +462,6 @@ final class org.maplibre.spatialk.geojson/Point : org.maplibre.spatialk.geojson/
     final fun toGeoUri(): kotlin/String // org.maplibre.spatialk.geojson/Point.toGeoUri|toGeoUri(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/Point.toString|toString(){}[0]
 
-    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.geojson/Point> { // org.maplibre.spatialk.geojson/Point.$serializer|null[0]
-        final val descriptor // org.maplibre.spatialk.geojson/Point.$serializer.descriptor|{}descriptor[0]
-            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.geojson/Point.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.geojson/Point.$serializer.childSerializers|childSerializers(){}[0]
-        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.geojson/Point // org.maplibre.spatialk.geojson/Point.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.geojson/Point) // org.maplibre.spatialk.geojson/Point.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.geojson.Point){}[0]
-    }
-
     final object Companion { // org.maplibre.spatialk.geojson/Point.Companion|null[0]
         final fun fromGeoUri(kotlin/String): org.maplibre.spatialk.geojson/Point // org.maplibre.spatialk.geojson/Point.Companion.fromGeoUri|fromGeoUri(kotlin.String){}[0]
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/Point // org.maplibre.spatialk.geojson/Point.Companion.fromJson|fromJson(kotlin.String){}[0]
@@ -557,6 +548,8 @@ final object org.maplibre.spatialk.geojson/GeoJson { // org.maplibre.spatialk.ge
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.geojson/GeoJson.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.geojson/GeoJson.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/GeoJson.toString|toString(){}[0]
+    final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonElement?> decodeFromString2(kotlin/String): #A1 // org.maplibre.spatialk.geojson/GeoJson.decodeFromString2|decodeFromString2(kotlin.String){0§<org.maplibre.spatialk.geojson.GeoJsonElement?>}[0]
+    final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonElement?> decodeFromStringOrNull2(kotlin/String): #A1? // org.maplibre.spatialk.geojson/GeoJson.decodeFromStringOrNull2|decodeFromStringOrNull2(kotlin.String){0§<org.maplibre.spatialk.geojson.GeoJsonElement?>}[0]
     final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonObject> decodeFromString(kotlin/String): #A1 // org.maplibre.spatialk.geojson/GeoJson.decodeFromString|decodeFromString(kotlin.String){0§<org.maplibre.spatialk.geojson.GeoJsonObject>}[0]
     final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonObject> decodeFromStringOrNull(kotlin/String): #A1? // org.maplibre.spatialk.geojson/GeoJson.decodeFromStringOrNull|decodeFromStringOrNull(kotlin.String){0§<org.maplibre.spatialk.geojson.GeoJsonObject>}[0]
     final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonObject> encodeToString(#A1): kotlin/String // org.maplibre.spatialk.geojson/GeoJson.encodeToString|encodeToString(0:0){0§<org.maplibre.spatialk.geojson.GeoJsonObject>}[0]

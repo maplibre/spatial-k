@@ -160,6 +160,16 @@ class PointTest {
     }
 
     @Test
+    fun wrongType() {
+        assertNull(Point.fromJsonOrNull("""{"type":"LineString","coordinates":[1.0,2.0]}"""))
+    }
+
+    @Test
+    fun missingType() {
+        assertNull(Point.fromJsonOrNull("""{"coordinates":[1.0,2.0]}"""))
+    }
+
+    @Test
     fun toGeoUri_withoutAltitude() {
         assertEquals("geo:1.1,2.2", Point(latitude = 1.1, longitude = 2.2).toGeoUri())
     }

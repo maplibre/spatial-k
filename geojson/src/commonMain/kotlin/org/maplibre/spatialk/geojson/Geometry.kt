@@ -3,7 +3,6 @@ package org.maplibre.spatialk.geojson
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonClassDiscriminator
 import org.intellij.lang.annotations.Language
 
 /**
@@ -15,7 +14,6 @@ import org.intellij.lang.annotations.Language
  */
 @Serializable
 @OptIn(ExperimentalSerializationApi::class)
-@JsonClassDiscriminator("type")
 public sealed interface Geometry : GeoJsonObject {
 
     public companion object {
