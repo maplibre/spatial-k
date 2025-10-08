@@ -17,12 +17,6 @@ import org.maplibre.spatialk.geojson.serialization.GeoUriParser
 public data class Point
 @JvmOverloads
 constructor(public val coordinates: Position, override val bbox: BoundingBox? = null) : Geometry {
-    @JvmOverloads
-    public constructor(
-        coordinates: DoubleArray,
-        bbox: BoundingBox? = null,
-    ) : this(Position(coordinates), bbox)
-
     public constructor(
         longitude: Double,
         latitude: Double,

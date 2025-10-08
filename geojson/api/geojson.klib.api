@@ -446,7 +446,6 @@ final class org.maplibre.spatialk.geojson/MultiPolygon : org.maplibre.spatialk.g
 
 final class org.maplibre.spatialk.geojson/Point : org.maplibre.spatialk.geojson/Geometry { // org.maplibre.spatialk.geojson/Point|null[0]
     constructor <init>(kotlin/Double, kotlin/Double, kotlin/Double? = ..., org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/Point.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double?;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
-    constructor <init>(kotlin/DoubleArray, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/Point.<init>|<init>(kotlin.DoubleArray;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     constructor <init>(org.maplibre.spatialk.geojson/Position, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/Point.<init>|<init>(org.maplibre.spatialk.geojson.Position;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
 
     final val bbox // org.maplibre.spatialk.geojson/Point.bbox|{}bbox[0]

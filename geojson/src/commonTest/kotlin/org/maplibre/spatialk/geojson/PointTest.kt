@@ -24,13 +24,13 @@ class PointTest {
 
     @Test
     fun longitude_doesReturnCorrectValue() {
-        val point = Point(arrayOf(1.0, 2.0, 5.0).toDoubleArray())
+        val point = Point(1.0, 2.0, 5.0)
         assertEquals(1.0, point.coordinates.longitude, DELTA)
     }
 
     @Test
     fun latitude_doesReturnCorrectValue() {
-        val point = Point(arrayOf(1.0, 2.0, 5.0).toDoubleArray())
+        val point = Point(1.0, 2.0, 5.0)
         assertEquals(2.0, point.coordinates.latitude, DELTA)
     }
 
