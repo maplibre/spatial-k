@@ -24,6 +24,8 @@ constructor(public val geometries: List<Geometry>, override val bbox: BoundingBo
         bbox: BoundingBox? = null,
     ) : this(geometries.toList(), bbox)
 
+    public override fun toJson(): String = GeoJson.encodeToString(this)
+
     public companion object {
         @JvmStatic
         @OptIn(SensitiveGeoJsonApi::class)

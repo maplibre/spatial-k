@@ -1,7 +1,7 @@
 package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmStatic
-import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
 
@@ -13,18 +13,16 @@ import org.intellij.lang.annotations.Language
  * @see GeometryCollection
  */
 @Serializable
-@OptIn(ExperimentalSerializationApi::class)
+@Polymorphic
 public sealed interface Geometry : GeoJsonObject {
 
     public companion object {
         @JvmStatic
-        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJson(@Language("json") json: String): Geometry =
-            GeoJson.decodeFromString(json)
+            GeoJson.decodeFromString2(json)
 
         @JvmStatic
-        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJsonOrNull(@Language("json") json: String): Geometry? =
-            GeoJson.decodeFromStringOrNull(json)
+            GeoJson.decodeFromStringOrNull2(json)
     }
 }

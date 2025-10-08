@@ -51,6 +51,8 @@ constructor(
     public fun getBooleanProperty(key: String): Boolean? =
         properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
 
+    public override fun toJson(): String = GeoJson.encodeToString(this)
+
     public companion object {
         @JvmSynthetic // See below for Java-facing API
         @JvmName("__fromJson") // Prevent clash with Java-facing API

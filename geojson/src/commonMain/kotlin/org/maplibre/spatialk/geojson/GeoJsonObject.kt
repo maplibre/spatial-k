@@ -14,8 +14,6 @@ import org.intellij.lang.annotations.Language
 public sealed interface GeoJsonObject : GeoJsonElement {
     public val bbox: BoundingBox?
 
-    public override fun toJson(): String = GeoJson.encodeToString(this)
-
     public companion object {
         @JvmStatic
         @OptIn(SensitiveGeoJsonApi::class)

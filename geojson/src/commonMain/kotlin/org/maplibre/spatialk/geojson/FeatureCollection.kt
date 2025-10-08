@@ -28,6 +28,8 @@ constructor(
         bbox: BoundingBox? = null,
     ) : this(features.toMutableList(), bbox)
 
+    public override fun toJson(): String = GeoJson.encodeToString(this)
+
     public companion object {
         @JvmStatic
         @OptIn(SensitiveGeoJsonApi::class)
