@@ -5,7 +5,7 @@ import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 
-internal class PolygonSerializer :
+internal object PolygonSerializer :
     BaseGeometrySerializer<Polygon, List<List<Position>>>(
         "Polygon",
         ListSerializer(ListSerializer(Position.serializer())),

@@ -5,7 +5,7 @@ import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Position
 
-internal class MultiPolygonSerializer :
+internal object MultiPolygonSerializer :
     BaseGeometrySerializer<MultiPolygon, List<List<List<Position>>>>(
         "MultiPolygon",
         ListSerializer(ListSerializer(ListSerializer(Position.serializer()))),

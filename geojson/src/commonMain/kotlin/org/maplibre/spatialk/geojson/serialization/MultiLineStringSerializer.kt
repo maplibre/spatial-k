@@ -5,7 +5,7 @@ import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
 
-internal class MultiLineStringSerializer :
+internal object MultiLineStringSerializer :
     BaseGeometrySerializer<MultiLineString, List<List<Position>>>(
         "MultiLineString",
         ListSerializer(ListSerializer(Position.serializer())),

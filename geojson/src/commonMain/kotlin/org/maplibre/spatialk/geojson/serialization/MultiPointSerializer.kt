@@ -5,7 +5,7 @@ import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.MultiPoint
 import org.maplibre.spatialk.geojson.Position
 
-internal class MultiPointSerializer :
+internal object MultiPointSerializer :
     BaseGeometrySerializer<MultiPoint, List<Position>>(
         "MultiPoint",
         ListSerializer(Position.serializer()),

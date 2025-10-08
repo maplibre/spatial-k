@@ -5,12 +5,7 @@ import org.intellij.lang.annotations.Language
 
 public data object GeoJson {
     /** The default Json configuration for GeoJson objects. */
-    @SensitiveGeoJsonApi
-    public val jsonFormat: Json = Json {
-        //        @OptIn(ExperimentalSerializationApi::class)
-        //        classDiscriminatorMode = ClassDiscriminatorMode.NONE
-        ignoreUnknownKeys = true
-    }
+    @SensitiveGeoJsonApi public val jsonFormat: Json = Json { ignoreUnknownKeys = true }
 
     public inline fun <reified T : GeoJsonObject> decodeFromString(
         @Language("json") string: String

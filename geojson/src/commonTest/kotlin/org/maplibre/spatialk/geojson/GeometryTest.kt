@@ -9,7 +9,7 @@ import org.maplibre.spatialk.geojson.utils.DELTA
 class GeometryTest {
 
     @Test
-    fun fromJson() {
+    fun geometryCollectionFromJson() {
         val json =
             """
             {

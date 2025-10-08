@@ -1,9 +1,9 @@
 package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmStatic
-import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
+import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
 
 /**
  * A Geometry object represents points, curves, and surfaces in coordinate space.
@@ -12,8 +12,7 @@ import org.intellij.lang.annotations.Language
  *   https://tools.ietf.org/html/rfc7946#section-3.1</a>
  * @see GeometryCollection
  */
-@Serializable
-@Polymorphic
+@Serializable(GeometrySerializer::class)
 public sealed interface Geometry : GeoJsonObject {
 
     public companion object {

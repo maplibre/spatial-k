@@ -197,4 +197,55 @@ class GeometryCollectionTest {
         val expectedGeometryCollection = GeometryCollection.fromJson(jsonOriginal)
         assertEquals(expectedGeometryCollection, actualGeometryCollection)
     }
+
+    @Test
+    fun wrongType() {
+        assertNull(
+            GeometryCollection.fromJsonOrNull(
+                """
+            {
+                "type": "FakeGeometryCollection",
+                "geometries": [
+                    {
+                        "type": "Point",
+                        "coordinates": [1.0, 2.0]
+                    },
+                    {
+                        "type": "LineString",
+                        "coordinates": [
+                            [1.0, 2.0],
+                            [2.0, 3.0]
+                        ]
+                    }
+                ]
+            }
+            """
+            )
+        )
+    }
+
+    @Test
+    fun missingType() {
+        assertNull(
+            GeometryCollection.fromJsonOrNull(
+                """
+            {
+                "geometries": [
+                    {
+                        "type": "Point",
+                        "coordinates": [1.0, 2.0]
+                    },
+                    {
+                        "type": "LineString",
+                        "coordinates": [
+                            [1.0, 2.0],
+                            [2.0, 3.0]
+                        ]
+                    }
+                ]
+            }
+            """
+            )
+        )
+    }
 }
