@@ -3,6 +3,7 @@ package org.maplibre.spatialk.geojson
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.FeatureCollectionSerializer
 
@@ -16,14 +17,14 @@ import org.maplibre.spatialk.geojson.serialization.FeatureCollectionSerializer
  *   https://tools.ietf.org/html/rfc7946#section-3.2</a>
  */
 @Serializable(with = FeatureCollectionSerializer::class)
-public data class FeatureCollection
+public data class FeatureCollection<out P : @Serializable Any>
 @JvmOverloads
 constructor(
-    public val features: List<Feature<*>> = emptyList(),
+    public val features: List<Feature<*, P>> = emptyList(),
     override val bbox: BoundingBox? = null,
-) : Collection<Feature<*>> by features, GeoJsonObject {
+) : Collection<Feature<*, P>> by features, GeoJsonObject {
     public constructor(
-        vararg features: Feature<*>,
+        vararg features: Feature<*, P>,
         bbox: BoundingBox? = null,
     ) : this(features.toMutableList(), bbox)
 
@@ -31,11 +32,11 @@ constructor(
 
     public companion object {
         @JvmStatic
-        public fun fromJson(@Language("json") json: String): FeatureCollection =
+        public fun fromJson(@Language("json") json: String): FeatureCollection<JsonObject> =
             GeoJson.decodeFromString(json)
 
         @JvmStatic
-        public fun fromJsonOrNull(@Language("json") json: String): FeatureCollection? =
+        public fun fromJsonOrNull(@Language("json") json: String): FeatureCollection<JsonObject>? =
             GeoJson.decodeFromStringOrNull(json)
     }
 }

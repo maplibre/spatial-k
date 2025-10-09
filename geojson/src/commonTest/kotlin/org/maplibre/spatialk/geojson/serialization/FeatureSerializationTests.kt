@@ -76,7 +76,7 @@ class FeatureSerializationTests {
 
     @Test
     fun testDeserializeIncorrectType() {
-        val feature = Feature(geometry = Point(longitude = 12.3, latitude = 45.6))
+        val feature = Feature(geometry = Point(longitude = 12.3, latitude = 45.6), null)
         val json = feature.toJson()
         assertEquals(feature, Feature.fromJson<Point>(json))
         assertFailsWith<SerializationException> { Feature.fromJson<LineString>(json) }

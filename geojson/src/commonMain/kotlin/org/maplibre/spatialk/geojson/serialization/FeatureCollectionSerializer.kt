@@ -13,17 +13,20 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
+import kotlinx.serialization.serializer
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
 
-internal object FeatureCollectionSerializer : KSerializer<FeatureCollection> {
+internal class FeatureCollectionSerializer<P : Any>(
+    private val propertiesSerializer: KSerializer<P>
+) : KSerializer<FeatureCollection<P>> {
     private val serialName: String = "FeatureCollection"
     private val typeSerializer = String.serializer()
     private val bboxSerializer = BoundingBox.Companion.serializer().nullable
     private val featuresSerializer =
-        ListSerializer(Feature.serializer(Geometry.serializer().nullable))
+        ListSerializer(Feature.serializer(Geometry.serializer().nullable, propertiesSerializer))
 
     override val descriptor: SerialDescriptor =
         buildClassSerialDescriptor(serialName) {
@@ -32,7 +35,7 @@ internal object FeatureCollectionSerializer : KSerializer<FeatureCollection> {
             element("features", featuresSerializer.descriptor)
         }
 
-    override fun serialize(encoder: Encoder, value: FeatureCollection) {
+    override fun serialize(encoder: Encoder, value: FeatureCollection<P>) {
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
             if (value.bbox != null)
@@ -41,11 +44,11 @@ internal object FeatureCollectionSerializer : KSerializer<FeatureCollection> {
         }
     }
 
-    override fun deserialize(decoder: Decoder): FeatureCollection {
+    override fun deserialize(decoder: Decoder): FeatureCollection<P> {
         return decoder.decodeStructure(descriptor) {
             var type: String? = null
             var bbox: BoundingBox? = null
-            var features: List<Feature<*>>? = null
+            var features: List<Feature<*, P>>? = null
 
             @OptIn(ExperimentalSerializationApi::class)
             if (decodeSequentially()) {

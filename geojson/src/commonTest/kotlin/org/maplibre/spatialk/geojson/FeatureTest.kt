@@ -13,7 +13,7 @@ class FeatureTest {
         val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
         val lineString = LineString(points)
-        val feature = Feature(lineString)
+        val feature = Feature(lineString, null)
         assertNotNull(feature)
     }
 
@@ -22,7 +22,7 @@ class FeatureTest {
         val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
         val lineString = LineString(points)
-        val feature = Feature(lineString)
+        val feature = Feature(lineString, null)
         assertNull(feature.bbox)
     }
 
@@ -31,7 +31,7 @@ class FeatureTest {
         val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
         val lineString = LineString(points)
-        val feature = Feature(lineString)
+        val feature = Feature(lineString, null)
 
         val actualFeature = Feature.fromJson<Geometry>(feature.toJson())
         val expectedFeature =
@@ -62,7 +62,7 @@ class FeatureTest {
         val lineString = LineString(points)
 
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
-        val feature = Feature(lineString, bbox = bbox)
+        val feature = Feature(lineString, null, bbox = bbox)
         val actualBbox = feature.bbox!!
         assertNotNull(actualBbox)
         assertEquals(1.0, actualBbox.west, DELTA)
@@ -78,7 +78,7 @@ class FeatureTest {
         val lineString = LineString(points)
 
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
-        val feature = Feature(lineString, bbox = bbox)
+        val feature = Feature(lineString, null, bbox = bbox)
 
         val actualFeature = Feature.fromJson<Geometry>(feature.toJson())
         val expectedFeature =

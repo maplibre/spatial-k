@@ -21,7 +21,7 @@ class ObjectTest {
                     """
             )
 
-        assertTrue(feature is Feature<*>)
+        assertTrue(feature is Feature<*, *>)
         assertTrue(feature.geometry is Point)
         assertEquals(Position(1.0, 2.0), feature.geometry.coordinates)
     }

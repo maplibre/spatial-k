@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThrows;
 
 import kotlinx.serialization.SerializationException;
 import kotlinx.serialization.json.JsonElementBuildersKt;
+import kotlinx.serialization.json.JsonObject;
 import kotlinx.serialization.json.JsonObjectBuilder;
 import org.junit.Test;
 
@@ -114,7 +115,7 @@ public class JavaDocsTest {
 
     JsonObjectBuilder properties = new JsonObjectBuilder();
     JsonElementBuildersKt.put(properties, "size", 9999);
-    Feature<Point> feature = new Feature<>(point, properties.build(), null, null);
+    Feature<Point, JsonObject> feature = new Feature<>(point, properties.build(), null, null);
 
     Integer size = feature.getIntProperty("size");
     Point geometry = feature.getGeometry(); // point
@@ -125,7 +126,7 @@ public class JavaDocsTest {
   public void featureCollectionExample() {
     // --8<-- [start:featureCollectionJava]
     Point point = new Point(new Position(-75.0, 45.0));
-    Feature<Point> pointFeature = new Feature<>(point, null, null, null);
+    Feature<Point, JsonObject> pointFeature = new Feature<>(point, null, null, null);
     FeatureCollection featureCollection = new FeatureCollection(new Feature[] {pointFeature}, null);
     // --8<-- [end:featureCollectionJava]
   }
@@ -143,7 +144,7 @@ public class JavaDocsTest {
   public void serializationToJsonExample() {
     // --8<-- [start:serializationToJsonJava]
     Point point = new Point(new Position(-75.0, 45.0));
-    Feature<Point> feature = new Feature<>(point, null, null, null);
+    Feature<Point, JsonObject> feature = new Feature<>(point, null, null, null);
     FeatureCollection featureCollection = new FeatureCollection(new Feature[] {feature}, null);
 
     String json = featureCollection.toJson();

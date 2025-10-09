@@ -12,18 +12,20 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
-import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.Geometry
 
-internal class FeatureSerializer<T : Geometry?>(private val geometrySerializer: KSerializer<T>) :
-    KSerializer<Feature<T>> {
+internal class FeatureSerializer<T : Geometry?, P : Any>(
+    private val geometrySerializer: KSerializer<T>,
+    propertiesSerializer: KSerializer<P>,
+) : KSerializer<Feature<T, P>> {
     private val serialName: String = "Feature"
     private val typeSerializer = String.serializer()
     private val bboxSerializer = BoundingBox.serializer().nullable
-    private val propertiesSerializer = JsonObject.serializer().nullable
     private val idSerializer = String.serializer().nullable
+
+    private val propertiesSerializer = propertiesSerializer.nullable
 
     // special sentinel for nullable values
     private val uninitialized = Any()
@@ -37,7 +39,7 @@ internal class FeatureSerializer<T : Geometry?>(private val geometrySerializer: 
             element("bbox", bboxSerializer.descriptor)
         }
 
-    override fun serialize(encoder: Encoder, value: Feature<T>) {
+    override fun serialize(encoder: Encoder, value: Feature<T, P>) {
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
             encodeSerializableElement(descriptor, 1, geometrySerializer, value.geometry)
@@ -48,7 +50,7 @@ internal class FeatureSerializer<T : Geometry?>(private val geometrySerializer: 
         }
     }
 
-    override fun deserialize(decoder: Decoder): Feature<T> {
+    override fun deserialize(decoder: Decoder): Feature<T, P> {
         return decoder.decodeStructure(descriptor) {
             var type: String? = null
             var bbox: BoundingBox? = null
@@ -82,7 +84,7 @@ internal class FeatureSerializer<T : Geometry?>(private val geometrySerializer: 
             if (properties == uninitialized)
                 throw SerializationException("Expected properties to be present")
 
-            @Suppress("UNCHECKED_CAST") Feature(geometry as T, properties as JsonObject?, id, bbox)
+            @Suppress("UNCHECKED_CAST") Feature(geometry as T, properties as P?, id, bbox)
         }
     }
 }
