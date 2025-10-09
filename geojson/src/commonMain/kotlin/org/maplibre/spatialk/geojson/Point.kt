@@ -47,10 +47,10 @@ constructor(public val coordinates: Position, override val bbox: BoundingBox? = 
         public fun fromGeoUri(uri: String): Point = Point(GeoUriParser.parsePosition(uri))
 
         @JvmStatic
-        public fun fromJson(@Language("json") json: String): Point = GeoJson.decodeFromString2(json)
+        public fun fromJson(@Language("json") json: String): Point = GeoJson.decodeFromString(json)
 
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): Point? =
-            GeoJson.decodeFromStringOrNull2(json)
+            GeoJson.decodeFromStringOrNull(json)
     }
 }

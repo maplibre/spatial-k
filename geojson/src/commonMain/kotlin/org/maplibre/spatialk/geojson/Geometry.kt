@@ -18,10 +18,10 @@ public sealed interface Geometry : GeoJsonObject {
     public companion object {
         @JvmStatic
         public fun fromJson(@Language("json") json: String): Geometry =
-            GeoJson.decodeFromString2(json)
+            GeoJson.decodeFromString(json)
 
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): Geometry? =
-            GeoJson.decodeFromStringOrNull2(json)
+            GeoJson.decodeFromStringOrNull(json)
     }
 }

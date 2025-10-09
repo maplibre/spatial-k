@@ -62,10 +62,10 @@ constructor(public val coordinates: List<List<Position>>, override val bbox: Bou
     public companion object {
         @JvmStatic
         public fun fromJson(@Language("json") json: String): MultiLineString =
-            GeoJson.decodeFromString2(json)
+            GeoJson.decodeFromString(json)
 
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): MultiLineString? =
-            GeoJson.decodeFromStringOrNull2(json)
+            GeoJson.decodeFromStringOrNull(json)
     }
 }

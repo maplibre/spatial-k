@@ -1,10 +1,8 @@
 package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmName
-import kotlin.jvm.JvmStatic
 import kotlin.math.min
 import kotlinx.serialization.Serializable
-import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.BoundingBoxSerializer
 
 /**
@@ -154,15 +152,5 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
         return "BoundingBox(southwest=$southwest, northeast=$northeast)"
     }
 
-    public override fun toJson(): String = GeoJson.encodeToString(this)
-
-    public companion object {
-        @JvmStatic
-        public fun fromJson(@Language("json") json: String): BoundingBox =
-            GeoJson.decodeFromString2(json)
-
-        @JvmStatic
-        public fun fromJsonOrNull(@Language("json") json: String): BoundingBox? =
-            GeoJson.decodeFromStringOrNull2(json)
-    }
+    public override fun toJson(): String = GeoJson.jsonFormat.encodeToString(this)
 }

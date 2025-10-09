@@ -53,24 +53,24 @@ constructor(
         @JvmName("fromJsonAsT")
         public inline fun <reified T : Geometry?> fromJson(
             @Language("json") json: String
-        ): Feature<T> = GeoJson.decodeFromString2(json)
+        ): Feature<T> = GeoJson.decodeFromString(json)
 
         @JvmSynthetic
         @JvmName("fromJsonOrNullAsT")
         public inline fun <reified T : Geometry?> fromJsonOrNull(
             @Language("json") json: String
-        ): Feature<T>? = GeoJson.decodeFromStringOrNull2(json)
+        ): Feature<T>? = GeoJson.decodeFromStringOrNull(json)
 
         @PublishedApi // Publish for Java; Kotlin should use the inline reified version
         @JvmStatic
         @Suppress("Unused")
         internal fun fromJson(json: String): Feature<*> =
-            GeoJson.decodeFromString2<Feature<Geometry?>>(json)
+            GeoJson.decodeFromString<Feature<Geometry?>>(json)
 
         @PublishedApi // Publish for Java; Kotlin should use the inline reified version
         @JvmStatic
         @Suppress("Unused")
         internal fun fromJsonOrNull(json: String): Feature<*>? =
-            GeoJson.decodeFromStringOrNull2<Feature<Geometry?>>(json)
+            GeoJson.decodeFromStringOrNull<Feature<Geometry?>>(json)
     }
 }

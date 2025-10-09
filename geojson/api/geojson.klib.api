@@ -197,8 +197,6 @@ final class org.maplibre.spatialk.geojson/BoundingBox : kotlin.collections/Itera
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/BoundingBox.toString|toString(){}[0]
 
     final object Companion { // org.maplibre.spatialk.geojson/BoundingBox.Companion|null[0]
-        final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/BoundingBox // org.maplibre.spatialk.geojson/BoundingBox.Companion.fromJson|fromJson(kotlin.String){}[0]
-        final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/BoundingBox.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/BoundingBox> // org.maplibre.spatialk.geojson/BoundingBox.Companion.serializer|serializer(){}[0]
     }
 }
@@ -448,8 +446,6 @@ final class org.maplibre.spatialk.geojson/Position : kotlin.collections/Iterable
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/Position.toString|toString(){}[0]
 
     final object Companion { // org.maplibre.spatialk.geojson/Position.Companion|null[0]
-        final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/Position // org.maplibre.spatialk.geojson/Position.Companion.fromJson|fromJson(kotlin.String){}[0]
-        final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/Position? // org.maplibre.spatialk.geojson/Position.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/Position> // org.maplibre.spatialk.geojson/Position.Companion.serializer|serializer(){}[0]
     }
 }
@@ -461,11 +457,9 @@ final object org.maplibre.spatialk.geojson/GeoJson { // org.maplibre.spatialk.ge
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.geojson/GeoJson.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.geojson/GeoJson.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/GeoJson.toString|toString(){}[0]
-    final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonElement?> decodeFromString2(kotlin/String): #A1 // org.maplibre.spatialk.geojson/GeoJson.decodeFromString2|decodeFromString2(kotlin.String){0§<org.maplibre.spatialk.geojson.GeoJsonElement?>}[0]
-    final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonElement?> decodeFromStringOrNull2(kotlin/String): #A1? // org.maplibre.spatialk.geojson/GeoJson.decodeFromStringOrNull2|decodeFromStringOrNull2(kotlin.String){0§<org.maplibre.spatialk.geojson.GeoJsonElement?>}[0]
-    final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonElement?> encodeToString(#A1): kotlin/String // org.maplibre.spatialk.geojson/GeoJson.encodeToString|encodeToString(0:0){0§<org.maplibre.spatialk.geojson.GeoJsonElement?>}[0]
-    final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonObject> decodeFromString(kotlin/String): #A1 // org.maplibre.spatialk.geojson/GeoJson.decodeFromString|decodeFromString(kotlin.String){0§<org.maplibre.spatialk.geojson.GeoJsonObject>}[0]
-    final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonObject> decodeFromStringOrNull(kotlin/String): #A1 // org.maplibre.spatialk.geojson/GeoJson.decodeFromStringOrNull|decodeFromStringOrNull(kotlin.String){0§<org.maplibre.spatialk.geojson.GeoJsonObject>}[0]
+    final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonObject?> decodeFromString(kotlin/String): #A1 // org.maplibre.spatialk.geojson/GeoJson.decodeFromString|decodeFromString(kotlin.String){0§<org.maplibre.spatialk.geojson.GeoJsonObject?>}[0]
+    final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonObject?> decodeFromStringOrNull(kotlin/String): #A1? // org.maplibre.spatialk.geojson/GeoJson.decodeFromStringOrNull|decodeFromStringOrNull(kotlin.String){0§<org.maplibre.spatialk.geojson.GeoJsonObject?>}[0]
+    final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonObject?> encodeToString(#A1): kotlin/String // org.maplibre.spatialk.geojson/GeoJson.encodeToString|encodeToString(0:0){0§<org.maplibre.spatialk.geojson.GeoJsonObject?>}[0]
 }
 
 final fun <#A: org.maplibre.spatialk.geojson/Geometry?> org.maplibre.spatialk.geojson.dsl/feature(#A, kotlin/String? = ..., org.maplibre.spatialk.geojson/BoundingBox? = ..., kotlin/Function1<kotlinx.serialization.json/JsonObjectBuilder, kotlin/Unit>? = ...): org.maplibre.spatialk.geojson/Feature<#A> // org.maplibre.spatialk.geojson.dsl/feature|feature(0:0;kotlin.String?;org.maplibre.spatialk.geojson.BoundingBox?;kotlin.Function1<kotlinx.serialization.json.JsonObjectBuilder,kotlin.Unit>?){0§<org.maplibre.spatialk.geojson.Geometry?>}[0]
