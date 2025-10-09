@@ -1,5 +1,6 @@
 package org.maplibre.spatialk.geojson.serialization
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -46,12 +47,19 @@ internal object FeatureCollectionSerializer : KSerializer<FeatureCollection> {
             var bbox: BoundingBox? = null
             var features: List<Feature<*>>? = null
 
-            while (true) when (val index = decodeElementIndex(descriptor)) {
-                CompositeDecoder.DECODE_DONE -> break
-                0 -> type = decodeSerializableElement(descriptor, 0, typeSerializer)
-                1 -> bbox = decodeSerializableElement(descriptor, 1, bboxSerializer)
-                2 -> features = decodeSerializableElement(descriptor, 2, featuresSerializer)
-                else -> throw SerializationException("Unknown index $index")
+            @OptIn(ExperimentalSerializationApi::class)
+            if (decodeSequentially()) {
+                type = decodeSerializableElement(descriptor, 0, typeSerializer)
+                bbox = decodeSerializableElement(descriptor, 1, bboxSerializer)
+                features = decodeSerializableElement(descriptor, 2, featuresSerializer)
+            } else {
+                while (true) when (val index = decodeElementIndex(descriptor)) {
+                    CompositeDecoder.DECODE_DONE -> break
+                    0 -> type = decodeSerializableElement(descriptor, 0, typeSerializer)
+                    1 -> bbox = decodeSerializableElement(descriptor, 1, bboxSerializer)
+                    2 -> features = decodeSerializableElement(descriptor, 2, featuresSerializer)
+                    else -> throw SerializationException("Unknown index $index")
+                }
             }
 
             if (type != serialName)

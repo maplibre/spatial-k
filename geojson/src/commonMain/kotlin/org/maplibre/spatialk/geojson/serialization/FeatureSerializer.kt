@@ -1,5 +1,6 @@
 package org.maplibre.spatialk.geojson.serialization
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
@@ -55,14 +56,23 @@ internal class FeatureSerializer<T : Geometry?>(private val geometrySerializer: 
             var properties: Any? = uninitialized
             var id: String? = null
 
-            while (true) when (val index = decodeElementIndex(descriptor)) {
-                CompositeDecoder.DECODE_DONE -> break
-                0 -> type = decodeSerializableElement(descriptor, 0, typeSerializer)
-                1 -> geometry = decodeSerializableElement(descriptor, 1, geometrySerializer)
-                2 -> properties = decodeSerializableElement(descriptor, 2, propertiesSerializer)
-                3 -> id = decodeSerializableElement(descriptor, 3, idSerializer)
-                4 -> bbox = decodeSerializableElement(descriptor, 4, bboxSerializer)
-                else -> throw SerializationException("Unknown index $index")
+            @OptIn(ExperimentalSerializationApi::class)
+            if (decodeSequentially()) {
+                type = decodeSerializableElement(descriptor, 0, typeSerializer)
+                geometry = decodeSerializableElement(descriptor, 1, geometrySerializer)
+                properties = decodeSerializableElement(descriptor, 2, propertiesSerializer)
+                id = decodeSerializableElement(descriptor, 3, idSerializer)
+                bbox = decodeSerializableElement(descriptor, 4, bboxSerializer)
+            } else {
+                while (true) when (val index = decodeElementIndex(descriptor)) {
+                    CompositeDecoder.DECODE_DONE -> break
+                    0 -> type = decodeSerializableElement(descriptor, 0, typeSerializer)
+                    1 -> geometry = decodeSerializableElement(descriptor, 1, geometrySerializer)
+                    2 -> properties = decodeSerializableElement(descriptor, 2, propertiesSerializer)
+                    3 -> id = decodeSerializableElement(descriptor, 3, idSerializer)
+                    4 -> bbox = decodeSerializableElement(descriptor, 4, bboxSerializer)
+                    else -> throw SerializationException("Unknown index $index")
+                }
             }
 
             if (type != serialName)
