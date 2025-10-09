@@ -351,7 +351,8 @@ class KotlinDocsTest {
                             "geometry": {
                                 "type": "Point",
                                 "coordinates": [-75.0, 45.0]
-                            }
+                            },
+                            "properties":null
                         }
                     ]
                 }
@@ -797,7 +798,8 @@ class KotlinDocsTest {
                       "geometry": {
                         "type": "Point",
                         "coordinates": [-75.0, 45.0]
-                      }
+                      },
+                      "properties":null
                     }
                   ]
                 }

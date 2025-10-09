@@ -51,7 +51,8 @@ class FeatureCollectionTest {
                                     [1.0, 2.0],
                                     [2.0, 3.0]
                                 ]
-                            }
+                            },
+                            "properties": null
                         },
                         {
                             "type": "Feature",
@@ -61,7 +62,8 @@ class FeatureCollectionTest {
                                     [1.0, 2.0],
                                     [2.0, 3.0]
                                 ]
-                            }
+                            },
+                            "properties": null
                         }
                     ]
                 }
@@ -112,7 +114,8 @@ class FeatureCollectionTest {
                                     [1.0, 2.0],
                                     [2.0, 3.0]
                                 ]
-                            }
+                            },
+                            "properties": null
                         },
                         {
                             "type": "Feature",
@@ -122,7 +125,8 @@ class FeatureCollectionTest {
                                     [1.0, 2.0],
                                     [2.0, 3.0]
                                 ]
-                            }
+                            },
+                            "properties": null
                         }
                     ]
                 }

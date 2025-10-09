@@ -45,7 +45,8 @@ class FeatureTest {
                             [1.0, 2.0],
                             [2.0, 3.0]
                         ]
-                    }
+                    },
+                    "properties": null
                 }
                 """
                     .trimIndent()
@@ -92,7 +93,8 @@ class FeatureTest {
                             [1.0, 2.0],
                             [2.0, 3.0]
                         ]
-                    }
+                    },
+                    "properties": null
                 }
                 """
                     .trimIndent()
@@ -240,7 +242,8 @@ class FeatureTest {
                         [1.0, 2.0],
                         [2.0, 3.0]
                     ]
-                }
+                },
+                "properties": null
             }
             """
                 .trimIndent()
@@ -286,7 +289,8 @@ class FeatureTest {
                 "geometry": {
                     "type": "Point",
                     "coordinates": [125.6, 10.1]
-                }
+                },
+                "properties": null
             }
             """
             )
@@ -295,7 +299,7 @@ class FeatureTest {
 
     @Test
     fun testNullGeometry() {
-        val nullJson = """{"type": "Feature", "geometry": null}"""
+        val nullJson = """{"type": "Feature", "geometry": null, "properties": null}"""
         assertNull(Feature.fromJson<Geometry?>(nullJson).geometry)
         assertNull(Feature.fromJson<MultiPoint?>(nullJson).geometry)
         assertNull(Feature.fromJson<Nothing?>(nullJson).geometry)
@@ -317,7 +321,8 @@ class FeatureTest {
                 "geometry": {
                     "type": "MultiPoint",
                     "coordinates": [[125.6, 10.1], [125.6, 10.1]]
-                }
+                },
+                "properties": null
             }
             """
 

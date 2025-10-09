@@ -2,9 +2,9 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
+import org.maplibre.spatialk.geojson.serialization.FeatureCollectionSerializer
 
 /**
  * A FeatureCollection object is a collection of [Feature] objects. This class implements the
@@ -15,8 +15,7 @@ import org.intellij.lang.annotations.Language
  * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.3">
  *   https://tools.ietf.org/html/rfc7946#section-3.2</a>
  */
-@Serializable
-@SerialName("FeatureCollection")
+@Serializable(with = FeatureCollectionSerializer::class)
 public data class FeatureCollection
 @JvmOverloads
 constructor(
@@ -32,13 +31,11 @@ constructor(
 
     public companion object {
         @JvmStatic
-        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJson(@Language("json") json: String): FeatureCollection =
-            GeoJson.decodeFromString(json)
+            GeoJson.decodeFromString2(json)
 
         @JvmStatic
-        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJsonOrNull(@Language("json") json: String): FeatureCollection? =
-            GeoJson.decodeFromStringOrNull(json)
+            GeoJson.decodeFromStringOrNull2(json)
     }
 }

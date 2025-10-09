@@ -72,27 +72,10 @@ final class <#A: out org.maplibre.spatialk.geojson/Geometry?> org.maplibre.spati
     final fun toJson(): kotlin/String // org.maplibre.spatialk.geojson/Feature.toJson|toJson(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/Feature.toString|toString(){}[0]
 
-    final class <#A1: kotlin/Any?> $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.geojson/Feature<#A1>> { // org.maplibre.spatialk.geojson/Feature.$serializer|null[0]
-        constructor <init>(kotlinx.serialization/KSerializer<#A1>) // org.maplibre.spatialk.geojson/Feature.$serializer.<init>|<init>(kotlinx.serialization.KSerializer<1:0>){}[0]
-
-        final val descriptor // org.maplibre.spatialk.geojson/Feature.$serializer.descriptor|{}descriptor[0]
-            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.geojson/Feature.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-        final val typeSerial0 // org.maplibre.spatialk.geojson/Feature.$serializer.typeSerial0|{}typeSerial0[0]
-
-        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.geojson/Feature.$serializer.childSerializers|childSerializers(){}[0]
-        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.geojson/Feature<#A1> // org.maplibre.spatialk.geojson/Feature.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.geojson/Feature<#A1>) // org.maplibre.spatialk.geojson/Feature.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.geojson.Feature<1:0>){}[0]
-        final fun typeParametersSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.geojson/Feature.$serializer.typeParametersSerializers|typeParametersSerializers(){}[0]
-    }
-
     final object Companion : kotlinx.serialization.internal/SerializerFactory { // org.maplibre.spatialk.geojson/Feature.Companion|null[0]
-        final val $cachedDescriptor // org.maplibre.spatialk.geojson/Feature.Companion.$cachedDescriptor|{}$cachedDescriptor[0]
-            final fun <get-$cachedDescriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.geojson/Feature.Companion.$cachedDescriptor.<get-$cachedDescriptor>|<get-$cachedDescriptor>(){}[0]
-        final val $childSerializers // org.maplibre.spatialk.geojson/Feature.Companion.$childSerializers|{}$childSerializers[0]
-
         final fun <#A2: kotlin/Any?> serializer(kotlinx.serialization/KSerializer<#A2>): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/Feature<#A2>> // org.maplibre.spatialk.geojson/Feature.Companion.serializer|serializer(kotlinx.serialization.KSerializer<0:0>){0§<kotlin.Any?>}[0]
-        final fun __fromJson(kotlin/String): org.maplibre.spatialk.geojson/Feature<*> // org.maplibre.spatialk.geojson/Feature.Companion.__fromJson|__fromJson(kotlin.String){}[0]
-        final fun __fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/Feature<*>? // org.maplibre.spatialk.geojson/Feature.Companion.__fromJsonOrNull|__fromJsonOrNull(kotlin.String){}[0]
+        final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/Feature<*> // org.maplibre.spatialk.geojson/Feature.Companion.fromJson|fromJson(kotlin.String){}[0]
+        final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/Feature<*>? // org.maplibre.spatialk.geojson/Feature.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // org.maplibre.spatialk.geojson/Feature.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
         final inline fun <#A2: reified org.maplibre.spatialk.geojson/Geometry?> fromJson(kotlin/String): org.maplibre.spatialk.geojson/Feature<#A2> // org.maplibre.spatialk.geojson/Feature.Companion.fromJson|fromJson(kotlin.String){0§<org.maplibre.spatialk.geojson.Geometry?>}[0]
         final inline fun <#A2: reified org.maplibre.spatialk.geojson/Geometry?> fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/Feature<#A2>? // org.maplibre.spatialk.geojson/Feature.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){0§<org.maplibre.spatialk.geojson.Geometry?>}[0]
@@ -243,18 +226,7 @@ final class org.maplibre.spatialk.geojson/FeatureCollection : kotlin.collections
     final fun toJson(): kotlin/String // org.maplibre.spatialk.geojson/FeatureCollection.toJson|toJson(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/FeatureCollection.toString|toString(){}[0]
 
-    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.geojson/FeatureCollection> { // org.maplibre.spatialk.geojson/FeatureCollection.$serializer|null[0]
-        final val descriptor // org.maplibre.spatialk.geojson/FeatureCollection.$serializer.descriptor|{}descriptor[0]
-            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.geojson/FeatureCollection.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.geojson/FeatureCollection.$serializer.childSerializers|childSerializers(){}[0]
-        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.geojson/FeatureCollection // org.maplibre.spatialk.geojson/FeatureCollection.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.geojson/FeatureCollection) // org.maplibre.spatialk.geojson/FeatureCollection.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.geojson.FeatureCollection){}[0]
-    }
-
     final object Companion { // org.maplibre.spatialk.geojson/FeatureCollection.Companion|null[0]
-        final val $childSerializers // org.maplibre.spatialk.geojson/FeatureCollection.Companion.$childSerializers|{}$childSerializers[0]
-
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/FeatureCollection // org.maplibre.spatialk.geojson/FeatureCollection.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/FeatureCollection? // org.maplibre.spatialk.geojson/FeatureCollection.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/FeatureCollection> // org.maplibre.spatialk.geojson/FeatureCollection.Companion.serializer|serializer(){}[0]

@@ -4,14 +4,12 @@ import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
 import org.intellij.lang.annotations.Language
-import org.maplibre.spatialk.geojson.serialization.FeatureGeometrySerializer
+import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
 
 /**
  * A feature object represents a spatially bounded thing.
@@ -24,13 +22,10 @@ import org.maplibre.spatialk.geojson.serialization.FeatureGeometrySerializer
  *   https://tools.ietf.org/html/rfc7946#section-3.2</a>
  * @see FeatureCollection
  */
-@Serializable
-@SerialName("Feature")
+@Serializable(with = FeatureSerializer::class)
 public data class Feature<out T : Geometry?>
 @JvmOverloads
 constructor(
-    @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
-    @Serializable(with = FeatureGeometrySerializer::class)
     public val geometry: T,
     public val properties: JsonObject? = null,
     public val id: String? = null,
@@ -51,48 +46,31 @@ constructor(
     public fun getBooleanProperty(key: String): Boolean? =
         properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
 
-    public override fun toJson(): String = GeoJson.encodeToString(this)
+    public override fun toJson(): String = GeoJson.encodeToString<Feature<Geometry?>>(this)
 
     public companion object {
-        @JvmSynthetic // See below for Java-facing API
-        @JvmName("__fromJson") // Prevent clash with Java-facing API
-        @OptIn(SensitiveGeoJsonApi::class)
+        @JvmSynthetic
+        @JvmName("fromJsonAsT")
         public inline fun <reified T : Geometry?> fromJson(
             @Language("json") json: String
-        ): Feature<T> {
-            @Suppress("UNCHECKED_CAST") // checked in `.also` block
-            return GeoJson.decodeFromString<Feature<*>>(json).also {
-                if (it.geometry !is T)
-                    throw SerializationException("Object is not a Feature<${T::class.simpleName}>")
-            } as Feature<T>
-        }
+        ): Feature<T> = GeoJson.decodeFromString2(json)
 
-        @JvmSynthetic // See below for Java-facing API
-        @JvmName("__fromJsonOrNull") // Prevent clash with Java-facing API
-        @OptIn(SensitiveGeoJsonApi::class)
+        @JvmSynthetic
+        @JvmName("fromJsonOrNullAsT")
         public inline fun <reified T : Geometry?> fromJsonOrNull(
             @Language("json") json: String
-        ): Feature<T>? {
-            @Suppress("UNCHECKED_CAST") // checked in `.also` block
-            return GeoJson.decodeFromStringOrNull<Feature<*>>(json).also {
-                if (it?.geometry !is T) return null
-            } as Feature<T>?
-        }
+        ): Feature<T>? = GeoJson.decodeFromStringOrNull2(json)
 
         @PublishedApi // Publish for Java; Kotlin should use the inline reified version
-        @JvmName("fromJson")
         @JvmStatic
-        @Suppress("FunctionName", "Unused")
-        @OptIn(SensitiveGeoJsonApi::class)
-        internal fun __fromJson(json: String): Feature<*> =
-            GeoJson.decodeFromString<Feature<Geometry>>(json)
+        @Suppress("Unused")
+        internal fun fromJson(json: String): Feature<*> =
+            GeoJson.decodeFromString2<Feature<Geometry?>>(json)
 
         @PublishedApi // Publish for Java; Kotlin should use the inline reified version
-        @JvmName("fromJsonOrNull")
         @JvmStatic
-        @Suppress("FunctionName", "Unused")
-        @OptIn(SensitiveGeoJsonApi::class)
-        internal fun __fromJsonOrNull(json: String): Feature<*>? =
-            GeoJson.decodeFromStringOrNull<Feature<Geometry>>(json)
+        @Suppress("Unused")
+        internal fun fromJsonOrNull(json: String): Feature<*>? =
+            GeoJson.decodeFromStringOrNull2<Feature<Geometry?>>(json)
     }
 }

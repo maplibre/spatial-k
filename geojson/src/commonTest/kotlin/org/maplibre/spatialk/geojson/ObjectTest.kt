@@ -15,7 +15,8 @@ class ObjectTest {
                             "geometry": {
                                 "type": "Point",
                                 "coordinates": [1.0, 2.0]
-                            }
+                            },
+                            "properties": null
                         }
                     """
             )

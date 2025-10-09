@@ -12,7 +12,7 @@ import org.maplibre.spatialk.geojson.serialization.MultiLineStringSerializer
  *   https://tools.ietf.org/html/rfc7946#section-3.1.5</a>
  * @see LineString
  */
-@Serializable(MultiLineStringSerializer::class)
+@Serializable(with = MultiLineStringSerializer::class)
 public data class MultiLineString
 @JvmOverloads
 constructor(public val coordinates: List<List<Position>>, override val bbox: BoundingBox? = null) :

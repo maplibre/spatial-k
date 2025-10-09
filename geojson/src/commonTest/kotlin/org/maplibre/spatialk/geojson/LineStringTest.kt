@@ -202,16 +202,24 @@ class LineStringTest {
     @Test
     fun wrongType() {
         assertIs<LineString>(
-            LineString.fromJsonOrNull("""{"type":"LineString","coordinates":[[1.0,2.0]]}""")
+            LineString.fromJsonOrNull(
+                """{"type":"LineString","coordinates":[[1.0,2.0],[1.0,2.0]]}"""
+            )
         )
-        assertNull(LineString.fromJsonOrNull("""{"type":"MultiPoint","coordinates":[[1.0,2.0]]}"""))
+        assertNull(
+            LineString.fromJsonOrNull(
+                """{"type":"MultiPoint","coordinates":[[1.0,2.0],[1.0,2.0]]}"""
+            )
+        )
     }
 
     @Test
     fun missingType() {
         assertIs<LineString>(
-            LineString.fromJsonOrNull("""{"type":"LineString","coordinates":[[1.0,2.0]]}""")
+            LineString.fromJsonOrNull(
+                """{"type":"LineString","coordinates":[[1.0,2.0],[1.0,2.0]]}"""
+            )
         )
-        assertNull(LineString.fromJsonOrNull("""{"coordinates":[[1.0,2.0]]}"""))
+        assertNull(LineString.fromJsonOrNull("""{"coordinates":[[1.0,2.0],[1.0,2.0]]}"""))
     }
 }

@@ -12,7 +12,7 @@ import org.maplibre.spatialk.geojson.serialization.MultiPolygonSerializer
  *   https://tools.ietf.org/html/rfc7946#section-3.1.7</a>
  * @see Polygon
  */
-@Serializable(MultiPolygonSerializer::class)
+@Serializable(with = MultiPolygonSerializer::class)
 public data class MultiPolygon
 @JvmOverloads
 constructor(

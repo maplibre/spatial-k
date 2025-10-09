@@ -11,7 +11,7 @@ import org.maplibre.spatialk.geojson.serialization.GeometryCollectionSerializer
  *   https://tools.ietf.org/html/rfc7946#section-3.1.8</a>
  * @see Geometry
  */
-@Serializable(GeometryCollectionSerializer::class)
+@Serializable(with = GeometryCollectionSerializer::class)
 public data class GeometryCollection
 @JvmOverloads
 constructor(public val geometries: List<Geometry>, override val bbox: BoundingBox? = null) :
@@ -27,12 +27,10 @@ constructor(public val geometries: List<Geometry>, override val bbox: BoundingBo
 
     public companion object {
         @JvmStatic
-        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJson(@Language("json") json: String): GeometryCollection =
             GeoJson.decodeFromString2(json)
 
         @JvmStatic
-        @OptIn(SensitiveGeoJsonApi::class)
         public fun fromJsonOrNull(@Language("json") json: String): GeometryCollection? =
             GeoJson.decodeFromStringOrNull2(json)
     }

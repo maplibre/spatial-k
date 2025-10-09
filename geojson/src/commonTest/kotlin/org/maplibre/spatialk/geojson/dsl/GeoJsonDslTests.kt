@@ -93,15 +93,15 @@ class GeoJsonDslTests {
         """
         |{"type":"FeatureCollection","features":[
         |{"type":"Feature","geometry":{"type":"Point","coordinates":[-75.0,45.0,100.0]},"properties":{"name":"Hello World"},"id":"point1"},
-        |{"type":"Feature","geometry":{"type":"MultiPoint","coordinates":[[-75.0,45.0,100.0],[45.0,45.0],[0.0,0.0]]}},
-        |{"type":"Feature","geometry":{"type":"LineString","coordinates":[[45.0,45.0],[0.0,0.0]]}},
-        |{"type":"Feature","geometry":{"type":"MultiLineString","coordinates":[[[45.0,45.0],[0.0,0.0]],[[44.4,55.5],[55.5,66.6]]]}},
-        |{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[45.0,45.0],[0.0,0.0],[12.0,12.0],[45.0,45.0]],[[4.0,4.0],[2.0,2.0],[3.0,3.0],[4.0,4.0]]]}},
-        |{"type":"Feature","geometry":{"type":"MultiPolygon","coordinates":[[[[45.0,45.0],[0.0,0.0],[12.0,12.0],[45.0,45.0]],[[4.0,4.0],[2.0,2.0],[3.0,3.0],[4.0,4.0]]],[[[12.0,0.0],[0.0,12.0],[-12.0,0.0],[5.0,5.0],[12.0,0.0]]]]}},
+        |{"type":"Feature","geometry":{"type":"MultiPoint","coordinates":[[-75.0,45.0,100.0],[45.0,45.0],[0.0,0.0]]},"properties":null},
+        |{"type":"Feature","geometry":{"type":"LineString","coordinates":[[45.0,45.0],[0.0,0.0]]},"properties":null},
+        |{"type":"Feature","geometry":{"type":"MultiLineString","coordinates":[[[45.0,45.0],[0.0,0.0]],[[44.4,55.5],[55.5,66.6]]]},"properties":null},
+        |{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[45.0,45.0],[0.0,0.0],[12.0,12.0],[45.0,45.0]],[[4.0,4.0],[2.0,2.0],[3.0,3.0],[4.0,4.0]]]},"properties":null},
+        |{"type":"Feature","geometry":{"type":"MultiPolygon","coordinates":[[[[45.0,45.0],[0.0,0.0],[12.0,12.0],[45.0,45.0]],[[4.0,4.0],[2.0,2.0],[3.0,3.0],[4.0,4.0]]],[[[12.0,0.0],[0.0,12.0],[-12.0,0.0],[5.0,5.0],[12.0,0.0]]]]},"properties":null},
         |{"type":"Feature","geometry":{"type":"GeometryCollection","geometries":[
         |{"type":"Point","coordinates":[-75.0,45.0,100.0]},
         |{"type":"LineString","coordinates":[[45.0,45.0],[0.0,0.0]]},
-        |{"type":"Polygon","coordinates":[[[45.0,45.0],[0.0,0.0],[12.0,12.0],[45.0,45.0]],[[4.0,4.0],[2.0,2.0],[3.0,3.0],[4.0,4.0]]]}]}}
+        |{"type":"Polygon","coordinates":[[[45.0,45.0],[0.0,0.0],[12.0,12.0],[45.0,45.0]],[[4.0,4.0],[2.0,2.0],[3.0,3.0],[4.0,4.0]]]}]},"properties":null}
         |]}"""
             .trimMargin()
 

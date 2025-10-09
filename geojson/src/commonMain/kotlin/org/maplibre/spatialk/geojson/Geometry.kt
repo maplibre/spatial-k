@@ -12,7 +12,7 @@ import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
  *   https://tools.ietf.org/html/rfc7946#section-3.1</a>
  * @see GeometryCollection
  */
-@Serializable(GeometrySerializer::class)
+@Serializable(with = GeometrySerializer::class)
 public sealed interface Geometry : GeoJsonObject {
 
     public companion object {
