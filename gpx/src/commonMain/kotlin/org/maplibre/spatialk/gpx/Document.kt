@@ -14,9 +14,9 @@ import nl.adaptivity.xmlutil.serialization.XmlSerialName
  * See https://www.topografix.com/GPX/1/1/#element_gpx
  *
  * @property metadata Metadata about the file.
- * @property trk A list of tracks.
- * @property rte A list of routes.
- * @property wpt A list of waypoints.
+ * @property tracks A list of tracks.
+ * @property routes A list of routes.
+ * @property waypoints A list of waypoints.
  */
 @XmlSerialName("gpx", "http://www.topografix.com/GPX/1/1")
 @Serializable
@@ -28,9 +28,9 @@ public data class Document(
     @Required val version: String = "1.1",
     @Required val creator: String = "org.maplibre.spatialk.gpx",
     @XmlSerialName("metadata") @XmlElement val metadata: Metadata? = null,
-    @XmlElement val trk: List<Track> = listOf(),
-    @XmlElement val rte: List<Route> = listOf(),
-    @XmlElement val wpt: List<Waypoint> = listOf(),
+    @XmlSerialName("trk") @XmlElement val tracks: List<Track> = listOf(),
+    @XmlSerialName("rte") @XmlElement val routes: List<Route> = listOf(),
+    @XmlSerialName("wpt") @XmlElement val waypoints: List<Waypoint> = listOf(),
 )
 
 /**
@@ -55,7 +55,7 @@ public data class Metadata(
     @XmlElement val desc: String? = null,
     @XmlSerialName("author") @XmlElement val author: Author? = null,
     @XmlSerialName("copyright") @XmlElement val copyright: Copyright? = null,
-    @XmlElement val link: List<Link> = listOf(),
+    @XmlSerialName("link") @XmlElement val link: List<Link> = listOf(),
     @XmlElement val time: String? = null,
     @XmlElement val keywords: String? = null,
     @XmlElement val bounds: Bounds? = null,

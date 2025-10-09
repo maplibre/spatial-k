@@ -4,12 +4,7 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import nl.adaptivity.xmlutil.serialization.XmlElement
-import org.maplibre.spatialk.geojson.Feature
-import org.maplibre.spatialk.geojson.Point
-import org.maplibre.spatialk.geojson.Position
 
 /**
  * Represents a waypoint, point of interest, or named feature on a map. This corresponds to the
@@ -65,22 +60,4 @@ public data class Waypoint(
     @XmlElement val ageofdgpsdata: Double? = null,
     @XmlElement val dgpsid: Double? = null,
     // @XmlElement val extensions = null,
-) {
-
-    public fun toFeature(): Feature<Point> {
-        return Feature(
-            geometry = Point(Position(lon, lat)),
-            properties =
-                JsonObject(
-                    mapOf(
-                            "name" to name?.let(::JsonPrimitive),
-                            "cmt" to cmt?.let(::JsonPrimitive),
-                            "desc" to desc?.let(::JsonPrimitive),
-                            // ...
-                        )
-                        .filterValues { it != null }
-                        .mapValues { it.value!! }
-                ),
-        )
-    }
-}
+)
