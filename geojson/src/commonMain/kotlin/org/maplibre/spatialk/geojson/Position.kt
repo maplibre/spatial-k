@@ -1,7 +1,9 @@
 package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmName
+import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
+import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.PositionSerializer
 
 /**
@@ -137,4 +139,18 @@ public class Position internal constructor(internal val coordinates: DoubleArray
     }
 
     public override fun toJson(): String = GeoJson.jsonFormat.encodeToString(this)
+
+    public companion object {
+        @JvmStatic
+        public fun fromJson(@Language("json") json: String): Position =
+            GeoJson.jsonFormat.decodeFromString(json)
+
+        @JvmStatic
+        public fun fromJsonOrNull(@Language("json") json: String): Position? =
+            try {
+                GeoJson.jsonFormat.decodeFromString(json)
+            } catch (_: IllegalArgumentException) {
+                null
+            }
+    }
 }
