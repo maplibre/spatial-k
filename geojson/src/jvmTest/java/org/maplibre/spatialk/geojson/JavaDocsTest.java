@@ -117,7 +117,7 @@ public class JavaDocsTest {
     JsonElementBuildersKt.put(properties, "size", 9999);
     Feature<Point, JsonObject> feature = new Feature<>(point, properties.build(), null, null);
 
-    Integer size = feature.getIntProperty("size");
+    Integer size = Feature.getIntProperty(feature, "size");
     Point geometry = feature.getGeometry(); // point
     // --8<-- [end:featureJava]
   }

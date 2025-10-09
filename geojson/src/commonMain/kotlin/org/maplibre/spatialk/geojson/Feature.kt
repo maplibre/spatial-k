@@ -31,30 +31,6 @@ constructor(
     public val id: String? = null,
     override val bbox: BoundingBox? = null,
 ) : GeoJsonObject {
-    public fun containsProperty(key: String): Boolean =
-        if (properties is JsonObject) {
-            properties.containsKey(key)
-        } else false
-
-    public fun getStringProperty(key: String): String? =
-        if (properties is JsonObject) {
-            properties[key]?.let { Json.decodeFromJsonElement(it) }
-        } else null
-
-    public fun getDoubleProperty(key: String): Double? =
-        if (properties is JsonObject) {
-            properties[key]?.let { Json.decodeFromJsonElement(it) }
-        } else null
-
-    public fun getIntProperty(key: String): Int? =
-        if (properties is JsonObject) {
-            properties[key]?.let { Json.decodeFromJsonElement(it) }
-        } else null
-
-    public fun getBooleanProperty(key: String): Boolean? =
-        if (properties is JsonObject) {
-            properties[key]?.let { Json.decodeFromJsonElement(it) }
-        } else null
 
     public override fun toJson(): String = GeoJson.encodeToString<Feature<Geometry?, P>>(this)
 
@@ -82,5 +58,35 @@ constructor(
         @Suppress("Unused")
         internal fun fromJsonOrNull(json: String): Feature<*, JsonObject>? =
             GeoJson.decodeFromStringOrNull<Feature<Geometry?, JsonObject>>(json)
+
+        @JvmStatic
+        public fun Feature<*, JsonObject>.containsProperty(key: String): Boolean =
+            if (properties is JsonObject) {
+                properties.containsKey(key)
+            } else false
+
+        @JvmStatic
+        public fun Feature<*, JsonObject>.getStringProperty(key: String): String? =
+            if (properties is JsonObject) {
+                properties[key]?.let { Json.decodeFromJsonElement(it) }
+            } else null
+
+        @JvmStatic
+        public fun Feature<*, JsonObject>.getDoubleProperty(key: String): Double? =
+            if (properties is JsonObject) {
+                properties[key]?.let { Json.decodeFromJsonElement(it) }
+            } else null
+
+        @JvmStatic
+        public fun Feature<*, JsonObject>.getIntProperty(key: String): Int? =
+            if (properties is JsonObject) {
+                properties[key]?.let { Json.decodeFromJsonElement(it) }
+            } else null
+
+        @JvmStatic
+        public fun Feature<*, JsonObject>.getBooleanProperty(key: String): Boolean? =
+            if (properties is JsonObject) {
+                properties[key]?.let { Json.decodeFromJsonElement(it) }
+            } else null
     }
 }
