@@ -12,7 +12,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJsonObjectSerializer
  * @property bbox An optional bounding box used to represent the limits of the object's geometry.
  */
 @Serializable(with = GeoJsonObjectSerializer::class)
-public sealed interface GeoJsonObject : GeoJsonElement {
+public sealed interface GeoJsonObject {
     public val bbox: BoundingBox?
 
     public companion object {
@@ -25,3 +25,5 @@ public sealed interface GeoJsonObject : GeoJsonElement {
             GeoJson.decodeFromStringOrNull(json)
     }
 }
+
+public inline fun <reified T : GeoJsonObject> T.toJson(): String = GeoJson.encodeToString(this)

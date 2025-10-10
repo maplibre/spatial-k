@@ -39,8 +39,6 @@ constructor(
         bbox: BoundingBox? = null,
     ) : this(coordinates.map(::Position), bbox)
 
-    public override fun toJson(): String = GeoJson.encodeToString(this)
-
     public companion object {
         @JvmStatic
         public fun fromJson(@Language("json") json: String): MultiPoint =

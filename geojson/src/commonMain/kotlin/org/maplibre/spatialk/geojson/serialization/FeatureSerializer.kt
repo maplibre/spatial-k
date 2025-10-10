@@ -2,6 +2,7 @@ package org.maplibre.spatialk.geojson.serialization
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
@@ -16,16 +17,14 @@ import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.Geometry
 
-internal class FeatureSerializer<T : Geometry?, P : Any>(
+internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
     private val geometrySerializer: KSerializer<T>,
-    propertiesSerializer: KSerializer<P>,
+    private val propertiesSerializer: KSerializer<P>,
 ) : KSerializer<Feature<T, P>> {
     private val serialName: String = "Feature"
     private val typeSerializer = String.serializer()
     private val bboxSerializer = BoundingBox.serializer().nullable
     private val idSerializer = String.serializer().nullable
-
-    private val propertiesSerializer = propertiesSerializer.nullable
 
     // special sentinel for nullable values
     private val uninitialized = Any()
@@ -84,7 +83,7 @@ internal class FeatureSerializer<T : Geometry?, P : Any>(
             if (properties == uninitialized)
                 throw SerializationException("Expected properties to be present")
 
-            @Suppress("UNCHECKED_CAST") Feature(geometry as T, properties as P?, id, bbox)
+            @Suppress("UNCHECKED_CAST") Feature(geometry as T, properties as P, id, bbox)
         }
     }
 }

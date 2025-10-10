@@ -2,6 +2,7 @@ package org.maplibre.spatialk.geojson.serialization
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
@@ -19,12 +20,12 @@ import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
 
-internal class FeatureCollectionSerializer<P : Any>(
-    private val propertiesSerializer: KSerializer<P>
+internal class FeatureCollectionSerializer<P : @Serializable Any?>(
+    propertiesSerializer: KSerializer<P>
 ) : KSerializer<FeatureCollection<P>> {
     private val serialName: String = "FeatureCollection"
     private val typeSerializer = String.serializer()
-    private val bboxSerializer = BoundingBox.Companion.serializer().nullable
+    private val bboxSerializer = BoundingBox.serializer().nullable
     private val featuresSerializer =
         ListSerializer(Feature.serializer(Geometry.serializer().nullable, propertiesSerializer))
 

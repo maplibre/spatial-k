@@ -145,9 +145,10 @@ public class JavaDocsTest {
     // --8<-- [start:serializationToJsonJava]
     Point point = new Point(new Position(-75.0, 45.0));
     Feature<Point, JsonObject> feature = new Feature<>(point, null, null, null);
-    FeatureCollection featureCollection = new FeatureCollection(new Feature[] {feature}, null);
+    FeatureCollection<JsonObject> featureCollection =
+        new FeatureCollection(new Feature[] {feature}, null);
 
-    String json = featureCollection.toJson();
+    String json = GeoJson.encodeToString(featureCollection);
     System.out.println(json);
     // --8<-- [end:serializationToJsonJava]
   }

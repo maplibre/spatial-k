@@ -17,26 +17,24 @@ import org.maplibre.spatialk.geojson.serialization.FeatureCollectionSerializer
  *   https://tools.ietf.org/html/rfc7946#section-3.2</a>
  */
 @Serializable(with = FeatureCollectionSerializer::class)
-public data class FeatureCollection<out P : @Serializable Any>
+public data class FeatureCollection<out P : @Serializable Any?>
 @JvmOverloads
 constructor(
     public val features: List<Feature<*, P>> = emptyList(),
     override val bbox: BoundingBox? = null,
-) : Collection<Feature<*, P>> by features, GeoJsonObject {
+) : GeoJsonObject, Collection<Feature<*, P>> by features {
     public constructor(
         vararg features: Feature<*, P>,
         bbox: BoundingBox? = null,
     ) : this(features.toMutableList(), bbox)
 
-    public override fun toJson(): String = GeoJson.encodeToString(this)
-
     public companion object {
         @JvmStatic
-        public fun fromJson(@Language("json") json: String): FeatureCollection<JsonObject> =
+        public fun fromJson(@Language("json") json: String): FeatureCollection<JsonObject?> =
             GeoJson.decodeFromString(json)
 
         @JvmStatic
-        public fun fromJsonOrNull(@Language("json") json: String): FeatureCollection<JsonObject>? =
+        public fun fromJsonOrNull(@Language("json") json: String): FeatureCollection<JsonObject?>? =
             GeoJson.decodeFromStringOrNull(json)
     }
 }

@@ -5,6 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.utils.DELTA
 import org.maplibre.spatialk.testutil.readResourceFile
 
@@ -12,7 +13,7 @@ class FeatureCollectionTest {
 
     @Test
     fun sanity() {
-        val features = listOf(Feature(null, null), Feature(null))
+        val features = listOf(Feature(null, null), Feature(null, null))
 
         val featureCollection = FeatureCollection(features)
         assertNotNull(featureCollection)
@@ -20,7 +21,7 @@ class FeatureCollectionTest {
 
     @Test
     fun bbox_nullWhenNotSet() {
-        val features = listOf(Feature(null, null), Feature(null))
+        val features = listOf(Feature(null, null), Feature(null, null))
 
         val featureCollection = FeatureCollection(features)
         assertNull(featureCollection.bbox)
@@ -169,7 +170,7 @@ class FeatureCollectionTest {
 
     @Test
     fun testMissingType() {
-        assertNull(Feature.fromJsonOrNull<Geometry>("{\"features\": []}"))
+        assertNull(Feature.fromJsonOrNull<Geometry, JsonObject?>("{\"features\": []}"))
     }
 
     companion object {

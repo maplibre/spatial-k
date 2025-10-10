@@ -23,70 +23,58 @@ import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
  * @see FeatureCollection
  */
 @Serializable(with = FeatureSerializer::class)
-public data class Feature<out T : Geometry?, out P : @Serializable Any>
+public data class Feature<out T : Geometry?, out P : @Serializable Any?>
 @JvmOverloads
 constructor(
     public val geometry: T,
-    public val properties: P? = null,
+    public val properties: P,
     public val id: String? = null,
     override val bbox: BoundingBox? = null,
 ) : GeoJsonObject {
 
-    public override fun toJson(): String = GeoJson.encodeToString<Feature<Geometry?, P>>(this)
-
     public companion object {
         @JvmSynthetic
-        @JvmName("fromJsonAsT")
-        public inline fun <reified T : Geometry?> fromJson(
+        @JvmName("inlineFromJson")
+        public inline fun <reified T : Geometry?, reified P : @Serializable Any?> fromJson(
             @Language("json") json: String
-        ): Feature<T, JsonObject> = GeoJson.decodeFromString(json)
+        ): Feature<T, P> = GeoJson.decodeFromString(json)
 
         @JvmSynthetic
-        @JvmName("fromJsonOrNullAsT")
-        public inline fun <reified T : Geometry?> fromJsonOrNull(
+        @JvmName("inlineFromJsonOrNull")
+        public inline fun <reified T : Geometry?, reified P : @Serializable Any?> fromJsonOrNull(
             @Language("json") json: String
-        ): Feature<T, JsonObject>? = GeoJson.decodeFromStringOrNull(json)
+        ): Feature<T, P>? = GeoJson.decodeFromStringOrNull(json)
 
-        @PublishedApi // Publish for Java; Kotlin should use the inline reified version
+        // Publish for Java; Kotlin should use the inline reified version
+        @PublishedApi
         @JvmStatic
-        @Suppress("Unused")
-        internal fun fromJson(json: String): Feature<*, JsonObject> =
-            GeoJson.decodeFromString<Feature<Geometry?, JsonObject>>(json)
+        internal fun fromJson(json: String): Feature<*, JsonObject?> =
+            GeoJson.decodeFromString<Feature<Geometry?, JsonObject?>>(json)
 
-        @PublishedApi // Publish for Java; Kotlin should use the inline reified version
+        // Publish for Java; Kotlin should use the inline reified version
+        @PublishedApi
         @JvmStatic
-        @Suppress("Unused")
-        internal fun fromJsonOrNull(json: String): Feature<*, JsonObject>? =
-            GeoJson.decodeFromStringOrNull<Feature<Geometry?, JsonObject>>(json)
-
-        @JvmStatic
-        public fun Feature<*, JsonObject>.containsProperty(key: String): Boolean =
-            if (properties is JsonObject) {
-                properties.containsKey(key)
-            } else false
+        internal fun fromJsonOrNull(json: String): Feature<*, JsonObject?>? =
+            GeoJson.decodeFromStringOrNull<Feature<Geometry?, JsonObject?>>(json)
 
         @JvmStatic
-        public fun Feature<*, JsonObject>.getStringProperty(key: String): String? =
-            if (properties is JsonObject) {
-                properties[key]?.let { Json.decodeFromJsonElement(it) }
-            } else null
+        public fun Feature<*, JsonObject?>.containsProperty(key: String): Boolean =
+            properties?.containsKey(key) ?: false
 
         @JvmStatic
-        public fun Feature<*, JsonObject>.getDoubleProperty(key: String): Double? =
-            if (properties is JsonObject) {
-                properties[key]?.let { Json.decodeFromJsonElement(it) }
-            } else null
+        public fun Feature<*, JsonObject?>.getStringProperty(key: String): String? =
+            properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
 
         @JvmStatic
-        public fun Feature<*, JsonObject>.getIntProperty(key: String): Int? =
-            if (properties is JsonObject) {
-                properties[key]?.let { Json.decodeFromJsonElement(it) }
-            } else null
+        public fun Feature<*, JsonObject?>.getDoubleProperty(key: String): Double? =
+            properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
 
         @JvmStatic
-        public fun Feature<*, JsonObject>.getBooleanProperty(key: String): Boolean? =
-            if (properties is JsonObject) {
-                properties[key]?.let { Json.decodeFromJsonElement(it) }
-            } else null
+        public fun Feature<*, JsonObject?>.getIntProperty(key: String): Int? =
+            properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
+
+        @JvmStatic
+        public fun Feature<*, JsonObject?>.getBooleanProperty(key: String): Boolean? =
+            properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
     }
 }

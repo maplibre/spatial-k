@@ -16,7 +16,7 @@ public fun <T : Geometry?> feature(
     id: String? = null,
     bbox: BoundingBox? = null,
     properties: (JsonObjectBuilder.() -> Unit)? = null,
-): Feature<T, JsonObject> =
+): Feature<T, JsonObject?> =
     Feature(geometry, properties?.let { buildJsonObject { properties() } }, id, bbox)
 
 @GeoJsonDsl
@@ -24,5 +24,5 @@ public fun feature(
     id: String? = null,
     bbox: BoundingBox? = null,
     properties: (JsonObjectBuilder.() -> Unit)? = null,
-): Feature<Nothing?, JsonObject> =
+): Feature<Nothing?, JsonObject?> =
     Feature(null, properties?.let { buildJsonObject { properties() } }, id, bbox)
