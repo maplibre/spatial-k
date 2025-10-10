@@ -24,11 +24,11 @@ jobs:
 
         runs-on: ${{ matrix.runner }}
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
               with:
                   fetch-depth: 0
                   fetch-tags: true
-            - uses: actions/setup-java@v5
+            - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
               with:
                   distribution: temurin
                   java-version: 21
@@ -43,11 +43,11 @@ jobs:
     benchmark:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
               with:
                   fetch-depth: 0
                   fetch-tags: true
-            - uses: actions/setup-java@v5
+            - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
               with:
                   distribution: temurin
                   java-version: 21
@@ -59,16 +59,16 @@ jobs:
     build-docs:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
               with:
                   fetch-depth: 0
                   fetch-tags: true
-            - uses: actions/setup-java@v5
+            - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
               with:
                   distribution: temurin
                   java-version: 21
             - run: ./gradlew :mkdocsBuild
-            - uses: actions/upload-pages-artifact@v4
+            - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
               with:
                   path: build/mkdocs
 
@@ -80,17 +80,17 @@ jobs:
             issues: write
             pull-requests: write
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
               with:
                   fetch-depth: 0
                   fetch-tags: true
-            - uses: actions/setup-java@v5
+            - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
               with:
                   distribution: temurin
                   java-version: 21
-            - uses: pre-commit/action@v3.0.1
+            - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
             - if: ${{ github.event_name == 'pull_request' && always() }}
-              uses: reviewdog/action-suggester@v1
+              uses: reviewdog/action-suggester@aa38384ceb608d00f84b4690cacc83a5aba307ff # v1.24.0
               with:
                   tool_name: format
                   fail_level: any
