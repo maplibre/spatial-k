@@ -24,4 +24,4 @@ jobs:
               env:
                   ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
               with:
-                  model: zai-coding-plan/glm-4.6
+                  model: zhipuai-coding-plan/glm-4.6
