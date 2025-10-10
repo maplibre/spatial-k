@@ -2,6 +2,7 @@ package org.maplibre.spatialk.geojson.serialization
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
@@ -39,13 +40,13 @@ internal object GeometryCollectionSerializer : KSerializer<GeometryCollection> {
         }
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     override fun deserialize(decoder: Decoder): GeometryCollection {
         return decoder.decodeStructure(descriptor) {
             var type: String? = null
             var bbox: BoundingBox? = null
             var geometries: List<Geometry>? = null
 
-            @OptIn(ExperimentalSerializationApi::class)
             if (decodeSequentially()) {
                 type = decodeSerializableElement(descriptor, 0, typeSerializer)
                 bbox = decodeSerializableElement(descriptor, 1, bboxSerializer)
@@ -60,10 +61,11 @@ internal object GeometryCollectionSerializer : KSerializer<GeometryCollection> {
                 }
             }
 
+            if (type == null) throw MissingFieldException("type", serialName)
+            if (geometries == null) throw MissingFieldException("geometries", serialName)
+
             if (type != serialName)
                 throw SerializationException("Expected type $serialName but found $type")
-            if (geometries == null)
-                throw SerializationException("Expected geometries to be present")
 
             GeometryCollection(geometries, bbox)
         }

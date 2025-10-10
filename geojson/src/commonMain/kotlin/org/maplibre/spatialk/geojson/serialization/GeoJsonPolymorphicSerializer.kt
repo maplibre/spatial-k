@@ -3,6 +3,8 @@ package org.maplibre.spatialk.geojson.serialization
 import kotlin.collections.get
 import kotlin.reflect.KClass
 import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.json.Json
@@ -30,9 +32,12 @@ internal abstract class GeoJsonPolymorphicSerializer<T : GeoJsonObject>(
 
     private val allowedSerializers by lazy { allSerializers.filter { it.key in allowedTypes } }
 
+    @OptIn(ExperimentalSerializationApi::class)
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<T> {
         element as? JsonObject ?: throw SerializationException("Expected JSON object")
-        val type = element["type"]?.let { Json.decodeFromJsonElement<String>(it.jsonPrimitive) }
+        val type =
+            element["type"]?.let { Json.decodeFromJsonElement<String>(it.jsonPrimitive) }
+                ?: throw MissingFieldException("type", "GeoJsonObject")
         val actualSerializer =
             allowedSerializers[type]
                 ?: throw SerializationException(
