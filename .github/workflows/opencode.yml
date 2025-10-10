@@ -22,7 +22,6 @@ jobs:
             - name: Run opencode
               uses: sst/opencode/github@latest
               env:
-                  VERSION: 0.14.7
                   OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
               with:
-                  model: opencode/kimi-k2
+                  model: opencode/claude-sonnet-4-5
