@@ -8,14 +8,14 @@ import org.maplibre.spatialk.geojson.dsl.feature
 import org.maplibre.spatialk.geojson.utils.assertJsonEquals
 
 class GeoJsonObjectTest {
-    private val feature: GeoJsonObject = feature(Point(1.0, 2.0)) { put("test", "value") }
+    private val feature: GeoJsonObject = feature(Point(1.1, 2.2)) { put("test", "value") }
     private val json = // language=json
         """
             {
                 "type": "Feature",
                 "geometry": {
                     "type": "Point",
-                    "coordinates": [1.0, 2.0]
+                    "coordinates": [1.1, 2.2]
                 },
                 "properties": {
                     "test": "value"
