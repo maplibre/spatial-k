@@ -1,0 +1,16 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+    "formatter": {
+        "ktlint": {
+            "disabled": true
+        },
+        "kotlin-formatter": {
+            "command": ["ktfmt", "--ktfmt-style=kotlinlang", "-w", "$FILE"],
+            "extensions": [".kt", ".kts"]
+        },
+        "java-formatter": {
+            "command": ["clang-format", "-i", "$FILE"],
+            "extensions": [".java"]
+        }
+    }
+}
