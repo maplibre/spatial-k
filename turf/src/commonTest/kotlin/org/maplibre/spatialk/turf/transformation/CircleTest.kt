@@ -7,6 +7,7 @@ import kotlinx.serialization.json.double
 import kotlinx.serialization.json.jsonPrimitive
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
@@ -21,7 +22,9 @@ class CircleTest {
         val pointFeature =
             Feature.fromJson<Point>(readResourceFile("transformation/circle/in/circle1.json"))
         val expectedOut =
-            FeatureCollection.fromJson(readResourceFile("transformation/circle/out/circle1.json"))
+            FeatureCollection.fromJson<Geometry?>(
+                readResourceFile("transformation/circle/out/circle1.json")
+            )
 
         val (_, expectedCircle) = expectedOut.features
 

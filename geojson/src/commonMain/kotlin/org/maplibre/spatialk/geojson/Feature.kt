@@ -50,26 +50,26 @@ constructor(
 
     public companion object {
         @JvmSynthetic
-        @JvmName("fromJsonAsT")
+        @JvmName("inlineFromJson")
         public inline fun <reified T : Geometry?> fromJson(
             @Language("json") json: String
         ): Feature<T> = GeoJson.decodeFromString(json)
 
         @JvmSynthetic
-        @JvmName("fromJsonOrNullAsT")
+        @JvmName("inlineFromJsonOrNull")
         public inline fun <reified T : Geometry?> fromJsonOrNull(
             @Language("json") json: String
         ): Feature<T>? = GeoJson.decodeFromStringOrNull(json)
 
-        @PublishedApi // Publish for Java; Kotlin should use the inline reified version
+        // Publish for Java; Kotlin should use the inline reified version
+        @PublishedApi
         @JvmStatic
-        @Suppress("Unused")
         internal fun fromJson(json: String): Feature<*> =
             GeoJson.decodeFromString<Feature<Geometry?>>(json)
 
-        @PublishedApi // Publish for Java; Kotlin should use the inline reified version
+        // Publish for Java; Kotlin should use the inline reified version
+        @PublishedApi
         @JvmStatic
-        @Suppress("Unused")
         internal fun fromJsonOrNull(json: String): Feature<*>? =
             GeoJson.decodeFromStringOrNull<Feature<Geometry?>>(json)
     }

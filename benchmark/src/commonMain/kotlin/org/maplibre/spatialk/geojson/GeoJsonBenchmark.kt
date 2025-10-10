@@ -21,58 +21,57 @@ import org.maplibre.spatialk.geojson.dsl.polygon
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(BenchmarkTimeUnit.MILLISECONDS)
 open class GeoJsonBenchmark {
-    private lateinit var featureCollection: FeatureCollection
+    private lateinit var featureCollection: FeatureCollection<*>
     private lateinit var jsonString: String
     private lateinit var jsonObject: JsonObject
 
-    private fun generateDataset(): FeatureCollection {
-        val random = Random(0)
-        return featureCollection {
-            repeat(5000) {
-                feature(
-                    geometry = point(random.nextDouble(360.0) - 180, random.nextDouble(360.0) - 180)
-                )
-            }
+    private val random = Random(0)
 
-            repeat(5000) {
-                feature(
-                    geometry =
-                        lineString {
-                            repeat(10) {
+    private fun generateDataset() = featureCollection {
+        repeat(5000) {
+            feature(
+                geometry = point(random.nextDouble(360.0) - 180, random.nextDouble(360.0) - 180)
+            )
+        }
+
+        repeat(5000) {
+            feature(
+                geometry =
+                    lineString {
+                        repeat(10) {
+                            +Position(
+                                random.nextDouble(360.0) - 180,
+                                random.nextDouble(360.0) - 180,
+                            )
+                        }
+                    }
+            )
+        }
+
+        repeat(5000) {
+            feature(
+                geometry =
+                    polygon {
+                        ring {
+                            val start =
+                                Position(
+                                    random.nextDouble(360.0) - 180,
+                                    random.nextDouble(360.0) - 180,
+                                    random.nextDouble(100.0),
+                                )
+                            +start
+                            repeat(8) {
                                 +Position(
                                     random.nextDouble(360.0) - 180,
                                     random.nextDouble(360.0) - 180,
+                                    random.nextDouble(100.0),
                                 )
                             }
+                            +start
                         }
-                )
-            }
-
-            repeat(5000) {
-                feature(
-                    geometry =
-                        polygon {
-                            ring {
-                                val start =
-                                    Position(
-                                        random.nextDouble(360.0) - 180,
-                                        random.nextDouble(360.0) - 180,
-                                        random.nextDouble(100.0),
-                                    )
-                                +start
-                                repeat(8) {
-                                    +Position(
-                                        random.nextDouble(360.0) - 180,
-                                        random.nextDouble(360.0) - 180,
-                                        random.nextDouble(100.0),
-                                    )
-                                }
-                                +start
-                            }
-                        }
-                ) {
-                    put("example", "value")
-                }
+                    }
+            ) {
+                put("example", "value")
             }
         }
     }
@@ -98,6 +97,6 @@ open class GeoJsonBenchmark {
 
     @Benchmark
     fun deserialization() {
-        FeatureCollection.fromJson(jsonString)
+        FeatureCollection.fromJson<Geometry?>(jsonString)
     }
 }

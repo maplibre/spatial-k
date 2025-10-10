@@ -22,7 +22,8 @@ public data object GeoJson {
                         is MultiPolygon -> MultiPolygon.serializer()
                         is GeometryCollection -> GeometryCollection.serializer()
                         is Feature<*> -> Feature.serializer(Geometry.serializer().nullable)
-                        is FeatureCollection -> FeatureCollection.serializer()
+                        is FeatureCollection<*> ->
+                            FeatureCollection.serializer(Geometry.serializer().nullable)
                     }
                 @Suppress("UNCHECKED_CAST")
                 serializer as SerializationStrategy<GeoJsonObject>

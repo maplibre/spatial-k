@@ -37,7 +37,7 @@ internal object GeoJsonObjectSerializer :
             "GeometryCollection" -> GeometryCollection.serializer()
             // other geojson object types
             "Feature" -> Feature.serializer(Geometry.serializer().nullable)
-            "FeatureCollection" -> FeatureCollection.serializer()
+            "FeatureCollection" -> FeatureCollection.serializer(Geometry.serializer().nullable)
             else -> throw SerializationException("Unknown GeoJSON type '$type'")
         }
     }

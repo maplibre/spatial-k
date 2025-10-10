@@ -3,6 +3,7 @@ package org.maplibre.spatialk.turf.misc
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.testutil.assertDoubleEquals
@@ -14,7 +15,9 @@ class NearestPointOnLineTest {
     @Test
     fun testNearestPointOnLine() {
         val (multiLine, point) =
-            FeatureCollection.fromJson(readResourceFile("misc/nearestPointOnLine/multiLine.json"))
+            FeatureCollection.fromJson<Geometry?>(
+                    readResourceFile("misc/nearestPointOnLine/multiLine.json")
+                )
                 .features
 
         val result =

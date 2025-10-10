@@ -32,7 +32,7 @@ class SquareGridTest {
         }
     }
 
-    private fun verifyValidGrid(grid: FeatureCollection) {
+    private fun verifyValidGrid(grid: FeatureCollection<Polygon>) {
         assertEquals(16, grid.features.size)
 
         val expectedFirstItem =

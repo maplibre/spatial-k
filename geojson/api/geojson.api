@@ -111,7 +111,7 @@ public final class org/maplibre/spatialk/geojson/FeatureCollection : java/util/C
 public final class org/maplibre/spatialk/geojson/FeatureCollection$Companion {
 	public final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
 	public final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+	public final fun serializer (Lkotlinx/serialization/KSerializer;)Lkotlinx/serialization/KSerializer;
 }
 
 public final class org/maplibre/spatialk/geojson/GeoJson {
