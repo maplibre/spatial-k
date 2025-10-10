@@ -21,8 +21,8 @@ jobs:
                   fetch-depth: 0
                   fetch-tags: true
                   persist-credentials: false
-            - uses: sst/opencode/github@27c211ef869cae9d18b3fefc36ba787af75ebde0 # v0.14.5
+            - uses: sst/opencode/github@568484df741ab9edfb67df80911a965a06e8dafb # v1.0.6
               env:
-                  ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
+                  OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
               with:
-                  model: zai-coding-plan/glm-4.6
+                  model: openrouter/z-ai/glm-4.6
