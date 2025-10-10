@@ -189,15 +189,15 @@ class FeatureCollectionTest {
             {
                 "type": "FeatureCollection",
                 "features": [
-                    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [1.0, 2.0]}, "properties": null},
-                    {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[1.0, 2.0], [3.0, 4.0]]}, "properties": null}
+                    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [1.1, 2.2]}, "properties": null},
+                    {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[1.1, 2.2], [3.3, 4.4]]}, "properties": null}
                 ]
             }
             """
 
         val fc = featureCollection {
-            feature(Point(Position(1.0, 2.0)))
-            feature(LineString(Position(1.0, 2.0), Position(3.0, 4.0)))
+            feature(Point(Position(1.1, 2.2)))
+            feature(LineString(Position(1.1, 2.2), Position(3.3, 4.4)))
         }
 
         assertEquals(fc, FeatureCollection.fromJsonOrNull<Geometry?>(json))
@@ -213,15 +213,15 @@ class FeatureCollectionTest {
             {
                 "type": "FeatureCollection",
                 "features": [
-                    {"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[1.0, 2.0], [1.0, 2.0]]}, "properties": null},
-                    {"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[3.0, 4.0], [3.0, 4.0]]}, "properties": null}
+                    {"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[1.1, 2.2], [1.1, 2.2]]}, "properties": null},
+                    {"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[3.3, 4.4], [3.3, 4.4]]}, "properties": null}
                 ]
             }
             """
 
         val fc = featureCollection {
-            feature(MultiPoint(Position(1.0, 2.0), Position(1.0, 2.0)))
-            feature(MultiPoint(Position(3.0, 4.0), Position(3.0, 4.0)))
+            feature(MultiPoint(Position(1.1, 2.2), Position(1.1, 2.2)))
+            feature(MultiPoint(Position(3.3, 4.4), Position(3.3, 4.4)))
         }
 
         assertEquals(fc, FeatureCollection.fromJsonOrNull<Geometry?>(json))
@@ -239,14 +239,14 @@ class FeatureCollectionTest {
                 "type": "FeatureCollection",
                 "features": [
                     {"type": "Feature", "geometry": null, "properties": null},
-                    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [1.0, 2.0]}, "properties": null}
+                    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [1.1, 2.2]}, "properties": null}
                 ]
             }
             """
 
         val fc = featureCollection {
             feature(null)
-            feature(Point(Position(1.0, 2.0)))
+            feature(Point(Position(1.1, 2.2)))
         }
 
         assertEquals(fc, FeatureCollection.fromJsonOrNull<Point?>(json))
