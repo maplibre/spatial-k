@@ -16,13 +16,12 @@ jobs:
             contents: read
             id-token: write
         steps:
-            - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-              with:
-                  fetch-depth: 0
-                  fetch-tags: true
-                  persist-credentials: false
-            - uses: sst/opencode/github@latest
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Run opencode
+              uses: sst/opencode/github@latest
               env:
-                  OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+                  OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
               with:
-                  model: openrouter/z-ai/glm-4.6
+                  model: opencode/glm-4.6
