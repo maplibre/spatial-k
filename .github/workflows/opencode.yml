@@ -21,7 +21,7 @@ jobs:
                   fetch-depth: 0
                   fetch-tags: true
                   persist-credentials: false
-            - uses: sst/opencode/github@34ec6cc97809b7747814880919d914271e85b536 # 2025-10-10
+            - uses: sst/opencode/github@27c211ef869cae9d18b3fefc36ba787af75ebde0 # v0.14.5
               env:
                   ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
               with:
