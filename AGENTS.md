@@ -7,17 +7,6 @@
 - `units` - Library for working with units of measure
 - `testutil` - Shared testing utilities and resource loading helpers
 
-## Build Organization
-
-- Convention plugins in `buildSrc/src/main/kotlin/` configure common behavior
-- `base-module.gradle.kts` - Kotlin setup with JVM toolchain and Java target
-- `multiplatform-module.gradle.kts` - Extend base module with all supported
-  multiplatform targets
-- `published-library.gradle.kts` - Maven publishing, Dokka, Kover, and ABI
-  validation
-- `test-resources.gradle.kts` - Resource loading for test files
-- Documentation uses Material for MkDocs in `docs/` directory
-
 ## Build/Test Commands
 
 - `./gradlew build` - Compile and run all checks across platforms
@@ -28,7 +17,20 @@
 - `./gradlew :koverHtmlReport` - Generate coverage report
 - `./gradlew updateLegacyAbi` - Dump JVM and KLIB ABI after API changes
 - `./gradlew :mkdocsBuild` - Build and check MkDocs documentation
-- `pre-commit run --all-files` - Format all code using pre-commit hooks
+- `pre-commit run --all-files --hook-stage manual`
+    - Run this command before committing changes to ensure code formatting and
+      ABI compliance.
+
+## Build Organization
+
+- Convention plugins in `buildSrc/src/main/kotlin/` configure common behavior
+- `base-module.gradle.kts` - Kotlin setup with JVM toolchain and Java target
+- `multiplatform-module.gradle.kts` - Extend base module with all supported
+  multiplatform targets
+- `published-library.gradle.kts` - Maven publishing, Dokka, Kover, and ABI
+  validation
+- `test-resources.gradle.kts` - Resource loading for test files
+- Documentation uses Material for MkDocs in `docs/` directory
 
 ## Code Style Guidelines
 
