@@ -21,7 +21,7 @@ jobs:
                   fetch-depth: 0
                   fetch-tags: true
                   persist-credentials: false
-            - uses: sst/opencode/github@568484df741ab9edfb67df80911a965a06e8dafb # v1.0.6
+            - uses: sst/opencode/github@latest
               env:
                   OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
               with:
