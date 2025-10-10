@@ -19,8 +19,8 @@ internal abstract class BaseGeometrySerializer<G : Geometry, C>(
     private val serialName: String,
     private val coordinatesSerializer: KSerializer<C>,
 ) : KSerializer<G> {
-    private val typeSerializer = String.Companion.serializer()
-    private val bboxSerializer = BoundingBox.Companion.serializer().nullable
+    private val typeSerializer = String.serializer()
+    private val bboxSerializer = BoundingBox.serializer().nullable
 
     override val descriptor: SerialDescriptor =
         buildClassSerialDescriptor(serialName) {

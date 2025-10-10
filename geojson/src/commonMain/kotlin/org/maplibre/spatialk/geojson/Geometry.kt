@@ -14,7 +14,6 @@ import org.maplibre.spatialk.geojson.serialization.GeometrySerializer
  */
 @Serializable(with = GeometrySerializer::class)
 public sealed interface Geometry : GeoJsonObject {
-
     public companion object {
         @JvmStatic
         public fun fromJson(@Language("json") json: String): Geometry =

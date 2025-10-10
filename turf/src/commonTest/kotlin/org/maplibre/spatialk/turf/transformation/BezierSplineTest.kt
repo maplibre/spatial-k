@@ -2,6 +2,7 @@ package org.maplibre.spatialk.turf.transformation
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.testutil.readResourceFile
@@ -11,11 +12,11 @@ class BezierSplineTest {
     @Test
     fun testBezierSplineIn() {
         val feature =
-            Feature.fromJson<LineString>(
+            Feature.Companion.fromJson<LineString, JsonObject?>(
                 readResourceFile("transformation/bezierspline/in/bezierIn.json")
             )
         val expectedOut =
-            Feature.fromJson<LineString>(
+            Feature.Companion.fromJson<LineString, JsonObject?>(
                 readResourceFile("transformation/bezierspline/out/bezierIn.json")
             )
 
@@ -25,11 +26,11 @@ class BezierSplineTest {
     @Test
     fun testBezierSplineSimple() {
         val feature =
-            Feature.fromJson<LineString>(
+            Feature.Companion.fromJson<LineString, JsonObject?>(
                 readResourceFile("transformation/bezierspline/in/simple.json")
             )
         val expectedOut =
-            Feature.fromJson<LineString>(
+            Feature.Companion.fromJson<LineString, JsonObject?>(
                 readResourceFile("transformation/bezierspline/out/simple.json")
             )
 
@@ -44,11 +45,11 @@ class BezierSplineTest {
     @Test
     fun testBezierSplineAcrossPacific() {
         val feature =
-            Feature.fromJson<LineString>(
+            Feature.Companion.fromJson<LineString, JsonObject?>(
                 readResourceFile("transformation/bezierspline/in/issue-#1063.json")
             )
         val expectedOut =
-            Feature.fromJson<LineString>(
+            Feature.Companion.fromJson<LineString, JsonObject?>(
                 readResourceFile("transformation/bezierspline/out/issue-#1063.json")
             )
 

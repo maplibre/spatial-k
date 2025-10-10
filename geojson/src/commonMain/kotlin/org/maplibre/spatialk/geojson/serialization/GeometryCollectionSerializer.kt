@@ -20,7 +20,7 @@ import org.maplibre.spatialk.geojson.GeometryCollection
 internal object GeometryCollectionSerializer : KSerializer<GeometryCollection> {
     private val serialName: String = "GeometryCollection"
     private val typeSerializer = String.serializer()
-    private val bboxSerializer = BoundingBox.Companion.serializer().nullable
+    private val bboxSerializer = BoundingBox.serializer().nullable
     private val geometriesSerializer = ListSerializer(Geometry.serializer())
 
     override val descriptor: SerialDescriptor =

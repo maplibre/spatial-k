@@ -3,6 +3,7 @@ package org.maplibre.spatialk.turf.transformation
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.double
 import kotlinx.serialization.json.jsonPrimitive
 import org.maplibre.spatialk.geojson.Feature
@@ -19,7 +20,9 @@ class CircleTest {
     @Test
     fun testCircle() {
         val pointFeature =
-            Feature.fromJson<Point>(readResourceFile("transformation/circle/in/circle1.json"))
+            Feature.Companion.fromJson<Point, JsonObject?>(
+                readResourceFile("transformation/circle/in/circle1.json")
+            )
         val expectedOut =
             FeatureCollection.fromJson(readResourceFile("transformation/circle/out/circle1.json"))
 

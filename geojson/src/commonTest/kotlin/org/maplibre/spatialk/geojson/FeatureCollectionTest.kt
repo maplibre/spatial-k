@@ -5,6 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.utils.DELTA
 import org.maplibre.spatialk.testutil.readResourceFile
 
@@ -12,7 +13,7 @@ class FeatureCollectionTest {
 
     @Test
     fun sanity() {
-        val features = listOf(Feature(null), Feature(null))
+        val features = listOf(Feature(null, null), Feature(null, null))
 
         val featureCollection = FeatureCollection(features)
         assertNotNull(featureCollection)
@@ -20,7 +21,7 @@ class FeatureCollectionTest {
 
     @Test
     fun bbox_nullWhenNotSet() {
-        val features = listOf(Feature(null), Feature(null))
+        val features = listOf(Feature(null, null), Feature(null, null))
 
         val featureCollection = FeatureCollection(features)
         assertNull(featureCollection.bbox)
@@ -31,7 +32,7 @@ class FeatureCollectionTest {
         val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
 
         val lineString = LineString(points)
-        val feature = Feature(lineString)
+        val feature = Feature(lineString, null)
 
         val features = listOf(feature, feature)
 
@@ -76,7 +77,7 @@ class FeatureCollectionTest {
 
     @Test
     fun bbox_returnsCorrectBbox() {
-        val features = listOf(Feature(null), Feature(null))
+        val features = listOf(Feature(null, null), Feature(null, null))
 
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
         val featureCollection = FeatureCollection(features, bbox)
@@ -92,7 +93,7 @@ class FeatureCollectionTest {
     fun bbox_doesSerializeWhenPresent() {
         val points = listOf(Position(1.0, 2.0), Position(2.0, 3.0))
         val lineString = LineString(points)
-        val feature = Feature(lineString)
+        val feature = Feature(lineString, null)
 
         val features = listOf(feature, feature)
         val bbox = BoundingBox(1.0, 2.0, 3.0, 4.0)
@@ -140,7 +141,7 @@ class FeatureCollectionTest {
     @Test
     fun passingInSingleFeature_doesHandleCorrectly() {
         val point = Point(1.0, 2.0)
-        val feature = Feature(point)
+        val feature = Feature(point, null)
         val geo = FeatureCollection(listOf(feature))
         assertNotNull(geo.features)
         assertEquals(1, geo.features.size)
@@ -169,7 +170,7 @@ class FeatureCollectionTest {
 
     @Test
     fun testMissingType() {
-        assertNull(Feature.fromJsonOrNull<Geometry>("{\"features\": []}"))
+        assertNull(Feature.fromJsonOrNull<Geometry, JsonObject?>("{\"features\": []}"))
     }
 
     companion object {

@@ -39,7 +39,7 @@ import org.maplibre.spatialk.geojson.serialization.PositionSerializer
  */
 @Serializable(with = PositionSerializer::class)
 public class Position internal constructor(internal val coordinates: DoubleArray) :
-    GeoJsonElement, Iterable<Double> {
+    Iterable<Double> {
     init {
         require(coordinates.size >= 2) { "At least two coordinates must be provided" }
     }
@@ -138,7 +138,7 @@ public class Position internal constructor(internal val coordinates: DoubleArray
         return "Position(longitude=$longitude, latitude=$latitude, altitude=$altitude)"
     }
 
-    public override fun toJson(): String = GeoJson.jsonFormat.encodeToString(this)
+    public fun toJson(): String = GeoJson.jsonFormat.encodeToString(serializer(), this)
 
     public companion object {
         @JvmStatic
