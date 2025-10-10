@@ -30,7 +30,7 @@ class NonJsonFormatTest {
     fun testProtoBufSerialization() {
         assertRoundTrip { obj ->
             @OptIn(ExperimentalSerializationApi::class)
-            ProtoBuf.Default.decodeFromByteArray(ProtoBuf.Default.encodeToByteArray(obj))
+            ProtoBuf.decodeFromByteArray(ProtoBuf.encodeToByteArray(obj))
         }
     }
 
@@ -39,7 +39,7 @@ class NonJsonFormatTest {
     fun testCborSerialization() {
         assertRoundTrip { obj ->
             @OptIn(ExperimentalSerializationApi::class)
-            Cbor.Default.decodeFromByteArray(ProtoBuf.Default.encodeToByteArray(obj))
+            Cbor.decodeFromByteArray(ProtoBuf.encodeToByteArray(obj))
         }
     }
 }
