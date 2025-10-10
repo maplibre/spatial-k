@@ -55,7 +55,7 @@
 
 ## Feature Conversion
 
-- [ ] `combine`
+- [x] [`combine`](../api/turf/org.maplibre.spatialk.turf.featureconversion/combine.html)
 - [ ] `explode`
 - [ ] `flatten`
 - [ ] `lineToPolygon`
