@@ -18,12 +18,13 @@ import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
 
-internal object FeatureCollectionSerializer : KSerializer<FeatureCollection> {
+internal class FeatureCollectionSerializer<T : Geometry?>(
+    private val geometrySerializer: KSerializer<T>
+) : KSerializer<FeatureCollection<T>> {
     private val serialName: String = "FeatureCollection"
     private val typeSerializer = String.serializer()
-    private val bboxSerializer = BoundingBox.Companion.serializer().nullable
-    private val featuresSerializer =
-        ListSerializer(Feature.serializer(Geometry.serializer().nullable))
+    private val bboxSerializer = BoundingBox.serializer().nullable
+    private val featuresSerializer = ListSerializer(Feature.serializer(geometrySerializer))
 
     override val descriptor: SerialDescriptor =
         buildClassSerialDescriptor(serialName) {
@@ -32,7 +33,7 @@ internal object FeatureCollectionSerializer : KSerializer<FeatureCollection> {
             element("features", featuresSerializer.descriptor)
         }
 
-    override fun serialize(encoder: Encoder, value: FeatureCollection) {
+    override fun serialize(encoder: Encoder, value: FeatureCollection<T>) {
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
             if (value.bbox != null)
@@ -41,11 +42,11 @@ internal object FeatureCollectionSerializer : KSerializer<FeatureCollection> {
         }
     }
 
-    override fun deserialize(decoder: Decoder): FeatureCollection {
+    override fun deserialize(decoder: Decoder): FeatureCollection<T> {
         return decoder.decodeStructure(descriptor) {
             var type: String? = null
             var bbox: BoundingBox? = null
-            var features: List<Feature<*>>? = null
+            var features: List<Feature<T>>? = null
 
             @OptIn(ExperimentalSerializationApi::class)
             if (decodeSequentially()) {

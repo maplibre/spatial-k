@@ -11,18 +11,18 @@ import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
 
 @GeoJsonDsl
-public class FeatureCollectionDsl(
-    private val features: MutableList<Feature<*>> = mutableListOf(),
+public class FeatureCollectionDsl<T : Geometry?>(
+    private val features: MutableList<Feature<T>> = mutableListOf(),
     public var bbox: BoundingBox? = null,
 ) {
-    public operator fun Feature<*>.unaryPlus() {
+    public operator fun Feature<T>.unaryPlus() {
         features.add(this)
     }
 
-    public fun create(): FeatureCollection = FeatureCollection(features, bbox)
+    public fun create(): FeatureCollection<T> = FeatureCollection(features, bbox)
 
     public fun feature(
-        geometry: Geometry? = null,
+        geometry: T,
         id: String? = null,
         bbox: BoundingBox? = null,
         properties: (JsonObjectBuilder.() -> Unit)? = null,
@@ -32,5 +32,6 @@ public class FeatureCollectionDsl(
 }
 
 @GeoJsonDsl
-public inline fun featureCollection(block: FeatureCollectionDsl.() -> Unit): FeatureCollection =
-    FeatureCollectionDsl().apply(block).create()
+public inline fun <T : Geometry?> featureCollection(
+    block: FeatureCollectionDsl<T>.() -> Unit
+): FeatureCollection<T> = FeatureCollectionDsl<T>().apply(block).create()

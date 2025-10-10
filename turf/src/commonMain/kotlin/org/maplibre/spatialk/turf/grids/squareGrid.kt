@@ -29,7 +29,7 @@ public fun squareGrid(
     bbox: BoundingBox,
     cellWidth: Length,
     cellHeight: Length = cellWidth,
-): FeatureCollection {
+): FeatureCollection<Polygon> {
     val featureList = mutableListOf<Feature<Polygon>>()
     val west = bbox.southwest.longitude
     val south = bbox.southwest.latitude
@@ -78,4 +78,5 @@ internal fun squareGrid(
     cellWidth: Double,
     cellHeight: Double = cellWidth,
     unit: LengthUnit = Meters,
-): FeatureCollection = squareGrid(bbox, cellWidth.toLength(unit), cellHeight.toLength(unit))
+): FeatureCollection<Polygon> =
+    squareGrid(bbox, cellWidth.toLength(unit), cellHeight.toLength(unit))

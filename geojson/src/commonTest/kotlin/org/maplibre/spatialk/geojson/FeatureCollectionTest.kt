@@ -5,7 +5,9 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import org.maplibre.spatialk.geojson.dsl.featureCollection
 import org.maplibre.spatialk.geojson.utils.DELTA
+import org.maplibre.spatialk.geojson.utils.assertJsonEquals
 import org.maplibre.spatialk.testutil.readResourceFile
 
 class FeatureCollectionTest {
@@ -144,7 +146,7 @@ class FeatureCollectionTest {
         val geo = FeatureCollection(listOf(feature))
         assertNotNull(geo.features)
         assertEquals(1, geo.features.size)
-        assertEquals(2.0, (geo.features.first().geometry as Point).coordinates.latitude, DELTA)
+        assertEquals(2.0, geo.features.first().geometry.coordinates.latitude, DELTA)
     }
 
     @Test
@@ -170,6 +172,111 @@ class FeatureCollectionTest {
     @Test
     fun testMissingType() {
         assertNull(Feature.fromJsonOrNull<Geometry>("{\"features\": []}"))
+    }
+
+    @Test
+    fun testEmptyCollection() {
+        val json = "{\"type\": \"FeatureCollection\", \"features\": []}"
+        val fc = featureCollection<Geometry?> {}
+        assertEquals(fc, FeatureCollection.fromJsonOrNull<Geometry?>(json))
+        assertJsonEquals(json, fc.toJson())
+    }
+
+    @Test
+    fun testMixedCollection() {
+        val json =
+            """
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [1.0, 2.0]}, "properties": null},
+                    {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[1.0, 2.0], [3.0, 4.0]]}, "properties": null}
+                ]
+            }
+            """
+
+        val fc = featureCollection {
+            feature(Point(Position(1.0, 2.0)))
+            feature(LineString(Position(1.0, 2.0), Position(3.0, 4.0)))
+        }
+
+        assertEquals(fc, FeatureCollection.fromJsonOrNull<Geometry?>(json))
+        assertNull(FeatureCollection.fromJsonOrNull<Point>(json))
+
+        assertJsonEquals(json, fc.toJson())
+    }
+
+    @Test
+    fun testHomogenousCollection() {
+        val json =
+            """
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    {"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[1.0, 2.0], [1.0, 2.0]]}, "properties": null},
+                    {"type": "Feature", "geometry": {"type": "MultiPoint", "coordinates": [[3.0, 4.0], [3.0, 4.0]]}, "properties": null}
+                ]
+            }
+            """
+
+        val fc = featureCollection {
+            feature(MultiPoint(Position(1.0, 2.0), Position(1.0, 2.0)))
+            feature(MultiPoint(Position(3.0, 4.0), Position(3.0, 4.0)))
+        }
+
+        assertEquals(fc, FeatureCollection.fromJsonOrNull<Geometry?>(json))
+        assertEquals(fc, FeatureCollection.fromJsonOrNull<MultiPoint>(json))
+        assertNull(FeatureCollection.fromJsonOrNull<LineString>(json))
+
+        assertJsonEquals(json, fc.toJson())
+    }
+
+    @Test
+    fun testNullableCollection() {
+        val json =
+            """
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    {"type": "Feature", "geometry": null, "properties": null},
+                    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [1.0, 2.0]}, "properties": null}
+                ]
+            }
+            """
+
+        val fc = featureCollection {
+            feature(null)
+            feature(Point(Position(1.0, 2.0)))
+        }
+
+        assertEquals(fc, FeatureCollection.fromJsonOrNull<Point?>(json))
+        assertNull(FeatureCollection.fromJsonOrNull<Point>(json))
+
+        assertJsonEquals(json, fc.toJson())
+    }
+
+    @Test
+    fun testUnlocatedCollection() {
+        val json =
+            """
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    {"type": "Feature", "geometry": null, "properties": null},
+                    {"type": "Feature", "geometry": null, "properties": null}
+                ]
+            }
+            """
+
+        val fc = featureCollection {
+            feature(null)
+            feature(null)
+        }
+
+        assertEquals(fc, FeatureCollection.fromJsonOrNull<Nothing?>(json))
+        assertNull(FeatureCollection.fromJsonOrNull<Point>(json))
+
+        assertJsonEquals(json, fc.toJson())
     }
 
     companion object {

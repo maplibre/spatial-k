@@ -77,7 +77,7 @@ class BboxTest {
     @Test
     fun testEmptyFeatures() {
         assertNull(feature().withComputedBbox().bbox)
-        assertNull(featureCollection {}.withComputedBbox().bbox)
+        assertNull(featureCollection<Nothing?> {}.withComputedBbox().bbox)
     }
 
     @Test

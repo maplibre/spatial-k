@@ -7,7 +7,6 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
-import org.maplibre.spatialk.geojson.GeoJsonObject
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.turf.measurement.computeBbox
 
@@ -29,8 +28,10 @@ public fun <T : Geometry?, U : Geometry?> Feature<T>.mapGeometry(transform: (T) 
 }
 
 /** Returns a [FeatureCollection] by applying [mapGeometry] to each feature in this collection. */
-public fun FeatureCollection.mapGeometry(transform: (Geometry?) -> Geometry?): GeoJsonObject {
-    val newFeatures = features.map { it.mapGeometry(transform) }
+public fun <T : Geometry?, U : Geometry?> FeatureCollection<T>.mapGeometry(
+    transform: (T) -> U
+): FeatureCollection<U> {
+    val newFeatures: List<Feature<U>> = features.map { it.mapGeometry(transform) }
     return FeatureCollection(
         features = newFeatures,
         bbox = bbox?.let { computeBbox(newFeatures.flatMap { it.flattenCoordinates() }) },

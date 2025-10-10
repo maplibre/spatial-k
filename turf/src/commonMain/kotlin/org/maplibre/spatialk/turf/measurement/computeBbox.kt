@@ -40,7 +40,7 @@ public fun computeBbox(coordinates: List<Position>): BoundingBox {
 
 public inline fun <reified T : GeoJsonObject> T.withComputedBbox(): T =
     when (this) {
-        is FeatureCollection -> {
+        is FeatureCollection<*> -> {
             val coords = flattenCoordinates()
             copy(bbox = if (coords.isNotEmpty()) computeBbox(coords) else null)
         }
