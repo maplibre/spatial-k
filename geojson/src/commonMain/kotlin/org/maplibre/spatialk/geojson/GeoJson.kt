@@ -12,19 +12,20 @@ public data object GeoJson {
         ignoreUnknownKeys = true
         serializersModule = SerializersModule {
             polymorphicDefaultSerializer(GeoJsonObject::class) {
+                val serializer =
+                    when (it) {
+                        is Point -> Point.serializer()
+                        is MultiPoint -> MultiPoint.serializer()
+                        is LineString -> LineString.serializer()
+                        is MultiLineString -> MultiLineString.serializer()
+                        is Polygon -> Polygon.serializer()
+                        is MultiPolygon -> MultiPolygon.serializer()
+                        is GeometryCollection -> GeometryCollection.serializer()
+                        is Feature<*> -> Feature.serializer(Geometry.serializer().nullable)
+                        is FeatureCollection -> FeatureCollection.serializer()
+                    }
                 @Suppress("UNCHECKED_CAST")
-                when (it) {
-                    is Point -> Point.serializer()
-                    is MultiPoint -> MultiPoint.serializer()
-                    is LineString -> LineString.serializer()
-                    is MultiLineString -> MultiLineString.serializer()
-                    is Polygon -> Polygon.serializer()
-                    is MultiPolygon -> MultiPolygon.serializer()
-                    is GeometryCollection -> GeometryCollection.serializer()
-                    is Feature<*> -> Feature.serializer(Geometry.serializer().nullable)
-                    is FeatureCollection -> FeatureCollection.serializer()
-                }
-                    as SerializationStrategy<GeoJsonObject>
+                serializer as SerializationStrategy<GeoJsonObject>
             }
         }
     }
