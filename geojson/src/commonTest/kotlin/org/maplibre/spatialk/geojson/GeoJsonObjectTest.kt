@@ -1,6 +1,5 @@
 package org.maplibre.spatialk.geojson
 
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlinx.serialization.json.put
@@ -39,7 +38,6 @@ class GeoJsonObjectTest {
     }
 
     @Test
-    @Ignore // "not registered for polymorphic serialization"
     fun serializeGeoJson() {
         assertJsonEquals(json, GeoJson.encodeToString<GeoJsonObject>(feature))
     }

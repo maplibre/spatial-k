@@ -1,11 +1,33 @@
 package org.maplibre.spatialk.geojson
 
+import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
 import org.intellij.lang.annotations.Language
 
 public data object GeoJson {
     /** The default Json configuration for GeoJson objects. */
-    public val jsonFormat: Json = Json { ignoreUnknownKeys = true }
+    public val jsonFormat: Json = Json {
+        ignoreUnknownKeys = true
+        serializersModule = SerializersModule {
+            polymorphicDefaultSerializer(GeoJsonObject::class) {
+                @Suppress("UNCHECKED_CAST")
+                when (it) {
+                    is Point -> Point.serializer()
+                    is MultiPoint -> MultiPoint.serializer()
+                    is LineString -> LineString.serializer()
+                    is MultiLineString -> MultiLineString.serializer()
+                    is Polygon -> Polygon.serializer()
+                    is MultiPolygon -> MultiPolygon.serializer()
+                    is GeometryCollection -> GeometryCollection.serializer()
+                    is Feature<*> -> Feature.serializer(Geometry.serializer().nullable)
+                    is FeatureCollection -> FeatureCollection.serializer()
+                }
+                    as SerializationStrategy<GeoJsonObject>
+            }
+        }
+    }
 
     /** Encode [value] into a GeoJSON [String]. */
     public inline fun <reified T : GeoJsonObject?> encodeToString(value: T): String =
