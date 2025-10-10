@@ -28,7 +28,7 @@ internal abstract class GeoJsonPolymorphicSerializer<T : GeoJsonObject>(
     private val allowedTypes: Set<String>,
 ) : JsonContentPolymorphicSerializer<T>(baseClass) {
 
-    private val allowedSerializers = allSerializers.filter { it.key in allowedTypes }
+    private val allowedSerializers by lazy { allSerializers.filter { it.key in allowedTypes } }
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<T> {
         element as? JsonObject ?: throw SerializationException("Expected JSON object")
@@ -43,7 +43,7 @@ internal abstract class GeoJsonPolymorphicSerializer<T : GeoJsonObject>(
     }
 
     internal companion object {
-        val allSerializers =
+        val allSerializers by lazy {
             mapOf(
                 "Point" to Point.Companion.serializer(),
                 "MultiPoint" to MultiPoint.Companion.serializer(),
@@ -56,5 +56,6 @@ internal abstract class GeoJsonPolymorphicSerializer<T : GeoJsonObject>(
                 "FeatureCollection" to
                     FeatureCollection.Companion.serializer(Geometry.Companion.serializer().nullable),
             )
+        }
     }
 }
