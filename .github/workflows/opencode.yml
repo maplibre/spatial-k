@@ -20,8 +20,8 @@ jobs:
               uses: actions/checkout@v4
 
             - name: Run opencode
-              uses: sst/opencode/github@latest
+              uses: sst/opencode/github@v0.6.10 # https://github.com/sst/opencode/issues/2549#issuecomment-3373840335
               env:
-                  ZAI_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
+                  ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
               with:
                   model: zai-coding-plan/glm-4.6
