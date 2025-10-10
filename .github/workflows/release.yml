@@ -23,11 +23,11 @@ jobs:
             name: maven-central
             url: https://central.sonatype.com/namespace/org.maplibre.spatialk
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
               with:
                   fetch-depth: 0
                   fetch-tags: true
-            - uses: actions/setup-java@v5
+            - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
               with:
                   distribution: temurin
                   java-version: 21
@@ -52,20 +52,20 @@ jobs:
             name: github-pages
             url: ${{ steps.deploy-pages.outputs.page_url }}
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
               with:
                   fetch-depth: 0
                   fetch-tags: true
-            - uses: actions/setup-java@v5
+            - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
               with:
                   distribution: temurin
                   java-version: 21
             - run: |
                   ./gradlew :mkdocsBuild -Psemver.stage=final -Psemver.scope=${{github.event.inputs.scope }}
-            - uses: actions/upload-pages-artifact@v4
+            - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
               with:
                   path: build/mkdocs
-            - uses: actions/deploy-pages@v4
+            - uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
               id: deploy-pages
 
     tag:
@@ -74,11 +74,11 @@ jobs:
         permissions:
             contents: write
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
               with:
                   fetch-depth: 0
                   fetch-tags: true
-            - uses: actions/setup-java@v5
+            - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
               with:
                   distribution: temurin
                   java-version: 21
