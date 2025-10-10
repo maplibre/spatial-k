@@ -17,9 +17,6 @@ kotlin {
     }
 }
 
-// TODO: runs but fails bezier spline tests
-tasks.named("wasmJsNodeTest") { enabled = false }
-
 mavenPublishing {
     pom {
         name = "Spatial K Turf"

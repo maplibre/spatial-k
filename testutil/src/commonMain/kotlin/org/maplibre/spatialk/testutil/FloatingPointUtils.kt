@@ -1,7 +1,9 @@
 package org.maplibre.spatialk.testutil
 
 import kotlin.math.abs
+import kotlin.test.assertEquals
 import kotlin.test.asserter
+import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Position
 
 fun assertDoubleEquals(
@@ -30,4 +32,17 @@ fun assertPositionEquals(
 
     assertDoubleEquals(expected.latitude, actual?.latitude, epsilon, message)
     assertDoubleEquals(expected.longitude, actual?.longitude, epsilon, message)
+}
+
+fun assertLineStringEquals(
+    expected: LineString,
+    actual: LineString,
+    epsilon: Double = 0.0001,
+    message: String? = null,
+) {
+    assertEquals(expected.coordinates.size, actual.coordinates.size, "Coordinate count mismatch")
+    expected.coordinates.forEachIndexed { index, expectedPos ->
+        val actualPos = actual.coordinates[index]
+        assertPositionEquals(expectedPos, actualPos, epsilon, (message ?: "") + " at index $index")
+    }
 }
