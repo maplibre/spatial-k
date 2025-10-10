@@ -16,11 +16,12 @@ jobs:
             contents: read
             id-token: write
         steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
-
-            - name: Run opencode
-              uses: sst/opencode/github@v0.6.10 # https://github.com/sst/opencode/issues/2549#issuecomment-3373840335
+            - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+              with:
+                  fetch-depth: 0
+                  fetch-tags: true
+                  persist-credentials: false
+            - uses: sst/opencode/github@34ec6cc97809b7747814880919d914271e85b536 # 2025-10-10
               env:
                   ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
               with:
