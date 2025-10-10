@@ -158,8 +158,8 @@ public inline fun multiPolygon(block: MultiPolygonDsl.() -> Unit): MultiPolygon 
 @GeoJsonDsl
 public class GeometryCollectionDsl(
     private val geometries: MutableList<Geometry> = mutableListOf()
-) : GeometryDsl<GeometryCollection>() {
-    override fun create(): GeometryCollection = GeometryCollection(geometries)
+) : GeometryDsl<GeometryCollection<Geometry>>() {
+    override fun create(): GeometryCollection<Geometry> = GeometryCollection(geometries)
 
     public operator fun Geometry.unaryPlus() {
         geometries.add(this)
@@ -167,5 +167,6 @@ public class GeometryCollectionDsl(
 }
 
 @GeoJsonDsl
-public inline fun geometryCollection(block: GeometryCollectionDsl.() -> Unit): GeometryCollection =
-    GeometryCollectionDsl().apply(block).create()
+public inline fun geometryCollection(
+    block: GeometryCollectionDsl.() -> Unit
+): GeometryCollection<Geometry> = GeometryCollectionDsl().apply(block).create()

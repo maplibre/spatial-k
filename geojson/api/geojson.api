@@ -193,7 +193,7 @@ public final class org/maplibre/spatialk/geojson/GeometryCollection : java/util/
 public final class org/maplibre/spatialk/geojson/GeometryCollection$Companion {
 	public final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
 	public final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+	public final fun serializer (Lkotlinx/serialization/KSerializer;)Lkotlinx/serialization/KSerializer;
 }
 
 public final class org/maplibre/spatialk/geojson/LineString : org/maplibre/spatialk/geojson/LineStringGeometry, org/maplibre/spatialk/geojson/SingleGeometry {
