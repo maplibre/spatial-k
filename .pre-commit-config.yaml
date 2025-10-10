@@ -37,5 +37,6 @@ repos:
             entry: ./gradlew updateLegacyAbi
             types_or: [kotlin]
             pass_filenames: false
+            stages: [manual]
 
 exclude: '^.*\.api$' # ignore formatting for generated files

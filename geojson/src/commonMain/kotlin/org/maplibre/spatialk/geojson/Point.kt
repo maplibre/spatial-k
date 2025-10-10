@@ -6,6 +6,8 @@ import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoUriParser
 import org.maplibre.spatialk.geojson.serialization.PointSerializer
+import org.maplibre.spatialk.units.Length
+import org.maplibre.spatialk.units.Rotation
 
 /**
  * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.1.2">
@@ -17,9 +19,9 @@ public data class Point
 @JvmOverloads
 constructor(public val coordinates: Position, override val bbox: BoundingBox? = null) : Geometry {
     public constructor(
-        longitude: Double,
-        latitude: Double,
-        altitude: Double? = null,
+        longitude: Rotation,
+        latitude: Rotation,
+        altitude: Length? = null,
         bbox: BoundingBox? = null,
     ) : this(Position(longitude, latitude, altitude), bbox)
 

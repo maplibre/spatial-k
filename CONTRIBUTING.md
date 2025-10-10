@@ -43,6 +43,13 @@ changes to the docs.
 
 ## Make CI happy
 
+### Dump ABIs
+
+We commit the ABI files to the repository so that changes to the ABI can be
+inspected in pull requests. To dump the ABIs, run `./gradlew updateLegacyAbi`.
+
+### Formatting
+
 A Git pre-commit hook is available to ensure that the code is formatted before
 every commit.
 

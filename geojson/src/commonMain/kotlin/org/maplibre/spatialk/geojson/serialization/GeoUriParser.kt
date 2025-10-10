@@ -2,6 +2,8 @@ package org.maplibre.spatialk.geojson.serialization
 
 import kotlin.text.get
 import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.units.extensions.degrees
+import org.maplibre.spatialk.units.extensions.meters
 
 internal object GeoUriParser {
     // geo uri syntax as defined at https://datatracker.ietf.org/doc/html/rfc5870#section-3.3
@@ -27,9 +29,9 @@ internal object GeoUriParser {
         }
 
         return Position(
-            latitude = result.groups["lat"]!!.value.toDouble(),
-            longitude = result.groups["lon"]!!.value.toDouble(),
-            altitude = result.groups["alt"]?.value?.toDouble(),
+            latitude = result.groups["lat"]!!.value.toDouble().degrees,
+            longitude = result.groups["lon"]!!.value.toDouble().degrees,
+            altitude = result.groups["alt"]?.value?.toDouble()?.meters,
         )
     }
 }

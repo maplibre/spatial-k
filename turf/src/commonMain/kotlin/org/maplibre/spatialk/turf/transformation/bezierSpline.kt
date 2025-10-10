@@ -32,9 +32,9 @@ private fun bezierSpline(coords: List<Position>, duration: Int, sharpness: Doubl
                 val p1 = coords[i]
                 val p2 = coords[i + 1]
                 Position(
-                    longitude = (p1.longitude + p2.longitude) / 2,
-                    latitude = (p1.latitude + p2.latitude) / 2,
-                    altitude = (p1.altitude() + p2.altitude()) / 2,
+                    longitudeDegrees = (p1.longitude + p2.longitude) / 2,
+                    latitudeDegrees = (p1.latitude + p2.latitude) / 2,
+                    altitudeMeters = (p1.altitude() + p2.altitude()) / 2,
                 )
             }
 
@@ -47,24 +47,24 @@ private fun bezierSpline(coords: List<Position>, duration: Int, sharpness: Doubl
             add(
                 Pair(
                     Position(
-                        longitude =
+                        longitudeDegrees =
                             (1.0 - sharpness) * coords[i + 1].longitude +
                                 sharpness * (centers[i].longitude + dx),
-                        latitude =
+                        latitudeDegrees =
                             (1.0 - sharpness) * coords[i + 1].latitude +
                                 sharpness * (centers[i].latitude + dy),
-                        altitude =
+                        altitudeMeters =
                             (1.0 - sharpness) * coords[i + 1].altitude() +
                                 sharpness * (centers[i].altitude() + dz),
                     ),
                     Position(
-                        longitude =
+                        longitudeDegrees =
                             (1.0 - sharpness) * coords[i + 1].longitude +
                                 sharpness * (centers[i + 1].longitude + dx),
-                        latitude =
+                        latitudeDegrees =
                             (1.0 - sharpness) * coords[i + 1].latitude +
                                 sharpness * (centers[i + 1].latitude + dy),
-                        altitude =
+                        altitudeMeters =
                             (1.0 - sharpness) * coords[i + 1].altitude() +
                                 sharpness * (centers[i + 1].altitude() + dz),
                     ),
@@ -79,14 +79,14 @@ private fun bezierSpline(coords: List<Position>, duration: Int, sharpness: Doubl
         val t3 = t2 * t
         val b = listOf(t3, 3 * t2 * (1 - t), 3 * t * (1 - t) * (1 - t), (1 - t) * (1 - t) * (1 - t))
         return Position(
-            longitude =
+            longitudeDegrees =
                 p2.longitude * b[0] +
                     c2.longitude * b[1] +
                     c1.longitude * b[2] +
                     p1.longitude * b[3],
-            latitude =
+            latitudeDegrees =
                 p2.latitude * b[0] + c2.latitude * b[1] + c1.latitude * b[2] + p1.latitude * b[3],
-            altitude =
+            altitudeMeters =
                 p2.altitude() * b[0] +
                     c2.altitude() * b[1] +
                     c1.altitude() * b[2] +

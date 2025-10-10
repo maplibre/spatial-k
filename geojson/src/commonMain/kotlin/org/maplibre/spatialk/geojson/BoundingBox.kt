@@ -6,6 +6,12 @@ import kotlin.math.min
 import kotlinx.serialization.Serializable
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.BoundingBoxSerializer
+import org.maplibre.spatialk.units.Length
+import org.maplibre.spatialk.units.Rotation
+import org.maplibre.spatialk.units.extensions.degrees
+import org.maplibre.spatialk.units.extensions.inDegrees
+import org.maplibre.spatialk.units.extensions.inMeters
+import org.maplibre.spatialk.units.extensions.meters
 
 /**
  * Represents an area bounded by a [northeast] and [southwest] [Position].
@@ -36,20 +42,29 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
     }
 
     public constructor(
-        west: Double,
-        south: Double,
-        east: Double,
-        north: Double,
-    ) : this(doubleArrayOf(west, south, east, north))
+        west: Rotation,
+        south: Rotation,
+        east: Rotation,
+        north: Rotation,
+    ) : this(doubleArrayOf(west.inDegrees, south.inDegrees, east.inDegrees, north.inDegrees))
 
     public constructor(
-        west: Double,
-        south: Double,
-        minAltitude: Double,
-        east: Double,
-        north: Double,
-        maxAltitude: Double,
-    ) : this(doubleArrayOf(west, south, minAltitude, east, north, maxAltitude))
+        west: Rotation,
+        south: Rotation,
+        minAltitude: Length,
+        east: Rotation,
+        north: Rotation,
+        maxAltitude: Length,
+    ) : this(
+        doubleArrayOf(
+            west.inDegrees,
+            south.inDegrees,
+            minAltitude.inMeters,
+            east.inDegrees,
+            north.inDegrees,
+            maxAltitude.inMeters,
+        )
+    )
 
     /**
      * Construct a [BoundingBox] from two [Position]s that represent the southwest corner and
@@ -97,23 +112,23 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
     public val northeast: Position
         get() = Position(coordinates.sliceArray((coordinates.size / 2)..<coordinates.size))
 
-    public val west: Double
-        get() = coordinates[0]
+    public val west: Rotation
+        get() = coordinates[0].degrees
 
-    public val south: Double
-        get() = coordinates[1]
+    public val south: Rotation
+        get() = coordinates[1].degrees
 
-    public val minAltitude: Double?
-        get() = if (hasAltitude) coordinates[2] else null
+    public val minAltitude: Length?
+        get() = if (hasAltitude) coordinates[2].meters else null
 
-    public val east: Double
-        get() = if (hasAltitude) coordinates[3] else coordinates[2]
+    public val east: Rotation
+        get() = if (hasAltitude) coordinates[3].degrees else coordinates[2].degrees
 
-    public val north: Double
-        get() = if (hasAltitude) coordinates[4] else coordinates[3]
+    public val north: Rotation
+        get() = if (hasAltitude) coordinates[4].degrees else coordinates[3].degrees
 
-    public val maxAltitude: Double?
-        get() = if (hasAltitude) coordinates[5] else null
+    public val maxAltitude: Length?
+        get() = if (hasAltitude) coordinates[5].meters else null
 
     /** @return the coordinate at the given index. */
     public operator fun get(index: Int): Double = coordinates[index]

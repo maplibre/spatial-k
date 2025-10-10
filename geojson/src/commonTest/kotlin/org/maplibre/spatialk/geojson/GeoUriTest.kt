@@ -9,7 +9,7 @@ class GeoUriTest {
     @Test
     fun parsePosition_acceptsTwoCoords() {
         assertEquals(
-            Position(latitude = 1.0, longitude = 2.0),
+            Position(latitudeDegrees = 1.0, longitudeDegrees = 2.0),
             GeoUriParser.parsePosition("geo:1.0,2.0"),
         )
     }
@@ -17,7 +17,7 @@ class GeoUriTest {
     @Test
     fun parsePosition_acceptsThreeCoords() {
         assertEquals(
-            Position(latitude = 1.0, longitude = 2.0, altitude = 3.0),
+            Position(latitudeDegrees = 1.0, longitudeDegrees = 2.0, altitudeMeters = 3.0),
             GeoUriParser.parsePosition("geo:1.0,2.0,3.0"),
         )
     }
@@ -44,7 +44,7 @@ class GeoUriTest {
     @Test
     fun parsePosition_acceptsParams() {
         assertEquals(
-            Position(latitude = 1.0, longitude = 2.0, altitude = 3.0),
+            Position(latitudeDegrees = 1.0, longitudeDegrees = 2.0, altitudeMeters = 3.0),
             GeoUriParser.parsePosition("geo:1.0,2.0,3.0;foo=bar;x=y;u"),
         )
     }
@@ -52,7 +52,7 @@ class GeoUriTest {
     @Test
     fun parsePosition_acceptsZeroUncertainty() {
         assertEquals(
-            Position(latitude = 1.0, longitude = 2.0, altitude = 3.0),
+            Position(latitudeDegrees = 1.0, longitudeDegrees = 2.0, altitudeMeters = 3.0),
             GeoUriParser.parsePosition("geo:1.0,2.0,3.0;u=0.0"),
         )
     }
@@ -67,7 +67,7 @@ class GeoUriTest {
     @Test
     fun parsePosition_acceptsCrsWgs84() {
         assertEquals(
-            Position(latitude = 1.0, longitude = 2.0, altitude = 3.0),
+            Position(latitudeDegrees = 1.0, longitudeDegrees = 2.0, altitudeMeters = 3.0),
             GeoUriParser.parsePosition("geo:1.0,2.0,3.0;crs=wgs84"),
         )
     }

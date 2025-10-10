@@ -5,11 +5,6 @@ public final class org/maplibre/spatialk/turf/booleans/Booleans {
 	public static final fun contains (Lorg/maplibre/spatialk/geojson/Polygon;Lorg/maplibre/spatialk/geojson/Position;Z)Z
 }
 
-public final class org/maplibre/spatialk/turf/constants/Constants {
-	public static final fun getEarthAverageRadius ()D
-	public static final fun getEarthEquatorRadius ()D
-}
-
 public final class org/maplibre/spatialk/turf/coordinatemutation/CoordinateMutation {
 	public static final fun round (DI)D
 	public static synthetic fun round$default (DIILjava/lang/Object;)D
@@ -48,8 +43,8 @@ public final class org/maplibre/spatialk/turf/measurement/Measurement {
 	public static final synthetic fun distanceAsLength (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/LineString;)D
 	public static final synthetic fun distanceAsLength (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
 	public static final fun envelope (Lorg/maplibre/spatialk/geojson/Geometry;)Lorg/maplibre/spatialk/geojson/Polygon;
-	public static final fun greatCircle (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;ID)Lorg/maplibre/spatialk/geojson/Geometry;
-	public static synthetic fun greatCircle$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;IDILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Geometry;
+	public static final fun greatCircle-cJjdsjQ (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;ID)Lorg/maplibre/spatialk/geojson/Geometry;
+	public static synthetic fun greatCircle-cJjdsjQ$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;IDILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Geometry;
 	public static final fun length (Lorg/maplibre/spatialk/geojson/Geometry;)D
 	public static final fun length (Lorg/maplibre/spatialk/geojson/Geometry;Lorg/maplibre/spatialk/units/LengthUnit;)D
 	public static synthetic fun length$default (Lorg/maplibre/spatialk/geojson/Geometry;Lorg/maplibre/spatialk/units/LengthUnit;ILjava/lang/Object;)D
@@ -59,10 +54,10 @@ public final class org/maplibre/spatialk/turf/measurement/Measurement {
 	public static synthetic fun locateAlong$default (Lorg/maplibre/spatialk/geojson/LineString;DLorg/maplibre/spatialk/units/LengthUnit;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Position;
 	public static final synthetic fun locateAlong-NY0MKA4 (Lorg/maplibre/spatialk/geojson/LineString;D)Lorg/maplibre/spatialk/geojson/Position;
 	public static final fun midpoint (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)Lorg/maplibre/spatialk/geojson/Position;
-	public static final fun offset (Lorg/maplibre/spatialk/geojson/Position;DI)Lorg/maplibre/spatialk/geojson/Position;
-	public static final fun offset (Lorg/maplibre/spatialk/geojson/Position;DLorg/maplibre/spatialk/units/LengthUnit;I)Lorg/maplibre/spatialk/geojson/Position;
-	public static synthetic fun offset$default (Lorg/maplibre/spatialk/geojson/Position;DLorg/maplibre/spatialk/units/LengthUnit;IILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Position;
-	public static final synthetic fun offset-RJZUCfk (Lorg/maplibre/spatialk/geojson/Position;DD)Lorg/maplibre/spatialk/geojson/Position;
+	public static final fun offset (Lorg/maplibre/spatialk/geojson/Position;DD)Lorg/maplibre/spatialk/geojson/Position;
+	public static final fun offset (Lorg/maplibre/spatialk/geojson/Position;DLorg/maplibre/spatialk/units/LengthUnit;D)Lorg/maplibre/spatialk/geojson/Position;
+	public static synthetic fun offset$default (Lorg/maplibre/spatialk/geojson/Position;DLorg/maplibre/spatialk/units/LengthUnit;DILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Position;
+	public static final synthetic fun offset-5rEEf_g (Lorg/maplibre/spatialk/geojson/Position;DD)Lorg/maplibre/spatialk/geojson/Position;
 	public static final fun rhumbDistance (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
 	public static final fun rhumbDistance (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/units/LengthUnit;)D
 	public static synthetic fun rhumbDistance$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/units/LengthUnit;ILjava/lang/Object;)D
@@ -114,12 +109,5 @@ public final class org/maplibre/spatialk/turf/transformation/Transformation {
 	public static synthetic fun circle-RJZUCfk$default (Lorg/maplibre/spatialk/geojson/Position;DIILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Polygon;
 	public static final fun simplify (Lorg/maplibre/spatialk/geojson/LineString;Ljava/lang/Double;Z)Lorg/maplibre/spatialk/geojson/LineString;
 	public static synthetic fun simplify$default (Lorg/maplibre/spatialk/geojson/LineString;Ljava/lang/Double;ZILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/LineString;
-}
-
-public final class org/maplibre/spatialk/turf/unitconversion/UnitConversion {
-	public static final fun azimuthToBearing (D)D
-	public static final fun bearingToAzimuth (D)D
-	public static final fun degreesToRadians (D)D
-	public static final fun radiansToDegrees (D)D
 }
 

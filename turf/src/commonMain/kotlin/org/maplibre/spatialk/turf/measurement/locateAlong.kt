@@ -12,6 +12,7 @@ import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
+import org.maplibre.spatialk.units.extensions.degrees
 import org.maplibre.spatialk.units.extensions.toLength
 
 /**
@@ -31,7 +32,7 @@ public fun LineString.locateAlong(distance: Length): Position {
                 val overshot = distance - travelled
                 return if (overshot.isZero) coordinate
                 else {
-                    val direction = coordinate.bearingTo(coordinates[i - 1]) - 180
+                    val direction = coordinate.bearingTo(coordinates[i - 1]) - 180.degrees
                     coordinate.offset(overshot, direction)
                 }
             }

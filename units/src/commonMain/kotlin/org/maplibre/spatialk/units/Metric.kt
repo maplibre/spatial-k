@@ -1,6 +1,7 @@
 package org.maplibre.spatialk.units
 
 import kotlin.jvm.JvmField
+import kotlin.math.PI
 
 /** Metric-based units not part of the The International System of Units. */
 public data object Metric {
@@ -13,4 +14,6 @@ public data object Metric {
     @JvmField public val Decares: AreaUnit = AreaUnit(1_000.0, "daa")
 
     @JvmField public val Hectares: AreaUnit = AreaUnit(10_000.0, "ha")
+
+    @JvmField public val Gradians: RotationUnit = RotationUnit(PI / 200, "gr")
 }

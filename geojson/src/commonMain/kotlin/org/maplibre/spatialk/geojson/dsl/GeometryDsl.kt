@@ -13,6 +13,8 @@ import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.units.Length
+import org.maplibre.spatialk.units.Rotation
 
 @GeoJsonDsl
 public abstract class GeometryDsl<T : Geometry>
@@ -27,9 +29,9 @@ public class PointDsl(private var coordinates: Position) : GeometryDsl<Point>() 
 
 @GeoJsonDsl
 public inline fun point(
-    longitude: Double,
-    latitude: Double,
-    altitude: Double? = null,
+    longitude: Rotation,
+    latitude: Rotation,
+    altitude: Length? = null,
     block: PointDsl.() -> Unit = {},
 ): Point = PointDsl(Position(longitude, latitude, altitude)).apply(block).create()
 
@@ -46,7 +48,7 @@ public class MultiPointDsl(private val points: MutableList<Position> = mutableLi
         points.add(this.coordinates)
     }
 
-    public fun point(longitude: Double, latitude: Double, altitude: Double? = null) {
+    public fun point(longitude: Rotation, latitude: Rotation, altitude: Length? = null) {
         points.add(Position(longitude, latitude, altitude))
     }
 }
@@ -68,7 +70,7 @@ public class LineStringDsl(internal val points: MutableList<Position> = mutableL
         points.add(this.coordinates)
     }
 
-    public fun point(longitude: Double, latitude: Double, altitude: Double? = null) {
+    public fun point(longitude: Rotation, latitude: Rotation, altitude: Length? = null) {
         points.add(Position(longitude, latitude, altitude))
     }
 }
@@ -114,7 +116,7 @@ public class PolygonDsl(internal val coordinates: MutableList<List<Position>> = 
             +LineStringDsl().apply(block).create()
         }
 
-        public fun point(longitude: Double, latitude: Double, altitude: Double? = null) {
+        public fun point(longitude: Rotation, latitude: Rotation, altitude: Length? = null) {
             points.add(Position(longitude, latitude, altitude))
         }
 
