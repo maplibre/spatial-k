@@ -285,14 +285,32 @@ class FeatureTest {
         assertNull(
             Feature.fromJsonOrNull<Geometry>(
                 """
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [125.6, 10.1]
-                },
-                "properties": null
-            }
-            """
+                        {
+                            "geometry": {
+                                "type": "Point",
+                                "coordinates": [125.6, 10.1]
+                            },
+                            "properties": null
+                        }
+                      """
+            )
+        )
+    }
+
+    @Test
+    fun testWrongType() {
+        assertNull(
+            Feature.fromJsonOrNull<Geometry>(
+                """
+                        {
+                            "type": "NotFeature",
+                            "geometry": {
+                                "type": "Point",
+                                "coordinates": [125.6, 10.1]
+                            },
+                            "properties": null
+                        }
+                      """
             )
         )
     }

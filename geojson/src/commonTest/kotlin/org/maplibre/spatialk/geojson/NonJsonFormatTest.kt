@@ -1,4 +1,4 @@
-package org.maplibre.spatialk.geojson.serialization
+package org.maplibre.spatialk.geojson
 
 import kotlin.test.Ignore
 import kotlin.test.Test
@@ -8,12 +8,10 @@ import kotlinx.serialization.cbor.Cbor
 import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
-import org.maplibre.spatialk.geojson.BoundingBox
-import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.dsl.lineString
 import org.maplibre.spatialk.geojson.dsl.lngLat
 
-class NonJsonSerializationTest {
+class NonJsonFormatTest {
     // NOTE: polymorphic types are not yet supported with non-json formats
     // That's Geometry, GeometryCollection, GeoJsonObject, FeatureCollection
     // Also Feature (because of properties: JsonObject) is not yet supported
@@ -32,7 +30,7 @@ class NonJsonSerializationTest {
     fun testProtoBufSerialization() {
         assertRoundTrip { obj ->
             @OptIn(ExperimentalSerializationApi::class)
-            ProtoBuf.decodeFromByteArray(ProtoBuf.encodeToByteArray(obj))
+            ProtoBuf.Default.decodeFromByteArray(ProtoBuf.Default.encodeToByteArray(obj))
         }
     }
 
@@ -41,7 +39,7 @@ class NonJsonSerializationTest {
     fun testCborSerialization() {
         assertRoundTrip { obj ->
             @OptIn(ExperimentalSerializationApi::class)
-            Cbor.decodeFromByteArray(ProtoBuf.encodeToByteArray(obj))
+            Cbor.Default.decodeFromByteArray(ProtoBuf.Default.encodeToByteArray(obj))
         }
     }
 }
