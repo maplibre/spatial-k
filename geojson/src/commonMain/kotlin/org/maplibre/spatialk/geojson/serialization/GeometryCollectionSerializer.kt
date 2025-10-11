@@ -18,9 +18,8 @@ import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.GeometryCollection
 
-internal class GeometryCollectionSerializer<T : Geometry>(
-    geometrySerializer: KSerializer<T>
-) : KSerializer<GeometryCollection<T>> {
+internal class GeometryCollectionSerializer<T : Geometry>(geometrySerializer: KSerializer<T>) :
+    KSerializer<GeometryCollection<T>> {
     private val serialName: String = "GeometryCollection"
     private val typeSerializer = String.serializer()
     private val bboxSerializer = BoundingBox.serializer().nullable
