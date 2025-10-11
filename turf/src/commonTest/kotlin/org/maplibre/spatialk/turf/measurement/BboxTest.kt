@@ -4,80 +4,86 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.Feature
+import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
-import org.maplibre.spatialk.geojson.dsl.*
+import org.maplibre.spatialk.geojson.dsl.addFeature
+import org.maplibre.spatialk.geojson.dsl.addLineString
+import org.maplibre.spatialk.geojson.dsl.addPolygon
+import org.maplibre.spatialk.geojson.dsl.addRing
+import org.maplibre.spatialk.geojson.dsl.buildFeatureCollection
+import org.maplibre.spatialk.geojson.dsl.buildLineString
+import org.maplibre.spatialk.geojson.dsl.buildMultiLineString
+import org.maplibre.spatialk.geojson.dsl.buildMultiPolygon
+import org.maplibre.spatialk.geojson.dsl.buildPolygon
 import org.maplibre.spatialk.testutil.readResourceFile
 
-private val point = point(102.0, 0.5)
-private val line = lineString {
-    point(102.0, -10.0)
-    point(103.0, 1.0)
-    point(104.0, 0.0)
-    point(130.0, 4.0)
+private val point = Point(102.0, 0.5)
+private val line = buildLineString {
+    add(102.0, -10.0)
+    add(103.0, 1.0)
+    add(104.0, 0.0)
+    add(130.0, 4.0)
 }
-private val polygon = polygon {
-    ring {
-        point(101.0, 0.0)
-        point(101.0, 1.0)
-        point(100.0, 1.0)
-        point(100.0, 0.0)
-        complete()
+private val polygon = buildPolygon {
+    addRing {
+        add(101.0, 0.0)
+        add(101.0, 1.0)
+        add(100.0, 1.0)
+        add(100.0, 0.0)
     }
 }
-private val multiLine = multiLineString {
-    lineString {
-        point(100.0, 0.0)
-        point(101.0, 1.0)
+private val multiLine = buildMultiLineString {
+    addLineString {
+        add(100.0, 0.0)
+        add(101.0, 1.0)
     }
-    lineString {
-        point(102.0, 2.0)
-        point(103.0, 3.0)
+    addLineString {
+        add(102.0, 2.0)
+        add(103.0, 3.0)
     }
 }
-private val multiPolygon = multiPolygon {
-    polygon {
-        ring {
-            point(102.0, 2.0)
-            point(103.0, 2.0)
-            point(103.0, 3.0)
-            point(102.0, 3.0)
-            complete()
+private val multiPolygon = buildMultiPolygon {
+    addPolygon {
+        addRing {
+            add(102.0, 2.0)
+            add(103.0, 2.0)
+            add(103.0, 3.0)
+            add(102.0, 3.0)
         }
     }
-    polygon {
-        ring {
-            point(100.0, 0.0)
-            point(101.0, 0.0)
-            point(101.0, 1.0)
-            point(100.0, 1.0)
-            complete()
+    addPolygon {
+        addRing {
+            add(100.0, 0.0)
+            add(101.0, 0.0)
+            add(101.0, 1.0)
+            add(100.0, 1.0)
         }
-        ring {
-            point(100.2, 0.2)
-            point(101.8, 0.2)
-            point(101.8, 0.8)
-            point(100.2, 0.8)
-            complete()
+        addRing {
+            add(100.2, 0.2)
+            add(101.8, 0.2)
+            add(101.8, 0.8)
+            add(100.2, 0.8)
         }
     }
 }
 
-private val featureCollection = featureCollection {
-    feature(geometry = point)
-    feature(geometry = line)
-    feature(geometry = polygon)
-    feature(geometry = multiLine)
-    feature(geometry = multiPolygon)
+private val featureCollection = buildFeatureCollection {
+    addFeature { geometry = point }
+    addFeature { geometry = line }
+    addFeature { geometry = polygon }
+    addFeature { geometry = multiLine }
+    addFeature { geometry = multiPolygon }
 }
 
 class BboxTest {
 
     @Test
     fun testEmptyFeatures() {
-        assertNull(feature().withComputedBbox().bbox)
-        assertNull(featureCollection<Nothing?> {}.withComputedBbox().bbox)
+        assertNull(Feature<Nothing?>(null).withComputedBbox().bbox)
+        assertNull(FeatureCollection<Nothing?>(emptyList()).withComputedBbox().bbox)
     }
 
     @Test
