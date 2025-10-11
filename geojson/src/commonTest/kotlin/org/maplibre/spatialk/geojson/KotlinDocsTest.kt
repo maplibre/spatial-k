@@ -434,28 +434,6 @@ class KotlinDocsTest {
     }
 
     @Test
-    fun dslPointExample() {
-        kotlinAndJsonExample(
-            kotlin = {
-                // --8<-- [start:dslPointKt]
-                val point = buildPoint { coordinates = Position(-75.0, 45.0, 100.0) }
-                // --8<-- [end:dslPointKt]
-
-                point.toJson()
-            },
-            json =
-                """
-                // --8<-- [start:dslPointJson]
-                {
-                  "type": "Point",
-                  "coordinates": [-75.0, 45.0, 100.0]
-                }
-                // --8<-- [end:dslPointJson]
-            """,
-        )
-    }
-
-    @Test
     fun dslMultiPointExample() {
         kotlinAndJsonExample(
             kotlin = {

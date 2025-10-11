@@ -11,6 +11,7 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.experimental.ExperimentalTypeInference
 import kotlin.jvm.JvmSynthetic
+import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
@@ -26,12 +27,6 @@ import org.maplibre.spatialk.geojson.Position
 @DslMarker internal annotation class GeoJsonDsl
 
 // outer builders
-
-@GeoJsonDsl
-public inline fun buildPoint(builderAction: PointBuilder.() -> Unit): Point {
-    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
-    return PointBuilder().apply { builderAction() }.build()
-}
 
 @GeoJsonDsl
 public inline fun buildLineString(builderAction: LineStringBuilder.() -> Unit): LineString {
@@ -91,24 +86,19 @@ public inline fun <T : Geometry?> buildFeatureCollection(
 
 // inner builders
 
-@GeoJsonDsl
-public inline fun MultiPointBuilder.addPoint(builderAction: PointBuilder.() -> Unit) {
-    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
-    add(PointBuilder().apply { builderAction() }.build())
+public fun MultiPointBuilder.addPoint(coordinates: Position, bbox: BoundingBox? = null) {
+    add(Point(coordinates, bbox))
 }
 
-@GeoJsonDsl
-public inline fun LineStringBuilder.addPoint(builderAction: PointBuilder.() -> Unit) {
-    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
-    add(PointBuilder().apply { builderAction() }.build())
+public fun LineStringBuilder.addPoint(coordinates: Position, bbox: BoundingBox? = null) {
+    add(Point(coordinates, bbox))
 }
 
-@GeoJsonDsl
-public inline fun GeometryCollectionBuilder<in Point>.addPoint(
-    builderAction: PointBuilder.() -> Unit
+public fun GeometryCollectionBuilder<in Point>.addPoint(
+    coordinates: Position,
+    bbox: BoundingBox? = null,
 ) {
-    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
-    add(PointBuilder().apply { builderAction() }.build())
+    add(Point(coordinates, bbox))
 }
 
 @GeoJsonDsl
