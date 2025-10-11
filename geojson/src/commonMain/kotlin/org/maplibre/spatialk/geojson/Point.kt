@@ -15,7 +15,8 @@ import org.maplibre.spatialk.geojson.serialization.PointSerializer
 @Serializable(with = PointSerializer::class)
 public data class Point
 @JvmOverloads
-constructor(public val coordinates: Position, override val bbox: BoundingBox? = null) : Geometry {
+constructor(public val coordinates: Position, override val bbox: BoundingBox? = null) :
+    SingleGeometry, PointGeometry {
     public constructor(
         longitude: Double,
         latitude: Double,

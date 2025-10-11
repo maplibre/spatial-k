@@ -7,9 +7,10 @@ import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeometryCollectionSerializer
 
 /**
+ * A collection of multiple, heterogeneous, [Geometry] objects.
+ *
  * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.1.8">
  *   https://tools.ietf.org/html/rfc7946#section-3.1.8</a>
- * @see Geometry
  */
 @Serializable(with = GeometryCollectionSerializer::class)
 public data class GeometryCollection

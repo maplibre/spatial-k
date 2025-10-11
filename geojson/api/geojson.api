@@ -196,7 +196,7 @@ public final class org/maplibre/spatialk/geojson/GeometryCollection$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class org/maplibre/spatialk/geojson/LineString : org/maplibre/spatialk/geojson/Geometry {
+public final class org/maplibre/spatialk/geojson/LineString : org/maplibre/spatialk/geojson/LineStringGeometry, org/maplibre/spatialk/geojson/SingleGeometry {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/LineString$Companion;
 	public fun <init> (Ljava/util/List;)V
 	public fun <init> (Ljava/util/List;Lorg/maplibre/spatialk/geojson/BoundingBox;)V
@@ -230,7 +230,31 @@ public final class org/maplibre/spatialk/geojson/LineString$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class org/maplibre/spatialk/geojson/MultiLineString : org/maplibre/spatialk/geojson/Geometry {
+public abstract interface class org/maplibre/spatialk/geojson/LineStringGeometry : org/maplibre/spatialk/geojson/Geometry {
+	public static final field Companion Lorg/maplibre/spatialk/geojson/LineStringGeometry$Companion;
+	public static fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/LineStringGeometry;
+	public static fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/LineStringGeometry;
+}
+
+public final class org/maplibre/spatialk/geojson/LineStringGeometry$Companion {
+	public final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/LineStringGeometry;
+	public final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/LineStringGeometry;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public abstract interface class org/maplibre/spatialk/geojson/MultiGeometry : org/maplibre/spatialk/geojson/Geometry {
+	public static final field Companion Lorg/maplibre/spatialk/geojson/MultiGeometry$Companion;
+	public static fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/MultiGeometry;
+	public static fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/MultiGeometry;
+}
+
+public final class org/maplibre/spatialk/geojson/MultiGeometry$Companion {
+	public final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/MultiGeometry;
+	public final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/MultiGeometry;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/geojson/MultiLineString : org/maplibre/spatialk/geojson/LineStringGeometry, org/maplibre/spatialk/geojson/MultiGeometry {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/MultiLineString$Companion;
 	public fun <init> (Ljava/util/List;)V
 	public fun <init> (Ljava/util/List;Lorg/maplibre/spatialk/geojson/BoundingBox;)V
@@ -264,7 +288,7 @@ public final class org/maplibre/spatialk/geojson/MultiLineString$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class org/maplibre/spatialk/geojson/MultiPoint : org/maplibre/spatialk/geojson/Geometry {
+public final class org/maplibre/spatialk/geojson/MultiPoint : org/maplibre/spatialk/geojson/MultiGeometry, org/maplibre/spatialk/geojson/PointGeometry {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/MultiPoint$Companion;
 	public fun <init> (Ljava/util/List;)V
 	public fun <init> (Ljava/util/List;Lorg/maplibre/spatialk/geojson/BoundingBox;)V
@@ -295,7 +319,7 @@ public final class org/maplibre/spatialk/geojson/MultiPoint$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class org/maplibre/spatialk/geojson/MultiPolygon : org/maplibre/spatialk/geojson/Geometry {
+public final class org/maplibre/spatialk/geojson/MultiPolygon : org/maplibre/spatialk/geojson/MultiGeometry, org/maplibre/spatialk/geojson/PolygonGeometry {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/MultiPolygon$Companion;
 	public fun <init> (Ljava/util/List;)V
 	public fun <init> (Ljava/util/List;Lorg/maplibre/spatialk/geojson/BoundingBox;)V
@@ -329,7 +353,7 @@ public final class org/maplibre/spatialk/geojson/MultiPolygon$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class org/maplibre/spatialk/geojson/Point : org/maplibre/spatialk/geojson/Geometry {
+public final class org/maplibre/spatialk/geojson/Point : org/maplibre/spatialk/geojson/PointGeometry, org/maplibre/spatialk/geojson/SingleGeometry {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/Point$Companion;
 	public fun <init> (DDLjava/lang/Double;Lorg/maplibre/spatialk/geojson/BoundingBox;)V
 	public synthetic fun <init> (DDLjava/lang/Double;Lorg/maplibre/spatialk/geojson/BoundingBox;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -359,7 +383,19 @@ public final class org/maplibre/spatialk/geojson/Point$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class org/maplibre/spatialk/geojson/Polygon : org/maplibre/spatialk/geojson/Geometry {
+public abstract interface class org/maplibre/spatialk/geojson/PointGeometry : org/maplibre/spatialk/geojson/Geometry {
+	public static final field Companion Lorg/maplibre/spatialk/geojson/PointGeometry$Companion;
+	public static fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/PointGeometry;
+	public static fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/PointGeometry;
+}
+
+public final class org/maplibre/spatialk/geojson/PointGeometry$Companion {
+	public final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/PointGeometry;
+	public final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/PointGeometry;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/geojson/Polygon : org/maplibre/spatialk/geojson/PolygonGeometry, org/maplibre/spatialk/geojson/SingleGeometry {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/Polygon$Companion;
 	public fun <init> (Ljava/util/List;)V
 	public fun <init> (Ljava/util/List;Lorg/maplibre/spatialk/geojson/BoundingBox;)V
@@ -390,6 +426,18 @@ public final class org/maplibre/spatialk/geojson/Polygon : org/maplibre/spatialk
 public final class org/maplibre/spatialk/geojson/Polygon$Companion {
 	public final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/Polygon;
 	public final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/Polygon;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public abstract interface class org/maplibre/spatialk/geojson/PolygonGeometry : org/maplibre/spatialk/geojson/Geometry {
+	public static final field Companion Lorg/maplibre/spatialk/geojson/PolygonGeometry$Companion;
+	public static fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/PolygonGeometry;
+	public static fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/PolygonGeometry;
+}
+
+public final class org/maplibre/spatialk/geojson/PolygonGeometry$Companion {
+	public final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/PolygonGeometry;
+	public final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/PolygonGeometry;
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
@@ -426,6 +474,18 @@ public final class org/maplibre/spatialk/geojson/Position$Companion {
 }
 
 public abstract interface annotation class org/maplibre/spatialk/geojson/SensitiveGeoJsonApi : java/lang/annotation/Annotation {
+}
+
+public abstract interface class org/maplibre/spatialk/geojson/SingleGeometry : org/maplibre/spatialk/geojson/Geometry {
+	public static final field Companion Lorg/maplibre/spatialk/geojson/SingleGeometry$Companion;
+	public static fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/SingleGeometry;
+	public static fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/SingleGeometry;
+}
+
+public final class org/maplibre/spatialk/geojson/SingleGeometry$Companion {
+	public final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/SingleGeometry;
+	public final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/SingleGeometry;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class org/maplibre/spatialk/geojson/dsl/FeatureCollectionDsl {
