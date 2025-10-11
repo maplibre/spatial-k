@@ -15,6 +15,10 @@ public final class org/maplibre/spatialk/turf/coordinatemutation/CoordinateMutat
 	public static synthetic fun round$default (DIILjava/lang/Object;)D
 }
 
+public final class org/maplibre/spatialk/turf/featureconversion/FeatureConversion {
+	public static final fun combine (Lorg/maplibre/spatialk/geojson/FeatureCollection;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
+}
+
 public final class org/maplibre/spatialk/turf/grids/Grids {
 	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;D)Lorg/maplibre/spatialk/geojson/FeatureCollection;
 	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;DD)Lorg/maplibre/spatialk/geojson/FeatureCollection;
