@@ -32,7 +32,7 @@ class KotlinDocsTest {
                 is MultiLineString -> "MultiLineString"
                 is Polygon -> "Polygon"
                 is MultiPolygon -> "MultiPolygon"
-                is GeometryCollection -> "GeometryCollection"
+                is GeometryCollection<*> -> "GeometryCollection"
             }
         // --8<-- [end:geometryExhaustiveTypeChecks]
     }

@@ -56,10 +56,11 @@ internal abstract class GeoJsonPolymorphicSerializer<T : GeoJsonObject>(
                 "MultiLineString" to MultiLineString.Companion.serializer(),
                 "Polygon" to Polygon.Companion.serializer(),
                 "MultiPolygon" to MultiPolygon.Companion.serializer(),
-                "GeometryCollection" to GeometryCollection.Companion.serializer(),
-                "Feature" to Feature.Companion.serializer(Geometry.Companion.serializer().nullable),
+                "GeometryCollection" to
+                    GeometryCollection.Companion.serializer(Geometry.serializer()),
+                "Feature" to Feature.Companion.serializer(Geometry.serializer().nullable),
                 "FeatureCollection" to
-                    FeatureCollection.Companion.serializer(Geometry.Companion.serializer().nullable),
+                    FeatureCollection.Companion.serializer(Geometry.serializer().nullable),
             )
         }
     }

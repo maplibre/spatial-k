@@ -37,7 +37,7 @@ public fun Geometry.length(): Length =
             this.coordinates.fold(Length.Zero) { total, polygon ->
                 total + polygon.fold(Length.Zero) { acc, ring -> acc + length(ring) }
             }
-        is GeometryCollection ->
+        is GeometryCollection<*> ->
             this.geometries.fold(Length.Zero) { acc, geom -> acc + geom.length() }
     }
 

@@ -20,7 +20,8 @@ public data object GeoJson {
                         is MultiLineString -> MultiLineString.serializer()
                         is Polygon -> Polygon.serializer()
                         is MultiPolygon -> MultiPolygon.serializer()
-                        is GeometryCollection -> GeometryCollection.serializer()
+                        is GeometryCollection<*> ->
+                            GeometryCollection.serializer(Geometry.serializer())
                         is Feature<*> -> Feature.serializer(Geometry.serializer().nullable)
                         is FeatureCollection<*> ->
                             FeatureCollection.serializer(Geometry.serializer().nullable)

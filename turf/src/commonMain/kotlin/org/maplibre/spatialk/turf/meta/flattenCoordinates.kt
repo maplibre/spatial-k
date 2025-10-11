@@ -16,7 +16,7 @@ public fun GeoJsonObject.flattenCoordinates(): List<Position> =
         is MultiLineString -> coordinates.flatten()
         is Polygon -> coordinates.flatten()
         is MultiPolygon -> coordinates.flatMap { it.flatten() }
-        is GeometryCollection -> geometries.flatMap { it.flattenCoordinates() }
+        is GeometryCollection<*> -> geometries.flatMap { it.flattenCoordinates() }
         is Feature<*> -> this.geometry?.flattenCoordinates().orEmpty()
         is FeatureCollection<*> -> features.flatMap { it.flattenCoordinates() }
     }

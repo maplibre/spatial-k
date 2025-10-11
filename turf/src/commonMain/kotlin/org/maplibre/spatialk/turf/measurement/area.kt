@@ -25,7 +25,8 @@ import org.maplibre.spatialk.units.extensions.times
 @JvmName("areaAsArea")
 public fun Geometry.area(): Area {
     return when (this) {
-        is GeometryCollection -> this.geometries.fold(Area.Zero) { acc, geom -> acc + geom.area() }
+        is GeometryCollection<*> ->
+            this.geometries.fold(Area.Zero) { acc, geom -> acc + geom.area() }
         is Polygon -> polygonArea(this.coordinates)
         is MultiPolygon ->
             this.coordinates.fold(Area.Zero) { acc, coords -> acc + polygonArea(coords) }

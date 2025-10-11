@@ -32,7 +32,7 @@ class GeometryTest {
                 .trimIndent()
 
         val geometry = Geometry.fromJson(json)
-        assertTrue(geometry is GeometryCollection)
+        assertTrue(geometry is GeometryCollection<*>)
     }
 
     @Test

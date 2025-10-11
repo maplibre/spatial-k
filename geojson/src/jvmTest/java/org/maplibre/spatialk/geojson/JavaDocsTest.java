@@ -103,7 +103,7 @@ public class JavaDocsTest {
     // --8<-- [start:geometryCollectionJava]
     Point point = new Point(new Position(-75.0, 45.0));
     LineString lineString = new LineString(new Position(-75.0, 45.0), new Position(-79.0, 44.0));
-    GeometryCollection geometryCollection = new GeometryCollection(point, lineString);
+    GeometryCollection<Geometry> geometryCollection = new GeometryCollection<>(point, lineString);
     // --8<-- [end:geometryCollectionJava]
   }
 
@@ -126,7 +126,7 @@ public class JavaDocsTest {
     // --8<-- [start:featureCollectionJava]
     Point point = new Point(new Position(-75.0, 45.0));
     Feature<Point> pointFeature = new Feature<>(point, null, null, null);
-    FeatureCollection featureCollection = new FeatureCollection(new Feature[] {pointFeature}, null);
+    FeatureCollection<Point> featureCollection = new FeatureCollection<>(pointFeature);
     // --8<-- [end:featureCollectionJava]
   }
 
@@ -144,7 +144,7 @@ public class JavaDocsTest {
     // --8<-- [start:serializationToJsonJava]
     Point point = new Point(new Position(-75.0, 45.0));
     Feature<Point> feature = new Feature<>(point, null, null, null);
-    FeatureCollection featureCollection = new FeatureCollection(new Feature[] {feature}, null);
+    FeatureCollection<Point> featureCollection = new FeatureCollection<>(feature);
 
     String json = featureCollection.toJson();
     System.out.println(json);

@@ -18,11 +18,12 @@ import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.GeometryCollection
 
-internal object GeometryCollectionSerializer : KSerializer<GeometryCollection> {
+internal class GeometryCollectionSerializer<T : Geometry>(geometrySerializer: KSerializer<T>) :
+    KSerializer<GeometryCollection<T>> {
     private val serialName: String = "GeometryCollection"
     private val typeSerializer = String.serializer()
     private val bboxSerializer = BoundingBox.serializer().nullable
-    private val geometriesSerializer = ListSerializer(Geometry.serializer())
+    private val geometriesSerializer = ListSerializer(geometrySerializer)
 
     override val descriptor: SerialDescriptor =
         buildClassSerialDescriptor(serialName) {
@@ -31,7 +32,7 @@ internal object GeometryCollectionSerializer : KSerializer<GeometryCollection> {
             element("geometries", geometriesSerializer.descriptor)
         }
 
-    override fun serialize(encoder: Encoder, value: GeometryCollection) {
+    override fun serialize(encoder: Encoder, value: GeometryCollection<T>) {
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
             if (value.bbox != null)
@@ -41,11 +42,11 @@ internal object GeometryCollectionSerializer : KSerializer<GeometryCollection> {
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    override fun deserialize(decoder: Decoder): GeometryCollection {
+    override fun deserialize(decoder: Decoder): GeometryCollection<T> {
         return decoder.decodeStructure(descriptor) {
             var type: String? = null
             var bbox: BoundingBox? = null
-            var geometries: List<Geometry>? = null
+            var geometries: List<T>? = null
 
             if (decodeSequentially()) {
                 type = decodeSerializableElement(descriptor, 0, typeSerializer)

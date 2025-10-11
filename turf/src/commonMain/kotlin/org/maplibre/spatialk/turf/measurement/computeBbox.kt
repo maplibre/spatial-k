@@ -44,7 +44,7 @@ public inline fun <reified T : GeoJsonObject> T.withComputedBbox(): T =
             val coords = flattenCoordinates()
             copy(bbox = if (coords.isNotEmpty()) computeBbox(coords) else null)
         }
-        is GeometryCollection -> {
+        is GeometryCollection<*> -> {
             val coords = flattenCoordinates()
             copy(bbox = if (coords.isNotEmpty()) computeBbox(coords) else null)
         }

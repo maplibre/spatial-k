@@ -24,6 +24,7 @@ constructor(
     public val features: List<Feature<T>> = emptyList(),
     override val bbox: BoundingBox? = null,
 ) : Collection<Feature<T>> by features, GeoJsonObject {
+    @JvmOverloads
     public constructor(
         vararg features: Feature<T>,
         bbox: BoundingBox? = null,
