@@ -71,11 +71,11 @@ private val multiPolygon = buildMultiPolygon {
 }
 
 private val featureCollection = buildFeatureCollection {
-    addFeature { geometry = point }
-    addFeature { geometry = line }
-    addFeature { geometry = polygon }
-    addFeature { geometry = multiLine }
-    addFeature { geometry = multiPolygon }
+    addFeature(point)
+    addFeature(line)
+    addFeature(polygon)
+    addFeature(multiLine)
+    addFeature(multiPolygon)
 }
 
 class BboxTest {

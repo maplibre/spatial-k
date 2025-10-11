@@ -200,8 +200,8 @@ class FeatureCollectionTest {
             """
 
         val fc = buildFeatureCollection {
-            addFeature { geometry = Point(1.1, 2.2) }
-            addFeature { geometry = lineStringOf(Position(1.1, 2.2), Position(3.3, 4.4)) }
+            addFeature(geometry = Point(1.1, 2.2))
+            addFeature(geometry = lineStringOf(Position(1.1, 2.2), Position(3.3, 4.4)))
         }
 
         assertEquals(fc, FeatureCollection.fromJsonOrNull<Geometry?>(json))
@@ -224,8 +224,8 @@ class FeatureCollectionTest {
             """
 
         val fc = buildFeatureCollection {
-            addFeature { geometry = multiPointOf(Position(1.1, 2.2), Position(1.1, 2.2)) }
-            addFeature { geometry = multiPointOf(Position(3.3, 4.4), Position(3.3, 4.4)) }
+            addFeature(geometry = multiPointOf(Position(1.1, 2.2), Position(1.1, 2.2)))
+            addFeature(geometry = multiPointOf(Position(3.3, 4.4), Position(3.3, 4.4)))
         }
 
         assertEquals(fc, FeatureCollection.fromJsonOrNull<Geometry?>(json))
@@ -249,8 +249,8 @@ class FeatureCollectionTest {
             """
 
         val fc = buildFeatureCollection {
-            addFeature { geometry = null }
-            addFeature { geometry = Point(1.1, 2.2) }
+            addFeature()
+            addFeature(geometry = Point(1.1, 2.2))
         }
 
         assertEquals(fc, FeatureCollection.fromJsonOrNull<Point?>(json))

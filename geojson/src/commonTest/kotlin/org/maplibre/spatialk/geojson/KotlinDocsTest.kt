@@ -686,16 +686,16 @@ class KotlinDocsTest {
         kotlinAndJsonExample(
             kotlin = {
                 // --8<-- [start:dslFeatureKt]
-                val feature = buildFeature {
-                    geometry = Point(-75.0, 45.0)
-                    id = "point1"
-                    bbox = BoundingBox(-76.9, 44.1, -74.2, 45.7)
-                    properties = buildJsonObject {
-                        put("name", "Hello World")
-                        put("value", 13)
-                        put("cool", true)
+                val feature =
+                    buildFeature(geometry = Point(-75.0, 45.0)) {
+                        id = "point1"
+                        bbox = BoundingBox(-76.9, 44.1, -74.2, 45.7)
+                        properties = buildJsonObject {
+                            put("name", "Hello World")
+                            put("value", 13)
+                            put("cool", true)
+                        }
                     }
-                }
                 // --8<-- [end:dslFeatureKt]
 
                 feature.toJson()
@@ -727,9 +727,7 @@ class KotlinDocsTest {
         kotlinAndJsonExample(
             kotlin = {
                 // --8<-- [start:dslFeatureCollectionKt]
-                val featureCollection = buildFeatureCollection {
-                    addFeature { geometry = Point(-75.0, 45.0) }
-                }
+                val featureCollection = buildFeatureCollection { addFeature(Point(-75.0, 45.0)) }
                 // --8<-- [end:dslFeatureCollectionKt]
 
                 featureCollection.toJson()

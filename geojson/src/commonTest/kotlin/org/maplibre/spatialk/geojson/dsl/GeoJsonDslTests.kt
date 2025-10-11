@@ -16,19 +16,18 @@ class GeoJsonDslTests {
     private val collectionDsl = buildFeatureCollection {
         val simplePoint = Point(-75.0, 45.0, 100.0)
         // Point
-        addFeature {
-            geometry = simplePoint
+        addFeature(simplePoint) {
             id = "point1"
             properties = buildJsonObject { put("name", "Hello World") }
         }
         // MultiPoint
-        addFeature {
-            geometry = buildMultiPoint {
+        addFeature(
+            buildMultiPoint {
                 add(simplePoint)
                 add(Position(45.0, 45.0))
                 add(Position(0.0, 0.0))
             }
-        }
+        )
 
         val simpleLine = buildLineString {
             add(Position(45.0, 45.0))
@@ -36,18 +35,18 @@ class GeoJsonDslTests {
         }
 
         // LineString
-        addFeature { geometry = simpleLine }
+        addFeature(simpleLine)
 
         // MultiLineString
-        addFeature {
-            geometry = buildMultiLineString {
+        addFeature(
+            buildMultiLineString {
                 add(simpleLine)
                 addLineString {
                     add(Position(44.4, 55.5))
                     add(Position(55.5, 66.6))
                 }
             }
-        }
+        )
 
         val simplePolygon = buildPolygon {
             addRing {
@@ -63,10 +62,10 @@ class GeoJsonDslTests {
         }
 
         // Polygon
-        addFeature { geometry = simplePolygon }
+        addFeature(simplePolygon)
 
-        addFeature {
-            geometry = buildMultiPolygon {
+        addFeature(
+            buildMultiPolygon {
                 add(simplePolygon)
                 addPolygon {
                     addRing {
@@ -77,15 +76,15 @@ class GeoJsonDslTests {
                     }
                 }
             }
-        }
+        )
 
-        addFeature {
-            geometry = buildGeometryCollection {
+        addFeature(
+            buildGeometryCollection {
                 add(simplePoint)
                 add(simpleLine)
                 add(simplePolygon)
             }
-        }
+        )
     }
 
     private val collectionJson =

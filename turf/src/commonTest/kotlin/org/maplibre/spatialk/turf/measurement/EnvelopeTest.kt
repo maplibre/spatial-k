@@ -17,17 +17,17 @@ class EnvelopeTest {
     @Test
     fun envelopeProcessesFeatureCollection() {
         val fc = buildFeatureCollection {
-            addFeature { geometry = Point(102.0, 0.5) }
-            addFeature {
-                geometry = buildLineString {
+            addFeature(Point(102.0, 0.5))
+            addFeature(
+                buildLineString {
                     add(102.0, -10.0)
                     add(103.0, 1.0)
                     add(104.0, 0.0)
                     add(130.0, 4.0)
                 }
-            }
-            addFeature {
-                geometry = buildPolygon {
+            )
+            addFeature(
+                buildPolygon {
                     addRing {
                         add(102.0, -10.0)
                         add(103.0, 1.0)
@@ -41,7 +41,7 @@ class EnvelopeTest {
                         add(102.0, -10.0)
                     }
                 }
-            }
+            )
         }
 
         val envelope = MultiPoint(fc.flattenCoordinates()).envelope()

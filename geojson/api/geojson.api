@@ -493,14 +493,12 @@ public final class org/maplibre/spatialk/geojson/SingleGeometry$Companion {
 }
 
 public final class org/maplibre/spatialk/geojson/dsl/FeatureBuilder {
-	public fun <init> ()V
+	public fun <init> (Lorg/maplibre/spatialk/geojson/Geometry;)V
 	public final fun build ()Lorg/maplibre/spatialk/geojson/Feature;
 	public final fun getBbox ()Lorg/maplibre/spatialk/geojson/BoundingBox;
-	public final fun getGeometry ()Lorg/maplibre/spatialk/geojson/Geometry;
 	public final fun getId ()Ljava/lang/String;
 	public final fun getProperties ()Lkotlinx/serialization/json/JsonObject;
 	public final fun setBbox (Lorg/maplibre/spatialk/geojson/BoundingBox;)V
-	public final fun setGeometry (Lorg/maplibre/spatialk/geojson/Geometry;)V
 	public final fun setId (Ljava/lang/String;)V
 	public final fun setProperties (Lkotlinx/serialization/json/JsonObject;)V
 }
@@ -523,6 +521,9 @@ public final class org/maplibre/spatialk/geojson/dsl/GeometryCollectionBuilder {
 
 public final synthetic class org/maplibre/spatialk/geojson/dsl/HelpersKt {
 	public static final fun addFeature (Lorg/maplibre/spatialk/geojson/dsl/FeatureCollectionBuilder;Lkotlin/jvm/functions/Function1;)V
+	public static final fun addFeature (Lorg/maplibre/spatialk/geojson/dsl/FeatureCollectionBuilder;Lorg/maplibre/spatialk/geojson/Geometry;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun addFeature$default (Lorg/maplibre/spatialk/geojson/dsl/FeatureCollectionBuilder;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static synthetic fun addFeature$default (Lorg/maplibre/spatialk/geojson/dsl/FeatureCollectionBuilder;Lorg/maplibre/spatialk/geojson/Geometry;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
 	public static final fun addGeometryCollection (Lorg/maplibre/spatialk/geojson/dsl/GeometryCollectionBuilder;Lkotlin/jvm/functions/Function1;)V
 	public static final fun addLineString (Lorg/maplibre/spatialk/geojson/dsl/GeometryCollectionBuilder;Lkotlin/jvm/functions/Function1;)V
 	public static final fun addLineString (Lorg/maplibre/spatialk/geojson/dsl/MultiLineStringBuilder;Lkotlin/jvm/functions/Function1;)V
@@ -539,6 +540,9 @@ public final synthetic class org/maplibre/spatialk/geojson/dsl/HelpersKt {
 	public static final fun addPolygon (Lorg/maplibre/spatialk/geojson/dsl/MultiPolygonBuilder;Lkotlin/jvm/functions/Function1;)V
 	public static final fun addRing (Lorg/maplibre/spatialk/geojson/dsl/PolygonBuilder;Lkotlin/jvm/functions/Function1;)V
 	public static final fun buildFeature (Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/Feature;
+	public static final fun buildFeature (Lorg/maplibre/spatialk/geojson/Geometry;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/Feature;
+	public static synthetic fun buildFeature$default (Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Feature;
+	public static synthetic fun buildFeature$default (Lorg/maplibre/spatialk/geojson/Geometry;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Feature;
 	public static final fun buildFeatureCollection (Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
 	public static final fun buildGeometryCollection (Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
 	public static final fun buildLineString (Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/LineString;

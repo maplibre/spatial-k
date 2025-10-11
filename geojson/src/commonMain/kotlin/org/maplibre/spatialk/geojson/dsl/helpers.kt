@@ -70,10 +70,19 @@ public inline fun <T : Geometry> buildGeometryCollection(
 
 @GeoJsonDsl
 public inline fun <T : Geometry?> buildFeature(
-    @BuilderInference builderAction: FeatureBuilder<T>.() -> Unit
+    geometry: T,
+    @BuilderInference builderAction: FeatureBuilder<T>.() -> Unit = {},
 ): Feature<T> {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
-    return FeatureBuilder<T>().apply { builderAction() }.build()
+    return FeatureBuilder(geometry).apply { builderAction() }.build()
+}
+
+@GeoJsonDsl
+public inline fun buildFeature(
+    @BuilderInference builderAction: FeatureBuilder<Nothing?>.() -> Unit = {}
+): Feature<Nothing?> {
+    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+    return FeatureBuilder(null).apply { builderAction() }.build()
 }
 
 @GeoJsonDsl
@@ -172,10 +181,19 @@ public inline fun <T : Geometry> GeometryCollectionBuilder<in GeometryCollection
 
 @GeoJsonDsl
 public inline fun <T : Geometry?> FeatureCollectionBuilder<in T>.addFeature(
-    @BuilderInference builderAction: FeatureBuilder<T>.() -> Unit
+    geometry: T,
+    @BuilderInference builderAction: FeatureBuilder<T>.() -> Unit = {},
 ) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
-    add(FeatureBuilder<T>().apply { builderAction() }.build())
+    add(FeatureBuilder(geometry).apply { builderAction() }.build())
+}
+
+@GeoJsonDsl
+public inline fun FeatureCollectionBuilder<in Nothing?>.addFeature(
+    @BuilderInference builderAction: FeatureBuilder<Nothing?>.() -> Unit = {}
+) {
+    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+    add(FeatureBuilder(null).apply { builderAction() }.build())
 }
 
 // multi geometry from singles

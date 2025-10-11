@@ -31,46 +31,49 @@ open class GeoJsonBenchmark {
 
     private fun generateDataset() = buildFeatureCollection {
         repeat(5000) {
-            addFeature {
+            addFeature(
                 geometry =
                     Point(
                         longitude = random.nextDouble(360.0) - 180,
                         latitude = random.nextDouble(360.0) - 180,
                     )
-            }
+            )
         }
 
         repeat(5000) {
-            addFeature {
-                geometry = buildLineString {
-                    repeat(10) {
-                        add(
-                            longitude = random.nextDouble(360.0) - 180,
-                            latitude = random.nextDouble(360.0) - 180,
-                        )
+            addFeature(
+                geometry =
+                    buildLineString {
+                        repeat(10) {
+                            add(
+                                longitude = random.nextDouble(360.0) - 180,
+                                latitude = random.nextDouble(360.0) - 180,
+                            )
+                        }
                     }
-                }
-            }
+            )
         }
 
         repeat(5000) {
-            addFeature {
-                geometry = buildPolygon {
-                    addRing {
-                        add(
-                            longitude = random.nextDouble(360.0) - 180,
-                            latitude = random.nextDouble(360.0) - 180,
-                            altitude = random.nextDouble(100.0),
-                        )
-                        repeat(8) {
+            addFeature(
+                geometry =
+                    buildPolygon {
+                        addRing {
                             add(
                                 longitude = random.nextDouble(360.0) - 180,
                                 latitude = random.nextDouble(360.0) - 180,
                                 altitude = random.nextDouble(100.0),
                             )
+                            repeat(8) {
+                                add(
+                                    longitude = random.nextDouble(360.0) - 180,
+                                    latitude = random.nextDouble(360.0) - 180,
+                                    altitude = random.nextDouble(100.0),
+                                )
+                            }
                         }
                     }
-                }
+            ) {
                 properties = buildJsonObject { put("example", "value") }
             }
         }
