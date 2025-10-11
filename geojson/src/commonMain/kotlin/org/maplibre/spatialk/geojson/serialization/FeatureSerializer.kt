@@ -2,6 +2,7 @@ package org.maplibre.spatialk.geojson.serialization
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
@@ -48,6 +49,7 @@ internal class FeatureSerializer<T : Geometry?>(private val geometrySerializer: 
         }
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     override fun deserialize(decoder: Decoder): Feature<T> {
         return decoder.decodeStructure(descriptor) {
             var type: String? = null
@@ -56,7 +58,6 @@ internal class FeatureSerializer<T : Geometry?>(private val geometrySerializer: 
             var properties: Any? = uninitialized
             var id: String? = null
 
-            @OptIn(ExperimentalSerializationApi::class)
             if (decodeSequentially()) {
                 type = decodeSerializableElement(descriptor, 0, typeSerializer)
                 geometry = decodeSerializableElement(descriptor, 1, geometrySerializer)
@@ -75,12 +76,12 @@ internal class FeatureSerializer<T : Geometry?>(private val geometrySerializer: 
                 }
             }
 
+            if (type == null) throw MissingFieldException("type", serialName)
+            if (geometry == uninitialized) throw MissingFieldException("geometry", serialName)
+            if (properties == uninitialized) throw MissingFieldException("properties", serialName)
+
             if (type != serialName)
                 throw SerializationException("Expected type $serialName but found $type")
-            if (geometry == uninitialized)
-                throw SerializationException("Expected geometry to be present")
-            if (properties == uninitialized)
-                throw SerializationException("Expected properties to be present")
 
             @Suppress("UNCHECKED_CAST") Feature(geometry as T, properties as JsonObject?, id, bbox)
         }
