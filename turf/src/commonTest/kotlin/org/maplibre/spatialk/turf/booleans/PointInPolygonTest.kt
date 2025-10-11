@@ -6,9 +6,10 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.MultiPolygon
+import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
-import org.maplibre.spatialk.geojson.dsl.point
-import org.maplibre.spatialk.geojson.dsl.polygon
+import org.maplibre.spatialk.geojson.dsl.addRing
+import org.maplibre.spatialk.geojson.dsl.buildPolygon
 import org.maplibre.spatialk.testutil.readResourceFile
 
 class PointInPolygonTest {
@@ -16,33 +17,31 @@ class PointInPolygonTest {
     @Test
     fun testFeatureCollection() {
         // test for a simple polygon
-        val poly = polygon {
-            ring {
-                point(0.0, 0.0)
-                point(0.0, 100.0)
-                point(100.0, 0.0)
-                complete()
+        val poly = buildPolygon {
+            addRing {
+                add(0.0, 0.0)
+                add(0.0, 100.0)
+                add(100.0, 0.0)
             }
         }
-        val ptIn = point(50.0, 50.0)
-        val ptOut = point(140.0, 150.0)
+        val ptIn = Point(50.0, 50.0)
+        val ptOut = Point(140.0, 150.0)
 
         assertTrue(poly.contains(ptIn.coordinates), "point inside simple polygon")
         assertFalse(poly.contains(ptOut.coordinates), "point outside simple polygon")
 
         // test for a concave polygon
-        val concavePoly = polygon {
-            ring {
-                point(0.0, 0.0)
-                point(50.0, 50.0)
-                point(0.0, 100.0)
-                point(100.0, 100.0)
-                point(100.0, 0.0)
-                complete()
+        val concavePoly = buildPolygon {
+            addRing {
+                add(0.0, 0.0)
+                add(50.0, 50.0)
+                add(0.0, 100.0)
+                add(100.0, 100.0)
+                add(100.0, 0.0)
             }
         }
-        val ptConcaveIn = point(75.0, 75.0)
-        val ptConcaveOut = point(25.0, 50.0)
+        val ptConcaveIn = Point(75.0, 75.0)
+        val ptConcaveOut = Point(25.0, 50.0)
 
         assertTrue(concavePoly.contains(ptConcaveIn.coordinates), "point inside concave polygon")
         assertFalse(concavePoly.contains(ptConcaveOut.coordinates), "point outside concave polygon")
@@ -50,9 +49,9 @@ class PointInPolygonTest {
 
     @Test
     fun testPolyWithHole() {
-        val ptInHole = point(-86.69208526611328, 36.20373274711739)
-        val ptInPoly = point(-86.72229766845702, 36.20258997094334)
-        val ptOutsidePoly = point(-86.75079345703125, 36.18527313913089)
+        val ptInHole = Point(-86.69208526611328, 36.20373274711739)
+        val ptInPoly = Point(-86.72229766845702, 36.20258997094334)
+        val ptOutsidePoly = Point(-86.75079345703125, 36.18527313913089)
         val polyHole =
             Feature.fromJson<Polygon>(readResourceFile("booleans/in/poly-with-hole.geojson"))
                 .geometry
@@ -64,10 +63,10 @@ class PointInPolygonTest {
 
     @Test
     fun testMultipolygonWithHole() {
-        val ptInHole = point(-86.69208526611328, 36.20373274711739)
-        val ptInPoly = point(-86.72229766845702, 36.20258997094334)
-        val ptInPoly2 = point(-86.75079345703125, 36.18527313913089)
-        val ptOutsidePoly = point(-86.75302505493164, 36.23015046460186)
+        val ptInHole = Point(-86.69208526611328, 36.20373274711739)
+        val ptInPoly = Point(-86.72229766845702, 36.20258997094334)
+        val ptInPoly2 = Point(-86.75079345703125, 36.18527313913089)
+        val ptOutsidePoly = Point(-86.75302505493164, 36.23015046460186)
         val multiPolyHole =
             Feature.fromJson<MultiPolygon>(
                     readResourceFile("booleans/in/multipoly-with-hole.geojson")
@@ -83,62 +82,62 @@ class PointInPolygonTest {
 
     @Test
     fun testBoundaryTest() {
-        val poly1 = polygon {
-            ring {
-                point(10.0, 10.0)
-                point(30.0, 20.0)
-                point(50.0, 10.0)
-                point(30.0, 0.0)
-                point(10.0, 10.0)
+        val poly1 = buildPolygon {
+            addRing {
+                add(10.0, 10.0)
+                add(30.0, 20.0)
+                add(50.0, 10.0)
+                add(30.0, 0.0)
+                add(10.0, 10.0)
             }
         }
-        val poly2 = polygon {
-            ring {
-                point(10.0, 0.0)
-                point(30.0, 20.0)
-                point(50.0, 0.0)
-                point(30.0, 10.0)
-                point(10.0, 0.0)
+        val poly2 = buildPolygon {
+            addRing {
+                add(10.0, 0.0)
+                add(30.0, 20.0)
+                add(50.0, 0.0)
+                add(30.0, 10.0)
+                add(10.0, 0.0)
             }
         }
-        val poly3 = polygon {
-            ring {
-                point(10.0, 0.0)
-                point(30.0, 20.0)
-                point(50.0, 0.0)
-                point(30.0, -20.0)
-                point(10.0, 0.0)
+        val poly3 = buildPolygon {
+            addRing {
+                add(10.0, 0.0)
+                add(30.0, 20.0)
+                add(50.0, 0.0)
+                add(30.0, -20.0)
+                add(10.0, 0.0)
             }
         }
-        val poly4 = polygon {
-            ring {
-                point(0.0, 0.0)
-                point(0.0, 20.0)
-                point(50.0, 20.0)
-                point(50.0, 0.0)
-                point(40.0, 0.0)
-                point(30.0, 10.0)
-                point(30.0, 0.0)
-                point(20.0, 10.0)
-                point(10.0, 10.0)
-                point(10.0, 0.0)
-                point(0.0, 0.0)
+        val poly4 = buildPolygon {
+            addRing {
+                add(0.0, 0.0)
+                add(0.0, 20.0)
+                add(50.0, 20.0)
+                add(50.0, 0.0)
+                add(40.0, 0.0)
+                add(30.0, 10.0)
+                add(30.0, 0.0)
+                add(20.0, 10.0)
+                add(10.0, 10.0)
+                add(10.0, 0.0)
+                add(0.0, 0.0)
             }
         }
-        val poly5 = polygon {
-            ring {
-                point(0.0, 20.0)
-                point(20.0, 40.0)
-                point(40.0, 20.0)
-                point(20.0, 0.0)
-                point(0.0, 20.0)
+        val poly5 = buildPolygon {
+            addRing {
+                add(0.0, 20.0)
+                add(20.0, 40.0)
+                add(40.0, 20.0)
+                add(20.0, 0.0)
+                add(0.0, 20.0)
             }
-            ring {
-                point(10.0, 20.0)
-                point(20.0, 30.0)
-                point(30.0, 20.0)
-                point(20.0, 10.0)
-                point(10.0, 20.0)
+            addRing {
+                add(10.0, 20.0)
+                add(20.0, 30.0)
+                add(30.0, 20.0)
+                add(20.0, 10.0)
+                add(10.0, 20.0)
             }
         }
 
@@ -146,43 +145,43 @@ class PointInPolygonTest {
             val isBoundaryIncluded = !ignoreBoundary
             val tests =
                 arrayOf(
-                    Triple(poly1, point(10.0, 10.0), isBoundaryIncluded), // 0
-                    Triple(poly1, point(30.0, 20.0), isBoundaryIncluded),
-                    Triple(poly1, point(50.0, 10.0), isBoundaryIncluded),
-                    Triple(poly1, point(30.0, 10.0), true),
-                    Triple(poly1, point(0.0, 10.0), false),
-                    Triple(poly1, point(60.0, 10.0), false),
-                    Triple(poly1, point(30.0, -10.0), false),
-                    Triple(poly1, point(30.0, 30.0), false),
-                    Triple(poly2, point(30.0, 0.0), false),
-                    Triple(poly2, point(0.0, 0.0), false),
-                    Triple(poly2, point(60.0, 0.0), false), // 10
-                    Triple(poly3, point(30.0, 0.0), true),
-                    Triple(poly3, point(0.0, 0.0), false),
-                    Triple(poly3, point(60.0, 0.0), false),
-                    Triple(poly4, point(0.0, 20.0), isBoundaryIncluded),
-                    Triple(poly4, point(10.0, 20.0), isBoundaryIncluded),
-                    Triple(poly4, point(50.0, 20.0), isBoundaryIncluded),
-                    Triple(poly4, point(0.0, 10.0), isBoundaryIncluded),
-                    Triple(poly4, point(5.0, 10.0), true),
-                    Triple(poly4, point(25.0, 10.0), true),
-                    Triple(poly4, point(35.0, 10.0), true), // 20
-                    Triple(poly4, point(0.0, 0.0), isBoundaryIncluded),
-                    Triple(poly4, point(20.0, 0.0), false),
-                    Triple(poly4, point(35.0, 0.0), false),
-                    Triple(poly4, point(50.0, 0.0), isBoundaryIncluded),
-                    Triple(poly4, point(50.0, 10.0), isBoundaryIncluded),
-                    Triple(poly4, point(5.0, 0.0), isBoundaryIncluded),
-                    Triple(poly4, point(10.0, 0.0), isBoundaryIncluded),
-                    Triple(poly5, point(20.0, 30.0), isBoundaryIncluded),
-                    Triple(poly5, point(25.0, 25.0), isBoundaryIncluded),
-                    Triple(poly5, point(30.0, 20.0), isBoundaryIncluded), // 30
-                    Triple(poly5, point(25.0, 15.0), isBoundaryIncluded),
-                    Triple(poly5, point(20.0, 10.0), isBoundaryIncluded),
-                    Triple(poly5, point(15.0, 15.0), isBoundaryIncluded),
-                    Triple(poly5, point(10.0, 20.0), isBoundaryIncluded),
-                    Triple(poly5, point(15.0, 25.0), isBoundaryIncluded),
-                    Triple(poly5, point(20.0, 20.0), false),
+                    Triple(poly1, Point(10.0, 10.0), isBoundaryIncluded), // 0
+                    Triple(poly1, Point(30.0, 20.0), isBoundaryIncluded),
+                    Triple(poly1, Point(50.0, 10.0), isBoundaryIncluded),
+                    Triple(poly1, Point(30.0, 10.0), true),
+                    Triple(poly1, Point(0.0, 10.0), false),
+                    Triple(poly1, Point(60.0, 10.0), false),
+                    Triple(poly1, Point(30.0, -10.0), false),
+                    Triple(poly1, Point(30.0, 30.0), false),
+                    Triple(poly2, Point(30.0, 0.0), false),
+                    Triple(poly2, Point(0.0, 0.0), false),
+                    Triple(poly2, Point(60.0, 0.0), false), // 10
+                    Triple(poly3, Point(30.0, 0.0), true),
+                    Triple(poly3, Point(0.0, 0.0), false),
+                    Triple(poly3, Point(60.0, 0.0), false),
+                    Triple(poly4, Point(0.0, 20.0), isBoundaryIncluded),
+                    Triple(poly4, Point(10.0, 20.0), isBoundaryIncluded),
+                    Triple(poly4, Point(50.0, 20.0), isBoundaryIncluded),
+                    Triple(poly4, Point(0.0, 10.0), isBoundaryIncluded),
+                    Triple(poly4, Point(5.0, 10.0), true),
+                    Triple(poly4, Point(25.0, 10.0), true),
+                    Triple(poly4, Point(35.0, 10.0), true), // 20
+                    Triple(poly4, Point(0.0, 0.0), isBoundaryIncluded),
+                    Triple(poly4, Point(20.0, 0.0), false),
+                    Triple(poly4, Point(35.0, 0.0), false),
+                    Triple(poly4, Point(50.0, 0.0), isBoundaryIncluded),
+                    Triple(poly4, Point(50.0, 10.0), isBoundaryIncluded),
+                    Triple(poly4, Point(5.0, 0.0), isBoundaryIncluded),
+                    Triple(poly4, Point(10.0, 0.0), isBoundaryIncluded),
+                    Triple(poly5, Point(20.0, 30.0), isBoundaryIncluded),
+                    Triple(poly5, Point(25.0, 25.0), isBoundaryIncluded),
+                    Triple(poly5, Point(30.0, 20.0), isBoundaryIncluded), // 30
+                    Triple(poly5, Point(25.0, 15.0), isBoundaryIncluded),
+                    Triple(poly5, Point(20.0, 10.0), isBoundaryIncluded),
+                    Triple(poly5, Point(15.0, 15.0), isBoundaryIncluded),
+                    Triple(poly5, Point(10.0, 20.0), isBoundaryIncluded),
+                    Triple(poly5, Point(15.0, 25.0), isBoundaryIncluded),
+                    Triple(poly5, Point(20.0, 20.0), false),
                 )
 
             val testTitle = "Boundary " + (if (ignoreBoundary) "ignored " else "") + "test number "
@@ -201,7 +200,7 @@ class PointInPolygonTest {
     // https://github.com/Turfjs/turf-inside/issues/15
     @Test
     fun testIssue15() {
-        val pt1 = point(-9.9964077, 53.8040989)
+        val pt1 = Point(-9.9964077, 53.8040989)
         val poly =
             Polygon(
                 arrayOf(

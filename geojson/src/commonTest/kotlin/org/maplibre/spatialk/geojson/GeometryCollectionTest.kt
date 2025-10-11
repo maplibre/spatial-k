@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import org.maplibre.spatialk.geojson.dsl.geometryCollection
+import org.maplibre.spatialk.geojson.dsl.buildGeometryCollection
 import org.maplibre.spatialk.geojson.utils.DELTA
 import org.maplibre.spatialk.geojson.utils.assertJsonEquals
 
@@ -254,7 +254,7 @@ class GeometryCollectionTest {
     @Test
     fun testEmptyCollection() {
         val json = "{\"type\": \"GeometryCollection\", \"geometries\": []}"
-        val gc = geometryCollection<Geometry> {}
+        val gc = buildGeometryCollection<Geometry> {}
         assertEquals(gc, GeometryCollection.fromJsonOrNull<Geometry>(json))
         assertJsonEquals(json, gc.toJson())
     }
@@ -272,9 +272,9 @@ class GeometryCollectionTest {
             }
             """
 
-        val gc = geometryCollection {
-            +Point(Position(1.1, 2.2))
-            +LineString(Position(1.1, 2.2), Position(3.3, 4.4))
+        val gc = buildGeometryCollection {
+            add(Point(Position(1.1, 2.2)))
+            add(LineString(Position(1.1, 2.2), Position(3.3, 4.4)))
         }
 
         assertEquals(gc, GeometryCollection.fromJsonOrNull<Geometry>(json))
@@ -296,9 +296,9 @@ class GeometryCollectionTest {
             }
             """
 
-        val gc = geometryCollection {
-            +MultiPoint(Position(1.1, 2.2), Position(1.1, 2.2))
-            +MultiPoint(Position(3.3, 4.4), Position(3.3, 4.4))
+        val gc = buildGeometryCollection {
+            add(MultiPoint(Position(1.1, 2.2), Position(1.1, 2.2)))
+            add(MultiPoint(Position(3.3, 4.4), Position(3.3, 4.4)))
         }
 
         assertEquals(gc, GeometryCollection.fromJsonOrNull<Geometry>(json))
