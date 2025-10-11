@@ -4,13 +4,16 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import org.maplibre.spatialk.geojson.*
-import org.maplibre.spatialk.geojson.dsl.featureCollection
+import org.maplibre.spatialk.geojson.dsl.addFeature
+import org.maplibre.spatialk.geojson.dsl.addRing
+import org.maplibre.spatialk.geojson.dsl.buildFeatureCollection
+import org.maplibre.spatialk.geojson.dsl.buildPolygon
 
 class CombineTests {
 
     @Test
     fun testCombineEmptyFeatureCollection() {
-        val input = featureCollection<SingleGeometry> {}
+        val input = buildFeatureCollection<SingleGeometry> {}
         val result = input.combine()
 
         assertEquals(3, result.features.size)
@@ -27,10 +30,10 @@ class CombineTests {
 
     @Test
     fun testCombineOnlyPoints() {
-        val input = featureCollection {
-            feature(Point(Position(0.0, 0.0)))
-            feature(Point(Position(1.0, 1.0)))
-            feature(Point(Position(2.0, 2.0)))
+        val input = buildFeatureCollection {
+            addFeature { geometry = Point(0.0, 0.0) }
+            addFeature { geometry = Point(1.0, 1.0) }
+            addFeature { geometry = Point(2.0, 2.0) }
         }
 
         val result = input.combine()
@@ -52,9 +55,9 @@ class CombineTests {
 
     @Test
     fun testCombineOnlyLineStrings() {
-        val input = featureCollection {
-            feature(LineString(listOf(Position(0.0, 0.0), Position(1.0, 1.0))))
-            feature(LineString(listOf(Position(2.0, 2.0), Position(3.0, 3.0))))
+        val input = buildFeatureCollection {
+            addFeature { geometry = LineString(Position(0.0, 0.0), Position(1.0, 1.0)) }
+            addFeature { geometry = LineString(Position(2.0, 2.0), Position(3.0, 3.0)) }
         }
 
         val result = input.combine()
@@ -75,33 +78,35 @@ class CombineTests {
 
     @Test
     fun testCombineOnlyPolygons() {
-        val input = featureCollection {
-            feature(
-                Polygon(
-                    listOf(
+        val input = buildFeatureCollection {
+            addFeature {
+                geometry =
+                    Polygon(
                         listOf(
-                            Position(0.0, 0.0),
-                            Position(1.0, 0.0),
-                            Position(1.0, 1.0),
-                            Position(0.0, 1.0),
-                            Position(0.0, 0.0),
+                            listOf(
+                                Position(0.0, 0.0),
+                                Position(1.0, 0.0),
+                                Position(1.0, 1.0),
+                                Position(0.0, 1.0),
+                                Position(0.0, 0.0),
+                            )
                         )
                     )
-                )
-            )
-            feature(
-                Polygon(
-                    listOf(
+            }
+            addFeature {
+                geometry =
+                    Polygon(
                         listOf(
-                            Position(2.0, 2.0),
-                            Position(3.0, 2.0),
-                            Position(3.0, 3.0),
-                            Position(2.0, 3.0),
-                            Position(2.0, 2.0),
+                            listOf(
+                                Position(2.0, 2.0),
+                                Position(3.0, 2.0),
+                                Position(3.0, 3.0),
+                                Position(2.0, 3.0),
+                                Position(2.0, 2.0),
+                            )
                         )
                     )
-                )
-            )
+            }
         }
 
         val result = input.combine()
@@ -144,23 +149,21 @@ class CombineTests {
 
     @Test
     fun testCombineMixedGeometries() {
-        val input = featureCollection {
-            feature(Point(Position(0.0, 0.0)))
-            feature(LineString(listOf(Position(1.0, 1.0), Position(2.0, 2.0))))
-            feature(
-                Polygon(
-                    listOf(
-                        listOf(
-                            Position(3.0, 3.0),
-                            Position(4.0, 3.0),
-                            Position(4.0, 4.0),
-                            Position(3.0, 4.0),
-                            Position(3.0, 3.0),
-                        )
-                    )
-                )
-            )
-            feature(Point(Position(5.0, 5.0)))
+        val input = buildFeatureCollection {
+            addFeature { geometry = Point(0.0, 0.0) }
+            addFeature { geometry = LineString(Position(1.0, 1.0), Position(2.0, 2.0)) }
+            addFeature {
+                geometry = buildPolygon {
+                    addRing {
+                        add(3.0, 3.0)
+                        add(4.0, 3.0)
+                        add(4.0, 4.0)
+                        add(3.0, 4.0)
+                        add(3.0, 3.0)
+                    }
+                }
+            }
+            addFeature { geometry = Point(5.0, 5.0) }
         }
 
         val result = input.combine()
@@ -194,27 +197,28 @@ class CombineTests {
 
     @Test
     fun testCombinePolygonWithHoles() {
-        val input = featureCollection {
-            feature(
-                Polygon(
-                    listOf(
+        val input = buildFeatureCollection {
+            addFeature {
+                geometry =
+                    Polygon(
                         listOf(
-                            Position(0.0, 0.0),
-                            Position(4.0, 0.0),
-                            Position(4.0, 4.0),
-                            Position(0.0, 4.0),
-                            Position(0.0, 0.0),
-                        ),
-                        listOf(
-                            Position(1.0, 1.0),
-                            Position(3.0, 1.0),
-                            Position(3.0, 3.0),
-                            Position(1.0, 3.0),
-                            Position(1.0, 1.0),
-                        ),
+                            listOf(
+                                Position(0.0, 0.0),
+                                Position(4.0, 0.0),
+                                Position(4.0, 4.0),
+                                Position(0.0, 4.0),
+                                Position(0.0, 0.0),
+                            ),
+                            listOf(
+                                Position(1.0, 1.0),
+                                Position(3.0, 1.0),
+                                Position(3.0, 3.0),
+                                Position(1.0, 3.0),
+                                Position(1.0, 1.0),
+                            ),
+                        )
                     )
-                )
-            )
+            }
         }
 
         val result = input.combine()

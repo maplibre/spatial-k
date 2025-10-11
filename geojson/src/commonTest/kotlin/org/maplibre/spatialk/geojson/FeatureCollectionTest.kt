@@ -5,7 +5,11 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import org.maplibre.spatialk.geojson.dsl.featureCollection
+import org.maplibre.spatialk.geojson.dsl.addFeature
+import org.maplibre.spatialk.geojson.dsl.buildFeatureCollection
+import org.maplibre.spatialk.geojson.dsl.featureCollectionOf
+import org.maplibre.spatialk.geojson.dsl.lineStringOf
+import org.maplibre.spatialk.geojson.dsl.multiPointOf
 import org.maplibre.spatialk.geojson.utils.DELTA
 import org.maplibre.spatialk.geojson.utils.assertJsonEquals
 import org.maplibre.spatialk.testutil.readResourceFile
@@ -177,7 +181,7 @@ class FeatureCollectionTest {
     @Test
     fun testEmptyCollection() {
         val json = "{\"type\": \"FeatureCollection\", \"features\": []}"
-        val fc = featureCollection<Geometry?> {}
+        val fc = featureCollectionOf<Geometry?>()
         assertEquals(fc, FeatureCollection.fromJsonOrNull<Geometry?>(json))
         assertJsonEquals(json, fc.toJson())
     }
@@ -195,9 +199,9 @@ class FeatureCollectionTest {
             }
             """
 
-        val fc = featureCollection {
-            feature(Point(Position(1.1, 2.2)))
-            feature(LineString(Position(1.1, 2.2), Position(3.3, 4.4)))
+        val fc = buildFeatureCollection {
+            addFeature { geometry = Point(1.1, 2.2) }
+            addFeature { geometry = lineStringOf(Position(1.1, 2.2), Position(3.3, 4.4)) }
         }
 
         assertEquals(fc, FeatureCollection.fromJsonOrNull<Geometry?>(json))
@@ -219,13 +223,13 @@ class FeatureCollectionTest {
             }
             """
 
-        val fc = featureCollection {
-            feature(MultiPoint(Position(1.1, 2.2), Position(1.1, 2.2)))
-            feature(MultiPoint(Position(3.3, 4.4), Position(3.3, 4.4)))
+        val fc = buildFeatureCollection {
+            addFeature { geometry = multiPointOf(Position(1.1, 2.2), Position(1.1, 2.2)) }
+            addFeature { geometry = multiPointOf(Position(3.3, 4.4), Position(3.3, 4.4)) }
         }
 
         assertEquals(fc, FeatureCollection.fromJsonOrNull<Geometry?>(json))
-        assertEquals(fc, FeatureCollection.fromJsonOrNull<MultiPoint>(json))
+        assertEquals<FeatureCollection<*>?>(fc, FeatureCollection.fromJsonOrNull<MultiPoint>(json))
         assertNull(FeatureCollection.fromJsonOrNull<LineString>(json))
 
         assertJsonEquals(json, fc.toJson())
@@ -244,9 +248,9 @@ class FeatureCollectionTest {
             }
             """
 
-        val fc = featureCollection {
-            feature(null)
-            feature(Point(Position(1.1, 2.2)))
+        val fc = buildFeatureCollection {
+            addFeature { geometry = null }
+            addFeature { geometry = Point(1.1, 2.2) }
         }
 
         assertEquals(fc, FeatureCollection.fromJsonOrNull<Point?>(json))
@@ -268,10 +272,7 @@ class FeatureCollectionTest {
             }
             """
 
-        val fc = featureCollection {
-            feature(null)
-            feature(null)
-        }
+        val fc = featureCollectionOf(Feature(null), Feature(null))
 
         assertEquals(fc, FeatureCollection.fromJsonOrNull<Nothing?>(json))
         assertNull(FeatureCollection.fromJsonOrNull<Point>(json))

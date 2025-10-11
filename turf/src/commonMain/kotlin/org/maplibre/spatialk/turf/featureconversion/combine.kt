@@ -6,8 +6,6 @@ package org.maplibre.spatialk.turf.featureconversion
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.*
-import org.maplibre.spatialk.geojson.dsl.feature
-import org.maplibre.spatialk.geojson.dsl.featureCollection
 
 /**
  * Combines a [FeatureCollection] of [Point], [LineString], or [Polygon] features into [MultiPoint],
@@ -26,9 +24,9 @@ public fun FeatureCollection<SingleGeometry>.combine(): FeatureCollection<MultiG
         }
     }
 
-    return featureCollection {
-        feature(MultiPoint(points.map { it.coordinates }))
-        feature(MultiLineString(lines.map { it.coordinates }))
-        feature(MultiPolygon(polygons.map { it.coordinates }))
-    }
+    return FeatureCollection(
+        Feature(MultiPoint(points.map { it.coordinates })),
+        Feature(MultiLineString(lines.map { it.coordinates })),
+        Feature(MultiPolygon(polygons.map { it.coordinates })),
+    )
 }
