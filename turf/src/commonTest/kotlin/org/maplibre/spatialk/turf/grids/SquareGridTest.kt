@@ -4,7 +4,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.maplibre.spatialk.geojson.BoundingBox
-import org.maplibre.spatialk.geojson.GeometryCollection
+import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.assertPositionEquals
@@ -32,7 +32,7 @@ class SquareGridTest {
         }
     }
 
-    private fun verifyValidGrid(grid: GeometryCollection<Polygon>) {
+    private fun verifyValidGrid(grid: MultiPolygon) {
         assertEquals(16, grid.size)
 
         val expectedFirstItem =

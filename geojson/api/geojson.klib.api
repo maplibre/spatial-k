@@ -351,7 +351,7 @@ final class org.maplibre.spatialk.geojson/LineString : org.maplibre.spatialk.geo
     }
 }
 
-final class org.maplibre.spatialk.geojson/MultiLineString : org.maplibre.spatialk.geojson/LineStringGeometry, org.maplibre.spatialk.geojson/MultiGeometry { // org.maplibre.spatialk.geojson/MultiLineString|null[0]
+final class org.maplibre.spatialk.geojson/MultiLineString : kotlin.collections/Collection<org.maplibre.spatialk.geojson/LineString>, org.maplibre.spatialk.geojson/LineStringGeometry, org.maplibre.spatialk.geojson/MultiGeometry { // org.maplibre.spatialk.geojson/MultiLineString|null[0]
     constructor <init>(kotlin.collections/List<kotlin.collections/List<org.maplibre.spatialk.geojson/Position>>, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/MultiLineString.<init>|<init>(kotlin.collections.List<kotlin.collections.List<org.maplibre.spatialk.geojson.Position>>;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     constructor <init>(kotlin/Array<kotlin/Array<kotlin/DoubleArray>>, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/MultiLineString.<init>|<init>(kotlin.Array<kotlin.Array<kotlin.DoubleArray>>;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     constructor <init>(kotlin/Array<out kotlin.collections/List<org.maplibre.spatialk.geojson/Position>>..., org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/MultiLineString.<init>|<init>(kotlin.Array<out|kotlin.collections.List<org.maplibre.spatialk.geojson.Position>>...;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
@@ -361,12 +361,19 @@ final class org.maplibre.spatialk.geojson/MultiLineString : org.maplibre.spatial
         final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/MultiLineString.bbox.<get-bbox>|<get-bbox>(){}[0]
     final val coordinates // org.maplibre.spatialk.geojson/MultiLineString.coordinates|{}coordinates[0]
         final fun <get-coordinates>(): kotlin.collections/List<kotlin.collections/List<org.maplibre.spatialk.geojson/Position>> // org.maplibre.spatialk.geojson/MultiLineString.coordinates.<get-coordinates>|<get-coordinates>(){}[0]
+    final val size // org.maplibre.spatialk.geojson/MultiLineString.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // org.maplibre.spatialk.geojson/MultiLineString.size.<get-size>|<get-size>(){}[0]
 
     final fun component1(): kotlin.collections/List<kotlin.collections/List<org.maplibre.spatialk.geojson/Position>> // org.maplibre.spatialk.geojson/MultiLineString.component1|component1(){}[0]
     final fun component2(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/MultiLineString.component2|component2(){}[0]
+    final fun contains(org.maplibre.spatialk.geojson/LineString): kotlin/Boolean // org.maplibre.spatialk.geojson/MultiLineString.contains|contains(org.maplibre.spatialk.geojson.LineString){}[0]
+    final fun containsAll(kotlin.collections/Collection<org.maplibre.spatialk.geojson/LineString>): kotlin/Boolean // org.maplibre.spatialk.geojson/MultiLineString.containsAll|containsAll(kotlin.collections.Collection<org.maplibre.spatialk.geojson.LineString>){}[0]
     final fun copy(kotlin.collections/List<kotlin.collections/List<org.maplibre.spatialk.geojson/Position>> = ..., org.maplibre.spatialk.geojson/BoundingBox? = ...): org.maplibre.spatialk.geojson/MultiLineString // org.maplibre.spatialk.geojson/MultiLineString.copy|copy(kotlin.collections.List<kotlin.collections.List<org.maplibre.spatialk.geojson.Position>>;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.geojson/MultiLineString.equals|equals(kotlin.Any?){}[0]
+    final fun get(kotlin/Int): org.maplibre.spatialk.geojson/LineString // org.maplibre.spatialk.geojson/MultiLineString.get|get(kotlin.Int){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.geojson/MultiLineString.hashCode|hashCode(){}[0]
+    final fun isEmpty(): kotlin/Boolean // org.maplibre.spatialk.geojson/MultiLineString.isEmpty|isEmpty(){}[0]
+    final fun iterator(): kotlin.collections/Iterator<org.maplibre.spatialk.geojson/LineString> // org.maplibre.spatialk.geojson/MultiLineString.iterator|iterator(){}[0]
     final fun toJson(): kotlin/String // org.maplibre.spatialk.geojson/MultiLineString.toJson|toJson(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/MultiLineString.toString|toString(){}[0]
 
@@ -377,7 +384,7 @@ final class org.maplibre.spatialk.geojson/MultiLineString : org.maplibre.spatial
     }
 }
 
-final class org.maplibre.spatialk.geojson/MultiPoint : org.maplibre.spatialk.geojson/MultiGeometry, org.maplibre.spatialk.geojson/PointGeometry { // org.maplibre.spatialk.geojson/MultiPoint|null[0]
+final class org.maplibre.spatialk.geojson/MultiPoint : kotlin.collections/Collection<org.maplibre.spatialk.geojson/Point>, org.maplibre.spatialk.geojson/MultiGeometry, org.maplibre.spatialk.geojson/PointGeometry { // org.maplibre.spatialk.geojson/MultiPoint|null[0]
     constructor <init>(kotlin.collections/List<org.maplibre.spatialk.geojson/Position>, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/MultiPoint.<init>|<init>(kotlin.collections.List<org.maplibre.spatialk.geojson.Position>;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     constructor <init>(kotlin/Array<kotlin/DoubleArray>, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/MultiPoint.<init>|<init>(kotlin.Array<kotlin.DoubleArray>;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     constructor <init>(kotlin/Array<out org.maplibre.spatialk.geojson/Point>..., org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/MultiPoint.<init>|<init>(kotlin.Array<out|org.maplibre.spatialk.geojson.Point>...;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
@@ -387,12 +394,19 @@ final class org.maplibre.spatialk.geojson/MultiPoint : org.maplibre.spatialk.geo
         final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/MultiPoint.bbox.<get-bbox>|<get-bbox>(){}[0]
     final val coordinates // org.maplibre.spatialk.geojson/MultiPoint.coordinates|{}coordinates[0]
         final fun <get-coordinates>(): kotlin.collections/List<org.maplibre.spatialk.geojson/Position> // org.maplibre.spatialk.geojson/MultiPoint.coordinates.<get-coordinates>|<get-coordinates>(){}[0]
+    final val size // org.maplibre.spatialk.geojson/MultiPoint.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // org.maplibre.spatialk.geojson/MultiPoint.size.<get-size>|<get-size>(){}[0]
 
     final fun component1(): kotlin.collections/List<org.maplibre.spatialk.geojson/Position> // org.maplibre.spatialk.geojson/MultiPoint.component1|component1(){}[0]
     final fun component2(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/MultiPoint.component2|component2(){}[0]
+    final fun contains(org.maplibre.spatialk.geojson/Point): kotlin/Boolean // org.maplibre.spatialk.geojson/MultiPoint.contains|contains(org.maplibre.spatialk.geojson.Point){}[0]
+    final fun containsAll(kotlin.collections/Collection<org.maplibre.spatialk.geojson/Point>): kotlin/Boolean // org.maplibre.spatialk.geojson/MultiPoint.containsAll|containsAll(kotlin.collections.Collection<org.maplibre.spatialk.geojson.Point>){}[0]
     final fun copy(kotlin.collections/List<org.maplibre.spatialk.geojson/Position> = ..., org.maplibre.spatialk.geojson/BoundingBox? = ...): org.maplibre.spatialk.geojson/MultiPoint // org.maplibre.spatialk.geojson/MultiPoint.copy|copy(kotlin.collections.List<org.maplibre.spatialk.geojson.Position>;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.geojson/MultiPoint.equals|equals(kotlin.Any?){}[0]
+    final fun get(kotlin/Int): org.maplibre.spatialk.geojson/Point // org.maplibre.spatialk.geojson/MultiPoint.get|get(kotlin.Int){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.geojson/MultiPoint.hashCode|hashCode(){}[0]
+    final fun isEmpty(): kotlin/Boolean // org.maplibre.spatialk.geojson/MultiPoint.isEmpty|isEmpty(){}[0]
+    final fun iterator(): kotlin.collections/Iterator<org.maplibre.spatialk.geojson/Point> // org.maplibre.spatialk.geojson/MultiPoint.iterator|iterator(){}[0]
     final fun toJson(): kotlin/String // org.maplibre.spatialk.geojson/MultiPoint.toJson|toJson(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/MultiPoint.toString|toString(){}[0]
 
@@ -403,7 +417,7 @@ final class org.maplibre.spatialk.geojson/MultiPoint : org.maplibre.spatialk.geo
     }
 }
 
-final class org.maplibre.spatialk.geojson/MultiPolygon : org.maplibre.spatialk.geojson/MultiGeometry, org.maplibre.spatialk.geojson/PolygonGeometry { // org.maplibre.spatialk.geojson/MultiPolygon|null[0]
+final class org.maplibre.spatialk.geojson/MultiPolygon : kotlin.collections/Collection<org.maplibre.spatialk.geojson/Polygon>, org.maplibre.spatialk.geojson/MultiGeometry, org.maplibre.spatialk.geojson/PolygonGeometry { // org.maplibre.spatialk.geojson/MultiPolygon|null[0]
     constructor <init>(kotlin.collections/List<kotlin.collections/List<kotlin.collections/List<org.maplibre.spatialk.geojson/Position>>>, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/MultiPolygon.<init>|<init>(kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<org.maplibre.spatialk.geojson.Position>>>;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     constructor <init>(kotlin/Array<kotlin/Array<kotlin/Array<kotlin/DoubleArray>>>, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/MultiPolygon.<init>|<init>(kotlin.Array<kotlin.Array<kotlin.Array<kotlin.DoubleArray>>>;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     constructor <init>(kotlin/Array<out kotlin.collections/List<kotlin.collections/List<org.maplibre.spatialk.geojson/Position>>>..., org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/MultiPolygon.<init>|<init>(kotlin.Array<out|kotlin.collections.List<kotlin.collections.List<org.maplibre.spatialk.geojson.Position>>>...;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
@@ -413,12 +427,19 @@ final class org.maplibre.spatialk.geojson/MultiPolygon : org.maplibre.spatialk.g
         final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/MultiPolygon.bbox.<get-bbox>|<get-bbox>(){}[0]
     final val coordinates // org.maplibre.spatialk.geojson/MultiPolygon.coordinates|{}coordinates[0]
         final fun <get-coordinates>(): kotlin.collections/List<kotlin.collections/List<kotlin.collections/List<org.maplibre.spatialk.geojson/Position>>> // org.maplibre.spatialk.geojson/MultiPolygon.coordinates.<get-coordinates>|<get-coordinates>(){}[0]
+    final val size // org.maplibre.spatialk.geojson/MultiPolygon.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // org.maplibre.spatialk.geojson/MultiPolygon.size.<get-size>|<get-size>(){}[0]
 
     final fun component1(): kotlin.collections/List<kotlin.collections/List<kotlin.collections/List<org.maplibre.spatialk.geojson/Position>>> // org.maplibre.spatialk.geojson/MultiPolygon.component1|component1(){}[0]
     final fun component2(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/MultiPolygon.component2|component2(){}[0]
+    final fun contains(org.maplibre.spatialk.geojson/Polygon): kotlin/Boolean // org.maplibre.spatialk.geojson/MultiPolygon.contains|contains(org.maplibre.spatialk.geojson.Polygon){}[0]
+    final fun containsAll(kotlin.collections/Collection<org.maplibre.spatialk.geojson/Polygon>): kotlin/Boolean // org.maplibre.spatialk.geojson/MultiPolygon.containsAll|containsAll(kotlin.collections.Collection<org.maplibre.spatialk.geojson.Polygon>){}[0]
     final fun copy(kotlin.collections/List<kotlin.collections/List<kotlin.collections/List<org.maplibre.spatialk.geojson/Position>>> = ..., org.maplibre.spatialk.geojson/BoundingBox? = ...): org.maplibre.spatialk.geojson/MultiPolygon // org.maplibre.spatialk.geojson/MultiPolygon.copy|copy(kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<org.maplibre.spatialk.geojson.Position>>>;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.geojson/MultiPolygon.equals|equals(kotlin.Any?){}[0]
+    final fun get(kotlin/Int): org.maplibre.spatialk.geojson/Polygon // org.maplibre.spatialk.geojson/MultiPolygon.get|get(kotlin.Int){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.geojson/MultiPolygon.hashCode|hashCode(){}[0]
+    final fun isEmpty(): kotlin/Boolean // org.maplibre.spatialk.geojson/MultiPolygon.isEmpty|isEmpty(){}[0]
+    final fun iterator(): kotlin.collections/Iterator<org.maplibre.spatialk.geojson/Polygon> // org.maplibre.spatialk.geojson/MultiPolygon.iterator|iterator(){}[0]
     final fun toJson(): kotlin/String // org.maplibre.spatialk.geojson/MultiPolygon.toJson|toJson(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/MultiPolygon.toString|toString(){}[0]
 

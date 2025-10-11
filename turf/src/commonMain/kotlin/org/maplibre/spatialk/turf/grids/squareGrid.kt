@@ -29,8 +29,8 @@ public fun squareGrid(
     bbox: BoundingBox,
     cellWidth: Length,
     cellHeight: Length = cellWidth,
-): GeometryCollection<Polygon> {
-    val polygons = mutableListOf<Polygon>()
+): MultiPolygon {
+    val polygons = mutableListOf<List<List<Position>>>()
     val west = bbox.southwest.longitude
     val south = bbox.southwest.latitude
     val east = bbox.northeast.longitude
@@ -60,14 +60,12 @@ public fun squareGrid(
                     add(Position(currentX + cellWidthDeg, currentY))
                     add(Position(currentX, currentY))
                 }
-            mutableListOf<List<Position>>()
-                .apply { add(positions) }
-                .also { polygons.add(Polygon(it)) }
+            mutableListOf<List<Position>>().apply { add(positions) }.also { polygons.add(it) }
             currentY += cellHeightDeg
         }
         currentX += cellWidthDeg
     }
-    return GeometryCollection(polygons)
+    return MultiPolygon(polygons)
 }
 
 @PublishedApi
@@ -78,5 +76,4 @@ internal fun squareGrid(
     cellWidth: Double,
     cellHeight: Double = cellWidth,
     unit: LengthUnit = Meters,
-): GeometryCollection<Polygon> =
-    squareGrid(bbox, cellWidth.toLength(unit), cellHeight.toLength(unit))
+): MultiPolygon = squareGrid(bbox, cellWidth.toLength(unit), cellHeight.toLength(unit))
