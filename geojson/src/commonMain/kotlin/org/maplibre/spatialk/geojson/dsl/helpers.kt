@@ -23,6 +23,8 @@ import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 
+@DslMarker internal annotation class GeoJsonDsl
+
 // outer builders
 
 @GeoJsonDsl
