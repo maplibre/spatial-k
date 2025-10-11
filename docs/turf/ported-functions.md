@@ -58,16 +58,16 @@
 - [x] [`combine`](../api/turf/org.maplibre.spatialk.turf.featureconversion/combine.html)
 - [x] [`explode`](../api/turf/org.maplibre.spatialk.turf.featureconversion/explode.html)
 - [ ] `flatten`
-- [ ] `lineToPolygon`
+- [x] [`lineToPolygon`](../api/turf/org.maplibre.spatialk.turf.featureconversion/to-polygon.html)
 - [ ] `polygonize`
-- [ ] `polygonToLine`
+- [x] [`polygonToLine`](../api/turf/org.maplibre.spatialk.turf.featureconversion/to-multi-line-string.html)
 
 ## Miscellaneous
 
 - [ ] `kinks`
 - [ ] `lineArc`
 - [ ] `lineChunk`
-- [x] [`lineIntersect`](../api/turf/org.maplibre.spatialk.turf.misc/intersect.html)
+- [ ] [`lineIntersect`](../api/turf/org.maplibre.spatialk.turf.misc/intersect.html)
       Partially implemented.
 - [ ] `lineOverlap`
 - [ ] `lineSegment`
