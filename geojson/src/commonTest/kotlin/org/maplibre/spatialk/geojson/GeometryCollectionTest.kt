@@ -6,6 +6,9 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import org.maplibre.spatialk.geojson.dsl.buildGeometryCollection
+import org.maplibre.spatialk.geojson.dsl.geometryCollectionOf
+import org.maplibre.spatialk.geojson.dsl.lineStringOf
+import org.maplibre.spatialk.geojson.dsl.multiPointOf
 import org.maplibre.spatialk.geojson.utils.DELTA
 import org.maplibre.spatialk.geojson.utils.assertJsonEquals
 
@@ -87,7 +90,7 @@ class GeometryCollectionTest {
     @Test
     fun passingInSingleGeometry_doesHandleCorrectly() {
         val geometry = Point(1.0, 2.0)
-        val collection = GeometryCollection(listOf(geometry))
+        val collection = geometryCollectionOf(geometry)
         assertNotNull(collection)
         assertEquals(1, collection.geometries.size)
         assertEquals(2.0, collection.geometries.first().coordinates.latitude, DELTA)
@@ -254,7 +257,7 @@ class GeometryCollectionTest {
     @Test
     fun testEmptyCollection() {
         val json = "{\"type\": \"GeometryCollection\", \"geometries\": []}"
-        val gc = buildGeometryCollection<Geometry> {}
+        val gc = geometryCollectionOf<Geometry>()
         assertEquals(gc, GeometryCollection.fromJsonOrNull<Geometry>(json))
         assertJsonEquals(json, gc.toJson())
     }
@@ -273,8 +276,8 @@ class GeometryCollectionTest {
             """
 
         val gc = buildGeometryCollection {
-            add(Point(Position(1.1, 2.2)))
-            add(LineString(Position(1.1, 2.2), Position(3.3, 4.4)))
+            add(Point(1.1, 2.2))
+            add(lineStringOf(Position(1.1, 2.2), Position(3.3, 4.4)))
         }
 
         assertEquals(gc, GeometryCollection.fromJsonOrNull<Geometry>(json))
@@ -297,8 +300,8 @@ class GeometryCollectionTest {
             """
 
         val gc = buildGeometryCollection {
-            add(MultiPoint(Position(1.1, 2.2), Position(1.1, 2.2)))
-            add(MultiPoint(Position(3.3, 4.4), Position(3.3, 4.4)))
+            add(multiPointOf(Position(1.1, 2.2), Position(1.1, 2.2)))
+            add(multiPointOf(Position(3.3, 4.4), Position(3.3, 4.4)))
         }
 
         assertEquals(gc, GeometryCollection.fromJsonOrNull<Geometry>(json))

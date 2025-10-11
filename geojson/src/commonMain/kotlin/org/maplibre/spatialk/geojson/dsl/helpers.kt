@@ -21,8 +21,9 @@ import org.maplibre.spatialk.geojson.MultiPoint
 import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
+import org.maplibre.spatialk.geojson.Position
 
-@DslMarker internal annotation class GeoJsonDsl
+// outer builders
 
 @GeoJsonDsl
 public inline fun buildPoint(builderAction: PointBuilder.() -> Unit): Point {
@@ -85,6 +86,8 @@ public inline fun <T : Geometry?> buildFeatureCollection(
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return FeatureCollectionBuilder<T>().apply { builderAction() }.build()
 }
+
+// inner builders
 
 @GeoJsonDsl
 public inline fun MultiPointBuilder.addPoint(builderAction: PointBuilder.() -> Unit) {
@@ -182,3 +185,34 @@ public inline fun <T : Geometry?> FeatureCollectionBuilder<in T>.addFeature(
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(FeatureBuilder<T>().apply { builderAction() }.build())
 }
+
+// multi geometry from singles
+
+public fun multiPointOf(vararg points: Point): MultiPoint = MultiPoint(*points)
+
+public fun multiLineStringOf(vararg lineStrings: LineString): MultiLineString =
+    MultiLineString(*lineStrings)
+
+public fun multiPolygonOf(vararg points: Point): MultiPoint = MultiPoint(*points)
+
+// all geometry from coordinates
+
+public fun multiPointOf(vararg coordinates: Position): MultiPoint = MultiPoint(*coordinates)
+
+public fun lineStringOf(vararg coordinates: Position): LineString = LineString(*coordinates)
+
+public fun multiLineStringOf(vararg coordinates: List<Position>): MultiLineString =
+    MultiLineString(*coordinates)
+
+public fun polygonOf(vararg coordinates: List<Position>): Polygon = Polygon(*coordinates)
+
+public fun multiPolygonOf(vararg coordinates: List<List<Position>>): MultiPolygon =
+    MultiPolygon(*coordinates)
+
+// collections
+
+public fun <T : Geometry> geometryCollectionOf(vararg geometries: T): GeometryCollection<T> =
+    GeometryCollection(geometries.toList())
+
+public fun <T : Geometry?> featureCollectionOf(vararg features: Feature<T>): FeatureCollection<T> =
+    FeatureCollection(features.toList())

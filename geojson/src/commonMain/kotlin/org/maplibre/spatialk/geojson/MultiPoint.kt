@@ -28,6 +28,12 @@ constructor(
         bbox: BoundingBox? = null,
     ) : this(coordinates.toList(), bbox)
 
+    @JvmOverloads
+    public constructor(
+        vararg points: Point,
+        bbox: BoundingBox? = null,
+    ) : this(points.map { it.coordinates }, bbox)
+
     /**
      * Create a MultiPoint by an array of [DoubleArray]s that each represent a position.
      *
