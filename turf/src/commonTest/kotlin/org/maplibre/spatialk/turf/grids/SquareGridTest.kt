@@ -9,8 +9,8 @@ import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
+import org.maplibre.spatialk.turf.coordinatemutation.flattenCoordinates
 import org.maplibre.spatialk.turf.measurement.computeBbox
-import org.maplibre.spatialk.turf.meta.flattenCoordinates
 import org.maplibre.spatialk.units.extensions.kilometers
 import org.maplibre.spatialk.units.extensions.meters
 

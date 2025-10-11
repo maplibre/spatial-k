@@ -11,7 +11,7 @@ import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
-import org.maplibre.spatialk.turf.meta.flattenCoordinates
+import org.maplibre.spatialk.turf.coordinatemutation.flattenCoordinates
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.extensions.kilometers
 

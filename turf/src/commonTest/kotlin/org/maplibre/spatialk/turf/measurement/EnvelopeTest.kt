@@ -10,7 +10,7 @@ import org.maplibre.spatialk.geojson.dsl.addRing
 import org.maplibre.spatialk.geojson.dsl.buildFeatureCollection
 import org.maplibre.spatialk.geojson.dsl.buildLineString
 import org.maplibre.spatialk.geojson.dsl.buildPolygon
-import org.maplibre.spatialk.turf.meta.flattenCoordinates
+import org.maplibre.spatialk.turf.coordinatemutation.flattenCoordinates
 
 class EnvelopeTest {
 

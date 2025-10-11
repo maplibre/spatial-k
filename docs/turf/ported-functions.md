@@ -127,25 +127,8 @@ Use the [GeoJson DSL](../geojson/index.md#geojson-dsl) instead.
 
 ## Meta
 
-- [x] [`coordAll`](../api/turf/org.maplibre.spatialk.turf.meta/flatten-coordinates.html)
-- [ ] `coordEach`
-- [ ] `coordReduce`
-- [ ] `featureEach`
-- [ ] `featureReduce`
-- [ ] `flattenEach`
-- [ ] `flattenReduce`
-- [ ] `getCoord`
-- [ ] `getCoords`
-- [ ] `getGeom`
-- [ ] `getType`
-- [ ] `geomEach`
-- [ ] `geomReduce`
-- [ ] `propEach`
-- [ ] `segmentEach`
-- [ ] `segmentReduce`
-- [ ] `getCluster`
-- [ ] `clusterEach`
-- [ ] `clusterReduce`
+Many GeoJson objects implement `Collection`, enabling standard Kotlin collection
+operations to replace Turf meta functions.
 
 ## Assertations
 
