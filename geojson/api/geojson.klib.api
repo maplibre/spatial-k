@@ -80,33 +80,42 @@ sealed interface org.maplibre.spatialk.geojson/SingleGeometry : org.maplibre.spa
     }
 }
 
-abstract class <#A: org.maplibre.spatialk.geojson/Geometry> org.maplibre.spatialk.geojson.dsl/GeometryDsl { // org.maplibre.spatialk.geojson.dsl/GeometryDsl|null[0]
-    constructor <init>(org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson.dsl/GeometryDsl.<init>|<init>(org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+final class <#A: org.maplibre.spatialk.geojson/Geometry> org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder { // org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder|null[0]
+    constructor <init>() // org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder.<init>|<init>(){}[0]
 
-    final var bbox // org.maplibre.spatialk.geojson.dsl/GeometryDsl.bbox|{}bbox[0]
-        final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson.dsl/GeometryDsl.bbox.<get-bbox>|<get-bbox>(){}[0]
-        final fun <set-bbox>(org.maplibre.spatialk.geojson/BoundingBox?) // org.maplibre.spatialk.geojson.dsl/GeometryDsl.bbox.<set-bbox>|<set-bbox>(org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+    final var bbox // org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder.bbox|{}bbox[0]
+        final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder.bbox.<get-bbox>|<get-bbox>(){}[0]
+        final fun <set-bbox>(org.maplibre.spatialk.geojson/BoundingBox?) // org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder.bbox.<set-bbox>|<set-bbox>(org.maplibre.spatialk.geojson.BoundingBox?){}[0]
 
-    abstract fun create(): #A // org.maplibre.spatialk.geojson.dsl/GeometryDsl.create|create(){}[0]
+    final fun add(#A) // org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder.add|add(1:0){}[0]
+    final fun build(): org.maplibre.spatialk.geojson/GeometryCollection<#A> // org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder.build|build(){}[0]
 }
 
-final class <#A: org.maplibre.spatialk.geojson/Geometry> org.maplibre.spatialk.geojson.dsl/GeometryCollectionDsl : org.maplibre.spatialk.geojson.dsl/GeometryDsl<org.maplibre.spatialk.geojson/GeometryCollection<#A>> { // org.maplibre.spatialk.geojson.dsl/GeometryCollectionDsl|null[0]
-    constructor <init>(kotlin.collections/MutableList<#A> = ...) // org.maplibre.spatialk.geojson.dsl/GeometryCollectionDsl.<init>|<init>(kotlin.collections.MutableList<1:0>){}[0]
+final class <#A: org.maplibre.spatialk.geojson/Geometry?> org.maplibre.spatialk.geojson.dsl/FeatureBuilder { // org.maplibre.spatialk.geojson.dsl/FeatureBuilder|null[0]
+    constructor <init>(#A) // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.<init>|<init>(1:0){}[0]
 
-    final fun (#A).unaryPlus() // org.maplibre.spatialk.geojson.dsl/GeometryCollectionDsl.unaryPlus|unaryPlus@1:0(){}[0]
-    final fun create(): org.maplibre.spatialk.geojson/GeometryCollection<#A> // org.maplibre.spatialk.geojson.dsl/GeometryCollectionDsl.create|create(){}[0]
+    final var bbox // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.bbox|{}bbox[0]
+        final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.bbox.<get-bbox>|<get-bbox>(){}[0]
+        final fun <set-bbox>(org.maplibre.spatialk.geojson/BoundingBox?) // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.bbox.<set-bbox>|<set-bbox>(org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+    final var id // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.id|{}id[0]
+        final fun <get-id>(): kotlin/String? // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.id.<get-id>|<get-id>(){}[0]
+        final fun <set-id>(kotlin/String?) // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.id.<set-id>|<set-id>(kotlin.String?){}[0]
+    final var properties // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.properties|{}properties[0]
+        final fun <get-properties>(): kotlinx.serialization.json/JsonObject? // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.properties.<get-properties>|<get-properties>(){}[0]
+        final fun <set-properties>(kotlinx.serialization.json/JsonObject?) // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.properties.<set-properties>|<set-properties>(kotlinx.serialization.json.JsonObject?){}[0]
+
+    final fun build(): org.maplibre.spatialk.geojson/Feature<#A> // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.build|build(){}[0]
 }
 
-final class <#A: org.maplibre.spatialk.geojson/Geometry?> org.maplibre.spatialk.geojson.dsl/FeatureCollectionDsl { // org.maplibre.spatialk.geojson.dsl/FeatureCollectionDsl|null[0]
-    constructor <init>(kotlin.collections/MutableList<org.maplibre.spatialk.geojson/Feature<#A>> = ..., org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson.dsl/FeatureCollectionDsl.<init>|<init>(kotlin.collections.MutableList<org.maplibre.spatialk.geojson.Feature<1:0>>;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+final class <#A: org.maplibre.spatialk.geojson/Geometry?> org.maplibre.spatialk.geojson.dsl/FeatureCollectionBuilder { // org.maplibre.spatialk.geojson.dsl/FeatureCollectionBuilder|null[0]
+    constructor <init>() // org.maplibre.spatialk.geojson.dsl/FeatureCollectionBuilder.<init>|<init>(){}[0]
 
-    final var bbox // org.maplibre.spatialk.geojson.dsl/FeatureCollectionDsl.bbox|{}bbox[0]
-        final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson.dsl/FeatureCollectionDsl.bbox.<get-bbox>|<get-bbox>(){}[0]
-        final fun <set-bbox>(org.maplibre.spatialk.geojson/BoundingBox?) // org.maplibre.spatialk.geojson.dsl/FeatureCollectionDsl.bbox.<set-bbox>|<set-bbox>(org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+    final var bbox // org.maplibre.spatialk.geojson.dsl/FeatureCollectionBuilder.bbox|{}bbox[0]
+        final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson.dsl/FeatureCollectionBuilder.bbox.<get-bbox>|<get-bbox>(){}[0]
+        final fun <set-bbox>(org.maplibre.spatialk.geojson/BoundingBox?) // org.maplibre.spatialk.geojson.dsl/FeatureCollectionBuilder.bbox.<set-bbox>|<set-bbox>(org.maplibre.spatialk.geojson.BoundingBox?){}[0]
 
-    final fun (org.maplibre.spatialk.geojson/Feature<#A>).unaryPlus() // org.maplibre.spatialk.geojson.dsl/FeatureCollectionDsl.unaryPlus|unaryPlus@org.maplibre.spatialk.geojson.Feature<1:0>(){}[0]
-    final fun create(): org.maplibre.spatialk.geojson/FeatureCollection<#A> // org.maplibre.spatialk.geojson.dsl/FeatureCollectionDsl.create|create(){}[0]
-    final fun feature(#A, kotlin/String? = ..., org.maplibre.spatialk.geojson/BoundingBox? = ..., kotlin/Function1<kotlinx.serialization.json/JsonObjectBuilder, kotlin/Unit>? = ...) // org.maplibre.spatialk.geojson.dsl/FeatureCollectionDsl.feature|feature(1:0;kotlin.String?;org.maplibre.spatialk.geojson.BoundingBox?;kotlin.Function1<kotlinx.serialization.json.JsonObjectBuilder,kotlin.Unit>?){}[0]
+    final fun add(org.maplibre.spatialk.geojson/Feature<#A>) // org.maplibre.spatialk.geojson.dsl/FeatureCollectionBuilder.add|add(org.maplibre.spatialk.geojson.Feature<1:0>){}[0]
+    final fun build(): org.maplibre.spatialk.geojson/FeatureCollection<#A> // org.maplibre.spatialk.geojson.dsl/FeatureCollectionBuilder.build|build(){}[0]
 }
 
 final class <#A: out org.maplibre.spatialk.geojson/Geometry> org.maplibre.spatialk.geojson/GeometryCollection : kotlin.collections/Collection<#A>, org.maplibre.spatialk.geojson/Geometry { // org.maplibre.spatialk.geojson/GeometryCollection|null[0]
@@ -212,62 +221,64 @@ final class <#A: out org.maplibre.spatialk.geojson/Geometry?> org.maplibre.spati
     }
 }
 
-final class org.maplibre.spatialk.geojson.dsl/LineStringDsl : org.maplibre.spatialk.geojson.dsl/GeometryDsl<org.maplibre.spatialk.geojson/LineString> { // org.maplibre.spatialk.geojson.dsl/LineStringDsl|null[0]
-    constructor <init>(kotlin.collections/MutableList<org.maplibre.spatialk.geojson/Position> = ...) // org.maplibre.spatialk.geojson.dsl/LineStringDsl.<init>|<init>(kotlin.collections.MutableList<org.maplibre.spatialk.geojson.Position>){}[0]
+final class org.maplibre.spatialk.geojson.dsl/LineStringBuilder { // org.maplibre.spatialk.geojson.dsl/LineStringBuilder|null[0]
+    constructor <init>() // org.maplibre.spatialk.geojson.dsl/LineStringBuilder.<init>|<init>(){}[0]
 
-    final fun (org.maplibre.spatialk.geojson/Point).unaryPlus() // org.maplibre.spatialk.geojson.dsl/LineStringDsl.unaryPlus|unaryPlus@org.maplibre.spatialk.geojson.Point(){}[0]
-    final fun (org.maplibre.spatialk.geojson/Position).unaryPlus() // org.maplibre.spatialk.geojson.dsl/LineStringDsl.unaryPlus|unaryPlus@org.maplibre.spatialk.geojson.Position(){}[0]
-    final fun create(): org.maplibre.spatialk.geojson/LineString // org.maplibre.spatialk.geojson.dsl/LineStringDsl.create|create(){}[0]
-    final fun point(kotlin/Double, kotlin/Double, kotlin/Double? = ...) // org.maplibre.spatialk.geojson.dsl/LineStringDsl.point|point(kotlin.Double;kotlin.Double;kotlin.Double?){}[0]
+    final var bbox // org.maplibre.spatialk.geojson.dsl/LineStringBuilder.bbox|{}bbox[0]
+        final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson.dsl/LineStringBuilder.bbox.<get-bbox>|<get-bbox>(){}[0]
+        final fun <set-bbox>(org.maplibre.spatialk.geojson/BoundingBox?) // org.maplibre.spatialk.geojson.dsl/LineStringBuilder.bbox.<set-bbox>|<set-bbox>(org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+
+    final fun add(kotlin/Double, kotlin/Double, kotlin/Double? = ...) // org.maplibre.spatialk.geojson.dsl/LineStringBuilder.add|add(kotlin.Double;kotlin.Double;kotlin.Double?){}[0]
+    final fun add(org.maplibre.spatialk.geojson/Point) // org.maplibre.spatialk.geojson.dsl/LineStringBuilder.add|add(org.maplibre.spatialk.geojson.Point){}[0]
+    final fun add(org.maplibre.spatialk.geojson/Position) // org.maplibre.spatialk.geojson.dsl/LineStringBuilder.add|add(org.maplibre.spatialk.geojson.Position){}[0]
+    final fun build(): org.maplibre.spatialk.geojson/LineString // org.maplibre.spatialk.geojson.dsl/LineStringBuilder.build|build(){}[0]
 }
 
-final class org.maplibre.spatialk.geojson.dsl/MultiLineStringDsl : org.maplibre.spatialk.geojson.dsl/GeometryDsl<org.maplibre.spatialk.geojson/MultiLineString> { // org.maplibre.spatialk.geojson.dsl/MultiLineStringDsl|null[0]
-    constructor <init>(kotlin.collections/MutableList<kotlin.collections/List<org.maplibre.spatialk.geojson/Position>> = ...) // org.maplibre.spatialk.geojson.dsl/MultiLineStringDsl.<init>|<init>(kotlin.collections.MutableList<kotlin.collections.List<org.maplibre.spatialk.geojson.Position>>){}[0]
+final class org.maplibre.spatialk.geojson.dsl/MultiLineStringBuilder { // org.maplibre.spatialk.geojson.dsl/MultiLineStringBuilder|null[0]
+    constructor <init>() // org.maplibre.spatialk.geojson.dsl/MultiLineStringBuilder.<init>|<init>(){}[0]
 
-    final fun (org.maplibre.spatialk.geojson/LineString).unaryPlus() // org.maplibre.spatialk.geojson.dsl/MultiLineStringDsl.unaryPlus|unaryPlus@org.maplibre.spatialk.geojson.LineString(){}[0]
-    final fun create(): org.maplibre.spatialk.geojson/MultiLineString // org.maplibre.spatialk.geojson.dsl/MultiLineStringDsl.create|create(){}[0]
-    final inline fun lineString(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/LineStringDsl, kotlin/Unit>) // org.maplibre.spatialk.geojson.dsl/MultiLineStringDsl.lineString|lineString(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.LineStringDsl,kotlin.Unit>){}[0]
+    final var bbox // org.maplibre.spatialk.geojson.dsl/MultiLineStringBuilder.bbox|{}bbox[0]
+        final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson.dsl/MultiLineStringBuilder.bbox.<get-bbox>|<get-bbox>(){}[0]
+        final fun <set-bbox>(org.maplibre.spatialk.geojson/BoundingBox?) // org.maplibre.spatialk.geojson.dsl/MultiLineStringBuilder.bbox.<set-bbox>|<set-bbox>(org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+
+    final fun add(org.maplibre.spatialk.geojson/LineString) // org.maplibre.spatialk.geojson.dsl/MultiLineStringBuilder.add|add(org.maplibre.spatialk.geojson.LineString){}[0]
+    final fun build(): org.maplibre.spatialk.geojson/MultiLineString // org.maplibre.spatialk.geojson.dsl/MultiLineStringBuilder.build|build(){}[0]
 }
 
-final class org.maplibre.spatialk.geojson.dsl/MultiPointDsl : org.maplibre.spatialk.geojson.dsl/GeometryDsl<org.maplibre.spatialk.geojson/MultiPoint> { // org.maplibre.spatialk.geojson.dsl/MultiPointDsl|null[0]
-    constructor <init>(kotlin.collections/MutableList<org.maplibre.spatialk.geojson/Position> = ...) // org.maplibre.spatialk.geojson.dsl/MultiPointDsl.<init>|<init>(kotlin.collections.MutableList<org.maplibre.spatialk.geojson.Position>){}[0]
+final class org.maplibre.spatialk.geojson.dsl/MultiPointBuilder { // org.maplibre.spatialk.geojson.dsl/MultiPointBuilder|null[0]
+    constructor <init>() // org.maplibre.spatialk.geojson.dsl/MultiPointBuilder.<init>|<init>(){}[0]
 
-    final fun (org.maplibre.spatialk.geojson/Point).unaryPlus() // org.maplibre.spatialk.geojson.dsl/MultiPointDsl.unaryPlus|unaryPlus@org.maplibre.spatialk.geojson.Point(){}[0]
-    final fun (org.maplibre.spatialk.geojson/Position).unaryPlus() // org.maplibre.spatialk.geojson.dsl/MultiPointDsl.unaryPlus|unaryPlus@org.maplibre.spatialk.geojson.Position(){}[0]
-    final fun create(): org.maplibre.spatialk.geojson/MultiPoint // org.maplibre.spatialk.geojson.dsl/MultiPointDsl.create|create(){}[0]
-    final fun point(kotlin/Double, kotlin/Double, kotlin/Double? = ...) // org.maplibre.spatialk.geojson.dsl/MultiPointDsl.point|point(kotlin.Double;kotlin.Double;kotlin.Double?){}[0]
+    final var bbox // org.maplibre.spatialk.geojson.dsl/MultiPointBuilder.bbox|{}bbox[0]
+        final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson.dsl/MultiPointBuilder.bbox.<get-bbox>|<get-bbox>(){}[0]
+        final fun <set-bbox>(org.maplibre.spatialk.geojson/BoundingBox?) // org.maplibre.spatialk.geojson.dsl/MultiPointBuilder.bbox.<set-bbox>|<set-bbox>(org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+
+    final fun add(kotlin/Double, kotlin/Double, kotlin/Double? = ...) // org.maplibre.spatialk.geojson.dsl/MultiPointBuilder.add|add(kotlin.Double;kotlin.Double;kotlin.Double?){}[0]
+    final fun add(org.maplibre.spatialk.geojson/Point) // org.maplibre.spatialk.geojson.dsl/MultiPointBuilder.add|add(org.maplibre.spatialk.geojson.Point){}[0]
+    final fun add(org.maplibre.spatialk.geojson/Position) // org.maplibre.spatialk.geojson.dsl/MultiPointBuilder.add|add(org.maplibre.spatialk.geojson.Position){}[0]
+    final fun build(): org.maplibre.spatialk.geojson/MultiPoint // org.maplibre.spatialk.geojson.dsl/MultiPointBuilder.build|build(){}[0]
 }
 
-final class org.maplibre.spatialk.geojson.dsl/MultiPolygonDsl : org.maplibre.spatialk.geojson.dsl/GeometryDsl<org.maplibre.spatialk.geojson/MultiPolygon> { // org.maplibre.spatialk.geojson.dsl/MultiPolygonDsl|null[0]
-    constructor <init>(kotlin.collections/MutableList<kotlin.collections/List<kotlin.collections/List<org.maplibre.spatialk.geojson/Position>>> = ...) // org.maplibre.spatialk.geojson.dsl/MultiPolygonDsl.<init>|<init>(kotlin.collections.MutableList<kotlin.collections.List<kotlin.collections.List<org.maplibre.spatialk.geojson.Position>>>){}[0]
+final class org.maplibre.spatialk.geojson.dsl/MultiPolygonBuilder { // org.maplibre.spatialk.geojson.dsl/MultiPolygonBuilder|null[0]
+    constructor <init>() // org.maplibre.spatialk.geojson.dsl/MultiPolygonBuilder.<init>|<init>(){}[0]
 
-    final fun (org.maplibre.spatialk.geojson/Polygon).unaryPlus() // org.maplibre.spatialk.geojson.dsl/MultiPolygonDsl.unaryPlus|unaryPlus@org.maplibre.spatialk.geojson.Polygon(){}[0]
-    final fun create(): org.maplibre.spatialk.geojson/MultiPolygon // org.maplibre.spatialk.geojson.dsl/MultiPolygonDsl.create|create(){}[0]
-    final inline fun polygon(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/PolygonDsl, kotlin/Unit>) // org.maplibre.spatialk.geojson.dsl/MultiPolygonDsl.polygon|polygon(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.PolygonDsl,kotlin.Unit>){}[0]
+    final var bbox // org.maplibre.spatialk.geojson.dsl/MultiPolygonBuilder.bbox|{}bbox[0]
+        final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson.dsl/MultiPolygonBuilder.bbox.<get-bbox>|<get-bbox>(){}[0]
+        final fun <set-bbox>(org.maplibre.spatialk.geojson/BoundingBox?) // org.maplibre.spatialk.geojson.dsl/MultiPolygonBuilder.bbox.<set-bbox>|<set-bbox>(org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+
+    final fun add(org.maplibre.spatialk.geojson/Polygon) // org.maplibre.spatialk.geojson.dsl/MultiPolygonBuilder.add|add(org.maplibre.spatialk.geojson.Polygon){}[0]
+    final fun build(): org.maplibre.spatialk.geojson/MultiPolygon // org.maplibre.spatialk.geojson.dsl/MultiPolygonBuilder.build|build(){}[0]
 }
 
-final class org.maplibre.spatialk.geojson.dsl/PointDsl : org.maplibre.spatialk.geojson.dsl/GeometryDsl<org.maplibre.spatialk.geojson/Point> { // org.maplibre.spatialk.geojson.dsl/PointDsl|null[0]
-    constructor <init>(org.maplibre.spatialk.geojson/Position) // org.maplibre.spatialk.geojson.dsl/PointDsl.<init>|<init>(org.maplibre.spatialk.geojson.Position){}[0]
+final class org.maplibre.spatialk.geojson.dsl/PolygonBuilder { // org.maplibre.spatialk.geojson.dsl/PolygonBuilder|null[0]
+    constructor <init>() // org.maplibre.spatialk.geojson.dsl/PolygonBuilder.<init>|<init>(){}[0]
 
-    final fun create(): org.maplibre.spatialk.geojson/Point // org.maplibre.spatialk.geojson.dsl/PointDsl.create|create(){}[0]
-}
+    final var bbox // org.maplibre.spatialk.geojson.dsl/PolygonBuilder.bbox|{}bbox[0]
+        final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson.dsl/PolygonBuilder.bbox.<get-bbox>|<get-bbox>(){}[0]
+        final fun <set-bbox>(org.maplibre.spatialk.geojson/BoundingBox?) // org.maplibre.spatialk.geojson.dsl/PolygonBuilder.bbox.<set-bbox>|<set-bbox>(org.maplibre.spatialk.geojson.BoundingBox?){}[0]
 
-final class org.maplibre.spatialk.geojson.dsl/PolygonDsl : org.maplibre.spatialk.geojson.dsl/GeometryDsl<org.maplibre.spatialk.geojson/Polygon> { // org.maplibre.spatialk.geojson.dsl/PolygonDsl|null[0]
-    constructor <init>(kotlin.collections/MutableList<kotlin.collections/List<org.maplibre.spatialk.geojson/Position>> = ...) // org.maplibre.spatialk.geojson.dsl/PolygonDsl.<init>|<init>(kotlin.collections.MutableList<kotlin.collections.List<org.maplibre.spatialk.geojson.Position>>){}[0]
-
-    final fun create(): org.maplibre.spatialk.geojson/Polygon // org.maplibre.spatialk.geojson.dsl/PolygonDsl.create|create(){}[0]
-    final fun ring(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/PolygonDsl.RingDsl, kotlin/Unit>) // org.maplibre.spatialk.geojson.dsl/PolygonDsl.ring|ring(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.PolygonDsl.RingDsl,kotlin.Unit>){}[0]
-
-    final inner class RingDsl { // org.maplibre.spatialk.geojson.dsl/PolygonDsl.RingDsl|null[0]
-        constructor <init>(kotlin.collections/MutableList<org.maplibre.spatialk.geojson/Position> = ...) // org.maplibre.spatialk.geojson.dsl/PolygonDsl.RingDsl.<init>|<init>(kotlin.collections.MutableList<org.maplibre.spatialk.geojson.Position>){}[0]
-
-        final fun (org.maplibre.spatialk.geojson/LineString).unaryPlus() // org.maplibre.spatialk.geojson.dsl/PolygonDsl.RingDsl.unaryPlus|unaryPlus@org.maplibre.spatialk.geojson.LineString(){}[0]
-        final fun (org.maplibre.spatialk.geojson/Point).unaryPlus() // org.maplibre.spatialk.geojson.dsl/PolygonDsl.RingDsl.unaryPlus|unaryPlus@org.maplibre.spatialk.geojson.Point(){}[0]
-        final fun (org.maplibre.spatialk.geojson/Position).unaryPlus() // org.maplibre.spatialk.geojson.dsl/PolygonDsl.RingDsl.unaryPlus|unaryPlus@org.maplibre.spatialk.geojson.Position(){}[0]
-        final fun complete() // org.maplibre.spatialk.geojson.dsl/PolygonDsl.RingDsl.complete|complete(){}[0]
-        final fun point(kotlin/Double, kotlin/Double, kotlin/Double? = ...) // org.maplibre.spatialk.geojson.dsl/PolygonDsl.RingDsl.point|point(kotlin.Double;kotlin.Double;kotlin.Double?){}[0]
-        final inline fun lineString(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/LineStringDsl, kotlin/Unit>) // org.maplibre.spatialk.geojson.dsl/PolygonDsl.RingDsl.lineString|lineString(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.LineStringDsl,kotlin.Unit>){}[0]
-    }
+    final fun add(kotlin.collections/List<org.maplibre.spatialk.geojson/Position>) // org.maplibre.spatialk.geojson.dsl/PolygonBuilder.add|add(kotlin.collections.List<org.maplibre.spatialk.geojson.Position>){}[0]
+    final fun add(org.maplibre.spatialk.geojson/LineString) // org.maplibre.spatialk.geojson.dsl/PolygonBuilder.add|add(org.maplibre.spatialk.geojson.LineString){}[0]
+    final fun build(): org.maplibre.spatialk.geojson/Polygon // org.maplibre.spatialk.geojson.dsl/PolygonBuilder.build|build(){}[0]
 }
 
 final class org.maplibre.spatialk.geojson/BoundingBox : kotlin.collections/Iterable<kotlin/Double>, org.maplibre.spatialk.geojson/GeoJsonElement { // org.maplibre.spatialk.geojson/BoundingBox|null[0]
@@ -369,6 +380,7 @@ final class org.maplibre.spatialk.geojson/MultiLineString : org.maplibre.spatial
 final class org.maplibre.spatialk.geojson/MultiPoint : org.maplibre.spatialk.geojson/MultiGeometry, org.maplibre.spatialk.geojson/PointGeometry { // org.maplibre.spatialk.geojson/MultiPoint|null[0]
     constructor <init>(kotlin.collections/List<org.maplibre.spatialk.geojson/Position>, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/MultiPoint.<init>|<init>(kotlin.collections.List<org.maplibre.spatialk.geojson.Position>;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     constructor <init>(kotlin/Array<kotlin/DoubleArray>, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/MultiPoint.<init>|<init>(kotlin.Array<kotlin.DoubleArray>;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+    constructor <init>(kotlin/Array<out org.maplibre.spatialk.geojson/Point>..., org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/MultiPoint.<init>|<init>(kotlin.Array<out|org.maplibre.spatialk.geojson.Point>...;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     constructor <init>(kotlin/Array<out org.maplibre.spatialk.geojson/Position>..., org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/MultiPoint.<init>|<init>(kotlin.Array<out|org.maplibre.spatialk.geojson.Position>...;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
 
     final val bbox // org.maplibre.spatialk.geojson/MultiPoint.bbox|{}bbox[0]
@@ -516,16 +528,36 @@ final object org.maplibre.spatialk.geojson/GeoJson { // org.maplibre.spatialk.ge
     final inline fun <#A1: reified org.maplibre.spatialk.geojson/GeoJsonObject?> encodeToString(#A1): kotlin/String // org.maplibre.spatialk.geojson/GeoJson.encodeToString|encodeToString(0:0){0§<org.maplibre.spatialk.geojson.GeoJsonObject?>}[0]
 }
 
-final fun <#A: org.maplibre.spatialk.geojson/Geometry?> org.maplibre.spatialk.geojson.dsl/feature(#A, kotlin/String? = ..., org.maplibre.spatialk.geojson/BoundingBox? = ..., kotlin/Function1<kotlinx.serialization.json/JsonObjectBuilder, kotlin/Unit>? = ...): org.maplibre.spatialk.geojson/Feature<#A> // org.maplibre.spatialk.geojson.dsl/feature|feature(0:0;kotlin.String?;org.maplibre.spatialk.geojson.BoundingBox?;kotlin.Function1<kotlinx.serialization.json.JsonObjectBuilder,kotlin.Unit>?){0§<org.maplibre.spatialk.geojson.Geometry?>}[0]
-final fun org.maplibre.spatialk.geojson.dsl/feature(kotlin/String? = ..., org.maplibre.spatialk.geojson/BoundingBox? = ..., kotlin/Function1<kotlinx.serialization.json/JsonObjectBuilder, kotlin/Unit>? = ...): org.maplibre.spatialk.geojson/Feature<kotlin/Nothing?> // org.maplibre.spatialk.geojson.dsl/feature|feature(kotlin.String?;org.maplibre.spatialk.geojson.BoundingBox?;kotlin.Function1<kotlinx.serialization.json.JsonObjectBuilder,kotlin.Unit>?){}[0]
-final fun org.maplibre.spatialk.geojson.dsl/lngLat(kotlin/Double, kotlin/Double): org.maplibre.spatialk.geojson/Position // org.maplibre.spatialk.geojson.dsl/lngLat|lngLat(kotlin.Double;kotlin.Double){}[0]
-final fun org.maplibre.spatialk.geojson.dsl/lngLat(kotlin/Double, kotlin/Double, kotlin/Double): org.maplibre.spatialk.geojson/Position // org.maplibre.spatialk.geojson.dsl/lngLat|lngLat(kotlin.Double;kotlin.Double;kotlin.Double){}[0]
-final fun org.maplibre.spatialk.geojson.dsl/lngLat(kotlin/Double, kotlin/Double, kotlin/Double?): org.maplibre.spatialk.geojson/Position // org.maplibre.spatialk.geojson.dsl/lngLat|lngLat(kotlin.Double;kotlin.Double;kotlin.Double?){}[0]
-final inline fun <#A: org.maplibre.spatialk.geojson/Geometry> org.maplibre.spatialk.geojson.dsl/geometryCollection(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/GeometryCollectionDsl<#A>, kotlin/Unit>): org.maplibre.spatialk.geojson/GeometryCollection<#A> // org.maplibre.spatialk.geojson.dsl/geometryCollection|geometryCollection(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.GeometryCollectionDsl<0:0>,kotlin.Unit>){0§<org.maplibre.spatialk.geojson.Geometry>}[0]
-final inline fun <#A: org.maplibre.spatialk.geojson/Geometry?> org.maplibre.spatialk.geojson.dsl/featureCollection(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/FeatureCollectionDsl<#A>, kotlin/Unit>): org.maplibre.spatialk.geojson/FeatureCollection<#A> // org.maplibre.spatialk.geojson.dsl/featureCollection|featureCollection(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.FeatureCollectionDsl<0:0>,kotlin.Unit>){0§<org.maplibre.spatialk.geojson.Geometry?>}[0]
-final inline fun org.maplibre.spatialk.geojson.dsl/lineString(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/LineStringDsl, kotlin/Unit>): org.maplibre.spatialk.geojson/LineString // org.maplibre.spatialk.geojson.dsl/lineString|lineString(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.LineStringDsl,kotlin.Unit>){}[0]
-final inline fun org.maplibre.spatialk.geojson.dsl/multiLineString(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/MultiLineStringDsl, kotlin/Unit>): org.maplibre.spatialk.geojson/MultiLineString // org.maplibre.spatialk.geojson.dsl/multiLineString|multiLineString(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.MultiLineStringDsl,kotlin.Unit>){}[0]
-final inline fun org.maplibre.spatialk.geojson.dsl/multiPoint(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/MultiPointDsl, kotlin/Unit>): org.maplibre.spatialk.geojson/MultiPoint // org.maplibre.spatialk.geojson.dsl/multiPoint|multiPoint(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.MultiPointDsl,kotlin.Unit>){}[0]
-final inline fun org.maplibre.spatialk.geojson.dsl/multiPolygon(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/MultiPolygonDsl, kotlin/Unit>): org.maplibre.spatialk.geojson/MultiPolygon // org.maplibre.spatialk.geojson.dsl/multiPolygon|multiPolygon(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.MultiPolygonDsl,kotlin.Unit>){}[0]
-final inline fun org.maplibre.spatialk.geojson.dsl/point(kotlin/Double, kotlin/Double, kotlin/Double? = ..., kotlin/Function1<org.maplibre.spatialk.geojson.dsl/PointDsl, kotlin/Unit> = ...): org.maplibre.spatialk.geojson/Point // org.maplibre.spatialk.geojson.dsl/point|point(kotlin.Double;kotlin.Double;kotlin.Double?;kotlin.Function1<org.maplibre.spatialk.geojson.dsl.PointDsl,kotlin.Unit>){}[0]
-final inline fun org.maplibre.spatialk.geojson.dsl/polygon(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/PolygonDsl, kotlin/Unit>): org.maplibre.spatialk.geojson/Polygon // org.maplibre.spatialk.geojson.dsl/polygon|polygon(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.PolygonDsl,kotlin.Unit>){}[0]
+final fun (org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder<in org.maplibre.spatialk.geojson/Point>).org.maplibre.spatialk.geojson.dsl/addPoint(org.maplibre.spatialk.geojson/Position, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson.dsl/addPoint|addPoint@org.maplibre.spatialk.geojson.dsl.GeometryCollectionBuilder<in|org.maplibre.spatialk.geojson.Point>(org.maplibre.spatialk.geojson.Position;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+final fun (org.maplibre.spatialk.geojson.dsl/LineStringBuilder).org.maplibre.spatialk.geojson.dsl/addPoint(org.maplibre.spatialk.geojson/Position, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson.dsl/addPoint|addPoint@org.maplibre.spatialk.geojson.dsl.LineStringBuilder(org.maplibre.spatialk.geojson.Position;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+final fun (org.maplibre.spatialk.geojson.dsl/MultiPointBuilder).org.maplibre.spatialk.geojson.dsl/addPoint(org.maplibre.spatialk.geojson/Position, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson.dsl/addPoint|addPoint@org.maplibre.spatialk.geojson.dsl.MultiPointBuilder(org.maplibre.spatialk.geojson.Position;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+final fun <#A: org.maplibre.spatialk.geojson/Geometry> org.maplibre.spatialk.geojson.dsl/geometryCollectionOf(kotlin/Array<out #A>...): org.maplibre.spatialk.geojson/GeometryCollection<#A> // org.maplibre.spatialk.geojson.dsl/geometryCollectionOf|geometryCollectionOf(kotlin.Array<out|0:0>...){0§<org.maplibre.spatialk.geojson.Geometry>}[0]
+final fun <#A: org.maplibre.spatialk.geojson/Geometry?> org.maplibre.spatialk.geojson.dsl/featureCollectionOf(kotlin/Array<out org.maplibre.spatialk.geojson/Feature<#A>>...): org.maplibre.spatialk.geojson/FeatureCollection<#A> // org.maplibre.spatialk.geojson.dsl/featureCollectionOf|featureCollectionOf(kotlin.Array<out|org.maplibre.spatialk.geojson.Feature<0:0>>...){0§<org.maplibre.spatialk.geojson.Geometry?>}[0]
+final fun org.maplibre.spatialk.geojson.dsl/lineStringOf(kotlin/Array<out org.maplibre.spatialk.geojson/Position>...): org.maplibre.spatialk.geojson/LineString // org.maplibre.spatialk.geojson.dsl/lineStringOf|lineStringOf(kotlin.Array<out|org.maplibre.spatialk.geojson.Position>...){}[0]
+final fun org.maplibre.spatialk.geojson.dsl/multiLineStringOf(kotlin/Array<out kotlin.collections/List<org.maplibre.spatialk.geojson/Position>>...): org.maplibre.spatialk.geojson/MultiLineString // org.maplibre.spatialk.geojson.dsl/multiLineStringOf|multiLineStringOf(kotlin.Array<out|kotlin.collections.List<org.maplibre.spatialk.geojson.Position>>...){}[0]
+final fun org.maplibre.spatialk.geojson.dsl/multiLineStringOf(kotlin/Array<out org.maplibre.spatialk.geojson/LineString>...): org.maplibre.spatialk.geojson/MultiLineString // org.maplibre.spatialk.geojson.dsl/multiLineStringOf|multiLineStringOf(kotlin.Array<out|org.maplibre.spatialk.geojson.LineString>...){}[0]
+final fun org.maplibre.spatialk.geojson.dsl/multiPointOf(kotlin/Array<out org.maplibre.spatialk.geojson/Point>...): org.maplibre.spatialk.geojson/MultiPoint // org.maplibre.spatialk.geojson.dsl/multiPointOf|multiPointOf(kotlin.Array<out|org.maplibre.spatialk.geojson.Point>...){}[0]
+final fun org.maplibre.spatialk.geojson.dsl/multiPointOf(kotlin/Array<out org.maplibre.spatialk.geojson/Position>...): org.maplibre.spatialk.geojson/MultiPoint // org.maplibre.spatialk.geojson.dsl/multiPointOf|multiPointOf(kotlin.Array<out|org.maplibre.spatialk.geojson.Position>...){}[0]
+final fun org.maplibre.spatialk.geojson.dsl/multiPolygonOf(kotlin/Array<out kotlin.collections/List<kotlin.collections/List<org.maplibre.spatialk.geojson/Position>>>...): org.maplibre.spatialk.geojson/MultiPolygon // org.maplibre.spatialk.geojson.dsl/multiPolygonOf|multiPolygonOf(kotlin.Array<out|kotlin.collections.List<kotlin.collections.List<org.maplibre.spatialk.geojson.Position>>>...){}[0]
+final fun org.maplibre.spatialk.geojson.dsl/multiPolygonOf(kotlin/Array<out org.maplibre.spatialk.geojson/Point>...): org.maplibre.spatialk.geojson/MultiPoint // org.maplibre.spatialk.geojson.dsl/multiPolygonOf|multiPolygonOf(kotlin.Array<out|org.maplibre.spatialk.geojson.Point>...){}[0]
+final fun org.maplibre.spatialk.geojson.dsl/polygonOf(kotlin/Array<out kotlin.collections/List<org.maplibre.spatialk.geojson/Position>>...): org.maplibre.spatialk.geojson/Polygon // org.maplibre.spatialk.geojson.dsl/polygonOf|polygonOf(kotlin.Array<out|kotlin.collections.List<org.maplibre.spatialk.geojson.Position>>...){}[0]
+final inline fun (org.maplibre.spatialk.geojson.dsl/FeatureCollectionBuilder<in kotlin/Nothing?>).org.maplibre.spatialk.geojson.dsl/addFeature(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/FeatureBuilder<kotlin/Nothing?>, kotlin/Unit> = ...) // org.maplibre.spatialk.geojson.dsl/addFeature|addFeature@org.maplibre.spatialk.geojson.dsl.FeatureCollectionBuilder<in|kotlin.Nothing?>(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.FeatureBuilder<kotlin.Nothing?>,kotlin.Unit>){}[0]
+final inline fun (org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder<in org.maplibre.spatialk.geojson/LineString>).org.maplibre.spatialk.geojson.dsl/addLineString(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/LineStringBuilder, kotlin/Unit>) // org.maplibre.spatialk.geojson.dsl/addLineString|addLineString@org.maplibre.spatialk.geojson.dsl.GeometryCollectionBuilder<in|org.maplibre.spatialk.geojson.LineString>(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.LineStringBuilder,kotlin.Unit>){}[0]
+final inline fun (org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder<in org.maplibre.spatialk.geojson/MultiLineString>).org.maplibre.spatialk.geojson.dsl/addMultiLineString(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/MultiLineStringBuilder, kotlin/Unit>) // org.maplibre.spatialk.geojson.dsl/addMultiLineString|addMultiLineString@org.maplibre.spatialk.geojson.dsl.GeometryCollectionBuilder<in|org.maplibre.spatialk.geojson.MultiLineString>(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.MultiLineStringBuilder,kotlin.Unit>){}[0]
+final inline fun (org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder<in org.maplibre.spatialk.geojson/MultiPoint>).org.maplibre.spatialk.geojson.dsl/addMultiPoint(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/MultiPointBuilder, kotlin/Unit>) // org.maplibre.spatialk.geojson.dsl/addMultiPoint|addMultiPoint@org.maplibre.spatialk.geojson.dsl.GeometryCollectionBuilder<in|org.maplibre.spatialk.geojson.MultiPoint>(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.MultiPointBuilder,kotlin.Unit>){}[0]
+final inline fun (org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder<in org.maplibre.spatialk.geojson/MultiPolygon>).org.maplibre.spatialk.geojson.dsl/addMultiPolygon(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/MultiPolygonBuilder, kotlin/Unit>) // org.maplibre.spatialk.geojson.dsl/addMultiPolygon|addMultiPolygon@org.maplibre.spatialk.geojson.dsl.GeometryCollectionBuilder<in|org.maplibre.spatialk.geojson.MultiPolygon>(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.MultiPolygonBuilder,kotlin.Unit>){}[0]
+final inline fun (org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder<in org.maplibre.spatialk.geojson/Polygon>).org.maplibre.spatialk.geojson.dsl/addPolygon(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/PolygonBuilder, kotlin/Unit>) // org.maplibre.spatialk.geojson.dsl/addPolygon|addPolygon@org.maplibre.spatialk.geojson.dsl.GeometryCollectionBuilder<in|org.maplibre.spatialk.geojson.Polygon>(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.PolygonBuilder,kotlin.Unit>){}[0]
+final inline fun (org.maplibre.spatialk.geojson.dsl/MultiLineStringBuilder).org.maplibre.spatialk.geojson.dsl/addLineString(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/LineStringBuilder, kotlin/Unit>) // org.maplibre.spatialk.geojson.dsl/addLineString|addLineString@org.maplibre.spatialk.geojson.dsl.MultiLineStringBuilder(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.LineStringBuilder,kotlin.Unit>){}[0]
+final inline fun (org.maplibre.spatialk.geojson.dsl/MultiPolygonBuilder).org.maplibre.spatialk.geojson.dsl/addPolygon(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/PolygonBuilder, kotlin/Unit>) // org.maplibre.spatialk.geojson.dsl/addPolygon|addPolygon@org.maplibre.spatialk.geojson.dsl.MultiPolygonBuilder(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.PolygonBuilder,kotlin.Unit>){}[0]
+final inline fun (org.maplibre.spatialk.geojson.dsl/PolygonBuilder).org.maplibre.spatialk.geojson.dsl/addRing(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/LineStringBuilder, kotlin/Unit>) // org.maplibre.spatialk.geojson.dsl/addRing|addRing@org.maplibre.spatialk.geojson.dsl.PolygonBuilder(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.LineStringBuilder,kotlin.Unit>){}[0]
+final inline fun <#A: org.maplibre.spatialk.geojson/Geometry> (org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder<in org.maplibre.spatialk.geojson/GeometryCollection<#A>>).org.maplibre.spatialk.geojson.dsl/addGeometryCollection(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder<#A>, kotlin/Unit>) // org.maplibre.spatialk.geojson.dsl/addGeometryCollection|addGeometryCollection@org.maplibre.spatialk.geojson.dsl.GeometryCollectionBuilder<in|org.maplibre.spatialk.geojson.GeometryCollection<0:0>>(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.GeometryCollectionBuilder<0:0>,kotlin.Unit>){0§<org.maplibre.spatialk.geojson.Geometry>}[0]
+final inline fun <#A: org.maplibre.spatialk.geojson/Geometry> org.maplibre.spatialk.geojson.dsl/buildGeometryCollection(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/GeometryCollectionBuilder<#A>, kotlin/Unit>): org.maplibre.spatialk.geojson/GeometryCollection<#A> // org.maplibre.spatialk.geojson.dsl/buildGeometryCollection|buildGeometryCollection(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.GeometryCollectionBuilder<0:0>,kotlin.Unit>){0§<org.maplibre.spatialk.geojson.Geometry>}[0]
+final inline fun <#A: org.maplibre.spatialk.geojson/Geometry?> (org.maplibre.spatialk.geojson.dsl/FeatureCollectionBuilder<in #A>).org.maplibre.spatialk.geojson.dsl/addFeature(#A, kotlin/Function1<org.maplibre.spatialk.geojson.dsl/FeatureBuilder<#A>, kotlin/Unit> = ...) // org.maplibre.spatialk.geojson.dsl/addFeature|addFeature@org.maplibre.spatialk.geojson.dsl.FeatureCollectionBuilder<in|0:0>(0:0;kotlin.Function1<org.maplibre.spatialk.geojson.dsl.FeatureBuilder<0:0>,kotlin.Unit>){0§<org.maplibre.spatialk.geojson.Geometry?>}[0]
+final inline fun <#A: org.maplibre.spatialk.geojson/Geometry?> org.maplibre.spatialk.geojson.dsl/buildFeature(#A, kotlin/Function1<org.maplibre.spatialk.geojson.dsl/FeatureBuilder<#A>, kotlin/Unit> = ...): org.maplibre.spatialk.geojson/Feature<#A> // org.maplibre.spatialk.geojson.dsl/buildFeature|buildFeature(0:0;kotlin.Function1<org.maplibre.spatialk.geojson.dsl.FeatureBuilder<0:0>,kotlin.Unit>){0§<org.maplibre.spatialk.geojson.Geometry?>}[0]
+final inline fun <#A: org.maplibre.spatialk.geojson/Geometry?> org.maplibre.spatialk.geojson.dsl/buildFeatureCollection(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/FeatureCollectionBuilder<#A>, kotlin/Unit>): org.maplibre.spatialk.geojson/FeatureCollection<#A> // org.maplibre.spatialk.geojson.dsl/buildFeatureCollection|buildFeatureCollection(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.FeatureCollectionBuilder<0:0>,kotlin.Unit>){0§<org.maplibre.spatialk.geojson.Geometry?>}[0]
+final inline fun org.maplibre.spatialk.geojson.dsl/buildFeature(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/FeatureBuilder<kotlin/Nothing?>, kotlin/Unit> = ...): org.maplibre.spatialk.geojson/Feature<kotlin/Nothing?> // org.maplibre.spatialk.geojson.dsl/buildFeature|buildFeature(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.FeatureBuilder<kotlin.Nothing?>,kotlin.Unit>){}[0]
+final inline fun org.maplibre.spatialk.geojson.dsl/buildLineString(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/LineStringBuilder, kotlin/Unit>): org.maplibre.spatialk.geojson/LineString // org.maplibre.spatialk.geojson.dsl/buildLineString|buildLineString(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.LineStringBuilder,kotlin.Unit>){}[0]
+final inline fun org.maplibre.spatialk.geojson.dsl/buildMultiLineString(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/MultiLineStringBuilder, kotlin/Unit>): org.maplibre.spatialk.geojson/MultiLineString // org.maplibre.spatialk.geojson.dsl/buildMultiLineString|buildMultiLineString(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.MultiLineStringBuilder,kotlin.Unit>){}[0]
+final inline fun org.maplibre.spatialk.geojson.dsl/buildMultiPoint(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/MultiPointBuilder, kotlin/Unit>): org.maplibre.spatialk.geojson/MultiPoint // org.maplibre.spatialk.geojson.dsl/buildMultiPoint|buildMultiPoint(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.MultiPointBuilder,kotlin.Unit>){}[0]
+final inline fun org.maplibre.spatialk.geojson.dsl/buildMultiPolygon(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/MultiPolygonBuilder, kotlin/Unit>): org.maplibre.spatialk.geojson/MultiPolygon // org.maplibre.spatialk.geojson.dsl/buildMultiPolygon|buildMultiPolygon(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.MultiPolygonBuilder,kotlin.Unit>){}[0]
+final inline fun org.maplibre.spatialk.geojson.dsl/buildPolygon(kotlin/Function1<org.maplibre.spatialk.geojson.dsl/PolygonBuilder, kotlin/Unit>): org.maplibre.spatialk.geojson/Polygon // org.maplibre.spatialk.geojson.dsl/buildPolygon|buildPolygon(kotlin.Function1<org.maplibre.spatialk.geojson.dsl.PolygonBuilder,kotlin.Unit>){}[0]

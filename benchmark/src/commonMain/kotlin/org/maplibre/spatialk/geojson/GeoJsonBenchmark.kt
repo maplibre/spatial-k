@@ -11,11 +11,13 @@ import kotlinx.benchmark.Setup
 import kotlinx.benchmark.State
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
-import org.maplibre.spatialk.geojson.dsl.featureCollection
-import org.maplibre.spatialk.geojson.dsl.lineString
-import org.maplibre.spatialk.geojson.dsl.point
-import org.maplibre.spatialk.geojson.dsl.polygon
+import org.maplibre.spatialk.geojson.dsl.addFeature
+import org.maplibre.spatialk.geojson.dsl.addRing
+import org.maplibre.spatialk.geojson.dsl.buildFeatureCollection
+import org.maplibre.spatialk.geojson.dsl.buildLineString
+import org.maplibre.spatialk.geojson.dsl.buildPolygon
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
@@ -27,21 +29,25 @@ open class GeoJsonBenchmark {
 
     private val random = Random(0)
 
-    private fun generateDataset() = featureCollection {
+    private fun generateDataset() = buildFeatureCollection {
         repeat(5000) {
-            feature(
-                geometry = point(random.nextDouble(360.0) - 180, random.nextDouble(360.0) - 180)
+            addFeature(
+                geometry =
+                    Point(
+                        longitude = random.nextDouble(360.0) - 180,
+                        latitude = random.nextDouble(360.0) - 180,
+                    )
             )
         }
 
         repeat(5000) {
-            feature(
+            addFeature(
                 geometry =
-                    lineString {
+                    buildLineString {
                         repeat(10) {
-                            +Position(
-                                random.nextDouble(360.0) - 180,
-                                random.nextDouble(360.0) - 180,
+                            add(
+                                longitude = random.nextDouble(360.0) - 180,
+                                latitude = random.nextDouble(360.0) - 180,
                             )
                         }
                     }
@@ -49,29 +55,26 @@ open class GeoJsonBenchmark {
         }
 
         repeat(5000) {
-            feature(
+            addFeature(
                 geometry =
-                    polygon {
-                        ring {
-                            val start =
-                                Position(
-                                    random.nextDouble(360.0) - 180,
-                                    random.nextDouble(360.0) - 180,
-                                    random.nextDouble(100.0),
-                                )
-                            +start
+                    buildPolygon {
+                        addRing {
+                            add(
+                                longitude = random.nextDouble(360.0) - 180,
+                                latitude = random.nextDouble(360.0) - 180,
+                                altitude = random.nextDouble(100.0),
+                            )
                             repeat(8) {
-                                +Position(
-                                    random.nextDouble(360.0) - 180,
-                                    random.nextDouble(360.0) - 180,
-                                    random.nextDouble(100.0),
+                                add(
+                                    longitude = random.nextDouble(360.0) - 180,
+                                    latitude = random.nextDouble(360.0) - 180,
+                                    altitude = random.nextDouble(100.0),
                                 )
                             }
-                            +start
                         }
                     }
             ) {
-                put("example", "value")
+                properties = buildJsonObject { put("example", "value") }
             }
         }
     }
