@@ -22,15 +22,15 @@ import org.maplibre.spatialk.units.extensions.toLength
  * @param bbox [BoundingBox] bbox extent
  * @param cellWidth of each cell
  * @param cellHeight of each cell
- * @return a [FeatureCollection] grid of polygons
+ * @return a [GeometryCollection] grid of polygons
  */
 @JvmSynthetic
 public fun squareGrid(
     bbox: BoundingBox,
     cellWidth: Length,
     cellHeight: Length = cellWidth,
-): FeatureCollection<Polygon> {
-    val featureList = mutableListOf<Feature<Polygon>>()
+): GeometryCollection<Polygon> {
+    val polygons = mutableListOf<Polygon>()
     val west = bbox.southwest.longitude
     val south = bbox.southwest.latitude
     val east = bbox.northeast.longitude
@@ -62,12 +62,12 @@ public fun squareGrid(
                 }
             mutableListOf<List<Position>>()
                 .apply { add(positions) }
-                .also { featureList.add(Feature(Polygon(it))) }
+                .also { polygons.add(Polygon(it)) }
             currentY += cellHeightDeg
         }
         currentX += cellWidthDeg
     }
-    return FeatureCollection(featureList)
+    return GeometryCollection(polygons)
 }
 
 @PublishedApi
@@ -78,5 +78,5 @@ internal fun squareGrid(
     cellWidth: Double,
     cellHeight: Double = cellWidth,
     unit: LengthUnit = Meters,
-): FeatureCollection<Polygon> =
+): GeometryCollection<Polygon> =
     squareGrid(bbox, cellWidth.toLength(unit), cellHeight.toLength(unit))

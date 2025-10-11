@@ -4,79 +4,80 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import org.maplibre.spatialk.geojson.*
-import org.maplibre.spatialk.geojson.dsl.featureCollection
 
 class CombineTests {
 
     @Test
     fun testCombineEmptyFeatureCollection() {
-        val input = featureCollection<SingleGeometry> {}
+        val input = GeometryCollection<SingleGeometry>()
         val result = input.combine()
 
-        assertEquals(3, result.features.size)
+        assertEquals(3, result.size)
 
-        val multiPoint = result.features[0].geometry as MultiPoint
+        val multiPoint = result.geometries[0] as MultiPoint
         assertTrue(multiPoint.coordinates.isEmpty())
 
-        val multiLineString = result.features[1].geometry as MultiLineString
+        val multiLineString = result.geometries[1] as MultiLineString
         assertTrue(multiLineString.coordinates.isEmpty())
 
-        val multiPolygon = result.features[2].geometry as MultiPolygon
+        val multiPolygon = result.geometries[2] as MultiPolygon
         assertTrue(multiPolygon.coordinates.isEmpty())
     }
 
     @Test
     fun testCombineOnlyPoints() {
-        val input = featureCollection {
-            feature(Point(Position(0.0, 0.0)))
-            feature(Point(Position(1.0, 1.0)))
-            feature(Point(Position(2.0, 2.0)))
-        }
+        val input =
+            GeometryCollection(
+                Point(Position(0.0, 0.0)),
+                Point(Position(1.0, 1.0)),
+                Point(Position(2.0, 2.0)),
+            )
 
         val result = input.combine()
 
-        assertEquals(3, result.features.size)
+        assertEquals(3, result.size)
 
-        val multiPoint = result.features[0].geometry as MultiPoint
+        val multiPoint = result.geometries[0] as MultiPoint
         assertEquals(3, multiPoint.coordinates.size)
         assertEquals(Position(0.0, 0.0), multiPoint.coordinates[0])
         assertEquals(Position(1.0, 1.0), multiPoint.coordinates[1])
         assertEquals(Position(2.0, 2.0), multiPoint.coordinates[2])
 
-        val multiLineString = result.features[1].geometry as MultiLineString
+        val multiLineString = result.geometries[1] as MultiLineString
         assertTrue(multiLineString.coordinates.isEmpty())
 
-        val multiPolygon = result.features[2].geometry as MultiPolygon
+        val multiPolygon = result.geometries[2] as MultiPolygon
         assertTrue(multiPolygon.coordinates.isEmpty())
     }
 
     @Test
     fun testCombineOnlyLineStrings() {
-        val input = featureCollection {
-            feature(LineString(listOf(Position(0.0, 0.0), Position(1.0, 1.0))))
-            feature(LineString(listOf(Position(2.0, 2.0), Position(3.0, 3.0))))
-        }
+        val input =
+            GeometryCollection(
+                LineString(listOf(Position(0.0, 0.0), Position(1.0, 1.0))),
+                LineString(listOf(Position(2.0, 2.0), Position(3.0, 3.0))),
+            )
 
         val result = input.combine()
 
-        assertEquals(3, result.features.size)
+        assertEquals(3, result.size)
 
-        val multiPoint = result.features[0].geometry as MultiPoint
+        val multiPoint = result.geometries[0] as MultiPoint
         assertTrue(multiPoint.coordinates.isEmpty())
 
-        val multiLineString = result.features[1].geometry as MultiLineString
+        val multiLineString = result.geometries[1] as MultiLineString
         assertEquals(2, multiLineString.coordinates.size)
         assertEquals(listOf(Position(0.0, 0.0), Position(1.0, 1.0)), multiLineString.coordinates[0])
         assertEquals(listOf(Position(2.0, 2.0), Position(3.0, 3.0)), multiLineString.coordinates[1])
 
-        val multiPolygon = result.features[2].geometry as MultiPolygon
+        val multiPolygon = result.geometries[2] as MultiPolygon
         assertTrue(multiPolygon.coordinates.isEmpty())
     }
 
     @Test
     fun testCombineOnlyPolygons() {
-        val input = featureCollection {
-            feature(
+        val input =
+            GeometryCollection(
                 Polygon(
                     listOf(
                         listOf(
@@ -87,9 +88,7 @@ class CombineTests {
                             Position(0.0, 0.0),
                         )
                     )
-                )
-            )
-            feature(
+                ),
                 Polygon(
                     listOf(
                         listOf(
@@ -100,21 +99,20 @@ class CombineTests {
                             Position(2.0, 2.0),
                         )
                     )
-                )
+                ),
             )
-        }
 
         val result = input.combine()
 
-        assertEquals(3, result.features.size)
+        assertEquals(3, result.size)
 
-        val multiPoint = result.features[0].geometry as MultiPoint
+        val multiPoint = result.geometries[0] as MultiPoint
         assertTrue(multiPoint.coordinates.isEmpty())
 
-        val multiLineString = result.features[1].geometry as MultiLineString
+        val multiLineString = result.geometries[1] as MultiLineString
         assertTrue(multiLineString.coordinates.isEmpty())
 
-        val multiPolygon = result.features[2].geometry as MultiPolygon
+        val multiPolygon = result.geometries[2] as MultiPolygon
         assertEquals(2, multiPolygon.coordinates.size)
         assertEquals(
             listOf(
@@ -144,10 +142,10 @@ class CombineTests {
 
     @Test
     fun testCombineMixedGeometries() {
-        val input = featureCollection {
-            feature(Point(Position(0.0, 0.0)))
-            feature(LineString(listOf(Position(1.0, 1.0), Position(2.0, 2.0))))
-            feature(
+        val input =
+            GeometryCollection(
+                Point(Position(0.0, 0.0)),
+                LineString(listOf(Position(1.0, 1.0), Position(2.0, 2.0))),
                 Polygon(
                     listOf(
                         listOf(
@@ -158,25 +156,24 @@ class CombineTests {
                             Position(3.0, 3.0),
                         )
                     )
-                )
+                ),
+                Point(Position(5.0, 5.0)),
             )
-            feature(Point(Position(5.0, 5.0)))
-        }
 
         val result = input.combine()
 
-        assertEquals(3, result.features.size)
+        assertEquals(3, result.size)
 
-        val multiPoint = result.features[0].geometry as MultiPoint
+        val multiPoint = result.geometries[0] as MultiPoint
         assertEquals(2, multiPoint.coordinates.size)
         assertEquals(Position(0.0, 0.0), multiPoint.coordinates[0])
         assertEquals(Position(5.0, 5.0), multiPoint.coordinates[1])
 
-        val multiLineString = result.features[1].geometry as MultiLineString
+        val multiLineString = result.geometries[1] as MultiLineString
         assertEquals(1, multiLineString.coordinates.size)
         assertEquals(listOf(Position(1.0, 1.0), Position(2.0, 2.0)), multiLineString.coordinates[0])
 
-        val multiPolygon = result.features[2].geometry as MultiPolygon
+        val multiPolygon = result.geometries[2] as MultiPolygon
         assertEquals(1, multiPolygon.coordinates.size)
         assertEquals(
             listOf(
@@ -194,8 +191,8 @@ class CombineTests {
 
     @Test
     fun testCombinePolygonWithHoles() {
-        val input = featureCollection {
-            feature(
+        val input =
+            GeometryCollection(
                 Polygon(
                     listOf(
                         listOf(
@@ -215,13 +212,12 @@ class CombineTests {
                     )
                 )
             )
-        }
 
         val result = input.combine()
 
-        assertEquals(3, result.features.size)
+        assertEquals(3, result.size)
 
-        val multiPolygon = result.features[2].geometry as MultiPolygon
+        val multiPolygon = result.geometries[2] as MultiPolygon
         assertEquals(1, multiPolygon.coordinates.size)
         assertEquals(2, multiPolygon.coordinates[0].size) // outer ring + hole
         assertEquals(

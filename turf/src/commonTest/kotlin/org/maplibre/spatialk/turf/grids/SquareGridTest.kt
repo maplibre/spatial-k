@@ -4,7 +4,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.maplibre.spatialk.geojson.BoundingBox
-import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.GeometryCollection
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.assertPositionEquals
@@ -32,8 +32,8 @@ class SquareGridTest {
         }
     }
 
-    private fun verifyValidGrid(grid: FeatureCollection<Polygon>) {
-        assertEquals(16, grid.features.size)
+    private fun verifyValidGrid(grid: GeometryCollection<Polygon>) {
+        assertEquals(16, grid.size)
 
         val expectedFirstItem =
             mutableListOf(
@@ -43,7 +43,7 @@ class SquareGridTest {
                 Position(13.17194422502807, 52.515969323342695),
                 Position(13.170147683370761, 52.515969323342695),
             )
-        val actualFirstItem = grid.features.first().flattenCoordinates()
+        val actualFirstItem = grid.first().flattenCoordinates()
 
         assertEquals(expectedFirstItem.size, actualFirstItem.size)
         expectedFirstItem.forEachIndexed { index, _ ->
@@ -58,7 +58,7 @@ class SquareGridTest {
                 Position(13.18452001662924, 52.517765865),
                 Position(13.18272347497193, 52.517765865),
             )
-        val actualLastItem = grid.features.last().flattenCoordinates()
+        val actualLastItem = grid.last().flattenCoordinates()
 
         assertEquals(expectedLastItem.size, actualLastItem.size)
         expectedFirstItem.forEachIndexed { index, _ ->
@@ -69,21 +69,21 @@ class SquareGridTest {
     @Test
     fun cellSizeBiggerThanBboxExtendLeadIntoEmptyGrid() {
         squareGrid(bbox = box, cellWidth = 2000.meters, cellHeight = 2000.meters).also {
-            assertEquals(0, it.features.size)
+            assertEquals(0, it.size)
         }
     }
 
     @Test
     fun smallerCellSizeWillOutputMoreCellsInGrid() {
         squareGrid(bbox = box, cellWidth = 0.1.kilometers, cellHeight = 0.1.kilometers).also {
-            assertEquals(85, it.features.size)
+            assertEquals(85, it.size)
         }
     }
 
     @Test
     fun increasedCellSizeWillOutputLessCellsInGrid() {
         squareGrid(bbox = box, cellWidth = 0.3.kilometers, cellHeight = 0.3.kilometers).also {
-            assertEquals(5, it.features.size)
+            assertEquals(5, it.size)
         }
     }
 }

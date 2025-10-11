@@ -16,17 +16,17 @@ public final class org/maplibre/spatialk/turf/coordinatemutation/CoordinateMutat
 }
 
 public final class org/maplibre/spatialk/turf/featureconversion/FeatureConversion {
-	public static final fun combine (Lorg/maplibre/spatialk/geojson/FeatureCollection;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
-	public static final fun explode (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
+	public static final fun combine (Lorg/maplibre/spatialk/geojson/GeometryCollection;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
+	public static final fun explode (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
 }
 
 public final class org/maplibre/spatialk/turf/grids/Grids {
-	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;D)Lorg/maplibre/spatialk/geojson/FeatureCollection;
-	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;DD)Lorg/maplibre/spatialk/geojson/FeatureCollection;
-	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;DDLorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
-	public static synthetic fun squareGrid$default (Lorg/maplibre/spatialk/geojson/BoundingBox;DDLorg/maplibre/spatialk/units/LengthUnit;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
-	public static final synthetic fun squareGrid-O-OAdmI (Lorg/maplibre/spatialk/geojson/BoundingBox;DD)Lorg/maplibre/spatialk/geojson/FeatureCollection;
-	public static synthetic fun squareGrid-O-OAdmI$default (Lorg/maplibre/spatialk/geojson/BoundingBox;DDILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
+	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;D)Lorg/maplibre/spatialk/geojson/GeometryCollection;
+	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;DD)Lorg/maplibre/spatialk/geojson/GeometryCollection;
+	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;DDLorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
+	public static synthetic fun squareGrid$default (Lorg/maplibre/spatialk/geojson/BoundingBox;DDLorg/maplibre/spatialk/units/LengthUnit;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
+	public static final synthetic fun squareGrid-O-OAdmI (Lorg/maplibre/spatialk/geojson/BoundingBox;DD)Lorg/maplibre/spatialk/geojson/GeometryCollection;
+	public static synthetic fun squareGrid-O-OAdmI$default (Lorg/maplibre/spatialk/geojson/BoundingBox;DDILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
 }
 
 public final class org/maplibre/spatialk/turf/measurement/Measurement {
