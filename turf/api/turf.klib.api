@@ -30,11 +30,6 @@ final class org.maplibre.spatialk.turf.misc/NearestPointOnLineResult { // org.ma
     final fun toString(): kotlin/String // org.maplibre.spatialk.turf.misc/NearestPointOnLineResult.toString|toString(){}[0]
 }
 
-final val org.maplibre.spatialk.turf.constants/EarthAverageRadius // org.maplibre.spatialk.turf.constants/EarthAverageRadius|{}EarthAverageRadius[0]
-    final fun <get-EarthAverageRadius>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.turf.constants/EarthAverageRadius.<get-EarthAverageRadius>|<get-EarthAverageRadius>(){}[0]
-final val org.maplibre.spatialk.turf.constants/EarthEquatorRadius // org.maplibre.spatialk.turf.constants/EarthEquatorRadius|{}EarthEquatorRadius[0]
-    final fun <get-EarthEquatorRadius>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.turf.constants/EarthEquatorRadius.<get-EarthEquatorRadius>|<get-EarthEquatorRadius>(){}[0]
-
 final fun (kotlin.collections/Collection<org.maplibre.spatialk.geojson/Point>).org.maplibre.spatialk.turf.misc/nearestPointTo(org.maplibre.spatialk.geojson/Position): org.maplibre.spatialk.geojson/Point // org.maplibre.spatialk.turf.misc/nearestPointTo|nearestPointTo@kotlin.collections.Collection<org.maplibre.spatialk.geojson.Point>(org.maplibre.spatialk.geojson.Position){}[0]
 final fun (kotlin/Double).org.maplibre.spatialk.turf.coordinatemutation/round(kotlin/Int = ...): kotlin/Double // org.maplibre.spatialk.turf.coordinatemutation/round|round@kotlin.Double(kotlin.Int){}[0]
 final fun (org.maplibre.spatialk.geojson/BoundingBox).org.maplibre.spatialk.turf.measurement/center(): org.maplibre.spatialk.geojson/Position // org.maplibre.spatialk.turf.measurement/center|center@org.maplibre.spatialk.geojson.BoundingBox(){}[0]

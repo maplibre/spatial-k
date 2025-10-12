@@ -3,11 +3,6 @@ public final class org/maplibre/spatialk/turf/booleans/Booleans {
 	public static final fun contains (Lorg/maplibre/spatialk/geojson/PolygonGeometry;Lorg/maplibre/spatialk/geojson/Position;Z)Z
 }
 
-public final class org/maplibre/spatialk/turf/constants/Constants {
-	public static final fun getEarthAverageRadius ()D
-	public static final fun getEarthEquatorRadius ()D
-}
-
 public final class org/maplibre/spatialk/turf/coordinatemutation/CoordinateMutation {
 	public static final fun flattenCoordinates (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Ljava/util/List;
 	public static final fun round (DI)D

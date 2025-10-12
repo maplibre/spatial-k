@@ -10,13 +10,15 @@ import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.constants.NegativeAntimeridian
-import org.maplibre.spatialk.turf.constants.PositiveAntimeridian
 import org.maplibre.spatialk.units.extensions.degrees
 import org.maplibre.spatialk.units.extensions.inDegrees
 import org.maplibre.spatialk.units.extensions.inEarthRadians
 import org.maplibre.spatialk.units.extensions.inRadians
 import org.maplibre.spatialk.units.extensions.radians
+
+private const val PositiveAntimeridian = 180.0
+
+private const val NegativeAntimeridian = -180.0
 
 /**
  * Calculate great circles routes as [LineString]. Raises error when [from] and [to] are antipodes.

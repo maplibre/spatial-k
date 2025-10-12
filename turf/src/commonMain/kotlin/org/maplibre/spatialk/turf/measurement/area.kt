@@ -9,9 +9,9 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmSynthetic
 import kotlin.math.sin
 import org.maplibre.spatialk.geojson.*
-import org.maplibre.spatialk.turf.constants.EarthEquatorRadius
 import org.maplibre.spatialk.units.Area
 import org.maplibre.spatialk.units.AreaUnit
+import org.maplibre.spatialk.units.Earth
 import org.maplibre.spatialk.units.International.SquareMeters
 import org.maplibre.spatialk.units.extensions.degrees
 import org.maplibre.spatialk.units.extensions.inRadians
@@ -101,7 +101,7 @@ private fun ringArea(coordinates: List<Position>): Area {
                 (p3.longitude.degrees.inRadians - p1.longitude.degrees.inRadians) *
                     sin(p2.latitude.degrees.inRadians)
         }
-        return (total * EarthEquatorRadius * EarthEquatorRadius / 2.0)
+        return (total * Earth.equatorRadius * Earth.equatorRadius / 2.0)
     }
     return Area.Zero
 }
