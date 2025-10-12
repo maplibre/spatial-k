@@ -23,7 +23,7 @@ import org.maplibre.spatialk.geojson.dsl.buildPolygon
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(BenchmarkTimeUnit.MILLISECONDS)
 open class GeoJsonBenchmark {
-    private lateinit var featureCollection: FeatureCollection<*>
+    private lateinit var featureCollection: FeatureCollection<*, *>
     private lateinit var jsonString: String
     private lateinit var jsonObject: JsonObject
 
@@ -100,6 +100,6 @@ open class GeoJsonBenchmark {
 
     @Benchmark
     fun deserialization() {
-        FeatureCollection.fromJson<Geometry?>(jsonString)
+        FeatureCollection.fromJson<Geometry?, JsonObject?>(jsonString)
     }
 }

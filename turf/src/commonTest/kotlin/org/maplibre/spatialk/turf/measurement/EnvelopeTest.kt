@@ -17,7 +17,7 @@ class EnvelopeTest {
     @Test
     fun envelopeProcessesFeatureCollection() {
         val fc = buildFeatureCollection {
-            addFeature(Point(102.0, 0.5))
+            addFeature(Point(102.0, 0.5), null)
             addFeature(
                 buildLineString {
                     add(102.0, -10.0)

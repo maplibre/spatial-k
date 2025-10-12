@@ -246,6 +246,9 @@ public fun multiPolygonOf(vararg coordinates: List<List<Position>>): MultiPolygo
 public fun <T : Geometry> geometryCollectionOf(vararg geometries: T): GeometryCollection<T> =
     GeometryCollection(geometries.toList())
 
+public fun featureCollectionOf(): FeatureCollection<Nothing?, Nothing?> =
+    FeatureCollection(emptyList())
+
 public fun <T : Geometry?, P : @Serializable Any?> featureCollectionOf(
     vararg features: Feature<T, P>
 ): FeatureCollection<T, P> = FeatureCollection(features.toList())

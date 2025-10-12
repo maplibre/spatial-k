@@ -7,6 +7,7 @@ import kotlin.collections.plus
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
+import kotlinx.serialization.Serializable
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.GeometryCollection
@@ -63,13 +64,13 @@ public fun GeometryCollection<LineStringGeometry>.toMultiPolygon(
 
 // GeometryCollection <> FeatureCollection
 
-public fun <T : Geometry> FeatureCollection<T?>.toGeometryCollection(): GeometryCollection<T> =
+public fun <T : Geometry> FeatureCollection<T?, *>.toGeometryCollection(): GeometryCollection<T> =
     GeometryCollection(features.mapNotNull { it.geometry })
 
 @JvmOverloads
-public fun <T : Geometry> GeometryCollection<T>.toFeatureCollection(
-    block: FeatureBuilder<T>.() -> Unit = {}
-): FeatureCollection<T> = FeatureCollection(geometries.map { buildFeature(it) { block() } })
+public fun <T : Geometry, P : @Serializable Any> GeometryCollection<T>.toFeatureCollection(
+    block: FeatureBuilder<T, P?>.() -> Unit = {}
+): FeatureCollection<T, P?> = FeatureCollection(geometries.map { buildFeature(it) { block() } })
 
 // Single -> Multi
 

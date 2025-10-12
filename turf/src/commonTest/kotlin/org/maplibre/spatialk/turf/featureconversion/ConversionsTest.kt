@@ -399,9 +399,9 @@ class ConversionsTest {
     fun testFeatureCollectionToGeometryCollection() {
         val featureCollection =
             FeatureCollection(
-                Feature(Point(Position(0.0, 0.0))),
-                Feature(Point(Position(1.0, 1.0))),
-                Feature(Point(Position(2.0, 2.0))),
+                Feature(Point(Position(0.0, 0.0)), null),
+                Feature(Point(Position(1.0, 1.0)), null),
+                Feature(Point(Position(2.0, 2.0)), null),
             )
         val result = featureCollection.toGeometryCollection()
 
@@ -415,9 +415,9 @@ class ConversionsTest {
     fun testFeatureCollectionWithNullGeometryToGeometryCollection() {
         val featureCollection =
             FeatureCollection(
-                Feature(Point(Position(0.0, 0.0))),
-                Feature(null),
-                Feature(Point(Position(2.0, 2.0))),
+                Feature(Point(Position(0.0, 0.0)), null),
+                Feature(null, null),
+                Feature(Point(Position(2.0, 2.0)), null),
             )
         val result = featureCollection.toGeometryCollection()
 
@@ -436,7 +436,7 @@ class ConversionsTest {
                     Point(Position(2.0, 2.0)),
                 )
             )
-        val result = geometryCollection.toFeatureCollection()
+        val result = geometryCollection.toFeatureCollection { properties = null }
 
         assertEquals(3, result.size)
         assertEquals(Position(0.0, 0.0), result.features[0].geometry.coordinates)
