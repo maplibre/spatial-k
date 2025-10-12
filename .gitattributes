@@ -1,0 +1,15 @@
+# Documentation - exclude from language statistics
+*.md linguist-documentation
+docs/** linguist-documentation
+
+# Test resources - mark as vendored to exclude from language statistics
+**/resources/**/*.json linguist-vendored
+**/resources/**/*.geojson linguist-vendored
+
+# Dependency lock files - mark as vendored
+yarn.lock linguist-vendored
+
+# Gradle wrapper - mark as vendored
+gradle/wrapper/** linguist-vendored
+gradlew linguist-vendored
+gradlew.bat linguist-vendored
