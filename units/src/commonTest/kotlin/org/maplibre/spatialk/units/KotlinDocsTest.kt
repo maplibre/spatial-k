@@ -31,6 +31,16 @@ class KotlinDocsTest {
     }
 
     @Test
+    fun bearings() {
+        // --8<-- [start:bearings]
+        val heading: Bearing = Bearing.North
+        val turnedRight: Bearing = heading + 90.degrees
+        val turnedLeft: Bearing = heading - 45.degrees
+        val diff: Rotation = turnedRight - turnedLeft
+        // --8<-- [end:bearings]
+    }
+
+    @Test
     fun customUnits() {
         // --8<-- [start:customUnits]
         // how many football fields could fit on the earth's oceans?
