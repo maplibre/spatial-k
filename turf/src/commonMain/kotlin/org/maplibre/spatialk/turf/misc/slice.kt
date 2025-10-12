@@ -62,7 +62,7 @@ public fun LineString.slice(start: Length, stop: Length): LineString {
                 slice.add(coordinate)
                 return LineString(slice)
             }
-            val direction = coordinate.bearingTo(coordinates[i - 1]) - 180
+            val direction = coordinates[i - 1].bearingTo(coordinate)
             val interpolated = coordinate.offset(overshot, direction)
             slice.add(interpolated)
         }
@@ -74,7 +74,7 @@ public fun LineString.slice(start: Length, stop: Length): LineString {
                 slice.add(coordinate)
                 return LineString(slice)
             }
-            val direction = coordinate.bearingTo(coordinates[i - 1]) - 180
+            val direction = coordinates[i - 1].bearingTo(coordinate)
             val interpolated = coordinate.offset(overshot, direction)
             slice.add(interpolated)
             return LineString(slice)
