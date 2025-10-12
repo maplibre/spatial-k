@@ -10,8 +10,10 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
-import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
+import org.maplibre.spatialk.units.extensions.degrees
+import org.maplibre.spatialk.units.extensions.inDegrees
+import org.maplibre.spatialk.units.extensions.inRadians
+import org.maplibre.spatialk.units.extensions.radians
 
 /**
  * Takes two positions and finds the geographic bearing between them, i.e., the angle measured in
@@ -25,15 +27,15 @@ import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
 public fun Position.bearingTo(to: Position, final: Boolean = false): Double {
     if (final) return finalBearing(this, to)
 
-    val lon1 = degreesToRadians(longitude)
-    val lon2 = degreesToRadians(to.longitude)
-    val lat1 = degreesToRadians(latitude)
-    val lat2 = degreesToRadians(to.latitude)
+    val lon1 = this.longitude.degrees.inRadians
+    val lon2 = to.longitude.degrees.inRadians
+    val lat1 = this.latitude.degrees.inRadians
+    val lat2 = to.latitude.degrees.inRadians
 
     val a = sin(lon2 - lon1) * cos(lat2)
     val b = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(lon2 - lon1)
 
-    return radiansToDegrees(atan2(a, b))
+    return atan2(a, b).radians.inDegrees
 }
 
 private fun finalBearing(start: Position, end: Position): Double =

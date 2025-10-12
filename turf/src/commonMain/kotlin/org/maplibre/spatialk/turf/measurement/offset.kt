@@ -12,12 +12,14 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
-import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
 import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
+import org.maplibre.spatialk.units.extensions.degrees
+import org.maplibre.spatialk.units.extensions.inDegrees
 import org.maplibre.spatialk.units.extensions.inEarthRadians
+import org.maplibre.spatialk.units.extensions.inRadians
+import org.maplibre.spatialk.units.extensions.radians
 import org.maplibre.spatialk.units.extensions.toLength
 
 /**
@@ -31,9 +33,9 @@ import org.maplibre.spatialk.units.extensions.toLength
  */
 @JvmSynthetic
 public fun Position.offset(distance: Length, bearing: Double): Position {
-    val longitude1 = degreesToRadians(longitude)
-    val latitude1 = degreesToRadians(latitude)
-    val bearingRad = degreesToRadians(bearing)
+    val longitude1 = this.longitude.degrees.inRadians
+    val latitude1 = this.latitude.degrees.inRadians
+    val bearingRad = bearing.degrees.inRadians
     val radians = distance.inEarthRadians
 
     val latitude2 =
@@ -45,7 +47,7 @@ public fun Position.offset(distance: Length, bearing: Double): Position {
                 cos(radians) - sin(latitude1) * sin(latitude2),
             )
 
-    return Position(radiansToDegrees(longitude2), radiansToDegrees(latitude2))
+    return Position(longitude2.radians.inDegrees, latitude2.radians.inDegrees)
 }
 
 @PublishedApi

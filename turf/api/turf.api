@@ -141,10 +141,3 @@ public final class org/maplibre/spatialk/turf/transformation/Transformation {
 	public static synthetic fun simplify$default (Lorg/maplibre/spatialk/geojson/LineString;Ljava/lang/Double;ZILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/LineString;
 }
 
-public final class org/maplibre/spatialk/turf/unitconversion/UnitConversion {
-	public static final fun azimuthToBearing (D)D
-	public static final fun bearingToAzimuth (D)D
-	public static final fun degreesToRadians (D)D
-	public static final fun radiansToDegrees (D)D
-}
-
