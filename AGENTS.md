@@ -39,3 +39,27 @@
 - Use kotlinx.serialization for JSON handling
 - Some tests use resource files from `src/commonTest/resources/` for JSON data
 - Mobile/browser tests disabled due to file system resource loading limitations
+
+## Commit Guidelines
+
+Never make a commit unless explicitly asked to do so. Such permission only
+extends to that one commit, not to future commits in that session.
+
+When making commits, always include a signoff in the commit message following
+this format:
+
+```
+🤖 Generated with [Agent Name](https://agent-url)
+
+Co-Authored-By: Agent Name <noreply@agent-domain>
+```
+
+Examples:
+
+- Claude: `🤖 Generated with [Claude Code](https://claude.com/claude-code)` and
+  `Co-Authored-By: Claude <noreply@anthropic.com>`
+- opencode: `🤖 Generated with [opencode](https://opencode.ai)` and
+  `Co-Authored-By: opencode <noreply@opencode.ai>`
+
+Each coding agent should use their own name and URL but maintain the same
+format.
