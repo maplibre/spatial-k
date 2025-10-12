@@ -39,6 +39,8 @@
 - Use kotlinx.serialization for JSON handling
 - Some tests use resource files from `src/commonTest/resources/` for JSON data
 - Mobile/browser tests disabled due to file system resource loading limitations
+- For floating-point comparisons in tests, use helpers from `testutil` instead
+  of `assertEquals()` to handle platform-specific precision differences
 
 ## Commit Guidelines
 
