@@ -1,7 +1,7 @@
-@file:JvmName("Meta")
+@file:JvmName("CoordinateMutation")
 @file:JvmMultifileClass
 
-package org.maplibre.spatialk.turf.meta
+package org.maplibre.spatialk.turf.coordinatemutation
 
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName

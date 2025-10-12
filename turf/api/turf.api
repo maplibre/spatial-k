@@ -11,22 +11,42 @@ public final class org/maplibre/spatialk/turf/constants/Constants {
 }
 
 public final class org/maplibre/spatialk/turf/coordinatemutation/CoordinateMutation {
+	public static final fun flattenCoordinates (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Ljava/util/List;
 	public static final fun round (DI)D
 	public static synthetic fun round$default (DIILjava/lang/Object;)D
 }
 
 public final class org/maplibre/spatialk/turf/featureconversion/FeatureConversion {
 	public static final fun combine (Lorg/maplibre/spatialk/geojson/GeometryCollection;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
-	public static final fun explode (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
+	public static final fun explode (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Lorg/maplibre/spatialk/geojson/MultiPoint;
+	public static final fun mapGeometry (Lorg/maplibre/spatialk/geojson/Feature;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/Feature;
+	public static final fun mapGeometry (Lorg/maplibre/spatialk/geojson/FeatureCollection;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
+	public static final fun toFeatureCollection (Lorg/maplibre/spatialk/geojson/GeometryCollection;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
+	public static final fun toFeatureCollection (Lorg/maplibre/spatialk/geojson/GeometryCollection;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
+	public static synthetic fun toFeatureCollection$default (Lorg/maplibre/spatialk/geojson/GeometryCollection;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
+	public static final fun toGeometryCollection (Lorg/maplibre/spatialk/geojson/FeatureCollection;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
+	public static final fun toMultiLineString (Lorg/maplibre/spatialk/geojson/LineString;)Lorg/maplibre/spatialk/geojson/MultiLineString;
+	public static final fun toMultiLineString (Lorg/maplibre/spatialk/geojson/Polygon;)Lorg/maplibre/spatialk/geojson/MultiLineString;
+	public static final fun toMultiLineStrings (Lorg/maplibre/spatialk/geojson/MultiPolygon;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
+	public static final fun toMultiPoint (Lorg/maplibre/spatialk/geojson/Point;)Lorg/maplibre/spatialk/geojson/MultiPoint;
+	public static final fun toMultiPolygon (Lorg/maplibre/spatialk/geojson/GeometryCollection;)Lorg/maplibre/spatialk/geojson/MultiPolygon;
+	public static final fun toMultiPolygon (Lorg/maplibre/spatialk/geojson/GeometryCollection;Z)Lorg/maplibre/spatialk/geojson/MultiPolygon;
+	public static final fun toMultiPolygon (Lorg/maplibre/spatialk/geojson/GeometryCollection;ZZ)Lorg/maplibre/spatialk/geojson/MultiPolygon;
+	public static final fun toMultiPolygon (Lorg/maplibre/spatialk/geojson/Polygon;)Lorg/maplibre/spatialk/geojson/MultiPolygon;
+	public static synthetic fun toMultiPolygon$default (Lorg/maplibre/spatialk/geojson/GeometryCollection;ZZILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/MultiPolygon;
+	public static final fun toPolygon (Lorg/maplibre/spatialk/geojson/LineStringGeometry;)Lorg/maplibre/spatialk/geojson/Polygon;
+	public static final fun toPolygon (Lorg/maplibre/spatialk/geojson/LineStringGeometry;Z)Lorg/maplibre/spatialk/geojson/Polygon;
+	public static final fun toPolygon (Lorg/maplibre/spatialk/geojson/LineStringGeometry;ZZ)Lorg/maplibre/spatialk/geojson/Polygon;
+	public static synthetic fun toPolygon$default (Lorg/maplibre/spatialk/geojson/LineStringGeometry;ZZILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Polygon;
 }
 
 public final class org/maplibre/spatialk/turf/grids/Grids {
-	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;D)Lorg/maplibre/spatialk/geojson/GeometryCollection;
-	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;DD)Lorg/maplibre/spatialk/geojson/GeometryCollection;
-	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;DDLorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
-	public static synthetic fun squareGrid$default (Lorg/maplibre/spatialk/geojson/BoundingBox;DDLorg/maplibre/spatialk/units/LengthUnit;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
-	public static final synthetic fun squareGrid-O-OAdmI (Lorg/maplibre/spatialk/geojson/BoundingBox;DD)Lorg/maplibre/spatialk/geojson/GeometryCollection;
-	public static synthetic fun squareGrid-O-OAdmI$default (Lorg/maplibre/spatialk/geojson/BoundingBox;DDILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
+	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;D)Lorg/maplibre/spatialk/geojson/MultiPolygon;
+	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;DD)Lorg/maplibre/spatialk/geojson/MultiPolygon;
+	public static final fun squareGrid (Lorg/maplibre/spatialk/geojson/BoundingBox;DDLorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/geojson/MultiPolygon;
+	public static synthetic fun squareGrid$default (Lorg/maplibre/spatialk/geojson/BoundingBox;DDLorg/maplibre/spatialk/units/LengthUnit;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/MultiPolygon;
+	public static final synthetic fun squareGrid-O-OAdmI (Lorg/maplibre/spatialk/geojson/BoundingBox;DD)Lorg/maplibre/spatialk/geojson/MultiPolygon;
+	public static synthetic fun squareGrid-O-OAdmI$default (Lorg/maplibre/spatialk/geojson/BoundingBox;DDILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/MultiPolygon;
 }
 
 public final class org/maplibre/spatialk/turf/measurement/Measurement {
@@ -74,12 +94,6 @@ public final class org/maplibre/spatialk/turf/measurement/Measurement {
 	public static final synthetic fun rhumbDistanceAsLength (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
 	public static final fun square (Lorg/maplibre/spatialk/geojson/BoundingBox;)Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public static final fun toPolygon (Lorg/maplibre/spatialk/geojson/BoundingBox;)Lorg/maplibre/spatialk/geojson/Polygon;
-}
-
-public final class org/maplibre/spatialk/turf/meta/Meta {
-	public static final fun flattenCoordinates (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Ljava/util/List;
-	public static final fun mapGeometry (Lorg/maplibre/spatialk/geojson/Feature;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/Feature;
-	public static final fun mapGeometry (Lorg/maplibre/spatialk/geojson/FeatureCollection;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
 }
 
 public final class org/maplibre/spatialk/turf/misc/Miscellaneous {

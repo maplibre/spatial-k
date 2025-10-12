@@ -58,16 +58,16 @@
 - [x] [`combine`](../api/turf/org.maplibre.spatialk.turf.featureconversion/combine.html)
 - [x] [`explode`](../api/turf/org.maplibre.spatialk.turf.featureconversion/explode.html)
 - [ ] `flatten`
-- [ ] `lineToPolygon`
+- [x] [`lineToPolygon`](../api/turf/org.maplibre.spatialk.turf.featureconversion/to-polygon.html)
 - [ ] `polygonize`
-- [ ] `polygonToLine`
+- [x] [`polygonToLine`](../api/turf/org.maplibre.spatialk.turf.featureconversion/to-multi-line-string.html)
 
 ## Miscellaneous
 
 - [ ] `kinks`
 - [ ] `lineArc`
 - [ ] `lineChunk`
-- [x] [`lineIntersect`](../api/turf/org.maplibre.spatialk.turf.misc/intersect.html)
+- [ ] [`lineIntersect`](../api/turf/org.maplibre.spatialk.turf.misc/intersect.html)
       Partially implemented.
 - [ ] `lineOverlap`
 - [ ] `lineSegment`
@@ -127,25 +127,8 @@ Use the [GeoJson DSL](../geojson/index.md#geojson-dsl) instead.
 
 ## Meta
 
-- [x] [`coordAll`](../api/turf/org.maplibre.spatialk.turf.meta/flatten-coordinates.html)
-- [ ] `coordEach`
-- [ ] `coordReduce`
-- [ ] `featureEach`
-- [ ] `featureReduce`
-- [ ] `flattenEach`
-- [ ] `flattenReduce`
-- [ ] `getCoord`
-- [ ] `getCoords`
-- [ ] `getGeom`
-- [ ] `getType`
-- [ ] `geomEach`
-- [ ] `geomReduce`
-- [ ] `propEach`
-- [ ] `segmentEach`
-- [ ] `segmentReduce`
-- [ ] `getCluster`
-- [ ] `clusterEach`
-- [ ] `clusterReduce`
+Many GeoJson objects implement `Collection`, enabling standard Kotlin collection
+operations to replace Turf meta functions.
 
 ## Assertations
 

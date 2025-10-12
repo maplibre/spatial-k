@@ -12,7 +12,7 @@ class ExplodeTest {
         val result = point.explode()
 
         assertEquals(1, result.size)
-        assertEquals(Position(1.0, 2.0), result.geometries[0].coordinates)
+        assertEquals(Position(1.0, 2.0), result.coordinates[0])
     }
 
     @Test
@@ -22,9 +22,9 @@ class ExplodeTest {
         val result = multiPoint.explode()
 
         assertEquals(3, result.size)
-        assertEquals(Position(1.0, 2.0), result.geometries[0].coordinates)
-        assertEquals(Position(3.0, 4.0), result.geometries[1].coordinates)
-        assertEquals(Position(5.0, 6.0), result.geometries[2].coordinates)
+        assertEquals(Position(1.0, 2.0), result.coordinates[0])
+        assertEquals(Position(3.0, 4.0), result.coordinates[1])
+        assertEquals(Position(5.0, 6.0), result.coordinates[2])
     }
 
     @Test
@@ -34,9 +34,9 @@ class ExplodeTest {
         val result = lineString.explode()
 
         assertEquals(3, result.size)
-        assertEquals(Position(1.0, 2.0), result.geometries[0].coordinates)
-        assertEquals(Position(3.0, 4.0), result.geometries[1].coordinates)
-        assertEquals(Position(5.0, 6.0), result.geometries[2].coordinates)
+        assertEquals(Position(1.0, 2.0), result.coordinates[0])
+        assertEquals(Position(3.0, 4.0), result.coordinates[1])
+        assertEquals(Position(5.0, 6.0), result.coordinates[2])
     }
 
     @Test
@@ -51,11 +51,11 @@ class ExplodeTest {
         val result = multiLineString.explode()
 
         assertEquals(5, result.size)
-        assertEquals(Position(1.0, 2.0), result.geometries[0].coordinates)
-        assertEquals(Position(3.0, 4.0), result.geometries[1].coordinates)
-        assertEquals(Position(5.0, 6.0), result.geometries[2].coordinates)
-        assertEquals(Position(7.0, 8.0), result.geometries[3].coordinates)
-        assertEquals(Position(9.0, 10.0), result.geometries[4].coordinates)
+        assertEquals(Position(1.0, 2.0), result.coordinates[0])
+        assertEquals(Position(3.0, 4.0), result.coordinates[1])
+        assertEquals(Position(5.0, 6.0), result.coordinates[2])
+        assertEquals(Position(7.0, 8.0), result.coordinates[3])
+        assertEquals(Position(9.0, 10.0), result.coordinates[4])
     }
 
     @Test
@@ -75,11 +75,11 @@ class ExplodeTest {
         val result = polygon.explode()
 
         assertEquals(5, result.size)
-        assertEquals(Position(0.0, 0.0), result.geometries[0].coordinates)
-        assertEquals(Position(1.0, 0.0), result.geometries[1].coordinates)
-        assertEquals(Position(1.0, 1.0), result.geometries[2].coordinates)
-        assertEquals(Position(0.0, 1.0), result.geometries[3].coordinates)
-        assertEquals(Position(0.0, 0.0), result.geometries[4].coordinates)
+        assertEquals(Position(0.0, 0.0), result.coordinates[0])
+        assertEquals(Position(1.0, 0.0), result.coordinates[1])
+        assertEquals(Position(1.0, 1.0), result.coordinates[2])
+        assertEquals(Position(0.0, 1.0), result.coordinates[3])
+        assertEquals(Position(0.0, 0.0), result.coordinates[4])
     }
 
     @Test
@@ -107,17 +107,17 @@ class ExplodeTest {
 
         assertEquals(10, result.size)
         // Outer ring
-        assertEquals(Position(0.0, 0.0), result.geometries[0].coordinates)
-        assertEquals(Position(4.0, 0.0), result.geometries[1].coordinates)
-        assertEquals(Position(4.0, 4.0), result.geometries[2].coordinates)
-        assertEquals(Position(0.0, 4.0), result.geometries[3].coordinates)
-        assertEquals(Position(0.0, 0.0), result.geometries[4].coordinates)
+        assertEquals(Position(0.0, 0.0), result.coordinates[0])
+        assertEquals(Position(4.0, 0.0), result.coordinates[1])
+        assertEquals(Position(4.0, 4.0), result.coordinates[2])
+        assertEquals(Position(0.0, 4.0), result.coordinates[3])
+        assertEquals(Position(0.0, 0.0), result.coordinates[4])
         // Hole
-        assertEquals(Position(1.0, 1.0), result.geometries[5].coordinates)
-        assertEquals(Position(3.0, 1.0), result.geometries[6].coordinates)
-        assertEquals(Position(3.0, 3.0), result.geometries[7].coordinates)
-        assertEquals(Position(1.0, 3.0), result.geometries[8].coordinates)
-        assertEquals(Position(1.0, 1.0), result.geometries[9].coordinates)
+        assertEquals(Position(1.0, 1.0), result.coordinates[5])
+        assertEquals(Position(3.0, 1.0), result.coordinates[6])
+        assertEquals(Position(3.0, 3.0), result.coordinates[7])
+        assertEquals(Position(1.0, 3.0), result.coordinates[8])
+        assertEquals(Position(1.0, 1.0), result.coordinates[9])
     }
 
     @Test
@@ -149,17 +149,17 @@ class ExplodeTest {
 
         assertEquals(10, result.size)
         // First polygon
-        assertEquals(Position(0.0, 0.0), result.geometries[0].coordinates)
-        assertEquals(Position(1.0, 0.0), result.geometries[1].coordinates)
-        assertEquals(Position(1.0, 1.0), result.geometries[2].coordinates)
-        assertEquals(Position(0.0, 1.0), result.geometries[3].coordinates)
-        assertEquals(Position(0.0, 0.0), result.geometries[4].coordinates)
+        assertEquals(Position(0.0, 0.0), result.coordinates[0])
+        assertEquals(Position(1.0, 0.0), result.coordinates[1])
+        assertEquals(Position(1.0, 1.0), result.coordinates[2])
+        assertEquals(Position(0.0, 1.0), result.coordinates[3])
+        assertEquals(Position(0.0, 0.0), result.coordinates[4])
         // Second polygon
-        assertEquals(Position(2.0, 2.0), result.geometries[5].coordinates)
-        assertEquals(Position(3.0, 2.0), result.geometries[6].coordinates)
-        assertEquals(Position(3.0, 3.0), result.geometries[7].coordinates)
-        assertEquals(Position(2.0, 3.0), result.geometries[8].coordinates)
-        assertEquals(Position(2.0, 2.0), result.geometries[9].coordinates)
+        assertEquals(Position(2.0, 2.0), result.coordinates[5])
+        assertEquals(Position(3.0, 2.0), result.coordinates[6])
+        assertEquals(Position(3.0, 3.0), result.coordinates[7])
+        assertEquals(Position(2.0, 3.0), result.coordinates[8])
+        assertEquals(Position(2.0, 2.0), result.coordinates[9])
     }
 
     @Test
@@ -175,11 +175,11 @@ class ExplodeTest {
         val result = geometryCollection.explode()
 
         assertEquals(5, result.size)
-        assertEquals(Position(1.0, 2.0), result.geometries[0].coordinates)
-        assertEquals(Position(3.0, 4.0), result.geometries[1].coordinates)
-        assertEquals(Position(5.0, 6.0), result.geometries[2].coordinates)
-        assertEquals(Position(7.0, 8.0), result.geometries[3].coordinates)
-        assertEquals(Position(9.0, 10.0), result.geometries[4].coordinates)
+        assertEquals(Position(1.0, 2.0), result.coordinates[0])
+        assertEquals(Position(3.0, 4.0), result.coordinates[1])
+        assertEquals(Position(5.0, 6.0), result.coordinates[2])
+        assertEquals(Position(7.0, 8.0), result.coordinates[3])
+        assertEquals(Position(9.0, 10.0), result.coordinates[4])
     }
 
     @Test
@@ -189,9 +189,9 @@ class ExplodeTest {
         val result = feature.explode()
 
         assertEquals(3, result.size)
-        assertEquals(Position(1.0, 2.0), result.geometries[0].coordinates)
-        assertEquals(Position(3.0, 4.0), result.geometries[1].coordinates)
-        assertEquals(Position(5.0, 6.0), result.geometries[2].coordinates)
+        assertEquals(Position(1.0, 2.0), result.coordinates[0])
+        assertEquals(Position(3.0, 4.0), result.coordinates[1])
+        assertEquals(Position(5.0, 6.0), result.coordinates[2])
     }
 
     @Test
@@ -213,11 +213,11 @@ class ExplodeTest {
         val result = featureCollection.explode()
 
         assertEquals(5, result.size)
-        assertEquals(Position(1.0, 2.0), result.geometries[0].coordinates)
-        assertEquals(Position(3.0, 4.0), result.geometries[1].coordinates)
-        assertEquals(Position(5.0, 6.0), result.geometries[2].coordinates)
-        assertEquals(Position(7.0, 8.0), result.geometries[3].coordinates)
-        assertEquals(Position(9.0, 10.0), result.geometries[4].coordinates)
+        assertEquals(Position(1.0, 2.0), result.coordinates[0])
+        assertEquals(Position(3.0, 4.0), result.coordinates[1])
+        assertEquals(Position(5.0, 6.0), result.coordinates[2])
+        assertEquals(Position(7.0, 8.0), result.coordinates[3])
+        assertEquals(Position(9.0, 10.0), result.coordinates[4])
     }
 
     @Test
@@ -257,16 +257,16 @@ class ExplodeTest {
 
         assertEquals(10, result.size)
         // MultiPolygon coordinates
-        assertEquals(Position(0.0, 0.0), result.geometries[0].coordinates)
-        assertEquals(Position(1.0, 0.0), result.geometries[1].coordinates)
-        assertEquals(Position(1.0, 1.0), result.geometries[2].coordinates)
-        assertEquals(Position(0.0, 1.0), result.geometries[3].coordinates)
-        assertEquals(Position(0.0, 0.0), result.geometries[4].coordinates)
+        assertEquals(Position(0.0, 0.0), result.coordinates[0])
+        assertEquals(Position(1.0, 0.0), result.coordinates[1])
+        assertEquals(Position(1.0, 1.0), result.coordinates[2])
+        assertEquals(Position(0.0, 1.0), result.coordinates[3])
+        assertEquals(Position(0.0, 0.0), result.coordinates[4])
         // MultiLineString coordinates
-        assertEquals(Position(2.0, 2.0), result.geometries[5].coordinates)
-        assertEquals(Position(3.0, 3.0), result.geometries[6].coordinates)
-        assertEquals(Position(4.0, 4.0), result.geometries[7].coordinates)
-        assertEquals(Position(5.0, 5.0), result.geometries[8].coordinates)
-        assertEquals(Position(6.0, 6.0), result.geometries[9].coordinates)
+        assertEquals(Position(2.0, 2.0), result.coordinates[5])
+        assertEquals(Position(3.0, 3.0), result.coordinates[6])
+        assertEquals(Position(4.0, 4.0), result.coordinates[7])
+        assertEquals(Position(5.0, 5.0), result.coordinates[8])
+        assertEquals(Position(6.0, 6.0), result.coordinates[9])
     }
 }

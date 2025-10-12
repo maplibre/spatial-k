@@ -7,7 +7,7 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.meta.flattenCoordinates
+import org.maplibre.spatialk.turf.coordinatemutation.flattenCoordinates
 
 /**
  * Takes a [LineString] and returns a curved version by applying a Bezier spline algorithm.

@@ -19,7 +19,7 @@ constructor(
     public val coordinates: List<Position>,
     /** a bounding box */
     override val bbox: BoundingBox? = null,
-) : MultiGeometry, PointGeometry {
+) : MultiGeometry, PointGeometry, Collection<Point> {
 
     /** Create a MultiPoint by a number of [Position]s. */
     @JvmOverloads
@@ -46,6 +46,20 @@ constructor(
     ) : this(coordinates.map(::Position), bbox)
 
     public override fun toJson(): String = GeoJson.encodeToString(this)
+
+    override val size: Int
+        get() = coordinates.size
+
+    override fun isEmpty(): Boolean = coordinates.isEmpty()
+
+    override fun contains(element: Point): Boolean = coordinates.contains(element.coordinates)
+
+    override fun iterator(): Iterator<Point> = coordinates.asSequence().map { Point(it) }.iterator()
+
+    override fun containsAll(elements: Collection<Point>): Boolean =
+        coordinates.containsAll(elements.map { it.coordinates })
+
+    public operator fun get(index: Int): Point = Point(coordinates[index])
 
     public companion object {
         @JvmStatic

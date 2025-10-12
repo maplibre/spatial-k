@@ -1,13 +1,14 @@
-@file:JvmName("Meta")
+@file:JvmName("FeatureConversion")
 @file:JvmMultifileClass
 
-package org.maplibre.spatialk.turf.meta
+package org.maplibre.spatialk.turf.featureconversion
 
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
+import org.maplibre.spatialk.turf.coordinatemutation.flattenCoordinates
 import org.maplibre.spatialk.turf.measurement.computeBbox
 
 /**

@@ -6,7 +6,7 @@ package org.maplibre.spatialk.turf.measurement
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.*
-import org.maplibre.spatialk.turf.meta.flattenCoordinates
+import org.maplibre.spatialk.turf.coordinatemutation.flattenCoordinates
 
 /**
  * Takes a [Geometry] and calculates the bounding box of all input features.

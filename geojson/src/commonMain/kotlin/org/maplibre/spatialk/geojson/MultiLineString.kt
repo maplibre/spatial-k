@@ -16,7 +16,7 @@ import org.maplibre.spatialk.geojson.serialization.MultiLineStringSerializer
 public data class MultiLineString
 @JvmOverloads
 constructor(public val coordinates: List<List<Position>>, override val bbox: BoundingBox? = null) :
-    MultiGeometry, LineStringGeometry {
+    MultiGeometry, LineStringGeometry, Collection<LineString> {
 
     /**
      * Create a MultiLineString by a number of lists of [Position]s.
@@ -58,6 +58,21 @@ constructor(public val coordinates: List<List<Position>>, override val bbox: Bou
     }
 
     public override fun toJson(): String = GeoJson.encodeToString(this)
+
+    override val size: Int
+        get() = coordinates.size
+
+    override fun isEmpty(): Boolean = coordinates.isEmpty()
+
+    override fun contains(element: LineString): Boolean = coordinates.contains(element.coordinates)
+
+    override fun iterator(): Iterator<LineString> =
+        coordinates.asSequence().map { LineString(it) }.iterator()
+
+    override fun containsAll(elements: Collection<LineString>): Boolean =
+        coordinates.containsAll(elements.map { it.coordinates })
+
+    public operator fun get(index: Int): LineString = LineString(coordinates[index])
 
     public companion object {
         @JvmStatic
