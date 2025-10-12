@@ -7,12 +7,17 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
+import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.turf.measurement.bearingTo
 import org.maplibre.spatialk.turf.measurement.distance
 import org.maplibre.spatialk.turf.measurement.offset
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
+
+public fun Collection<Point>.nearestPointTo(point: Position): Point = minBy {
+    distance(it.coordinates, point)
+}
 
 /**
  * Result values from [findNearestPointOnLine].
