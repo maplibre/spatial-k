@@ -26,9 +26,6 @@ constructor(public val geometries: List<T>, override val bbox: BoundingBox? = nu
         bbox: BoundingBox? = null,
     ) : this(geometries.toList(), bbox)
 
-    public override fun toJson(): String =
-        GeoJson.encodeToString<GeometryCollection<Geometry>>(this)
-
     public companion object {
         @JvmSynthetic
         @JvmName("inlineFromJson")
@@ -42,7 +39,7 @@ constructor(public val geometries: List<T>, override val bbox: BoundingBox? = nu
             @Language("json") json: String
         ): GeometryCollection<T>? = GeoJson.decodeFromStringOrNull(json)
 
-        // Publish below for Java; Kotlin should use the inline reified version
+        // Publish for Java below; Kotlin should use the inline reified versions above
 
         @PublishedApi
         @JvmStatic

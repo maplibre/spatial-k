@@ -1,5 +1,7 @@
 package org.maplibre.spatialk.geojson
 
+public inline fun <reified T : GeoJsonObject> T.toJson(): String = GeoJson.encodeToString<T>(this)
+
 @RequiresOptIn(
     level = RequiresOptIn.Level.ERROR,
     message = "This API should be used with caution; please check the documentation.",

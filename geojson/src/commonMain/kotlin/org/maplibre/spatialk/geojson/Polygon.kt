@@ -75,8 +75,6 @@ constructor(
         }
     }
 
-    public override fun toJson(): String = GeoJson.encodeToString(this)
-
     public companion object {
         @JvmStatic
         public fun fromJson(@Language("json") json: String): Polygon =

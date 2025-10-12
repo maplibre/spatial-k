@@ -28,7 +28,7 @@ import org.maplibre.spatialk.geojson.serialization.BoundingBoxSerializer
  */
 @Serializable(with = BoundingBoxSerializer::class)
 public class BoundingBox internal constructor(internal val coordinates: DoubleArray) :
-    GeoJsonElement, Iterable<Double> {
+    Iterable<Double> {
     init {
         require(coordinates.size >= 4 && coordinates.size % 2 == 0) {
             "Bounding Box coordinates must have at least 4 and an even number of values"
@@ -154,7 +154,7 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
         return "BoundingBox(southwest=$southwest, northeast=$northeast)"
     }
 
-    public override fun toJson(): String = GeoJson.jsonFormat.encodeToString(this)
+    public fun toJson(): String = GeoJson.jsonFormat.encodeToString(this)
 
     public companion object {
         @JvmStatic

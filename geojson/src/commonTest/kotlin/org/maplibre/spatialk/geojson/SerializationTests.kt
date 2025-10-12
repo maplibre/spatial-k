@@ -21,7 +21,7 @@ class SerializationTests {
         assertEquals("[60.2,23.2354,100.5]", altitude.toJson())
 
         val list = listOf(Position(12.3, 45.6), Position(78.9, 12.3))
-        @OptIn(SensitiveGeoJsonApi::class) val listResult = GeoJson.jsonFormat.encodeToString(list)
+        val listResult = GeoJson.jsonFormat.encodeToString(list)
         assertEquals("[[12.3,45.6],[78.9,12.3]]", listResult)
     }
 
@@ -33,7 +33,6 @@ class SerializationTests {
         val withAltitude = Position.fromJson("[60.2,23.2354,100.5]")
         assertEquals(Position(60.2, 23.2354, 100.5), withAltitude)
 
-        @OptIn(SensitiveGeoJsonApi::class)
         val list = GeoJson.jsonFormat.decodeFromString<List<Position>>("[[12.3,45.6],[78.9,12.3]]")
 
         assertEquals(listOf(Position(12.3, 45.6), Position(78.9, 12.3)), list)

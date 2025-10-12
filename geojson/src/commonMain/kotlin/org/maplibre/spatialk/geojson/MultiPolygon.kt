@@ -69,8 +69,6 @@ constructor(
         }
     }
 
-    public override fun toJson(): String = GeoJson.encodeToString(this)
-
     override val size: Int
         get() = coordinates.size
 

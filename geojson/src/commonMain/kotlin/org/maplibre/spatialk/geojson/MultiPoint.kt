@@ -45,8 +45,6 @@ constructor(
         bbox: BoundingBox? = null,
     ) : this(coordinates.map(::Position), bbox)
 
-    public override fun toJson(): String = GeoJson.encodeToString(this)
-
     override val size: Int
         get() = coordinates.size
 

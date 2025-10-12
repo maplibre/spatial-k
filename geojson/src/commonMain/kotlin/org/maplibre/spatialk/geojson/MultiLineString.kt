@@ -57,8 +57,6 @@ constructor(public val coordinates: List<List<Position>>, override val bbox: Bou
         }
     }
 
-    public override fun toJson(): String = GeoJson.encodeToString(this)
-
     override val size: Int
         get() = coordinates.size
 

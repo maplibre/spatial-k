@@ -299,9 +299,8 @@ class KotlinDocsTest {
                 val point = Point(Position(-75.0, 45.0))
                 val feature = Feature(point, properties = buildJsonObject { put("size", 9999) })
 
-                val size: Number? =
-                    feature.properties?.get("size")?.jsonPrimitive?.doubleOrNull // 9999
-                val geometry: Point? = feature.geometry
+                val size: Number? = feature.properties["size"]?.jsonPrimitive?.doubleOrNull // 9999
+                val geometry: Point = feature.geometry
                 // --8<-- [end:featureKt]
 
                 feature.toJson()
@@ -330,7 +329,7 @@ class KotlinDocsTest {
             kotlin = {
                 // --8<-- [start:featureCollectionKt]
                 val point = Point(Position(-75.0, 45.0))
-                val pointFeature = Feature(point)
+                val pointFeature = Feature(point, null)
                 val featureCollection = FeatureCollection(pointFeature)
 
                 featureCollection.forEach { feature ->
@@ -384,7 +383,7 @@ class KotlinDocsTest {
     fun serializationToJsonExample() {
         // --8<-- [start:serializationToJson]
         val point = Point(Position(-75.0, 45.0))
-        val feature = Feature(point)
+        val feature = Feature(point, null)
         val featureCollection = FeatureCollection(feature)
 
         val json = featureCollection.toJson()
@@ -413,10 +412,9 @@ class KotlinDocsTest {
     @Test
     fun kotlinxSerializationExample() {
         // --8<-- [start:kotlinxSerialization]
-        @OptIn(SensitiveGeoJsonApi::class)
-        val feature: Feature<*> =
+        val feature: Feature<*, *> =
             GeoJson.jsonFormat.decodeFromString(
-                serializer<Feature<Geometry>>(),
+                serializer<Feature<Geometry, JsonObject?>>(),
                 """
                 {
                     "type": "Feature",
@@ -727,7 +725,12 @@ class KotlinDocsTest {
         kotlinAndJsonExample(
             kotlin = {
                 // --8<-- [start:dslFeatureCollectionKt]
-                val featureCollection = buildFeatureCollection { addFeature(Point(-75.0, 45.0)) }
+                val featureCollection = buildFeatureCollection {
+                    addFeature {
+                        geometry = Point(-75.0, 45.0)
+                        properties = buildJsonObject { put("name", "Hello") }
+                    }
+                }
                 // --8<-- [end:dslFeatureCollectionKt]
 
                 featureCollection.toJson()
@@ -744,7 +747,9 @@ class KotlinDocsTest {
                         "type": "Point",
                         "coordinates": [-75.0, 45.0]
                       },
-                      "properties":null
+                      "properties": {
+                        "name": "Hello"
+                      }
                     }
                   ]
                 }

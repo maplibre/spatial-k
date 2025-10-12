@@ -11,6 +11,7 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.experimental.ExperimentalTypeInference
 import kotlin.jvm.JvmSynthetic
+import kotlinx.serialization.Serializable
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
@@ -69,28 +70,38 @@ public inline fun <T : Geometry> buildGeometryCollection(
 }
 
 @GeoJsonDsl
-public inline fun <T : Geometry?> buildFeature(
+public inline fun <T : Geometry?, P : @Serializable Any?> buildFeature(
     geometry: T,
-    @BuilderInference builderAction: FeatureBuilder<T>.() -> Unit = {},
-): Feature<T> {
+    properties: P,
+    @BuilderInference builderAction: FeatureBuilder<T, P>.() -> Unit = {},
+): Feature<T, P> {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
-    return FeatureBuilder(geometry).apply { builderAction() }.build()
+    return FeatureBuilder(geometry, properties).apply { builderAction() }.build()
 }
 
 @GeoJsonDsl
-public inline fun buildFeature(
-    @BuilderInference builderAction: FeatureBuilder<Nothing?>.() -> Unit = {}
-): Feature<Nothing?> {
+public inline fun <T : Geometry?, P : @Serializable Any> buildFeature(
+    geometry: T,
+    @BuilderInference builderAction: FeatureBuilder<T, P?>.() -> Unit = {},
+): Feature<T, P?> {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
-    return FeatureBuilder(null).apply { builderAction() }.build()
+    return FeatureBuilder<T, P?>(geometry, null).apply { builderAction() }.build()
 }
 
 @GeoJsonDsl
-public inline fun <T : Geometry?> buildFeatureCollection(
-    @BuilderInference builderAction: FeatureCollectionBuilder<T>.() -> Unit
-): FeatureCollection<T> {
+public inline fun <T : Geometry, P : @Serializable Any> buildFeature(
+    @BuilderInference builderAction: FeatureBuilder<T?, P?>.() -> Unit = {}
+): Feature<T?, P?> {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
-    return FeatureCollectionBuilder<T>().apply { builderAction() }.build()
+    return FeatureBuilder<T?, P?>(null, null).apply { builderAction() }.build()
+}
+
+@GeoJsonDsl
+public inline fun <T : Geometry?, P : @Serializable Any?> buildFeatureCollection(
+    @BuilderInference builderAction: FeatureCollectionBuilder<T, P>.() -> Unit
+): FeatureCollection<T, P> {
+    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+    return FeatureCollectionBuilder<T, P>().apply { builderAction() }.build()
 }
 
 // inner builders
@@ -180,20 +191,31 @@ public inline fun <T : Geometry> GeometryCollectionBuilder<in GeometryCollection
 }
 
 @GeoJsonDsl
-public inline fun <T : Geometry?> FeatureCollectionBuilder<in T>.addFeature(
+public inline fun <T : Geometry?, P : @Serializable Any?> FeatureCollectionBuilder<in T, in P>
+    .addFeature(
     geometry: T,
-    @BuilderInference builderAction: FeatureBuilder<T>.() -> Unit = {},
+    properties: P,
+    @BuilderInference builderAction: FeatureBuilder<T, P>.() -> Unit = {},
 ) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
-    add(FeatureBuilder(geometry).apply { builderAction() }.build())
+    add(FeatureBuilder(geometry, properties).apply { builderAction() }.build())
 }
 
 @GeoJsonDsl
-public inline fun FeatureCollectionBuilder<in Nothing?>.addFeature(
-    @BuilderInference builderAction: FeatureBuilder<Nothing?>.() -> Unit = {}
+public inline fun <T : Geometry?, P : @Serializable Any> FeatureCollectionBuilder<in T, in P?>
+    .addFeature(
+    geometry: T,
+    @BuilderInference builderAction: FeatureBuilder<T, P?>.() -> Unit = {},
 ) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
-    add(FeatureBuilder(null).apply { builderAction() }.build())
+    add(FeatureBuilder<T, P?>(geometry, null).apply { builderAction() }.build())
+}
+
+@GeoJsonDsl
+public inline fun <T : Geometry, P : @Serializable Any> FeatureCollectionBuilder<in T?, in P?>
+    .addFeature(@BuilderInference builderAction: FeatureBuilder<T?, P?>.() -> Unit = {}) {
+    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+    add(FeatureBuilder<T?, P?>(null, null).apply { builderAction() }.build())
 }
 
 // multi geometry from singles
@@ -224,5 +246,6 @@ public fun multiPolygonOf(vararg coordinates: List<List<Position>>): MultiPolygo
 public fun <T : Geometry> geometryCollectionOf(vararg geometries: T): GeometryCollection<T> =
     GeometryCollection(geometries.toList())
 
-public fun <T : Geometry?> featureCollectionOf(vararg features: Feature<T>): FeatureCollection<T> =
-    FeatureCollection(features.toList())
+public fun <T : Geometry?, P : @Serializable Any?> featureCollectionOf(
+    vararg features: Feature<T, P>
+): FeatureCollection<T, P> = FeatureCollection(features.toList())
