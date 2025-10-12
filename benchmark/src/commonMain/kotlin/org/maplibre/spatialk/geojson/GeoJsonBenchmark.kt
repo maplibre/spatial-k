@@ -23,7 +23,7 @@ import org.maplibre.spatialk.geojson.dsl.buildPolygon
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(BenchmarkTimeUnit.MILLISECONDS)
 open class GeoJsonBenchmark {
-    private lateinit var featureCollection: FeatureCollection<*, *>
+    private lateinit var featureCollection: FeatureCollection<Geometry?, JsonObject?>
     private lateinit var jsonString: String
     private lateinit var jsonObject: JsonObject
 
