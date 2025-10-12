@@ -117,7 +117,7 @@ Use the [GeoJson DSL](../geojson/index.md#geojson-dsl) instead.
 
 ## Classification
 
-- [ ] `nearestPoint`
+- [x] [`nearestPoint`](../api/turf/org.maplibre.spatialk.turf.misc/nearest-point-to.html)
 
 ## Aggregation
 
