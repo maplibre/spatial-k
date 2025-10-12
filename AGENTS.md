@@ -51,15 +51,17 @@ this format:
 ```
 🤖 Generated with [Agent Name](https://agent-url)
 
-Co-Authored-By: Agent Name <noreply@agent-domain>
+Co-Authored-By: Agent Name <example@agent-domain>
 ```
 
 Examples:
 
 - Claude: `🤖 Generated with [Claude Code](https://claude.com/claude-code)` and
   `Co-Authored-By: Claude <noreply@anthropic.com>`
-- opencode: `🤖 Generated with [opencode](https://opencode.ai)` and
-  `Co-Authored-By: opencode <noreply@opencode.ai>`
+- OpenCode: `🤖 Generated with [OpenCode](https://opencode.ai)` and
+  `Co-Authored-By: OpenCode <noreply@opencode.ai>`
+- Amp: `🤖 Generated with [Amp](https://ampcode.com)` and
+  `Co-Authored-By: Amp <amp@ampcode.com>`
 
-Each coding agent should use their own name and URL but maintain the same
+Each coding agent should use their own Author and URL but maintain the same
 format.
