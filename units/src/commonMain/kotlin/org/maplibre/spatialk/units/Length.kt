@@ -47,6 +47,10 @@ public value class Length private constructor(private val valueInMeters: Double)
 
     public fun roundToInt(unit: LengthUnit): Int = toDouble(unit).roundToInt()
 
+    public operator fun unaryMinus(): Length = Length(-valueInMeters)
+
+    public operator fun unaryPlus(): Length = Length(valueInMeters)
+
     public operator fun plus(other: Length): Length = Length(valueInMeters + other.valueInMeters)
 
     public operator fun minus(other: Length): Length = Length(valueInMeters - other.valueInMeters)
@@ -60,9 +64,13 @@ public value class Length private constructor(private val valueInMeters: Double)
 
     public operator fun div(other: Length): Double = valueInMeters / other.valueInMeters
 
+    public operator fun rem(other: Length): Length = Length(valueInMeters % other.valueInMeters)
+
+    public fun mod(other: Length): Length = Length(valueInMeters.mod(other.valueInMeters))
+
     override fun toString(): String = toString(Meters)
 
-    public fun toString(unit: LengthUnit, decimalPlaces: Int = Int.MAX_VALUE): String =
+    public fun toString(unit: LengthUnit = Meters, decimalPlaces: Int = 2): String =
         unit.format(toDouble(unit), decimalPlaces)
 
     override fun compareTo(other: Length): Int = valueInMeters.compareTo(other.valueInMeters)

@@ -48,12 +48,12 @@ public value class Area private constructor(private val valueInMetersSquared: Do
 
     public fun roundToInt(unit: AreaUnit): Int = toDouble(unit).roundToInt()
 
-    public operator fun plus(other: Area): Area =
-        Area(valueInMetersSquared + other.valueInMetersSquared)
-
     public operator fun unaryMinus(): Area = Area(-valueInMetersSquared)
 
     public operator fun unaryPlus(): Area = Area(valueInMetersSquared)
+
+    public operator fun plus(other: Area): Area =
+        Area(valueInMetersSquared + other.valueInMetersSquared)
 
     public operator fun minus(other: Area): Area =
         Area(valueInMetersSquared - other.valueInMetersSquared)
@@ -67,9 +67,14 @@ public value class Area private constructor(private val valueInMetersSquared: Do
 
     public operator fun div(other: Area): Double = valueInMetersSquared / other.valueInMetersSquared
 
+    public operator fun rem(other: Area): Area =
+        Area(valueInMetersSquared % other.valueInMetersSquared)
+
+    public fun mod(other: Area): Area = Area(valueInMetersSquared.mod(other.valueInMetersSquared))
+
     public override fun toString(): String = toString(SquareMeters)
 
-    public fun toString(unit: AreaUnit, decimalPlaces: Int = Int.MAX_VALUE): String =
+    public fun toString(unit: AreaUnit = SquareMeters, decimalPlaces: Int = 2): String =
         unit.format(toDouble(unit), decimalPlaces)
 
     override fun compareTo(other: Area): Int =

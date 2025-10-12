@@ -6,6 +6,7 @@ kotlin {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.io.core)
             api(libs.kotlinx.serialization.json)
+            implementation(project(":units"))
             implementation(project(":geojson"))
         }
 
