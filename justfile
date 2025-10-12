@@ -38,6 +38,8 @@ native_test_task := if os() == "macos" {
 test-native:
     ./gradlew {{native_test_task}}
 
+test: test-jvm test-js test-wasm test-native
+
 build:
     ./gradlew build
 

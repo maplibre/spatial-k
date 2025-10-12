@@ -8,31 +8,23 @@ import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Polygon
+import org.maplibre.spatialk.geojson.PolygonGeometry
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.turf.measurement.computeBbox
 
 /**
- * Takes a [Position] and a [Polygon] and determines if the position resides inside the polygon. The
- * polygon. The polygon can be convex or concave. The function accounts for holes. A position on the
- * boundary is considered to be inside.
+ * Takes a [Position] and one or more [Polygon] and determines if the position resides inside the
+ * polygons. The polygons can be convex or concave. The function accounts for holes. A position on
+ * the boundary is considered to be inside.
  *
  * @return true if the [Position] is inside the [Polygon]. A position on the boundary is considered
  *   to be inside.
  */
-public operator fun Polygon.contains(pos: Position): Boolean = this.contains(pos, false)
+public operator fun PolygonGeometry.contains(pos: Position): Boolean = this.contains(pos, false)
 
 /**
- * Takes a [Position] and a [MultiPolygon] and determines if the position resides inside the
- * polygon. The polygon can be convex or concave. The function accounts for holes. A position on the
- * boundary is considered to be inside.
- *
- * @return true if the [Position] is inside the [MultiPolygon].
- */
-public operator fun MultiPolygon.contains(pos: Position): Boolean = this.contains(pos, false)
-
-/**
- * Takes a [Position] and a [Polygon] and determines if the position resides inside the polygon. The
- * polygon can be convex or concave. The function accounts for holes.
+ * Takes a [Position] and one or more [Polygon] and determines if the position resides inside the
+ * polygons. The polygons can be convex or concave. The function accounts for holes.
  *
  * @param pos input point
  * @param ignoreBoundary True if the polygon boundary should not be considered to be inside the
@@ -40,26 +32,14 @@ public operator fun MultiPolygon.contains(pos: Position): Boolean = this.contain
  * @return `true` if the Position is inside the Polygon; `false` if the Position is not inside the
  *   Polygon
  */
-public fun Polygon.contains(pos: Position, ignoreBoundary: Boolean): Boolean {
+public fun PolygonGeometry.contains(pos: Position, ignoreBoundary: Boolean): Boolean {
     val bbox = this.computeBbox()
     // normalize to multipolygon
-    val polys = listOf(coordinates)
-    return pointInPolygon(pos, bbox, polys, ignoreBoundary)
-}
-
-/**
- * Takes a [Position] and a [MultiPolygon] and determines if the position resides inside the
- * polygon. The polygon can be convex or concave. The function accounts for holes.
- *
- * @param pos input point
- * @param ignoreBoundary True if the polygon boundary should not be considered to be inside the
- *   polygon.
- * @return `true` if the Position is inside the Polygon; `false` if the Position is not inside the
- *   Polygon
- */
-public fun MultiPolygon.contains(pos: Position, ignoreBoundary: Boolean): Boolean {
-    val bbox = this.computeBbox()
-    val polys = coordinates
+    val polys =
+        when (this) {
+            is Polygon -> listOf(this.coordinates)
+            is MultiPolygon -> this.coordinates
+        }
     return pointInPolygon(pos, bbox, polys, ignoreBoundary)
 }
 

@@ -105,7 +105,7 @@ Use the [GeoJson DSL](../geojson/index.md#geojson-dsl) instead.
 
 ## Joins
 
-- [ ] `pointsWithinPolygon`
+- [x] [`pointsWithinPolygon`](../api/turf/org.maplibre.spatialk.turf.misc/filter-inside.html)
 - [ ] `tag`
 
 ## Grids
