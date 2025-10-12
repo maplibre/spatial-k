@@ -21,5 +21,7 @@ public sealed interface Geometry : GeoJsonObject {
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): Geometry? =
             GeoJson.decodeFromStringOrNull(json)
+
+        @JvmStatic public fun toJson(geometry: Geometry): String = geometry.toJson()
     }
 }

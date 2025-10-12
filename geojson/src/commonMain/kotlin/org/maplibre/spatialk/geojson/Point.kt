@@ -45,5 +45,7 @@ constructor(public val coordinates: Position, override val bbox: BoundingBox? = 
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): Point? =
             GeoJson.decodeFromStringOrNull(json)
+
+        @PublishedApi @JvmStatic internal fun toJson(point: Point): String = point.toJson()
     }
 }

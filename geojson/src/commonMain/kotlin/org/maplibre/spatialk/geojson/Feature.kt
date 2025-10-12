@@ -4,7 +4,9 @@ import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -56,6 +58,21 @@ constructor(
         @JvmStatic
         internal fun fromJsonOrNull(json: String): Feature<Geometry?, JsonObject?>? =
             GeoJson.decodeFromStringOrNull<Feature<Geometry?, JsonObject?>>(json)
+
+        @PublishedApi
+        @JvmStatic
+        internal fun toJson(feature: Feature<Geometry?, JsonObject?>): String = feature.toJson()
+
+        @PublishedApi
+        @JvmStatic
+        internal fun <T> toJson(
+            feature: Feature<Geometry?, T>,
+            propertiesSerializer: KSerializer<T>,
+        ): String =
+            GeoJson.jsonFormat.encodeToString(
+                serializer(Geometry.serializer().nullable, propertiesSerializer),
+                feature,
+            )
 
         // JsonObject property accessors
 

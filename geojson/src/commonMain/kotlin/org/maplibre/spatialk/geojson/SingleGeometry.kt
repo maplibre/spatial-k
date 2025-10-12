@@ -19,5 +19,8 @@ public sealed interface SingleGeometry : Geometry {
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): SingleGeometry? =
             GeoJson.decodeFromStringOrNull(json)
+
+        @JvmStatic
+        public fun toJson(singleGeometry: SingleGeometry): String = singleGeometry.toJson()
     }
 }

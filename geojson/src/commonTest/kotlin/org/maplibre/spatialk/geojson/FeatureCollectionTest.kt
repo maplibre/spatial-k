@@ -2,10 +2,14 @@ package org.maplibre.spatialk.geojson
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import org.maplibre.spatialk.geojson.dsl.addFeature
 import org.maplibre.spatialk.geojson.dsl.buildFeatureCollection
 import org.maplibre.spatialk.geojson.dsl.featureCollectionOf
@@ -16,6 +20,8 @@ import org.maplibre.spatialk.geojson.utils.assertJsonEquals
 import org.maplibre.spatialk.testutil.readResourceFile
 
 class FeatureCollectionTest {
+
+    @Serializable private data class NameProp(val name: String)
 
     @Test
     fun sanity() {
@@ -285,6 +291,117 @@ class FeatureCollectionTest {
         assertNull(FeatureCollection.fromJsonOrNull<Point, Nothing?>(json))
 
         assertJsonEquals(json, fc.toJson())
+    }
+
+    @Test
+    fun testCollectionWithTypedProperties() {
+        val json =
+            """
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    {"type": "Feature", "geometry": null, "properties": {"key1": "value1", "key2": "value2"}},
+                    {"type": "Feature", "geometry": null, "properties": {"key3": "value3", "key4": "value4"}}
+                ]
+            }
+            """
+
+        val fc = buildFeatureCollection {
+            addFeature(null, mapOf("key1" to "value1", "key2" to "value2"))
+            addFeature(null, mapOf("key3" to "value3", "key4" to "value4"))
+        }
+
+        assertEquals(fc, FeatureCollection.fromJson<Geometry?, Map<String, String>>(json))
+        assertNotNull(FeatureCollection.fromJsonOrNull<Nothing?, JsonObject>(json))
+        assertNull(FeatureCollection.fromJsonOrNull<Geometry?, Map<String, Int>>(json))
+        assertJsonEquals(json, fc.toJson())
+    }
+
+    @Test
+    fun testCollectionWithNullableProperties() {
+        val json =
+            """
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    {"type": "Feature", "geometry": null, "properties": null},
+                    {"type": "Feature", "geometry": null, "properties": {"key": "value"}}
+                ]
+            }
+            """
+
+        val fc = buildFeatureCollection {
+            addFeature<Nothing?, JsonObject?>(null, null)
+            addFeature(null, JsonObject(mapOf("key" to JsonPrimitive("value"))))
+        }
+
+        assertEquals(fc, FeatureCollection.fromJson<Nothing?, JsonObject?>(json))
+        assertNull(FeatureCollection.fromJsonOrNull<Nothing?, JsonObject>(json))
+
+        assertJsonEquals(json, fc.toJson())
+    }
+
+    @Test
+    fun testCollectionWithAllNullProperties() {
+        val json =
+            """
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    {"type": "Feature", "geometry": null, "properties": null},
+                    {"type": "Feature", "geometry": null, "properties": null}
+                ]
+            }
+            """
+
+        val fc = featureCollectionOf(Feature(null, null), Feature(null, null))
+
+        assertEquals(fc, FeatureCollection.fromJson<Nothing?, Nothing?>(json))
+        assertNull(FeatureCollection.fromJsonOrNull<Nothing?, JsonObject>(json))
+
+        assertJsonEquals(json, fc.toJson())
+    }
+
+    @Test
+    fun testCollectionWithDataClassProperties() {
+        val json =
+            """
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    {"type": "Feature", "geometry": null, "properties": {"name": "First Feature"}},
+                    {"type": "Feature", "geometry": null, "properties": {"name": "Second Feature"}}
+                ]
+            }
+            """
+
+        val fc = buildFeatureCollection {
+            addFeature(null, NameProp("First Feature"))
+            addFeature(null, NameProp("Second Feature"))
+        }
+
+        assertEquals(fc, FeatureCollection.fromJson<Nothing?, NameProp>(json))
+        assertEquals("First Feature", fc.features[0].properties.name)
+        assertEquals("Second Feature", fc.features[1].properties.name)
+
+        assertJsonEquals(json, fc.toJson())
+    }
+
+    @Test
+    fun testCollectionWithInvalidPropertyType() {
+        // String type is not a valid properties type (must be an object)
+        val stringPropsJson =
+            """
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    {"type": "Feature", "geometry": null, "properties": "not an object"}
+                ]
+            }
+            """
+        assertFailsWith<SerializationException> {
+            FeatureCollection.fromJson<Nothing?, String>(stringPropsJson)
+        }
     }
 
     companion object {

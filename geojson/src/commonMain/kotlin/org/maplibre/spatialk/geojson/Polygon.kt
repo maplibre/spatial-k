@@ -83,5 +83,7 @@ constructor(
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): Polygon? =
             GeoJson.decodeFromStringOrNull(json)
+
+        @PublishedApi @JvmStatic internal fun toJson(polygon: Polygon): String = polygon.toJson()
     }
 }

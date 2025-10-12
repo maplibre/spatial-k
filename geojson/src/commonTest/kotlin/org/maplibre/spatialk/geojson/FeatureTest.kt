@@ -362,4 +362,106 @@ class FeatureTest {
             Feature.fromJson<Nothing?, Nothing?>(multipointJson)
         }
     }
+
+    @Test
+    fun testNullProperties() {
+        val nullJson = """{"type": "Feature", "geometry": null, "properties": null}"""
+        assertNull(Feature.fromJson<Nothing?, JsonObject?>(nullJson).properties)
+        assertNull(Feature.fromJson<Nothing?, Nothing?>(nullJson).properties)
+        assertFailsWith<SerializationException> { Feature.fromJson<Nothing?, JsonObject>(nullJson) }
+
+        val json =
+            Json.decodeFromString<JsonObject>(
+                Feature.fromJson<Nothing?, JsonObject?>(nullJson).toJson()
+            )
+        assertTrue(json.containsKey("properties"))
+        assertEquals(JsonNull, json["properties"])
+    }
+
+    @Test
+    fun testNonObjectProperties() {
+        // String type is not a valid properties type (must be an object)
+        val stringPropsJson =
+            """
+            {
+                "type": "Feature",
+                "geometry": null,
+                "properties": "not an object"
+            }
+            """
+        assertFailsWith<SerializationException> {
+            Feature.fromJson<Nothing?, String>(stringPropsJson)
+        }
+    }
+
+    @Test
+    fun testIncorrectProperties() {
+        // Map<String, String> with correct data succeeds
+        val mapPropsJson =
+            """
+            {
+                "type": "Feature",
+                "geometry": null,
+                "properties": {"key1": "value1", "key2": "value2"}
+            }
+            """
+        val mapFeature = Feature.fromJson<Nothing?, Map<String, String>>(mapPropsJson)
+        assertEquals(mapOf("key1" to "value1", "key2" to "value2"), mapFeature.properties)
+
+        // Map<String, String> with null fails
+        val nullPropsJson = """{"type": "Feature", "geometry": null, "properties": null}"""
+        assertFailsWith<SerializationException> {
+            Feature.fromJson<Nothing?, Map<String, String>>(nullPropsJson)
+        }
+
+        // Data class (NameProp) with correct structure succeeds
+        val namePropJson =
+            """
+            {
+                "type": "Feature",
+                "geometry": null,
+                "properties": {"name": "test name"}
+            }
+            """
+        val namePropFeature = Feature.fromJson<Nothing?, NameProp>(namePropJson)
+        assertEquals("test name", namePropFeature.properties.name)
+
+        // Data class with wrong structure fails
+        val wrongStructureJson =
+            """
+            {
+                "type": "Feature",
+                "geometry": null,
+                "properties": {"wrongKey": "value"}
+            }
+            """
+        assertFailsWith<SerializationException> {
+            Feature.fromJson<Nothing?, NameProp>(wrongStructureJson)
+        }
+    }
+
+    @Test
+    fun testDefaultGenericSerializers() {
+        // Map<*, *> properties not tested because the fallback serializer selection does not
+        // support generic types.
+
+        val nullPropsFeature: GeoJsonObject = Feature(null, null)
+        val jsonObjectPropsFeature: GeoJsonObject =
+            Feature(null, JsonObject(mapOf("key" to JsonPrimitive("value"))))
+        val dataClassPropsFeature: GeoJsonObject = Feature(null, NameProp("test"))
+
+        val nullDeserialized = GeoJsonObject.fromJson(nullPropsFeature.toJson()) as Feature<*, *>
+        val jsonObjectDeserialized =
+            GeoJsonObject.fromJson(jsonObjectPropsFeature.toJson()) as Feature<*, *>
+        val dataClassDeserialized =
+            GeoJsonObject.fromJson(dataClassPropsFeature.toJson()) as Feature<*, *>
+
+        assertNull(nullDeserialized.properties)
+
+        assertIs<JsonObject>(jsonObjectDeserialized.properties)
+        assertEquals(JsonPrimitive("value"), jsonObjectDeserialized.properties["key"])
+
+        assertIs<JsonObject>(dataClassDeserialized.properties)
+        assertEquals(JsonPrimitive("test"), dataClassDeserialized.properties["name"])
+    }
 }

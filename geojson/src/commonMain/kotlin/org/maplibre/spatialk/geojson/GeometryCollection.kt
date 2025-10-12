@@ -50,5 +50,10 @@ constructor(public val geometries: List<T>, override val bbox: BoundingBox? = nu
         @JvmStatic
         internal fun fromJsonOrNull(json: String): GeometryCollection<*>? =
             GeoJson.decodeFromStringOrNull<GeometryCollection<Geometry>>(json)
+
+        @PublishedApi
+        @JvmStatic
+        internal fun toJson(geometryCollection: GeometryCollection<Geometry>): String =
+            geometryCollection.toJson()
     }
 }

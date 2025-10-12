@@ -19,5 +19,9 @@ public sealed interface LineStringGeometry : Geometry {
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): LineStringGeometry? =
             GeoJson.decodeFromStringOrNull(json)
+
+        @JvmStatic
+        public fun toJson(lineStringGeometry: LineStringGeometry): String =
+            lineStringGeometry.toJson()
     }
 }

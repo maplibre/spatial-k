@@ -19,5 +19,7 @@ public sealed interface PointGeometry : Geometry {
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): PointGeometry? =
             GeoJson.decodeFromStringOrNull(json)
+
+        @JvmStatic public fun toJson(pointGeometry: PointGeometry): String = pointGeometry.toJson()
     }
 }

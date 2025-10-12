@@ -146,9 +146,8 @@ public class JavaDocsTest {
     Point point = new Point(new Position(-75.0, 45.0));
     Feature<Point, JsonObject> feature = new Feature<>(point, null, null, null);
     FeatureCollection<Point, JsonObject> featureCollection = new FeatureCollection<>(feature);
-    // TODO
-    // String json = featureCollection.toJson();
-    // System.out.println(json);
+    String json = FeatureCollection.toJson(featureCollection);
+    System.out.println(json);
     // --8<-- [end:serializationToJsonJava]
   }
 

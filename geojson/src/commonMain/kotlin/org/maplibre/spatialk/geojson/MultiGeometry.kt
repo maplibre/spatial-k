@@ -19,5 +19,7 @@ public sealed interface MultiGeometry : Geometry {
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): MultiGeometry? =
             GeoJson.decodeFromStringOrNull(json)
+
+        @JvmStatic public fun toJson(multiGeometry: MultiGeometry): String = multiGeometry.toJson()
     }
 }

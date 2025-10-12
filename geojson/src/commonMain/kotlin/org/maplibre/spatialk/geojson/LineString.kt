@@ -68,5 +68,9 @@ constructor(
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): LineString? =
             GeoJson.decodeFromStringOrNull(json)
+
+        @PublishedApi
+        @JvmStatic
+        internal fun toJson(lineString: LineString): String = lineString.toJson()
     }
 }

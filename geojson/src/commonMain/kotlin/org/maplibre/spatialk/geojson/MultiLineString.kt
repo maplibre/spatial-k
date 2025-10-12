@@ -80,5 +80,9 @@ constructor(public val coordinates: List<List<Position>>, override val bbox: Bou
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): MultiLineString? =
             GeoJson.decodeFromStringOrNull(json)
+
+        @PublishedApi
+        @JvmStatic
+        internal fun toJson(multiLineString: MultiLineString): String = multiLineString.toJson()
     }
 }

@@ -8,6 +8,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
@@ -29,6 +30,13 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
 
     // special sentinel for nullable values
     private val uninitialized = Any()
+
+    init {
+        if (propertiesSerializer.descriptor.kind !is StructureKind)
+            throw SerializationException(
+                "Expected Feature.properties to serialize to a structure, got ${propertiesSerializer.descriptor.kind}"
+            )
+    }
 
     override val descriptor: SerialDescriptor =
         buildClassSerialDescriptor(serialName) {

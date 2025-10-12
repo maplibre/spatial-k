@@ -67,5 +67,9 @@ constructor(
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): MultiPoint? =
             GeoJson.decodeFromStringOrNull(json)
+
+        @PublishedApi
+        @JvmStatic
+        internal fun toJson(multiPoint: MultiPoint): String = multiPoint.toJson()
     }
 }

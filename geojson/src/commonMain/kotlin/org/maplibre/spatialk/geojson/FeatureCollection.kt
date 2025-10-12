@@ -4,7 +4,9 @@ import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.FeatureCollectionSerializer
@@ -55,5 +57,21 @@ constructor(
         @JvmStatic
         internal fun fromJsonOrNull(json: String): FeatureCollection<Geometry?, JsonObject?>? =
             GeoJson.decodeFromStringOrNull<FeatureCollection<Geometry?, JsonObject?>>(json)
+
+        @PublishedApi
+        @JvmStatic
+        internal fun toJson(featureCollection: FeatureCollection<Geometry?, JsonObject?>): String =
+            featureCollection.toJson()
+
+        @PublishedApi
+        @JvmStatic
+        internal fun <T> toJson(
+            featureCollection: FeatureCollection<Geometry?, T>,
+            propertiesSerializer: KSerializer<T>,
+        ): String =
+            GeoJson.jsonFormat.encodeToString(
+                serializer(Geometry.serializer().nullable, propertiesSerializer),
+                featureCollection,
+            )
     }
 }

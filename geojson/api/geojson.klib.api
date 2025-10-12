@@ -19,6 +19,7 @@ sealed interface org.maplibre.spatialk.geojson/GeoJsonObject { // org.maplibre.s
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/GeoJsonObject? // org.maplibre.spatialk.geojson/GeoJsonObject.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/GeoJsonObject> // org.maplibre.spatialk.geojson/GeoJsonObject.Companion.serializer|serializer(){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // org.maplibre.spatialk.geojson/GeoJsonObject.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/GeoJsonObject): kotlin/String // org.maplibre.spatialk.geojson/GeoJsonObject.Companion.toJson|toJson(org.maplibre.spatialk.geojson.GeoJsonObject){}[0]
     }
 }
 
@@ -28,6 +29,7 @@ sealed interface org.maplibre.spatialk.geojson/Geometry : org.maplibre.spatialk.
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/Geometry? // org.maplibre.spatialk.geojson/Geometry.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/Geometry> // org.maplibre.spatialk.geojson/Geometry.Companion.serializer|serializer(){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // org.maplibre.spatialk.geojson/Geometry.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/Geometry): kotlin/String // org.maplibre.spatialk.geojson/Geometry.Companion.toJson|toJson(org.maplibre.spatialk.geojson.Geometry){}[0]
     }
 }
 
@@ -37,6 +39,7 @@ sealed interface org.maplibre.spatialk.geojson/LineStringGeometry : org.maplibre
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/LineStringGeometry? // org.maplibre.spatialk.geojson/LineStringGeometry.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/LineStringGeometry> // org.maplibre.spatialk.geojson/LineStringGeometry.Companion.serializer|serializer(){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // org.maplibre.spatialk.geojson/LineStringGeometry.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/LineStringGeometry): kotlin/String // org.maplibre.spatialk.geojson/LineStringGeometry.Companion.toJson|toJson(org.maplibre.spatialk.geojson.LineStringGeometry){}[0]
     }
 }
 
@@ -46,6 +49,7 @@ sealed interface org.maplibre.spatialk.geojson/MultiGeometry : org.maplibre.spat
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/MultiGeometry? // org.maplibre.spatialk.geojson/MultiGeometry.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/MultiGeometry> // org.maplibre.spatialk.geojson/MultiGeometry.Companion.serializer|serializer(){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // org.maplibre.spatialk.geojson/MultiGeometry.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/MultiGeometry): kotlin/String // org.maplibre.spatialk.geojson/MultiGeometry.Companion.toJson|toJson(org.maplibre.spatialk.geojson.MultiGeometry){}[0]
     }
 }
 
@@ -55,6 +59,7 @@ sealed interface org.maplibre.spatialk.geojson/PointGeometry : org.maplibre.spat
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/PointGeometry? // org.maplibre.spatialk.geojson/PointGeometry.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/PointGeometry> // org.maplibre.spatialk.geojson/PointGeometry.Companion.serializer|serializer(){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // org.maplibre.spatialk.geojson/PointGeometry.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/PointGeometry): kotlin/String // org.maplibre.spatialk.geojson/PointGeometry.Companion.toJson|toJson(org.maplibre.spatialk.geojson.PointGeometry){}[0]
     }
 }
 
@@ -64,6 +69,7 @@ sealed interface org.maplibre.spatialk.geojson/PolygonGeometry : org.maplibre.sp
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/PolygonGeometry? // org.maplibre.spatialk.geojson/PolygonGeometry.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/PolygonGeometry> // org.maplibre.spatialk.geojson/PolygonGeometry.Companion.serializer|serializer(){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // org.maplibre.spatialk.geojson/PolygonGeometry.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/PolygonGeometry): kotlin/String // org.maplibre.spatialk.geojson/PolygonGeometry.Companion.toJson|toJson(org.maplibre.spatialk.geojson.PolygonGeometry){}[0]
     }
 }
 
@@ -73,6 +79,7 @@ sealed interface org.maplibre.spatialk.geojson/SingleGeometry : org.maplibre.spa
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/SingleGeometry? // org.maplibre.spatialk.geojson/SingleGeometry.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/SingleGeometry> // org.maplibre.spatialk.geojson/SingleGeometry.Companion.serializer|serializer(){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // org.maplibre.spatialk.geojson/SingleGeometry.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/SingleGeometry): kotlin/String // org.maplibre.spatialk.geojson/SingleGeometry.Companion.toJson|toJson(org.maplibre.spatialk.geojson.SingleGeometry){}[0]
     }
 }
 
@@ -144,6 +151,7 @@ final class <#A: out org.maplibre.spatialk.geojson/Geometry> org.maplibre.spatia
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/GeometryCollection<*> // org.maplibre.spatialk.geojson/GeometryCollection.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/GeometryCollection<*>? // org.maplibre.spatialk.geojson/GeometryCollection.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // org.maplibre.spatialk.geojson/GeometryCollection.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/GeometryCollection<org.maplibre.spatialk.geojson/Geometry>): kotlin/String // org.maplibre.spatialk.geojson/GeometryCollection.Companion.toJson|toJson(org.maplibre.spatialk.geojson.GeometryCollection<org.maplibre.spatialk.geojson.Geometry>){}[0]
         final inline fun <#A2: reified org.maplibre.spatialk.geojson/Geometry> fromJson(kotlin/String): org.maplibre.spatialk.geojson/GeometryCollection<#A2> // org.maplibre.spatialk.geojson/GeometryCollection.Companion.fromJson|fromJson(kotlin.String){0§<org.maplibre.spatialk.geojson.Geometry>}[0]
         final inline fun <#A2: reified org.maplibre.spatialk.geojson/Geometry> fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/GeometryCollection<#A2>? // org.maplibre.spatialk.geojson/GeometryCollection.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){0§<org.maplibre.spatialk.geojson.Geometry>}[0]
     }
@@ -177,9 +185,11 @@ final class <#A: out org.maplibre.spatialk.geojson/Geometry?, #B: out kotlin/Any
         final fun (org.maplibre.spatialk.geojson/Feature<*, kotlinx.serialization.json/JsonObject?>).getIntProperty(kotlin/String): kotlin/Int? // org.maplibre.spatialk.geojson/Feature.Companion.getIntProperty|getIntProperty@org.maplibre.spatialk.geojson.Feature<*,kotlinx.serialization.json.JsonObject?>(kotlin.String){}[0]
         final fun (org.maplibre.spatialk.geojson/Feature<*, kotlinx.serialization.json/JsonObject?>).getStringProperty(kotlin/String): kotlin/String? // org.maplibre.spatialk.geojson/Feature.Companion.getStringProperty|getStringProperty@org.maplibre.spatialk.geojson.Feature<*,kotlinx.serialization.json.JsonObject?>(kotlin.String){}[0]
         final fun <#A2: kotlin/Any?, #B2: kotlin/Any?> serializer(kotlinx.serialization/KSerializer<#A2>, kotlinx.serialization/KSerializer<#B2>): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/Feature<#A2, #B2>> // org.maplibre.spatialk.geojson/Feature.Companion.serializer|serializer(kotlinx.serialization.KSerializer<0:0>;kotlinx.serialization.KSerializer<0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+        final fun <#A2: kotlin/Any?> toJson(org.maplibre.spatialk.geojson/Feature<org.maplibre.spatialk.geojson/Geometry?, #A2>, kotlinx.serialization/KSerializer<#A2>): kotlin/String // org.maplibre.spatialk.geojson/Feature.Companion.toJson|toJson(org.maplibre.spatialk.geojson.Feature<org.maplibre.spatialk.geojson.Geometry?,0:0>;kotlinx.serialization.KSerializer<0:0>){0§<kotlin.Any?>}[0]
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/Feature<org.maplibre.spatialk.geojson/Geometry?, kotlinx.serialization.json/JsonObject?> // org.maplibre.spatialk.geojson/Feature.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/Feature<org.maplibre.spatialk.geojson/Geometry?, kotlinx.serialization.json/JsonObject?>? // org.maplibre.spatialk.geojson/Feature.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // org.maplibre.spatialk.geojson/Feature.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/Feature<org.maplibre.spatialk.geojson/Geometry?, kotlinx.serialization.json/JsonObject?>): kotlin/String // org.maplibre.spatialk.geojson/Feature.Companion.toJson|toJson(org.maplibre.spatialk.geojson.Feature<org.maplibre.spatialk.geojson.Geometry?,kotlinx.serialization.json.JsonObject?>){}[0]
         final inline fun <#A2: reified org.maplibre.spatialk.geojson/Geometry?, #B2: reified kotlin/Any?> fromJson(kotlin/String): org.maplibre.spatialk.geojson/Feature<#A2, #B2> // org.maplibre.spatialk.geojson/Feature.Companion.fromJson|fromJson(kotlin.String){0§<org.maplibre.spatialk.geojson.Geometry?>;1§<kotlin.Any?>}[0]
         final inline fun <#A2: reified org.maplibre.spatialk.geojson/Geometry?, #B2: reified kotlin/Any?> fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/Feature<#A2, #B2>? // org.maplibre.spatialk.geojson/Feature.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){0§<org.maplibre.spatialk.geojson.Geometry?>;1§<kotlin.Any?>}[0]
     }
@@ -209,9 +219,11 @@ final class <#A: out org.maplibre.spatialk.geojson/Geometry?, #B: out kotlin/Any
 
     final object Companion : kotlinx.serialization.internal/SerializerFactory { // org.maplibre.spatialk.geojson/FeatureCollection.Companion|null[0]
         final fun <#A2: kotlin/Any?, #B2: kotlin/Any?> serializer(kotlinx.serialization/KSerializer<#A2>, kotlinx.serialization/KSerializer<#B2>): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/FeatureCollection<#A2, #B2>> // org.maplibre.spatialk.geojson/FeatureCollection.Companion.serializer|serializer(kotlinx.serialization.KSerializer<0:0>;kotlinx.serialization.KSerializer<0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+        final fun <#A2: kotlin/Any?> toJson(org.maplibre.spatialk.geojson/FeatureCollection<org.maplibre.spatialk.geojson/Geometry?, #A2>, kotlinx.serialization/KSerializer<#A2>): kotlin/String // org.maplibre.spatialk.geojson/FeatureCollection.Companion.toJson|toJson(org.maplibre.spatialk.geojson.FeatureCollection<org.maplibre.spatialk.geojson.Geometry?,0:0>;kotlinx.serialization.KSerializer<0:0>){0§<kotlin.Any?>}[0]
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/FeatureCollection<org.maplibre.spatialk.geojson/Geometry?, kotlinx.serialization.json/JsonObject?> // org.maplibre.spatialk.geojson/FeatureCollection.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/FeatureCollection<org.maplibre.spatialk.geojson/Geometry?, kotlinx.serialization.json/JsonObject?>? // org.maplibre.spatialk.geojson/FeatureCollection.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // org.maplibre.spatialk.geojson/FeatureCollection.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/FeatureCollection<org.maplibre.spatialk.geojson/Geometry?, kotlinx.serialization.json/JsonObject?>): kotlin/String // org.maplibre.spatialk.geojson/FeatureCollection.Companion.toJson|toJson(org.maplibre.spatialk.geojson.FeatureCollection<org.maplibre.spatialk.geojson.Geometry?,kotlinx.serialization.json.JsonObject?>){}[0]
         final inline fun <#A2: reified org.maplibre.spatialk.geojson/Geometry?, #B2: reified kotlin/Any?> fromJson(kotlin/String): org.maplibre.spatialk.geojson/FeatureCollection<#A2, #B2> // org.maplibre.spatialk.geojson/FeatureCollection.Companion.fromJson|fromJson(kotlin.String){0§<org.maplibre.spatialk.geojson.Geometry?>;1§<kotlin.Any?>}[0]
         final inline fun <#A2: reified org.maplibre.spatialk.geojson/Geometry?, #B2: reified kotlin/Any?> fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/FeatureCollection<#A2, #B2>? // org.maplibre.spatialk.geojson/FeatureCollection.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){0§<org.maplibre.spatialk.geojson.Geometry?>;1§<kotlin.Any?>}[0]
     }
@@ -343,6 +355,7 @@ final class org.maplibre.spatialk.geojson/LineString : org.maplibre.spatialk.geo
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/LineString // org.maplibre.spatialk.geojson/LineString.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/LineString? // org.maplibre.spatialk.geojson/LineString.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/LineString> // org.maplibre.spatialk.geojson/LineString.Companion.serializer|serializer(){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/LineString): kotlin/String // org.maplibre.spatialk.geojson/LineString.Companion.toJson|toJson(org.maplibre.spatialk.geojson.LineString){}[0]
     }
 }
 
@@ -375,6 +388,7 @@ final class org.maplibre.spatialk.geojson/MultiLineString : kotlin.collections/C
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/MultiLineString // org.maplibre.spatialk.geojson/MultiLineString.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/MultiLineString? // org.maplibre.spatialk.geojson/MultiLineString.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/MultiLineString> // org.maplibre.spatialk.geojson/MultiLineString.Companion.serializer|serializer(){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/MultiLineString): kotlin/String // org.maplibre.spatialk.geojson/MultiLineString.Companion.toJson|toJson(org.maplibre.spatialk.geojson.MultiLineString){}[0]
     }
 }
 
@@ -407,6 +421,7 @@ final class org.maplibre.spatialk.geojson/MultiPoint : kotlin.collections/Collec
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/MultiPoint // org.maplibre.spatialk.geojson/MultiPoint.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/MultiPoint? // org.maplibre.spatialk.geojson/MultiPoint.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/MultiPoint> // org.maplibre.spatialk.geojson/MultiPoint.Companion.serializer|serializer(){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/MultiPoint): kotlin/String // org.maplibre.spatialk.geojson/MultiPoint.Companion.toJson|toJson(org.maplibre.spatialk.geojson.MultiPoint){}[0]
     }
 }
 
@@ -439,6 +454,7 @@ final class org.maplibre.spatialk.geojson/MultiPolygon : kotlin.collections/Coll
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/MultiPolygon // org.maplibre.spatialk.geojson/MultiPolygon.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/MultiPolygon? // org.maplibre.spatialk.geojson/MultiPolygon.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/MultiPolygon> // org.maplibre.spatialk.geojson/MultiPolygon.Companion.serializer|serializer(){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/MultiPolygon): kotlin/String // org.maplibre.spatialk.geojson/MultiPolygon.Companion.toJson|toJson(org.maplibre.spatialk.geojson.MultiPolygon){}[0]
     }
 }
 
@@ -464,6 +480,7 @@ final class org.maplibre.spatialk.geojson/Point : org.maplibre.spatialk.geojson/
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/Point // org.maplibre.spatialk.geojson/Point.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/Point? // org.maplibre.spatialk.geojson/Point.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/Point> // org.maplibre.spatialk.geojson/Point.Companion.serializer|serializer(){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/Point): kotlin/String // org.maplibre.spatialk.geojson/Point.Companion.toJson|toJson(org.maplibre.spatialk.geojson.Point){}[0]
     }
 }
 
@@ -489,6 +506,7 @@ final class org.maplibre.spatialk.geojson/Polygon : org.maplibre.spatialk.geojso
         final fun fromJson(kotlin/String): org.maplibre.spatialk.geojson/Polygon // org.maplibre.spatialk.geojson/Polygon.Companion.fromJson|fromJson(kotlin.String){}[0]
         final fun fromJsonOrNull(kotlin/String): org.maplibre.spatialk.geojson/Polygon? // org.maplibre.spatialk.geojson/Polygon.Companion.fromJsonOrNull|fromJsonOrNull(kotlin.String){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geojson/Polygon> // org.maplibre.spatialk.geojson/Polygon.Companion.serializer|serializer(){}[0]
+        final fun toJson(org.maplibre.spatialk.geojson/Polygon): kotlin/String // org.maplibre.spatialk.geojson/Polygon.Companion.toJson|toJson(org.maplibre.spatialk.geojson.Polygon){}[0]
     }
 }
 
