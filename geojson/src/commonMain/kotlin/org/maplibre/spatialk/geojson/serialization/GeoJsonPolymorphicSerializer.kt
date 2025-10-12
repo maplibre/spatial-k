@@ -50,21 +50,20 @@ internal abstract class GeoJsonPolymorphicSerializer<T : GeoJsonObject>(
     internal companion object {
         val allSerializers by lazy {
             mapOf(
-                "Point" to Point.Companion.serializer(),
-                "MultiPoint" to MultiPoint.Companion.serializer(),
-                "LineString" to LineString.Companion.serializer(),
-                "MultiLineString" to MultiLineString.Companion.serializer(),
-                "Polygon" to Polygon.Companion.serializer(),
-                "MultiPolygon" to MultiPolygon.Companion.serializer(),
-                "GeometryCollection" to
-                    GeometryCollection.Companion.serializer(Geometry.serializer()),
+                "Point" to Point.serializer(),
+                "MultiPoint" to MultiPoint.serializer(),
+                "LineString" to LineString.serializer(),
+                "MultiLineString" to MultiLineString.serializer(),
+                "Polygon" to Polygon.serializer(),
+                "MultiPolygon" to MultiPolygon.serializer(),
+                "GeometryCollection" to GeometryCollection.serializer(Geometry.serializer()),
                 "Feature" to
-                    Feature.Companion.serializer(
+                    Feature.serializer(
                         Geometry.serializer().nullable,
                         JsonObject.serializer().nullable,
                     ),
                 "FeatureCollection" to
-                    FeatureCollection.Companion.serializer(
+                    FeatureCollection.serializer(
                         Geometry.serializer().nullable,
                         JsonObject.serializer().nullable,
                     ),
