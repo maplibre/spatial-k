@@ -2,6 +2,7 @@ package org.maplibre.spatialk.turf.misc
 
 import kotlin.test.Test
 import kotlin.test.assertTrue
+import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.testutil.assertPositionEquals
@@ -14,7 +15,9 @@ class LineSliceAlongTest {
     @Test
     fun testLineSliceAlong() {
         val lineFeature =
-            Feature.fromJson<LineString>(readResourceFile("misc/lineSliceAlong/line1.geojson"))
+            Feature.fromJson<LineString, JsonObject?>(
+                readResourceFile("misc/lineSliceAlong/line1.geojson")
+            )
         val line = lineFeature.geometry
 
         val start = 500.miles
@@ -36,7 +39,9 @@ class LineSliceAlongTest {
     @Test
     fun testLineSliceAlongOvershoot() {
         val lineFeature =
-            Feature.fromJson<LineString>(readResourceFile("misc/lineSliceAlong/line1.geojson"))
+            Feature.fromJson<LineString, JsonObject?>(
+                readResourceFile("misc/lineSliceAlong/line1.geojson")
+            )
         val line = lineFeature.geometry
 
         val start = 500.miles
@@ -58,7 +63,9 @@ class LineSliceAlongTest {
     @Test
     fun testLineSliceAlongRoute1() {
         val routeFeature =
-            Feature.fromJson<LineString>(readResourceFile("misc/lineSliceAlong/route1.geojson"))
+            Feature.fromJson<LineString, JsonObject?>(
+                readResourceFile("misc/lineSliceAlong/route1.geojson")
+            )
         val route = routeFeature.geometry
 
         val start = 500.miles
@@ -80,7 +87,9 @@ class LineSliceAlongTest {
     @Test
     fun testLineSliceAlongRoute2() {
         val routeFeature =
-            Feature.fromJson<LineString>(readResourceFile("misc/lineSliceAlong/route2.geojson"))
+            Feature.fromJson<LineString, JsonObject?>(
+                readResourceFile("misc/lineSliceAlong/route2.geojson")
+            )
         val route = routeFeature.geometry
 
         val start = 25.miles

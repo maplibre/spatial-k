@@ -2,9 +2,8 @@ package org.maplibre.spatialk.geojson.dsl
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiPoint
 import org.maplibre.spatialk.geojson.Point
@@ -15,11 +14,13 @@ class GeoJsonDslTests {
 
     private val collectionDsl = buildFeatureCollection {
         val simplePoint = Point(-75.0, 45.0, 100.0)
+
         // Point
         addFeature(simplePoint) {
             id = "point1"
-            properties = buildJsonObject { put("name", "Hello World") }
+            properties = mapOf("name" to "Hello World")
         }
+
         // MultiPoint
         addFeature(
             buildMultiPoint {
@@ -105,7 +106,10 @@ class GeoJsonDslTests {
 
     @Test
     fun testDslConstruction() {
-        assertEquals(FeatureCollection.fromJson(collectionJson), collectionDsl)
+        assertEquals(
+            FeatureCollection.fromJson<Geometry?, Map<String, String>?>(collectionJson),
+            collectionDsl,
+        )
     }
 
     @Test

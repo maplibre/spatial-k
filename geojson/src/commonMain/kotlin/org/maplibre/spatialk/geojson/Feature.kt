@@ -4,7 +4,9 @@ import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -23,54 +25,75 @@ import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
  * @see FeatureCollection
  */
 @Serializable(with = FeatureSerializer::class)
-public data class Feature<out T : Geometry?>
+public data class Feature<out T : Geometry?, out P : @Serializable Any?>
 @JvmOverloads
 constructor(
     public val geometry: T,
-    public val properties: JsonObject? = null,
+    public val properties: P,
     public val id: String? = null,
     override val bbox: BoundingBox? = null,
 ) : GeoJsonObject {
 
-    public fun containsProperty(key: String): Boolean = properties?.containsKey(key) ?: false
-
-    public fun getStringProperty(key: String): String? =
-        properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
-
-    public fun getDoubleProperty(key: String): Double? =
-        properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
-
-    public fun getIntProperty(key: String): Int? =
-        properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
-
-    public fun getBooleanProperty(key: String): Boolean? =
-        properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
-
-    public override fun toJson(): String = GeoJson.encodeToString<Feature<Geometry?>>(this)
-
     public companion object {
         @JvmSynthetic
         @JvmName("inlineFromJson")
-        public inline fun <reified T : Geometry?> fromJson(
+        public inline fun <reified T : Geometry?, reified P : @Serializable Any?> fromJson(
             @Language("json") json: String
-        ): Feature<T> = GeoJson.decodeFromString(json)
+        ): Feature<T, P> = GeoJson.decodeFromString(json)
 
         @JvmSynthetic
         @JvmName("inlineFromJsonOrNull")
-        public inline fun <reified T : Geometry?> fromJsonOrNull(
+        public inline fun <reified T : Geometry?, reified P : @Serializable Any?> fromJsonOrNull(
             @Language("json") json: String
-        ): Feature<T>? = GeoJson.decodeFromStringOrNull(json)
+        ): Feature<T, P>? = GeoJson.decodeFromStringOrNull(json)
 
-        // Publish for Java; Kotlin should use the inline reified version
+        // Publish for Java below; Kotlin should use the inline reified versions above
+
         @PublishedApi
         @JvmStatic
-        internal fun fromJson(json: String): Feature<*> =
-            GeoJson.decodeFromString<Feature<Geometry?>>(json)
+        internal fun fromJson(json: String): Feature<Geometry?, JsonObject?> =
+            GeoJson.decodeFromString<Feature<Geometry?, JsonObject?>>(json)
 
-        // Publish for Java; Kotlin should use the inline reified version
         @PublishedApi
         @JvmStatic
-        internal fun fromJsonOrNull(json: String): Feature<*>? =
-            GeoJson.decodeFromStringOrNull<Feature<Geometry?>>(json)
+        internal fun fromJsonOrNull(json: String): Feature<Geometry?, JsonObject?>? =
+            GeoJson.decodeFromStringOrNull<Feature<Geometry?, JsonObject?>>(json)
+
+        @PublishedApi
+        @JvmStatic
+        internal fun toJson(feature: Feature<Geometry?, JsonObject?>): String = feature.toJson()
+
+        @PublishedApi
+        @JvmStatic
+        internal fun <T> toJson(
+            feature: Feature<Geometry?, T>,
+            propertiesSerializer: KSerializer<T>,
+        ): String =
+            GeoJson.jsonFormat.encodeToString(
+                serializer(Geometry.serializer().nullable, propertiesSerializer),
+                feature,
+            )
+
+        // JsonObject property accessors
+
+        @JvmStatic
+        public fun Feature<*, JsonObject?>.containsProperty(key: String): Boolean =
+            properties?.containsKey(key) ?: false
+
+        @JvmStatic
+        public fun Feature<*, JsonObject?>.getStringProperty(key: String): String? =
+            properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
+
+        @JvmStatic
+        public fun Feature<*, JsonObject?>.getDoubleProperty(key: String): Double? =
+            properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
+
+        @JvmStatic
+        public fun Feature<*, JsonObject?>.getIntProperty(key: String): Int? =
+            properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
+
+        @JvmStatic
+        public fun Feature<*, JsonObject?>.getBooleanProperty(key: String): Boolean? =
+            properties?.get(key)?.let { Json.decodeFromJsonElement(it) }
     }
 }

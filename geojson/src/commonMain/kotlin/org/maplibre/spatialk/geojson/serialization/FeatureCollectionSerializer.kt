@@ -2,6 +2,7 @@ package org.maplibre.spatialk.geojson.serialization
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
@@ -18,13 +19,15 @@ import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
 
-internal class FeatureCollectionSerializer<T : Geometry?>(
-    private val geometrySerializer: KSerializer<T>
-) : KSerializer<FeatureCollection<T>> {
+internal class FeatureCollectionSerializer<T : Geometry?, P : @Serializable Any?>(
+    geometrySerializer: KSerializer<T>,
+    propertiesSerializer: KSerializer<P>,
+) : KSerializer<FeatureCollection<T, P>> {
     private val serialName: String = "FeatureCollection"
     private val typeSerializer = String.serializer()
     private val bboxSerializer = BoundingBox.serializer().nullable
-    private val featuresSerializer = ListSerializer(Feature.serializer(geometrySerializer))
+    private val featuresSerializer =
+        ListSerializer(Feature.serializer(geometrySerializer, propertiesSerializer))
 
     override val descriptor: SerialDescriptor =
         buildClassSerialDescriptor(serialName) {
@@ -33,7 +36,7 @@ internal class FeatureCollectionSerializer<T : Geometry?>(
             element("features", featuresSerializer.descriptor)
         }
 
-    override fun serialize(encoder: Encoder, value: FeatureCollection<T>) {
+    override fun serialize(encoder: Encoder, value: FeatureCollection<T, P>) {
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
             if (value.bbox != null)
@@ -42,11 +45,11 @@ internal class FeatureCollectionSerializer<T : Geometry?>(
         }
     }
 
-    override fun deserialize(decoder: Decoder): FeatureCollection<T> {
+    override fun deserialize(decoder: Decoder): FeatureCollection<T, P> {
         return decoder.decodeStructure(descriptor) {
             var type: String? = null
             var bbox: BoundingBox? = null
-            var features: List<Feature<T>>? = null
+            var features: List<Feature<T, P>>? = null
 
             @OptIn(ExperimentalSerializationApi::class)
             if (decodeSequentially()) {

@@ -60,8 +60,6 @@ constructor(
         require(coordinates.size >= 2) { "LineString must contain at least two positions" }
     }
 
-    public override fun toJson(): String = GeoJson.encodeToString(this)
-
     public companion object {
         @JvmStatic
         public fun fromJson(@Language("json") json: String): LineString =
@@ -70,5 +68,9 @@ constructor(
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): LineString? =
             GeoJson.decodeFromStringOrNull(json)
+
+        @PublishedApi
+        @JvmStatic
+        internal fun toJson(lineString: LineString): String = lineString.toJson()
     }
 }

@@ -3,31 +3,40 @@ package org.maplibre.spatialk.geojson.serialization
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.MissingFieldException
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
-import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.Geometry
 
-internal class FeatureSerializer<T : Geometry?>(private val geometrySerializer: KSerializer<T>) :
-    KSerializer<Feature<T>> {
+internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
+    private val geometrySerializer: KSerializer<T>,
+    private val propertiesSerializer: KSerializer<P>,
+) : KSerializer<Feature<T, P>> {
     private val serialName: String = "Feature"
     private val typeSerializer = String.serializer()
     private val bboxSerializer = BoundingBox.serializer().nullable
-    private val propertiesSerializer = JsonObject.serializer().nullable
     private val idSerializer = String.serializer().nullable
 
     // special sentinel for nullable values
     private val uninitialized = Any()
+
+    init {
+        if (propertiesSerializer.descriptor.kind !is StructureKind)
+            throw SerializationException(
+                "Expected Feature.properties to serialize to a structure, got ${propertiesSerializer.descriptor.kind}"
+            )
+    }
 
     override val descriptor: SerialDescriptor =
         buildClassSerialDescriptor(serialName) {
@@ -38,7 +47,7 @@ internal class FeatureSerializer<T : Geometry?>(private val geometrySerializer: 
             element("bbox", bboxSerializer.descriptor)
         }
 
-    override fun serialize(encoder: Encoder, value: Feature<T>) {
+    override fun serialize(encoder: Encoder, value: Feature<T, P>) {
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
             encodeSerializableElement(descriptor, 1, geometrySerializer, value.geometry)
@@ -50,7 +59,7 @@ internal class FeatureSerializer<T : Geometry?>(private val geometrySerializer: 
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    override fun deserialize(decoder: Decoder): Feature<T> {
+    override fun deserialize(decoder: Decoder): Feature<T, P> {
         return decoder.decodeStructure(descriptor) {
             var type: String? = null
             var bbox: BoundingBox? = null
@@ -83,7 +92,7 @@ internal class FeatureSerializer<T : Geometry?>(private val geometrySerializer: 
             if (type != serialName)
                 throw SerializationException("Expected type $serialName but found $type")
 
-            @Suppress("UNCHECKED_CAST") Feature(geometry as T, properties as JsonObject?, id, bbox)
+            @Suppress("UNCHECKED_CAST") Feature(geometry as T, properties as P, id, bbox)
         }
     }
 }

@@ -24,8 +24,6 @@ constructor(public val coordinates: Position, override val bbox: BoundingBox? = 
         bbox: BoundingBox? = null,
     ) : this(Position(longitude, latitude, altitude), bbox)
 
-    public override fun toJson(): String = GeoJson.encodeToString(this)
-
     /**
      * Converts this [Point] to a `geo` URI of the format `geo:lat,lon` or `geo:lat,lon,alt`.
      *
@@ -47,5 +45,7 @@ constructor(public val coordinates: Position, override val bbox: BoundingBox? = 
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): Point? =
             GeoJson.decodeFromStringOrNull(json)
+
+        @PublishedApi @JvmStatic internal fun toJson(point: Point): String = point.toJson()
     }
 }

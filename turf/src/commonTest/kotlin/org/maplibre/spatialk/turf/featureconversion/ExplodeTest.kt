@@ -3,6 +3,7 @@ package org.maplibre.spatialk.turf.featureconversion
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.maplibre.spatialk.geojson.*
+import org.maplibre.spatialk.geojson.dsl.featureCollectionOf
 
 class ExplodeTest {
 
@@ -185,7 +186,10 @@ class ExplodeTest {
     @Test
     fun testExplodeFeature() {
         val feature =
-            Feature(LineString(listOf(Position(1.0, 2.0), Position(3.0, 4.0), Position(5.0, 6.0))))
+            Feature(
+                LineString(listOf(Position(1.0, 2.0), Position(3.0, 4.0), Position(5.0, 6.0))),
+                null,
+            )
         val result = feature.explode()
 
         assertEquals(3, result.size)
@@ -196,7 +200,7 @@ class ExplodeTest {
 
     @Test
     fun testExplodeFeatureWithNullGeometry() {
-        val feature = Feature(null)
+        val feature = Feature(null, null)
         val result = feature.explode()
 
         assertEquals(0, result.size)
@@ -206,9 +210,9 @@ class ExplodeTest {
     fun testExplodeFeatureCollection() {
         val featureCollection =
             FeatureCollection(
-                Feature(Point(Position(1.0, 2.0))),
-                Feature(LineString(listOf(Position(3.0, 4.0), Position(5.0, 6.0)))),
-                Feature(MultiPoint(listOf(Position(7.0, 8.0), Position(9.0, 10.0)))),
+                Feature(Point(Position(1.0, 2.0)), null),
+                Feature(LineString(listOf(Position(3.0, 4.0), Position(5.0, 6.0))), null),
+                Feature(MultiPoint(listOf(Position(7.0, 8.0), Position(9.0, 10.0))), null),
             )
         val result = featureCollection.explode()
 
@@ -222,7 +226,7 @@ class ExplodeTest {
 
     @Test
     fun testExplodeEmptyFeatureCollection() {
-        val featureCollection = FeatureCollection<Nothing?>()
+        val featureCollection = featureCollectionOf()
         val result = featureCollection.explode()
         assertEquals(0, result.size)
     }

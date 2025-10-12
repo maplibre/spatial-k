@@ -5,7 +5,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
-import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
@@ -18,6 +17,7 @@ import org.maplibre.spatialk.geojson.dsl.buildLineString
 import org.maplibre.spatialk.geojson.dsl.buildMultiLineString
 import org.maplibre.spatialk.geojson.dsl.buildMultiPolygon
 import org.maplibre.spatialk.geojson.dsl.buildPolygon
+import org.maplibre.spatialk.geojson.dsl.featureCollectionOf
 import org.maplibre.spatialk.testutil.readResourceFile
 
 private val point = Point(102.0, 0.5)
@@ -71,7 +71,7 @@ private val multiPolygon = buildMultiPolygon {
 }
 
 private val featureCollection = buildFeatureCollection {
-    addFeature(point)
+    addFeature(point, null)
     addFeature(line)
     addFeature(polygon)
     addFeature(multiLine)
@@ -82,8 +82,8 @@ class BboxTest {
 
     @Test
     fun testEmptyFeatures() {
-        assertNull(Feature<Nothing?>(null).withComputedBbox().bbox)
-        assertNull(FeatureCollection<Nothing?>(emptyList()).withComputedBbox().bbox)
+        assertNull(Feature(null, null).withComputedBbox().bbox)
+        assertNull(featureCollectionOf().withComputedBbox().bbox)
     }
 
     @Test

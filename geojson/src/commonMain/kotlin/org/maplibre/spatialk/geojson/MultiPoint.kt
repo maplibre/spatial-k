@@ -45,8 +45,6 @@ constructor(
         bbox: BoundingBox? = null,
     ) : this(coordinates.map(::Position), bbox)
 
-    public override fun toJson(): String = GeoJson.encodeToString(this)
-
     override val size: Int
         get() = coordinates.size
 
@@ -69,5 +67,9 @@ constructor(
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): MultiPoint? =
             GeoJson.decodeFromStringOrNull(json)
+
+        @PublishedApi
+        @JvmStatic
+        internal fun toJson(multiPoint: MultiPoint): String = multiPoint.toJson()
     }
 }

@@ -1,9 +1,12 @@
 package org.maplibre.spatialk.geojson
 
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.serializer
 import org.intellij.lang.annotations.Language
 
 public data object GeoJson {
@@ -22,9 +25,28 @@ public data object GeoJson {
                         is MultiPolygon -> MultiPolygon.serializer()
                         is GeometryCollection<*> ->
                             GeometryCollection.serializer(Geometry.serializer())
-                        is Feature<*> -> Feature.serializer(Geometry.serializer().nullable)
-                        is FeatureCollection<*> ->
-                            FeatureCollection.serializer(Geometry.serializer().nullable)
+                        is Feature<*, *> ->
+                            Feature.serializer(
+                                Geometry.serializer().nullable,
+                                when (val props = it.properties) {
+                                    is JsonObject? -> JsonObject.serializer().nullable
+                                    else -> {
+                                        @OptIn(InternalSerializationApi::class)
+                                        props::class.serializer()
+                                    }
+                                },
+                            )
+                        is FeatureCollection<*, *> ->
+                            FeatureCollection.serializer(
+                                Geometry.serializer().nullable,
+                                when (val props = it.features.firstOrNull()?.properties) {
+                                    is JsonObject? -> JsonObject.serializer().nullable
+                                    else -> {
+                                        @OptIn(InternalSerializationApi::class)
+                                        props::class.serializer()
+                                    }
+                                },
+                            )
                     }
                 @Suppress("UNCHECKED_CAST")
                 serializer as SerializationStrategy<GeoJsonObject>

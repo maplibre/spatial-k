@@ -18,7 +18,9 @@ import org.maplibre.spatialk.turf.measurement.computeBbox
  * If the original feature has a [Feature.bbox], then the resulting feature has a new `bbox`
  * computed using the new geometry, if present.
  */
-public fun <T : Geometry?, U : Geometry?> Feature<T>.mapGeometry(transform: (T) -> U): Feature<U> {
+public fun <T : Geometry?, U : Geometry?, P> Feature<T, P>.mapGeometry(
+    transform: (T) -> U
+): Feature<U, P> {
     val newGeometry = transform(geometry)
     return Feature(
         geometry = newGeometry,
@@ -29,10 +31,10 @@ public fun <T : Geometry?, U : Geometry?> Feature<T>.mapGeometry(transform: (T) 
 }
 
 /** Returns a [FeatureCollection] by applying [mapGeometry] to each feature in this collection. */
-public fun <T : Geometry?, U : Geometry?> FeatureCollection<T>.mapGeometry(
+public fun <T : Geometry?, U : Geometry?, P> FeatureCollection<T, P>.mapGeometry(
     transform: (T) -> U
-): FeatureCollection<U> {
-    val newFeatures: List<Feature<U>> = features.map { it.mapGeometry(transform) }
+): FeatureCollection<U, P> {
+    val newFeatures: List<Feature<U, P>> = features.map { it.mapGeometry(transform) }
     return FeatureCollection(
         features = newFeatures,
         bbox = bbox?.let { computeBbox(newFeatures.flatMap { it.flattenCoordinates() }) },

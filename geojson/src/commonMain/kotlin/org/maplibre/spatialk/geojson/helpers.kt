@@ -1,4 +1,10 @@
+@file:JvmSynthetic
+
 package org.maplibre.spatialk.geojson
+
+import kotlin.jvm.JvmSynthetic
+
+public inline fun <reified T : GeoJsonObject> T.toJson(): String = GeoJson.encodeToString<T>(this)
 
 @RequiresOptIn(
     level = RequiresOptIn.Level.ERROR,

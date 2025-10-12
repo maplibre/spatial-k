@@ -19,6 +19,8 @@ public final class org/maplibre/spatialk/turf/featureconversion/FeatureConversio
 	public static final fun explode (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Lorg/maplibre/spatialk/geojson/MultiPoint;
 	public static final fun mapGeometry (Lorg/maplibre/spatialk/geojson/Feature;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/Feature;
 	public static final fun mapGeometry (Lorg/maplibre/spatialk/geojson/FeatureCollection;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
+	public static final fun mapProperties (Lorg/maplibre/spatialk/geojson/Feature;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/Feature;
+	public static final fun mapProperties (Lorg/maplibre/spatialk/geojson/FeatureCollection;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
 	public static final fun toFeatureCollection (Lorg/maplibre/spatialk/geojson/GeometryCollection;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
 	public static final fun toFeatureCollection (Lorg/maplibre/spatialk/geojson/GeometryCollection;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
 	public static synthetic fun toFeatureCollection$default (Lorg/maplibre/spatialk/geojson/GeometryCollection;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
