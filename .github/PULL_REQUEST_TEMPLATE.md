@@ -14,4 +14,5 @@
 - [ ] Briefly describe the changes in this PR.
 - [ ] Link to related issues.
 - [ ] Write tests for all new functionality.
-- [ ] Run `./gradlew updateLegacyAbi` to dump the public API for review
+- [ ] Disclose if and to what extent an AI coding assistant was used.
+- [ ] Run `./gradlew updateLegacyAbi` to dump the public API for review.
