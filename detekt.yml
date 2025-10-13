@@ -1,35 +1,15 @@
 config:
     validation: true
     warningsAsErrors: false
-    excludes: ""
-
-console-reports:
-    active: true
-    exclude:
-        - "ProjectStatisticsReport"
-        - "ComplexityReport"
-        - "NotificationReport"
-        - "FindingsReport"
-        - "FileBasedFindingsReport"
 
 comments:
     EndOfSentenceFormat:
         active: true
-        excludes: &excludes
-            - "**/commonTest/**"
-            - "**/jvmTest/**"
-            - "**/testutil/**"
-            - "**/benchmark/**"
-            - "**/turf/**" # TODO remove
     KDocReferencesNonPublicProperty:
         active: true
-        excludes: *excludes
     UndocumentedPublicClass:
         active: true
-        excludes: *excludes
     UndocumentedPublicFunction:
         active: true
-        excludes: *excludes
     UndocumentedPublicProperty:
         active: true
-        excludes: *excludes

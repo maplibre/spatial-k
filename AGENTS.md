@@ -17,6 +17,7 @@
 - `./gradlew :koverHtmlReport` - Generate coverage report
 - `./gradlew updateLegacyAbi` - Dump JVM and KLIB ABI after API changes
 - `./gradlew :mkdocsBuild` - Build and check MkDocs documentation
+- `./gradlew detekt` - Check for undocumented public APIs
 - `pre-commit run --all-files --hook-stage manual`
     - Run this command before committing changes to ensure code formatting and
       ABI compliance.

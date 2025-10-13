@@ -14,6 +14,7 @@ dependencies {
     implementation(libs.gradle.kover)
     implementation(libs.gradle.semver)
     implementation(libs.gradle.mkdocs.build)
+    implementation(libs.gradle.detekt)
 }
 
 kotlin { jvmToolchain(21) }

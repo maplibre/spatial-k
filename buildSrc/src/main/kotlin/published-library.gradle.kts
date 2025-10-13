@@ -1,3 +1,4 @@
+import dev.detekt.gradle.extensions.FailOnSeverity
 import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
@@ -6,6 +7,7 @@ plugins {
     id("com.vanniktech.maven.publish")
     id("org.jetbrains.kotlinx.kover")
     id("semver")
+    id("dev.detekt")
 }
 
 group = "org.maplibre.spatialk"
@@ -16,6 +18,13 @@ kotlin {
         @OptIn(ExperimentalAbiValidation::class)
         enabled = true
     }
+}
+
+detekt {
+    source.setFrom("src/commonMain/kotlin")
+    config.setFrom(rootProject.file("detekt.yml"))
+    failOnSeverity = FailOnSeverity.Warning
+    basePath.set(rootProject.rootDir)
 }
 
 dokka {

@@ -12,7 +12,7 @@ pre-commit-uninstall:
     pre-commit uninstall
 
 detekt:
-    detekt -c detekt.yml
+    ./gradlew detekt
 
 format:
     pre-commit run --all-files --hook-stage manual || true
