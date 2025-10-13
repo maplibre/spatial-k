@@ -12,7 +12,7 @@ copyright: "Copyright &copy; 2025 MapLibre Contributors"
 
 nav:
     - Introduction: index.md
-    - GeoJson:
+    - GeoJSON:
           - geojson/index.md
     - Turf:
           - turf/index.md
