@@ -30,12 +30,12 @@ Details can be found in the [API reference](../api/units/index.html).
 
 ## Simple unit conversion
 
-`Length`, `Area`, and `Rotation` measurements are type safe inline wrappers
-around `Double` values, and can be converted to/from numbers with unit
-conversion.
+In Kotlin, `Length`, `Area`, and `Rotation` are type-safe value classes wrapping
+a `Double`. They can be converted to and from raw `Double` values using the
+provided unit accessors.
 
-Java has no support for inline classes, so we provide a `convert` method to
-convert a `Double` between units.
+In Java, use the `convert` helper from
+`org.maplibre.spatialk.units.extensions.Utils` to convert between units.
 
 === "Kotlin"
 
@@ -51,8 +51,8 @@ convert a `Double` between units.
 
 ## Arithmetic
 
-`Area` and `Length` support common arithmetic operations, and will convert
-between scalars, lengths, and areas as needed.
+In Kotlin, `Area` and `Length` support arithmetic operations through operator
+overloading, converting between scalars, lengths, and areas as needed.
 
 === "Kotlin"
 
@@ -63,8 +63,9 @@ between scalars, lengths, and areas as needed.
 ## Bearings and Rotations
 
 `Bearing` represents an absolute geographic heading (e.g., North, East), while
-`Rotation` represents a relative angular displacement. Bearings can be rotated,
-and the difference between two bearings is a rotation.
+`Rotation` represents a relative angular displacement. In Kotlin, bearings can
+be rotated using operators, and the difference between two bearings is a
+rotation.
 
 === "Kotlin"
 
@@ -74,8 +75,8 @@ and the difference between two bearings is a rotation.
 
 ## Custom units
 
-We provide common international units already defined, but if you need to work
-with other units, you can define your own.
+Predefined SI (International System of Units) and Imperial units are available,
+but you can define custom units as needed.
 
 === "Kotlin"
 

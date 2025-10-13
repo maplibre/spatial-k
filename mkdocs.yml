@@ -1,6 +1,6 @@
 site_name: "Spatial K"
 
-site_description: "Kotlin Multiplatform GeoJson library and Turfjs port"
+site_description: "Kotlin Multiplatform GeoJSON library and Turf.js port"
 site_url: https://maplibre.github.io/spatial-k
 site_author: MapLibre
 
@@ -11,7 +11,7 @@ edit_uri: edit/main/docs/docs/
 copyright: "Copyright &copy; 2025 MapLibre Contributors"
 
 nav:
-    - "Getting Started": index.md
+    - "Introduction": index.md
     - Modules:
           - GeoJson:
                 - geojson/index.md

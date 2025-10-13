@@ -1,9 +1,9 @@
-# GeoJson
+# GeoJSON
 
 The `geojson` module contains an implementation of
 [RFC 7946: The GeoJSON Format](https://tools.ietf.org/html/rfc7946).
 
-See below for constructing GeoJson objects using the DSL.
+See below for constructing GeoJSON objects using the DSL.
 
 ## Installation
 
@@ -25,9 +25,9 @@ See below for constructing GeoJson objects using the DSL.
     }
     ```
 
-## GeoJson Objects
+## GeoJSON Objects
 
-The `GeoJsonObject` interface represents all GeoJson objects. All GeoJson
+The `GeoJsonObject` interface represents all GeoJSON objects. All GeoJSON
 objects can have a `bbox` property specified on them which is a `BoundingBox`
 that represents the bounds of that object's geometry.
 
@@ -48,13 +48,10 @@ documentation can be found in the [API pages](../api/geojson/index.html).
 
 #### Position
 
-Positions are implemented as a `DoubleArray`-backed class. Each component
-(`longitude`, `latitude`, `altitude`) can be accessed by its propery. The class
-also supports destructuring.
-
-Positions are implemented as an interface where the longitude, latitude, and
-optionally an altitude are accessible as properties. The basic implementation of
-the `Position` interface is the `LngLat` class.
+`Position` is a `DoubleArray`-backed class where longitude, latitude, and
+optionally an altitude are accessible as properties. Coordinates follow the
+order specified in RFC 7946: `[longitude, latitude, altitude?]`. The class
+supports destructuring in Kotlin.
 
 === "Kotlin"
 
@@ -211,9 +208,7 @@ A `MultiPolygon` is an array of Polygons.
 
 #### GeometryCollection
 
-A `GeometryCollection` is a collection of multiple geometries. It implements the
-`Collection` interface and can be used in any place that a collection can be
-used.
+A `GeometryCollection` contains multiple, heterogeneous geometries.
 
 === "Kotlin"
 
@@ -238,9 +233,11 @@ used.
 A `Feature` can contain a `Geometry` object, as well as a set of data
 properties, and optionally a commonly used identifier (`id`).
 
-A feature's properties are stored as a map of `JsonElement` objects from
-`kotlinx.serialization`. A set of helper methods to get and set properties with
-the appropriate types directly.
+Properties can be any object that serializes into a JSON object. For dynamic or
+unknown property schemas, use `JsonObject`. For known schemas, use a
+`@Serializable` data class. Helper methods for accessing properties are
+available when properties are of type `JsonObject` (see the
+[API documentation](../api/geojson/index.html) for details).
 
 === "Kotlin"
 
@@ -313,9 +310,8 @@ a `DoubleArray` with each component accessible by its propery (`southwest` and
 
 ### To JSON
 
-Any `GeoJsonObject` can be serialized to a JSON string using the `json()`
-function. This function converts the object to JSON using string concatenation
-and is therefore very fast.
+Any `GeoJsonObject` can be serialized to a JSON string using the `toJson()`
+method.
 
 === "Kotlin"
 
@@ -360,61 +356,32 @@ Like with encoding, Spatial-K objects can also be decoded using
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:kotlinxSerialization"
     ```
 
-## GeoJson DSL
+## GeoJSON Builders
 
-It's recommended to construct GeoJson objects in-code using the GeoJson DSL.
-
-### Positions
-
-Convenience functions to construct latitude/longitude Position instances are
-included. These functions will check for valid latitude and longitude values and
-will throw an `IllegalArgumentException` otherwise.
-
-=== "Kotlin"
-
-    ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslLngLatKt"
-
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslLngLatException"
-    ```
-
-=== "JSON"
-
-    ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslLngLatJson"
-    ```
+It's recommended to construct GeoJSON objects in-code using builder classes. In
+Kotlin, these are available through a convenient DSL. In Java, use the builder
+classes directly.
 
 ### Geometry
 
-Each geometry type has a corresponding DSL.
+Each geometry type more complex than `Point` has a corresponding DSL.
 
-A GeoJson object's `bbox` value can be assigned in any of the DSLs.
-
-#### Point
-
-=== "Kotlin"
-
-    ```kotlin
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslPointKt"
-    ```
-
-=== "JSON"
-
-    ```json
-    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslPointJson"
-    ```
+A GeoJSON object's `bbox` value can be assigned in any of the DSLs.
 
 #### MultiPoint
 
-The `MultiPoint` DSL creates a `MultiPoint` from many `Point`s, or by using the
-unary plus operator to add `Position` instances as positions in the geometry.
-`Point` geometries can also be added to the multipoint using the unary plus
-operator.
+The `MultiPoint` builder uses `add()` to add positions or `Point` geometries.
 
 === "Kotlin"
 
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiPointKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslMultiPointJava"
     ```
 
 === "JSON"
@@ -425,15 +392,20 @@ operator.
 
 #### LineString
 
-A `LineString` contains main points. Like with `MultiPoint`, a `LineString` can
-also be built using the unary plus operator to add positions as part of the
-line. The order in which positions are added to the `LineString` is the order
-that the `LineString` will follow.
+A `LineString` contains two or more positions, in order. The builder uses
+`add()` to add positions. The order in which positions are added is the order
+that the line will follow.
 
 === "Kotlin"
 
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslLineStringKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslLineStringJava"
     ```
 
 === "JSON"
@@ -444,13 +416,19 @@ that the `LineString` will follow.
 
 #### MultiLineString
 
-The `MultiLineString` DSL uses the unary plus operator to add multiple line
-strings. The `LineString` DSL can be used to create `LineString` objects to add.
+The `MultiLineString` builder uses `addLineString()` to define line strings
+inline, or `add()` to add existing `LineString` objects.
 
 === "Kotlin"
 
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiLineStringKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslMultiLineStringJava"
     ```
 
 === "JSON"
@@ -461,18 +439,22 @@ strings. The `LineString` DSL can be used to create `LineString` objects to add.
 
 #### Polygon
 
-The `Polygon` DSL is used by specifying linear rings that make up the polygon's
-shape and holes. The first `ring` is the exterior ring with four or more
-positions. The last position must be the same as the first position. All `ring`s
-that follow will represent interior rings (i.e., holes) in the polygon.
-
-For convenience, the `complete()` function can be used to "complete" a ring. It
-adds the last position in the ring by copying the first position that was added.
+The `Polygon` builder uses `addRing()` (Kotlin DSL) or `add()` with `LineString`
+objects (Java/Kotlin) to define linear rings. The first ring is the exterior
+ring with four or more positions. The last position must be the same as the
+first position. All subsequent rings represent interior rings (i.e., holes) in
+the polygon.
 
 === "Kotlin"
 
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslPolygonKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslPolygonJava"
     ```
 
 === "JSON"
@@ -483,13 +465,19 @@ adds the last position in the ring by copying the first position that was added.
 
 #### MultiPolygon
 
-Like with previous "Multi" geometries, the unary plus operator is used to add
-multiple `Polygon` objects. The `Polygon` DSL can also be used here.
+The `MultiPolygon` builder uses `addPolygon()` to define polygons inline, or
+`add()` to add existing `Polygon` objects.
 
 === "Kotlin"
 
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiPolygonKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslMultiPolygonJava"
     ```
 
 === "JSON"
@@ -498,15 +486,23 @@ multiple `Polygon` objects. The `Polygon` DSL can also be used here.
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiPolygonJson"
     ```
 
-#### Geometry Collection
+#### GeometryCollection
 
-The unary plus operator can be used to add any geometry instance to a
-`GeometryCollection`.
+The `GeometryCollection` builder provides `addPoint()`, `addLineString()`,
+`addPolygon()`, `addMultiPoint()`, `addMultiLineString()`, `addMultiPolygon()`,
+and `addGeometryCollection()` to define geometries inline (Kotlin only), or
+`add()` to add existing geometry objects.
 
 === "Kotlin"
 
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslGeometryCollectionKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslGeometryCollectionJava"
     ```
 
 === "JSON"
@@ -517,14 +513,20 @@ The unary plus operator can be used to add any geometry instance to a
 
 ### Feature
 
-The `Feature` DSL can construct a `Feature` object with a geometry, a bounding
-box, and an id. Properties can be specified in the `PropertiesBuilder` block by
-calling `put(key, value)` to add properties.
+The `Feature` builder constructs a `Feature` object with a geometry, bounding
+box, id, and properties. Properties can be any serializable object, such as a
+`JsonObject` built with `buildJsonObject` from kotlinx.serialization.
 
 === "Kotlin"
 
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslFeatureKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslFeatureJava"
     ```
 
 === "JSON"
@@ -533,15 +535,21 @@ calling `put(key, value)` to add properties.
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslFeatureJson"
     ```
 
-### Feature Collection
+### FeatureCollection
 
-A `FeatureCollection` is constructed by adding multiple `Feature` objects using
-the unary plus operator.
+The `FeatureCollection` builder uses `addFeature()` to define features inline
+(Kotlin only), or `add()` to add existing `Feature` objects.
 
 === "Kotlin"
 
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslFeatureCollectionKt"
+    ```
+
+=== "Java"
+
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslFeatureCollectionJava"
     ```
 
 === "JSON"
