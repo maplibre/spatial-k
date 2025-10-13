@@ -20,7 +20,7 @@ import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
  * See [RFC 7946 Section 3.2](https://tools.ietf.org/html/rfc7946#section-3.2) for the full
  * specification.
  *
- * @param T The type of [Geometry] contained in this [Feature].
+ * @param G The type of [Geometry] contained in this [Feature].
  * @param P The type of properties. This can be any type that serializes to a JSON object. For
  *   dynamic or unknown property schemas, use [JsonObject]. For known schemas, use a [Serializable]
  *   data class.
@@ -31,10 +31,10 @@ import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
  * @see FeatureCollection
  */
 @Serializable(with = FeatureSerializer::class)
-public data class Feature<out T : Geometry?, out P : @Serializable Any?>
+public data class Feature<out G : Geometry?, out P : @Serializable Any?>
 @JvmOverloads
 constructor(
-    public val geometry: T,
+    public val geometry: G,
     public val properties: P,
     public val id: String? = null,
     override val bbox: BoundingBox? = null,
@@ -52,9 +52,9 @@ constructor(
          */
         @JvmSynthetic
         @JvmName("inlineFromJson")
-        public inline fun <reified T : Geometry?, reified P : @Serializable Any?> fromJson(
+        public inline fun <reified G : Geometry?, reified P : @Serializable Any?> fromJson(
             @Language("json") json: String
-        ): Feature<T, P> = GeoJson.decodeFromString(json)
+        ): Feature<G, P> = GeoJson.decodeFromString(json)
 
         /**
          * Deserializes a [Feature] from a JSON string, or returns null on failure.
@@ -64,9 +64,9 @@ constructor(
          */
         @JvmSynthetic
         @JvmName("inlineFromJsonOrNull")
-        public inline fun <reified T : Geometry?, reified P : @Serializable Any?> fromJsonOrNull(
+        public inline fun <reified G : Geometry?, reified P : @Serializable Any?> fromJsonOrNull(
             @Language("json") json: String
-        ): Feature<T, P>? = GeoJson.decodeFromStringOrNull(json)
+        ): Feature<G, P>? = GeoJson.decodeFromStringOrNull(json)
 
         // Publish for Java below; Kotlin should use the inline reified versions above
 

@@ -16,14 +16,14 @@ import org.maplibre.spatialk.geojson.serialization.GeometryCollectionSerializer
  * specification.
  */
 @Serializable(with = GeometryCollectionSerializer::class)
-public data class GeometryCollection<out T : Geometry>
+public data class GeometryCollection<out G : Geometry>
 @JvmOverloads
 constructor(
     /** The [Geometry] objects in this [GeometryCollection]. */
-    public val geometries: List<T>,
+    public val geometries: List<G>,
     /** The [BoundingBox] of this [GeometryCollection]. */
     override val bbox: BoundingBox? = null,
-) : Geometry, Collection<T> by geometries {
+) : Geometry, Collection<G> by geometries {
 
     /**
      * Create a [GeometryCollection] by a number of [Geometry] objects.
@@ -33,7 +33,7 @@ constructor(
      */
     @JvmOverloads
     public constructor(
-        vararg geometries: T,
+        vararg geometries: G,
         bbox: BoundingBox? = null,
     ) : this(geometries.toList(), bbox)
 
@@ -49,9 +49,9 @@ constructor(
          */
         @JvmSynthetic
         @JvmName("inlineFromJson")
-        public inline fun <reified T : Geometry> fromJson(
+        public inline fun <reified G : Geometry> fromJson(
             @Language("json") json: String
-        ): GeometryCollection<T> = GeoJson.decodeFromString(json)
+        ): GeometryCollection<G> = GeoJson.decodeFromString(json)
 
         /**
          * Deserialize a [GeometryCollection] from a JSON string, or null if parsing fails.

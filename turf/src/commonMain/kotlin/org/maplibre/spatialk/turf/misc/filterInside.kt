@@ -12,10 +12,10 @@ import org.maplibre.spatialk.geojson.PointGeometry
 import org.maplibre.spatialk.geojson.PolygonGeometry
 import org.maplibre.spatialk.turf.booleans.contains
 
-public fun <T : PointGeometry> GeometryCollection<T>.filterInside(
+public fun <G : PointGeometry> GeometryCollection<G>.filterInside(
     polygons: GeometryCollection<PolygonGeometry>
-): GeometryCollection<T> {
-    val results = mutableListOf<T>()
+): GeometryCollection<G> {
+    val results = mutableListOf<G>()
 
     forEach { pointGeometry ->
         when (pointGeometry) {
@@ -26,7 +26,7 @@ public fun <T : PointGeometry> GeometryCollection<T>.filterInside(
                     pointGeometry.filter { point -> polygons.any { point.coordinates in it } }
                 @Suppress("UNCHECKED_CAST")
                 if (pointsInside.isNotEmpty())
-                    results.add(MultiPoint(pointsInside.map { it.coordinates }) as T)
+                    results.add(MultiPoint(pointsInside.map { it.coordinates }) as G)
             }
         }
     }
