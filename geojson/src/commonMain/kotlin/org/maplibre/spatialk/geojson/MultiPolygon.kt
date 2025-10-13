@@ -3,29 +3,36 @@ package org.maplibre.spatialk.geojson
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.MultiPolygonSerializer
 
 /**
- * @throws IllegalArgumentException if any of the lists does not represent a valid polygon
- * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.1.7">
- *   https://tools.ietf.org/html/rfc7946#section-3.1.7</a>
+ * A [MultiPolygon] geometry represents multiple surfaces in coordinate space.
+ *
+ * See [RFC 7946 Section 3.1.7](https://tools.ietf.org/html/rfc7946#section-3.1.7) for the full
+ * specification.
+ *
+ * @throws IllegalArgumentException if any of the lists does not represent a valid [Polygon]
  * @see Polygon
  */
 @Serializable(with = MultiPolygonSerializer::class)
 public data class MultiPolygon
 @JvmOverloads
 constructor(
-    /** a list (= polygons) of lists (= polygon rings) of lists of [Position]s. */
+    /** The coordinates of this geometry. */
     public val coordinates: List<List<List<Position>>>,
-    /** a bounding box */
+    /** The bounding box of this geometry. */
     override val bbox: BoundingBox? = null,
 ) : MultiGeometry, PolygonGeometry, Collection<Polygon> {
 
     /**
-     * Create a MultiPolygon by a number of lists (= polygon rings) of lists (= positions).
+     * Create a [MultiPolygon] by a number of lists (= polygon rings) of lists (= [Position]
+     * objects).
      *
-     * @throws IllegalArgumentException if any list does not represent a valid polygon
+     * @param coordinates The lists of polygon rings that make up the [Polygon] objects.
+     * @param bbox The [BoundingBox] of this geometry.
+     * @throws IllegalArgumentException if any list does not represent a valid [Polygon]
      */
     @JvmOverloads
     public constructor(
@@ -33,7 +40,14 @@ constructor(
         bbox: BoundingBox? = null,
     ) : this(coordinates.toList(), bbox)
 
-    /** Create a MultiPolygon by a number of [Polygon]s. */
+    /**
+     * Create a [MultiPolygon] by a number of [Polygon] objects.
+     *
+     * @param polygons The [Polygon] objects that make up this multi-polygon.
+     * @param bbox The [BoundingBox] of this geometry.
+     * @throws IllegalArgumentException if any of the [Polygon] objects does not represent a valid
+     *   polygon (e.g., empty or rings not closed or fewer than 4 positions per ring).
+     */
     @JvmOverloads
     public constructor(
         vararg polygons: Polygon,
@@ -41,10 +55,13 @@ constructor(
     ) : this(polygons.map { it.coordinates }, bbox)
 
     /**
-     * Create a MultiPolygon by an array (= polygons) of arrays (= polygon rings) of arrays (=
-     * positions) where each position is represented by a [DoubleArray].
+     * Create a [MultiPolygon] by an array (= [Polygon] objects) of arrays (= polygon rings) of
+     * arrays (= [Position] objects) where each [Position] is represented by a [DoubleArray].
      *
-     * @throws IllegalArgumentException if the array does not represent a valid multi polygon
+     * @param coordinates The array of arrays of arrays of double arrays representing [Polygon]
+     *   objects.
+     * @param bbox The [BoundingBox] of this geometry.
+     * @throws IllegalArgumentException if the array does not represent a valid [MultiPolygon]
      */
     @JvmOverloads
     public constructor(
@@ -82,13 +99,34 @@ constructor(
     override fun containsAll(elements: Collection<Polygon>): Boolean =
         coordinates.containsAll(elements.map { it.coordinates })
 
+    /**
+     * Get the polygon at the specified index.
+     *
+     * @param index The index of the polygon to retrieve.
+     * @return The polygon at the specified index.
+     */
     public operator fun get(index: Int): Polygon = Polygon(coordinates[index])
 
+    /** Factory methods for creating and serializing [MultiPolygon] objects. */
     public companion object {
+        /**
+         * Deserialize a [MultiPolygon] from a JSON string.
+         *
+         * @param json The JSON string to parse.
+         * @return The deserialized [MultiPolygon].
+         * @throws SerializationException if the JSON string is invalid or cannot be deserialized.
+         * @throws IllegalArgumentException if the geometry does not meet structural requirements.
+         */
         @JvmStatic
         public fun fromJson(@Language("json") json: String): MultiPolygon =
             GeoJson.decodeFromString(json)
 
+        /**
+         * Deserialize a [MultiPolygon] from a JSON string, or null if parsing fails.
+         *
+         * @param json The JSON string to parse.
+         * @return The deserialized [MultiPolygon], or null if parsing fails.
+         */
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): MultiPolygon? =
             GeoJson.decodeFromStringOrNull(json)

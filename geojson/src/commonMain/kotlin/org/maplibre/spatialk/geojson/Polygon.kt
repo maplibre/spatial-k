@@ -3,37 +3,50 @@ package org.maplibre.spatialk.geojson
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.PolygonSerializer
 
 /**
- * To specify a constraint specific to [Polygon]s, it is useful to introduce the concept of a linear
- * ring:
- * - A linear ring is a closed LineString with four or more positions.
- * - The first and last positions are equivalent, and they MUST contain identical values; their
- *   representation SHOULD also be identical.
+ * A [Polygon] geometry represents a surface in coordinate space bounded by linear rings.
+ *
+ * To specify a constraint specific to [Polygon] objects, it is useful to introduce the concept of a
+ * linear ring:
+ * - A linear ring is a closed [LineString] with four or more [Position] objects.
+ * - The first and last [Position] objects are equivalent, and they MUST contain identical values;
+ *   their representation SHOULD also be identical.
  * - A linear ring is the boundary of a surface or the boundary of a hole in a surface.
  * - A linear ring MUST follow the right-hand rule with respect to the area it bounds, i.e.,
  *   exterior rings are counterclockwise, and holes are clockwise.
  *
- * @throws IllegalArgumentException if the coordinates are empty or any of the position lists
- *   representing a line string is either not closed or contains fewer than 4 positions.
- * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.1.6">
- *   https://tools.ietf.org/html/rfc7946#section-3.1.6</a>
- * @see [MultiPolygon]
+ * See [RFC 7946 Section 3.1.6](https://tools.ietf.org/html/rfc7946#section-3.1.6) for the full
+ * specification.
+ *
+ * @throws IllegalArgumentException if the coordinates are empty or any of the [Position] lists
+ *   representing a [LineString] is either not closed or contains fewer than 4 [Position] objects.
+ * @see MultiPolygon
  */
 @Serializable(with = PolygonSerializer::class)
 public data class Polygon
 @JvmOverloads
 constructor(
     /**
-     * A list (= polygon rings) of lists of [Position]s that represent this polygon. The first ring
-     * represents the exterior ring while any others are interior rings (= holes).
+     * The coordinates of this [Polygon]. A list (= polygon rings) of lists of [Position] objects
+     * that represent this [Polygon]. The first ring represents the exterior ring while any others
+     * are interior rings (= holes).
      */
     public val coordinates: List<List<Position>>,
-    /** a bounding box */
+    /** The [BoundingBox] of this [Polygon]. */
     override val bbox: BoundingBox? = null,
 ) : SingleGeometry, PolygonGeometry {
+    /**
+     * Create a [Polygon] by a number of linear rings.
+     *
+     * @param coordinates The linear rings that make up this [Polygon].
+     * @param bbox The [BoundingBox] of this [Polygon].
+     * @throws IllegalArgumentException if no coordinates have been specified or any of the
+     *   [Position] lists is either not closed or contains fewer than 4 [Position] objects.
+     */
     @JvmOverloads
     public constructor(
         vararg coordinates: List<Position>,
@@ -41,10 +54,12 @@ constructor(
     ) : this(coordinates.toList(), bbox)
 
     /**
-     * Create a Polygon by a number of closed [LineString]s.
+     * Create a [Polygon] by a number of closed [LineString] objects.
      *
+     * @param lineStrings The [LineString] objects representing the polygon rings.
+     * @param bbox The [BoundingBox] of this [Polygon].
      * @throws IllegalArgumentException if no coordinates have been specified or any of the
-     *   [LineString]s is either not closed or contains fewer than 4 positions.
+     *   [LineString] objects is either not closed or contains fewer than 4 [Position] objects.
      */
     @JvmOverloads
     public constructor(
@@ -53,12 +68,14 @@ constructor(
     ) : this(lineStrings.map { it.coordinates }, bbox)
 
     /**
-     * Create a Polygon by arrays (= polygon rings) of arrays (= positions) where each position is
-     * represented by a [DoubleArray].
+     * Create a [Polygon] by arrays (= polygon rings) of arrays (= [Position] objects) where each
+     * [Position] is represented by a [DoubleArray].
      *
+     * @param coordinates The array of arrays of double arrays representing polygon rings.
+     * @param bbox The [BoundingBox] of this [Polygon].
      * @throws IllegalArgumentException if the outer array is empty, or if any of the inner arrays
-     *   does not represent a valid closed line string, or if any of the arrays of doubles does not
-     *   represent a valid position.
+     *   does not represent a valid closed [LineString], or if any of the arrays of doubles does not
+     *   represent a valid [Position].
      */
     @JvmOverloads
     public constructor(
@@ -75,11 +92,26 @@ constructor(
         }
     }
 
+    /** Factory methods for creating and serializing [Polygon] objects. */
     public companion object {
+        /**
+         * Deserialize a [Polygon] from a JSON string.
+         *
+         * @param json The JSON string to parse.
+         * @return The deserialized [Polygon].
+         * @throws SerializationException if the JSON string is invalid or cannot be deserialized.
+         * @throws IllegalArgumentException if the geometry does not meet structural requirements.
+         */
         @JvmStatic
         public fun fromJson(@Language("json") json: String): Polygon =
             GeoJson.decodeFromString(json)
 
+        /**
+         * Deserialize a [Polygon] from a JSON string, or null if parsing fails.
+         *
+         * @param json The JSON string to parse.
+         * @return The deserialized [Polygon], or null if parsing fails.
+         */
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): Polygon? =
             GeoJson.decodeFromStringOrNull(json)

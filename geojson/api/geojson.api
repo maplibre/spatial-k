@@ -646,7 +646,7 @@ public final synthetic class org/maplibre/spatialk/geojson/dsl/HelpersKt {
 	public static final fun multiPointOf ([Lorg/maplibre/spatialk/geojson/Point;)Lorg/maplibre/spatialk/geojson/MultiPoint;
 	public static final fun multiPointOf ([Lorg/maplibre/spatialk/geojson/Position;)Lorg/maplibre/spatialk/geojson/MultiPoint;
 	public static final fun multiPolygonOf ([Ljava/util/List;)Lorg/maplibre/spatialk/geojson/MultiPolygon;
-	public static final fun multiPolygonOf ([Lorg/maplibre/spatialk/geojson/Point;)Lorg/maplibre/spatialk/geojson/MultiPoint;
+	public static final fun multiPolygonOf ([Lorg/maplibre/spatialk/geojson/Polygon;)Lorg/maplibre/spatialk/geojson/MultiPolygon;
 	public static final fun polygonOf ([Ljava/util/List;)Lorg/maplibre/spatialk/geojson/Polygon;
 }
 
