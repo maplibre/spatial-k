@@ -6,10 +6,10 @@ import org.maplibre.spatialk.testutil.assertBearingEquals
 import org.maplibre.spatialk.testutil.assertRotationEquals
 import org.maplibre.spatialk.units.Bearing.Companion.East
 import org.maplibre.spatialk.units.Bearing.Companion.North
-import org.maplibre.spatialk.units.Bearing.Companion.NorthEast
+import org.maplibre.spatialk.units.Bearing.Companion.Northeast
 import org.maplibre.spatialk.units.Bearing.Companion.South
-import org.maplibre.spatialk.units.Bearing.Companion.SouthEast
-import org.maplibre.spatialk.units.Bearing.Companion.SouthWest
+import org.maplibre.spatialk.units.Bearing.Companion.Southeast
+import org.maplibre.spatialk.units.Bearing.Companion.Southwest
 import org.maplibre.spatialk.units.Bearing.Companion.West
 import org.maplibre.spatialk.units.DMS.Degrees
 import org.maplibre.spatialk.units.extensions.arcMinutes
@@ -41,9 +41,9 @@ class BearingTest {
     @Test
     fun testBearingOverflow() {
         assertBearingEquals(East, North + 450.degrees)
-        assertBearingEquals(NorthEast, East + 675.degrees)
+        assertBearingEquals(Northeast, East + 675.degrees)
         assertBearingEquals(West, North - 90.degrees)
-        assertBearingEquals(NorthEast, East - 405.degrees)
+        assertBearingEquals(Northeast, East - 405.degrees)
         assertBearingEquals(North, North + 360.degrees)
         assertBearingEquals(North, North + 720.degrees)
     }
@@ -62,13 +62,13 @@ class BearingTest {
     @Test
     fun testSmallestRotation() {
         assertRotationEquals(90.degrees, North.smallestRotationTo(East))
-        assertRotationEquals(45.degrees, North.smallestRotationTo(NorthEast))
+        assertRotationEquals(45.degrees, North.smallestRotationTo(Northeast))
 
         assertRotationEquals((-90).degrees, East.smallestRotationTo(North))
-        assertRotationEquals((-45).degrees, NorthEast.smallestRotationTo(North))
+        assertRotationEquals((-45).degrees, Northeast.smallestRotationTo(North))
 
-        assertRotationEquals((-135).degrees, SouthEast.smallestRotationTo(North))
-        assertRotationEquals(135.degrees, SouthWest.smallestRotationTo(North))
+        assertRotationEquals((-135).degrees, Southeast.smallestRotationTo(North))
+        assertRotationEquals(135.degrees, Southwest.smallestRotationTo(North))
 
         assertRotationEquals(180.degrees, South.smallestRotationTo(North))
         assertRotationEquals(180.degrees, West.smallestRotationTo(East))
@@ -93,7 +93,7 @@ class BearingTest {
         assertEquals("S 90.00° E", East.toString())
         assertEquals("S 0.00° W", South.toString())
         assertEquals("N 90° W", West.toString(Degrees, 0))
-        assertEquals("N 45.0° E", NorthEast.toString(Degrees, 1))
+        assertEquals("N 45.0° E", Northeast.toString(Degrees, 1))
         assertEquals("N 10.00° E", (North + 10.degrees).toString())
         assertEquals("S 10.00° E", (North + 170.degrees).toString())
         assertEquals("S 10.00° W", (South + 10.degrees).toString())
@@ -106,7 +106,7 @@ class BearingTest {
         assertEquals("S 90° 0′ 0.00″ E", East.toDmsString())
         assertEquals("S 0° 0′ 0.00″ W", South.toDmsString())
         assertEquals("N 90° 0′ 0.00″ W", West.toDmsString())
-        assertEquals("N 45° 0′ 0.00″ E", NorthEast.toDmsString())
+        assertEquals("N 45° 0′ 0.00″ E", Northeast.toDmsString())
         assertEquals("N 10° 30′ 0.00″ E", (North + 10.degrees + 30.arcMinutes).toDmsString())
         assertEquals(
             "S 10° 30′ 30.5″ E",

@@ -12,6 +12,8 @@ import org.maplibre.spatialk.units.extensions.degrees
  * Represents an absolute bearing or heading, internally stored as a [Rotation] from [North] in the
  * range [0,360) degrees defined in the positive-clockwise direction when viewed from above (axis of
  * rotation is a vector pointing down).
+ *
+ * @see Rotation
  */
 @JvmInline
 public value class Bearing private constructor(private val rotationFromNorth: Rotation) {
@@ -57,8 +59,13 @@ public value class Bearing private constructor(private val rotationFromNorth: Ro
         return offset
     }
 
+    /** Returns a string representation of this bearing as a quadrant bearing. */
     override fun toString(): String = toString(Degrees)
 
+    /**
+     * Returns a string representation of this bearing as a quadrant bearing with the specified
+     * [unit] and [decimalPlaces].
+     */
     public fun toString(unit: RotationUnit = Degrees, decimalPlaces: Int = 2): String =
         when (this - North) {
             in 0.degrees..<90.degrees -> "N ${(this - North).toString(unit, decimalPlaces)} E"
@@ -81,15 +88,55 @@ public value class Bearing private constructor(private val rotationFromNorth: Ro
             else -> "N ${(North - this).toDmsString( decimalPlaces)} W"
         }
 
+    /** Companion object containing cardinal and intercardinal bearing directions. */
     public companion object {
+        /** North bearing. */
         public val North: Bearing = Bearing(0.degrees)
-        public val NorthEast: Bearing = Bearing(45.degrees)
+
+        /** North-northeast bearing. */
+        public val NorthNortheast: Bearing = Bearing(22.5.degrees)
+
+        /** Northeast bearing. */
+        public val Northeast: Bearing = Bearing(45.degrees)
+
+        /** East-northeast bearing. */
+        public val EastNortheast: Bearing = Bearing(67.5.degrees)
+
+        /** East bearing. */
         public val East: Bearing = Bearing(90.degrees)
-        public val SouthEast: Bearing = Bearing(135.degrees)
+
+        /** East-southeast bearing. */
+        public val EastSoutheast: Bearing = Bearing(112.5.degrees)
+
+        /** Southeast bearing. */
+        public val Southeast: Bearing = Bearing(135.degrees)
+
+        /** South-southeast bearing. */
+        public val SouthSoutheast: Bearing = Bearing(157.5.degrees)
+
+        /** South bearing. */
         public val South: Bearing = Bearing(180.degrees)
-        public val SouthWest: Bearing = Bearing(225.degrees)
+
+        /** South-southwest bearing. */
+        public val SouthSouthwest: Bearing = Bearing(202.5.degrees)
+
+        /** Southwest bearing. */
+        public val Southwest: Bearing = Bearing(225.degrees)
+
+        /** West-southwest bearing. */
+        public val WestSouthwest: Bearing = Bearing(247.5.degrees)
+
+        /** West bearing. */
         public val West: Bearing = Bearing(270.degrees)
-        public val NorthWest: Bearing = Bearing(315.degrees)
+
+        /** West-northwest bearing. */
+        public val WestNorthwest: Bearing = Bearing(292.5.degrees)
+
+        /** Northwest bearing. */
+        public val Northwest: Bearing = Bearing(315.degrees)
+
+        /** North-northwest bearing. */
+        public val NorthNorthwest: Bearing = Bearing(337.5.degrees)
 
         @JvmSynthetic
         internal fun of(rotationFromNorth: Rotation) = Bearing(rotationFromNorth.mod(360.degrees))
