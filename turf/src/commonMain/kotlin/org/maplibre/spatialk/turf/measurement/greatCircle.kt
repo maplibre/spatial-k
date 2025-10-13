@@ -10,11 +10,15 @@ import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.constants.NegativeAntimeridian
-import org.maplibre.spatialk.turf.constants.PositiveAntimeridian
-import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
-import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
+import org.maplibre.spatialk.units.extensions.degrees
+import org.maplibre.spatialk.units.extensions.inDegrees
 import org.maplibre.spatialk.units.extensions.inEarthRadians
+import org.maplibre.spatialk.units.extensions.inRadians
+import org.maplibre.spatialk.units.extensions.radians
+
+private const val PositiveAntimeridian = 180.0
+
+private const val NegativeAntimeridian = -180.0
 
 /**
  * Calculate great circles routes as [LineString]. Raises error when [from] and [to] are antipodes.
@@ -48,10 +52,10 @@ public fun greatCircle(
      * http://www.edwilliams.org/avform.htm#Intermediate
      */
     fun intermediateCoordinate(fraction: Double): Position {
-        val lon1 = degreesToRadians(from.longitude)
-        val lon2 = degreesToRadians(to.longitude)
-        val lat1 = degreesToRadians(from.latitude)
-        val lat2 = degreesToRadians(to.latitude)
+        val lon1 = from.longitude.degrees.inRadians
+        val lon2 = to.longitude.degrees.inRadians
+        val lat1 = from.latitude.degrees.inRadians
+        val lat2 = to.latitude.degrees.inRadians
 
         val a = sin((1 - fraction) * distance) / sin(distance)
         val b = sin(fraction * distance) / sin(distance)
@@ -59,8 +63,8 @@ public fun greatCircle(
         val y = a * cos(lat1) * sin(lon1) + b * cos(lat2) * sin(lon2)
         val z = a * sin(lat1) + b * sin(lat2)
 
-        val lat = radiansToDegrees(atan2(z, sqrt(x.pow(2) + y.pow(2))))
-        val lon = radiansToDegrees(atan2(y, x))
+        val lat = atan2(z, sqrt(x.pow(2) + y.pow(2))).radians.inDegrees
+        val lon = atan2(y, x).radians.inDegrees
         return Position(lon, lat)
     }
 

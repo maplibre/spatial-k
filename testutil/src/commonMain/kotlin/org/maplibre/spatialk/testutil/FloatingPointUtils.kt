@@ -5,6 +5,11 @@ import kotlin.test.assertEquals
 import kotlin.test.asserter
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.units.Bearing
+import org.maplibre.spatialk.units.Bearing.Companion.North
+import org.maplibre.spatialk.units.Rotation
+import org.maplibre.spatialk.units.extensions.degrees
+import org.maplibre.spatialk.units.extensions.inDegrees
 
 fun assertDoubleEquals(
     expected: Double,
@@ -20,6 +25,30 @@ fun assertDoubleEquals(
         },
         abs(expected - actual!!) <= epsilon,
     )
+}
+
+fun assertRotationEquals(
+    expected: Rotation,
+    actual: Rotation?,
+    epsilon: Rotation = 0.0001.degrees,
+    message: String? = null,
+) {
+    asserter.assertNotNull(null, actual)
+
+    assertDoubleEquals(expected.inDegrees, actual?.inDegrees, epsilon.inDegrees, message)
+    assertDoubleEquals(expected.inDegrees, actual?.inDegrees, epsilon.inDegrees, message)
+}
+
+fun assertBearingEquals(
+    expected: Bearing,
+    actual: Bearing?,
+    epsilon: Rotation = 0.0001.degrees,
+    message: String? = null,
+) {
+    asserter.assertNotNull(null, actual)
+
+    assertRotationEquals((expected - North), actual?.minus(North), epsilon, message)
+    assertRotationEquals((expected - North), actual?.minus(North), epsilon, message)
 }
 
 fun assertPositionEquals(

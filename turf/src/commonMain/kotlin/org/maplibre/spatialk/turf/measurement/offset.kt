@@ -7,18 +7,15 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmSynthetic
-import kotlin.math.asin
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.sin
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.turf.unitconversion.degreesToRadians
-import org.maplibre.spatialk.turf.unitconversion.radiansToDegrees
+import org.maplibre.spatialk.units.Bearing
+import org.maplibre.spatialk.units.Bearing.Companion.North
+import org.maplibre.spatialk.units.DMS.Degrees
 import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
-import org.maplibre.spatialk.units.extensions.inEarthRadians
-import org.maplibre.spatialk.units.extensions.toLength
+import org.maplibre.spatialk.units.RotationUnit
+import org.maplibre.spatialk.units.extensions.*
 
 /**
  * Takes a [Position] and calculates the location of a destination position given a distance
@@ -30,22 +27,22 @@ import org.maplibre.spatialk.units.extensions.toLength
  * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
  */
 @JvmSynthetic
-public fun Position.offset(distance: Length, bearing: Double): Position {
-    val longitude1 = degreesToRadians(longitude)
-    val latitude1 = degreesToRadians(latitude)
-    val bearingRad = degreesToRadians(bearing)
-    val radians = distance.inEarthRadians
+public fun Position.offset(distance: Length, bearing: Bearing): Position {
+    val longitude1 = this.longitude.degrees
+    val latitude1 = this.latitude.degrees
+    val bearingFromN = (bearing - North)
+    val radians = distance.inEarthRadians.radians
 
     val latitude2 =
-        asin(sin(latitude1) * cos(radians) + cos(latitude1) * sin(radians) * cos(bearingRad))
+        asin(sin(latitude1) * cos(radians) + cos(latitude1) * sin(radians) * cos(bearingFromN))
     val longitude2 =
         longitude1 +
             atan2(
-                sin(bearingRad) * sin(radians) * cos(latitude1),
+                sin(bearingFromN) * sin(radians) * cos(latitude1),
                 cos(radians) - sin(latitude1) * sin(latitude2),
             )
 
-    return Position(radiansToDegrees(longitude2), radiansToDegrees(latitude2))
+    return Position(longitude2.inDegrees, latitude2.inDegrees)
 }
 
 @PublishedApi
@@ -54,6 +51,8 @@ public fun Position.offset(distance: Length, bearing: Double): Position {
 internal fun offset(
     origin: Position,
     distance: Double,
-    unit: LengthUnit = Meters,
-    bearing: Int,
-): Position = origin.offset(distance.toLength(unit), bearing.toDouble())
+    distanceUnit: LengthUnit = Meters,
+    bearing: Double,
+    bearingUnit: RotationUnit = Degrees,
+): Position =
+    origin.offset(distance.toLength(distanceUnit), North + bearing.toRotation(bearingUnit))

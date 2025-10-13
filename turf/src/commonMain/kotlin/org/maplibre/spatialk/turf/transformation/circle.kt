@@ -11,9 +11,12 @@ import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.turf.measurement.computeBbox
 import org.maplibre.spatialk.turf.measurement.offset
+import org.maplibre.spatialk.units.Bearing
 import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
+import org.maplibre.spatialk.units.extensions.degrees
+import org.maplibre.spatialk.units.extensions.times
 import org.maplibre.spatialk.units.extensions.toLength
 
 /**
@@ -30,8 +33,11 @@ public fun circle(center: Position, radius: Length, steps: Int = 64): Polygon {
     require(radius.isPositive) { "radius must be a positive value" }
 
     val ring = buildList {
-        (0..steps).map { step -> add(center.offset(radius, (step * -360) / steps.toDouble())) }
-        add(center.offset(radius, 0.0))
+        (0..steps).map { step ->
+            val fraction = step.toDouble() / steps
+            add(center.offset(radius, Bearing.North - (360.degrees * fraction)))
+        }
+        add(center.offset(radius, Bearing.North))
     }
 
     return Polygon(coordinates = listOf(ring), bbox = computeBbox(ring))

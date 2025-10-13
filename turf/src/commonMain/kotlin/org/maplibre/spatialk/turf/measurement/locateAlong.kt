@@ -31,7 +31,7 @@ public fun LineString.locateAlong(distance: Length): Position {
                 val overshot = distance - travelled
                 return if (overshot.isZero) coordinate
                 else {
-                    val direction = coordinate.bearingTo(coordinates[i - 1]) - 180
+                    val direction = coordinates[i - 1].bearingTo(coordinate)
                     coordinate.offset(overshot, direction)
                 }
             }

@@ -5,12 +5,12 @@ package org.maplibre.spatialk.units.extensions
 import kotlin.experimental.ExperimentalTypeInference
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmSynthetic
-import org.maplibre.spatialk.units.Area
-import org.maplibre.spatialk.units.AreaUnit
-import org.maplibre.spatialk.units.Geodesy.Degrees
-import org.maplibre.spatialk.units.Geodesy.Minutes
-import org.maplibre.spatialk.units.Geodesy.Radians
-import org.maplibre.spatialk.units.Geodesy.Seconds
+import kotlin.math.pow
+import kotlin.math.roundToLong
+import org.maplibre.spatialk.units.*
+import org.maplibre.spatialk.units.DMS.ArcMinutes
+import org.maplibre.spatialk.units.DMS.ArcSeconds
+import org.maplibre.spatialk.units.DMS.Degrees
 import org.maplibre.spatialk.units.Imperial.Acres
 import org.maplibre.spatialk.units.Imperial.Cables
 import org.maplibre.spatialk.units.Imperial.Chains
@@ -33,32 +33,38 @@ import org.maplibre.spatialk.units.International.Centimeters
 import org.maplibre.spatialk.units.International.Kilometers
 import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.International.Millimeters
+import org.maplibre.spatialk.units.International.Radians
 import org.maplibre.spatialk.units.International.SquareCentimeters
 import org.maplibre.spatialk.units.International.SquareKilometers
 import org.maplibre.spatialk.units.International.SquareMeters
 import org.maplibre.spatialk.units.International.SquareMillimeters
-import org.maplibre.spatialk.units.Length
-import org.maplibre.spatialk.units.LengthUnit
 import org.maplibre.spatialk.units.Metric.Ares
 import org.maplibre.spatialk.units.Metric.Centiares
 import org.maplibre.spatialk.units.Metric.Decares
 import org.maplibre.spatialk.units.Metric.Deciares
+import org.maplibre.spatialk.units.Metric.Gradians
 import org.maplibre.spatialk.units.Metric.Hectares
 
 internal fun Double.toRoundedString(decimalPlaces: Int): String {
-    val str = toString().split('.', limit = 1)
-    val integerPart = str[0]
-    val decimalPart = str.getOrElse(1) { "0" }.take(decimalPlaces)
-    return integerPart + decimalPart
+    val mult = 10.0.pow(decimalPlaces)
+    val rounded = ((this * mult).roundToLong() / mult).toString()
+    val intPart = rounded.substringBefore('.')
+    if (decimalPlaces == 0) return intPart
+    val decimalPart = rounded.substringAfter('.', missingDelimiterValue = "").take(decimalPlaces)
+    return "$intPart.${decimalPart.padEnd(decimalPlaces, '0')}"
 }
 
 public operator fun Double.times(other: Length): Length = other * this
 
 public operator fun Double.times(other: Area): Area = other * this
 
+public operator fun Double.times(other: Rotation): Rotation = other * this
+
 public fun Double.toLength(unit: LengthUnit): Length = Length.of(this, unit)
 
 public fun Double.toArea(unit: AreaUnit): Area = Area.of(this, unit)
+
+public fun Double.toRotation(unit: RotationUnit): Rotation = Rotation.of(this, unit)
 
 @OptIn(ExperimentalTypeInference::class)
 @OverloadResolutionByLambdaReturnType
@@ -76,6 +82,15 @@ public inline fun <T> Iterable<T>.sumOf(selector: (T) -> Area): Area =
     fold(Area.Zero) { acc, t -> acc + selector(t) }
 
 @JvmName("sumArea") public fun Iterable<Area>.sum(): Area = fold(Area.Zero) { acc, t -> acc + t }
+
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+@JvmName("sumOfRotation")
+public inline fun <T> Iterable<T>.sumOf(selector: (T) -> Rotation): Rotation =
+    fold(Rotation.Zero) { acc, t -> acc + selector(t) }
+
+@JvmName("sumRotation")
+public fun Iterable<Rotation>.sum(): Rotation = fold(Rotation.Zero) { acc, t -> acc + t }
 
 // SI units - Length
 
@@ -153,43 +168,90 @@ public inline val Int.squareKilometers: Area
 public inline val Area.inSquareKilometers: Double
     get() = toDouble(SquareKilometers)
 
+// Rotation units
+
+public inline val Double.radians: Rotation
+    get() = toRotation(Radians)
+
+public inline val Int.radians: Rotation
+    get() = toDouble().toRotation(Radians)
+
+public inline val Rotation.inRadians: Double
+    get() = toDouble(Radians)
+
+public inline val Double.gradians: Rotation
+    get() = toRotation(Gradians)
+
+public inline val Int.gradians: Rotation
+    get() = toDouble().toRotation(Gradians)
+
+public inline val Rotation.inGradians: Double
+    get() = toDouble(Gradians)
+
+public inline val Double.degrees: Rotation
+    get() = toRotation(Degrees)
+
+public inline val Int.degrees: Rotation
+    get() = toDouble().toRotation(Degrees)
+
+public inline val Rotation.inDegrees: Double
+    get() = toDouble(Degrees)
+
+public inline val Double.arcMinutes: Rotation
+    get() = toRotation(ArcMinutes)
+
+public inline val Int.arcMinutes: Rotation
+    get() = toDouble().toRotation(ArcMinutes)
+
+public inline val Rotation.inArcMinutes: Double
+    get() = toDouble(ArcMinutes)
+
+public inline val Double.arcSeconds: Rotation
+    get() = toRotation(ArcSeconds)
+
+public inline val Int.arcSeconds: Rotation
+    get() = toDouble().toRotation(ArcSeconds)
+
+public inline val Rotation.inArcSeconds: Double
+    get() = toDouble(ArcSeconds)
+
 // Geodesy units - Length
 
 public inline val Double.earthRadians: Length
-    get() = toLength(Radians)
+    get() = toLength(Earth.Radians)
 
 public inline val Int.earthRadians: Length
-    get() = toDouble().toLength(Radians)
+    get() = toDouble().toLength(Earth.Radians)
 
 public inline val Length.inEarthRadians: Double
-    get() = toDouble(Radians)
+    get() = toDouble(Earth.Radians)
 
 public inline val Double.earthDegrees: Length
-    get() = toLength(Degrees)
+    get() = toLength(Earth.Degrees)
 
 public inline val Int.earthDegrees: Length
-    get() = toDouble().toLength(Degrees)
+    get() = toDouble().toLength(Earth.Degrees)
 
 public inline val Length.inEarthDegrees: Double
-    get() = toDouble(Degrees)
+    get() = toDouble(Earth.Degrees)
 
 public inline val Double.earthMinutes: Length
-    get() = toLength(Minutes)
+    get() = toLength(Earth.ArcMinutes)
 
 public inline val Int.earthMinutes: Length
-    get() = toDouble().toLength(Minutes)
+    get() = toDouble().toLength(Earth.ArcMinutes)
 
 public inline val Length.inEarthMinutes: Double
-    get() = toDouble(Minutes)
+    get() = toDouble(Earth.ArcMinutes)
 
 public inline val Double.earthSeconds: Length
-    get() = toLength(Seconds)
+    get() = toLength(Earth.ArcSeconds)
 
 public inline val Int.earthSeconds: Length
-    get() = toDouble().toLength(Seconds)
+    get() = toDouble().toLength(Earth.ArcSeconds)
 
 public inline val Length.inEarthSeconds: Double
-    get() = toDouble(Seconds)
+    get() = toDouble(Earth.ArcSeconds)
 
 // Metric units - Area
 
@@ -403,3 +465,19 @@ public inline val Int.acres: Area
 
 public inline val Area.inAcres: Double
     get() = toDouble(Acres)
+
+// Angle math
+
+public fun sin(x: Rotation): Double = kotlin.math.sin(x.inRadians)
+
+public fun cos(x: Rotation): Double = kotlin.math.cos(x.inRadians)
+
+public fun tan(x: Rotation): Double = kotlin.math.tan(x.inRadians)
+
+public fun asin(x: Double): Rotation = kotlin.math.asin(x).radians
+
+public fun acos(x: Double): Rotation = kotlin.math.acos(x).radians
+
+public fun atan(x: Double): Rotation = kotlin.math.atan(x).radians
+
+public fun atan2(y: Double, x: Double): Rotation = kotlin.math.atan2(y, x).radians

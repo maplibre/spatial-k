@@ -19,7 +19,9 @@ public final class org/maplibre/spatialk/units/Area : java/lang/Comparable {
 	public static final fun isPositive-impl (D)Z
 	public static final fun isZero-impl (D)Z
 	public static final fun minus-t9y-CaE (DD)D
+	public static final fun mod-t9y-CaE (DD)D
 	public static final fun plus-t9y-CaE (DD)D
+	public static final fun rem-t9y-CaE (DD)D
 	public static final fun roundToInt-impl (DLorg/maplibre/spatialk/units/AreaUnit;)I
 	public static final fun roundToLong-impl (DLorg/maplibre/spatialk/units/AreaUnit;)J
 	public static final fun times-OWkeucc (DD)D
@@ -51,13 +53,53 @@ public class org/maplibre/spatialk/units/AreaUnit : java/lang/Comparable, org/ma
 	public fun getSymbol ()Ljava/lang/String;
 }
 
-public final class org/maplibre/spatialk/units/Geodesy {
-	public static final field Degrees Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field INSTANCE Lorg/maplibre/spatialk/units/Geodesy;
-	public static final field Minutes Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field Radians Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field Seconds Lorg/maplibre/spatialk/units/LengthUnit;
+public final class org/maplibre/spatialk/units/Bearing {
+	public static final field Companion Lorg/maplibre/spatialk/units/Bearing$Companion;
+	public static final synthetic fun box-impl (D)Lorg/maplibre/spatialk/units/Bearing;
+	public static final fun clockwiseRotationTo-uP7kCNw (DD)D
 	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (DLjava/lang/Object;)Z
+	public static final fun equals-impl0 (DD)Z
+	public fun hashCode ()I
+	public static fun hashCode-impl (D)I
+	public static final fun minus-Kq4BSts (DD)D
+	public static final fun minus-uP7kCNw (DD)D
+	public static final fun plus-Kq4BSts (DD)D
+	public static final fun smallestRotationTo-uP7kCNw (DD)D
+	public static final fun toDmsString-impl (DI)Ljava/lang/String;
+	public static synthetic fun toDmsString-impl$default (DIILjava/lang/Object;)Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (D)Ljava/lang/String;
+	public static final fun toString-impl (DLorg/maplibre/spatialk/units/RotationUnit;I)Ljava/lang/String;
+	public static synthetic fun toString-impl$default (DLorg/maplibre/spatialk/units/RotationUnit;IILjava/lang/Object;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()D
+}
+
+public final class org/maplibre/spatialk/units/Bearing$Companion {
+	public final fun getEast-lyDGrjM ()D
+	public final fun getNorth-lyDGrjM ()D
+	public final fun getNorthEast-lyDGrjM ()D
+	public final fun getNorthWest-lyDGrjM ()D
+	public final fun getSouth-lyDGrjM ()D
+	public final fun getSouthEast-lyDGrjM ()D
+	public final fun getSouthWest-lyDGrjM ()D
+	public final fun getWest-lyDGrjM ()D
+}
+
+public final class org/maplibre/spatialk/units/DMS {
+	public static final field ArcMinutes Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field ArcSeconds Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field Degrees Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/DMS;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/Earth : org/maplibre/spatialk/units/World {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/Earth;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEquatorRadius-_8uq4Z0 ()D
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -93,6 +135,7 @@ public final class org/maplibre/spatialk/units/International {
 	public static final field Kilometers Lorg/maplibre/spatialk/units/LengthUnit;
 	public static final field Meters Lorg/maplibre/spatialk/units/LengthUnit;
 	public static final field Millimeters Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Radians Lorg/maplibre/spatialk/units/RotationUnit;
 	public static final field SquareCentimeters Lorg/maplibre/spatialk/units/AreaUnit;
 	public static final field SquareKilometers Lorg/maplibre/spatialk/units/AreaUnit;
 	public static final field SquareMeters Lorg/maplibre/spatialk/units/AreaUnit;
@@ -122,7 +165,9 @@ public final class org/maplibre/spatialk/units/Length : java/lang/Comparable {
 	public static final fun isPositive-impl (D)Z
 	public static final fun isZero-impl (D)Z
 	public static final fun minus-kw6D2l4 (DD)D
+	public static final fun mod-kw6D2l4 (DD)D
 	public static final fun plus-kw6D2l4 (DD)D
+	public static final fun rem-kw6D2l4 (DD)D
 	public static final fun roundToInt-impl (DLorg/maplibre/spatialk/units/LengthUnit;)I
 	public static final fun roundToLong-impl (DLorg/maplibre/spatialk/units/LengthUnit;)J
 	public static final fun times-QXbdlf8 (DD)D
@@ -133,6 +178,8 @@ public final class org/maplibre/spatialk/units/Length : java/lang/Comparable {
 	public static fun toString-impl (D)Ljava/lang/String;
 	public static final fun toString-impl (DLorg/maplibre/spatialk/units/LengthUnit;I)Ljava/lang/String;
 	public static synthetic fun toString-impl$default (DLorg/maplibre/spatialk/units/LengthUnit;IILjava/lang/Object;)Ljava/lang/String;
+	public static final fun unaryMinus-_8uq4Z0 (D)D
+	public static final fun unaryPlus-_8uq4Z0 (D)D
 	public final synthetic fun unbox-impl ()D
 }
 
@@ -161,11 +208,70 @@ public final class org/maplibre/spatialk/units/Metric {
 	public static final field Centiares Lorg/maplibre/spatialk/units/AreaUnit;
 	public static final field Decares Lorg/maplibre/spatialk/units/AreaUnit;
 	public static final field Deciares Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Gradians Lorg/maplibre/spatialk/units/RotationUnit;
 	public static final field Hectares Lorg/maplibre/spatialk/units/AreaUnit;
 	public static final field INSTANCE Lorg/maplibre/spatialk/units/Metric;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/Rotation : java/lang/Comparable {
+	public static final field Companion Lorg/maplibre/spatialk/units/Rotation$Companion;
+	public static final synthetic fun box-impl (D)Lorg/maplibre/spatialk/units/Rotation;
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo-FBJBH8g (D)I
+	public static fun compareTo-FBJBH8g (DD)I
+	public static final fun div-5AGCAgg (DD)D
+	public static final fun div-FBJBH8g (DD)D
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (DLjava/lang/Object;)Z
+	public static final fun equals-impl0 (DD)Z
+	public static final fun getAbsoluteValue-LX175cE (D)D
+	public fun hashCode ()I
+	public static fun hashCode-impl (D)I
+	public static final fun isFinite-impl (D)Z
+	public static final fun isInfinite-impl (D)Z
+	public static final fun isNegative-impl (D)Z
+	public static final fun isPositive-impl (D)Z
+	public static final fun isZero-impl (D)Z
+	public static final fun minus-G5e4Kxo (DD)D
+	public static final fun mod-G5e4Kxo (DD)D
+	public static final fun plus-G5e4Kxo (DD)D
+	public static final fun plus-nYcFxiw (DD)D
+	public static final fun rem-G5e4Kxo (DD)D
+	public static final fun roundToInt-impl (DLorg/maplibre/spatialk/units/RotationUnit;)I
+	public static final fun roundToLong-impl (DLorg/maplibre/spatialk/units/RotationUnit;)J
+	public static final fun times-5AGCAgg (DD)D
+	public static final fun toDmsString-impl (DI)Ljava/lang/String;
+	public static synthetic fun toDmsString-impl$default (DIILjava/lang/Object;)Ljava/lang/String;
+	public static final fun toDouble-impl (DLorg/maplibre/spatialk/units/RotationUnit;)D
+	public static final fun toFloat-impl (DLorg/maplibre/spatialk/units/RotationUnit;)F
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (D)Ljava/lang/String;
+	public static final fun toString-impl (DLorg/maplibre/spatialk/units/RotationUnit;I)Ljava/lang/String;
+	public static synthetic fun toString-impl$default (DLorg/maplibre/spatialk/units/RotationUnit;IILjava/lang/Object;)Ljava/lang/String;
+	public static final fun unaryMinus-LX175cE (D)D
+	public static final fun unaryPlus-LX175cE (D)D
+	public final synthetic fun unbox-impl ()D
+}
+
+public final class org/maplibre/spatialk/units/Rotation$Companion {
+	public final fun getMaxValue-LX175cE ()D
+	public final fun getMinValue-LX175cE ()D
+	public final fun getNegativeInfinity-LX175cE ()D
+	public final fun getPositiveInfinity-LX175cE ()D
+	public final fun getZero-LX175cE ()D
+}
+
+public class org/maplibre/spatialk/units/RotationUnit : java/lang/Comparable, org/maplibre/spatialk/units/UnitOfMeasure {
+	public fun <init> (DLjava/lang/String;)V
+	public final fun asLengthUnitOn (Lorg/maplibre/spatialk/units/World;)Lorg/maplibre/spatialk/units/LengthUnit;
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public final fun compareTo (Lorg/maplibre/spatialk/units/RotationUnit;)I
+	public fun format (DI)Ljava/lang/String;
+	public final fun getRadiansPerUnit ()D
+	public fun getSymbol ()Ljava/lang/String;
 }
 
 public abstract interface class org/maplibre/spatialk/units/UnitOfMeasure {
@@ -179,9 +285,27 @@ public final class org/maplibre/spatialk/units/UnitOfMeasure$DefaultImpls {
 	public static synthetic fun format$default (Lorg/maplibre/spatialk/units/UnitOfMeasure;DIILjava/lang/Object;)Ljava/lang/String;
 }
 
+public abstract class org/maplibre/spatialk/units/World {
+	public final field ArcMinutes Lorg/maplibre/spatialk/units/LengthUnit;
+	public final field ArcSeconds Lorg/maplibre/spatialk/units/LengthUnit;
+	public final field Degrees Lorg/maplibre/spatialk/units/LengthUnit;
+	public final field Radians Lorg/maplibre/spatialk/units/LengthUnit;
+	public synthetic fun <init> (DLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getAverageRadius-_8uq4Z0 ()D
+}
+
 public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt {
+	public static final fun acos (D)D
+	public static final fun asin (D)D
+	public static final fun atan (D)D
+	public static final fun atan2 (DD)D
+	public static final fun cos-FBJBH8g (D)D
 	public static final fun getAcres (D)D
 	public static final fun getAcres (I)D
+	public static final fun getArcMinutes (D)D
+	public static final fun getArcMinutes (I)D
+	public static final fun getArcSeconds (D)D
+	public static final fun getArcSeconds (I)D
 	public static final fun getAres (D)D
 	public static final fun getAres (I)D
 	public static final fun getCables (D)D
@@ -196,6 +320,8 @@ public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt 
 	public static final fun getDecares (I)D
 	public static final fun getDeciares (D)D
 	public static final fun getDeciares (I)D
+	public static final fun getDegrees (D)D
+	public static final fun getDegrees (I)D
 	public static final fun getEarthDegrees (D)D
 	public static final fun getEarthDegrees (I)D
 	public static final fun getEarthMinutes (D)D
@@ -210,9 +336,13 @@ public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt 
 	public static final fun getFeet (I)D
 	public static final fun getFurlongs (D)D
 	public static final fun getFurlongs (I)D
+	public static final fun getGradians (D)D
+	public static final fun getGradians (I)D
 	public static final fun getHectares (D)D
 	public static final fun getHectares (I)D
 	public static final fun getInAcres-g7vxaWU (D)D
+	public static final fun getInArcMinutes-FBJBH8g (D)D
+	public static final fun getInArcSeconds-FBJBH8g (D)D
 	public static final fun getInAres-g7vxaWU (D)D
 	public static final fun getInCables-z3ishhw (D)D
 	public static final fun getInCentiares-g7vxaWU (D)D
@@ -220,6 +350,7 @@ public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt 
 	public static final fun getInChains-z3ishhw (D)D
 	public static final fun getInDecares-g7vxaWU (D)D
 	public static final fun getInDeciares-g7vxaWU (D)D
+	public static final fun getInDegrees-FBJBH8g (D)D
 	public static final fun getInEarthDegrees-z3ishhw (D)D
 	public static final fun getInEarthMinutes-z3ishhw (D)D
 	public static final fun getInEarthRadians-z3ishhw (D)D
@@ -227,6 +358,7 @@ public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt 
 	public static final fun getInFathoms-z3ishhw (D)D
 	public static final fun getInFeet-z3ishhw (D)D
 	public static final fun getInFurlongs-z3ishhw (D)D
+	public static final fun getInGradians-FBJBH8g (D)D
 	public static final fun getInHectares-g7vxaWU (D)D
 	public static final fun getInInches-z3ishhw (D)D
 	public static final fun getInKilometers-z3ishhw (D)D
@@ -236,6 +368,7 @@ public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt 
 	public static final fun getInMiles-z3ishhw (D)D
 	public static final fun getInMillimeters-z3ishhw (D)D
 	public static final fun getInNauticalMiles-z3ishhw (D)D
+	public static final fun getInRadians-FBJBH8g (D)D
 	public static final fun getInRods-z3ishhw (D)D
 	public static final fun getInSquareCentimeters-g7vxaWU (D)D
 	public static final fun getInSquareFeet-g7vxaWU (D)D
@@ -263,6 +396,8 @@ public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt 
 	public static final fun getMillimeters (I)D
 	public static final fun getNauticalMiles (D)D
 	public static final fun getNauticalMiles (I)D
+	public static final fun getRadians (D)D
+	public static final fun getRadians (I)D
 	public static final fun getRods (D)D
 	public static final fun getRods (I)D
 	public static final fun getSquareCentimeters (D)D
@@ -285,18 +420,25 @@ public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt 
 	public static final fun getSquareYards (I)D
 	public static final fun getYards (D)D
 	public static final fun getYards (I)D
+	public static final fun sin-FBJBH8g (D)D
 	public static final fun sumArea (Ljava/lang/Iterable;)D
 	public static final fun sumLength (Ljava/lang/Iterable;)D
 	public static final fun sumOfArea (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;)D
 	public static final fun sumOfLength (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;)D
+	public static final fun sumOfRotation (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;)D
+	public static final fun sumRotation (Ljava/lang/Iterable;)D
+	public static final fun tan-FBJBH8g (D)D
 	public static final fun times-DQw0L0M (DD)D
+	public static final fun times-EFOIjWM (DD)D
 	public static final fun times-NY0MKA4 (DD)D
 	public static final fun toArea (DLorg/maplibre/spatialk/units/AreaUnit;)D
 	public static final fun toLength (DLorg/maplibre/spatialk/units/LengthUnit;)D
+	public static final fun toRotation (DLorg/maplibre/spatialk/units/RotationUnit;)D
 }
 
 public final class org/maplibre/spatialk/units/extensions/Utils {
 	public static final fun convert (DLorg/maplibre/spatialk/units/AreaUnit;Lorg/maplibre/spatialk/units/AreaUnit;)D
 	public static final fun convert (DLorg/maplibre/spatialk/units/LengthUnit;Lorg/maplibre/spatialk/units/LengthUnit;)D
+	public static final fun convert (DLorg/maplibre/spatialk/units/RotationUnit;Lorg/maplibre/spatialk/units/RotationUnit;)D
 }
 

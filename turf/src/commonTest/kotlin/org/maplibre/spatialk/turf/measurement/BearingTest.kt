@@ -2,7 +2,9 @@ package org.maplibre.spatialk.turf.measurement
 
 import kotlin.test.Test
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.testutil.assertDoubleEquals
+import org.maplibre.spatialk.testutil.assertBearingEquals
+import org.maplibre.spatialk.units.Bearing.Companion.North
+import org.maplibre.spatialk.units.extensions.degrees
 
 class BearingTest {
 
@@ -11,7 +13,15 @@ class BearingTest {
         val start = Position(-75.0, 45.0)
         val end = Position(20.0, 60.0)
 
-        assertDoubleEquals(37.75, start.bearingTo(end), 0.01, "Initial Bearing")
-        assertDoubleEquals(120.01, start.bearingTo(end, final = true), 0.01, "Final Bearing")
+        assertBearingEquals(
+            North + 37.75495.degrees,
+            start.bearingTo(end),
+            message = "Initial Bearing",
+        )
+        assertBearingEquals(
+            North + 120.01405.degrees,
+            start.bearingTo(end, final = true),
+            message = "Final Bearing",
+        )
     }
 }
