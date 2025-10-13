@@ -1,10 +1,10 @@
 # Spatial K
 
-[![Maven Central Version](https://img.shields.io/maven-central/v/org.maplibre.spatialk/spatial-k?label=Maven)](https://central.sonatype.com/namespace/org.maplibre.spatialk)
+[![Maven Central Version](https://img.shields.io/maven-central/v/org.maplibre.spatialk/geojson?label=Maven)](https://central.sonatype.com/namespace/org.maplibre.spatialk)
 [![License](https://img.shields.io/github/license/maplibre/spatial-k?label=License)](https://github.com/maplibre/spatial-k/blob/main/LICENSE)
 [![Kotlin Version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaplibre%2Fspatial-k%2Frefs%2Fheads%2Fmain%2Fgradle%2Flibs.versions.toml&query=versions.kotlin&prefix=v&logo=kotlin&label=Kotlin)](./gradle/libs.versions.toml)
-[![Documentation](https://img.shields.io/badge/Documentation-blue?logo=MaterialForMkDocs&logoColor=white)](https://maplibre.org/maplibre/spatialk/)
-[![API Reference](https://img.shields.io/badge/API_Reference-blue?logo=Kotlin&logoColor=white)](https://maplibre.org/maplibre/spatialk/api/)
+[![Documentation](https://img.shields.io/badge/Documentation-blue?logo=MaterialForMkDocs&logoColor=white)](https://maplibre.org/spatial-k/)
+[![API Reference](https://img.shields.io/badge/API_Reference-blue?logo=Kotlin&logoColor=white)](https://maplibre.org/spatial-k/api/)
 [![Slack](https://img.shields.io/badge/Slack-4A154B?logo=slack&logoColor=white)](https://osmus.slack.com/archives/maplibre)
 
 ## Introduction
