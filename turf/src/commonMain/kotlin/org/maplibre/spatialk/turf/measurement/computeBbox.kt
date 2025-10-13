@@ -15,6 +15,13 @@ import org.maplibre.spatialk.turf.coordinatemutation.flattenCoordinates
  */
 public fun Geometry.computeBbox(): BoundingBox = computeBbox(this.flattenCoordinates())
 
+/**
+ * Computes the bounding box that encompasses all given coordinates.
+ *
+ * @param coordinates List of positions to compute the bounding box for.
+ * @return A [BoundingBox] that covers all the coordinates.
+ * @throws IllegalArgumentException if coordinates is empty or contains non-finite values.
+ */
 public fun computeBbox(coordinates: List<Position>): BoundingBox {
     require(coordinates.isNotEmpty()) { "coordinates must not be empty" }
     val coordinates =
@@ -38,6 +45,16 @@ public fun computeBbox(coordinates: List<Position>): BoundingBox {
     return BoundingBox(coordinates[0], coordinates[1], coordinates[2], coordinates[3])
 }
 
+/**
+ * Returns a copy of this GeoJSON object with a computed bounding box.
+ *
+ * For [FeatureCollection] and [GeometryCollection], computes the bounding box from all contained
+ * coordinates. For [Feature], uses the geometry's bounding box. For other types, returns the object
+ * unchanged.
+ *
+ * @return A copy of this object with the bbox property set to the computed bounding box, or null if
+ *   there are no coordinates.
+ */
 public inline fun <reified T : GeoJsonObject> T.withComputedBbox(): T =
     when (this) {
         is FeatureCollection<*, *> -> {

@@ -67,6 +67,15 @@ public fun distance(from: Position, to: LineString): Length {
     return distance
 }
 
+/**
+ * Calculates the distance between a given line and the nearest point on the line to a position.
+ *
+ * This is a convenience function equivalent to calling `distance(to, from)`.
+ *
+ * @param from line to calculate from
+ * @param to point to calculate to
+ * @return distance between the line and the point
+ */
 @JvmSynthetic
 @JvmName("distanceAsLength")
 public fun distance(from: LineString, to: Position): Length = distance(to, from)

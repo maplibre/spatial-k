@@ -26,7 +26,7 @@ public fun intersect(line1: LineString, line2: LineString): List<Position> {
 }
 
 /**
- * Find a point that intersects LineStrings with two coordinates each
+ * Find a point that intersects LineStrings with two coordinates each.
  *
  * @param line1 A [LineString] (must contain exactly 2 coordinates)
  * @param line2 A [LineString] (must contain exactly 2 coordinates)
