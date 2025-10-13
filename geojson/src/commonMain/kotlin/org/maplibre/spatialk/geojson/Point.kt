@@ -33,6 +33,7 @@ constructor(
      * @param altitude The altitude of the [Point], or null if not specified.
      * @param bbox The [BoundingBox] of this [Point].
      */
+    @JvmOverloads
     public constructor(
         longitude: Double,
         latitude: Double,

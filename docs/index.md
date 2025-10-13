@@ -6,19 +6,23 @@
 # Spatial K
 
 Spatial K is a set of libraries for working with geospatial data in Kotlin,
-including an implementation of GeoJson and a port of Turfjs written in pure
-Kotlin. It supports Kotlin Multiplatform projects and also features a Kotlin DSL
-for building GeoJson objects.
+including an implementation of GeoJSON and a port of Turf.js written in pure
+Kotlin. It supports Kotlin Multiplatform and Java projects and features a Kotlin
+DSL for building GeoJSON objects.
+
+See the [API Reference](api/index.html) for detailed documentation.
 
 ## Modules
 
-- [`geojson`](./geojson/index.md) - GeoJson implementation
+- [`geojson`](./geojson/index.md) - GeoJSON implementation and DSL
 - [`turf`](./turf/index.md) - Turf.js port
 - [`units`](./units/index.md) - Units of measure
 
 ### Snapshots
 
-Snapshot builds are available on Sonatype.
+![Sonatype Snapshots](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Forg%2Fmaplibre%2Fspatialk%2Fgeojson%2Fmaven-metadata.xml&label=Snapshot)
+
+Snapshot builds are available on Sonatype:
 
 ```kotlin
 repositories {
@@ -26,7 +30,13 @@ repositories {
         url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
     }
 }
+
+dependencies {
+    implementation("org.maplibre.spatialk:geojson:VERSION-SNAPSHOT")
+}
 ```
+
+Note: Snapshots are unstable and may change without notice.
 
 ## Supported targets
 

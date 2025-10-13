@@ -432,6 +432,8 @@ public final class org/maplibre/spatialk/geojson/MultiPolygon$Companion {
 
 public final class org/maplibre/spatialk/geojson/Point : org/maplibre/spatialk/geojson/PointGeometry, org/maplibre/spatialk/geojson/SingleGeometry {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/Point$Companion;
+	public fun <init> (DD)V
+	public fun <init> (DDLjava/lang/Double;)V
 	public fun <init> (DDLjava/lang/Double;Lorg/maplibre/spatialk/geojson/BoundingBox;)V
 	public synthetic fun <init> (DDLjava/lang/Double;Lorg/maplibre/spatialk/geojson/BoundingBox;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun <init> (Lorg/maplibre/spatialk/geojson/Position;)V
