@@ -15,7 +15,7 @@ import org.maplibre.spatialk.units.extensions.*
 
 /**
  * Takes two positions and finds the geographic bearing between them, i.e., the angle measured in
- * degrees from the north line (0 degrees)
+ * degrees from the north line.
  *
  * @param to ending point
  * @param final calculates the final bearing if true
