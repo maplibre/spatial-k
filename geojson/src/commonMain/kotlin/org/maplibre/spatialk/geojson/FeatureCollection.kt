@@ -23,12 +23,12 @@ import org.maplibre.spatialk.geojson.serialization.FeatureCollectionSerializer
  * @property features The collection of [Feature] objects stored in this [FeatureCollection]
  */
 @Serializable(with = FeatureCollectionSerializer::class)
-public data class FeatureCollection<out T : Geometry?, out P : @Serializable Any?>
+public data class FeatureCollection<out G : Geometry?, out P : @Serializable Any?>
 @JvmOverloads
 constructor(
-    public val features: List<Feature<T, P>> = emptyList(),
+    public val features: List<Feature<G, P>> = emptyList(),
     override val bbox: BoundingBox? = null,
-) : Collection<Feature<T, P>> by features, GeoJsonObject {
+) : Collection<Feature<G, P>> by features, GeoJsonObject {
     /**
      * Constructs a [FeatureCollection] from a vararg of [Feature] objects.
      *
@@ -37,7 +37,7 @@ constructor(
      */
     @JvmOverloads
     public constructor(
-        vararg features: Feature<T, P>,
+        vararg features: Feature<G, P>,
         bbox: BoundingBox? = null,
     ) : this(features.toMutableList(), bbox)
 
@@ -53,9 +53,9 @@ constructor(
          */
         @JvmSynthetic
         @JvmName("inlineFromJson")
-        public inline fun <reified T : Geometry?, reified P : @Serializable Any?> fromJson(
+        public inline fun <reified G : Geometry?, reified P : @Serializable Any?> fromJson(
             @Language("json") json: String
-        ): FeatureCollection<T, P> = GeoJson.decodeFromString(json)
+        ): FeatureCollection<G, P> = GeoJson.decodeFromString(json)
 
         /**
          * Deserializes a [FeatureCollection] from a JSON string, or returns null on failure.
@@ -65,9 +65,9 @@ constructor(
          */
         @JvmSynthetic
         @JvmName("inlineFromJsonOrNull")
-        public inline fun <reified T : Geometry?, reified P : @Serializable Any?> fromJsonOrNull(
+        public inline fun <reified G : Geometry?, reified P : @Serializable Any?> fromJsonOrNull(
             @Language("json") json: String
-        ): FeatureCollection<T, P>? = GeoJson.decodeFromStringOrNull(json)
+        ): FeatureCollection<G, P>? = GeoJson.decodeFromStringOrNull(json)
 
         // Publish for Java below; Kotlin should use the inline reified versions above
 
