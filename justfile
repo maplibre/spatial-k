@@ -11,6 +11,9 @@ pre-commit-install:
 pre-commit-uninstall:
     pre-commit uninstall
 
+detekt:
+    detekt -c detekt.yml
+
 format:
     pre-commit run --all-files --hook-stage manual || true
 

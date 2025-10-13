@@ -3,25 +3,35 @@ package org.maplibre.spatialk.geojson
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.MultiLineStringSerializer
 
 /**
- * @throws IllegalArgumentException if any of the position lists is not a valid line string
- * @see <a href="https://tools.ietf.org/html/rfc7946#section-3.1.5">
- *   https://tools.ietf.org/html/rfc7946#section-3.1.5</a>
+ * A [MultiLineString] geometry represents multiple curves in coordinate space.
+ *
+ * See [RFC 7946 Section 3.1.5](https://tools.ietf.org/html/rfc7946#section-3.1.5) for the full
+ * specification.
+ *
+ * @throws IllegalArgumentException if any of the [Position] lists is not a valid [LineString]
  * @see LineString
  */
 @Serializable(with = MultiLineStringSerializer::class)
 public data class MultiLineString
 @JvmOverloads
-constructor(public val coordinates: List<List<Position>>, override val bbox: BoundingBox? = null) :
-    MultiGeometry, LineStringGeometry, Collection<LineString> {
+constructor(
+    /** The coordinates of this geometry. */
+    public val coordinates: List<List<Position>>,
+    /** The bounding box of this geometry. */
+    override val bbox: BoundingBox? = null,
+) : MultiGeometry, LineStringGeometry, Collection<LineString> {
 
     /**
-     * Create a MultiLineString by a number of lists of [Position]s.
+     * Create a [MultiLineString] by a number of lists of [Position] objects.
      *
-     * @throws IllegalArgumentException if any of the position lists is not a valid line string
+     * @param coordinates The lists of [Position] objects that make up the [LineString] objects.
+     * @param bbox The [BoundingBox] of this geometry.
+     * @throws IllegalArgumentException if any of the [Position] lists is not a valid [LineString]
      */
     @JvmOverloads
     public constructor(
@@ -29,7 +39,14 @@ constructor(public val coordinates: List<List<Position>>, override val bbox: Bou
         bbox: BoundingBox? = null,
     ) : this(coordinates.toList(), bbox)
 
-    /** Create a MultiLineString by a number of [LineString]s. */
+    /**
+     * Create a [MultiLineString] by a number of [LineString] objects.
+     *
+     * @param lineStrings The [LineString] objects that make up this multi-line string.
+     * @param bbox The [BoundingBox] of this geometry.
+     * @throws IllegalArgumentException if any of the [LineString] objects contains fewer than 2
+     *   [Position] objects.
+     */
     @JvmOverloads
     public constructor(
         vararg lineStrings: LineString,
@@ -37,11 +54,13 @@ constructor(public val coordinates: List<List<Position>>, override val bbox: Bou
     ) : this(lineStrings.map { it.coordinates }, bbox)
 
     /**
-     * Create a MultiLineString by an array (= line strings) of arrays (= positions) where each
-     * position is represented by a [DoubleArray].
+     * Create a [MultiLineString] by an array (= [LineString] objects) of arrays (= [Position]
+     * objects) where each [Position] is represented by a [DoubleArray].
      *
-     * @throws IllegalArgumentException if any of the position lists is not a valid line string or
-     *   any of the arrays of doubles does not represent a valid position.
+     * @param coordinates The array of arrays of double arrays representing [LineString] objects.
+     * @param bbox The [BoundingBox] of this geometry.
+     * @throws IllegalArgumentException if any of the [Position] lists is not a valid [LineString]
+     *   or any of the arrays of doubles does not represent a valid [Position].
      */
     @JvmOverloads
     public constructor(
@@ -70,13 +89,34 @@ constructor(public val coordinates: List<List<Position>>, override val bbox: Bou
     override fun containsAll(elements: Collection<LineString>): Boolean =
         coordinates.containsAll(elements.map { it.coordinates })
 
+    /**
+     * Get the line string at the specified index.
+     *
+     * @param index The index of the line string to retrieve.
+     * @return The line string at the specified index.
+     */
     public operator fun get(index: Int): LineString = LineString(coordinates[index])
 
+    /** Factory methods for creating and serializing [MultiLineString] objects. */
     public companion object {
+        /**
+         * Deserialize a [MultiLineString] from a JSON string.
+         *
+         * @param json The JSON string to parse.
+         * @return The deserialized [MultiLineString].
+         * @throws SerializationException if the JSON string is invalid or cannot be deserialized.
+         * @throws IllegalArgumentException if the geometry does not meet structural requirements.
+         */
         @JvmStatic
         public fun fromJson(@Language("json") json: String): MultiLineString =
             GeoJson.decodeFromString(json)
 
+        /**
+         * Deserialize a [MultiLineString] from a JSON string, or null if parsing fails.
+         *
+         * @param json The JSON string to parse.
+         * @return The deserialized [MultiLineString], or null if parsing fails.
+         */
         @JvmStatic
         public fun fromJsonOrNull(@Language("json") json: String): MultiLineString? =
             GeoJson.decodeFromStringOrNull(json)

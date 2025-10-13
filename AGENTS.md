@@ -41,6 +41,8 @@
 - Mobile/browser tests disabled due to file system resource loading limitations
 - For floating-point comparisons in tests, use helpers from `testutil` instead
   of `assertEquals()` to handle platform-specific precision differences
+- When writing KDoc comments, prefer adding imports over writing fully qualified
+  names
 
 ## Commit Guidelines
 

@@ -1,0 +1,30 @@
+config:
+    validation: true
+    warningsAsErrors: false
+    excludes: ""
+
+console-reports:
+    active: false
+
+comments:
+    EndOfSentenceFormat:
+        active: true
+        excludes: &excludes
+            - "**/commonTest/**"
+            - "**/jvmTest/**"
+            - "**/testutil/**"
+            - "**/benchmark/**"
+            - "**/turf/**" # TODO remove
+            - "**/units/**" # TODO remove
+    KDocReferencesNonPublicProperty:
+        active: true
+        excludes: *excludes
+    UndocumentedPublicClass:
+        active: true
+        excludes: *excludes
+    UndocumentedPublicFunction:
+        active: true
+        excludes: *excludes
+    UndocumentedPublicProperty:
+        active: true
+        excludes: *excludes
