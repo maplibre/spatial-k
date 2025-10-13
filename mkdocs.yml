@@ -11,15 +11,14 @@ edit_uri: edit/main/docs/docs/
 copyright: "Copyright &copy; 2025 MapLibre Contributors"
 
 nav:
-    - "Introduction": index.md
-    - Modules:
-          - GeoJson:
-                - geojson/index.md
-          - Turf:
-                - turf/index.md
-                - "Ported Functions": turf/ported-functions.md
-          - Units:
-                - units/index.md
+    - Introduction: index.md
+    - GeoJson:
+          - geojson/index.md
+    - Turf:
+          - turf/index.md
+          - "Ported Functions": turf/ported-functions.md
+    - Units:
+          - units/index.md
     - "API Reference": api/index.html
 
 theme:
