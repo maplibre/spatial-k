@@ -4,7 +4,13 @@ config:
     excludes: ""
 
 console-reports:
-    active: false
+    active: true
+    exclude:
+        - "ProjectStatisticsReport"
+        - "ComplexityReport"
+        - "NotificationReport"
+        - "FindingsReport"
+        - "FileBasedFindingsReport"
 
 comments:
     EndOfSentenceFormat:
@@ -15,7 +21,6 @@ comments:
             - "**/testutil/**"
             - "**/benchmark/**"
             - "**/turf/**" # TODO remove
-            - "**/units/**" # TODO remove
     KDocReferencesNonPublicProperty:
         active: true
         excludes: *excludes

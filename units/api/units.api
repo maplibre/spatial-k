@@ -77,13 +77,21 @@ public final class org/maplibre/spatialk/units/Bearing {
 
 public final class org/maplibre/spatialk/units/Bearing$Companion {
 	public final fun getEast-lyDGrjM ()D
+	public final fun getEastNortheast-lyDGrjM ()D
+	public final fun getEastSoutheast-lyDGrjM ()D
 	public final fun getNorth-lyDGrjM ()D
-	public final fun getNorthEast-lyDGrjM ()D
-	public final fun getNorthWest-lyDGrjM ()D
+	public final fun getNorthNortheast-lyDGrjM ()D
+	public final fun getNorthNorthwest-lyDGrjM ()D
+	public final fun getNortheast-lyDGrjM ()D
+	public final fun getNorthwest-lyDGrjM ()D
 	public final fun getSouth-lyDGrjM ()D
-	public final fun getSouthEast-lyDGrjM ()D
-	public final fun getSouthWest-lyDGrjM ()D
+	public final fun getSouthSoutheast-lyDGrjM ()D
+	public final fun getSouthSouthwest-lyDGrjM ()D
+	public final fun getSoutheast-lyDGrjM ()D
+	public final fun getSouthwest-lyDGrjM ()D
 	public final fun getWest-lyDGrjM ()D
+	public final fun getWestNorthwest-lyDGrjM ()D
+	public final fun getWestSouthwest-lyDGrjM ()D
 }
 
 public final class org/maplibre/spatialk/units/DMS {
