@@ -61,7 +61,7 @@ jobs:
                   distribution: temurin
                   java-version: 21
             - run: |
-                  ./gradlew :mkdocsBuild -Psemver.stage=final -Psemver.scope=${{github.event.inputs.scope }}
+                  ./gradlew :mkdocsBuild -Psemver.stage=final -Psemver.scope=${{ github.event.inputs.scope }}
             - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
               with:
                   path: build/mkdocs

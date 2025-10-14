@@ -26,10 +26,12 @@ mkdocs {
     publish {
         docPath = null // single version site
     }
-    extras = mapOf("project_version" to project.version.toString())
 }
 
-tasks.withType<MkdocsTask>().configureEach { dependsOn("dokkaGenerateHtml") }
+tasks.withType<MkdocsTask>().configureEach {
+    dependsOn("dokkaGenerateHtml")
+    extras.assign(provider { mapOf("project_version" to project.version.toString()) })
+}
 
 kover {
     reports {
