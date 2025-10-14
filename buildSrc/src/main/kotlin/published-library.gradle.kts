@@ -39,7 +39,7 @@ dokka {
         configureEach {
             includes.from("MODULE.md")
             sourceLink {
-                remoteUrl("https://github.com/maplibre/spatial-k/tree/${project.version}/")
+                remoteUrl("https://github.com/maplibre/spatial-k/tree/v${project.version}/")
                 localDirectory = rootDir
             }
             externalDocumentationLinks {
