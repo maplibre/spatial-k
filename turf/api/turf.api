@@ -115,6 +115,14 @@ public final class org/maplibre/spatialk/turf/measurement/Measurement {
 	public static synthetic fun offset$default (Lorg/maplibre/spatialk/geojson/Position;DLorg/maplibre/spatialk/units/LengthUnit;DLorg/maplibre/spatialk/units/RotationUnit;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Position;
 	public static final synthetic fun offset-5rEEf_g (Lorg/maplibre/spatialk/geojson/Point;DD)Lorg/maplibre/spatialk/geojson/Position;
 	public static final synthetic fun offset-5rEEf_g (Lorg/maplibre/spatialk/geojson/Position;DD)Lorg/maplibre/spatialk/geojson/Position;
+	public static final fun rhumbBearingTo (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;)D
+	public static final fun rhumbBearingTo (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/units/RotationUnit;)D
+	public static final fun rhumbBearingTo (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
+	public static final fun rhumbBearingTo (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/units/RotationUnit;)D
+	public static synthetic fun rhumbBearingTo$default (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/units/RotationUnit;ILjava/lang/Object;)D
+	public static synthetic fun rhumbBearingTo$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/units/RotationUnit;ILjava/lang/Object;)D
+	public static final fun rhumbBearingToAsBearing (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;)D
+	public static final fun rhumbBearingToAsBearing (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
 	public static final fun rhumbDistance (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;)D
 	public static final fun rhumbDistance (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/units/LengthUnit;)D
 	public static final fun rhumbDistance (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
