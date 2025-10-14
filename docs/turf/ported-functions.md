@@ -19,7 +19,7 @@
 - [ ] `pointOnFeature`
 - [ ] `polygonTangents`
 - [x] [`pointToLineDistance`](../api/turf/org.maplibre.spatialk.turf.measurement/distance.html)
-- [x] [`rhumbBearing`](../api/turf/org.maplibre.spatialk.turf.measurement/rhumb-bearing.html)
+- [x] [`rhumbBearing`](../api/turf/org.maplibre.spatialk.turf.measurement/rhumb-bearing-to.html)
 - [ ] `rhumbDestination`
 - [x] [`rhumbDistance`](../api/turf/org.maplibre.spatialk.turf.measurement/rhumb-distance.html)
 - [x] [`square`](../api/turf/org.maplibre.spatialk.turf.measurement/square.html)
