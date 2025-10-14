@@ -6,6 +6,7 @@ package org.maplibre.spatialk.turf.measurement
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmSynthetic
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.Bearing
@@ -24,6 +25,7 @@ import org.maplibre.spatialk.units.extensions.*
  */
 @JvmOverloads
 @JvmName("bearingToAsBearing")
+@JvmSynthetic
 public fun Position.bearingTo(to: Position, final: Boolean = false): Bearing {
     if (final) return to.bearingTo(this) + 180.degrees
 
@@ -48,6 +50,7 @@ public fun Position.bearingTo(to: Position, final: Boolean = false): Bearing {
  */
 @JvmOverloads
 @JvmName("bearingToAsBearing")
+@JvmSynthetic
 public fun Point.bearingTo(to: Point, final: Boolean = false): Bearing =
     this.coordinates.bearingTo(to.coordinates, final)
 

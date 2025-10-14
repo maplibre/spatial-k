@@ -24,4 +24,11 @@ class BearingTest {
             message = "Final Bearing",
         )
     }
+
+    @Test
+    fun testRhumbBearing() {
+        val start = Position(-75.0, 45.0)
+        val end = Position(20.0, 60.0)
+        assertBearingEquals(North + 75.28061364784332.degrees, start.rhumbBearingTo(end))
+    }
 }
