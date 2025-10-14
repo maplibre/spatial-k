@@ -5,6 +5,7 @@ import kotlin.jvm.JvmSynthetic
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
+import kotlinx.serialization.Serializable
 import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.International.SquareMeters
 
@@ -18,6 +19,7 @@ import org.maplibre.spatialk.units.International.SquareMeters
  * @see Length
  */
 @JvmInline
+@Serializable
 public value class Area private constructor(private val valueInMetersSquared: Double) :
     Comparable<Area> {
 

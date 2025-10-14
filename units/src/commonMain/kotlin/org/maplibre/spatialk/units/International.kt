@@ -1,6 +1,7 @@
 package org.maplibre.spatialk.units
 
 import kotlin.jvm.JvmField
+import kotlin.math.PI
 
 /** The International System of Units (SI). */
 public data object International {
@@ -34,5 +35,5 @@ public data object International {
     public val Kilometers: LengthUnit = LengthUnit(1_000.0, "km", squaredUnit = SquareKilometers)
 
     /** Radians [RotationUnit]. */
-    @JvmField public val Radians: RotationUnit = RotationUnit(1.0, "rad")
+    @JvmField public val Radians: RotationUnit = RotationUnit(180.0 / PI, "rad")
 }

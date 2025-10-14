@@ -8,8 +8,8 @@ import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.*
 
 /**
- * Combines a [FeatureCollection] of [Point], [LineString], or [Polygon] features into [MultiPoint],
- * [MultiLineString], or [MultiPolygon] features.
+ * Combines a [GeometryCollection] of [Point], [LineString], or [Polygon] features into
+ * [MultiPoint], [MultiLineString], or [MultiPolygon] features.
  */
 public fun GeometryCollection<SingleGeometry>.combine(): GeometryCollection<MultiGeometry> {
     val points = mutableListOf<Point>()

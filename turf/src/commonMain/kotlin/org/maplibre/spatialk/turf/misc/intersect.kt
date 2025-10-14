@@ -6,6 +6,7 @@ package org.maplibre.spatialk.turf.misc
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import org.maplibre.spatialk.geojson.LineString
+import org.maplibre.spatialk.geojson.MultiPoint
 import org.maplibre.spatialk.geojson.Position
 
 /**
@@ -13,13 +14,14 @@ import org.maplibre.spatialk.geojson.Position
  *
  * Currently only supports primitive LineStrings containing exactly two points each!
  *
- * @return A list containing any intersections between [line1] and [line2]
+ * @return A list containing any intersections between [line1] and [line2], or null if there are no
+ *   intersections.
  * @throws NotImplementedError if either LineString does not contain exactly two points
  */
-public fun intersect(line1: LineString, line2: LineString): List<Position> {
+public fun intersect(line1: LineString, line2: LineString): MultiPoint? {
     if (line1.coordinates.size == 2 && line2.coordinates.size == 2) {
         val intersect = intersects(line1, line2)
-        return if (intersect != null) listOf(intersect) else emptyList()
+        return if (intersect != null) MultiPoint(listOf(intersect)) else null
     } else {
         throw NotImplementedError("Complex GeoJSON intersections are currently unsupported")
     }

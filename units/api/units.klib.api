@@ -62,6 +62,15 @@ final value class org.maplibre.spatialk.units/Area : kotlin/Comparable<org.mapli
     final fun unaryMinus(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.unaryMinus|unaryMinus(){}[0]
     final fun unaryPlus(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.unaryPlus|unaryPlus(){}[0]
 
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.units/Area> { // org.maplibre.spatialk.units/Area.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.units/Area.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.units/Area.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.units/Area.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.units/Area) // org.maplibre.spatialk.units/Area.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.units.Area){}[0]
+    }
+
     final object Companion { // org.maplibre.spatialk.units/Area.Companion|null[0]
         final val MaxValue // org.maplibre.spatialk.units/Area.Companion.MaxValue|{}MaxValue[0]
             final fun <get-MaxValue>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.Companion.MaxValue.<get-MaxValue>|<get-MaxValue>(){}[0]
@@ -73,6 +82,8 @@ final value class org.maplibre.spatialk.units/Area : kotlin/Comparable<org.mapli
             final fun <get-PositiveInfinity>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.Companion.PositiveInfinity.<get-PositiveInfinity>|<get-PositiveInfinity>(){}[0]
         final val Zero // org.maplibre.spatialk.units/Area.Companion.Zero|{}Zero[0]
             final fun <get-Zero>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.Companion.Zero.<get-Zero>|<get-Zero>(){}[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.units/Area> // org.maplibre.spatialk.units/Area.Companion.serializer|serializer(){}[0]
     }
 }
 
@@ -87,6 +98,15 @@ final value class org.maplibre.spatialk.units/Bearing { // org.maplibre.spatialk
     final fun toDmsString(kotlin/Int = ...): kotlin/String // org.maplibre.spatialk.units/Bearing.toDmsString|toDmsString(kotlin.Int){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.units/Bearing.toString|toString(){}[0]
     final fun toString(org.maplibre.spatialk.units/RotationUnit = ..., kotlin/Int = ...): kotlin/String // org.maplibre.spatialk.units/Bearing.toString|toString(org.maplibre.spatialk.units.RotationUnit;kotlin.Int){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.units/Bearing> { // org.maplibre.spatialk.units/Bearing.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.units/Bearing.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.units/Bearing.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.units/Bearing.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.units/Bearing // org.maplibre.spatialk.units/Bearing.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.units/Bearing) // org.maplibre.spatialk.units/Bearing.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.units.Bearing){}[0]
+    }
 
     final object Companion { // org.maplibre.spatialk.units/Bearing.Companion|null[0]
         final val East // org.maplibre.spatialk.units/Bearing.Companion.East|{}East[0]
@@ -121,6 +141,8 @@ final value class org.maplibre.spatialk.units/Bearing { // org.maplibre.spatialk
             final fun <get-WestNorthwest>(): org.maplibre.spatialk.units/Bearing // org.maplibre.spatialk.units/Bearing.Companion.WestNorthwest.<get-WestNorthwest>|<get-WestNorthwest>(){}[0]
         final val WestSouthwest // org.maplibre.spatialk.units/Bearing.Companion.WestSouthwest|{}WestSouthwest[0]
             final fun <get-WestSouthwest>(): org.maplibre.spatialk.units/Bearing // org.maplibre.spatialk.units/Bearing.Companion.WestSouthwest.<get-WestSouthwest>|<get-WestSouthwest>(){}[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.units/Bearing> // org.maplibre.spatialk.units/Bearing.Companion.serializer|serializer(){}[0]
     }
 }
 
@@ -158,6 +180,15 @@ final value class org.maplibre.spatialk.units/Length : kotlin/Comparable<org.map
     final fun unaryMinus(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.unaryMinus|unaryMinus(){}[0]
     final fun unaryPlus(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.unaryPlus|unaryPlus(){}[0]
 
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.units/Length> { // org.maplibre.spatialk.units/Length.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.units/Length.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.units/Length.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.units/Length.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.units/Length) // org.maplibre.spatialk.units/Length.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.units.Length){}[0]
+    }
+
     final object Companion { // org.maplibre.spatialk.units/Length.Companion|null[0]
         final val MaxValue // org.maplibre.spatialk.units/Length.Companion.MaxValue|{}MaxValue[0]
             final fun <get-MaxValue>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.Companion.MaxValue.<get-MaxValue>|<get-MaxValue>(){}[0]
@@ -169,6 +200,8 @@ final value class org.maplibre.spatialk.units/Length : kotlin/Comparable<org.map
             final fun <get-PositiveInfinity>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.Companion.PositiveInfinity.<get-PositiveInfinity>|<get-PositiveInfinity>(){}[0]
         final val Zero // org.maplibre.spatialk.units/Length.Companion.Zero|{}Zero[0]
             final fun <get-Zero>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/Length.Companion.Zero.<get-Zero>|<get-Zero>(){}[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.units/Length> // org.maplibre.spatialk.units/Length.Companion.serializer|serializer(){}[0]
     }
 }
 
@@ -207,6 +240,15 @@ final value class org.maplibre.spatialk.units/Rotation : kotlin/Comparable<org.m
     final fun unaryMinus(): org.maplibre.spatialk.units/Rotation // org.maplibre.spatialk.units/Rotation.unaryMinus|unaryMinus(){}[0]
     final fun unaryPlus(): org.maplibre.spatialk.units/Rotation // org.maplibre.spatialk.units/Rotation.unaryPlus|unaryPlus(){}[0]
 
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.units/Rotation> { // org.maplibre.spatialk.units/Rotation.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.units/Rotation.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.units/Rotation.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.units/Rotation.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.units/Rotation // org.maplibre.spatialk.units/Rotation.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.units/Rotation) // org.maplibre.spatialk.units/Rotation.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.units.Rotation){}[0]
+    }
+
     final object Companion { // org.maplibre.spatialk.units/Rotation.Companion|null[0]
         final val MaxValue // org.maplibre.spatialk.units/Rotation.Companion.MaxValue|{}MaxValue[0]
             final fun <get-MaxValue>(): org.maplibre.spatialk.units/Rotation // org.maplibre.spatialk.units/Rotation.Companion.MaxValue.<get-MaxValue>|<get-MaxValue>(){}[0]
@@ -218,6 +260,8 @@ final value class org.maplibre.spatialk.units/Rotation : kotlin/Comparable<org.m
             final fun <get-PositiveInfinity>(): org.maplibre.spatialk.units/Rotation // org.maplibre.spatialk.units/Rotation.Companion.PositiveInfinity.<get-PositiveInfinity>|<get-PositiveInfinity>(){}[0]
         final val Zero // org.maplibre.spatialk.units/Rotation.Companion.Zero|{}Zero[0]
             final fun <get-Zero>(): org.maplibre.spatialk.units/Rotation // org.maplibre.spatialk.units/Rotation.Companion.Zero.<get-Zero>|<get-Zero>(){}[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.units/Rotation> // org.maplibre.spatialk.units/Rotation.Companion.serializer|serializer(){}[0]
     }
 }
 
@@ -247,8 +291,8 @@ open class org.maplibre.spatialk.units/LengthUnit : kotlin/Comparable<org.maplib
 open class org.maplibre.spatialk.units/RotationUnit : kotlin/Comparable<org.maplibre.spatialk.units/RotationUnit>, org.maplibre.spatialk.units/UnitOfMeasure { // org.maplibre.spatialk.units/RotationUnit|null[0]
     constructor <init>(kotlin/Double, kotlin/String) // org.maplibre.spatialk.units/RotationUnit.<init>|<init>(kotlin.Double;kotlin.String){}[0]
 
-    final val radiansPerUnit // org.maplibre.spatialk.units/RotationUnit.radiansPerUnit|{}radiansPerUnit[0]
-        final fun <get-radiansPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/RotationUnit.radiansPerUnit.<get-radiansPerUnit>|<get-radiansPerUnit>(){}[0]
+    final val degreesPerUnit // org.maplibre.spatialk.units/RotationUnit.degreesPerUnit|{}degreesPerUnit[0]
+        final fun <get-degreesPerUnit>(): kotlin/Double // org.maplibre.spatialk.units/RotationUnit.degreesPerUnit.<get-degreesPerUnit>|<get-degreesPerUnit>(){}[0]
     open val symbol // org.maplibre.spatialk.units/RotationUnit.symbol|{}symbol[0]
         open fun <get-symbol>(): kotlin/String // org.maplibre.spatialk.units/RotationUnit.symbol.<get-symbol>|<get-symbol>(){}[0]
 

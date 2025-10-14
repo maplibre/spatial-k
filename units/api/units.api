@@ -36,12 +36,24 @@ public final class org/maplibre/spatialk/units/Area : java/lang/Comparable {
 	public final synthetic fun unbox-impl ()D
 }
 
+public final synthetic class org/maplibre/spatialk/units/Area$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/Area$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize-OWkeucc (Lkotlinx/serialization/encoding/Decoder;)D
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize-DQw0L0M (Lkotlinx/serialization/encoding/Encoder;D)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
 public final class org/maplibre/spatialk/units/Area$Companion {
 	public final fun getMaxValue-Od-tmbY ()D
 	public final fun getMinValue-Od-tmbY ()D
 	public final fun getNegativeInfinity-Od-tmbY ()D
 	public final fun getPositiveInfinity-Od-tmbY ()D
 	public final fun getZero-Od-tmbY ()D
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public class org/maplibre/spatialk/units/AreaUnit : java/lang/Comparable, org/maplibre/spatialk/units/UnitOfMeasure {
@@ -75,6 +87,17 @@ public final class org/maplibre/spatialk/units/Bearing {
 	public final synthetic fun unbox-impl ()D
 }
 
+public final synthetic class org/maplibre/spatialk/units/Bearing$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/Bearing$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize-7mj81W4 (Lkotlinx/serialization/encoding/Decoder;)D
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize-lOi3GXk (Lkotlinx/serialization/encoding/Encoder;D)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
 public final class org/maplibre/spatialk/units/Bearing$Companion {
 	public final fun getEast-lyDGrjM ()D
 	public final fun getEastNortheast-lyDGrjM ()D
@@ -92,6 +115,7 @@ public final class org/maplibre/spatialk/units/Bearing$Companion {
 	public final fun getWest-lyDGrjM ()D
 	public final fun getWestNorthwest-lyDGrjM ()D
 	public final fun getWestSouthwest-lyDGrjM ()D
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class org/maplibre/spatialk/units/DMS {
@@ -191,12 +215,24 @@ public final class org/maplibre/spatialk/units/Length : java/lang/Comparable {
 	public final synthetic fun unbox-impl ()D
 }
 
+public final synthetic class org/maplibre/spatialk/units/Length$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/Length$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize-Z9QLXes (Lkotlinx/serialization/encoding/Decoder;)D
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize-NY0MKA4 (Lkotlinx/serialization/encoding/Encoder;D)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
 public final class org/maplibre/spatialk/units/Length$Companion {
 	public final fun getMaxValue-_8uq4Z0 ()D
 	public final fun getMinValue-_8uq4Z0 ()D
 	public final fun getNegativeInfinity-_8uq4Z0 ()D
 	public final fun getPositiveInfinity-_8uq4Z0 ()D
 	public final fun getZero-_8uq4Z0 ()D
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public class org/maplibre/spatialk/units/LengthUnit : java/lang/Comparable, org/maplibre/spatialk/units/UnitOfMeasure {
@@ -264,12 +300,24 @@ public final class org/maplibre/spatialk/units/Rotation : java/lang/Comparable {
 	public final synthetic fun unbox-impl ()D
 }
 
+public final synthetic class org/maplibre/spatialk/units/Rotation$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/Rotation$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize-5AGCAgg (Lkotlinx/serialization/encoding/Decoder;)D
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize-EFOIjWM (Lkotlinx/serialization/encoding/Encoder;D)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
 public final class org/maplibre/spatialk/units/Rotation$Companion {
 	public final fun getMaxValue-LX175cE ()D
 	public final fun getMinValue-LX175cE ()D
 	public final fun getNegativeInfinity-LX175cE ()D
 	public final fun getPositiveInfinity-LX175cE ()D
 	public final fun getZero-LX175cE ()D
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public class org/maplibre/spatialk/units/RotationUnit : java/lang/Comparable, org/maplibre/spatialk/units/UnitOfMeasure {
@@ -278,7 +326,7 @@ public class org/maplibre/spatialk/units/RotationUnit : java/lang/Comparable, or
 	public synthetic fun compareTo (Ljava/lang/Object;)I
 	public final fun compareTo (Lorg/maplibre/spatialk/units/RotationUnit;)I
 	public fun format (DI)Ljava/lang/String;
-	public final fun getRadiansPerUnit ()D
+	public final fun getDegreesPerUnit ()D
 	public fun getSymbol ()Ljava/lang/String;
 }
 

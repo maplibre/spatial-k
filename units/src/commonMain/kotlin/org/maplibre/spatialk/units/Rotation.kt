@@ -5,6 +5,7 @@ import kotlin.jvm.JvmSynthetic
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
+import kotlinx.serialization.Serializable
 import org.maplibre.spatialk.units.DMS.ArcMinutes
 import org.maplibre.spatialk.units.DMS.ArcSeconds
 import org.maplibre.spatialk.units.DMS.Degrees
@@ -12,7 +13,7 @@ import org.maplibre.spatialk.units.International.Radians
 import org.maplibre.spatialk.units.extensions.*
 
 /**
- * Represents a magnitude of angular displacement, internally stored as a [Double] of radians. It
+ * Represents a magnitude of angular displacement, internally stored as a [Double] of degrees. It
  * may be greater than a full turn (360 degrees).
  *
  * This representation does not define whether positive rotations are clockwise or anticlockwise, as
@@ -25,17 +26,18 @@ import org.maplibre.spatialk.units.extensions.*
  * @see Bearing
  */
 @JvmInline
-public value class Rotation private constructor(private val valueInRadians: Double) :
+@Serializable
+public value class Rotation private constructor(private val valueInDegrees: Double) :
     Comparable<Rotation> {
 
     /** Returns the absolute value of this rotation. */
     public val absoluteValue: Rotation
-        get() = Rotation(valueInRadians.absoluteValue)
+        get() = Rotation(valueInDegrees.absoluteValue)
 
     /** Returns `true` if this rotation is infinite (positive or negative). */
     public val isInfinite: Boolean
         get() =
-            valueInRadians == Double.POSITIVE_INFINITY || valueInRadians == Double.NEGATIVE_INFINITY
+            valueInDegrees == Double.POSITIVE_INFINITY || valueInDegrees == Double.NEGATIVE_INFINITY
 
     /** Returns `true` if this rotation is finite (not infinite). */
     public val isFinite: Boolean
@@ -43,18 +45,18 @@ public value class Rotation private constructor(private val valueInRadians: Doub
 
     /** Returns `true` if this rotation is greater than zero. */
     public val isPositive: Boolean
-        get() = valueInRadians > 0
+        get() = valueInDegrees > 0
 
     /** Returns `true` if this rotation is less than zero. */
     public val isNegative: Boolean
-        get() = valueInRadians < 0
+        get() = valueInDegrees < 0
 
     /** Returns `true` if this rotation is equal to zero. */
     public val isZero: Boolean
-        get() = valueInRadians == 0.0
+        get() = valueInDegrees == 0.0
 
     /** Converts this rotation to a [Double] value in the specified [unit]. */
-    public fun toDouble(unit: RotationUnit): Double = valueInRadians / unit.radiansPerUnit
+    public fun toDouble(unit: RotationUnit): Double = valueInDegrees / unit.degreesPerUnit
 
     /** Converts this rotation to a [Float] value in the specified [unit]. */
     public fun toFloat(unit: RotationUnit): Float = toDouble(unit).toFloat()
@@ -66,39 +68,39 @@ public value class Rotation private constructor(private val valueInRadians: Doub
     public fun roundToInt(unit: RotationUnit): Int = toDouble(unit).roundToInt()
 
     /** Returns the negation of this rotation. */
-    public operator fun unaryMinus(): Rotation = Rotation(-valueInRadians)
+    public operator fun unaryMinus(): Rotation = Rotation(-valueInDegrees)
 
     /** Returns this rotation unchanged. */
-    public operator fun unaryPlus(): Rotation = Rotation(valueInRadians)
+    public operator fun unaryPlus(): Rotation = Rotation(valueInDegrees)
 
     /** Adds another rotation to this rotation. */
     public operator fun plus(other: Rotation): Rotation =
-        Rotation(valueInRadians + other.valueInRadians)
+        Rotation(valueInDegrees + other.valueInDegrees)
 
     /** Adds this [Rotation] to a [Bearing]. */
     public operator fun plus(other: Bearing): Bearing = other + this
 
     /** Subtracts another rotation from this rotation. */
     public operator fun minus(other: Rotation): Rotation =
-        Rotation(valueInRadians - other.valueInRadians)
+        Rotation(valueInDegrees - other.valueInDegrees)
 
     /** Multiplies this rotation by a scalar value. */
-    public operator fun times(other: Double): Rotation = Rotation(valueInRadians * other)
+    public operator fun times(other: Double): Rotation = Rotation(valueInDegrees * other)
 
     /** Divides this rotation by a scalar value. */
-    public operator fun div(other: Double): Rotation = Rotation(valueInRadians / other)
+    public operator fun div(other: Double): Rotation = Rotation(valueInDegrees / other)
 
     /** Divides this rotation by another rotation, resulting in a dimensionless scalar. */
-    public operator fun div(other: Rotation): Double = valueInRadians / other.valueInRadians
+    public operator fun div(other: Rotation): Double = valueInDegrees / other.valueInDegrees
 
     /** Returns the remainder of dividing this rotation by another rotation. */
     public operator fun rem(other: Rotation): Rotation =
-        Rotation(valueInRadians % other.valueInRadians)
+        Rotation(valueInDegrees % other.valueInDegrees)
 
     /** Returns the modulo of this rotation with respect to another rotation. */
-    public fun mod(other: Rotation): Rotation = Rotation(valueInRadians.mod(other.valueInRadians))
+    public fun mod(other: Rotation): Rotation = Rotation(valueInDegrees.mod(other.valueInDegrees))
 
-    /** Returns a string representation of this rotation in radians. */
+    /** Returns a string representation of this rotation in degrees. */
     override fun toString(): String = toString(Radians)
 
     /**
@@ -131,7 +133,7 @@ public value class Rotation private constructor(private val valueInRadians: Doub
             "${secondsPart.toRoundedString(decimalPlaces)}${ArcSeconds.symbol}"
     }
 
-    override fun compareTo(other: Rotation): Int = valueInRadians.compareTo(other.valueInRadians)
+    override fun compareTo(other: Rotation): Int = valueInDegrees.compareTo(other.valueInDegrees)
 
     /** Companion object containing predefined rotation values. */
     public companion object {
@@ -151,6 +153,8 @@ public value class Rotation private constructor(private val valueInRadians: Doub
         public val NegativeInfinity: Rotation = Rotation(Double.NEGATIVE_INFINITY)
 
         @JvmSynthetic
-        internal fun of(value: Double, unit: RotationUnit) = Rotation(value * unit.radiansPerUnit)
+        internal fun of(value: Double, unit: RotationUnit): Rotation {
+            return Rotation(value * unit.degreesPerUnit)
+        }
     }
 }

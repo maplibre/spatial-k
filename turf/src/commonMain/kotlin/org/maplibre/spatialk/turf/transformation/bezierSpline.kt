@@ -15,14 +15,20 @@ import org.maplibre.spatialk.turf.coordinatemutation.flattenCoordinates
  * The bezier spline implementation is a port of the implementation by
  * [Leszek Rybicki](http://leszek.rybicki.cc/) used in turfjs.
  *
- * @param duration time in milliseconds between points in the output data
+ * @param resolution t-step between points in the output data. A smaller t-step creates more points,
+ *   resulting in a smoother curve. A larger t-step generates fewer points, which can result in a
+ *   jagged, inaccurate curve.
  * @param sharpness a measure of how curvy the path should be between splines
  * @return A [LineString] containing a curved line around the positions of the input line
  */
-public fun LineString.bezierSpline(duration: Int = 10_000, sharpness: Double = 0.85): LineString =
-    LineString(bezierSpline(this.flattenCoordinates(), duration, sharpness))
+public fun LineString.bezierSpline(resolution: Int = 10_000, sharpness: Double = 0.85): LineString =
+    LineString(bezierSpline(this.flattenCoordinates(), resolution, sharpness))
 
-private fun bezierSpline(coords: List<Position>, duration: Int, sharpness: Double): List<Position> {
+private fun bezierSpline(
+    coords: List<Position>,
+    resolution: Int,
+    sharpness: Double,
+): List<Position> {
     // utility function to ensure a given altitude
     fun Position.altitude() = altitude ?: 0.0
 
@@ -96,11 +102,11 @@ private fun bezierSpline(coords: List<Position>, duration: Int, sharpness: Doubl
 
     fun pos(time: Int): Position {
         var t = time.coerceAtLeast(0)
-        if (t > duration) {
-            t = duration - 1
+        if (t > resolution) {
+            t = resolution - 1
         }
 
-        val t2 = t.toDouble() / duration
+        val t2 = t.toDouble() / resolution
         if (t2 >= 1) {
             return coords[coords.lastIndex]
         }
@@ -111,7 +117,7 @@ private fun bezierSpline(coords: List<Position>, duration: Int, sharpness: Doubl
     }
 
     val positions =
-        (0..<duration step 10).plus(duration).mapNotNull { i ->
+        (0..<resolution step 10).plus(resolution).mapNotNull { i ->
             if ((i / 100) % 2 != 0) {
                 return@mapNotNull null
             }

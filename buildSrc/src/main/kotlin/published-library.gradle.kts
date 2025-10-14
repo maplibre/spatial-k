@@ -14,6 +14,13 @@ group = "org.maplibre.spatialk"
 
 kotlin {
     explicitApi()
+    compilerOptions {
+        freeCompilerArgs =
+            listOf(
+                // Will be the default soon: https://youtrack.jetbrains.com/issue/KT-11914
+                "-Xconsistent-data-class-copy-visibility"
+            )
+    }
     abiValidation {
         @OptIn(ExperimentalAbiValidation::class)
         enabled = true

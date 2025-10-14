@@ -212,6 +212,7 @@ final class <#A: out org.maplibre.spatialk.geojson/Geometry?, #B: out kotlin/Any
     final fun containsAll(kotlin.collections/Collection<org.maplibre.spatialk.geojson/Feature<#A, #B>>): kotlin/Boolean // org.maplibre.spatialk.geojson/FeatureCollection.containsAll|containsAll(kotlin.collections.Collection<org.maplibre.spatialk.geojson.Feature<1:0,1:1>>){}[0]
     final fun copy(kotlin.collections/List<org.maplibre.spatialk.geojson/Feature<#A, #B>> = ..., org.maplibre.spatialk.geojson/BoundingBox? = ...): org.maplibre.spatialk.geojson/FeatureCollection<#A, #B> // org.maplibre.spatialk.geojson/FeatureCollection.copy|copy(kotlin.collections.List<org.maplibre.spatialk.geojson.Feature<1:0,1:1>>;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.geojson/FeatureCollection.equals|equals(kotlin.Any?){}[0]
+    final fun get(kotlin/Int): org.maplibre.spatialk.geojson/Feature<#A, #B> // org.maplibre.spatialk.geojson/FeatureCollection.get|get(kotlin.Int){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.geojson/FeatureCollection.hashCode|hashCode(){}[0]
     final fun isEmpty(): kotlin/Boolean // org.maplibre.spatialk.geojson/FeatureCollection.isEmpty|isEmpty(){}[0]
     final fun iterator(): kotlin.collections/Iterator<org.maplibre.spatialk.geojson/Feature<#A, #B>> // org.maplibre.spatialk.geojson/FeatureCollection.iterator|iterator(){}[0]
@@ -466,6 +467,10 @@ final class org.maplibre.spatialk.geojson/Point : org.maplibre.spatialk.geojson/
         final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/Point.bbox.<get-bbox>|<get-bbox>(){}[0]
     final val coordinates // org.maplibre.spatialk.geojson/Point.coordinates|{}coordinates[0]
         final fun <get-coordinates>(): org.maplibre.spatialk.geojson/Position // org.maplibre.spatialk.geojson/Point.coordinates.<get-coordinates>|<get-coordinates>(){}[0]
+    final val latitude // org.maplibre.spatialk.geojson/Point.latitude|{}latitude[0]
+        final fun <get-latitude>(): kotlin/Double // org.maplibre.spatialk.geojson/Point.latitude.<get-latitude>|<get-latitude>(){}[0]
+    final val longitude // org.maplibre.spatialk.geojson/Point.longitude|{}longitude[0]
+        final fun <get-longitude>(): kotlin/Double // org.maplibre.spatialk.geojson/Point.longitude.<get-longitude>|<get-longitude>(){}[0]
 
     final fun component1(): org.maplibre.spatialk.geojson/Position // org.maplibre.spatialk.geojson/Point.component1|component1(){}[0]
     final fun component2(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/Point.component2|component2(){}[0]

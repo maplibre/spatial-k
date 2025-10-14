@@ -1,15 +1,17 @@
 package org.maplibre.spatialk.units
 
+import org.maplibre.spatialk.units.extensions.degrees
 import org.maplibre.spatialk.units.extensions.inMeters
+import org.maplibre.spatialk.units.extensions.inRadians
 
 /**
  * Represents a unit of [Rotation] measurement.
  *
- * @property radiansPerUnit Conversion factor from this unit to radians.
+ * @property degreesPerUnit Conversion factor from this unit to degrees.
  * @see Rotation
  */
 public open class RotationUnit(
-    public val radiansPerUnit: Double,
+    public val degreesPerUnit: Double,
     public override val symbol: String,
 ) : UnitOfMeasure, Comparable<RotationUnit> {
 
@@ -18,8 +20,8 @@ public open class RotationUnit(
      * [World]'s average radius.
      */
     public fun asLengthUnitOn(world: World): LengthUnit =
-        LengthUnit(radiansPerUnit * world.averageRadius.inMeters, symbol)
+        LengthUnit(degreesPerUnit.degrees.inRadians * world.averageRadius.inMeters, symbol)
 
     public final override fun compareTo(other: RotationUnit): Int =
-        radiansPerUnit.compareTo(other.radiansPerUnit)
+        degreesPerUnit.compareTo(other.degreesPerUnit)
 }

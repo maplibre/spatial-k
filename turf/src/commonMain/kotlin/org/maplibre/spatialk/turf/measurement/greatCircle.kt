@@ -9,6 +9,7 @@ import kotlin.math.*
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.MultiLineString
+import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.extensions.degrees
 import org.maplibre.spatialk.units.extensions.inDegrees
@@ -186,3 +187,20 @@ public fun greatCircle(
         MultiLineString(coordinates = coordinates, bbox = computeBbox(coordinates.flatten()))
     }
 }
+
+/**
+ * Calculate great circles routes as [LineString]. Raises error when [from] and [to] are antipodes.
+ *
+ * @param from source point
+ * @param to destination point
+ * @param pointCount number of positions on the arc (including [from] and [to])
+ * @param antimeridianOffset from antimeridian in degrees (default long. = +/- 10deg, geometries
+ *   within 170deg to -170deg will be split)
+ * @throws IllegalArgumentException if [from] and [to] are diametrically opposite.
+ */
+public fun greatCircle(
+    from: Point,
+    to: Point,
+    pointCount: Int = 100,
+    antimeridianOffset: Double = 10.0,
+): Geometry = greatCircle(from.coordinates, to.coordinates, pointCount, antimeridianOffset)
