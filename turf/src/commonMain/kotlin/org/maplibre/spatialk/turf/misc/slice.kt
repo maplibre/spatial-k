@@ -8,6 +8,7 @@ import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmSynthetic
 import org.maplibre.spatialk.geojson.LineString
+import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.turf.measurement.bearingTo
 import org.maplibre.spatialk.turf.measurement.distance
@@ -30,17 +31,28 @@ public fun LineString.slice(start: Position, stop: Position): LineString {
     val stopVertex = this.nearestPointTo(stop)
 
     val (startPos, endPos) =
-        if (startVertex.index <= stopVertex.index) startVertex to stopVertex
+        if (startVertex.properties.index <= stopVertex.properties.index) startVertex to stopVertex
         else stopVertex to startVertex
 
-    val positions = mutableListOf(startPos.point)
-    for (i in startPos.index + 1 until endPos.index + 1) {
+    val positions = mutableListOf(startPos.geometry.coordinates)
+    for (i in startPos.properties.index + 1 until endPos.properties.index + 1) {
         positions.add(coordinates[i])
     }
-    positions.add(endPos.point)
+    positions.add(endPos.geometry.coordinates)
 
     return LineString(positions)
 }
+
+/**
+ * Takes a [LineString], a start and a stop [Point] and returns a subsection of the line between
+ * those points. The start and stop points do not need to fall exactly on the line.
+ *
+ * @param start Start point
+ * @param stop Stop point
+ * @return The sliced subsection of the line
+ */
+public fun LineString.slice(start: Point, stop: Point): LineString =
+    this.slice(start.coordinates, stop.coordinates)
 
 /**
  * Takes a [LineString] and a specified distance along the line to a [start] and [stop] [Position],

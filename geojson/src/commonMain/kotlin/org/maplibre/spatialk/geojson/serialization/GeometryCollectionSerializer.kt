@@ -14,6 +14,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
+import kotlinx.serialization.json.JsonEncoder
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.GeometryCollection
@@ -35,7 +36,7 @@ internal class GeometryCollectionSerializer<T : Geometry>(geometrySerializer: KS
     override fun serialize(encoder: Encoder, value: GeometryCollection<T>) {
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
-            if (value.bbox != null)
+            if (value.bbox != null || encoder !is JsonEncoder)
                 encodeSerializableElement(descriptor, 1, bboxSerializer, value.bbox)
             encodeSerializableElement(descriptor, 2, geometriesSerializer, value.geometries)
         }

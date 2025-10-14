@@ -25,6 +25,15 @@ constructor(
     /** The [BoundingBox] of this [Point]. */
     override val bbox: BoundingBox? = null,
 ) : SingleGeometry, PointGeometry {
+
+    /** The longitude value of this [Point] in degrees. */
+    public val longitude: Double
+        get() = coordinates.longitude
+
+    /** The latitude value of this [Point] in degrees. */
+    public val latitude: Double
+        get() = coordinates.latitude
+
     /**
      * Create a [Point] from individual coordinate components.
      *

@@ -29,8 +29,8 @@ class LineSliceAlongTest {
         val expectedStart = line.locateAlong(start)
         val expectedStop = line.locateAlong(stop)
 
-        assertPositionEquals(expectedStart, sliced.coordinates.first())
-        assertPositionEquals(expectedStop, sliced.coordinates.last())
+        assertPositionEquals(expectedStart.coordinates, sliced.coordinates.first())
+        assertPositionEquals(expectedStop.coordinates, sliced.coordinates.last())
 
         // Verify it's a valid LineString with at least 2 points
         assertTrue(sliced.coordinates.size >= 2)
@@ -53,8 +53,8 @@ class LineSliceAlongTest {
         val expectedStart = line.locateAlong(start)
         val expectedStop = line.locateAlong(stop) // This should clamp to the end
 
-        assertPositionEquals(expectedStart, sliced.coordinates.first())
-        assertPositionEquals(expectedStop, sliced.coordinates.last())
+        assertPositionEquals(expectedStart.coordinates, sliced.coordinates.first())
+        assertPositionEquals(expectedStop.coordinates, sliced.coordinates.last())
 
         // Verify it's a valid LineString
         assertTrue(sliced.coordinates.size >= 2)
@@ -77,8 +77,8 @@ class LineSliceAlongTest {
         val expectedStart = route.locateAlong(start)
         val expectedStop = route.locateAlong(stop)
 
-        assertPositionEquals(expectedStart, sliced.coordinates.first())
-        assertPositionEquals(expectedStop, sliced.coordinates.last())
+        assertPositionEquals(expectedStart.coordinates, sliced.coordinates.first())
+        assertPositionEquals(expectedStop.coordinates, sliced.coordinates.last())
 
         // Verify it's a valid LineString
         assertTrue(sliced.coordinates.size >= 2)
@@ -101,8 +101,8 @@ class LineSliceAlongTest {
         val expectedStart = route.locateAlong(start)
         val expectedStop = route.locateAlong(stop)
 
-        assertPositionEquals(expectedStart, sliced.coordinates.first())
-        assertPositionEquals(expectedStop, sliced.coordinates.last())
+        assertPositionEquals(expectedStart.coordinates, sliced.coordinates.first())
+        assertPositionEquals(expectedStop.coordinates, sliced.coordinates.last())
 
         // Verify it's a valid LineString
         assertTrue(sliced.coordinates.size >= 2)

@@ -7,6 +7,7 @@ import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmSynthetic
+import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.Bearing
 import org.maplibre.spatialk.units.Bearing.Companion.North
@@ -22,7 +23,7 @@ import org.maplibre.spatialk.units.extensions.*
  * [Length] and bearing in degrees. This uses the Haversine formula to account for global curvature.
  *
  * @param distance distance from the origin point
- * @param bearing ranging from -180 to 180
+ * @param bearing direction from the origin point
  * @return destination position
  * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
  */
@@ -45,6 +46,19 @@ public fun Position.offset(distance: Length, bearing: Bearing): Position {
     return Position(longitude2.inDegrees, latitude2.inDegrees)
 }
 
+/**
+ * Takes a [Point] and calculates the location of a destination position given a distance [Length]
+ * and bearing in degrees. This uses the Haversine formula to account for global curvature.
+ *
+ * @param distance distance from the origin point
+ * @param bearing direction from the origin point
+ * @return destination position
+ * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
+ */
+@JvmSynthetic
+public fun Point.offset(distance: Length, bearing: Bearing): Position =
+    this.coordinates.offset(distance, bearing)
+
 @PublishedApi
 @Suppress("unused")
 @JvmOverloads
@@ -56,3 +70,14 @@ internal fun offset(
     bearingUnit: RotationUnit = Degrees,
 ): Position =
     origin.offset(distance.toLength(distanceUnit), North + bearing.toRotation(bearingUnit))
+
+@PublishedApi
+@Suppress("unused")
+@JvmOverloads
+internal fun offset(
+    origin: Point,
+    distance: Double,
+    distanceUnit: LengthUnit = Meters,
+    bearing: Double,
+    bearingUnit: RotationUnit = Degrees,
+): Position = offset(origin.coordinates, distance, distanceUnit, bearing, bearingUnit)

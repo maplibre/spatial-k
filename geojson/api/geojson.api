@@ -99,6 +99,7 @@ public final class org/maplibre/spatialk/geojson/FeatureCollection : java/util/C
 	public fun equals (Ljava/lang/Object;)Z
 	public static final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
 	public static final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
+	public final fun get (I)Lorg/maplibre/spatialk/geojson/Feature;
 	public fun getBbox ()Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public final fun getFeatures ()Ljava/util/List;
 	public fun getSize ()I
@@ -449,6 +450,8 @@ public final class org/maplibre/spatialk/geojson/Point : org/maplibre/spatialk/g
 	public static final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/Point;
 	public fun getBbox ()Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public final fun getCoordinates ()Lorg/maplibre/spatialk/geojson/Position;
+	public final fun getLatitude ()D
+	public final fun getLongitude ()D
 	public fun hashCode ()I
 	public final fun toGeoUri ()Ljava/lang/String;
 	public static final fun toJson (Lorg/maplibre/spatialk/geojson/Point;)Ljava/lang/String;

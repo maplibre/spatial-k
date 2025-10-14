@@ -1,6 +1,14 @@
 plugins { id("published-library") }
 
-kotlin { sourceSets { commonTest.dependencies { implementation(project(":testutil")) } } }
+kotlin {
+    sourceSets {
+        commonMain.dependencies { implementation(libs.kotlinx.serialization.core) }
+        commonTest.dependencies {
+            implementation(project(":testutil"))
+            implementation(libs.kotlinx.serialization.json)
+        }
+    }
+}
 
 mavenPublishing {
     pom {

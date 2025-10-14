@@ -8,6 +8,7 @@ import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmSynthetic
 import kotlin.math.*
+import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
@@ -48,6 +49,12 @@ public fun rhumbDistance(from: Position, to: Position): Length {
     return dist
 }
 
+/** Calculates the distance along a rhumb line between two points. */
+@JvmSynthetic
+@JvmName("rhumbDistanceAsLength")
+public fun rhumbDistance(from: Point, to: Point): Length =
+    rhumbDistance(from.coordinates, to.coordinates)
+
 @PublishedApi
 @Suppress("unused")
 @JvmOverloads
@@ -56,3 +63,9 @@ internal fun rhumbDistance(
     destination: Position,
     unit: LengthUnit = Meters,
 ): Double = rhumbDistance(origin, destination).toDouble(unit)
+
+@PublishedApi
+@Suppress("unused")
+@JvmOverloads
+internal fun rhumbDistance(origin: Point, destination: Point, unit: LengthUnit = Meters): Double =
+    rhumbDistance(origin.coordinates, destination.coordinates, unit)

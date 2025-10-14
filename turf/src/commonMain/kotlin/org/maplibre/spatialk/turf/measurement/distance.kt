@@ -9,6 +9,7 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmSynthetic
 import kotlin.math.*
 import org.maplibre.spatialk.geojson.LineString
+import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
@@ -19,13 +20,13 @@ import org.maplibre.spatialk.units.extensions.inRadians
 import org.maplibre.spatialk.units.extensions.times
 
 /**
- * Calculates the distance between two positions. This uses the Haversine formula to account for
- * global curvature.
+ * Calculates the distance between two positions. This uses the
+ * [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula) to account for global
+ * curvature.
  *
  * @param from origin point
  * @param to destination point
  * @return distance between the two points
- * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
  */
 @JvmSynthetic
 @JvmName("distanceAsLength")
@@ -39,11 +40,30 @@ public fun distance(from: Position, to: Position): Length {
     return 2.0 * atan2(sqrt(a), sqrt(1 - a)).earthRadians
 }
 
+/**
+ * Calculates the distance between two points. This uses the
+ * [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula) to account for global
+ * curvature.
+ *
+ * @param from origin point
+ * @param to destination point
+ * @return distance between the two points
+ */
+@JvmSynthetic
+@JvmName("distanceAsLength")
+public fun distance(from: Point, to: Point): Length = distance(from.coordinates, to.coordinates)
+
 @PublishedApi
 @Suppress("unused")
 @JvmOverloads
 internal fun distance(from: Position, to: Position, unit: LengthUnit = Meters): Double =
     distance(from, to).toDouble(unit)
+
+@PublishedApi
+@Suppress("unused")
+@JvmOverloads
+internal fun distance(from: Point, to: Point, unit: LengthUnit = Meters): Double =
+    distance(from.coordinates, to.coordinates, unit)
 
 /**
  * Calculates the distance between a given point and the nearest point on a line.
@@ -68,6 +88,16 @@ public fun distance(from: Position, to: LineString): Length {
 }
 
 /**
+ * Calculates the distance between a given point and the nearest point on a line.
+ *
+ * @param from point to calculate from
+ * @param to line to calculate to
+ */
+@JvmSynthetic
+@JvmName("distanceAsLength")
+public fun distance(from: Point, to: LineString): Length = distance(from.coordinates, to)
+
+/**
  * Calculates the distance between a given line and the nearest point on the line to a position.
  *
  * This is a convenience function equivalent to calling `distance(to, from)`.
@@ -80,6 +110,19 @@ public fun distance(from: Position, to: LineString): Length {
 @JvmName("distanceAsLength")
 public fun distance(from: LineString, to: Position): Length = distance(to, from)
 
+/**
+ * Calculates the distance between a given line and the nearest point on the line to a point.
+ *
+ * This is a convenience function equivalent to calling `distance(to, from)`.
+ *
+ * @param from line to calculate from
+ * @param to point to calculate to
+ * @return distance between the line and the point
+ */
+@JvmSynthetic
+@JvmName("distanceAsLength")
+public fun distance(from: LineString, to: Point): Length = distance(to.coordinates, from)
+
 @PublishedApi
 @Suppress("unused")
 @JvmOverloads
@@ -89,8 +132,20 @@ internal fun distance(from: Position, to: LineString, unit: LengthUnit = Meters)
 @PublishedApi
 @Suppress("unused")
 @JvmOverloads
+internal fun distance(from: Point, to: LineString, unit: LengthUnit = Meters): Double =
+    distance(from.coordinates, to, unit)
+
+@PublishedApi
+@Suppress("unused")
+@JvmOverloads
 internal fun distance(from: LineString, to: Position, unit: LengthUnit = Meters): Double =
     distance(to, from).toDouble(unit)
+
+@PublishedApi
+@Suppress("unused")
+@JvmOverloads
+internal fun distance(from: LineString, to: Point, unit: LengthUnit = Meters): Double =
+    distance(to.coordinates, from, unit)
 
 private fun distanceToSegment(point: Position, start: Position, end: Position): Length {
     fun dot(u: Position, v: Position): Double {

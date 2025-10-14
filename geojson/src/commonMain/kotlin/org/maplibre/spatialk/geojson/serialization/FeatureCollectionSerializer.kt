@@ -14,6 +14,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
+import kotlinx.serialization.json.JsonEncoder
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
@@ -39,7 +40,7 @@ internal class FeatureCollectionSerializer<T : Geometry?, P : @Serializable Any?
     override fun serialize(encoder: Encoder, value: FeatureCollection<T, P>) {
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
-            if (value.bbox != null)
+            if (value.bbox != null || encoder !is JsonEncoder)
                 encodeSerializableElement(descriptor, 1, bboxSerializer, value.bbox)
             encodeSerializableElement(descriptor, 2, featuresSerializer, value.features)
         }

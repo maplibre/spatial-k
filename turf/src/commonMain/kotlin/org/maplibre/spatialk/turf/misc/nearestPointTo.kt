@@ -5,7 +5,10 @@ package org.maplibre.spatialk.turf.misc
 
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
+import kotlinx.serialization.Serializable
+import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.LineString
+import org.maplibre.spatialk.geojson.LineStringGeometry
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
@@ -17,30 +20,57 @@ import org.maplibre.spatialk.units.LengthUnit
 import org.maplibre.spatialk.units.extensions.degrees
 
 /**
+ * Result properties from [nearestPointTo] of a `Collection<Point>`.
+ *
+ * @property distance Distance between the input position and the point
+ * @property index Index of the point in the collection
+ */
+@Serializable
+public data class NearestPointProps internal constructor(val distance: Length, val index: Int) {
+    @PublishedApi
+    @Suppress("unused")
+    internal fun getDistance(unit: LengthUnit): Double = distance.toDouble(unit)
+}
+
+/**
  * Finds the nearest point in the collection to the given position.
  *
  * @param point The position to find the nearest point to.
  * @return The [Point] in the collection that is closest to the given position.
  * @throws NoSuchElementException if the collection is empty.
  */
-public fun Collection<Point>.nearestPointTo(point: Position): Point = minBy {
-    distance(it.coordinates, point)
+public fun Collection<Point>.nearestPointTo(point: Point): Feature<Point, NearestPointProps> {
+    if (this.isEmpty()) throw NoSuchElementException("No points available.")
+
+    var resultPos = Position(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)
+    var resultDistance = Length.PositiveInfinity
+    var resultIndex = -1
+
+    this.forEachIndexed { i, candidate ->
+        val distance = distance(candidate.coordinates, point.coordinates)
+        if (distance < resultDistance) {
+            resultPos = candidate.coordinates
+            resultDistance = distance
+            resultIndex = i
+        }
+    }
+
+    return Feature(
+        geometry = Point(resultPos),
+        properties = NearestPointProps(resultDistance, resultIndex),
+    )
 }
 
 /**
- * Result values from [findNearestPointOnLine].
+ * Result properties from [nearestPointTo] from a `LineString`.
  *
- * @property point The point on the line nearest to the input position
- * @property distance Distance between the input position and [point]
- * @property location Distance along the line from the stat to the [point]
- * @property index Index of the segment of the line on which [point] lies.
+ * @property distance Distance between the input position and the point
+ * @property location Distance along the line from the stat to the the point
+ * @property index Index of the segment of the line on which the point lies.
  */
-public data class NearestPointOnLineResult(
-    val point: Position,
-    val distance: Length,
-    val location: Length,
-    val index: Int,
-) {
+@Serializable
+public data class NearestPointOnLineProps
+internal constructor(val distance: Length, val location: Length, val index: Int) {
     @PublishedApi
     @Suppress("unused")
     internal fun getDistance(unit: LengthUnit): Double = distance.toDouble(unit)
@@ -56,29 +86,25 @@ public data class NearestPointOnLineResult(
  * @param point The [Position] given to find the closest point along the [LineString]
  * @return The closest position along the line
  */
-public fun LineString.nearestPointTo(point: Position): NearestPointOnLineResult =
-    findNearestPointOnLine(listOf(coordinates), point)
-
-/**
- * Finds the closest [Position] along a [MultiLineString] to a given position.
- *
- * @param point The [Position] given to find the closest point along the [MultiLineString]
- * @return The closest position along the lines
- */
-public fun MultiLineString.nearestPointTo(point: Position): NearestPointOnLineResult =
-    findNearestPointOnLine(coordinates, point)
+public fun LineStringGeometry.nearestPointTo(
+    point: Position
+): Feature<Point, NearestPointOnLineProps> {
+    val lines =
+        when (this) {
+            is LineString -> listOf(coordinates)
+            is MultiLineString -> coordinates
+        }
+    return findNearestPointOnLine(lines, point)
+}
 
 private fun findNearestPointOnLine(
     lines: List<List<Position>>,
     point: Position,
-): NearestPointOnLineResult {
-    var closest =
-        NearestPointOnLineResult(
-            Position(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY),
-            Length.PositiveInfinity,
-            Length.PositiveInfinity,
-            -1,
-        )
+): Feature<Point, NearestPointOnLineProps> {
+    var resultPos = Position(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)
+    var resultDistance = Length.PositiveInfinity
+    var resultLocation = Length.PositiveInfinity
+    var resultIndex = -1
 
     var length = Length.Zero
 
@@ -97,42 +123,38 @@ private fun findNearestPointOnLine(
             val perpPoint2 = point.offset(heightDistance, direction - 90.degrees)
 
             val intersect =
-                intersect(LineString(perpPoint1, perpPoint2), LineString(start, stop)).getOrNull(0)
+                intersect(LineString(perpPoint1, perpPoint2), LineString(start, stop))
+                    ?.get(0)
+                    ?.coordinates
 
-            if (startDistance < closest.distance) {
-                closest =
-                    closest.copy(
-                        point = start,
-                        location = length,
-                        distance = startDistance,
-                        index = i,
-                    )
+            if (startDistance < resultDistance) {
+                resultPos = start
+                resultLocation = length
+                resultDistance = startDistance
+                resultIndex = i
             }
 
-            if (stopDistance < closest.distance) {
-                closest =
-                    closest.copy(
-                        point = stop,
-                        location = length + sectionLength,
-                        distance = stopDistance,
-                        index = i + 1,
-                    )
+            if (stopDistance < resultDistance) {
+                resultPos = stop
+                resultLocation = length + sectionLength
+                resultDistance = stopDistance
+                resultIndex = i + 1
             }
 
-            if (intersect != null && distance(point, intersect) < closest.distance) {
+            if (intersect != null && distance(point, intersect) < resultDistance) {
                 val intersectDistance = distance(point, intersect)
-                closest =
-                    closest.copy(
-                        point = intersect,
-                        distance = intersectDistance,
-                        location = length + distance(start, intersect),
-                        index = i,
-                    )
+                resultPos = intersect
+                resultDistance = intersectDistance
+                resultLocation = length + distance(start, intersect)
+                resultIndex = i
             }
 
             length += sectionLength
         }
     }
 
-    return closest
+    return Feature(
+        Point(resultPos),
+        NearestPointOnLineProps(resultDistance, resultLocation, resultIndex),
+    )
 }

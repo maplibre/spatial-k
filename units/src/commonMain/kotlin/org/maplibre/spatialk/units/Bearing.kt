@@ -2,6 +2,7 @@ package org.maplibre.spatialk.units
 
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmSynthetic
+import kotlinx.serialization.Serializable
 import org.maplibre.spatialk.units.Bearing.Companion.North
 import org.maplibre.spatialk.units.DMS.ArcMinutes
 import org.maplibre.spatialk.units.DMS.ArcSeconds
@@ -16,6 +17,7 @@ import org.maplibre.spatialk.units.extensions.degrees
  * @see Rotation
  */
 @JvmInline
+@Serializable
 public value class Bearing private constructor(private val rotationFromNorth: Rotation) {
 
     /**

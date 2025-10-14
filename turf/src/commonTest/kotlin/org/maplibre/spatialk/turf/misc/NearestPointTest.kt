@@ -4,15 +4,15 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import org.maplibre.spatialk.geojson.Point
-import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.geojson.dsl.geometryCollectionOf
+import org.maplibre.spatialk.testutil.assertDoubleEquals
 
 class NearestPointTest {
 
     @Test
     fun testNearestPointToFromTurfJs() {
         // Test data from turf.js nearest-point test
-        val targetPoint = Position(-75.4, 39.4)
+        val targetPoint = Point(-75.4, 39.4)
         val points =
             geometryCollectionOf(
                 Point(-75.833, 39.284),
@@ -34,17 +34,18 @@ class NearestPointTest {
                 Point(-75.56, 39.36),
             )
 
-        val nearestPoint = points.nearestPointTo(targetPoint)
+        val (nearestPoint, props) = points.nearestPointTo(targetPoint)
 
         // The nearest point should be at index 14: [-75.33, 39.44]
-        assertEquals(-75.33, nearestPoint.coordinates.longitude, 0.00001)
-        assertEquals(39.44, nearestPoint.coordinates.latitude, 0.00001)
+        assertDoubleEquals(-75.33, nearestPoint.longitude)
+        assertDoubleEquals(39.44, nearestPoint.latitude)
+        assertEquals(14, props.index)
     }
 
     @Test
     fun testNearestPointToEmptyCollection() {
         val emptyPoints = geometryCollectionOf<Point>()
-        val targetPoint = Position(0.0, 0.0)
+        val targetPoint = Point(0.0, 0.0)
 
         assertFailsWith<NoSuchElementException> { emptyPoints.nearestPointTo(targetPoint) }
     }
@@ -52,21 +53,22 @@ class NearestPointTest {
     @Test
     fun testNearestPointToSinglePoint() {
         val points = geometryCollectionOf(Point(1.0, 2.0))
-        val targetPoint = Position(0.0, 0.0)
+        val targetPoint = Point(0.0, 0.0)
 
-        val nearestPoint = points.nearestPointTo(targetPoint)
-        assertEquals(1.0, nearestPoint.coordinates.longitude)
-        assertEquals(2.0, nearestPoint.coordinates.latitude)
+        val (nearestPoint) = points.nearestPointTo(targetPoint)
+        assertDoubleEquals(1.0, nearestPoint.longitude)
+        assertDoubleEquals(2.0, nearestPoint.latitude)
     }
 
     @Test
     fun testNearestPointToIdenticalPoints() {
         val points = geometryCollectionOf(Point(0.0, 0.0), Point(1.0, 1.0), Point(0.0, 0.0))
-        val targetPoint = Position(0.0, 0.0)
+        val targetPoint = Point(0.0, 0.0)
 
-        val nearestPoint = points.nearestPointTo(targetPoint)
-        assertEquals(0.0, nearestPoint.coordinates.longitude)
-        assertEquals(0.0, nearestPoint.coordinates.latitude)
+        val (nearestPoint, props) = points.nearestPointTo(targetPoint)
+        assertDoubleEquals(0.0, nearestPoint.longitude)
+        assertDoubleEquals(0.0, nearestPoint.latitude)
+        assertEquals(props.index, 0)
         // Should return the first occurrence (index 0)
     }
 }

@@ -41,6 +41,14 @@ constructor(
         bbox: BoundingBox? = null,
     ) : this(features.toMutableList(), bbox)
 
+    /**
+     * Get the feature at the specified index.
+     *
+     * @param index The index of the feature to retrieve.
+     * @return The feature at the specified index.
+     */
+    public operator fun get(index: Int): Feature<G, P> = features[index]
+
     /** Factory methods for creating and serializing [FeatureCollection] objects. */
     public companion object {
         /**
