@@ -6,6 +6,7 @@ package org.maplibre.spatialk.turf.measurement
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmSynthetic
 import kotlin.math.PI
 import kotlin.math.ln
 import org.maplibre.spatialk.geojson.Point
@@ -24,6 +25,7 @@ import org.maplibre.spatialk.units.extensions.*
  * @return [Bearing] between this and [to] along a rhumb line
  */
 @JvmName("rhumbBearingToAsBearing")
+@JvmSynthetic
 public fun Position.rhumbBearingTo(to: Position): Bearing = calculateRhumbBearing(this, to)
 
 /**
@@ -34,6 +36,7 @@ public fun Position.rhumbBearingTo(to: Position): Bearing = calculateRhumbBearin
  * @return [Bearing] between this and [to] along a rhumb line
  */
 @JvmName("rhumbBearingToAsBearing")
+@JvmSynthetic
 public fun Point.rhumbBearingTo(to: Point): Bearing =
     this.coordinates.rhumbBearingTo(to.coordinates)
 

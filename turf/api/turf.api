@@ -57,10 +57,10 @@ public final class org/maplibre/spatialk/turf/measurement/Measurement {
 	public static final fun bearingTo (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;ZLorg/maplibre/spatialk/units/RotationUnit;)D
 	public static synthetic fun bearingTo$default (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;ZLorg/maplibre/spatialk/units/RotationUnit;ILjava/lang/Object;)D
 	public static synthetic fun bearingTo$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;ZLorg/maplibre/spatialk/units/RotationUnit;ILjava/lang/Object;)D
-	public static final fun bearingToAsBearing (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;)D
-	public static final fun bearingToAsBearing (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;Z)D
-	public static final fun bearingToAsBearing (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
-	public static final fun bearingToAsBearing (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Z)D
+	public static final synthetic fun bearingToAsBearing (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;)D
+	public static final synthetic fun bearingToAsBearing (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;Z)D
+	public static final synthetic fun bearingToAsBearing (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
+	public static final synthetic fun bearingToAsBearing (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Z)D
 	public static synthetic fun bearingToAsBearing$default (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;ZILjava/lang/Object;)D
 	public static synthetic fun bearingToAsBearing$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;ZILjava/lang/Object;)D
 	public static final fun center (Lorg/maplibre/spatialk/geojson/BoundingBox;)Lorg/maplibre/spatialk/geojson/Point;
@@ -121,8 +121,8 @@ public final class org/maplibre/spatialk/turf/measurement/Measurement {
 	public static final fun rhumbBearingTo (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/units/RotationUnit;)D
 	public static synthetic fun rhumbBearingTo$default (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/units/RotationUnit;ILjava/lang/Object;)D
 	public static synthetic fun rhumbBearingTo$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/units/RotationUnit;ILjava/lang/Object;)D
-	public static final fun rhumbBearingToAsBearing (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;)D
-	public static final fun rhumbBearingToAsBearing (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
+	public static final synthetic fun rhumbBearingToAsBearing (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;)D
+	public static final synthetic fun rhumbBearingToAsBearing (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
 	public static final fun rhumbDistance (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;)D
 	public static final fun rhumbDistance (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/units/LengthUnit;)D
 	public static final fun rhumbDistance (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
