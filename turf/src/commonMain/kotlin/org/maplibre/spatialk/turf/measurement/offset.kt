@@ -20,12 +20,13 @@ import org.maplibre.spatialk.units.extensions.*
 
 /**
  * Takes a [Position] and calculates the location of a destination position given a distance
- * [Length] and bearing in degrees. This uses the Haversine formula to account for global curvature.
+ * [Length] and [Bearing]. This uses the
+ * [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula) to account for global
+ * curvature.
  *
  * @param distance distance from the origin point
  * @param bearing direction from the origin point
  * @return destination position
- * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
  */
 @JvmSynthetic
 public fun Position.offset(distance: Length, bearing: Bearing): Position {
@@ -48,12 +49,12 @@ public fun Position.offset(distance: Length, bearing: Bearing): Position {
 
 /**
  * Takes a [Point] and calculates the location of a destination position given a distance [Length]
- * and bearing in degrees. This uses the Haversine formula to account for global curvature.
+ * and [Bearing]. This uses the [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula)
+ * to account for global curvature.
  *
  * @param distance distance from the origin point
  * @param bearing direction from the origin point
  * @return destination position
- * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>
  */
 @JvmSynthetic
 public fun Point.offset(distance: Length, bearing: Bearing): Position =
