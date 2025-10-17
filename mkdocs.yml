@@ -6,7 +6,7 @@ site_author: MapLibre
 
 repo_name: "spatial-k"
 repo_url: https://github.com/maplibre/spatial-k
-edit_uri: edit/main/docs/docs/
+edit_uri: edit/main/docs/
 
 copyright: "Copyright &copy; 2025 MapLibre Contributors"
 
