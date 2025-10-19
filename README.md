@@ -61,7 +61,7 @@ val inMeters = distance.inMeters     // 5000.0
 val formatted = distance.toString()  // "5000 m"
 ```
 
-See the [project site](https://maplibre.org/maplibre/spatialk/) for more info.
+See the [project site](https://maplibre.org/spatial-k/) for more info.
 
 ## Getting Involved
 
