@@ -2,7 +2,6 @@ package org.maplibre.spatialk.gpx
 
 import nl.adaptivity.xmlutil.ExperimentalXmlUtilApi
 import nl.adaptivity.xmlutil.serialization.DefaultXmlSerializationPolicy
-import nl.adaptivity.xmlutil.serialization.UnknownChildHandler
 import nl.adaptivity.xmlutil.serialization.XML
 import org.intellij.lang.annotations.Language
 
@@ -12,15 +11,7 @@ public data object Gpx {
     @OptIn(ExperimentalXmlUtilApi::class)
     public val gpxFormat: XML = XML {
         indentString = "    "
-        policy =
-            DefaultXmlSerializationPolicy.Builder()
-                .apply {
-                    unknownChildHandler =
-                        UnknownChildHandler { input, inputKind, descriptor, name, candidates ->
-                            listOf()
-                        }
-                }
-                .build()
+        policy = DefaultXmlSerializationPolicy.Builder().apply { ignoreUnknownChildren() }.build()
     }
 
     /**
