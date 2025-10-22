@@ -1,0 +1,29 @@
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.topografix.com/GPX/1/1
+                         http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1"
+    creator="ChatGPT-GPX">
+    <metadata>
+        <name>Sample Route</name>
+        <desc>A simple GPX route example with three points.</desc>
+        <author>
+            <name>ChatGPT</name>
+        </author>
+        <time>2025-10-22T12:00:00Z</time>
+    </metadata>
+    <rte>
+        <name>Example Route - City Park Loop</name>
+        <desc>A short route passing through a few waypoints.</desc>
+        <rtept lat="37.7749" lon="-122.4194">
+            <name>Start - City Center</name>
+            <desc>Starting point in downtown.</desc>
+        </rtept>
+        <rtept lat="37.7694" lon="-122.4862">
+            <name>Waypoint - Park Entrance</name>
+            <desc>Entrance to the park.</desc>
+        </rtept>
+        <rtept lat="37.8021" lon="-122.4488">
+            <name>Finish - Scenic Overlook</name>
+            <desc>End of the route at the overlook.</desc>
+        </rtept>
+    </rte>
+</gpx>

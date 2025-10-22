@@ -2,31 +2,37 @@ package org.maplibre.spatialk.gpx
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import org.maplibre.spatialk.geojson.GeoJson
+import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.Point
+import org.maplibre.spatialk.geojson.SensitiveGeoJsonApi
 import org.maplibre.spatialk.testutil.readResourceFile
 
 class GpxTest {
+    @OptIn(SensitiveGeoJsonApi::class)
     @Test
-    fun testGpx() {
-        val resource = readResourceFile("in/sample.gpx")
-        val document = Gpx.decodeFromString(resource)
-        assertEquals(3, document.waypoints.size)
-        assertEquals("Reichstag (Berlin)", document.waypoints[0].name)
+    fun testWaypoints() {
+        val document = Gpx.decodeFromString(readResourceFile("in/waypoints.gpx"))
+        assertEquals(3, document.wpt.size)
+        assertEquals("WPT001", document.wpt[0].name)
 
-        val serialized = Gpx.encodeToString(document)
-        stripEquals(resource, serialized)
+        assertEquals(
+            FeatureCollection.fromJson<Point, Waypoint>(readResourceFile("out/waypoints.json")),
+            document.wpt.toGeoJson(),
+        )
+
+        stripEquals(readResourceFile("out/waypoints.gpx"), Gpx.encodeToString(document))
     }
 
     @Test
-    fun testGpxToGeoJson() {
-        val inFile = readResourceFile("in/Donauradweg.gpx")
-        val document = Gpx.decodeFromString(inFile)
-        assertEquals(3, document.waypoints.size)
+    fun testTrack() {
+        val document = Gpx.decodeFromString(readResourceFile("in/track.gpx"))
+        stripEquals(readResourceFile("out/track.gpx"), Gpx.encodeToString(document))
+    }
 
-        val geojson = document.tracks.first().trkseg.first().trkpt.toGeoJson()
-        val outFile = readResourceFile("out/Donauradweg.json")
-
-        assertEquals(outFile, GeoJson.encodeToString(geojson))
+    @Test
+    fun testRoute() {
+        val document = Gpx.decodeFromString(readResourceFile("in/route.gpx"))
+        stripEquals(readResourceFile("out/route.gpx"), Gpx.encodeToString(document))
     }
 
     fun stripEquals(expected: String, actual: String) {

@@ -1,8 +1,11 @@
 package org.maplibre.spatialk.gpx
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
+import org.maplibre.spatialk.geojson.Feature
+import org.maplibre.spatialk.geojson.GeometryCollection
+import org.maplibre.spatialk.geojson.Point
 
 /**
  * Represents a GPX track (`trk` element), an ordered list of points describing a path.
@@ -22,15 +25,25 @@ import nl.adaptivity.xmlutil.serialization.XmlElement
  */
 @Serializable
 public data class Track(
-    @XmlElement val name: String?,
-    @XmlElement val cmt: String?,
-    @XmlElement val desc: String?,
-    @XmlElement val src: String?,
-    @XmlElement val link: String?,
-    @XmlElement val number: Int?,
-    @XmlElement val type: String?,
-    @SerialName("trkseg") @XmlElement val trkseg: List<TrackSegment>,
+    @XmlElement val name: String? = null,
+    @XmlElement val cmt: String? = null,
+    @XmlElement val desc: String? = null,
+    @XmlElement val src: String? = null,
+    @XmlElement val link: Link? = null,
+    @XmlElement val number: Int? = null,
+    @XmlElement val type: String? = null,
+    @XmlSerialName("trkseg") @XmlElement val trkseg: List<TrackSegment> = listOf(),
+    // @XmlElement val extensions = null,
 )
+
+public fun Track.toGeoJson(): Feature<GeometryCollection<Point>, Track> {
+    return Feature(
+        GeometryCollection(
+            trkseg.flatMap { segment -> segment.trkpt.map { point -> point.toGeoJson().geometry } }
+        ),
+        this,
+    )
+}
 
 /**
  * A Track Segment holds a list of Track Points which are logically connected in order. To represent
@@ -41,4 +54,12 @@ public data class Track(
  *
  * @property trkpt A list of track points.
  */
-@Serializable public data class TrackSegment(@XmlElement val trkpt: List<Waypoint>)
+@Serializable
+public data class TrackSegment(
+    @XmlSerialName("trkpt") @XmlElement val trkpt: List<Waypoint>
+    // @XmlElement val extensions = null,
+)
+
+public fun TrackSegment.toGeoJson(): Feature<GeometryCollection<Point>, TrackSegment> {
+    return Feature(GeometryCollection(trkpt.map { it.toGeoJson().geometry }), this)
+}

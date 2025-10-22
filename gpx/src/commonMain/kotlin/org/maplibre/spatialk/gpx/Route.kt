@@ -2,6 +2,10 @@ package org.maplibre.spatialk.gpx
 
 import kotlinx.serialization.Serializable
 import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
+import org.maplibre.spatialk.geojson.Feature
+import org.maplibre.spatialk.geojson.GeometryCollection
+import org.maplibre.spatialk.geojson.Point
 
 /**
  * Represents a route - an ordered list of waypoints representing a series of turn points leading to
@@ -30,5 +34,10 @@ public data class Route(
     @XmlElement val link: String?,
     @XmlElement val number: Int?,
     @XmlElement val type: String?,
-    @XmlElement val rtept: List<Waypoint>,
+    @XmlSerialName("rtept") @XmlElement val rtept: List<Waypoint>,
+    // @XmlElement val extensions = null,
 )
+
+public fun Route.toGeoJson(): Feature<GeometryCollection<Point>, Route> {
+    return Feature(GeometryCollection(rtept.map { it.toGeoJson().geometry }), this)
+}

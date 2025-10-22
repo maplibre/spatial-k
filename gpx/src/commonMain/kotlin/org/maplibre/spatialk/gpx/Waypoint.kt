@@ -5,6 +5,10 @@ import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import nl.adaptivity.xmlutil.serialization.XmlElement
+import org.maplibre.spatialk.geojson.Feature
+import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.Point
+import org.maplibre.spatialk.geojson.Position
 
 /**
  * Represents a waypoint, point of interest, or named feature on a map. This corresponds to the
@@ -12,6 +16,8 @@ import nl.adaptivity.xmlutil.serialization.XmlElement
  *
  * A waypoint is a single point on the earth, defined by its latitude and longitude. It can
  * optionally include other information such as elevation, time, and descriptive details.
+ *
+ * See https://www.topografix.com/GPX/1/1/#type_wptType
  *
  * @property lat The latitude of the point. Decimal degrees, WGS84 datum. (Required)
  * @property lon The longitude of the point. Decimal degrees, WGS84 datum. (Required)
@@ -33,7 +39,6 @@ import nl.adaptivity.xmlutil.serialization.XmlElement
  * @property vdop Vertical dilution of precision.
  * @property pdop Position dilution of precision.
  * @property ageofdgpsdata Number of seconds since last DGPS update.
- * @see <a href="https://www.topografix.com/GPX/1/1/#type_wptType">GPX 1.1 Schema - wptType</a>
  */
 @Serializable
 @SerialName("wpt")
@@ -49,7 +54,7 @@ public data class Waypoint(
     @XmlElement val cmt: String? = null,
     @XmlElement val desc: String? = null,
     @XmlElement val src: String? = null,
-    @XmlElement val link: String? = null,
+    @XmlElement val link: Link? = null,
     @XmlElement val sym: String? = null,
     @XmlElement val type: String? = null,
     @XmlElement val fix: String? = null,
@@ -61,3 +66,11 @@ public data class Waypoint(
     @XmlElement val dgpsid: Double? = null,
     // @XmlElement val extensions = null,
 )
+
+public fun Waypoint.toGeoJson(): Feature<Point, Waypoint> {
+    return Feature(geometry = Point(Position(lon, lat, ele)), properties = this)
+}
+
+public fun List<Waypoint>.toGeoJson(): FeatureCollection<Point, Waypoint> {
+    return FeatureCollection(map { it.toGeoJson() })
+}
