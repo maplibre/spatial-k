@@ -91,12 +91,13 @@ public data class Author(
  *
  * See [copyrightType](https://www.topografix.com/GPX/1/1/#type_copyrightType).
  *
+ * @property author The copyright holder.
  * @property year The copyright year.
  * @property license A URL to the license governing the use of the file.
  */
 @Serializable
 public data class Copyright(
-    val author: String? = null,
+    val author: String,
     @XmlElement val year: String? = null,
     @XmlElement val license: String? = null,
 )
