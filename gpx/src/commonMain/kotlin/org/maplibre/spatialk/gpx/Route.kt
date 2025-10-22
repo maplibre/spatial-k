@@ -38,6 +38,14 @@ public data class Route(
     // @XmlElement val extensions = null,
 )
 
+/**
+ * Converts this [Route] to a GeoJSON [Feature] with a [GeometryCollection] of [Point]s.
+ *
+ * The geometry is a [GeometryCollection] containing all the route points (`rtept`). The properties
+ * of the feature are the properties of this [Route] object itself.
+ *
+ * @return A GeoJSON [Feature] representing this route.
+ */
 public fun Route.toGeoJson(): Feature<GeometryCollection<Point>, Route> {
     return Feature(GeometryCollection(rtept.map { it.toGeoJson().geometry }), this)
 }

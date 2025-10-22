@@ -39,6 +39,7 @@ import org.maplibre.spatialk.geojson.Position
  * @property vdop Vertical dilution of precision.
  * @property pdop Position dilution of precision.
  * @property ageofdgpsdata Number of seconds since last DGPS update.
+ * @property dgpsid ID of DGPS station used in differential correction.
  */
 @Serializable
 @SerialName("wpt")
@@ -67,10 +68,29 @@ public data class Waypoint(
     // @XmlElement val extensions = null,
 )
 
+/**
+ * Converts a [Waypoint] into a GeoJSON [Feature] with a [Point] geometry.
+ *
+ * The `lon`, `lat`, and optional `ele` of the waypoint are used to create the [Point] geometry. The
+ * entire [Waypoint] object itself is set as the properties of the feature.
+ *
+ * @return A GeoJSON [Feature] representation of the waypoint.
+ */
 public fun Waypoint.toGeoJson(): Feature<Point, Waypoint> {
     return Feature(geometry = Point(Position(lon, lat, ele)), properties = this)
 }
 
+/**
+ * Converts a list of [Waypoint] objects into a GeoJSON [FeatureCollection].
+ *
+ * Each [Waypoint] in the list is transformed into a GeoJSON [Feature] with a [Point] geometry. The
+ * original [Waypoint] object is set as the properties of its corresponding feature.
+ *
+ * @return A [FeatureCollection] containing a list of features, where each feature represents a
+ *   waypoint from the input list.
+ * @receiver A list of [Waypoint] objects to be converted.
+ * @see Waypoint.toGeoJson
+ */
 public fun List<Waypoint>.toGeoJson(): FeatureCollection<Point, Waypoint> {
     return FeatureCollection(map { it.toGeoJson() })
 }

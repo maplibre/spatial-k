@@ -15,10 +15,14 @@ import nl.adaptivity.xmlutil.serialization.XmlSerialName
  *
  * See <a href="https://www.topografix.com/GPX/1/1/#element_gpx">gpx</a>.
  *
+ * @property schemaLocation The location of the GPX schema. Should be
+ *   "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd".
+ * @property version The GPX version. Should be "1.1".
+ * @property creator The name or URL of the software that created the GPX file.
  * @property metadata Metadata about the file.
- * @property trk A list of tracks.
- * @property rte A list of routes.
  * @property wpt A list of waypoints.
+ * @property rte A list of routes.
+ * @property trk A list of tracks.
  */
 @XmlSerialName("gpx", "http://www.topografix.com/GPX/1/1")
 @Serializable

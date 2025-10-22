@@ -36,6 +36,16 @@ public data class Track(
     // @XmlElement val extensions = null,
 )
 
+/**
+ * Converts this [Track] object into a GeoJSON [Feature] object.
+ *
+ * The geometry of the feature will be a [GeometryCollection] of [Point]s, representing all the
+ * track points from all segments of the track. The original [Track] object is stored in the
+ * feature's `properties` field.
+ *
+ * @return A GeoJSON [Feature] with a [GeometryCollection] geometry and this [Track] as its
+ *   properties.
+ */
 public fun Track.toGeoJson(): Feature<GeometryCollection<Point>, Track> {
     return Feature(
         GeometryCollection(
@@ -60,6 +70,15 @@ public data class TrackSegment(
     // @XmlElement val extensions = null,
 )
 
+/**
+ * Converts this [TrackSegment] into a GeoJSON [Feature].
+ *
+ * The feature's geometry is a [GeometryCollection] containing all the [Point] geometries from the
+ * track points (`trkpt`) within this segment. The feature's properties will be this [TrackSegment]
+ * object itself.
+ *
+ * @return A GeoJSON [Feature] representing this track segment.
+ */
 public fun TrackSegment.toGeoJson(): Feature<GeometryCollection<Point>, TrackSegment> {
     return Feature(GeometryCollection(trkpt.map { it.toGeoJson().geometry }), this)
 }
