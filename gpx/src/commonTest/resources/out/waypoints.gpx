@@ -8,7 +8,7 @@
         <author>
             <name>ChatGPT</name>
         </author>
-        <copyright>
+        <copyright author="ChatGPT">
             <year>2025</year>
             <license>https://creativecommons.org/licenses/by/4.0/</license>
         </copyright>
@@ -18,6 +18,7 @@
         </link>
         <time>2025-10-22T12:00:00Z</time>
         <keywords>gpx,waypoints,example,template</keywords>
+        <bounds minlat="37.7694" minlon="-122.4862" maxlat="37.8021" maxlon="-122.4194" />
     </metadata>
     <wpt lat="37.7749" lon="-122.4194">
         <ele>15.0</ele>
@@ -28,6 +29,10 @@
         <cmt>City Center - Start Point</cmt>
         <desc>Main downtown starting location.</desc>
         <src>Surveyed GPS Data</src>
+        <link href="https://example.com/wpt001">
+            <text>City Center Info</text>
+            <type>text/html</type>
+        </link>
         <sym>Flag, Blue</sym>
         <type>Start</type>
         <fix>3d</fix>
@@ -47,6 +52,10 @@
         <cmt>Park Entrance</cmt>
         <desc>Entrance to Golden Gate Park area.</desc>
         <src>Topo Map</src>
+        <link href="https://example.com/wpt002">
+            <text>Park Details</text>
+            <type>text/html</type>
+        </link>
         <sym>Tree</sym>
         <type>Waypoint</type>
         <fix>dgps</fix>
@@ -66,6 +75,10 @@
         <cmt>Scenic Overlook</cmt>
         <desc>Beautiful overlook point with city view.</desc>
         <src>Drone Survey</src>
+        <link href="https://example.com/wpt003">
+            <text>Viewpoint Info</text>
+            <type>text/html</type>
+        </link>
         <sym>Camera</sym>
         <type>Finish</type>
         <fix>3d</fix>

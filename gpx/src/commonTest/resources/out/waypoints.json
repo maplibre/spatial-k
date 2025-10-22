@@ -18,6 +18,11 @@
                 "cmt": "City Center - Start Point",
                 "desc": "Main downtown starting location.",
                 "src": "Surveyed GPS Data",
+                "link": {
+                    "href": "https://example.com/wpt001",
+                    "text": "City Center Info",
+                    "type": "text/html"
+                },
                 "sym": "Flag, Blue",
                 "type": "Start",
                 "fix": "3d",
@@ -46,6 +51,11 @@
                 "cmt": "Park Entrance",
                 "desc": "Entrance to Golden Gate Park area.",
                 "src": "Topo Map",
+                "link": {
+                    "href": "https://example.com/wpt002",
+                    "text": "Park Details",
+                    "type": "text/html"
+                },
                 "sym": "Tree",
                 "type": "Waypoint",
                 "fix": "dgps",
@@ -74,6 +84,11 @@
                 "cmt": "Scenic Overlook",
                 "desc": "Beautiful overlook point with city view.",
                 "src": "Drone Survey",
+                "link": {
+                    "href": "https://example.com/wpt003",
+                    "text": "Viewpoint Info",
+                    "type": "text/html"
+                },
                 "sym": "Camera",
                 "type": "Finish",
                 "fix": "3d",

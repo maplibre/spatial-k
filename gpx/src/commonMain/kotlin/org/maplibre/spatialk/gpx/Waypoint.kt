@@ -2,9 +2,9 @@ package org.maplibre.spatialk.gpx
 
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Point
@@ -42,7 +42,6 @@ import org.maplibre.spatialk.geojson.Position
  * @property dgpsid ID of DGPS station used in differential correction.
  */
 @Serializable
-@SerialName("wpt")
 @OptIn(ExperimentalTime::class)
 public data class Waypoint(
     val lat: Double,
@@ -55,7 +54,7 @@ public data class Waypoint(
     @XmlElement val cmt: String? = null,
     @XmlElement val desc: String? = null,
     @XmlElement val src: String? = null,
-    @XmlElement val link: Link? = null,
+    @XmlSerialName("link") @XmlElement val link: Link? = null,
     @XmlElement val sym: String? = null,
     @XmlElement val type: String? = null,
     @XmlElement val fix: String? = null,

@@ -66,7 +66,7 @@ constructor(
     @XmlSerialName("link") @XmlElement val link: List<Link> = listOf(),
     @XmlElement val time: Instant? = null,
     @XmlElement val keywords: String? = null,
-    @XmlElement val bounds: Bounds? = null,
+    @XmlSerialName("bounds") @XmlElement val bounds: Bounds? = null,
     // val extensions: Extensions?,
 )
 
@@ -96,6 +96,7 @@ public data class Author(
  */
 @Serializable
 public data class Copyright(
+    val author: String? = null,
     @XmlElement val year: String? = null,
     @XmlElement val license: String? = null,
 )

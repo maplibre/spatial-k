@@ -14,6 +14,7 @@
         </link>
         <time>2025-10-22T12:00:00Z</time>
         <keywords>gpx,track,example,gps</keywords>
+        <bounds minlat="37.7694" minlon="-122.4862" maxlat="37.8021" maxlon="-122.4194" />
     </metadata>
     <trk>
         <name>City Loop Track</name>
