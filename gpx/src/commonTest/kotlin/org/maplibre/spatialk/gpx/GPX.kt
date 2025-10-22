@@ -36,6 +36,14 @@ class GpxTest {
     }
 
     fun stripEquals(expected: String, actual: String) {
-        assertEquals(expected.replace(Regex("\\s+"), ""), actual.replace(Regex("\\s+"), ""))
+        val expected = expected.replace(Regex("\\s+"), "")
+        val actual = actual.replace(Regex("\\s+"), "")
+
+        // dirty hack for different number formatting on nodeJs platform
+        if (!actual.contains(".0<")) {
+            assertEquals(expected.replace(".0<", "<"), actual)
+        } else {
+            assertEquals(expected, actual)
+        }
     }
 }
