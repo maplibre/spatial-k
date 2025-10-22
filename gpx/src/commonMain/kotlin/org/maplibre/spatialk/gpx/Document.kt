@@ -13,11 +13,11 @@ import nl.adaptivity.xmlutil.serialization.XmlSerialName
  * GPX is an XML schema designed as a common GPS data format for software applications. It can be
  * used to describe waypoints, tracks, and routes.
  *
- * See <a href="https://www.topografix.com/GPX/1/1/#element_gpx">gpx</a>.
+ * See [gpx](https://www.topografix.com/GPX/1/1/#element_gpx).
  *
  * @property schemaLocation The location of the GPX schema. Should be
- *   "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd".
- * @property version The GPX version. Should be "1.1".
+ *   `http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd`.
+ * @property version The GPX version. Should be `1.1`.
  * @property creator The name or URL of the software that created the GPX file.
  * @property metadata Metadata about the file.
  * @property wpt A list of waypoints.
@@ -43,7 +43,7 @@ public data class Document(
  * Represents metadata about the GPX file. This information is about the file itself, not the data
  * within it.
  *
- * See <a href="https://www.topografix.com/GPX/1/1/#type_metadataType">metadataType</a>.
+ * See [metadataType](https://www.topografix.com/GPX/1/1/#type_metadataType).
  *
  * @property name The name of the GPX file.
  * @property desc A description of the contents of the GPX file.
@@ -73,7 +73,7 @@ constructor(
 /**
  * Represents information about the author of the GPX file.
  *
- * See <a href="https://www.topografix.com/GPX/1/1/#type_personType">personType</a>.
+ * See [personType](https://www.topografix.com/GPX/1/1/#type_personType).
  *
  * @property name Name of the person or organization.
  * @property email Email address of the author.
@@ -89,7 +89,7 @@ public data class Author(
 /**
  * Represents copyright and license information governing the use of the GPX file.
  *
- * See <a href="https://www.topografix.com/GPX/1/1/#type_copyrightType">copyrightType</a>.
+ * See [copyrightType](https://www.topografix.com/GPX/1/1/#type_copyrightType).
  *
  * @property year The copyright year.
  * @property license A URL to the license governing the use of the file.
@@ -103,7 +103,7 @@ public data class Copyright(
 /**
  * Represents an email address, broken into two parts.
  *
- * See <a href="https://www.topografix.com/GPX/1/1/#type_emailType">emailType</a>.
+ * See [emailType](https://www.topografix.com/GPX/1/1/#type_emailType).
  *
  * @property id The ID part of the email address (e.g., "me" in "me@example.com").
  * @property domain The domain part of the email address (e.g., "example.com" in "me@example.com").
@@ -114,7 +114,7 @@ public data class Copyright(
  * Represents a link to an external resource. This allows a GPX file to be associated with a web
  * page, photo, or any other information on the web.
  *
- * See <a href="https://www.topografix.com/GPX/1/1/#type_linkType">linkType</a>.
+ * See [linkType](https://www.topografix.com/GPX/1/1/#type_linkType).
  *
  * @property href The URL of the link.
  * @property text The text of the link.
@@ -131,7 +131,7 @@ public data class Link(
  * Represents the minimum and maximum coordinates that describe the extent of the data in a GPX
  * file.
  *
- * See <a href="https://www.topografix.com/GPX/1/1/#type_boundsType">boundsType</a>.
+ * See [boundsType](https://www.topografix.com/GPX/1/1/#type_boundsType).
  *
  * @property minlat The minimum latitude.
  * @property minlon The minimum longitude.

@@ -11,7 +11,7 @@ import org.maplibre.spatialk.geojson.Point
  * Represents a route - an ordered list of waypoints representing a series of turn points leading to
  * a destination.
  *
- * See <a href="https://www.topografix.com/GPX/1/1/#type_rteType">rteType</a>.
+ * See [rteType](https://www.topografix.com/GPX/1/1/#type_rteType).
  *
  * @property name The GPS name of the route.
  * @property cmt A comment, and/or additional information about the route.

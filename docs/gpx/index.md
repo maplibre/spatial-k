@@ -1,4 +1,4 @@
-# Units
+# GPX
 
 The `gpx` module contains data types for the GPS Exchange Format (GPX) version
 1.1.
