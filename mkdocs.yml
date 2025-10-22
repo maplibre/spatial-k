@@ -19,6 +19,8 @@ nav:
           - "Ported Functions": turf/ported-functions.md
     - Units:
           - units/index.md
+    - GPX:
+          - gpx/index.md
     - "API Reference": api/index.html
 
 theme:

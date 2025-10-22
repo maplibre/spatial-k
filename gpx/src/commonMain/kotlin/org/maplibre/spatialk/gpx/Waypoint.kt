@@ -17,7 +17,7 @@ import org.maplibre.spatialk.geojson.Position
  * A waypoint is a single point on the earth, defined by its latitude and longitude. It can
  * optionally include other information such as elevation, time, and descriptive details.
  *
- * See https://www.topografix.com/GPX/1/1/#type_wptType
+ * See <a href="https://www.topografix.com/GPX/1/1/#type_wptType">wptType</a>.
  *
  * @property lat The latitude of the point. Decimal degrees, WGS84 datum. (Required)
  * @property lon The longitude of the point. Decimal degrees, WGS84 datum. (Required)

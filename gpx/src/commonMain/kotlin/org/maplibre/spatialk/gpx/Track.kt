@@ -12,7 +12,7 @@ import org.maplibre.spatialk.geojson.Point
  *
  * A track is made up of one or more track segments.
  *
- * See https://www.topografix.com/GPX/1/1/#type_trkType
+ * See <a href="https://www.topografix.com/GPX/1/1/#type_trkType">trkType</a>.
  *
  * @property name The GPS name of the track.
  * @property cmt A comment or description for the track.
@@ -50,7 +50,7 @@ public fun Track.toGeoJson(): Feature<GeometryCollection<Point>, Track> {
  * a single GPS track where GPS reception was lost, or the GPS receiver was turned off, start a new
  * Track Segment for each continuous span of track data.
  *
- * See https://www.topografix.com/GPX/1/1/#type_trksegType
+ * See <a href="https://www.topografix.com/GPX/1/1/#type_trksegType">trksegType</a>.
  *
  * @property trkpt A list of track points.
  */

@@ -53,4 +53,7 @@ dependencies {
 
     dokka(project(":turf"))
     kover(project(":turf"))
+
+    dokka(project(":gpx"))
+    kover(project(":gpx"))
 }

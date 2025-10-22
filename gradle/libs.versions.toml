@@ -10,9 +10,10 @@ kotlinx-io = "0.8.0"
 semver = "0.8.0"
 mkdocs-build = "4.0.1"
 detekt = "2.0.0-alpha.0"
+xmlutil = "0.91.2"
 
 [libraries]
-jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref="jetbrains-annotations"}
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-protobuf = { module = "org.jetbrains.kotlinx:kotlinx-serialization-protobuf", version.ref = "kotlinx-serialization" }
@@ -26,5 +27,7 @@ gradle-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", versio
 gradle-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-plugin", version.ref = "kotlinx-benchmark" }
 gradle-kover = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kotlinx-kover" }
 gradle-semver = { module = "com.javiersc.semver:com.javiersc.semver.gradle.plugin", version.ref = "semver" }
-gradle-mkdocs-build = { module = "ru.vyarus.mkdocs-build:ru.vyarus.mkdocs-build.gradle.plugin", version.ref = "mkdocs-build"}
+gradle-mkdocs-build = { module = "ru.vyarus.mkdocs-build:ru.vyarus.mkdocs-build.gradle.plugin", version.ref = "mkdocs-build" }
 gradle-detekt = { module = "dev.detekt:dev.detekt.gradle.plugin", version.ref = "detekt" }
+xmlutil-core = { module = "io.github.pdvrieze.xmlutil:core", version.ref = "xmlutil" }
+xmlutil-serialization = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xmlutil" }
