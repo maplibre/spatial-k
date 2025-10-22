@@ -7,8 +7,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":geojson"))
-            api(project(":units"))
-
+            implementation(libs.jetbrains.annotations)
             implementation(libs.xmlutil.core)
             implementation(libs.xmlutil.serialization)
         }
