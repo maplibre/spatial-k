@@ -1,0 +1,104 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-122.4194, 37.7749, 15.0]
+            },
+            "properties": {
+                "lat": 37.7749,
+                "lon": -122.4194,
+                "ele": 15.0,
+                "time": "2025-10-22T12:00:00Z",
+                "magvar": 12.5,
+                "geoidheight": -29.0,
+                "name": "WPT001",
+                "cmt": "City Center - Start Point",
+                "desc": "Main downtown starting location.",
+                "src": "Surveyed GPS Data",
+                "link": {
+                    "href": "https://example.com/wpt001",
+                    "text": "City Center Info",
+                    "type": "text/html"
+                },
+                "sym": "Flag, Blue",
+                "type": "Start",
+                "fix": "3d",
+                "sat": 10,
+                "hdop": 0.9,
+                "vdop": 1.1,
+                "pdop": 1.5,
+                "ageofdgpsdata": 1.2,
+                "dgpsid": 23.0
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-122.4862, 37.7694, 45.3]
+            },
+            "properties": {
+                "lat": 37.7694,
+                "lon": -122.4862,
+                "ele": 45.3,
+                "time": "2025-10-22T12:15:00Z",
+                "magvar": 12.7,
+                "geoidheight": -30.2,
+                "name": "WPT002",
+                "cmt": "Park Entrance",
+                "desc": "Entrance to Golden Gate Park area.",
+                "src": "Topo Map",
+                "link": {
+                    "href": "https://example.com/wpt002",
+                    "text": "Park Details",
+                    "type": "text/html"
+                },
+                "sym": "Tree",
+                "type": "Waypoint",
+                "fix": "dgps",
+                "sat": 9,
+                "hdop": 1.0,
+                "vdop": 1.3,
+                "pdop": 1.8,
+                "ageofdgpsdata": 0.8,
+                "dgpsid": 35.0
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-122.4488, 37.8021, 92.7]
+            },
+            "properties": {
+                "lat": 37.8021,
+                "lon": -122.4488,
+                "ele": 92.7,
+                "time": "2025-10-22T12:45:00Z",
+                "magvar": 12.6,
+                "geoidheight": -28.7,
+                "name": "WPT003",
+                "cmt": "Scenic Overlook",
+                "desc": "Beautiful overlook point with city view.",
+                "src": "Drone Survey",
+                "link": {
+                    "href": "https://example.com/wpt003",
+                    "text": "Viewpoint Info",
+                    "type": "text/html"
+                },
+                "sym": "Camera",
+                "type": "Finish",
+                "fix": "3d",
+                "sat": 12,
+                "hdop": 0.8,
+                "vdop": 1.0,
+                "pdop": 1.3,
+                "ageofdgpsdata": 0.5,
+                "dgpsid": 50.0
+            }
+        }
+    ]
+}

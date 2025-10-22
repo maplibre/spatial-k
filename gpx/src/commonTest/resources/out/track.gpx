@@ -1,0 +1,74 @@
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.topografix.com/GPX/1/1
+                         http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1"
+    creator="ChatGPT-GPX">
+    <metadata>
+        <name>Sample Track</name>
+        <desc>Example GPX file showing a multi-segment track.</desc>
+        <author>
+            <name>ChatGPT</name>
+        </author>
+        <link href="https://example.com">
+            <text>Sample GPX Resource</text>
+            <type>text/html</type>
+        </link>
+        <time>2025-10-22T12:00:00Z</time>
+        <keywords>gpx,track,example,gps</keywords>
+        <bounds minlat="37.7694" minlon="-122.4862" maxlat="37.8021" maxlon="-122.4194" />
+    </metadata>
+    <trk>
+        <name>City Loop Track</name>
+        <cmt>Sample track through San Francisco</cmt>
+        <desc>This track simulates a route starting downtown, going through a park, and ending at a
+            viewpoint.
+        </desc>
+        <src>Simulated GPS Data</src>
+        <number>1</number>
+        <type>Loop</type>
+        <trkseg>
+            <trkpt lat="37.7749" lon="-122.4194">
+                <ele>15.2</ele>
+                <time>2025-10-22T12:00:00Z</time>
+                <magvar>12.5</magvar>
+                <geoidheight>-29.0</geoidheight>
+                <fix>3d</fix>
+                <sat>10</sat>
+                <hdop>0.9</hdop>
+                <vdop>1.2</vdop>
+                <pdop>1.6</pdop>
+            </trkpt>
+            <trkpt lat="37.7765" lon="-122.429">
+                <ele>22.8</ele>
+                <time>2025-10-22T12:05:00Z</time>
+                <fix>3d</fix>
+                <sat>9</sat>
+            </trkpt>
+            <trkpt lat="37.778" lon="-122.441">
+                <ele>35.6</ele>
+                <time>2025-10-22T12:10:00Z</time>
+                <fix>3d</fix>
+                <sat>8</sat>
+            </trkpt>
+        </trkseg>
+        <trkseg>
+            <trkpt lat="37.7694" lon="-122.4862">
+                <ele>48.3</ele>
+                <time>2025-10-22T12:20:00Z</time>
+                <fix>dgps</fix>
+                <sat>9</sat>
+            </trkpt>
+            <trkpt lat="37.779" lon="-122.46">
+                <ele>62.7</ele>
+                <time>2025-10-22T12:30:00Z</time>
+                <fix>3d</fix>
+                <sat>10</sat>
+            </trkpt>
+            <trkpt lat="37.8021" lon="-122.4488">
+                <ele>90.4</ele>
+                <time>2025-10-22T12:45:00Z</time>
+                <fix>3d</fix>
+                <sat>12</sat>
+            </trkpt>
+        </trkseg>
+    </trk>
+</gpx>

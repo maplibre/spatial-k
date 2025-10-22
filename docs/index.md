@@ -17,6 +17,7 @@ See the [API Reference](api/index.html) for detailed documentation.
 - [`geojson`](./geojson/index.md) - GeoJSON implementation and DSL
 - [`turf`](./turf/index.md) - Turf.js port
 - [`units`](./units/index.md) - Units of measure
+- [`gpx`](./gpx/index.md) - GPX implementation
 
 ### Snapshots
 
