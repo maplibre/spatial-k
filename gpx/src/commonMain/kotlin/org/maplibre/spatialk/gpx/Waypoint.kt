@@ -2,6 +2,7 @@ package org.maplibre.spatialk.gpx
 
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import nl.adaptivity.xmlutil.serialization.XmlElement
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
@@ -19,51 +20,51 @@ import org.maplibre.spatialk.geojson.Position
  *
  * See [wptType](https://www.topografix.com/GPX/1/1/#type_wptType).
  *
- * @property lat The latitude of the point. Decimal degrees, WGS84 datum. (Required)
- * @property lon The longitude of the point. Decimal degrees, WGS84 datum. (Required)
- * @property ele Elevation of the point in meters.
- * @property time The time of the waypoint creation.
- * @property magvar Magnetic variation (in degrees) at the point.
- * @property geoidheight Height of geoid (mean sea level) above WGS84 earth ellipsoid, in meters.
+ * @property latitude The latitude of the point. Decimal degrees, WGS84 datum. (Required)
+ * @property longitude The longitude of the point. Decimal degrees, WGS84 datum. (Required)
+ * @property elevation Elevation of the point in meters.
+ * @property timestamp The time of the waypoint creation.
+ * @property magneticVariation Magnetic variation (in degrees) at the point.
+ * @property geoIdHeight Height of geoid (mean sea level) above WGS84 earth ellipsoid, in meters.
  * @property name The GPS name of the waypoint.
- * @property cmt GPS waypoint comment.
- * @property desc A text description of the element.
- * @property src Source of data. Included to give user some idea of reliability and accuracy of
+ * @property comment GPS waypoint comment.
+ * @property description A text description of the element.
+ * @property source Source of data. Included to give user some idea of reliability and accuracy of
  *   data.
  * @property link Link to additional information about the waypoint.
- * @property sym Text of GPS symbol name.
+ * @property symbol Text of GPS symbol name.
  * @property type Type of waypoint.
  * @property fix Type of GPS fix. 'none' means no fix. '2d' and '3d' are just estimates of quality.
- * @property sat Number of satellites used to calculate the GPX fix.
- * @property hdop Horizontal dilution of precision.
- * @property vdop Vertical dilution of precision.
- * @property pdop Position dilution of precision.
- * @property ageofdgpsdata Number of seconds since last DGPS update.
- * @property dgpsid ID of DGPS station used in differential correction.
+ * @property satelliteCount Number of satellites used to calculate the GPX fix.
+ * @property horizontalDop Horizontal dilution of precision.
+ * @property verticalDop Vertical dilution of precision.
+ * @property positionDop Position dilution of precision.
+ * @property dgpsAge Number of seconds since last DGPS update.
+ * @property dgpsId ID of DGPS station used in differential correction.
  */
 @Serializable
 @OptIn(ExperimentalTime::class)
 public data class Waypoint(
-    val lat: Double,
-    val lon: Double,
-    @XmlElement val ele: Double? = null,
-    @XmlElement val time: Instant? = null,
-    @XmlElement val magvar: Double? = null,
-    @XmlElement val geoidheight: Double? = null,
+    @SerialName("lat") val latitude: Double,
+    @SerialName("lon") val longitude: Double,
+    @SerialName("ele") @XmlElement val elevation: Double? = null,
+    @SerialName("time") @XmlElement val timestamp: Instant? = null,
+    @SerialName("magvar") @XmlElement val magneticVariation: Double? = null,
+    @SerialName("geoidheight") @XmlElement val geoIdHeight: Double? = null,
     @XmlElement val name: String? = null,
-    @XmlElement val cmt: String? = null,
-    @XmlElement val desc: String? = null,
-    @XmlElement val src: String? = null,
+    @SerialName("cmt") @XmlElement val comment: String? = null,
+    @SerialName("desc") @XmlElement val description: String? = null,
+    @SerialName("src") @XmlElement val source: String? = null,
     @XmlSerialName("link") @XmlElement val link: Link? = null,
-    @XmlElement val sym: String? = null,
+    @SerialName("sym") @XmlElement val symbol: String? = null,
     @XmlElement val type: String? = null,
     @XmlElement val fix: String? = null,
-    @XmlElement val sat: Int? = null,
-    @XmlElement val hdop: Double? = null,
-    @XmlElement val vdop: Double? = null,
-    @XmlElement val pdop: Double? = null,
-    @XmlElement val ageofdgpsdata: Double? = null,
-    @XmlElement val dgpsid: Double? = null,
+    @SerialName("sat") @XmlElement val satelliteCount: Int? = null,
+    @SerialName("hdop") @XmlElement val horizontalDop: Double? = null,
+    @SerialName("vdop") @XmlElement val verticalDop: Double? = null,
+    @SerialName("pdop") @XmlElement val positionDop: Double? = null,
+    @SerialName("ageofdgpsdata") @XmlElement val dgpsAge: Double? = null,
+    @SerialName("dgpsid") @XmlElement val dgpsId: Double? = null,
     // @XmlElement val extensions = null,
 )
 
@@ -76,7 +77,7 @@ public data class Waypoint(
  * @return A GeoJSON [Feature] representation of the waypoint.
  */
 public fun Waypoint.toGeoJson(): Feature<Point, Waypoint> {
-    return Feature(geometry = Point(Position(lon, lat, ele)), properties = this)
+    return Feature(geometry = Point(Position(longitude, latitude, elevation)), properties = this)
 }
 
 /**

@@ -1,5 +1,6 @@
 package org.maplibre.spatialk.gpx
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import nl.adaptivity.xmlutil.serialization.XmlElement
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
@@ -15,24 +16,27 @@ import org.maplibre.spatialk.geojson.Point
  * See [trkType](https://www.topografix.com/GPX/1/1/#type_trkType).
  *
  * @property name The GPS name of the track.
- * @property cmt A comment or description for the track.
- * @property desc A user-supplied description of the track.
- * @property src The source of the data.
+ * @property comment A comment or description for the track.
+ * @property description A user-supplied description of the track.
+ * @property source The source of the data.
  * @property link A URL link associated with the track.
  * @property number A GPS track number.
  * @property type The type of activity for the track (e.g., "cycling", "running").
- * @property trkseg A list of track segments that make up the track.
+ * @property segments A list of track segments that make up the track.
  */
 @Serializable
 public data class Track(
-    @XmlElement val name: String? = null,
-    @XmlElement val cmt: String? = null,
-    @XmlElement val desc: String? = null,
-    @XmlElement val src: String? = null,
-    @XmlElement val link: Link? = null,
-    @XmlElement val number: Int? = null,
-    @XmlElement val type: String? = null,
-    @XmlSerialName("trkseg") @XmlElement val trkseg: List<TrackSegment> = listOf(),
+    @SerialName("name") @XmlElement val name: String? = null,
+    @SerialName("cmt") @XmlElement val comment: String? = null,
+    @SerialName("desc") @XmlElement val description: String? = null,
+    @SerialName("src") @XmlElement val source: String? = null,
+    @SerialName("link") @XmlElement val link: Link? = null,
+    @SerialName("number") @XmlElement val number: Int? = null,
+    @SerialName("type") @XmlElement val type: String? = null,
+    @SerialName("trkseg")
+    @XmlSerialName("trkseg")
+    @XmlElement
+    val segments: List<TrackSegment> = listOf(),
     // @XmlElement val extensions = null,
 )
 
@@ -49,7 +53,9 @@ public data class Track(
 public fun Track.toGeoJson(): Feature<GeometryCollection<Point>, Track> {
     return Feature(
         GeometryCollection(
-            trkseg.flatMap { segment -> segment.trkpt.map { point -> point.toGeoJson().geometry } }
+            segments.flatMap { segment ->
+                segment.points.map { point -> point.toGeoJson().geometry }
+            }
         ),
         this,
     )
@@ -62,11 +68,11 @@ public fun Track.toGeoJson(): Feature<GeometryCollection<Point>, Track> {
  *
  * See [trksegType](https://www.topografix.com/GPX/1/1/#type_trksegType).
  *
- * @property trkpt A list of track points.
+ * @property points A list of track points.
  */
 @Serializable
 public data class TrackSegment(
-    @XmlSerialName("trkpt") @XmlElement val trkpt: List<Waypoint>
+    @XmlSerialName("trkpt") @XmlElement val points: List<Waypoint>
     // @XmlElement val extensions = null,
 )
 
@@ -80,5 +86,5 @@ public data class TrackSegment(
  * @return A GeoJSON [Feature] representing this track segment.
  */
 public fun TrackSegment.toGeoJson(): Feature<GeometryCollection<Point>, TrackSegment> {
-    return Feature(GeometryCollection(trkpt.map { it.toGeoJson().geometry }), this)
+    return Feature(GeometryCollection(points.map { it.toGeoJson().geometry }), this)
 }

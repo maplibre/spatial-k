@@ -12,12 +12,12 @@ class GpxTest {
     @Test
     fun testWaypoints() {
         val document = Gpx.decodeFromString(readResourceFile("in/waypoints.gpx"))
-        assertEquals(3, document.wpt.size)
-        assertEquals("WPT001", document.wpt[0].name)
+        assertEquals(3, document.waypoints.size)
+        assertEquals("WPT001", document.waypoints[0].name)
 
         assertEquals(
             FeatureCollection.fromJson<Point, Waypoint>(readResourceFile("out/waypoints.json")),
-            document.wpt.toGeoJson(),
+            document.waypoints.toGeoJson(),
         )
 
         stripEquals(readResourceFile("out/waypoints.gpx"), Gpx.encodeToString(document))

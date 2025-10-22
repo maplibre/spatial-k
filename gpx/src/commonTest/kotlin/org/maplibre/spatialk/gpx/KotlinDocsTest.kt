@@ -18,7 +18,7 @@ class KotlinDocsTest {
         val document =
             Document(
                 metadata = Metadata(name = "My GPX File"),
-                wpt =
+                waypoints =
                     listOf(
                         Waypoint(1.0, 2.0),
                         Waypoint(3.0, 4.0),

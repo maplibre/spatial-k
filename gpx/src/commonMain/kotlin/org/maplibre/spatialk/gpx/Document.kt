@@ -3,6 +3,7 @@ package org.maplibre.spatialk.gpx
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.serialization.Required
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import nl.adaptivity.xmlutil.serialization.XmlElement
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
@@ -20,9 +21,9 @@ import nl.adaptivity.xmlutil.serialization.XmlSerialName
  * @property version The GPX version. Should be `1.1`.
  * @property creator The name or URL of the software that created the GPX file.
  * @property metadata Metadata about the file.
- * @property wpt A list of waypoints.
- * @property rte A list of routes.
- * @property trk A list of tracks.
+ * @property waypoints A list of waypoints.
+ * @property routes A list of routes.
+ * @property tracks A list of tracks.
  */
 @XmlSerialName("gpx", "http://www.topografix.com/GPX/1/1")
 @Serializable
@@ -34,9 +35,12 @@ public data class Document(
     @Required val version: String = "1.1",
     @Required val creator: String = "org.maplibre.spatialk.gpx",
     @XmlSerialName("metadata") @XmlElement val metadata: Metadata? = null,
-    @XmlSerialName("trk") @XmlElement val trk: List<Track> = listOf(),
-    @XmlSerialName("rte") @XmlElement val rte: List<Route> = listOf(),
-    @XmlSerialName("wpt") @XmlElement val wpt: List<Waypoint> = listOf(),
+    @SerialName("tracks") @XmlSerialName("trk") @XmlElement val tracks: List<Track> = listOf(),
+    @SerialName("routes") @XmlSerialName("rte") @XmlElement val routes: List<Route> = listOf(),
+    @SerialName("waypoints")
+    @XmlSerialName("wpt")
+    @XmlElement
+    val waypoints: List<Waypoint> = listOf(),
 )
 
 /**
@@ -46,11 +50,11 @@ public data class Document(
  * See [metadataType](https://www.topografix.com/GPX/1/1/#type_metadataType).
  *
  * @property name The name of the GPX file.
- * @property desc A description of the contents of the GPX file.
+ * @property description A description of the contents of the GPX file.
  * @property author The person or organization who created the GPX file.
  * @property copyright Copyright and license information governing use of the file.
  * @property link URLs associated with the location described in the file.
- * @property time The creation timestamp of the data in the file.
+ * @property timestamp The creation timestamp of the data in the file.
  * @property keywords Keywords associated with the file. Search engines or databases may use them.
  * @property bounds The minimum and maximum coordinates that describe the extent of the data in the
  *   file.
@@ -59,12 +63,12 @@ public data class Document(
 public data class Metadata
 @OptIn(ExperimentalTime::class)
 constructor(
-    @XmlSerialName("name") @XmlElement val name: String? = null,
-    @XmlElement val desc: String? = null,
-    @XmlSerialName("author") @XmlElement val author: Author? = null,
+    @SerialName("name") @XmlElement val name: String? = null,
+    @SerialName("desc") @XmlElement val description: String? = null,
+    @SerialName("author") @XmlSerialName("author") @XmlElement val author: Author? = null,
     @XmlSerialName("copyright") @XmlElement val copyright: Copyright? = null,
     @XmlSerialName("link") @XmlElement val link: List<Link> = listOf(),
-    @XmlElement val time: Instant? = null,
+    @SerialName("time") @XmlElement val timestamp: Instant? = null,
     @XmlElement val keywords: String? = null,
     @XmlSerialName("bounds") @XmlElement val bounds: Bounds? = null,
     // val extensions: Extensions?,
@@ -135,15 +139,16 @@ public data class Link(
  *
  * See [boundsType](https://www.topografix.com/GPX/1/1/#type_boundsType).
  *
- * @property minlat The minimum latitude.
- * @property minlon The minimum longitude.
- * @property maxlat The maximum latitude.
- * @property maxlon The maximum longitude.
+ * @property minLatitude The minimum latitude.
+ * @property minLongitude The minimum longitude.
+ * @property maxLatitude The maximum latitude.
+ * @property maxLongitude The maximum longitude.
  */
 @Serializable
+@SerialName("bounds")
 public data class Bounds(
-    val minlat: Double,
-    val minlon: Double,
-    val maxlat: Double,
-    val maxlon: Double,
+    @SerialName("minlat") val minLatitude: Double,
+    @SerialName("minlon") val minLongitude: Double,
+    @SerialName("maxlat") val maxLatitude: Double,
+    @SerialName("maxlon") val maxLongitude: Double,
 )
