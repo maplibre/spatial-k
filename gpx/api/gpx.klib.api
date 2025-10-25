@@ -1,0 +1,489 @@
+// Klib ABI Dump
+// Targets: [androidNativeArm32, androidNativeArm64, androidNativeX64, androidNativeX86, iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, wasmWasi, watchosArm32, watchosArm64, watchosDeviceArm64, watchosSimulatorArm64, watchosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <org.maplibre.spatialk:gpx>
+final class org.maplibre.spatialk.gpx/Author { // org.maplibre.spatialk.gpx/Author|null[0]
+    constructor <init>(kotlin/String? = ..., org.maplibre.spatialk.gpx/Email? = ..., org.maplibre.spatialk.gpx/Link? = ...) // org.maplibre.spatialk.gpx/Author.<init>|<init>(kotlin.String?;org.maplibre.spatialk.gpx.Email?;org.maplibre.spatialk.gpx.Link?){}[0]
+
+    final val email // org.maplibre.spatialk.gpx/Author.email|{}email[0]
+        final fun <get-email>(): org.maplibre.spatialk.gpx/Email? // org.maplibre.spatialk.gpx/Author.email.<get-email>|<get-email>(){}[0]
+    final val link // org.maplibre.spatialk.gpx/Author.link|{}link[0]
+        final fun <get-link>(): org.maplibre.spatialk.gpx/Link? // org.maplibre.spatialk.gpx/Author.link.<get-link>|<get-link>(){}[0]
+    final val name // org.maplibre.spatialk.gpx/Author.name|{}name[0]
+        final fun <get-name>(): kotlin/String? // org.maplibre.spatialk.gpx/Author.name.<get-name>|<get-name>(){}[0]
+
+    final fun component1(): kotlin/String? // org.maplibre.spatialk.gpx/Author.component1|component1(){}[0]
+    final fun component2(): org.maplibre.spatialk.gpx/Email? // org.maplibre.spatialk.gpx/Author.component2|component2(){}[0]
+    final fun component3(): org.maplibre.spatialk.gpx/Link? // org.maplibre.spatialk.gpx/Author.component3|component3(){}[0]
+    final fun copy(kotlin/String? = ..., org.maplibre.spatialk.gpx/Email? = ..., org.maplibre.spatialk.gpx/Link? = ...): org.maplibre.spatialk.gpx/Author // org.maplibre.spatialk.gpx/Author.copy|copy(kotlin.String?;org.maplibre.spatialk.gpx.Email?;org.maplibre.spatialk.gpx.Link?){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Author.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Author.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Author.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.gpx/Author> { // org.maplibre.spatialk.gpx/Author.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.gpx/Author.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.gpx/Author.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.gpx/Author.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.gpx/Author // org.maplibre.spatialk.gpx/Author.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.gpx/Author) // org.maplibre.spatialk.gpx/Author.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.gpx.Author){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.gpx/Author.Companion|null[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.gpx/Author> // org.maplibre.spatialk.gpx/Author.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.gpx/Bounds { // org.maplibre.spatialk.gpx/Bounds|null[0]
+    constructor <init>(kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double) // org.maplibre.spatialk.gpx/Bounds.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double){}[0]
+
+    final val maxLatitude // org.maplibre.spatialk.gpx/Bounds.maxLatitude|{}maxLatitude[0]
+        final fun <get-maxLatitude>(): kotlin/Double // org.maplibre.spatialk.gpx/Bounds.maxLatitude.<get-maxLatitude>|<get-maxLatitude>(){}[0]
+    final val maxLongitude // org.maplibre.spatialk.gpx/Bounds.maxLongitude|{}maxLongitude[0]
+        final fun <get-maxLongitude>(): kotlin/Double // org.maplibre.spatialk.gpx/Bounds.maxLongitude.<get-maxLongitude>|<get-maxLongitude>(){}[0]
+    final val minLatitude // org.maplibre.spatialk.gpx/Bounds.minLatitude|{}minLatitude[0]
+        final fun <get-minLatitude>(): kotlin/Double // org.maplibre.spatialk.gpx/Bounds.minLatitude.<get-minLatitude>|<get-minLatitude>(){}[0]
+    final val minLongitude // org.maplibre.spatialk.gpx/Bounds.minLongitude|{}minLongitude[0]
+        final fun <get-minLongitude>(): kotlin/Double // org.maplibre.spatialk.gpx/Bounds.minLongitude.<get-minLongitude>|<get-minLongitude>(){}[0]
+
+    final fun component1(): kotlin/Double // org.maplibre.spatialk.gpx/Bounds.component1|component1(){}[0]
+    final fun component2(): kotlin/Double // org.maplibre.spatialk.gpx/Bounds.component2|component2(){}[0]
+    final fun component3(): kotlin/Double // org.maplibre.spatialk.gpx/Bounds.component3|component3(){}[0]
+    final fun component4(): kotlin/Double // org.maplibre.spatialk.gpx/Bounds.component4|component4(){}[0]
+    final fun copy(kotlin/Double = ..., kotlin/Double = ..., kotlin/Double = ..., kotlin/Double = ...): org.maplibre.spatialk.gpx/Bounds // org.maplibre.spatialk.gpx/Bounds.copy|copy(kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Bounds.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Bounds.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Bounds.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.gpx/Bounds> { // org.maplibre.spatialk.gpx/Bounds.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.gpx/Bounds.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.gpx/Bounds.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.gpx/Bounds.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.gpx/Bounds // org.maplibre.spatialk.gpx/Bounds.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.gpx/Bounds) // org.maplibre.spatialk.gpx/Bounds.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.gpx.Bounds){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.gpx/Bounds.Companion|null[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.gpx/Bounds> // org.maplibre.spatialk.gpx/Bounds.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.gpx/Copyright { // org.maplibre.spatialk.gpx/Copyright|null[0]
+    constructor <init>(kotlin/String, kotlin/String? = ..., kotlin/String? = ...) // org.maplibre.spatialk.gpx/Copyright.<init>|<init>(kotlin.String;kotlin.String?;kotlin.String?){}[0]
+
+    final val author // org.maplibre.spatialk.gpx/Copyright.author|{}author[0]
+        final fun <get-author>(): kotlin/String // org.maplibre.spatialk.gpx/Copyright.author.<get-author>|<get-author>(){}[0]
+    final val license // org.maplibre.spatialk.gpx/Copyright.license|{}license[0]
+        final fun <get-license>(): kotlin/String? // org.maplibre.spatialk.gpx/Copyright.license.<get-license>|<get-license>(){}[0]
+    final val year // org.maplibre.spatialk.gpx/Copyright.year|{}year[0]
+        final fun <get-year>(): kotlin/String? // org.maplibre.spatialk.gpx/Copyright.year.<get-year>|<get-year>(){}[0]
+
+    final fun component1(): kotlin/String // org.maplibre.spatialk.gpx/Copyright.component1|component1(){}[0]
+    final fun component2(): kotlin/String? // org.maplibre.spatialk.gpx/Copyright.component2|component2(){}[0]
+    final fun component3(): kotlin/String? // org.maplibre.spatialk.gpx/Copyright.component3|component3(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/String? = ..., kotlin/String? = ...): org.maplibre.spatialk.gpx/Copyright // org.maplibre.spatialk.gpx/Copyright.copy|copy(kotlin.String;kotlin.String?;kotlin.String?){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Copyright.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Copyright.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Copyright.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.gpx/Copyright> { // org.maplibre.spatialk.gpx/Copyright.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.gpx/Copyright.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.gpx/Copyright.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.gpx/Copyright.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.gpx/Copyright // org.maplibre.spatialk.gpx/Copyright.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.gpx/Copyright) // org.maplibre.spatialk.gpx/Copyright.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.gpx.Copyright){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.gpx/Copyright.Companion|null[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.gpx/Copyright> // org.maplibre.spatialk.gpx/Copyright.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.gpx/Document { // org.maplibre.spatialk.gpx/Document|null[0]
+    constructor <init>(kotlin/String = ..., kotlin/String = ..., kotlin/String = ..., org.maplibre.spatialk.gpx/Metadata? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Track> = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Route> = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> = ...) // org.maplibre.spatialk.gpx/Document.<init>|<init>(kotlin.String;kotlin.String;kotlin.String;org.maplibre.spatialk.gpx.Metadata?;kotlin.collections.List<org.maplibre.spatialk.gpx.Track>;kotlin.collections.List<org.maplibre.spatialk.gpx.Route>;kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>){}[0]
+
+    final val creator // org.maplibre.spatialk.gpx/Document.creator|{}creator[0]
+        final fun <get-creator>(): kotlin/String // org.maplibre.spatialk.gpx/Document.creator.<get-creator>|<get-creator>(){}[0]
+    final val metadata // org.maplibre.spatialk.gpx/Document.metadata|{}metadata[0]
+        final fun <get-metadata>(): org.maplibre.spatialk.gpx/Metadata? // org.maplibre.spatialk.gpx/Document.metadata.<get-metadata>|<get-metadata>(){}[0]
+    final val routes // org.maplibre.spatialk.gpx/Document.routes|{}routes[0]
+        final fun <get-routes>(): kotlin.collections/List<org.maplibre.spatialk.gpx/Route> // org.maplibre.spatialk.gpx/Document.routes.<get-routes>|<get-routes>(){}[0]
+    final val schemaLocation // org.maplibre.spatialk.gpx/Document.schemaLocation|{}schemaLocation[0]
+        final fun <get-schemaLocation>(): kotlin/String // org.maplibre.spatialk.gpx/Document.schemaLocation.<get-schemaLocation>|<get-schemaLocation>(){}[0]
+    final val tracks // org.maplibre.spatialk.gpx/Document.tracks|{}tracks[0]
+        final fun <get-tracks>(): kotlin.collections/List<org.maplibre.spatialk.gpx/Track> // org.maplibre.spatialk.gpx/Document.tracks.<get-tracks>|<get-tracks>(){}[0]
+    final val version // org.maplibre.spatialk.gpx/Document.version|{}version[0]
+        final fun <get-version>(): kotlin/String // org.maplibre.spatialk.gpx/Document.version.<get-version>|<get-version>(){}[0]
+    final val waypoints // org.maplibre.spatialk.gpx/Document.waypoints|{}waypoints[0]
+        final fun <get-waypoints>(): kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> // org.maplibre.spatialk.gpx/Document.waypoints.<get-waypoints>|<get-waypoints>(){}[0]
+
+    final fun component1(): kotlin/String // org.maplibre.spatialk.gpx/Document.component1|component1(){}[0]
+    final fun component2(): kotlin/String // org.maplibre.spatialk.gpx/Document.component2|component2(){}[0]
+    final fun component3(): kotlin/String // org.maplibre.spatialk.gpx/Document.component3|component3(){}[0]
+    final fun component4(): org.maplibre.spatialk.gpx/Metadata? // org.maplibre.spatialk.gpx/Document.component4|component4(){}[0]
+    final fun component5(): kotlin.collections/List<org.maplibre.spatialk.gpx/Track> // org.maplibre.spatialk.gpx/Document.component5|component5(){}[0]
+    final fun component6(): kotlin.collections/List<org.maplibre.spatialk.gpx/Route> // org.maplibre.spatialk.gpx/Document.component6|component6(){}[0]
+    final fun component7(): kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> // org.maplibre.spatialk.gpx/Document.component7|component7(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/String = ..., kotlin/String = ..., org.maplibre.spatialk.gpx/Metadata? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Track> = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Route> = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> = ...): org.maplibre.spatialk.gpx/Document // org.maplibre.spatialk.gpx/Document.copy|copy(kotlin.String;kotlin.String;kotlin.String;org.maplibre.spatialk.gpx.Metadata?;kotlin.collections.List<org.maplibre.spatialk.gpx.Track>;kotlin.collections.List<org.maplibre.spatialk.gpx.Route>;kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Document.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Document.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Document.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.gpx/Document> { // org.maplibre.spatialk.gpx/Document.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.gpx/Document.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.gpx/Document.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.gpx/Document.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.gpx/Document // org.maplibre.spatialk.gpx/Document.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.gpx/Document) // org.maplibre.spatialk.gpx/Document.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.gpx.Document){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.gpx/Document.Companion|null[0]
+        final val $childSerializers // org.maplibre.spatialk.gpx/Document.Companion.$childSerializers|{}$childSerializers[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.gpx/Document> // org.maplibre.spatialk.gpx/Document.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.gpx/Email { // org.maplibre.spatialk.gpx/Email|null[0]
+    constructor <init>(kotlin/String, kotlin/String) // org.maplibre.spatialk.gpx/Email.<init>|<init>(kotlin.String;kotlin.String){}[0]
+
+    final val domain // org.maplibre.spatialk.gpx/Email.domain|{}domain[0]
+        final fun <get-domain>(): kotlin/String // org.maplibre.spatialk.gpx/Email.domain.<get-domain>|<get-domain>(){}[0]
+    final val id // org.maplibre.spatialk.gpx/Email.id|{}id[0]
+        final fun <get-id>(): kotlin/String // org.maplibre.spatialk.gpx/Email.id.<get-id>|<get-id>(){}[0]
+
+    final fun component1(): kotlin/String // org.maplibre.spatialk.gpx/Email.component1|component1(){}[0]
+    final fun component2(): kotlin/String // org.maplibre.spatialk.gpx/Email.component2|component2(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/String = ...): org.maplibre.spatialk.gpx/Email // org.maplibre.spatialk.gpx/Email.copy|copy(kotlin.String;kotlin.String){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Email.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Email.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Email.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.gpx/Email> { // org.maplibre.spatialk.gpx/Email.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.gpx/Email.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.gpx/Email.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.gpx/Email.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.gpx/Email // org.maplibre.spatialk.gpx/Email.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.gpx/Email) // org.maplibre.spatialk.gpx/Email.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.gpx.Email){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.gpx/Email.Companion|null[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.gpx/Email> // org.maplibre.spatialk.gpx/Email.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.gpx/Link { // org.maplibre.spatialk.gpx/Link|null[0]
+    constructor <init>(kotlin/String, kotlin/String? = ..., kotlin/String? = ...) // org.maplibre.spatialk.gpx/Link.<init>|<init>(kotlin.String;kotlin.String?;kotlin.String?){}[0]
+
+    final val href // org.maplibre.spatialk.gpx/Link.href|{}href[0]
+        final fun <get-href>(): kotlin/String // org.maplibre.spatialk.gpx/Link.href.<get-href>|<get-href>(){}[0]
+    final val text // org.maplibre.spatialk.gpx/Link.text|{}text[0]
+        final fun <get-text>(): kotlin/String? // org.maplibre.spatialk.gpx/Link.text.<get-text>|<get-text>(){}[0]
+    final val type // org.maplibre.spatialk.gpx/Link.type|{}type[0]
+        final fun <get-type>(): kotlin/String? // org.maplibre.spatialk.gpx/Link.type.<get-type>|<get-type>(){}[0]
+
+    final fun component1(): kotlin/String // org.maplibre.spatialk.gpx/Link.component1|component1(){}[0]
+    final fun component2(): kotlin/String? // org.maplibre.spatialk.gpx/Link.component2|component2(){}[0]
+    final fun component3(): kotlin/String? // org.maplibre.spatialk.gpx/Link.component3|component3(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/String? = ..., kotlin/String? = ...): org.maplibre.spatialk.gpx/Link // org.maplibre.spatialk.gpx/Link.copy|copy(kotlin.String;kotlin.String?;kotlin.String?){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Link.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Link.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Link.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.gpx/Link> { // org.maplibre.spatialk.gpx/Link.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.gpx/Link.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.gpx/Link.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.gpx/Link.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.gpx/Link // org.maplibre.spatialk.gpx/Link.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.gpx/Link) // org.maplibre.spatialk.gpx/Link.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.gpx.Link){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.gpx/Link.Companion|null[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.gpx/Link> // org.maplibre.spatialk.gpx/Link.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.gpx/Metadata { // org.maplibre.spatialk.gpx/Metadata|null[0]
+    constructor <init>(kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Author? = ..., org.maplibre.spatialk.gpx/Copyright? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Link> = ..., kotlin.time/Instant? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Bounds? = ...) // org.maplibre.spatialk.gpx/Metadata.<init>|<init>(kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Author?;org.maplibre.spatialk.gpx.Copyright?;kotlin.collections.List<org.maplibre.spatialk.gpx.Link>;kotlin.time.Instant?;kotlin.String?;org.maplibre.spatialk.gpx.Bounds?){}[0]
+
+    final val author // org.maplibre.spatialk.gpx/Metadata.author|{}author[0]
+        final fun <get-author>(): org.maplibre.spatialk.gpx/Author? // org.maplibre.spatialk.gpx/Metadata.author.<get-author>|<get-author>(){}[0]
+    final val bounds // org.maplibre.spatialk.gpx/Metadata.bounds|{}bounds[0]
+        final fun <get-bounds>(): org.maplibre.spatialk.gpx/Bounds? // org.maplibre.spatialk.gpx/Metadata.bounds.<get-bounds>|<get-bounds>(){}[0]
+    final val copyright // org.maplibre.spatialk.gpx/Metadata.copyright|{}copyright[0]
+        final fun <get-copyright>(): org.maplibre.spatialk.gpx/Copyright? // org.maplibre.spatialk.gpx/Metadata.copyright.<get-copyright>|<get-copyright>(){}[0]
+    final val description // org.maplibre.spatialk.gpx/Metadata.description|{}description[0]
+        final fun <get-description>(): kotlin/String? // org.maplibre.spatialk.gpx/Metadata.description.<get-description>|<get-description>(){}[0]
+    final val keywords // org.maplibre.spatialk.gpx/Metadata.keywords|{}keywords[0]
+        final fun <get-keywords>(): kotlin/String? // org.maplibre.spatialk.gpx/Metadata.keywords.<get-keywords>|<get-keywords>(){}[0]
+    final val link // org.maplibre.spatialk.gpx/Metadata.link|{}link[0]
+        final fun <get-link>(): kotlin.collections/List<org.maplibre.spatialk.gpx/Link> // org.maplibre.spatialk.gpx/Metadata.link.<get-link>|<get-link>(){}[0]
+    final val name // org.maplibre.spatialk.gpx/Metadata.name|{}name[0]
+        final fun <get-name>(): kotlin/String? // org.maplibre.spatialk.gpx/Metadata.name.<get-name>|<get-name>(){}[0]
+    final val timestamp // org.maplibre.spatialk.gpx/Metadata.timestamp|{}timestamp[0]
+        final fun <get-timestamp>(): kotlin.time/Instant? // org.maplibre.spatialk.gpx/Metadata.timestamp.<get-timestamp>|<get-timestamp>(){}[0]
+
+    final fun component1(): kotlin/String? // org.maplibre.spatialk.gpx/Metadata.component1|component1(){}[0]
+    final fun component2(): kotlin/String? // org.maplibre.spatialk.gpx/Metadata.component2|component2(){}[0]
+    final fun component3(): org.maplibre.spatialk.gpx/Author? // org.maplibre.spatialk.gpx/Metadata.component3|component3(){}[0]
+    final fun component4(): org.maplibre.spatialk.gpx/Copyright? // org.maplibre.spatialk.gpx/Metadata.component4|component4(){}[0]
+    final fun component5(): kotlin.collections/List<org.maplibre.spatialk.gpx/Link> // org.maplibre.spatialk.gpx/Metadata.component5|component5(){}[0]
+    final fun component6(): kotlin.time/Instant? // org.maplibre.spatialk.gpx/Metadata.component6|component6(){}[0]
+    final fun component7(): kotlin/String? // org.maplibre.spatialk.gpx/Metadata.component7|component7(){}[0]
+    final fun component8(): org.maplibre.spatialk.gpx/Bounds? // org.maplibre.spatialk.gpx/Metadata.component8|component8(){}[0]
+    final fun copy(kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Author? = ..., org.maplibre.spatialk.gpx/Copyright? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Link> = ..., kotlin.time/Instant? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Bounds? = ...): org.maplibre.spatialk.gpx/Metadata // org.maplibre.spatialk.gpx/Metadata.copy|copy(kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Author?;org.maplibre.spatialk.gpx.Copyright?;kotlin.collections.List<org.maplibre.spatialk.gpx.Link>;kotlin.time.Instant?;kotlin.String?;org.maplibre.spatialk.gpx.Bounds?){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Metadata.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Metadata.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Metadata.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.gpx/Metadata> { // org.maplibre.spatialk.gpx/Metadata.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.gpx/Metadata.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.gpx/Metadata.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.gpx/Metadata.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.gpx/Metadata // org.maplibre.spatialk.gpx/Metadata.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.gpx/Metadata) // org.maplibre.spatialk.gpx/Metadata.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.gpx.Metadata){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.gpx/Metadata.Companion|null[0]
+        final val $childSerializers // org.maplibre.spatialk.gpx/Metadata.Companion.$childSerializers|{}$childSerializers[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.gpx/Metadata> // org.maplibre.spatialk.gpx/Metadata.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.gpx/Route { // org.maplibre.spatialk.gpx/Route|null[0]
+    constructor <init>(kotlin/String?, kotlin/String?, kotlin/String?, kotlin/String?, kotlin/String?, kotlin/Int?, kotlin/String?, kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint>) // org.maplibre.spatialk.gpx/Route.<init>|<init>(kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.Int?;kotlin.String?;kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>){}[0]
+
+    final val comment // org.maplibre.spatialk.gpx/Route.comment|{}comment[0]
+        final fun <get-comment>(): kotlin/String? // org.maplibre.spatialk.gpx/Route.comment.<get-comment>|<get-comment>(){}[0]
+    final val description // org.maplibre.spatialk.gpx/Route.description|{}description[0]
+        final fun <get-description>(): kotlin/String? // org.maplibre.spatialk.gpx/Route.description.<get-description>|<get-description>(){}[0]
+    final val link // org.maplibre.spatialk.gpx/Route.link|{}link[0]
+        final fun <get-link>(): kotlin/String? // org.maplibre.spatialk.gpx/Route.link.<get-link>|<get-link>(){}[0]
+    final val name // org.maplibre.spatialk.gpx/Route.name|{}name[0]
+        final fun <get-name>(): kotlin/String? // org.maplibre.spatialk.gpx/Route.name.<get-name>|<get-name>(){}[0]
+    final val number // org.maplibre.spatialk.gpx/Route.number|{}number[0]
+        final fun <get-number>(): kotlin/Int? // org.maplibre.spatialk.gpx/Route.number.<get-number>|<get-number>(){}[0]
+    final val routePoints // org.maplibre.spatialk.gpx/Route.routePoints|{}routePoints[0]
+        final fun <get-routePoints>(): kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> // org.maplibre.spatialk.gpx/Route.routePoints.<get-routePoints>|<get-routePoints>(){}[0]
+    final val source // org.maplibre.spatialk.gpx/Route.source|{}source[0]
+        final fun <get-source>(): kotlin/String? // org.maplibre.spatialk.gpx/Route.source.<get-source>|<get-source>(){}[0]
+    final val type // org.maplibre.spatialk.gpx/Route.type|{}type[0]
+        final fun <get-type>(): kotlin/String? // org.maplibre.spatialk.gpx/Route.type.<get-type>|<get-type>(){}[0]
+
+    final fun component1(): kotlin/String? // org.maplibre.spatialk.gpx/Route.component1|component1(){}[0]
+    final fun component2(): kotlin/String? // org.maplibre.spatialk.gpx/Route.component2|component2(){}[0]
+    final fun component3(): kotlin/String? // org.maplibre.spatialk.gpx/Route.component3|component3(){}[0]
+    final fun component4(): kotlin/String? // org.maplibre.spatialk.gpx/Route.component4|component4(){}[0]
+    final fun component5(): kotlin/String? // org.maplibre.spatialk.gpx/Route.component5|component5(){}[0]
+    final fun component6(): kotlin/Int? // org.maplibre.spatialk.gpx/Route.component6|component6(){}[0]
+    final fun component7(): kotlin/String? // org.maplibre.spatialk.gpx/Route.component7|component7(){}[0]
+    final fun component8(): kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> // org.maplibre.spatialk.gpx/Route.component8|component8(){}[0]
+    final fun copy(kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> = ...): org.maplibre.spatialk.gpx/Route // org.maplibre.spatialk.gpx/Route.copy|copy(kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.Int?;kotlin.String?;kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Route.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Route.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Route.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.gpx/Route> { // org.maplibre.spatialk.gpx/Route.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.gpx/Route.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.gpx/Route.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.gpx/Route.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.gpx/Route // org.maplibre.spatialk.gpx/Route.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.gpx/Route) // org.maplibre.spatialk.gpx/Route.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.gpx.Route){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.gpx/Route.Companion|null[0]
+        final val $childSerializers // org.maplibre.spatialk.gpx/Route.Companion.$childSerializers|{}$childSerializers[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.gpx/Route> // org.maplibre.spatialk.gpx/Route.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.gpx/Track { // org.maplibre.spatialk.gpx/Track|null[0]
+    constructor <init>(kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Link? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/TrackSegment> = ...) // org.maplibre.spatialk.gpx/Track.<init>|<init>(kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Link?;kotlin.Int?;kotlin.String?;kotlin.collections.List<org.maplibre.spatialk.gpx.TrackSegment>){}[0]
+
+    final val comment // org.maplibre.spatialk.gpx/Track.comment|{}comment[0]
+        final fun <get-comment>(): kotlin/String? // org.maplibre.spatialk.gpx/Track.comment.<get-comment>|<get-comment>(){}[0]
+    final val description // org.maplibre.spatialk.gpx/Track.description|{}description[0]
+        final fun <get-description>(): kotlin/String? // org.maplibre.spatialk.gpx/Track.description.<get-description>|<get-description>(){}[0]
+    final val link // org.maplibre.spatialk.gpx/Track.link|{}link[0]
+        final fun <get-link>(): org.maplibre.spatialk.gpx/Link? // org.maplibre.spatialk.gpx/Track.link.<get-link>|<get-link>(){}[0]
+    final val name // org.maplibre.spatialk.gpx/Track.name|{}name[0]
+        final fun <get-name>(): kotlin/String? // org.maplibre.spatialk.gpx/Track.name.<get-name>|<get-name>(){}[0]
+    final val number // org.maplibre.spatialk.gpx/Track.number|{}number[0]
+        final fun <get-number>(): kotlin/Int? // org.maplibre.spatialk.gpx/Track.number.<get-number>|<get-number>(){}[0]
+    final val segments // org.maplibre.spatialk.gpx/Track.segments|{}segments[0]
+        final fun <get-segments>(): kotlin.collections/List<org.maplibre.spatialk.gpx/TrackSegment> // org.maplibre.spatialk.gpx/Track.segments.<get-segments>|<get-segments>(){}[0]
+    final val source // org.maplibre.spatialk.gpx/Track.source|{}source[0]
+        final fun <get-source>(): kotlin/String? // org.maplibre.spatialk.gpx/Track.source.<get-source>|<get-source>(){}[0]
+    final val type // org.maplibre.spatialk.gpx/Track.type|{}type[0]
+        final fun <get-type>(): kotlin/String? // org.maplibre.spatialk.gpx/Track.type.<get-type>|<get-type>(){}[0]
+
+    final fun component1(): kotlin/String? // org.maplibre.spatialk.gpx/Track.component1|component1(){}[0]
+    final fun component2(): kotlin/String? // org.maplibre.spatialk.gpx/Track.component2|component2(){}[0]
+    final fun component3(): kotlin/String? // org.maplibre.spatialk.gpx/Track.component3|component3(){}[0]
+    final fun component4(): kotlin/String? // org.maplibre.spatialk.gpx/Track.component4|component4(){}[0]
+    final fun component5(): org.maplibre.spatialk.gpx/Link? // org.maplibre.spatialk.gpx/Track.component5|component5(){}[0]
+    final fun component6(): kotlin/Int? // org.maplibre.spatialk.gpx/Track.component6|component6(){}[0]
+    final fun component7(): kotlin/String? // org.maplibre.spatialk.gpx/Track.component7|component7(){}[0]
+    final fun component8(): kotlin.collections/List<org.maplibre.spatialk.gpx/TrackSegment> // org.maplibre.spatialk.gpx/Track.component8|component8(){}[0]
+    final fun copy(kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Link? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/TrackSegment> = ...): org.maplibre.spatialk.gpx/Track // org.maplibre.spatialk.gpx/Track.copy|copy(kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Link?;kotlin.Int?;kotlin.String?;kotlin.collections.List<org.maplibre.spatialk.gpx.TrackSegment>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Track.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Track.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Track.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.gpx/Track> { // org.maplibre.spatialk.gpx/Track.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.gpx/Track.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.gpx/Track.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.gpx/Track.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.gpx/Track // org.maplibre.spatialk.gpx/Track.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.gpx/Track) // org.maplibre.spatialk.gpx/Track.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.gpx.Track){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.gpx/Track.Companion|null[0]
+        final val $childSerializers // org.maplibre.spatialk.gpx/Track.Companion.$childSerializers|{}$childSerializers[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.gpx/Track> // org.maplibre.spatialk.gpx/Track.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.gpx/TrackSegment { // org.maplibre.spatialk.gpx/TrackSegment|null[0]
+    constructor <init>(kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint>) // org.maplibre.spatialk.gpx/TrackSegment.<init>|<init>(kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>){}[0]
+
+    final val points // org.maplibre.spatialk.gpx/TrackSegment.points|{}points[0]
+        final fun <get-points>(): kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> // org.maplibre.spatialk.gpx/TrackSegment.points.<get-points>|<get-points>(){}[0]
+
+    final fun component1(): kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> // org.maplibre.spatialk.gpx/TrackSegment.component1|component1(){}[0]
+    final fun copy(kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> = ...): org.maplibre.spatialk.gpx/TrackSegment // org.maplibre.spatialk.gpx/TrackSegment.copy|copy(kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/TrackSegment.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/TrackSegment.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/TrackSegment.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.gpx/TrackSegment> { // org.maplibre.spatialk.gpx/TrackSegment.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.gpx/TrackSegment.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.gpx/TrackSegment.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.gpx/TrackSegment.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.gpx/TrackSegment // org.maplibre.spatialk.gpx/TrackSegment.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.gpx/TrackSegment) // org.maplibre.spatialk.gpx/TrackSegment.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.gpx.TrackSegment){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.gpx/TrackSegment.Companion|null[0]
+        final val $childSerializers // org.maplibre.spatialk.gpx/TrackSegment.Companion.$childSerializers|{}$childSerializers[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.gpx/TrackSegment> // org.maplibre.spatialk.gpx/TrackSegment.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.gpx/Waypoint { // org.maplibre.spatialk.gpx/Waypoint|null[0]
+    constructor <init>(kotlin/Double, kotlin/Double, kotlin/Double? = ..., kotlin.time/Instant? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Link? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ...) // org.maplibre.spatialk.gpx/Waypoint.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double?;kotlin.time.Instant?;kotlin.Double?;kotlin.Double?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Link?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.Int?;kotlin.Double?;kotlin.Double?;kotlin.Double?;kotlin.Double?;kotlin.Double?){}[0]
+
+    final val comment // org.maplibre.spatialk.gpx/Waypoint.comment|{}comment[0]
+        final fun <get-comment>(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.comment.<get-comment>|<get-comment>(){}[0]
+    final val description // org.maplibre.spatialk.gpx/Waypoint.description|{}description[0]
+        final fun <get-description>(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.description.<get-description>|<get-description>(){}[0]
+    final val dgpsAge // org.maplibre.spatialk.gpx/Waypoint.dgpsAge|{}dgpsAge[0]
+        final fun <get-dgpsAge>(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.dgpsAge.<get-dgpsAge>|<get-dgpsAge>(){}[0]
+    final val dgpsId // org.maplibre.spatialk.gpx/Waypoint.dgpsId|{}dgpsId[0]
+        final fun <get-dgpsId>(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.dgpsId.<get-dgpsId>|<get-dgpsId>(){}[0]
+    final val elevation // org.maplibre.spatialk.gpx/Waypoint.elevation|{}elevation[0]
+        final fun <get-elevation>(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.elevation.<get-elevation>|<get-elevation>(){}[0]
+    final val fix // org.maplibre.spatialk.gpx/Waypoint.fix|{}fix[0]
+        final fun <get-fix>(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.fix.<get-fix>|<get-fix>(){}[0]
+    final val geoIdHeight // org.maplibre.spatialk.gpx/Waypoint.geoIdHeight|{}geoIdHeight[0]
+        final fun <get-geoIdHeight>(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.geoIdHeight.<get-geoIdHeight>|<get-geoIdHeight>(){}[0]
+    final val horizontalDop // org.maplibre.spatialk.gpx/Waypoint.horizontalDop|{}horizontalDop[0]
+        final fun <get-horizontalDop>(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.horizontalDop.<get-horizontalDop>|<get-horizontalDop>(){}[0]
+    final val latitude // org.maplibre.spatialk.gpx/Waypoint.latitude|{}latitude[0]
+        final fun <get-latitude>(): kotlin/Double // org.maplibre.spatialk.gpx/Waypoint.latitude.<get-latitude>|<get-latitude>(){}[0]
+    final val link // org.maplibre.spatialk.gpx/Waypoint.link|{}link[0]
+        final fun <get-link>(): org.maplibre.spatialk.gpx/Link? // org.maplibre.spatialk.gpx/Waypoint.link.<get-link>|<get-link>(){}[0]
+    final val longitude // org.maplibre.spatialk.gpx/Waypoint.longitude|{}longitude[0]
+        final fun <get-longitude>(): kotlin/Double // org.maplibre.spatialk.gpx/Waypoint.longitude.<get-longitude>|<get-longitude>(){}[0]
+    final val magneticVariation // org.maplibre.spatialk.gpx/Waypoint.magneticVariation|{}magneticVariation[0]
+        final fun <get-magneticVariation>(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.magneticVariation.<get-magneticVariation>|<get-magneticVariation>(){}[0]
+    final val name // org.maplibre.spatialk.gpx/Waypoint.name|{}name[0]
+        final fun <get-name>(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.name.<get-name>|<get-name>(){}[0]
+    final val positionDop // org.maplibre.spatialk.gpx/Waypoint.positionDop|{}positionDop[0]
+        final fun <get-positionDop>(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.positionDop.<get-positionDop>|<get-positionDop>(){}[0]
+    final val satelliteCount // org.maplibre.spatialk.gpx/Waypoint.satelliteCount|{}satelliteCount[0]
+        final fun <get-satelliteCount>(): kotlin/Int? // org.maplibre.spatialk.gpx/Waypoint.satelliteCount.<get-satelliteCount>|<get-satelliteCount>(){}[0]
+    final val source // org.maplibre.spatialk.gpx/Waypoint.source|{}source[0]
+        final fun <get-source>(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.source.<get-source>|<get-source>(){}[0]
+    final val symbol // org.maplibre.spatialk.gpx/Waypoint.symbol|{}symbol[0]
+        final fun <get-symbol>(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.symbol.<get-symbol>|<get-symbol>(){}[0]
+    final val timestamp // org.maplibre.spatialk.gpx/Waypoint.timestamp|{}timestamp[0]
+        final fun <get-timestamp>(): kotlin.time/Instant? // org.maplibre.spatialk.gpx/Waypoint.timestamp.<get-timestamp>|<get-timestamp>(){}[0]
+    final val type // org.maplibre.spatialk.gpx/Waypoint.type|{}type[0]
+        final fun <get-type>(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.type.<get-type>|<get-type>(){}[0]
+    final val verticalDop // org.maplibre.spatialk.gpx/Waypoint.verticalDop|{}verticalDop[0]
+        final fun <get-verticalDop>(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.verticalDop.<get-verticalDop>|<get-verticalDop>(){}[0]
+
+    final fun component1(): kotlin/Double // org.maplibre.spatialk.gpx/Waypoint.component1|component1(){}[0]
+    final fun component10(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.component10|component10(){}[0]
+    final fun component11(): org.maplibre.spatialk.gpx/Link? // org.maplibre.spatialk.gpx/Waypoint.component11|component11(){}[0]
+    final fun component12(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.component12|component12(){}[0]
+    final fun component13(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.component13|component13(){}[0]
+    final fun component14(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.component14|component14(){}[0]
+    final fun component15(): kotlin/Int? // org.maplibre.spatialk.gpx/Waypoint.component15|component15(){}[0]
+    final fun component16(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.component16|component16(){}[0]
+    final fun component17(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.component17|component17(){}[0]
+    final fun component18(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.component18|component18(){}[0]
+    final fun component19(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.component19|component19(){}[0]
+    final fun component2(): kotlin/Double // org.maplibre.spatialk.gpx/Waypoint.component2|component2(){}[0]
+    final fun component20(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.component20|component20(){}[0]
+    final fun component3(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.component3|component3(){}[0]
+    final fun component4(): kotlin.time/Instant? // org.maplibre.spatialk.gpx/Waypoint.component4|component4(){}[0]
+    final fun component5(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.component5|component5(){}[0]
+    final fun component6(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.component6|component6(){}[0]
+    final fun component7(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.component7|component7(){}[0]
+    final fun component8(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.component8|component8(){}[0]
+    final fun component9(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.component9|component9(){}[0]
+    final fun copy(kotlin/Double = ..., kotlin/Double = ..., kotlin/Double? = ..., kotlin.time/Instant? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Link? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ...): org.maplibre.spatialk.gpx/Waypoint // org.maplibre.spatialk.gpx/Waypoint.copy|copy(kotlin.Double;kotlin.Double;kotlin.Double?;kotlin.time.Instant?;kotlin.Double?;kotlin.Double?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Link?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.Int?;kotlin.Double?;kotlin.Double?;kotlin.Double?;kotlin.Double?;kotlin.Double?){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Waypoint.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Waypoint.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Waypoint.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.gpx/Waypoint> { // org.maplibre.spatialk.gpx/Waypoint.$serializer|null[0]
+        final val descriptor // org.maplibre.spatialk.gpx/Waypoint.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.gpx/Waypoint.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.gpx/Waypoint.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.gpx/Waypoint // org.maplibre.spatialk.gpx/Waypoint.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.gpx/Waypoint) // org.maplibre.spatialk.gpx/Waypoint.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.gpx.Waypoint){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.gpx/Waypoint.Companion|null[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.gpx/Waypoint> // org.maplibre.spatialk.gpx/Waypoint.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final object org.maplibre.spatialk.gpx/Gpx { // org.maplibre.spatialk.gpx/Gpx|null[0]
+    final val gpxFormat // org.maplibre.spatialk.gpx/Gpx.gpxFormat|{}gpxFormat[0]
+        final fun <get-gpxFormat>(): nl.adaptivity.xmlutil.serialization/XML // org.maplibre.spatialk.gpx/Gpx.gpxFormat.<get-gpxFormat>|<get-gpxFormat>(){}[0]
+
+    final fun decodeFromString(kotlin/String): org.maplibre.spatialk.gpx/Document // org.maplibre.spatialk.gpx/Gpx.decodeFromString|decodeFromString(kotlin.String){}[0]
+    final fun decodeFromStringOrNull(kotlin/String): org.maplibre.spatialk.gpx/Document? // org.maplibre.spatialk.gpx/Gpx.decodeFromStringOrNull|decodeFromStringOrNull(kotlin.String){}[0]
+    final fun encodeToString(org.maplibre.spatialk.gpx/Document): kotlin/String // org.maplibre.spatialk.gpx/Gpx.encodeToString|encodeToString(org.maplibre.spatialk.gpx.Document){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Gpx.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Gpx.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Gpx.toString|toString(){}[0]
+}
+
+final fun (kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint>).org.maplibre.spatialk.gpx/toGeoJson(): org.maplibre.spatialk.geojson/FeatureCollection<org.maplibre.spatialk.geojson/Point, org.maplibre.spatialk.gpx/Waypoint> // org.maplibre.spatialk.gpx/toGeoJson|toGeoJson@kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>(){}[0]
+final fun (org.maplibre.spatialk.gpx/Route).org.maplibre.spatialk.gpx/toGeoJson(): org.maplibre.spatialk.geojson/Feature<org.maplibre.spatialk.geojson/GeometryCollection<org.maplibre.spatialk.geojson/Point>, org.maplibre.spatialk.gpx/Route> // org.maplibre.spatialk.gpx/toGeoJson|toGeoJson@org.maplibre.spatialk.gpx.Route(){}[0]
+final fun (org.maplibre.spatialk.gpx/Track).org.maplibre.spatialk.gpx/toGeoJson(): org.maplibre.spatialk.geojson/Feature<org.maplibre.spatialk.geojson/GeometryCollection<org.maplibre.spatialk.geojson/Point>, org.maplibre.spatialk.gpx/Track> // org.maplibre.spatialk.gpx/toGeoJson|toGeoJson@org.maplibre.spatialk.gpx.Track(){}[0]
+final fun (org.maplibre.spatialk.gpx/TrackSegment).org.maplibre.spatialk.gpx/toGeoJson(): org.maplibre.spatialk.geojson/Feature<org.maplibre.spatialk.geojson/GeometryCollection<org.maplibre.spatialk.geojson/Point>, org.maplibre.spatialk.gpx/TrackSegment> // org.maplibre.spatialk.gpx/toGeoJson|toGeoJson@org.maplibre.spatialk.gpx.TrackSegment(){}[0]
+final fun (org.maplibre.spatialk.gpx/Waypoint).org.maplibre.spatialk.gpx/toGeoJson(): org.maplibre.spatialk.geojson/Feature<org.maplibre.spatialk.geojson/Point, org.maplibre.spatialk.gpx/Waypoint> // org.maplibre.spatialk.gpx/toGeoJson|toGeoJson@org.maplibre.spatialk.gpx.Waypoint(){}[0]
