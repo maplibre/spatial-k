@@ -463,6 +463,8 @@ final class org.maplibre.spatialk.geojson/Point : org.maplibre.spatialk.geojson/
     constructor <init>(kotlin/Double, kotlin/Double, kotlin/Double? = ..., org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/Point.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double?;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     constructor <init>(org.maplibre.spatialk.geojson/Position, org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/Point.<init>|<init>(org.maplibre.spatialk.geojson.Position;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
 
+    final val altitude // org.maplibre.spatialk.geojson/Point.altitude|{}altitude[0]
+        final fun <get-altitude>(): kotlin/Double? // org.maplibre.spatialk.geojson/Point.altitude.<get-altitude>|<get-altitude>(){}[0]
     final val bbox // org.maplibre.spatialk.geojson/Point.bbox|{}bbox[0]
         final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/Point.bbox.<get-bbox>|<get-bbox>(){}[0]
     final val coordinates // org.maplibre.spatialk.geojson/Point.coordinates|{}coordinates[0]
