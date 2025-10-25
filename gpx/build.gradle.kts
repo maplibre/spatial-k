@@ -10,6 +10,7 @@ kotlin {
             implementation(libs.jetbrains.annotations)
             implementation(libs.xmlutil.core)
             implementation(libs.xmlutil.serialization)
+            implementation(libs.kotlinx.datetime)
         }
 
         commonTest.dependencies {

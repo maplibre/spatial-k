@@ -20,24 +20,32 @@ class GpxTest {
             document.waypoints.toGeoJson(),
         )
 
-        stripEquals(readResourceFile("out/waypoints.gpx"), Gpx.encodeToString(document))
+        assertEncodedEquals(readResourceFile("out/waypoints.gpx"), document)
     }
 
     @Test
     fun testTrack() {
-        val document = Gpx.decodeFromString(readResourceFile("in/track.gpx"))
-        stripEquals(readResourceFile("out/track.gpx"), Gpx.encodeToString(document))
+        assertEncodedEquals(
+            readResourceFile("out/track.gpx"),
+            Gpx.decodeFromString(readResourceFile("in/track.gpx")),
+        )
+
+        assertEncodedEquals(
+            readResourceFile("out/track.gpx"),
+            Gpx.decodeFromString(readResourceFile("in/track_lenient.gpx"))
+                .copy(creator = "ChatGPT-GPX"),
+        )
     }
 
     @Test
     fun testRoute() {
         val document = Gpx.decodeFromString(readResourceFile("in/route.gpx"))
-        stripEquals(readResourceFile("out/route.gpx"), Gpx.encodeToString(document))
+        assertEncodedEquals(readResourceFile("out/route.gpx"), document)
     }
 
-    fun stripEquals(expected: String, actual: String) {
+    fun assertEncodedEquals(expected: String, actual: Document) {
         val expected = expected.replace(Regex("\\s+"), "")
-        val actual = actual.replace(Regex("\\s+"), "")
+        val actual = Gpx.encodeToString(actual).replace(Regex("\\s+"), "")
 
         // dirty hack for different number formatting on nodeJs platform
         if (!actual.contains(".0<")) {
