@@ -338,7 +338,7 @@ class FeatureTest {
                 .trimIndent()
 
         val feature = Feature.fromJson<Point, Nothing?>(numericIdJson)
-        assertEquals(123L, feature.id?.value)
+        assertEquals(JsonPrimitive(123L), feature.id)
         assertJsonEquals(numericIdJson, feature.toJson())
     }
 
@@ -359,7 +359,7 @@ class FeatureTest {
                 .trimIndent()
 
         val feature = Feature.fromJson<Point, Nothing?>(numericIdJson)
-        assertEquals(123.45, feature.id?.value)
+        assertEquals(JsonPrimitive(123.45), feature.id)
         assertJsonEquals(numericIdJson, feature.toJson())
     }
 
@@ -380,7 +380,7 @@ class FeatureTest {
                 .trimIndent()
 
         val feature = Feature.fromJson<Point, Nothing?>(stringIdJson)
-        assertEquals("test-id", feature.id?.value)
+        assertEquals(JsonPrimitive("test-id"), feature.id)
         assertJsonEquals(stringIdJson, feature.toJson())
     }
 

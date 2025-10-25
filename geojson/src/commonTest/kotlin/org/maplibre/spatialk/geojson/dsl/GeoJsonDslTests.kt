@@ -9,7 +9,6 @@ import org.maplibre.spatialk.geojson.MultiPoint
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.geojson.StringFeatureId
 
 class GeoJsonDslTests {
 
@@ -18,7 +17,7 @@ class GeoJsonDslTests {
 
         // Point
         addFeature(simplePoint) {
-            id = StringFeatureId("point1")
+            setId("point1")
             properties = mapOf("name" to "Hello World")
         }
 

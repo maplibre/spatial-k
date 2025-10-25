@@ -33,50 +33,19 @@ public final class org/maplibre/spatialk/geojson/BoundingBox$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class org/maplibre/spatialk/geojson/DoubleFeatureId : org/maplibre/spatialk/geojson/FeatureId {
-	public static final field Companion Lorg/maplibre/spatialk/geojson/DoubleFeatureId$Companion;
-	public static final synthetic fun box-impl (D)Lorg/maplibre/spatialk/geojson/DoubleFeatureId;
-	public static fun constructor-impl (D)D
-	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (DLjava/lang/Object;)Z
-	public static final fun equals-impl0 (DD)Z
-	public fun getValue ()Ljava/lang/Double;
-	public synthetic fun getValue ()Ljava/lang/Object;
-	public fun hashCode ()I
-	public static fun hashCode-impl (D)I
-	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (D)Ljava/lang/String;
-	public final synthetic fun unbox-impl ()D
-}
-
-public final synthetic class org/maplibre/spatialk/geojson/DoubleFeatureId$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lorg/maplibre/spatialk/geojson/DoubleFeatureId$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun deserialize-LzR8rww (Lkotlinx/serialization/encoding/Decoder;)D
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public final fun serialize-6SC1iEs (Lkotlinx/serialization/encoding/Encoder;D)V
-	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
-}
-
-public final class org/maplibre/spatialk/geojson/DoubleFeatureId$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
 public final class org/maplibre/spatialk/geojson/Feature : org/maplibre/spatialk/geojson/GeoJsonObject {
 	public static final field Companion Lorg/maplibre/spatialk/geojson/Feature$Companion;
 	public fun <init> (Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/Object;)V
-	public fun <init> (Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/Object;Lorg/maplibre/spatialk/geojson/FeatureId;)V
-	public fun <init> (Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/Object;Lorg/maplibre/spatialk/geojson/FeatureId;Lorg/maplibre/spatialk/geojson/BoundingBox;)V
-	public synthetic fun <init> (Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/Object;Lorg/maplibre/spatialk/geojson/FeatureId;Lorg/maplibre/spatialk/geojson/BoundingBox;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/Object;Lkotlinx/serialization/json/JsonPrimitive;)V
+	public fun <init> (Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/Object;Lkotlinx/serialization/json/JsonPrimitive;Lorg/maplibre/spatialk/geojson/BoundingBox;)V
+	public synthetic fun <init> (Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/Object;Lkotlinx/serialization/json/JsonPrimitive;Lorg/maplibre/spatialk/geojson/BoundingBox;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lorg/maplibre/spatialk/geojson/Geometry;
 	public final fun component2 ()Ljava/lang/Object;
-	public final fun component3 ()Lorg/maplibre/spatialk/geojson/FeatureId;
+	public final fun component3 ()Lkotlinx/serialization/json/JsonPrimitive;
 	public final fun component4 ()Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public static final fun containsProperty (Lorg/maplibre/spatialk/geojson/Feature;Ljava/lang/String;)Z
-	public final fun copy (Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/Object;Lorg/maplibre/spatialk/geojson/FeatureId;Lorg/maplibre/spatialk/geojson/BoundingBox;)Lorg/maplibre/spatialk/geojson/Feature;
-	public static synthetic fun copy$default (Lorg/maplibre/spatialk/geojson/Feature;Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/Object;Lorg/maplibre/spatialk/geojson/FeatureId;Lorg/maplibre/spatialk/geojson/BoundingBox;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Feature;
+	public final fun copy (Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/Object;Lkotlinx/serialization/json/JsonPrimitive;Lorg/maplibre/spatialk/geojson/BoundingBox;)Lorg/maplibre/spatialk/geojson/Feature;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/geojson/Feature;Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/Object;Lkotlinx/serialization/json/JsonPrimitive;Lorg/maplibre/spatialk/geojson/BoundingBox;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Feature;
 	public fun equals (Ljava/lang/Object;)Z
 	public static final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/Feature;
 	public static final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/Feature;
@@ -84,7 +53,7 @@ public final class org/maplibre/spatialk/geojson/Feature : org/maplibre/spatialk
 	public static final fun getBooleanProperty (Lorg/maplibre/spatialk/geojson/Feature;Ljava/lang/String;)Ljava/lang/Boolean;
 	public static final fun getDoubleProperty (Lorg/maplibre/spatialk/geojson/Feature;Ljava/lang/String;)Ljava/lang/Double;
 	public final fun getGeometry ()Lorg/maplibre/spatialk/geojson/Geometry;
-	public final fun getId ()Lorg/maplibre/spatialk/geojson/FeatureId;
+	public final fun getId ()Lkotlinx/serialization/json/JsonPrimitive;
 	public static final fun getIntProperty (Lorg/maplibre/spatialk/geojson/Feature;Ljava/lang/String;)Ljava/lang/Integer;
 	public final fun getProperties ()Ljava/lang/Object;
 	public static final fun getStringProperty (Lorg/maplibre/spatialk/geojson/Feature;Ljava/lang/String;)Ljava/lang/String;
@@ -155,15 +124,6 @@ public final class org/maplibre/spatialk/geojson/FeatureCollection$Companion {
 	public final fun serializer (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;)Lkotlinx/serialization/KSerializer;
 	public final fun toJson (Lorg/maplibre/spatialk/geojson/FeatureCollection;)Ljava/lang/String;
 	public final fun toJson (Lorg/maplibre/spatialk/geojson/FeatureCollection;Lkotlinx/serialization/KSerializer;)Ljava/lang/String;
-}
-
-public abstract interface class org/maplibre/spatialk/geojson/FeatureId {
-	public static final field Companion Lorg/maplibre/spatialk/geojson/FeatureId$Companion;
-	public abstract fun getValue ()Ljava/lang/Object;
-}
-
-public final class org/maplibre/spatialk/geojson/FeatureId$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class org/maplibre/spatialk/geojson/GeoJson {
@@ -296,37 +256,6 @@ public final class org/maplibre/spatialk/geojson/LineStringGeometry$Companion {
 	public final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/LineStringGeometry;
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 	public final fun toJson (Lorg/maplibre/spatialk/geojson/LineStringGeometry;)Ljava/lang/String;
-}
-
-public final class org/maplibre/spatialk/geojson/LongFeatureId : org/maplibre/spatialk/geojson/FeatureId {
-	public static final field Companion Lorg/maplibre/spatialk/geojson/LongFeatureId$Companion;
-	public static final synthetic fun box-impl (J)Lorg/maplibre/spatialk/geojson/LongFeatureId;
-	public static fun constructor-impl (J)J
-	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (JLjava/lang/Object;)Z
-	public static final fun equals-impl0 (JJ)Z
-	public fun getValue ()Ljava/lang/Long;
-	public synthetic fun getValue ()Ljava/lang/Object;
-	public fun hashCode ()I
-	public static fun hashCode-impl (J)I
-	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (J)Ljava/lang/String;
-	public final synthetic fun unbox-impl ()J
-}
-
-public final synthetic class org/maplibre/spatialk/geojson/LongFeatureId$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lorg/maplibre/spatialk/geojson/LongFeatureId$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun deserialize-llclKus (Lkotlinx/serialization/encoding/Decoder;)J
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public final fun serialize-Y1sILoU (Lkotlinx/serialization/encoding/Encoder;J)V
-	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
-}
-
-public final class org/maplibre/spatialk/geojson/LongFeatureId$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public abstract interface class org/maplibre/spatialk/geojson/MultiGeometry : org/maplibre/spatialk/geojson/Geometry {
@@ -650,50 +579,19 @@ public final class org/maplibre/spatialk/geojson/SingleGeometry$Companion {
 	public final fun toJson (Lorg/maplibre/spatialk/geojson/SingleGeometry;)Ljava/lang/String;
 }
 
-public final class org/maplibre/spatialk/geojson/StringFeatureId : org/maplibre/spatialk/geojson/FeatureId {
-	public static final field Companion Lorg/maplibre/spatialk/geojson/StringFeatureId$Companion;
-	public static final synthetic fun box-impl (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/StringFeatureId;
-	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
-	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
-	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
-	public synthetic fun getValue ()Ljava/lang/Object;
-	public fun getValue ()Ljava/lang/String;
-	public fun hashCode ()I
-	public static fun hashCode-impl (Ljava/lang/String;)I
-	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
-	public final synthetic fun unbox-impl ()Ljava/lang/String;
-}
-
-public final synthetic class org/maplibre/spatialk/geojson/StringFeatureId$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lorg/maplibre/spatialk/geojson/StringFeatureId$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun deserialize-0OCI3hA (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/String;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public final fun serialize-EpdR0bc (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/String;)V
-	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
-}
-
-public final class org/maplibre/spatialk/geojson/StringFeatureId$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
 public final class org/maplibre/spatialk/geojson/dsl/FeatureBuilder {
 	public fun <init> (Lorg/maplibre/spatialk/geojson/Geometry;Ljava/lang/Object;)V
 	public final fun build ()Lorg/maplibre/spatialk/geojson/Feature;
 	public final fun getBbox ()Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public final fun getGeometry ()Lorg/maplibre/spatialk/geojson/Geometry;
-	public final fun getId ()Lorg/maplibre/spatialk/geojson/FeatureId;
+	public final fun getId ()Lkotlinx/serialization/json/JsonPrimitive;
 	public final fun getProperties ()Ljava/lang/Object;
 	public final fun setBbox (Lorg/maplibre/spatialk/geojson/BoundingBox;)V
 	public final fun setGeometry (Lorg/maplibre/spatialk/geojson/Geometry;)V
 	public final fun setId (D)V
 	public final fun setId (J)V
 	public final fun setId (Ljava/lang/String;)V
-	public final fun setId (Lorg/maplibre/spatialk/geojson/FeatureId;)V
+	public final fun setId (Lkotlinx/serialization/json/JsonPrimitive;)V
 	public final fun setProperties (Ljava/lang/Object;)V
 }
 
