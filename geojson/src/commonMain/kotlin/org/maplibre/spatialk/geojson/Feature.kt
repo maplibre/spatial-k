@@ -11,8 +11,6 @@ import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
-import kotlinx.serialization.json.doubleOrNull
-import kotlinx.serialization.json.longOrNull
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
 
@@ -43,13 +41,15 @@ constructor(
 ) : GeoJsonObject {
 
     init {
-        require(id == null || id.isString || (id.doubleOrNull ?: id.longOrNull) != null) {
-            "Feature.id must be a string or a number; got $id"
+        require(id == null || id.isString || id.content.matches(numberRegex)) {
+            "Feature.id must be a string or a base-10 number; got $id"
         }
     }
 
     /** Factory methods for creating and serializing [Feature] objects. */
     public companion object {
+        private val numberRegex = Regex("""^-?\d+(\.\d+)?$""")
+
         /**
          * Deserializes a [Feature] from a JSON string.
          *
