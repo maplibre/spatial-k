@@ -32,14 +32,29 @@ public class FeatureBuilder<G : Geometry?, P : @Serializable Any?>(
     public var id: FeatureId? = null
     public var bbox: BoundingBox? = null
 
+    /**
+     * Sets the Feature identifier using a string value.
+     *
+     * @param value The string identifier value.
+     */
     public fun setId(value: String) {
         this.id = StringFeatureId(value)
     }
 
+    /**
+     * Sets the Feature identifier using a long value.
+     *
+     * @param value The long integer identifier value.
+     */
     public fun setId(value: Long) {
         this.id = LongFeatureId(value)
     }
 
+    /**
+     * Sets the Feature identifier using a double value.
+     *
+     * @param value The double identifier value.
+     */
     public fun setId(value: Double) {
         this.id = DoubleFeatureId(value)
     }
