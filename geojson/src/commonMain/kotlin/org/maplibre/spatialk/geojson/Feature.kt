@@ -27,7 +27,7 @@ import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
  * @property geometry A [Geometry] object contained within the [Feature].
  * @property properties Additional properties about this [Feature]. It should be serializable into a
  *   [JsonObject].
- * @property id An optionally included string that commonly identifies this [Feature].
+ * @property id An optionally included string or number that commonly identifies this [Feature].
  * @see FeatureCollection
  */
 @Serializable(with = FeatureSerializer::class)
@@ -36,7 +36,7 @@ public data class Feature<out G : Geometry?, out P : @Serializable Any?>
 constructor(
     public val geometry: G,
     public val properties: P,
-    public val id: String? = null,
+    public val id: FeatureId? = null,
     override val bbox: BoundingBox? = null,
 ) : GeoJsonObject {
 

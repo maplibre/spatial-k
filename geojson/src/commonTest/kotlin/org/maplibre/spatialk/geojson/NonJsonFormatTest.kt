@@ -32,7 +32,10 @@ class NonJsonFormatTest {
     private val testFeatureClassProps = Feature(testLineString, ExampleProps())
 
     private val testFeatureCollectionNullProps = FeatureCollection(testFeatureNullProps)
+
     private val testFeatureCollectionClassProps = FeatureCollection(testFeatureClassProps)
+
+    private val testFeatureId = Feature(null, null, id = StringFeatureId("test-id"))
 
     private inline fun <reified T> assertRoundTrip(format: BinaryFormat, value: T) {
         val encoded = format.encodeToByteArray(value)
@@ -52,6 +55,8 @@ class NonJsonFormatTest {
 
     @Test
     fun testCborFeatureCollectionProps() = assertRoundTrip(Cbor, testFeatureCollectionClassProps)
+
+    @Test fun testCborFeatureId() = assertRoundTrip(Cbor, testFeatureId)
 
     @Test fun testProtobufGeometry() = assertRoundTrip(ProtoBuf, testLineString)
 
@@ -75,4 +80,6 @@ class NonJsonFormatTest {
     @Ignore
     fun testProtobufFeatureCollectionProps() =
         assertRoundTrip(ProtoBuf, testFeatureCollectionClassProps)
+
+    @Test @Ignore fun testProtobufFeatureId() = assertRoundTrip(ProtoBuf, testFeatureId)
 }

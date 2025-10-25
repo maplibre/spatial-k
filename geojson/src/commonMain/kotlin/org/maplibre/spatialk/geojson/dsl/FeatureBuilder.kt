@@ -3,8 +3,12 @@ package org.maplibre.spatialk.geojson.dsl
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.DoubleFeatureId
 import org.maplibre.spatialk.geojson.Feature
+import org.maplibre.spatialk.geojson.FeatureId
 import org.maplibre.spatialk.geojson.Geometry
+import org.maplibre.spatialk.geojson.LongFeatureId
+import org.maplibre.spatialk.geojson.StringFeatureId
 
 /**
  * Builder for constructing [Feature] objects using a DSL.
@@ -25,8 +29,20 @@ public class FeatureBuilder<G : Geometry?, P : @Serializable Any?>(
     public var geometry: G,
     public var properties: P,
 ) {
-    public var id: String? = null
+    public var id: FeatureId? = null
     public var bbox: BoundingBox? = null
+
+    public fun setId(value: String) {
+        this.id = StringFeatureId(value)
+    }
+
+    public fun setId(value: Long) {
+        this.id = LongFeatureId(value)
+    }
+
+    public fun setId(value: Double) {
+        this.id = DoubleFeatureId(value)
+    }
 
     /**
      * Builds the [Feature] from the configured values.

@@ -24,7 +24,6 @@ public data object GeoJson {
      */
     public val jsonFormat: Json = Json {
         ignoreUnknownKeys = true
-        isLenient = true // coerce types when decoding
         serializersModule = SerializersModule {
             polymorphicDefaultSerializer(GeoJsonObject::class) {
                 val serializer =

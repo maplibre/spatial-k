@@ -15,10 +15,47 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
+import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonEncoder
+import kotlinx.serialization.json.JsonPrimitive
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.DoubleFeatureId
 import org.maplibre.spatialk.geojson.Feature
+import org.maplibre.spatialk.geojson.FeatureId
 import org.maplibre.spatialk.geojson.Geometry
+import org.maplibre.spatialk.geojson.LongFeatureId
+import org.maplibre.spatialk.geojson.StringFeatureId
+
+internal object FeatureIdSerializer : KSerializer<FeatureId> {
+    private val jsonDelegate = JsonPrimitive.serializer()
+
+    override val descriptor: SerialDescriptor = jsonDelegate.descriptor
+
+    override fun serialize(encoder: Encoder, value: FeatureId) {
+        if (encoder is JsonEncoder) {
+            when (value) {
+                is StringFeatureId -> jsonDelegate.serialize(encoder, JsonPrimitive(value.value))
+                is DoubleFeatureId -> jsonDelegate.serialize(encoder, JsonPrimitive(value.value))
+                is LongFeatureId -> jsonDelegate.serialize(encoder, JsonPrimitive(value.value))
+            }
+        } else {
+            encoder.encodeString(value.value.toString())
+        }
+    }
+
+    override fun deserialize(decoder: Decoder): FeatureId {
+        if (decoder is JsonDecoder)
+            return when (val primitive = decoder.decodeJsonElement()) {
+                is JsonPrimitive if primitive.isString -> StringFeatureId(primitive.content)
+                is JsonPrimitive if primitive.content.all { it.isDigit() } ->
+                    LongFeatureId(primitive.content.toLong())
+                is JsonPrimitive if primitive.content.all { it.isDigit() || it == '.' } ->
+                    DoubleFeatureId(primitive.content.toDouble())
+                else -> throw SerializationException("Invalid FeatureId value: $primitive")
+            }
+        return StringFeatureId(decoder.decodeString())
+    }
+}
 
 internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
     private val geometrySerializer: KSerializer<T>,
@@ -27,7 +64,7 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
     private val serialName: String = "Feature"
     private val typeSerializer = String.serializer()
     private val bboxSerializer = BoundingBox.serializer().nullable
-    private val idSerializer = String.serializer().nullable
+    private val idSerializer = FeatureId.serializer().nullable
 
     // special sentinel for nullable values
     private val uninitialized = Any()
@@ -67,7 +104,7 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
             var bbox: BoundingBox? = null
             var geometry: Any? = uninitialized
             var properties: Any? = uninitialized
-            var id: String? = null
+            var id: FeatureId? = null
 
             if (decodeSequentially()) {
                 type = decodeSerializableElement(descriptor, 0, typeSerializer)
