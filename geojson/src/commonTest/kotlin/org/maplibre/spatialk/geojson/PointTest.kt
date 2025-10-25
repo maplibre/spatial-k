@@ -20,19 +20,19 @@ class PointTest {
     @Test
     fun altitude_returnsIsOptional() {
         val point = Point(1.0, 2.0)
-        assertNull(point.coordinates.altitude)
+        assertNull(point.altitude)
     }
 
     @Test
     fun longitude_doesReturnCorrectValue() {
         val point = Point(1.0, 2.0, 5.0)
-        assertEquals(1.0, point.coordinates.longitude, DELTA)
+        assertEquals(1.0, point.longitude, DELTA)
     }
 
     @Test
     fun latitude_doesReturnCorrectValue() {
         val point = Point(1.0, 2.0, 5.0)
-        assertEquals(2.0, point.coordinates.latitude, DELTA)
+        assertEquals(2.0, point.latitude, DELTA)
     }
 
     @Test
@@ -104,8 +104,8 @@ class PointTest {
             )
 
         assertNotNull(point)
-        assertEquals(2.0, point.coordinates.longitude, DELTA)
-        assertEquals(3.0, point.coordinates.latitude, DELTA)
+        assertEquals(2.0, point.longitude, DELTA)
+        assertEquals(3.0, point.latitude, DELTA)
         assertNotNull(point.bbox)
         assertEquals(1.0, point.bbox.southwest.longitude, DELTA)
         assertEquals(2.0, point.bbox.southwest.latitude, DELTA)
@@ -125,9 +125,9 @@ class PointTest {
                 .trimIndent()
         val geo: Point = Point.fromJson(json)
 
-        assertEquals(geo.coordinates.longitude, 100.0, DELTA)
-        assertEquals(geo.coordinates.latitude, 0.0, DELTA)
-        assertNull(geo.coordinates.altitude)
+        assertEquals(geo.longitude, 100.0, DELTA)
+        assertEquals(geo.latitude, 0.0, DELTA)
+        assertNull(geo.altitude)
     }
 
     @Test

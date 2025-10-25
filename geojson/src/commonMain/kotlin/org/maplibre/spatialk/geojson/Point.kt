@@ -34,6 +34,10 @@ constructor(
     public val latitude: Double
         get() = coordinates.latitude
 
+    /** The altitude value of this [Point] in meters. */
+    public val altitude: Double?
+        get() = coordinates.altitude
+
     /**
      * Create a [Point] from individual coordinate components.
      *
