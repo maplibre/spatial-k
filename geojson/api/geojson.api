@@ -448,6 +448,7 @@ public final class org/maplibre/spatialk/geojson/Point : org/maplibre/spatialk/g
 	public static final fun fromGeoUri (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/Point;
 	public static final fun fromJson (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/Point;
 	public static final fun fromJsonOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geojson/Point;
+	public final fun getAltitude ()Ljava/lang/Double;
 	public fun getBbox ()Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public final fun getCoordinates ()Lorg/maplibre/spatialk/geojson/Position;
 	public final fun getLatitude ()D
