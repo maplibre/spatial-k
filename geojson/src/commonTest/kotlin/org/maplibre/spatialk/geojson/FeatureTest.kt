@@ -322,6 +322,66 @@ class FeatureTest {
     }
 
     @Test
+    fun testIntegerId() {
+        val numericIdJson =
+            """
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [125.6, 10.1]
+                },
+                "properties": null,
+                "id": 123
+            }
+            """
+                .trimIndent()
+
+        val feature = Feature.fromJson<Point, Nothing?>(numericIdJson)
+        assertEquals("123", feature.id)
+    }
+
+    @Test
+    fun testFloatingId() {
+        val numericIdJson =
+            """
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [125.6, 10.1]
+                },
+                "properties": null,
+                "id": 123.45
+            }
+            """
+                .trimIndent()
+
+        val feature = Feature.fromJson<Point, Nothing?>(numericIdJson)
+        assertEquals("123.45", feature.id)
+    }
+
+    @Test
+    fun testStringId() {
+        val stringIdJson =
+            """
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [1.0, 2.0]
+                },
+                "properties": null,
+                "id": "test-id"
+            }
+            """
+                .trimIndent()
+
+        val feature = Feature.fromJson<Point, Nothing?>(stringIdJson)
+        assertEquals("test-id", feature.id)
+    }
+
+    @Test
     fun testNullGeometry() {
         val nullJson = """{"type": "Feature", "geometry": null, "properties": null}"""
         assertNull(Feature.fromJson<Geometry?, Nothing?>(nullJson).geometry)
