@@ -1,0 +1,445 @@
+public final class org/maplibre/spatialk/gpx/Author {
+	public static final field Companion Lorg/maplibre/spatialk/gpx/Author$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Email;Lorg/maplibre/spatialk/gpx/Link;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Email;Lorg/maplibre/spatialk/gpx/Link;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lorg/maplibre/spatialk/gpx/Email;
+	public final fun component3 ()Lorg/maplibre/spatialk/gpx/Link;
+	public final fun copy (Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Email;Lorg/maplibre/spatialk/gpx/Link;)Lorg/maplibre/spatialk/gpx/Author;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/gpx/Author;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Email;Lorg/maplibre/spatialk/gpx/Link;ILjava/lang/Object;)Lorg/maplibre/spatialk/gpx/Author;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEmail ()Lorg/maplibre/spatialk/gpx/Email;
+	public final fun getLink ()Lorg/maplibre/spatialk/gpx/Link;
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/maplibre/spatialk/gpx/Author$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/gpx/Author$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/maplibre/spatialk/gpx/Author;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/maplibre/spatialk/gpx/Author;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Author$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Bounds {
+	public static final field Companion Lorg/maplibre/spatialk/gpx/Bounds$Companion;
+	public fun <init> (DDDD)V
+	public final fun component1 ()D
+	public final fun component2 ()D
+	public final fun component3 ()D
+	public final fun component4 ()D
+	public final fun copy (DDDD)Lorg/maplibre/spatialk/gpx/Bounds;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/gpx/Bounds;DDDDILjava/lang/Object;)Lorg/maplibre/spatialk/gpx/Bounds;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaxLatitude ()D
+	public final fun getMaxLongitude ()D
+	public final fun getMinLatitude ()D
+	public final fun getMinLongitude ()D
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/maplibre/spatialk/gpx/Bounds$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/gpx/Bounds$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/maplibre/spatialk/gpx/Bounds;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/maplibre/spatialk/gpx/Bounds;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Bounds$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Copyright {
+	public static final field Companion Lorg/maplibre/spatialk/gpx/Copyright$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/maplibre/spatialk/gpx/Copyright;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/gpx/Copyright;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lorg/maplibre/spatialk/gpx/Copyright;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAuthor ()Ljava/lang/String;
+	public final fun getLicense ()Ljava/lang/String;
+	public final fun getYear ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/maplibre/spatialk/gpx/Copyright$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/gpx/Copyright$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/maplibre/spatialk/gpx/Copyright;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/maplibre/spatialk/gpx/Copyright;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Copyright$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Document {
+	public static final field Companion Lorg/maplibre/spatialk/gpx/Document$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Metadata;Ljava/util/List;Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Metadata;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Lorg/maplibre/spatialk/gpx/Metadata;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Metadata;Ljava/util/List;Ljava/util/List;Ljava/util/List;)Lorg/maplibre/spatialk/gpx/Document;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/gpx/Document;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Metadata;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lorg/maplibre/spatialk/gpx/Document;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCreator ()Ljava/lang/String;
+	public final fun getMetadata ()Lorg/maplibre/spatialk/gpx/Metadata;
+	public final fun getRoutes ()Ljava/util/List;
+	public final fun getSchemaLocation ()Ljava/lang/String;
+	public final fun getTracks ()Ljava/util/List;
+	public final fun getVersion ()Ljava/lang/String;
+	public final fun getWaypoints ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/maplibre/spatialk/gpx/Document$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/gpx/Document$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/maplibre/spatialk/gpx/Document;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/maplibre/spatialk/gpx/Document;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Document$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Email {
+	public static final field Companion Lorg/maplibre/spatialk/gpx/Email$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lorg/maplibre/spatialk/gpx/Email;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/gpx/Email;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lorg/maplibre/spatialk/gpx/Email;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDomain ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/maplibre/spatialk/gpx/Email$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/gpx/Email$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/maplibre/spatialk/gpx/Email;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/maplibre/spatialk/gpx/Email;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Email$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Gpx {
+	public static final field INSTANCE Lorg/maplibre/spatialk/gpx/Gpx;
+	public final fun decodeFromString (Ljava/lang/String;)Lorg/maplibre/spatialk/gpx/Document;
+	public final fun decodeFromStringOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/gpx/Document;
+	public final fun encodeToString (Lorg/maplibre/spatialk/gpx/Document;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getGpxFormat ()Lnl/adaptivity/xmlutil/serialization/XML;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/gpx/Link {
+	public static final field Companion Lorg/maplibre/spatialk/gpx/Link$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/maplibre/spatialk/gpx/Link;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/gpx/Link;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lorg/maplibre/spatialk/gpx/Link;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHref ()Ljava/lang/String;
+	public final fun getText ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/maplibre/spatialk/gpx/Link$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/gpx/Link$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/maplibre/spatialk/gpx/Link;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/maplibre/spatialk/gpx/Link;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Link$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Metadata {
+	public static final field Companion Lorg/maplibre/spatialk/gpx/Metadata$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Author;Lorg/maplibre/spatialk/gpx/Copyright;Ljava/util/List;Lkotlin/time/Instant;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Bounds;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Author;Lorg/maplibre/spatialk/gpx/Copyright;Ljava/util/List;Lkotlin/time/Instant;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Bounds;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lorg/maplibre/spatialk/gpx/Author;
+	public final fun component4 ()Lorg/maplibre/spatialk/gpx/Copyright;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Lkotlin/time/Instant;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Lorg/maplibre/spatialk/gpx/Bounds;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Author;Lorg/maplibre/spatialk/gpx/Copyright;Ljava/util/List;Lkotlin/time/Instant;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Bounds;)Lorg/maplibre/spatialk/gpx/Metadata;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/gpx/Metadata;Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Author;Lorg/maplibre/spatialk/gpx/Copyright;Ljava/util/List;Lkotlin/time/Instant;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Bounds;ILjava/lang/Object;)Lorg/maplibre/spatialk/gpx/Metadata;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAuthor ()Lorg/maplibre/spatialk/gpx/Author;
+	public final fun getBounds ()Lorg/maplibre/spatialk/gpx/Bounds;
+	public final fun getCopyright ()Lorg/maplibre/spatialk/gpx/Copyright;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getKeywords ()Ljava/lang/String;
+	public final fun getLink ()Ljava/util/List;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getTimestamp ()Lkotlin/time/Instant;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/maplibre/spatialk/gpx/Metadata$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/gpx/Metadata$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/maplibre/spatialk/gpx/Metadata;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/maplibre/spatialk/gpx/Metadata;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Metadata$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Route {
+	public static final field Companion Lorg/maplibre/spatialk/gpx/Route$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/Integer;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/List;)Lorg/maplibre/spatialk/gpx/Route;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/gpx/Route;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lorg/maplibre/spatialk/gpx/Route;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getComment ()Ljava/lang/String;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getLink ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNumber ()Ljava/lang/Integer;
+	public final fun getRoutePoints ()Ljava/util/List;
+	public final fun getSource ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/maplibre/spatialk/gpx/Route$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/gpx/Route$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/maplibre/spatialk/gpx/Route;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/maplibre/spatialk/gpx/Route;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Route$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/RouteKt {
+	public static final fun toGeoJson (Lorg/maplibre/spatialk/gpx/Route;)Lorg/maplibre/spatialk/geojson/Feature;
+}
+
+public final class org/maplibre/spatialk/gpx/Track {
+	public static final field Companion Lorg/maplibre/spatialk/gpx/Track$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Link;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Link;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Lorg/maplibre/spatialk/gpx/Link;
+	public final fun component6 ()Ljava/lang/Integer;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Link;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/List;)Lorg/maplibre/spatialk/gpx/Track;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/gpx/Track;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Link;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lorg/maplibre/spatialk/gpx/Track;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getComment ()Ljava/lang/String;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getLink ()Lorg/maplibre/spatialk/gpx/Link;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNumber ()Ljava/lang/Integer;
+	public final fun getSegments ()Ljava/util/List;
+	public final fun getSource ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/maplibre/spatialk/gpx/Track$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/gpx/Track$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/maplibre/spatialk/gpx/Track;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/maplibre/spatialk/gpx/Track;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Track$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/TrackKt {
+	public static final fun toGeoJson (Lorg/maplibre/spatialk/gpx/Track;)Lorg/maplibre/spatialk/geojson/Feature;
+	public static final fun toGeoJson (Lorg/maplibre/spatialk/gpx/TrackSegment;)Lorg/maplibre/spatialk/geojson/Feature;
+}
+
+public final class org/maplibre/spatialk/gpx/TrackSegment {
+	public static final field Companion Lorg/maplibre/spatialk/gpx/TrackSegment$Companion;
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lorg/maplibre/spatialk/gpx/TrackSegment;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/gpx/TrackSegment;Ljava/util/List;ILjava/lang/Object;)Lorg/maplibre/spatialk/gpx/TrackSegment;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPoints ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/maplibre/spatialk/gpx/TrackSegment$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/gpx/TrackSegment$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/maplibre/spatialk/gpx/TrackSegment;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/maplibre/spatialk/gpx/TrackSegment;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/TrackSegment$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Waypoint {
+	public static final field Companion Lorg/maplibre/spatialk/gpx/Waypoint$Companion;
+	public fun <init> (DDLjava/lang/Double;Lkotlin/time/Instant;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Link;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;)V
+	public synthetic fun <init> (DDLjava/lang/Double;Lkotlin/time/Instant;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Link;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()D
+	public final fun component10 ()Ljava/lang/String;
+	public final fun component11 ()Lorg/maplibre/spatialk/gpx/Link;
+	public final fun component12 ()Ljava/lang/String;
+	public final fun component13 ()Ljava/lang/String;
+	public final fun component14 ()Ljava/lang/String;
+	public final fun component15 ()Ljava/lang/Integer;
+	public final fun component16 ()Ljava/lang/Double;
+	public final fun component17 ()Ljava/lang/Double;
+	public final fun component18 ()Ljava/lang/Double;
+	public final fun component19 ()Ljava/lang/Double;
+	public final fun component2 ()D
+	public final fun component20 ()Ljava/lang/Double;
+	public final fun component3 ()Ljava/lang/Double;
+	public final fun component4 ()Lkotlin/time/Instant;
+	public final fun component5 ()Ljava/lang/Double;
+	public final fun component6 ()Ljava/lang/Double;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (DDLjava/lang/Double;Lkotlin/time/Instant;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Link;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;)Lorg/maplibre/spatialk/gpx/Waypoint;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/gpx/Waypoint;DDLjava/lang/Double;Lkotlin/time/Instant;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/maplibre/spatialk/gpx/Link;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;ILjava/lang/Object;)Lorg/maplibre/spatialk/gpx/Waypoint;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getComment ()Ljava/lang/String;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getDgpsAge ()Ljava/lang/Double;
+	public final fun getDgpsId ()Ljava/lang/Double;
+	public final fun getElevation ()Ljava/lang/Double;
+	public final fun getFix ()Ljava/lang/String;
+	public final fun getGeoIdHeight ()Ljava/lang/Double;
+	public final fun getHorizontalDop ()Ljava/lang/Double;
+	public final fun getLatitude ()D
+	public final fun getLink ()Lorg/maplibre/spatialk/gpx/Link;
+	public final fun getLongitude ()D
+	public final fun getMagneticVariation ()Ljava/lang/Double;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPositionDop ()Ljava/lang/Double;
+	public final fun getSatelliteCount ()Ljava/lang/Integer;
+	public final fun getSource ()Ljava/lang/String;
+	public final fun getSymbol ()Ljava/lang/String;
+	public final fun getTimestamp ()Lkotlin/time/Instant;
+	public final fun getType ()Ljava/lang/String;
+	public final fun getVerticalDop ()Ljava/lang/Double;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/maplibre/spatialk/gpx/Waypoint$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/maplibre/spatialk/gpx/Waypoint$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/maplibre/spatialk/gpx/Waypoint;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/maplibre/spatialk/gpx/Waypoint;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/Waypoint$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/gpx/WaypointKt {
+	public static final fun toGeoJson (Ljava/util/List;)Lorg/maplibre/spatialk/geojson/FeatureCollection;
+	public static final fun toGeoJson (Lorg/maplibre/spatialk/gpx/Waypoint;)Lorg/maplibre/spatialk/geojson/Feature;
+}
+

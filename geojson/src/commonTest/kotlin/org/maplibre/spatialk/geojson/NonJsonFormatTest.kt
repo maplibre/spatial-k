@@ -9,6 +9,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.cbor.Cbor
 import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.protobuf.ProtoBuf
 import org.maplibre.spatialk.geojson.dsl.buildLineString
 
@@ -32,7 +33,12 @@ class NonJsonFormatTest {
     private val testFeatureClassProps = Feature(testLineString, ExampleProps())
 
     private val testFeatureCollectionNullProps = FeatureCollection(testFeatureNullProps)
+
     private val testFeatureCollectionClassProps = FeatureCollection(testFeatureClassProps)
+
+    private val testFeatureIdString = Feature(null, null, id = JsonPrimitive("test-id"))
+    private val testFeatureIdLong = Feature(null, null, id = JsonPrimitive(123L))
+    private val testFeatureIdDouble = Feature(null, null, id = JsonPrimitive(123.45))
 
     private inline fun <reified T> assertRoundTrip(format: BinaryFormat, value: T) {
         val encoded = format.encodeToByteArray(value)
@@ -52,6 +58,13 @@ class NonJsonFormatTest {
 
     @Test
     fun testCborFeatureCollectionProps() = assertRoundTrip(Cbor, testFeatureCollectionClassProps)
+
+    @Test
+    fun testCborFeatureId() {
+        assertRoundTrip(Cbor, testFeatureIdString)
+        assertRoundTrip(Cbor, testFeatureIdLong)
+        assertRoundTrip(Cbor, testFeatureIdDouble)
+    }
 
     @Test fun testProtobufGeometry() = assertRoundTrip(ProtoBuf, testLineString)
 
@@ -75,4 +88,12 @@ class NonJsonFormatTest {
     @Ignore
     fun testProtobufFeatureCollectionProps() =
         assertRoundTrip(ProtoBuf, testFeatureCollectionClassProps)
+
+    @Test
+    @Ignore
+    fun testProtobufFeatureId() {
+        assertRoundTrip(ProtoBuf, testFeatureIdString)
+        assertRoundTrip(ProtoBuf, testFeatureIdLong)
+        assertRoundTrip(ProtoBuf, testFeatureIdDouble)
+    }
 }

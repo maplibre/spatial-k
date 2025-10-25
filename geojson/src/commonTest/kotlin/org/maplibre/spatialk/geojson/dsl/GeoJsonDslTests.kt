@@ -17,7 +17,7 @@ class GeoJsonDslTests {
 
         // Point
         addFeature(simplePoint) {
-            id = "point1"
+            setId("point1")
             properties = mapOf("name" to "Hello World")
         }
 
@@ -101,7 +101,8 @@ class GeoJsonDslTests {
         |{"type":"Point","coordinates":[-75.0,45.0,100.0]},
         |{"type":"LineString","coordinates":[[45.0,45.0],[0.0,0.0]]},
         |{"type":"Polygon","coordinates":[[[45.0,45.0],[0.0,0.0],[12.0,12.0],[45.0,45.0]],[[4.0,4.0],[2.0,2.0],[3.0,3.0],[4.0,4.0]]]}]},"properties":null}
-        |]}"""
+        |]}
+        """
             .trimMargin()
 
     @Test

@@ -686,7 +686,7 @@ class KotlinDocsTest {
                 // --8<-- [start:dslFeatureKt]
                 val feature =
                     buildFeature(geometry = Point(-75.0, 45.0)) {
-                        id = "point1"
+                        setId("point1")
                         bbox = BoundingBox(-76.9, 44.1, -74.2, 45.7)
                         properties = buildJsonObject {
                             put("name", "Hello World")

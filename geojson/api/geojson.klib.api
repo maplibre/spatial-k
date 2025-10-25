@@ -104,13 +104,16 @@ final class <#A: org.maplibre.spatialk.geojson/Geometry?, #B: kotlin/Any?> org.m
         final fun <get-geometry>(): #A // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.geometry.<get-geometry>|<get-geometry>(){}[0]
         final fun <set-geometry>(#A) // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.geometry.<set-geometry>|<set-geometry>(1:0){}[0]
     final var id // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.id|{}id[0]
-        final fun <get-id>(): kotlin/String? // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.id.<get-id>|<get-id>(){}[0]
-        final fun <set-id>(kotlin/String?) // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.id.<set-id>|<set-id>(kotlin.String?){}[0]
+        final fun <get-id>(): kotlinx.serialization.json/JsonPrimitive? // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.id.<get-id>|<get-id>(){}[0]
+        final fun <set-id>(kotlinx.serialization.json/JsonPrimitive?) // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.id.<set-id>|<set-id>(kotlinx.serialization.json.JsonPrimitive?){}[0]
     final var properties // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.properties|{}properties[0]
         final fun <get-properties>(): #B // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.properties.<get-properties>|<get-properties>(){}[0]
         final fun <set-properties>(#B) // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.properties.<set-properties>|<set-properties>(1:1){}[0]
 
     final fun build(): org.maplibre.spatialk.geojson/Feature<#A, #B> // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.build|build(){}[0]
+    final fun setId(kotlin/Double) // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.setId|setId(kotlin.Double){}[0]
+    final fun setId(kotlin/Long) // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.setId|setId(kotlin.Long){}[0]
+    final fun setId(kotlin/String) // org.maplibre.spatialk.geojson.dsl/FeatureBuilder.setId|setId(kotlin.String){}[0]
 }
 
 final class <#A: org.maplibre.spatialk.geojson/Geometry?, #B: kotlin/Any?> org.maplibre.spatialk.geojson.dsl/FeatureCollectionBuilder { // org.maplibre.spatialk.geojson.dsl/FeatureCollectionBuilder|null[0]
@@ -158,22 +161,22 @@ final class <#A: out org.maplibre.spatialk.geojson/Geometry> org.maplibre.spatia
 }
 
 final class <#A: out org.maplibre.spatialk.geojson/Geometry?, #B: out kotlin/Any?> org.maplibre.spatialk.geojson/Feature : org.maplibre.spatialk.geojson/GeoJsonObject { // org.maplibre.spatialk.geojson/Feature|null[0]
-    constructor <init>(#A, #B, kotlin/String? = ..., org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/Feature.<init>|<init>(1:0;1:1;kotlin.String?;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+    constructor <init>(#A, #B, kotlinx.serialization.json/JsonPrimitive? = ..., org.maplibre.spatialk.geojson/BoundingBox? = ...) // org.maplibre.spatialk.geojson/Feature.<init>|<init>(1:0;1:1;kotlinx.serialization.json.JsonPrimitive?;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
 
     final val bbox // org.maplibre.spatialk.geojson/Feature.bbox|{}bbox[0]
         final fun <get-bbox>(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/Feature.bbox.<get-bbox>|<get-bbox>(){}[0]
     final val geometry // org.maplibre.spatialk.geojson/Feature.geometry|{}geometry[0]
         final fun <get-geometry>(): #A // org.maplibre.spatialk.geojson/Feature.geometry.<get-geometry>|<get-geometry>(){}[0]
     final val id // org.maplibre.spatialk.geojson/Feature.id|{}id[0]
-        final fun <get-id>(): kotlin/String? // org.maplibre.spatialk.geojson/Feature.id.<get-id>|<get-id>(){}[0]
+        final fun <get-id>(): kotlinx.serialization.json/JsonPrimitive? // org.maplibre.spatialk.geojson/Feature.id.<get-id>|<get-id>(){}[0]
     final val properties // org.maplibre.spatialk.geojson/Feature.properties|{}properties[0]
         final fun <get-properties>(): #B // org.maplibre.spatialk.geojson/Feature.properties.<get-properties>|<get-properties>(){}[0]
 
     final fun component1(): #A // org.maplibre.spatialk.geojson/Feature.component1|component1(){}[0]
     final fun component2(): #B // org.maplibre.spatialk.geojson/Feature.component2|component2(){}[0]
-    final fun component3(): kotlin/String? // org.maplibre.spatialk.geojson/Feature.component3|component3(){}[0]
+    final fun component3(): kotlinx.serialization.json/JsonPrimitive? // org.maplibre.spatialk.geojson/Feature.component3|component3(){}[0]
     final fun component4(): org.maplibre.spatialk.geojson/BoundingBox? // org.maplibre.spatialk.geojson/Feature.component4|component4(){}[0]
-    final fun copy(#A = ..., #B = ..., kotlin/String? = ..., org.maplibre.spatialk.geojson/BoundingBox? = ...): org.maplibre.spatialk.geojson/Feature<#A, #B> // org.maplibre.spatialk.geojson/Feature.copy|copy(1:0;1:1;kotlin.String?;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
+    final fun copy(#A = ..., #B = ..., kotlinx.serialization.json/JsonPrimitive? = ..., org.maplibre.spatialk.geojson/BoundingBox? = ...): org.maplibre.spatialk.geojson/Feature<#A, #B> // org.maplibre.spatialk.geojson/Feature.copy|copy(1:0;1:1;kotlinx.serialization.json.JsonPrimitive?;org.maplibre.spatialk.geojson.BoundingBox?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.geojson/Feature.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.geojson/Feature.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.geojson/Feature.toString|toString(){}[0]

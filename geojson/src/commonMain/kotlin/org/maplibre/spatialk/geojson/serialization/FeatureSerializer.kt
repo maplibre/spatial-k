@@ -18,6 +18,7 @@ import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.json.JsonEncoder
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
+import org.maplibre.spatialk.geojson.FeatureId
 import org.maplibre.spatialk.geojson.Geometry
 
 internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
@@ -27,7 +28,7 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
     private val serialName: String = "Feature"
     private val typeSerializer = String.serializer()
     private val bboxSerializer = BoundingBox.serializer().nullable
-    private val idSerializer = String.serializer().nullable
+    private val idSerializer = FeatureIdSerializer.nullable
 
     // special sentinel for nullable values
     private val uninitialized = Any()
@@ -67,7 +68,7 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
             var bbox: BoundingBox? = null
             var geometry: Any? = uninitialized
             var properties: Any? = uninitialized
-            var id: String? = null
+            var id: FeatureId? = null
 
             if (decodeSequentially()) {
                 type = decodeSerializableElement(descriptor, 0, typeSerializer)

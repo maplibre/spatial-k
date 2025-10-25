@@ -322,6 +322,69 @@ class FeatureTest {
     }
 
     @Test
+    fun testIntegerId() {
+        val numericIdJson =
+            """
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [125.6, 10.1]
+                },
+                "properties": null,
+                "id": 123
+            }
+            """
+                .trimIndent()
+
+        val feature = Feature.fromJson<Point, Nothing?>(numericIdJson)
+        assertEquals(JsonPrimitive(123L), feature.id)
+        assertJsonEquals(numericIdJson, feature.toJson())
+    }
+
+    @Test
+    fun testFloatingId() {
+        val numericIdJson =
+            """
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [125.6, 10.1]
+                },
+                "properties": null,
+                "id": 123.45
+            }
+            """
+                .trimIndent()
+
+        val feature = Feature.fromJson<Point, Nothing?>(numericIdJson)
+        assertEquals(JsonPrimitive(123.45), feature.id)
+        assertJsonEquals(numericIdJson, feature.toJson())
+    }
+
+    @Test
+    fun testStringId() {
+        val stringIdJson =
+            """
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [125.6, 10.1]
+                },
+                "properties": null,
+                "id": "test-id"
+            }
+            """
+                .trimIndent()
+
+        val feature = Feature.fromJson<Point, Nothing?>(stringIdJson)
+        assertEquals(JsonPrimitive("test-id"), feature.id)
+        assertJsonEquals(stringIdJson, feature.toJson())
+    }
+
+    @Test
     fun testNullGeometry() {
         val nullJson = """{"type": "Feature", "geometry": null, "properties": null}"""
         assertNull(Feature.fromJson<Geometry?, Nothing?>(nullJson).geometry)
