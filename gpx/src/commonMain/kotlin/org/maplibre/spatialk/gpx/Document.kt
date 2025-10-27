@@ -2,11 +2,14 @@ package org.maplibre.spatialk.gpx
 
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import kotlinx.serialization.EncodeDefault
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Required
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import nl.adaptivity.xmlutil.serialization.XmlElement
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
+import org.maplibre.spatialk.gpx.serializers.UtcDefaultInstantSerializer
 
 /**
  * Represents the root element of a GPX file.
@@ -26,14 +29,15 @@ import nl.adaptivity.xmlutil.serialization.XmlSerialName
  * @property tracks A list of tracks.
  */
 @XmlSerialName("gpx", "http://www.topografix.com/GPX/1/1")
+@OptIn(ExperimentalSerializationApi::class)
 @Serializable
 public data class Document(
-    @Required
+    @EncodeDefault
     @XmlSerialName("schemaLocation", "http://www.w3.org/2001/XMLSchema-instance", "xsi")
     val schemaLocation: String =
         "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd",
     @Required val version: String = "1.1",
-    @Required val creator: String = "org.maplibre.spatialk.gpx",
+    @EncodeDefault val creator: String = "org.maplibre.spatialk.gpx",
     @XmlSerialName("metadata") @XmlElement val metadata: Metadata? = null,
     @SerialName("tracks") @XmlSerialName("trk") @XmlElement val tracks: List<Track> = listOf(),
     @SerialName("routes") @XmlSerialName("rte") @XmlElement val routes: List<Route> = listOf(),
@@ -68,7 +72,10 @@ constructor(
     @SerialName("author") @XmlSerialName("author") @XmlElement val author: Author? = null,
     @XmlSerialName("copyright") @XmlElement val copyright: Copyright? = null,
     @XmlSerialName("link") @XmlElement val link: List<Link> = listOf(),
-    @SerialName("time") @XmlElement val timestamp: Instant? = null,
+    @Serializable(with = UtcDefaultInstantSerializer::class)
+    @SerialName("time")
+    @XmlElement
+    val timestamp: Instant? = null,
     @XmlElement val keywords: String? = null,
     @XmlSerialName("bounds") @XmlElement val bounds: Bounds? = null,
     // val extensions: Extensions?,

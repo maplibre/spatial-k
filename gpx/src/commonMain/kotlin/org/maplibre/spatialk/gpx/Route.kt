@@ -23,8 +23,8 @@ import org.maplibre.spatialk.geojson.Point
  * @property number A GPS route number.
  * @property type The type of route. This is for categorizing the route and can be user-defined
  *   (e.g., "resupply", "scenic").
- * @property routePoints A list of route points ([Waypoint]) which are the turning points,
- *   intersections, or other critical points in the route.
+ * @property points A list of route points ([Waypoint]) which are the turning points, intersections,
+ *   or other critical points in the route.
  */
 @Serializable
 public data class Route(
@@ -35,7 +35,7 @@ public data class Route(
     @SerialName("link") @XmlElement val link: String?,
     @SerialName("number") @XmlElement val number: Int?,
     @SerialName("type") @XmlElement val type: String?,
-    @SerialName("rtept") @XmlSerialName("rtept") @XmlElement val routePoints: List<Waypoint>,
+    @SerialName("rtept") @XmlSerialName("rtept") @XmlElement val points: List<Waypoint>,
     // @XmlElement val extensions = null,
 )
 
@@ -48,5 +48,5 @@ public data class Route(
  * @return A GeoJSON [Feature] representing this route.
  */
 public fun Route.toGeoJson(): Feature<GeometryCollection<Point>, Route> {
-    return Feature(GeometryCollection(routePoints.map { it.toGeoJson().geometry }), this)
+    return Feature(GeometryCollection(points.map { it.toGeoJson().geometry }), this)
 }
