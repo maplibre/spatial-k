@@ -10,7 +10,7 @@ import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.gpx.serializers.InstantSerializer
+import org.maplibre.spatialk.gpx.serializers.UtcDefaultInstantSerializer
 
 /**
  * Represents a waypoint, point of interest, or named feature on a map. This corresponds to the
@@ -49,7 +49,7 @@ public data class Waypoint(
     @SerialName("lat") val latitude: Double,
     @SerialName("lon") val longitude: Double,
     @SerialName("ele") @XmlElement val elevation: Double? = null,
-    @Serializable(with = InstantSerializer::class)
+    @Serializable(with = UtcDefaultInstantSerializer::class)
     @SerialName("time")
     @XmlElement
     val timestamp: Instant? = null,

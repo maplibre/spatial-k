@@ -13,10 +13,10 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 @OptIn(ExperimentalTime::class)
-internal object InstantSerializer : KSerializer<Instant> {
+internal object UtcDefaultInstantSerializer : KSerializer<Instant> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor(
-            "org.maplibre.spatialk.gpx.serializers.InstantSerializer",
+            "org.maplibre.spatialk.gpx.serializers.UtcDefaultInstantSerializer",
             PrimitiveKind.STRING,
         )
 

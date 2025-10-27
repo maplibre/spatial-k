@@ -9,7 +9,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import nl.adaptivity.xmlutil.serialization.XmlElement
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
-import org.maplibre.spatialk.gpx.serializers.InstantSerializer
+import org.maplibre.spatialk.gpx.serializers.UtcDefaultInstantSerializer
 
 /**
  * Represents the root element of a GPX file.
@@ -72,7 +72,7 @@ constructor(
     @SerialName("author") @XmlSerialName("author") @XmlElement val author: Author? = null,
     @XmlSerialName("copyright") @XmlElement val copyright: Copyright? = null,
     @XmlSerialName("link") @XmlElement val link: List<Link> = listOf(),
-    @Serializable(with = InstantSerializer::class)
+    @Serializable(with = UtcDefaultInstantSerializer::class)
     @SerialName("time")
     @XmlElement
     val timestamp: Instant? = null,
