@@ -271,7 +271,7 @@ public final class org/maplibre/spatialk/gpx/Route {
 	public final fun getLink ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getNumber ()Ljava/lang/Integer;
-	public final fun getRoutePoints ()Ljava/util/List;
+	public final fun getPoints ()Ljava/util/List;
 	public final fun getSource ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
 	public fun hashCode ()I
