@@ -26,6 +26,7 @@ import org.maplibre.spatialk.geojson.Point
  *   (e.g., "resupply", "scenic").
  * @property points A list of route points ([Waypoint]) which are the turning points, intersections,
  *   or other critical points in the route.
+ * @property extensions Extension schema elements.
  */
 @Serializable
 public data class Route(

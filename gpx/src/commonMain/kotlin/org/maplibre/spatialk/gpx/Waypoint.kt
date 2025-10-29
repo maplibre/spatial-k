@@ -43,6 +43,7 @@ import org.maplibre.spatialk.gpx.serializers.UtcDefaultInstantSerializer
  * @property positionDop Position dilution of precision.
  * @property dgpsAge Number of seconds since last DGPS update.
  * @property dgpsId ID of DGPS station used in differential correction.
+ * @property extensions Extension schema elements.
  */
 @Serializable
 @OptIn(ExperimentalTime::class)

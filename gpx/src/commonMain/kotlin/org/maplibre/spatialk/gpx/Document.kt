@@ -28,6 +28,7 @@ import org.maplibre.spatialk.gpx.serializers.UtcDefaultInstantSerializer
  * @property waypoints A list of waypoints.
  * @property routes A list of routes.
  * @property tracks A list of tracks.
+ * @property extensions Extension schema elements.
  */
 @XmlSerialName("gpx", "http://www.topografix.com/GPX/1/1")
 @OptIn(ExperimentalSerializationApi::class)
@@ -64,6 +65,7 @@ public data class Document(
  * @property keywords Keywords associated with the file. Search engines or databases may use them.
  * @property bounds The minimum and maximum coordinates that describe the extent of the data in the
  *   file.
+ * @property extensions Extension schema elements.
  */
 @Serializable
 public data class Metadata

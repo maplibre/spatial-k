@@ -24,6 +24,7 @@ import org.maplibre.spatialk.geojson.Point
  * @property number A GPS track number.
  * @property type The type of activity for the track (e.g., "cycling", "running").
  * @property segments A list of track segments that make up the track.
+ * @property extensions Extension schema elements.
  */
 @Serializable
 public data class Track(
@@ -70,6 +71,7 @@ public fun Track.toGeoJson(): Feature<GeometryCollection<Point>, Track> {
  * See [trksegType](https://www.topografix.com/GPX/1/1/#type_trksegType).
  *
  * @property points A list of track points.
+ * @property extensions Extension schema elements.
  */
 @Serializable
 public data class TrackSegment(
