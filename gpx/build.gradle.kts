@@ -20,6 +20,10 @@ kotlin {
     }
 }
 
+// ElementSerializer doesn't work in NodeJS because DOMParser is only available in browser
+// https://github.com/pdvrieze/xmlutil/issues/298
+tasks.named("jsNodeTest") { enabled = false }
+
 mavenPublishing {
     pom {
         name = "Spatial K GPX"
