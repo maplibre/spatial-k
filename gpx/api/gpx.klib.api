@@ -106,10 +106,12 @@ final class org.maplibre.spatialk.gpx/Copyright { // org.maplibre.spatialk.gpx/C
 }
 
 final class org.maplibre.spatialk.gpx/Document { // org.maplibre.spatialk.gpx/Document|null[0]
-    constructor <init>(kotlin/String = ..., kotlin/String = ..., kotlin/String = ..., org.maplibre.spatialk.gpx/Metadata? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Track> = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Route> = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> = ...) // org.maplibre.spatialk.gpx/Document.<init>|<init>(kotlin.String;kotlin.String;kotlin.String;org.maplibre.spatialk.gpx.Metadata?;kotlin.collections.List<org.maplibre.spatialk.gpx.Track>;kotlin.collections.List<org.maplibre.spatialk.gpx.Route>;kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>){}[0]
+    constructor <init>(kotlin/String = ..., kotlin/String = ..., kotlin/String = ..., org.maplibre.spatialk.gpx/Metadata? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Track> = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Route> = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> = ..., nl.adaptivity.xmlutil.dom2/Element? = ...) // org.maplibre.spatialk.gpx/Document.<init>|<init>(kotlin.String;kotlin.String;kotlin.String;org.maplibre.spatialk.gpx.Metadata?;kotlin.collections.List<org.maplibre.spatialk.gpx.Track>;kotlin.collections.List<org.maplibre.spatialk.gpx.Route>;kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>;nl.adaptivity.xmlutil.dom2.Element?){}[0]
 
     final val creator // org.maplibre.spatialk.gpx/Document.creator|{}creator[0]
         final fun <get-creator>(): kotlin/String // org.maplibre.spatialk.gpx/Document.creator.<get-creator>|<get-creator>(){}[0]
+    final val extensions // org.maplibre.spatialk.gpx/Document.extensions|{}extensions[0]
+        final fun <get-extensions>(): nl.adaptivity.xmlutil.dom2/Element? // org.maplibre.spatialk.gpx/Document.extensions.<get-extensions>|<get-extensions>(){}[0]
     final val metadata // org.maplibre.spatialk.gpx/Document.metadata|{}metadata[0]
         final fun <get-metadata>(): org.maplibre.spatialk.gpx/Metadata? // org.maplibre.spatialk.gpx/Document.metadata.<get-metadata>|<get-metadata>(){}[0]
     final val routes // org.maplibre.spatialk.gpx/Document.routes|{}routes[0]
@@ -130,7 +132,8 @@ final class org.maplibre.spatialk.gpx/Document { // org.maplibre.spatialk.gpx/Do
     final fun component5(): kotlin.collections/List<org.maplibre.spatialk.gpx/Track> // org.maplibre.spatialk.gpx/Document.component5|component5(){}[0]
     final fun component6(): kotlin.collections/List<org.maplibre.spatialk.gpx/Route> // org.maplibre.spatialk.gpx/Document.component6|component6(){}[0]
     final fun component7(): kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> // org.maplibre.spatialk.gpx/Document.component7|component7(){}[0]
-    final fun copy(kotlin/String = ..., kotlin/String = ..., kotlin/String = ..., org.maplibre.spatialk.gpx/Metadata? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Track> = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Route> = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> = ...): org.maplibre.spatialk.gpx/Document // org.maplibre.spatialk.gpx/Document.copy|copy(kotlin.String;kotlin.String;kotlin.String;org.maplibre.spatialk.gpx.Metadata?;kotlin.collections.List<org.maplibre.spatialk.gpx.Track>;kotlin.collections.List<org.maplibre.spatialk.gpx.Route>;kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>){}[0]
+    final fun component8(): nl.adaptivity.xmlutil.dom2/Element? // org.maplibre.spatialk.gpx/Document.component8|component8(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/String = ..., kotlin/String = ..., org.maplibre.spatialk.gpx/Metadata? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Track> = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Route> = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> = ..., nl.adaptivity.xmlutil.dom2/Element? = ...): org.maplibre.spatialk.gpx/Document // org.maplibre.spatialk.gpx/Document.copy|copy(kotlin.String;kotlin.String;kotlin.String;org.maplibre.spatialk.gpx.Metadata?;kotlin.collections.List<org.maplibre.spatialk.gpx.Track>;kotlin.collections.List<org.maplibre.spatialk.gpx.Route>;kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>;nl.adaptivity.xmlutil.dom2.Element?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Document.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Document.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Document.toString|toString(){}[0]
@@ -213,7 +216,7 @@ final class org.maplibre.spatialk.gpx/Link { // org.maplibre.spatialk.gpx/Link|n
 }
 
 final class org.maplibre.spatialk.gpx/Metadata { // org.maplibre.spatialk.gpx/Metadata|null[0]
-    constructor <init>(kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Author? = ..., org.maplibre.spatialk.gpx/Copyright? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Link> = ..., kotlin.time/Instant? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Bounds? = ...) // org.maplibre.spatialk.gpx/Metadata.<init>|<init>(kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Author?;org.maplibre.spatialk.gpx.Copyright?;kotlin.collections.List<org.maplibre.spatialk.gpx.Link>;kotlin.time.Instant?;kotlin.String?;org.maplibre.spatialk.gpx.Bounds?){}[0]
+    constructor <init>(kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Author? = ..., org.maplibre.spatialk.gpx/Copyright? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Link> = ..., kotlin.time/Instant? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Bounds? = ..., nl.adaptivity.xmlutil.dom2/Element? = ...) // org.maplibre.spatialk.gpx/Metadata.<init>|<init>(kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Author?;org.maplibre.spatialk.gpx.Copyright?;kotlin.collections.List<org.maplibre.spatialk.gpx.Link>;kotlin.time.Instant?;kotlin.String?;org.maplibre.spatialk.gpx.Bounds?;nl.adaptivity.xmlutil.dom2.Element?){}[0]
 
     final val author // org.maplibre.spatialk.gpx/Metadata.author|{}author[0]
         final fun <get-author>(): org.maplibre.spatialk.gpx/Author? // org.maplibre.spatialk.gpx/Metadata.author.<get-author>|<get-author>(){}[0]
@@ -223,6 +226,8 @@ final class org.maplibre.spatialk.gpx/Metadata { // org.maplibre.spatialk.gpx/Me
         final fun <get-copyright>(): org.maplibre.spatialk.gpx/Copyright? // org.maplibre.spatialk.gpx/Metadata.copyright.<get-copyright>|<get-copyright>(){}[0]
     final val description // org.maplibre.spatialk.gpx/Metadata.description|{}description[0]
         final fun <get-description>(): kotlin/String? // org.maplibre.spatialk.gpx/Metadata.description.<get-description>|<get-description>(){}[0]
+    final val extensions // org.maplibre.spatialk.gpx/Metadata.extensions|{}extensions[0]
+        final fun <get-extensions>(): nl.adaptivity.xmlutil.dom2/Element? // org.maplibre.spatialk.gpx/Metadata.extensions.<get-extensions>|<get-extensions>(){}[0]
     final val keywords // org.maplibre.spatialk.gpx/Metadata.keywords|{}keywords[0]
         final fun <get-keywords>(): kotlin/String? // org.maplibre.spatialk.gpx/Metadata.keywords.<get-keywords>|<get-keywords>(){}[0]
     final val link // org.maplibre.spatialk.gpx/Metadata.link|{}link[0]
@@ -240,7 +245,8 @@ final class org.maplibre.spatialk.gpx/Metadata { // org.maplibre.spatialk.gpx/Me
     final fun component6(): kotlin.time/Instant? // org.maplibre.spatialk.gpx/Metadata.component6|component6(){}[0]
     final fun component7(): kotlin/String? // org.maplibre.spatialk.gpx/Metadata.component7|component7(){}[0]
     final fun component8(): org.maplibre.spatialk.gpx/Bounds? // org.maplibre.spatialk.gpx/Metadata.component8|component8(){}[0]
-    final fun copy(kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Author? = ..., org.maplibre.spatialk.gpx/Copyright? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Link> = ..., kotlin.time/Instant? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Bounds? = ...): org.maplibre.spatialk.gpx/Metadata // org.maplibre.spatialk.gpx/Metadata.copy|copy(kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Author?;org.maplibre.spatialk.gpx.Copyright?;kotlin.collections.List<org.maplibre.spatialk.gpx.Link>;kotlin.time.Instant?;kotlin.String?;org.maplibre.spatialk.gpx.Bounds?){}[0]
+    final fun component9(): nl.adaptivity.xmlutil.dom2/Element? // org.maplibre.spatialk.gpx/Metadata.component9|component9(){}[0]
+    final fun copy(kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Author? = ..., org.maplibre.spatialk.gpx/Copyright? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Link> = ..., kotlin.time/Instant? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Bounds? = ..., nl.adaptivity.xmlutil.dom2/Element? = ...): org.maplibre.spatialk.gpx/Metadata // org.maplibre.spatialk.gpx/Metadata.copy|copy(kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Author?;org.maplibre.spatialk.gpx.Copyright?;kotlin.collections.List<org.maplibre.spatialk.gpx.Link>;kotlin.time.Instant?;kotlin.String?;org.maplibre.spatialk.gpx.Bounds?;nl.adaptivity.xmlutil.dom2.Element?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Metadata.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Metadata.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Metadata.toString|toString(){}[0]
@@ -262,12 +268,14 @@ final class org.maplibre.spatialk.gpx/Metadata { // org.maplibre.spatialk.gpx/Me
 }
 
 final class org.maplibre.spatialk.gpx/Route { // org.maplibre.spatialk.gpx/Route|null[0]
-    constructor <init>(kotlin/String?, kotlin/String?, kotlin/String?, kotlin/String?, kotlin/String?, kotlin/Int?, kotlin/String?, kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint>) // org.maplibre.spatialk.gpx/Route.<init>|<init>(kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.Int?;kotlin.String?;kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>){}[0]
+    constructor <init>(kotlin/String?, kotlin/String?, kotlin/String?, kotlin/String?, kotlin/String?, kotlin/Int?, kotlin/String?, kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint>, nl.adaptivity.xmlutil.dom2/Element? = ...) // org.maplibre.spatialk.gpx/Route.<init>|<init>(kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.Int?;kotlin.String?;kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>;nl.adaptivity.xmlutil.dom2.Element?){}[0]
 
     final val comment // org.maplibre.spatialk.gpx/Route.comment|{}comment[0]
         final fun <get-comment>(): kotlin/String? // org.maplibre.spatialk.gpx/Route.comment.<get-comment>|<get-comment>(){}[0]
     final val description // org.maplibre.spatialk.gpx/Route.description|{}description[0]
         final fun <get-description>(): kotlin/String? // org.maplibre.spatialk.gpx/Route.description.<get-description>|<get-description>(){}[0]
+    final val extensions // org.maplibre.spatialk.gpx/Route.extensions|{}extensions[0]
+        final fun <get-extensions>(): nl.adaptivity.xmlutil.dom2/Element? // org.maplibre.spatialk.gpx/Route.extensions.<get-extensions>|<get-extensions>(){}[0]
     final val link // org.maplibre.spatialk.gpx/Route.link|{}link[0]
         final fun <get-link>(): kotlin/String? // org.maplibre.spatialk.gpx/Route.link.<get-link>|<get-link>(){}[0]
     final val name // org.maplibre.spatialk.gpx/Route.name|{}name[0]
@@ -289,7 +297,8 @@ final class org.maplibre.spatialk.gpx/Route { // org.maplibre.spatialk.gpx/Route
     final fun component6(): kotlin/Int? // org.maplibre.spatialk.gpx/Route.component6|component6(){}[0]
     final fun component7(): kotlin/String? // org.maplibre.spatialk.gpx/Route.component7|component7(){}[0]
     final fun component8(): kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> // org.maplibre.spatialk.gpx/Route.component8|component8(){}[0]
-    final fun copy(kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> = ...): org.maplibre.spatialk.gpx/Route // org.maplibre.spatialk.gpx/Route.copy|copy(kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.Int?;kotlin.String?;kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>){}[0]
+    final fun component9(): nl.adaptivity.xmlutil.dom2/Element? // org.maplibre.spatialk.gpx/Route.component9|component9(){}[0]
+    final fun copy(kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> = ..., nl.adaptivity.xmlutil.dom2/Element? = ...): org.maplibre.spatialk.gpx/Route // org.maplibre.spatialk.gpx/Route.copy|copy(kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.Int?;kotlin.String?;kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>;nl.adaptivity.xmlutil.dom2.Element?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Route.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Route.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Route.toString|toString(){}[0]
@@ -311,12 +320,14 @@ final class org.maplibre.spatialk.gpx/Route { // org.maplibre.spatialk.gpx/Route
 }
 
 final class org.maplibre.spatialk.gpx/Track { // org.maplibre.spatialk.gpx/Track|null[0]
-    constructor <init>(kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Link? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/TrackSegment> = ...) // org.maplibre.spatialk.gpx/Track.<init>|<init>(kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Link?;kotlin.Int?;kotlin.String?;kotlin.collections.List<org.maplibre.spatialk.gpx.TrackSegment>){}[0]
+    constructor <init>(kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Link? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/TrackSegment> = ..., nl.adaptivity.xmlutil.dom2/Element? = ...) // org.maplibre.spatialk.gpx/Track.<init>|<init>(kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Link?;kotlin.Int?;kotlin.String?;kotlin.collections.List<org.maplibre.spatialk.gpx.TrackSegment>;nl.adaptivity.xmlutil.dom2.Element?){}[0]
 
     final val comment // org.maplibre.spatialk.gpx/Track.comment|{}comment[0]
         final fun <get-comment>(): kotlin/String? // org.maplibre.spatialk.gpx/Track.comment.<get-comment>|<get-comment>(){}[0]
     final val description // org.maplibre.spatialk.gpx/Track.description|{}description[0]
         final fun <get-description>(): kotlin/String? // org.maplibre.spatialk.gpx/Track.description.<get-description>|<get-description>(){}[0]
+    final val extensions // org.maplibre.spatialk.gpx/Track.extensions|{}extensions[0]
+        final fun <get-extensions>(): nl.adaptivity.xmlutil.dom2/Element? // org.maplibre.spatialk.gpx/Track.extensions.<get-extensions>|<get-extensions>(){}[0]
     final val link // org.maplibre.spatialk.gpx/Track.link|{}link[0]
         final fun <get-link>(): org.maplibre.spatialk.gpx/Link? // org.maplibre.spatialk.gpx/Track.link.<get-link>|<get-link>(){}[0]
     final val name // org.maplibre.spatialk.gpx/Track.name|{}name[0]
@@ -338,7 +349,8 @@ final class org.maplibre.spatialk.gpx/Track { // org.maplibre.spatialk.gpx/Track
     final fun component6(): kotlin/Int? // org.maplibre.spatialk.gpx/Track.component6|component6(){}[0]
     final fun component7(): kotlin/String? // org.maplibre.spatialk.gpx/Track.component7|component7(){}[0]
     final fun component8(): kotlin.collections/List<org.maplibre.spatialk.gpx/TrackSegment> // org.maplibre.spatialk.gpx/Track.component8|component8(){}[0]
-    final fun copy(kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Link? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/TrackSegment> = ...): org.maplibre.spatialk.gpx/Track // org.maplibre.spatialk.gpx/Track.copy|copy(kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Link?;kotlin.Int?;kotlin.String?;kotlin.collections.List<org.maplibre.spatialk.gpx.TrackSegment>){}[0]
+    final fun component9(): nl.adaptivity.xmlutil.dom2/Element? // org.maplibre.spatialk.gpx/Track.component9|component9(){}[0]
+    final fun copy(kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Link? = ..., kotlin/Int? = ..., kotlin/String? = ..., kotlin.collections/List<org.maplibre.spatialk.gpx/TrackSegment> = ..., nl.adaptivity.xmlutil.dom2/Element? = ...): org.maplibre.spatialk.gpx/Track // org.maplibre.spatialk.gpx/Track.copy|copy(kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Link?;kotlin.Int?;kotlin.String?;kotlin.collections.List<org.maplibre.spatialk.gpx.TrackSegment>;nl.adaptivity.xmlutil.dom2.Element?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Track.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Track.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Track.toString|toString(){}[0]
@@ -360,13 +372,16 @@ final class org.maplibre.spatialk.gpx/Track { // org.maplibre.spatialk.gpx/Track
 }
 
 final class org.maplibre.spatialk.gpx/TrackSegment { // org.maplibre.spatialk.gpx/TrackSegment|null[0]
-    constructor <init>(kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint>) // org.maplibre.spatialk.gpx/TrackSegment.<init>|<init>(kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>){}[0]
+    constructor <init>(kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint>, nl.adaptivity.xmlutil.dom2/Element? = ...) // org.maplibre.spatialk.gpx/TrackSegment.<init>|<init>(kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>;nl.adaptivity.xmlutil.dom2.Element?){}[0]
 
+    final val extensions // org.maplibre.spatialk.gpx/TrackSegment.extensions|{}extensions[0]
+        final fun <get-extensions>(): nl.adaptivity.xmlutil.dom2/Element? // org.maplibre.spatialk.gpx/TrackSegment.extensions.<get-extensions>|<get-extensions>(){}[0]
     final val points // org.maplibre.spatialk.gpx/TrackSegment.points|{}points[0]
         final fun <get-points>(): kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> // org.maplibre.spatialk.gpx/TrackSegment.points.<get-points>|<get-points>(){}[0]
 
     final fun component1(): kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> // org.maplibre.spatialk.gpx/TrackSegment.component1|component1(){}[0]
-    final fun copy(kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> = ...): org.maplibre.spatialk.gpx/TrackSegment // org.maplibre.spatialk.gpx/TrackSegment.copy|copy(kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>){}[0]
+    final fun component2(): nl.adaptivity.xmlutil.dom2/Element? // org.maplibre.spatialk.gpx/TrackSegment.component2|component2(){}[0]
+    final fun copy(kotlin.collections/List<org.maplibre.spatialk.gpx/Waypoint> = ..., nl.adaptivity.xmlutil.dom2/Element? = ...): org.maplibre.spatialk.gpx/TrackSegment // org.maplibre.spatialk.gpx/TrackSegment.copy|copy(kotlin.collections.List<org.maplibre.spatialk.gpx.Waypoint>;nl.adaptivity.xmlutil.dom2.Element?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/TrackSegment.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/TrackSegment.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/TrackSegment.toString|toString(){}[0]
@@ -388,7 +403,7 @@ final class org.maplibre.spatialk.gpx/TrackSegment { // org.maplibre.spatialk.gp
 }
 
 final class org.maplibre.spatialk.gpx/Waypoint { // org.maplibre.spatialk.gpx/Waypoint|null[0]
-    constructor <init>(kotlin/Double, kotlin/Double, kotlin/Double? = ..., kotlin.time/Instant? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Link? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ...) // org.maplibre.spatialk.gpx/Waypoint.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double?;kotlin.time.Instant?;kotlin.Double?;kotlin.Double?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Link?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.Int?;kotlin.Double?;kotlin.Double?;kotlin.Double?;kotlin.Double?;kotlin.Double?){}[0]
+    constructor <init>(kotlin/Double, kotlin/Double, kotlin/Double? = ..., kotlin.time/Instant? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Link? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., nl.adaptivity.xmlutil.dom2/Element? = ...) // org.maplibre.spatialk.gpx/Waypoint.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double?;kotlin.time.Instant?;kotlin.Double?;kotlin.Double?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Link?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.Int?;kotlin.Double?;kotlin.Double?;kotlin.Double?;kotlin.Double?;kotlin.Double?;nl.adaptivity.xmlutil.dom2.Element?){}[0]
 
     final val comment // org.maplibre.spatialk.gpx/Waypoint.comment|{}comment[0]
         final fun <get-comment>(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.comment.<get-comment>|<get-comment>(){}[0]
@@ -400,6 +415,8 @@ final class org.maplibre.spatialk.gpx/Waypoint { // org.maplibre.spatialk.gpx/Wa
         final fun <get-dgpsId>(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.dgpsId.<get-dgpsId>|<get-dgpsId>(){}[0]
     final val elevation // org.maplibre.spatialk.gpx/Waypoint.elevation|{}elevation[0]
         final fun <get-elevation>(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.elevation.<get-elevation>|<get-elevation>(){}[0]
+    final val extensions // org.maplibre.spatialk.gpx/Waypoint.extensions|{}extensions[0]
+        final fun <get-extensions>(): nl.adaptivity.xmlutil.dom2/Element? // org.maplibre.spatialk.gpx/Waypoint.extensions.<get-extensions>|<get-extensions>(){}[0]
     final val fix // org.maplibre.spatialk.gpx/Waypoint.fix|{}fix[0]
         final fun <get-fix>(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.fix.<get-fix>|<get-fix>(){}[0]
     final val geoIdHeight // org.maplibre.spatialk.gpx/Waypoint.geoIdHeight|{}geoIdHeight[0]
@@ -444,6 +461,7 @@ final class org.maplibre.spatialk.gpx/Waypoint { // org.maplibre.spatialk.gpx/Wa
     final fun component19(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.component19|component19(){}[0]
     final fun component2(): kotlin/Double // org.maplibre.spatialk.gpx/Waypoint.component2|component2(){}[0]
     final fun component20(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.component20|component20(){}[0]
+    final fun component21(): nl.adaptivity.xmlutil.dom2/Element? // org.maplibre.spatialk.gpx/Waypoint.component21|component21(){}[0]
     final fun component3(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.component3|component3(){}[0]
     final fun component4(): kotlin.time/Instant? // org.maplibre.spatialk.gpx/Waypoint.component4|component4(){}[0]
     final fun component5(): kotlin/Double? // org.maplibre.spatialk.gpx/Waypoint.component5|component5(){}[0]
@@ -451,7 +469,7 @@ final class org.maplibre.spatialk.gpx/Waypoint { // org.maplibre.spatialk.gpx/Wa
     final fun component7(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.component7|component7(){}[0]
     final fun component8(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.component8|component8(){}[0]
     final fun component9(): kotlin/String? // org.maplibre.spatialk.gpx/Waypoint.component9|component9(){}[0]
-    final fun copy(kotlin/Double = ..., kotlin/Double = ..., kotlin/Double? = ..., kotlin.time/Instant? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Link? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ...): org.maplibre.spatialk.gpx/Waypoint // org.maplibre.spatialk.gpx/Waypoint.copy|copy(kotlin.Double;kotlin.Double;kotlin.Double?;kotlin.time.Instant?;kotlin.Double?;kotlin.Double?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Link?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.Int?;kotlin.Double?;kotlin.Double?;kotlin.Double?;kotlin.Double?;kotlin.Double?){}[0]
+    final fun copy(kotlin/Double = ..., kotlin/Double = ..., kotlin/Double? = ..., kotlin.time/Instant? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., org.maplibre.spatialk.gpx/Link? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin/Int? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., kotlin/Double? = ..., nl.adaptivity.xmlutil.dom2/Element? = ...): org.maplibre.spatialk.gpx/Waypoint // org.maplibre.spatialk.gpx/Waypoint.copy|copy(kotlin.Double;kotlin.Double;kotlin.Double?;kotlin.time.Instant?;kotlin.Double?;kotlin.Double?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.String?;org.maplibre.spatialk.gpx.Link?;kotlin.String?;kotlin.String?;kotlin.String?;kotlin.Int?;kotlin.Double?;kotlin.Double?;kotlin.Double?;kotlin.Double?;kotlin.Double?;nl.adaptivity.xmlutil.dom2.Element?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.gpx/Waypoint.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.gpx/Waypoint.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.gpx/Waypoint.toString|toString(){}[0]
