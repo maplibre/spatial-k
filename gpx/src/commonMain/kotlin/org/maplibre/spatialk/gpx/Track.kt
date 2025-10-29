@@ -2,6 +2,7 @@ package org.maplibre.spatialk.gpx
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.dom2.Element
 import nl.adaptivity.xmlutil.serialization.XmlElement
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
 import org.maplibre.spatialk.geojson.Feature
@@ -37,7 +38,7 @@ public data class Track(
     @XmlSerialName("trkseg")
     @XmlElement
     val segments: List<TrackSegment> = listOf(),
-    // @XmlElement val extensions = null,
+    @XmlSerialName("extensions") @XmlElement val extensions: Element? = null,
 )
 
 /**
@@ -72,8 +73,8 @@ public fun Track.toGeoJson(): Feature<GeometryCollection<Point>, Track> {
  */
 @Serializable
 public data class TrackSegment(
-    @XmlSerialName("trkpt") @XmlElement val points: List<Waypoint>
-    // @XmlElement val extensions = null,
+    @XmlSerialName("trkpt") @XmlElement val points: List<Waypoint>,
+    @XmlSerialName("extensions") @XmlElement val extensions: Element? = null,
 )
 
 /**

@@ -7,6 +7,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Required
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.dom2.Element
 import nl.adaptivity.xmlutil.serialization.XmlElement
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
 import org.maplibre.spatialk.gpx.serializers.UtcDefaultInstantSerializer
@@ -45,6 +46,7 @@ public data class Document(
     @XmlSerialName("wpt")
     @XmlElement
     val waypoints: List<Waypoint> = listOf(),
+    @XmlSerialName("extensions") @XmlElement val extensions: Element? = null,
 )
 
 /**
@@ -78,7 +80,7 @@ constructor(
     val timestamp: Instant? = null,
     @XmlElement val keywords: String? = null,
     @XmlSerialName("bounds") @XmlElement val bounds: Bounds? = null,
-    // val extensions: Extensions?,
+    @XmlSerialName("extensions") @XmlElement val extensions: Element? = null,
 )
 
 /**
