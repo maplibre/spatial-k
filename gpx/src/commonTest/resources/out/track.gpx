@@ -38,7 +38,7 @@
                 <pdop>1.6</pdop>
                 <extensions>
                     <gpxtpx:TrackPointExtension
-                        xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1">
+                        xmlns:gpxtpx="https://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
                         <gpxtpx:hr>156</gpxtpx:hr>
                         <gpxtpx:cad>90</gpxtpx:cad>
                     </gpxtpx:TrackPointExtension>
@@ -51,7 +51,7 @@
                 <sat>9</sat>
                 <extensions>
                     <gpxtpx:TrackPointExtension
-                        xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1">
+                        xmlns:gpxtpx="https://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
                         <gpxtpx:hr>156</gpxtpx:hr>
                         <gpxtpx:cad>90</gpxtpx:cad>
                     </gpxtpx:TrackPointExtension>
