@@ -2,6 +2,7 @@ package org.maplibre.spatialk.gpx
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.dom2.Element
 import nl.adaptivity.xmlutil.serialization.XmlElement
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
 import org.maplibre.spatialk.geojson.Feature
@@ -23,6 +24,7 @@ import org.maplibre.spatialk.geojson.Point
  * @property number A GPS track number.
  * @property type The type of activity for the track (e.g., "cycling", "running").
  * @property segments A list of track segments that make up the track.
+ * @property extensions Extension schema elements.
  */
 @Serializable
 public data class Track(
@@ -37,7 +39,7 @@ public data class Track(
     @XmlSerialName("trkseg")
     @XmlElement
     val segments: List<TrackSegment> = listOf(),
-    // @XmlElement val extensions = null,
+    @XmlSerialName("extensions") @XmlElement val extensions: Element? = null,
 )
 
 /**
@@ -69,11 +71,12 @@ public fun Track.toGeoJson(): Feature<GeometryCollection<Point>, Track> {
  * See [trksegType](https://www.topografix.com/GPX/1/1/#type_trksegType).
  *
  * @property points A list of track points.
+ * @property extensions Extension schema elements.
  */
 @Serializable
 public data class TrackSegment(
-    @XmlSerialName("trkpt") @XmlElement val points: List<Waypoint>
-    // @XmlElement val extensions = null,
+    @XmlSerialName("trkpt") @XmlElement val points: List<Waypoint>,
+    @XmlSerialName("extensions") @XmlElement val extensions: Element? = null,
 )
 
 /**

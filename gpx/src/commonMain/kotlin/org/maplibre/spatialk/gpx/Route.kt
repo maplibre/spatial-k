@@ -2,6 +2,7 @@ package org.maplibre.spatialk.gpx
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.dom2.Element
 import nl.adaptivity.xmlutil.serialization.XmlElement
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
 import org.maplibre.spatialk.geojson.Feature
@@ -25,6 +26,7 @@ import org.maplibre.spatialk.geojson.Point
  *   (e.g., "resupply", "scenic").
  * @property points A list of route points ([Waypoint]) which are the turning points, intersections,
  *   or other critical points in the route.
+ * @property extensions Extension schema elements.
  */
 @Serializable
 public data class Route(
@@ -36,7 +38,7 @@ public data class Route(
     @SerialName("number") @XmlElement val number: Int?,
     @SerialName("type") @XmlElement val type: String?,
     @SerialName("rtept") @XmlSerialName("rtept") @XmlElement val points: List<Waypoint>,
-    // @XmlElement val extensions = null,
+    @XmlSerialName("extensions") @XmlElement val extensions: Element? = null,
 )
 
 /**

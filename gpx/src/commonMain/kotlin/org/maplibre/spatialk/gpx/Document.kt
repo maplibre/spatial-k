@@ -7,6 +7,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Required
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.dom2.Element
 import nl.adaptivity.xmlutil.serialization.XmlElement
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
 import org.maplibre.spatialk.gpx.serializers.UtcDefaultInstantSerializer
@@ -27,6 +28,7 @@ import org.maplibre.spatialk.gpx.serializers.UtcDefaultInstantSerializer
  * @property waypoints A list of waypoints.
  * @property routes A list of routes.
  * @property tracks A list of tracks.
+ * @property extensions Extension schema elements.
  */
 @XmlSerialName("gpx", "http://www.topografix.com/GPX/1/1")
 @OptIn(ExperimentalSerializationApi::class)
@@ -45,6 +47,7 @@ public data class Document(
     @XmlSerialName("wpt")
     @XmlElement
     val waypoints: List<Waypoint> = listOf(),
+    @XmlSerialName("extensions") @XmlElement val extensions: Element? = null,
 )
 
 /**
@@ -62,6 +65,7 @@ public data class Document(
  * @property keywords Keywords associated with the file. Search engines or databases may use them.
  * @property bounds The minimum and maximum coordinates that describe the extent of the data in the
  *   file.
+ * @property extensions Extension schema elements.
  */
 @Serializable
 public data class Metadata
@@ -78,7 +82,7 @@ constructor(
     val timestamp: Instant? = null,
     @XmlElement val keywords: String? = null,
     @XmlSerialName("bounds") @XmlElement val bounds: Bounds? = null,
-    // val extensions: Extensions?,
+    @XmlSerialName("extensions") @XmlElement val extensions: Element? = null,
 )
 
 /**

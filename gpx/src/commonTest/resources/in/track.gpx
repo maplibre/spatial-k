@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="ChatGPT-GPX" xmlns="http://www.topografix.com/GPX/1/1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1
-                         http://www.topografix.com/GPX/1/1/gpx.xsd">
+                         http://www.topografix.com/GPX/1/1/gpx.xsd"
+    xmlns:gpxtpx="https://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
 
     <metadata>
         <name>Sample Track</name>
@@ -36,8 +37,6 @@
             <trkpt lat="37.7749" lon="-122.4194">
                 <ele>15.2</ele>
                 <time>2025-10-22T12:00:00Z</time>
-                <course>90.0</course>
-                <speed>1.4</speed>
                 <magvar>12.5</magvar>
                 <geoidheight>-29.0</geoidheight>
                 <sat>10</sat>
@@ -45,22 +44,30 @@
                 <vdop>1.2</vdop>
                 <pdop>1.6</pdop>
                 <fix>3d</fix>
+                <extensions>
+                    <gpxtpx:TrackPointExtension>
+                        <gpxtpx:hr>156</gpxtpx:hr>
+                        <gpxtpx:cad>90</gpxtpx:cad>
+                    </gpxtpx:TrackPointExtension>
+                </extensions>
             </trkpt>
 
             <trkpt lat="37.7765" lon="-122.4290">
                 <ele>22.8</ele>
                 <time>2025-10-22T12:05:00Z</time>
-                <course>92.0</course>
-                <speed>1.6</speed>
                 <fix>3d</fix>
                 <sat>9</sat>
+                <extensions>
+                    <gpxtpx:TrackPointExtension>
+                        <gpxtpx:hr>156</gpxtpx:hr>
+                        <gpxtpx:cad>90</gpxtpx:cad>
+                    </gpxtpx:TrackPointExtension>
+                </extensions>
             </trkpt>
 
             <trkpt lat="37.7780" lon="-122.4410">
                 <ele>35.6</ele>
                 <time>2025-10-22T12:10:00Z</time>
-                <course>100.0</course>
-                <speed>1.8</speed>
                 <fix>3d</fix>
                 <sat>8</sat>
             </trkpt>
@@ -70,8 +77,6 @@
             <trkpt lat="37.7694" lon="-122.4862">
                 <ele>48.3</ele>
                 <time>2025-10-22T12:20:00Z</time>
-                <course>110.0</course>
-                <speed>2.0</speed>
                 <fix>dgps</fix>
                 <sat>9</sat>
             </trkpt>
@@ -79,8 +84,6 @@
             <trkpt lat="37.7790" lon="-122.4600">
                 <ele>62.7</ele>
                 <time>2025-10-22T12:30:00Z</time>
-                <course>120.0</course>
-                <speed>2.2</speed>
                 <fix>3d</fix>
                 <sat>10</sat>
             </trkpt>
@@ -88,8 +91,6 @@
             <trkpt lat="37.8021" lon="-122.4488">
                 <ele>90.4</ele>
                 <time>2025-10-22T12:45:00Z</time>
-                <course>135.0</course>
-                <speed>0.0</speed>
                 <fix>3d</fix>
                 <sat>12</sat>
             </trkpt>

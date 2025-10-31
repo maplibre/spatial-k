@@ -6,6 +6,7 @@
     * unknown metadata element
 -->
 <gpx version="1.1" xmlns="http://www.topografix.com/GPX/1/1"
+    xmlns:gpxtpx="https://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <metadata>
         <name>Sample Track</name>
@@ -50,6 +51,12 @@
                 <vdop>1.2</vdop>
                 <pdop>1.6</pdop>
                 <fix>3d</fix>
+                <extensions>
+                    <gpxtpx:TrackPointExtension>
+                        <gpxtpx:hr>156</gpxtpx:hr>
+                        <gpxtpx:cad>90</gpxtpx:cad>
+                    </gpxtpx:TrackPointExtension>
+                </extensions>
             </trkpt>
 
             <trkpt lat="37.7765" lon="-122.4290">
@@ -59,6 +66,12 @@
                 <speed>1.6</speed>
                 <fix>3d</fix>
                 <sat>9</sat>
+                <extensions>
+                    <gpxtpx:TrackPointExtension>
+                        <gpxtpx:hr>156</gpxtpx:hr>
+                        <gpxtpx:cad>90</gpxtpx:cad>
+                    </gpxtpx:TrackPointExtension>
+                </extensions>
             </trkpt>
 
             <trkpt lat="37.7780" lon="-122.4410">
