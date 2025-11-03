@@ -11,7 +11,7 @@ dokka = "2.1.0"
 semver = "0.8.0"
 mkdocs-build = "4.0.1"
 detekt = "2.0.0-alpha.1"
-xmlutil = "0.91.2"
+xmlutil = "0.91.3"
 
 [libraries]
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
