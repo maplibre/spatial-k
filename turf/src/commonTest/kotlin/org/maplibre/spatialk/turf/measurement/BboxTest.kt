@@ -97,6 +97,7 @@ class BboxTest {
     @Test
     fun testPointBbox() {
         assertEquals(BoundingBox(102.0, 0.5, 102.0, 0.5), point.computeBbox())
+        assertEquals(point.computeBbox(), point.withComputedBbox().bbox)
     }
 
     @Test
