@@ -546,7 +546,7 @@ public class RBush<T : Feature<*, *>>(maxEntries: Int = 9) {
         return BoundingBox(minX, minY, maxX, maxY)
     }
 
-    public companion object {
+    private companion object {
         private fun extend(a: BoundingBox, b: BoundingBox): BoundingBox {
             return BoundingBox(
                 min(a.southwest.longitude, b.southwest.longitude),
