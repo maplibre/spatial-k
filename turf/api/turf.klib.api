@@ -16,8 +16,6 @@ final class <#A: org.maplibre.spatialk.geojson/Feature<*, *>> org.maplibre.spati
     final fun insert(kotlin.collections/List<#A>) // org.maplibre.spatialk.turf.grids/RBush.insert|insert(kotlin.collections.List<1:0>){}[0]
     final fun remove(#A): kotlin/Boolean // org.maplibre.spatialk.turf.grids/RBush.remove|remove(1:0){}[0]
     final fun search(org.maplibre.spatialk.geojson/BoundingBox): kotlin.collections/List<#A> // org.maplibre.spatialk.turf.grids/RBush.search|search(org.maplibre.spatialk.geojson.BoundingBox){}[0]
-
-    final object Companion // org.maplibre.spatialk.turf.grids/RBush.Companion|null[0]
 }
 
 final class org.maplibre.spatialk.turf.misc/NearestPointOnLineProps { // org.maplibre.spatialk.turf.misc/NearestPointOnLineProps|null[0]

@@ -45,7 +45,6 @@ public final class org/maplibre/spatialk/turf/grids/Grids {
 }
 
 public final class org/maplibre/spatialk/turf/grids/RBush {
-	public static final field Companion Lorg/maplibre/spatialk/turf/grids/RBush$Companion;
 	public fun <init> ()V
 	public fun <init> (I)V
 	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -56,9 +55,6 @@ public final class org/maplibre/spatialk/turf/grids/RBush {
 	public final fun insert (Lorg/maplibre/spatialk/geojson/Feature;)V
 	public final fun remove (Lorg/maplibre/spatialk/geojson/Feature;)Z
 	public final fun search (Lorg/maplibre/spatialk/geojson/BoundingBox;)Ljava/util/List;
-}
-
-public final class org/maplibre/spatialk/turf/grids/RBush$Companion {
 }
 
 public final class org/maplibre/spatialk/turf/measurement/Measurement {
