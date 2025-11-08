@@ -48,9 +48,9 @@ public fun computeBbox(coordinates: List<Position>): BoundingBox {
 /**
  * Returns a copy of this GeoJSON object with a computed bounding box.
  *
- * For [FeatureCollection] and [GeometryCollection], computes the bounding box from all contained
- * coordinates. For [Feature], uses the geometry's bounding box. For other types, returns the object
- * unchanged.
+ * For [Geometry] types, it computes the bounding box of the geometry's coordinates. For a
+ * [Feature], it computes the bounding box of its geometry. For a [FeatureCollection] or
+ * [GeometryCollection], it computes the bounding box of all contained coordinates.
  *
  * @return A copy of this object with the bbox property set to the computed bounding box, or null if
  *   there are no coordinates.
@@ -66,6 +66,11 @@ public inline fun <reified T : GeoJsonObject> T.withComputedBbox(): T =
             copy(bbox = if (coords.isNotEmpty()) computeBbox(coords) else null)
         }
         is Feature<*, *> -> copy(bbox = geometry?.computeBbox())
-        else -> this
+        is LineString -> copy(bbox = computeBbox())
+        is MultiLineString -> copy(bbox = computeBbox())
+        is MultiPoint -> copy(bbox = computeBbox())
+        is MultiPolygon -> copy(bbox = computeBbox())
+        is Point -> copy(bbox = computeBbox())
+        is Polygon -> copy(bbox = computeBbox())
     }
         as T
