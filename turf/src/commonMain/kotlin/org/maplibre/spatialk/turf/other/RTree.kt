@@ -1,4 +1,4 @@
-package org.maplibre.spatialk.turf.grids
+package org.maplibre.spatialk.turf.other
 
 import kotlin.math.E
 import kotlin.math.ceil
@@ -10,12 +10,22 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
+import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.GeoJsonObject
+import org.maplibre.spatialk.geojson.GeometryCollection
+import org.maplibre.spatialk.geojson.LineString
+import org.maplibre.spatialk.geojson.MultiLineString
+import org.maplibre.spatialk.geojson.MultiPoint
+import org.maplibre.spatialk.geojson.MultiPolygon
+import org.maplibre.spatialk.geojson.Point
+import org.maplibre.spatialk.geojson.Polygon
+import org.maplibre.spatialk.turf.coordinatemutation.flattenCoordinates
 import org.maplibre.spatialk.turf.measurement.computeBbox
 
 /**
  * A high-performance R-tree-based spatial index for 2D points and rectangles.
  *
- * RBush is an implementation of an R-tree, a tree data structure used for spatial access methods,
+ * RTree is an implementation of an R-tree, a tree data structure used for spatial access methods,
  * i.e., for indexing multi-dimensional information such as geographical coordinates, rectangles, or
  * polygons. It's a popular choice for spatial indexing due to its efficiency in handling dynamic
  * datasets (i.e., data that changes over time) and its speed in performing spatial queries.
@@ -37,8 +47,8 @@ import org.maplibre.spatialk.turf.measurement.computeBbox
  *   faster loading/insertion but slower searches, and vice versa. Must be 4 or greater. Defaults
  *   to 9.
  */
-public class RBush<T : Feature<*, *>>(maxEntries: Int = 9) {
-    private data class Node<T : Feature<*, *>>(
+public class RTree<T : GeoJsonObject>(maxEntries: Int = 9) {
+    private data class Node<T : GeoJsonObject>(
         var item: T? = null,
         var children: MutableList<Node<T>> = mutableListOf(),
         var height: Int = 1,
@@ -146,19 +156,18 @@ public class RBush<T : Feature<*, *>>(maxEntries: Int = 9) {
      * Bulk-loads data into the R-tree.
      *
      * @param data A list of features to load into the tree.
-     * @return The current [RBush] instance for chaining.
+     * @return The current [RTree] instance for chaining.
      */
     public fun insert(data: List<T>) {
         if (data.isEmpty()) return
+        val data = data.map { it.withBoundingBox() }
 
-        val items = data.map { it.withBoundingBox() }
-
-        if (items.size < minEntries) {
-            items.forEach { insert(it) }
+        if (data.size < minEntries) {
+            data.forEach { insert(it) }
             return
         }
 
-        var node = build(items.toMutableList(), 0, items.size - 1, 0)
+        var node = build(data.toMutableList(), 0, data.size - 1, 0)
 
         if (this.data.children.isEmpty()) {
             this.data = node
@@ -546,62 +555,52 @@ public class RBush<T : Feature<*, *>>(maxEntries: Int = 9) {
         return BoundingBox(minX, minY, maxX, maxY)
     }
 
+    private fun compareNodeMinX(a: Node<T>, b: Node<T>): Int {
+        return (a.bbox.southwest.longitude - b.bbox.southwest.longitude).compareTo(0.0)
+    }
+
+    private fun compareNodeMinY(a: Node<T>, b: Node<T>): Int {
+        return (a.bbox.southwest.latitude - b.bbox.southwest.latitude).compareTo(0.0)
+    }
+
     private companion object {
         private fun extend(a: BoundingBox, b: BoundingBox): BoundingBox {
             return BoundingBox(
-                min(a.southwest.longitude, b.southwest.longitude),
-                min(a.southwest.latitude, b.southwest.latitude),
-                max(a.northeast.longitude, b.northeast.longitude),
-                max(a.northeast.latitude, b.northeast.latitude),
+                min(a.west, b.west),
+                min(a.south, b.south),
+                max(a.east, b.east),
+                max(a.north, b.north),
             )
         }
 
-        private fun <T : Feature<*, *>> compareNodeMinX(a: Node<T>, b: Node<T>): Int {
-            return (a.bbox.southwest.longitude - b.bbox.southwest.longitude).compareTo(0.0)
-        }
-
-        private fun <T : Feature<*, *>> compareNodeMinY(a: Node<T>, b: Node<T>): Int {
-            return (a.bbox.southwest.latitude - b.bbox.southwest.latitude).compareTo(0.0)
-        }
-
         private fun bboxArea(a: BoundingBox): Double {
-            return (a.northeast.longitude - a.southwest.longitude) *
-                (a.northeast.latitude - a.southwest.latitude)
+            return (a.east - a.west) * (a.north - a.south)
         }
 
         private fun bboxMargin(a: BoundingBox): Double {
-            return (a.northeast.longitude - a.southwest.longitude) +
-                (a.northeast.latitude - a.southwest.latitude)
+            return (a.east - a.west) + (a.north - a.south)
         }
 
         private fun enlargedArea(a: BoundingBox, b: BoundingBox): Double {
-            return (max(b.northeast.longitude, a.northeast.longitude) -
-                min(b.southwest.longitude, a.southwest.longitude)) *
-                (max(b.northeast.latitude, a.northeast.latitude) -
-                    min(b.southwest.latitude, a.southwest.latitude))
+            return (max(b.east, a.east) - min(b.west, a.west)) *
+                (max(b.north, a.north) - min(b.south, a.south))
         }
 
         private fun intersectionArea(a: BoundingBox, b: BoundingBox): Double {
-            val minX = max(a.southwest.longitude, b.southwest.longitude)
-            val minY = max(a.southwest.latitude, b.southwest.latitude)
-            val maxX = min(a.northeast.longitude, b.northeast.longitude)
-            val maxY = min(a.northeast.latitude, b.northeast.latitude)
+            val minX = max(a.west, b.west)
+            val minY = max(a.south, b.south)
+            val maxX = min(a.east, b.east)
+            val maxY = min(a.north, b.north)
 
             return max(0.0, maxX - minX) * max(0.0, maxY - minY)
         }
 
         private fun contains(a: BoundingBox, b: BoundingBox): Boolean {
-            return a.southwest.longitude <= b.southwest.longitude &&
-                a.southwest.latitude <= b.southwest.latitude &&
-                b.northeast.longitude <= a.northeast.longitude &&
-                b.northeast.latitude <= a.northeast.latitude
+            return a.west <= b.west && a.south <= b.south && b.east <= a.east && b.north <= a.north
         }
 
         private fun intersects(a: BoundingBox, b: BoundingBox): Boolean {
-            return b.southwest.longitude <= a.northeast.longitude &&
-                b.southwest.latitude <= a.northeast.latitude &&
-                b.northeast.longitude >= a.southwest.longitude &&
-                b.northeast.latitude >= a.southwest.latitude
+            return b.west <= a.east && b.south <= a.north && b.east >= a.west && b.north >= a.south
         }
 
         private fun <T> multiSelect(
@@ -685,7 +684,24 @@ public class RBush<T : Feature<*, *>>(maxEntries: Int = 9) {
     private fun T.withBoundingBox(): T =
         if (bbox == null) {
             @Suppress("UNCHECKED_CAST")
-            copy(bbox = geometry?.computeBbox()) as T
+            when (this) {
+                is FeatureCollection<*, *> -> {
+                    val coords = flattenCoordinates()
+                    copy(bbox = if (coords.isNotEmpty()) computeBbox(coords) else null)
+                }
+                is GeometryCollection<*> -> {
+                    val coords = flattenCoordinates()
+                    copy(bbox = if (coords.isNotEmpty()) computeBbox(coords) else null)
+                }
+                is Feature<*, *> -> copy(bbox = geometry?.computeBbox())
+                is LineString -> copy(bbox = computeBbox())
+                is MultiLineString -> copy(bbox = computeBbox())
+                is MultiPoint -> copy(bbox = computeBbox())
+                is MultiPolygon -> copy(bbox = computeBbox())
+                is Point -> copy(bbox = computeBbox())
+                is Polygon -> copy(bbox = computeBbox())
+            }
+                as T
         } else {
             this
         }

@@ -6,16 +6,16 @@
 // - Show declarations: true
 
 // Library unique name: <org.maplibre.spatialk:turf>
-final class <#A: org.maplibre.spatialk.geojson/Feature<*, *>> org.maplibre.spatialk.turf.grids/RBush { // org.maplibre.spatialk.turf.grids/RBush|null[0]
-    constructor <init>(kotlin/Int = ...) // org.maplibre.spatialk.turf.grids/RBush.<init>|<init>(kotlin.Int){}[0]
+final class <#A: org.maplibre.spatialk.geojson/GeoJsonObject> org.maplibre.spatialk.turf.other/RTree { // org.maplibre.spatialk.turf.other/RTree|null[0]
+    constructor <init>(kotlin/Int = ...) // org.maplibre.spatialk.turf.other/RTree.<init>|<init>(kotlin.Int){}[0]
 
-    final fun all(): kotlin.collections/List<#A> // org.maplibre.spatialk.turf.grids/RBush.all|all(){}[0]
-    final fun clear() // org.maplibre.spatialk.turf.grids/RBush.clear|clear(){}[0]
-    final fun collides(org.maplibre.spatialk.geojson/BoundingBox): kotlin/Boolean // org.maplibre.spatialk.turf.grids/RBush.collides|collides(org.maplibre.spatialk.geojson.BoundingBox){}[0]
-    final fun insert(#A) // org.maplibre.spatialk.turf.grids/RBush.insert|insert(1:0){}[0]
-    final fun insert(kotlin.collections/List<#A>) // org.maplibre.spatialk.turf.grids/RBush.insert|insert(kotlin.collections.List<1:0>){}[0]
-    final fun remove(#A): kotlin/Boolean // org.maplibre.spatialk.turf.grids/RBush.remove|remove(1:0){}[0]
-    final fun search(org.maplibre.spatialk.geojson/BoundingBox): kotlin.collections/List<#A> // org.maplibre.spatialk.turf.grids/RBush.search|search(org.maplibre.spatialk.geojson.BoundingBox){}[0]
+    final fun all(): kotlin.collections/List<#A> // org.maplibre.spatialk.turf.other/RTree.all|all(){}[0]
+    final fun clear() // org.maplibre.spatialk.turf.other/RTree.clear|clear(){}[0]
+    final fun collides(org.maplibre.spatialk.geojson/BoundingBox): kotlin/Boolean // org.maplibre.spatialk.turf.other/RTree.collides|collides(org.maplibre.spatialk.geojson.BoundingBox){}[0]
+    final fun insert(#A) // org.maplibre.spatialk.turf.other/RTree.insert|insert(1:0){}[0]
+    final fun insert(kotlin.collections/List<#A>) // org.maplibre.spatialk.turf.other/RTree.insert|insert(kotlin.collections.List<1:0>){}[0]
+    final fun remove(#A): kotlin/Boolean // org.maplibre.spatialk.turf.other/RTree.remove|remove(1:0){}[0]
+    final fun search(org.maplibre.spatialk.geojson/BoundingBox): kotlin.collections/List<#A> // org.maplibre.spatialk.turf.other/RTree.search|search(org.maplibre.spatialk.geojson.BoundingBox){}[0]
 }
 
 final class org.maplibre.spatialk.turf.misc/NearestPointOnLineProps { // org.maplibre.spatialk.turf.misc/NearestPointOnLineProps|null[0]

@@ -1,4 +1,4 @@
-package org.maplibre.spatialk.turf.grids
+package org.maplibre.spatialk.turf.other
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -13,14 +13,14 @@ class RBushTest {
     @Test
     fun testLoad() {
         val features = listOf(Feature(Point(0.0, 0.0), null), Feature(Point(1.0, 1.0), null))
-        val tree = RBush<Feature<Point, Nothing?>>()
+        val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(features)
         assertEquals(2, tree.all().size)
     }
 
     @Test
     fun testInsert() {
-        val tree = RBush<Feature<Point, Nothing?>>()
+        val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(Feature(Point(0.0, 0.0), null))
         tree.insert(Feature(Point(1.0, 1.0), null))
         assertEquals(2, tree.all().size)
@@ -29,7 +29,7 @@ class RBushTest {
     @Test
     fun testAll() {
         val features = listOf(Feature(Point(0.0, 0.0), null), Feature(Point(1.0, 1.0), null))
-        val tree = RBush<Feature<Point, Nothing?>>()
+        val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(features)
         assertEquals(features.size, tree.all().size)
     }
@@ -42,7 +42,7 @@ class RBushTest {
                 Feature(Point(1.0, 1.0), null),
                 Feature(Point(10.0, 10.0), null),
             )
-        val tree = RBush<Feature<Point, Nothing?>>()
+        val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(features)
 
         val result = tree.search(BoundingBox(0.0, 0.0, 1.0, 1.0))
@@ -55,7 +55,7 @@ class RBushTest {
     @Test
     fun testCollides() {
         val features = listOf(Feature(Point(0.0, 0.0), null), Feature(Point(1.0, 1.0), null))
-        val tree = RBush<Feature<Point, Nothing?>>()
+        val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(features)
 
         assertTrue(tree.collides(BoundingBox(0.5, 0.5, 1.5, 1.5)))
@@ -65,7 +65,7 @@ class RBushTest {
     @Test
     fun testRemove() {
         val features = listOf(Feature(Point(0.0, 0.0), null), Feature(Point(1.0, 1.0), null))
-        val tree = RBush<Feature<Point, Nothing?>>()
+        val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(features)
 
         tree.remove(features[0])
@@ -75,7 +75,7 @@ class RBushTest {
     @Test
     fun testClear() {
         val features = listOf(Feature(Point(0.0, 0.0), null), Feature(Point(1.0, 1.0), null))
-        val tree = RBush<Feature<Point, Nothing?>>()
+        val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(features)
 
         tree.clear()
@@ -176,11 +176,11 @@ class RBushTest {
 
     @Test
     fun `constructor uses 9 max entries by default`() {
-        val tree = RBush<Feature<Point, Nothing?>>()
+        val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(someData(9))
         // Height should be 1 with 9 entries
 
-        val tree2 = RBush<Feature<Point, Nothing?>>()
+        val tree2 = RTree<Feature<Point, Nothing?>>()
         tree2.insert(someData(10))
         // Height should be 2 with 10 entries
         // Note: Without toJSON equivalent, we can't directly test height
@@ -191,18 +191,18 @@ class RBushTest {
 
     @Test
     fun `insert bulk-loads the given data and forms a proper search tree`() {
-        val tree = RBush<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>(4)
         tree.insert(data)
         assertFeatureListsEqual(data, tree.all())
     }
 
     @Test
     fun `insert uses standard insertion when given a low number of items`() {
-        val tree = RBush<Feature<Point, Nothing?>>(8)
+        val tree = RTree<Feature<Point, Nothing?>>(8)
         tree.insert(data)
         tree.insert(data.slice(0..2))
 
-        val tree2 = RBush<Feature<Point, Nothing?>>(8)
+        val tree2 = RTree<Feature<Point, Nothing?>>(8)
         tree2.insert(data)
         tree2.insert(data[0])
         tree2.insert(data[1])
@@ -213,7 +213,7 @@ class RBushTest {
 
     @Test
     fun `insert does nothing if loading empty data`() {
-        val tree = RBush<Feature<Point, Nothing?>>()
+        val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(emptyList())
 
         assertEquals(0, tree.all().size)
@@ -221,7 +221,7 @@ class RBushTest {
 
     @Test
     fun `insert properly splits tree root when merging trees of the same height`() {
-        val tree = RBush<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>(4)
         tree.insert(data)
         tree.insert(data)
 
@@ -232,11 +232,11 @@ class RBushTest {
     fun `insert properly merges data of smaller or bigger tree heights`() {
         val smaller = someData(10)
 
-        val tree1 = RBush<Feature<Point, Nothing?>>(4)
+        val tree1 = RTree<Feature<Point, Nothing?>>(4)
         tree1.insert(data)
         tree1.insert(smaller)
 
-        val tree2 = RBush<Feature<Point, Nothing?>>(4)
+        val tree2 = RTree<Feature<Point, Nothing?>>(4)
         tree2.insert(smaller)
         tree2.insert(data)
 
@@ -246,7 +246,7 @@ class RBushTest {
 
     @Test
     fun `search finds matching points in the tree given a bbox`() {
-        val tree = RBush<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>(4)
         tree.insert(data)
         val result = tree.search(BoundingBox(40.0, 20.0, 80.0, 70.0))
 
@@ -272,7 +272,7 @@ class RBushTest {
 
     @Test
     fun `collides returns true when search finds matching points`() {
-        val tree = RBush<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>(4)
         tree.insert(data)
         val result = tree.collides(BoundingBox(40.0, 20.0, 80.0, 70.0))
 
@@ -281,7 +281,7 @@ class RBushTest {
 
     @Test
     fun `search returns an empty list if nothing found`() {
-        val tree = RBush<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>(4)
         tree.insert(data)
         val result = tree.search(BoundingBox(200.0, 200.0, 210.0, 210.0))
 
@@ -290,7 +290,7 @@ class RBushTest {
 
     @Test
     fun `collides returns false if nothing found`() {
-        val tree = RBush<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>(4)
         tree.insert(data)
         val result = tree.collides(BoundingBox(200.0, 200.0, 210.0, 210.0))
 
@@ -299,7 +299,7 @@ class RBushTest {
 
     @Test
     fun `all returns all points in the tree`() {
-        val tree = RBush<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>(4)
         tree.insert(data)
         val result = tree.all()
 
@@ -319,7 +319,7 @@ class RBushTest {
                 )
                 .map { createPointFeature(it[0], it[1]) }
 
-        val tree = RBush<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>(4)
         tree.insert(items.slice(0..2))
 
         tree.insert(items[3])
@@ -331,13 +331,13 @@ class RBushTest {
 
     @Test
     fun `insert forms a valid tree if items are inserted one by one`() {
-        val tree = RBush<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>(4)
 
         for (i in data.indices) {
             tree.insert(data[i])
         }
 
-        val tree2 = RBush<Feature<Point, Nothing?>>(4)
+        val tree2 = RTree<Feature<Point, Nothing?>>(4)
         tree2.insert(data)
 
         assertFeatureListsEqual(data, tree.all())
@@ -346,7 +346,7 @@ class RBushTest {
 
     @Test
     fun `remove removes items correctly`() {
-        val tree = RBush<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>(4)
         tree.insert(data)
 
         val len = data.size
@@ -364,7 +364,7 @@ class RBushTest {
 
     @Test
     fun `remove does nothing if nothing found`() {
-        val tree = RBush<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>(4)
         tree.insert(data)
         val allBefore = tree.all()
 
@@ -375,7 +375,7 @@ class RBushTest {
 
     @Test
     fun `remove brings the tree to a clear state when removing everything one by one`() {
-        val tree = RBush<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>(4)
         tree.insert(data)
 
         for (i in data.indices) {
@@ -387,7 +387,7 @@ class RBushTest {
 
     @Test
     fun `clear should clear all the data in the tree`() {
-        val tree = RBush<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>(4)
         tree.insert(data)
         tree.clear()
 
