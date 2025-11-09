@@ -191,19 +191,16 @@ class RBushTest {
 
     @Test
     fun `insert bulk-loads the given data and forms a proper search tree`() {
-        val tree = RTree<Feature<Point, Nothing?>>(4)
-        tree.insert(data)
+        val tree = RTree(data)
         assertFeatureListsEqual(data, tree.all())
     }
 
     @Test
     fun `insert uses standard insertion when given a low number of items`() {
-        val tree = RTree<Feature<Point, Nothing?>>(8)
-        tree.insert(data)
+        val tree = RTree(data)
         tree.insert(data.slice(0..2))
 
-        val tree2 = RTree<Feature<Point, Nothing?>>(8)
-        tree2.insert(data)
+        val tree2 = RTree(data)
         tree2.insert(data[0])
         tree2.insert(data[1])
         tree2.insert(data[2])
@@ -221,7 +218,7 @@ class RBushTest {
 
     @Test
     fun `insert properly splits tree root when merging trees of the same height`() {
-        val tree = RTree<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(data)
         tree.insert(data)
 
@@ -232,11 +229,11 @@ class RBushTest {
     fun `insert properly merges data of smaller or bigger tree heights`() {
         val smaller = someData(10)
 
-        val tree1 = RTree<Feature<Point, Nothing?>>(4)
+        val tree1 = RTree<Feature<Point, Nothing?>>()
         tree1.insert(data)
         tree1.insert(smaller)
 
-        val tree2 = RTree<Feature<Point, Nothing?>>(4)
+        val tree2 = RTree<Feature<Point, Nothing?>>()
         tree2.insert(smaller)
         tree2.insert(data)
 
@@ -246,8 +243,7 @@ class RBushTest {
 
     @Test
     fun `search finds matching points in the tree given a bbox`() {
-        val tree = RTree<Feature<Point, Nothing?>>(4)
-        tree.insert(data)
+        val tree = RTree(data)
         val result = tree.search(BoundingBox(40.0, 20.0, 80.0, 70.0))
 
         val expected =
@@ -272,8 +268,7 @@ class RBushTest {
 
     @Test
     fun `collides returns true when search finds matching points`() {
-        val tree = RTree<Feature<Point, Nothing?>>(4)
-        tree.insert(data)
+        val tree = RTree(data)
         val result = tree.collides(BoundingBox(40.0, 20.0, 80.0, 70.0))
 
         assertTrue(result)
@@ -281,8 +276,7 @@ class RBushTest {
 
     @Test
     fun `search returns an empty list if nothing found`() {
-        val tree = RTree<Feature<Point, Nothing?>>(4)
-        tree.insert(data)
+        val tree = RTree(data)
         val result = tree.search(BoundingBox(200.0, 200.0, 210.0, 210.0))
 
         assertEquals(0, result.size)
@@ -290,8 +284,7 @@ class RBushTest {
 
     @Test
     fun `collides returns false if nothing found`() {
-        val tree = RTree<Feature<Point, Nothing?>>(4)
-        tree.insert(data)
+        val tree = RTree(data)
         val result = tree.collides(BoundingBox(200.0, 200.0, 210.0, 210.0))
 
         assertFalse(result)
@@ -299,8 +292,7 @@ class RBushTest {
 
     @Test
     fun `all returns all points in the tree`() {
-        val tree = RTree<Feature<Point, Nothing?>>(4)
-        tree.insert(data)
+        val tree = RTree(data)
         val result = tree.all()
 
         assertFeatureListsEqual(data, result)
@@ -319,7 +311,7 @@ class RBushTest {
                 )
                 .map { createPointFeature(it[0], it[1]) }
 
-        val tree = RTree<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(items.slice(0..2))
 
         tree.insert(items[3])
@@ -331,14 +323,13 @@ class RBushTest {
 
     @Test
     fun `insert forms a valid tree if items are inserted one by one`() {
-        val tree = RTree<Feature<Point, Nothing?>>(4)
+        val tree = RTree<Feature<Point, Nothing?>>()
 
         for (i in data.indices) {
             tree.insert(data[i])
         }
 
-        val tree2 = RTree<Feature<Point, Nothing?>>(4)
-        tree2.insert(data)
+        val tree2 = RTree(data)
 
         assertFeatureListsEqual(data, tree.all())
         assertFeatureListsEqual(tree2.all(), tree.all())
@@ -346,8 +337,7 @@ class RBushTest {
 
     @Test
     fun `remove removes items correctly`() {
-        val tree = RTree<Feature<Point, Nothing?>>(4)
-        tree.insert(data)
+        val tree = RTree(data)
 
         val len = data.size
 
@@ -364,8 +354,7 @@ class RBushTest {
 
     @Test
     fun `remove does nothing if nothing found`() {
-        val tree = RTree<Feature<Point, Nothing?>>(4)
-        tree.insert(data)
+        val tree = RTree(data)
         val allBefore = tree.all()
 
         tree.remove(createPointFeature(13.0, 13.0))
@@ -375,8 +364,7 @@ class RBushTest {
 
     @Test
     fun `remove brings the tree to a clear state when removing everything one by one`() {
-        val tree = RTree<Feature<Point, Nothing?>>(4)
-        tree.insert(data)
+        val tree = RTree(data)
 
         for (i in data.indices) {
             tree.remove(data[i])
@@ -387,8 +375,7 @@ class RBushTest {
 
     @Test
     fun `clear should clear all the data in the tree`() {
-        val tree = RTree<Feature<Point, Nothing?>>(4)
-        tree.insert(data)
+        val tree = RTree(data)
         tree.clear()
 
         assertEquals(0, tree.all().size)

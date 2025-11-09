@@ -47,7 +47,7 @@ import org.maplibre.spatialk.turf.measurement.computeBbox
  *   faster loading/insertion but slower searches, and vice versa. Must be 4 or greater. Defaults
  *   to 9.
  */
-public class RTree<T : GeoJsonObject>(maxEntries: Int = 9) {
+public class RTree<T : GeoJsonObject>(initialData: List<T> = emptyList(), maxEntries: Int = 9) {
     private data class Node<T : GeoJsonObject>(
         var item: T? = null,
         var children: MutableList<Node<T>> = mutableListOf(),
@@ -75,6 +75,10 @@ public class RTree<T : GeoJsonObject>(maxEntries: Int = 9) {
     private val maxEntries: Int = max(4, maxEntries)
     private val minEntries: Int = max(2, ceil(this.maxEntries * 0.4).toInt())
     private var data: Node<T> = Node()
+
+    init {
+        insert(initialData)
+    }
 
     /**
      * Retrieves all items stored in the R-tree.
