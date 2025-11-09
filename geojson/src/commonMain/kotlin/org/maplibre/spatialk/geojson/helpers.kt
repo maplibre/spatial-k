@@ -3,6 +3,8 @@
 package org.maplibre.spatialk.geojson
 
 import kotlin.jvm.JvmSynthetic
+import kotlin.reflect.KTypeProjection
+import kotlin.reflect.typeOf
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonObject
 
@@ -27,7 +29,14 @@ import kotlinx.serialization.json.JsonObject
  * @throws SerializationException if serialization fails.
  * @see GeoJson.encodeToString
  */
-public inline fun <reified T : GeoJsonObject> T.toJson(): String = GeoJson.encodeToString<T>(this)
+public inline fun <reified T : GeoJsonObject> T.toJson(): String {
+    // If the type is known at compile time (no star projections), use that serializer
+    return if (typeOf<T>().arguments.none { it == KTypeProjection.STAR })
+        GeoJson.encodeToString<T>(this)
+
+    // Otherwise, use runtime lookup (GeoJsonObject polymorphic default serializer)
+    else GeoJson.encodeToString<GeoJsonObject>(this)
+}
 
 /**
  * Marks GeoJSON API that should be used with caution.
