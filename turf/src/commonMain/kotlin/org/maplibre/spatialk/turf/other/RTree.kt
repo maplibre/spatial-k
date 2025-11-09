@@ -48,7 +48,7 @@ import org.maplibre.spatialk.turf.measurement.computeBbox
  *   to 9.
  */
 public class RTree<T : GeoJsonObject>(initialData: List<T> = emptyList(), maxEntries: Int = 9) {
-    private data class Node<T : GeoJsonObject>(
+    internal data class Node<T : GeoJsonObject>(
         var item: T? = null,
         var children: MutableList<Node<T>> = mutableListOf(),
         var height: Int = 1,
@@ -74,7 +74,7 @@ public class RTree<T : GeoJsonObject>(initialData: List<T> = emptyList(), maxEnt
 
     private val maxEntries: Int = max(4, maxEntries)
     private val minEntries: Int = max(2, ceil(this.maxEntries * 0.4).toInt())
-    private var data: Node<T> = Node()
+    internal var data: Node<T> = Node()
 
     init {
         insert(initialData)

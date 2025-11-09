@@ -178,15 +178,11 @@ class RBushTest {
     fun `constructor uses 9 max entries by default`() {
         val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(someData(9))
-        // Height should be 1 with 9 entries
+        assertEquals(1, tree.data.height)
 
         val tree2 = RTree<Feature<Point, Nothing?>>()
         tree2.insert(someData(10))
-        // Height should be 2 with 10 entries
-        // Note: Without toJSON equivalent, we can't directly test height
-        // This test verifies the tree works with default maxEntries
-        assertEquals(9, tree.all().size)
-        assertEquals(10, tree2.all().size)
+        assertEquals(2, tree2.data.height)
     }
 
     @Test
