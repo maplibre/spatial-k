@@ -175,13 +175,13 @@ class RBushTest {
     }
 
     @Test
-    fun `constructor uses 9 max entries by default`() {
+    fun `constructor uses 16 max entries by default`() {
         val tree = RTree<Feature<Point, Nothing?>>()
-        tree.insert(someData(9))
+        tree.insert(someData(16))
         assertEquals(1, tree.data.height)
 
         val tree2 = RTree<Feature<Point, Nothing?>>()
-        tree2.insert(someData(10))
+        tree2.insert(someData(17))
         assertEquals(2, tree2.data.height)
     }
 
