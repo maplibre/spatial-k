@@ -508,10 +508,10 @@ class FeatureTest {
         // Map<*, *> properties not tested because the fallback serializer selection does not
         // support generic types.
 
-        val nullPropsFeature: GeoJsonObject = Feature(null, null)
-        val jsonObjectPropsFeature: GeoJsonObject =
+        val nullPropsFeature: Feature<*, *> = Feature(null, null)
+        val jsonObjectPropsFeature: Feature<*, *> =
             Feature(null, JsonObject(mapOf("key" to JsonPrimitive("value"))))
-        val dataClassPropsFeature: GeoJsonObject = Feature(null, NameProp("test"))
+        val dataClassPropsFeature: Feature<*, *> = Feature(null, NameProp("test"))
 
         val nullDeserialized = GeoJsonObject.fromJson(nullPropsFeature.toJson()) as Feature<*, *>
         val jsonObjectDeserialized =
