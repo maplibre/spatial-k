@@ -38,16 +38,16 @@ import org.maplibre.spatialk.turf.measurement.computeBbox
  * for `maxEntries` leads to a tree with fewer, fuller nodes. This can speed up initial loading and
  * insertion operations but may slow down search queries because each node covers a larger area.
  * Conversely, a lower `maxEntries` value creates a more fine-grained tree with smaller nodes, which
- * can be faster for searches but slower for insertions. The default value of 9 is a commonly used
+ * can be faster for searches but slower for insertions. The default value of 16 is a commonly used
  * and well-balanced choice.
  *
  * @param T The type of [Feature] to be stored in the tree. The feature's geometry is used to
  *   calculate its bounding box for indexing.
  * @param maxEntries The maximum number of entries in a single tree node. A higher value leads to
  *   faster loading/insertion but slower searches, and vice versa. Must be 4 or greater. Defaults
- *   to 9.
+ *   to 16.
  */
-public class RTree<T : GeoJsonObject>(initialData: List<T> = emptyList(), maxEntries: Int = 9) {
+public class RTree<T : GeoJsonObject>(initialData: List<T> = emptyList(), maxEntries: Int = 16) {
     internal data class Node<T : GeoJsonObject>(
         var item: T? = null,
         var children: MutableList<Node<T>> = mutableListOf(),
