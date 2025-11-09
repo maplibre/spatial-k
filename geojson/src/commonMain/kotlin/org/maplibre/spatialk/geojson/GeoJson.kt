@@ -25,9 +25,9 @@ public data object GeoJson {
     public val jsonFormat: Json = Json {
         ignoreUnknownKeys = true
         serializersModule = SerializersModule {
-            polymorphicDefaultSerializer(GeoJsonObject::class) {
+            polymorphicDefaultSerializer(GeoJsonObject::class) { obj ->
                 val serializer =
-                    when (it) {
+                    when (obj) {
                         is Point -> Point.serializer()
                         is MultiPoint -> MultiPoint.serializer()
                         is LineString -> LineString.serializer()
@@ -39,7 +39,7 @@ public data object GeoJson {
                         is Feature<*, *> ->
                             Feature.serializer(
                                 Geometry.serializer().nullable,
-                                when (val props = it.properties) {
+                                when (val props = obj.properties) {
                                     is JsonObject? -> JsonObject.serializer().nullable
                                     else -> {
                                         @OptIn(InternalSerializationApi::class)
@@ -50,7 +50,7 @@ public data object GeoJson {
                         is FeatureCollection<*, *> ->
                             FeatureCollection.serializer(
                                 Geometry.serializer().nullable,
-                                when (val props = it.features.firstOrNull()?.properties) {
+                                when (val props = obj.features.firstNotNullOf { it.properties }) {
                                     is JsonObject? -> JsonObject.serializer().nullable
                                     else -> {
                                         @OptIn(InternalSerializationApi::class)
