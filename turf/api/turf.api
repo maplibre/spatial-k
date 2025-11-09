@@ -207,8 +207,8 @@ public final class org/maplibre/spatialk/turf/misc/NearestPointProps$Companion {
 
 public final class org/maplibre/spatialk/turf/other/RTree {
 	public fun <init> ()V
-	public fun <init> (I)V
-	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/util/List;I)V
+	public synthetic fun <init> (Ljava/util/List;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun all ()Ljava/util/List;
 	public final fun clear ()V
 	public final fun collides (Lorg/maplibre/spatialk/geojson/BoundingBox;)Z
