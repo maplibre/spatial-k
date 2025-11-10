@@ -9,13 +9,13 @@ import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 
-class RBushTest {
+class RTreeTest {
     @Test
     fun testLoad() {
         val features = listOf(Feature(Point(0.0, 0.0), null), Feature(Point(1.0, 1.0), null))
         val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(features)
-        assertEquals(2, tree.all().size)
+        assertEquals(2, tree.size)
     }
 
     @Test
@@ -23,7 +23,7 @@ class RBushTest {
         val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(Feature(Point(0.0, 0.0), null))
         tree.insert(Feature(Point(1.0, 1.0), null))
-        assertEquals(2, tree.all().size)
+        assertEquals(2, tree.size)
     }
 
     @Test
@@ -31,7 +31,7 @@ class RBushTest {
         val features = listOf(Feature(Point(0.0, 0.0), null), Feature(Point(1.0, 1.0), null))
         val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(features)
-        assertEquals(features.size, tree.all().size)
+        assertEquals(features.size, tree.size)
     }
 
     @Test
@@ -69,7 +69,7 @@ class RBushTest {
         tree.insert(features)
 
         tree.remove(features[0])
-        assertEquals(1, tree.all().size)
+        assertEquals(1, tree.size)
     }
 
     @Test
@@ -79,7 +79,7 @@ class RBushTest {
         tree.insert(features)
 
         tree.clear()
-        assertEquals(0, tree.all().size)
+        assertEquals(0, tree.size)
     }
 
     private fun createPointFeature(x: Double, y: Double): Feature<Point, Nothing?> {
@@ -188,7 +188,7 @@ class RBushTest {
     @Test
     fun `insert bulk-loads the given data and forms a proper search tree`() {
         val tree = RTree(data)
-        assertFeatureListsEqual(data, tree.all())
+        assertFeatureListsEqual(data, tree.toList())
     }
 
     @Test
@@ -201,7 +201,7 @@ class RBushTest {
         tree2.insert(data[1])
         tree2.insert(data[2])
 
-        assertFeatureListsEqual(tree.all(), tree2.all())
+        assertFeatureListsEqual(tree.toList(), tree2.toList())
     }
 
     @Test
@@ -209,7 +209,7 @@ class RBushTest {
         val tree = RTree<Feature<Point, Nothing?>>()
         tree.insert(emptyList())
 
-        assertEquals(0, tree.all().size)
+        assertEquals(0, tree.toList().size)
     }
 
     @Test
@@ -218,7 +218,7 @@ class RBushTest {
         tree.insert(data)
         tree.insert(data)
 
-        assertFeatureListsEqual(data + data, tree.all())
+        assertFeatureListsEqual(data + data, tree.toList())
     }
 
     @Test
@@ -233,8 +233,8 @@ class RBushTest {
         tree2.insert(smaller)
         tree2.insert(data)
 
-        assertFeatureListsEqual(data + smaller, tree1.all())
-        assertFeatureListsEqual(data + smaller, tree2.all())
+        assertFeatureListsEqual(data + smaller, tree1.toList())
+        assertFeatureListsEqual(data + smaller, tree2.toList())
     }
 
     @Test
@@ -289,7 +289,7 @@ class RBushTest {
     @Test
     fun `all returns all points in the tree`() {
         val tree = RTree(data)
-        val result = tree.all()
+        val result = tree.toList()
 
         assertFeatureListsEqual(data, result)
         assertFeatureListsEqual(data, tree.search(BoundingBox(0.0, 0.0, 100.0, 100.0)))
@@ -311,10 +311,10 @@ class RBushTest {
         tree.insert(items.slice(0..2))
 
         tree.insert(items[3])
-        assertFeatureListsEqual(items.slice(0..3), tree.all())
+        assertFeatureListsEqual(items.slice(0..3), tree.toList())
 
         tree.insert(items[4])
-        assertFeatureListsEqual(items, tree.all())
+        assertFeatureListsEqual(items, tree.toList())
     }
 
     @Test
@@ -327,8 +327,8 @@ class RBushTest {
 
         val tree2 = RTree(data)
 
-        assertFeatureListsEqual(data, tree.all())
-        assertFeatureListsEqual(tree2.all(), tree.all())
+        assertFeatureListsEqual(data, tree.toList())
+        assertFeatureListsEqual(tree2.toList(), tree.toList())
     }
 
     @Test
@@ -345,17 +345,17 @@ class RBushTest {
         tree.remove(data[len - 2])
         tree.remove(data[len - 3])
 
-        assertFeatureListsEqual(data.slice(3 until len - 3), tree.all())
+        assertFeatureListsEqual(data.slice(3 until len - 3), tree.toList())
     }
 
     @Test
     fun `remove does nothing if nothing found`() {
         val tree = RTree(data)
-        val allBefore = tree.all()
+        val allBefore = tree.toList()
 
         tree.remove(createPointFeature(13.0, 13.0))
 
-        assertFeatureListsEqual(allBefore, tree.all())
+        assertFeatureListsEqual(allBefore, tree.toList())
     }
 
     @Test
@@ -366,7 +366,7 @@ class RBushTest {
             tree.remove(data[i])
         }
 
-        assertEquals(0, tree.all().size)
+        assertEquals(0, tree.size)
     }
 
     @Test
@@ -374,6 +374,6 @@ class RBushTest {
         val tree = RTree(data)
         tree.clear()
 
-        assertEquals(0, tree.all().size)
+        assertEquals(0, tree.size)
     }
 }

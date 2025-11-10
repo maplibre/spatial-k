@@ -47,7 +47,10 @@ import org.maplibre.spatialk.turf.measurement.computeBbox
  *   faster loading/insertion but slower searches, and vice versa. Must be 4 or greater. Defaults
  *   to 16.
  */
-public class RTree<T : GeoJsonObject>(initialData: List<T> = emptyList(), maxEntries: Int = 16) {
+public class RTree<T : GeoJsonObject>(
+    initialData: List<T> = emptyList(),
+    private val maxEntries: Int = 16,
+) : Collection<T> {
     internal data class Node<T : GeoJsonObject>(
         var item: T? = null,
         var children: MutableList<Node<T>> = mutableListOf(),
@@ -63,30 +66,59 @@ public class RTree<T : GeoJsonObject>(initialData: List<T> = emptyList(), maxEnt
                 ),
     ) {
         fun computeBbox() {
+            val item = item
             bbox =
                 if (item != null) {
-                    item?.bbox!!
+                    item.bbox!!
                 } else {
-                    computeBbox(children.flatMap { listOf(it.bbox.northeast, it.bbox.southwest) })
+                    computeBbox(
+                        buildList {
+                            children.forEach {
+                                add(it.bbox.northeast)
+                                add(it.bbox.southwest)
+                            }
+                        }
+                    )
                 }
         }
     }
 
-    private val maxEntries: Int = max(4, maxEntries)
     private val minEntries: Int = max(2, ceil(this.maxEntries * 0.4).toInt())
     internal var data: Node<T> = Node()
 
+    private var cachedSize: Int? = null
+
     init {
+        require(maxEntries >= 4) { "maxEntries must be 4 or greater" }
         insert(initialData)
     }
 
-    /**
-     * Retrieves all items stored in the R-tree.
-     *
-     * @return A list containing all the items in the tree.
-     */
-    public fun all(): List<T> {
-        return all(data, mutableListOf())
+    override val size: Int
+        get() {
+            if (cachedSize == null) {
+                cachedSize = countItems(data)
+            }
+            return cachedSize!!
+        }
+
+    override fun isEmpty(): Boolean {
+        return data.children.isEmpty()
+    }
+
+    override fun iterator(): Iterator<T> {
+        return all(data, mutableListOf()).iterator()
+    }
+
+    override fun contains(element: T): Boolean {
+        val elementWithBbox = element.withBoundingBox()
+        val bbox = elementWithBbox.bbox ?: return false
+
+        val candidates = search(bbox)
+        return candidates.any { it == element }
+    }
+
+    override fun containsAll(elements: Collection<T>): Boolean {
+        return elements.all { contains(it) }
     }
 
     /**
@@ -164,6 +196,8 @@ public class RTree<T : GeoJsonObject>(initialData: List<T> = emptyList(), maxEnt
      */
     public fun insert(data: List<T>) {
         if (data.isEmpty()) return
+        cachedSize = null
+
         val data = data.map { it.withBoundingBox() }
 
         if (data.size < minEntries) {
@@ -194,12 +228,14 @@ public class RTree<T : GeoJsonObject>(initialData: List<T> = emptyList(), maxEnt
      *   present.
      */
     public fun insert(item: T) {
+        cachedSize = null
         val node = Node(item.withBoundingBox())
         insert(node, data.height - 1)
     }
 
     /** Removes all items from the tree. */
     public fun clear() {
+        cachedSize = 0
         data = Node()
     }
 
@@ -241,6 +277,7 @@ public class RTree<T : GeoJsonObject>(initialData: List<T> = emptyList(), maxEnt
                     node.children.removeAt(index)
                     path.add(node)
                     condense(path)
+                    cachedSize = null
                     return true
                 }
             }
@@ -565,6 +602,13 @@ public class RTree<T : GeoJsonObject>(initialData: List<T> = emptyList(), maxEnt
 
     private fun compareNodeMinY(a: Node<T>, b: Node<T>): Int {
         return (a.bbox.southwest.latitude - b.bbox.southwest.latitude).compareTo(0.0)
+    }
+
+    private fun countItems(node: Node<T>): Int {
+        if (node.leaf) {
+            return node.children.size
+        }
+        return node.children.sumOf { countItems(it) }
     }
 
     private companion object {

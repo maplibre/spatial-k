@@ -58,25 +58,25 @@ open class RTreeBenchmark {
     @Benchmark
     fun insertion128() {
         val rtree = RTree(featureCollection.features, 128)
-        require(rtree.all().size == featureCollection.features.size)
+        require(rtree.size == featureCollection.features.size)
     }
 
     @Benchmark
     fun insertion64() {
         val rtree = RTree(featureCollection.features, 64)
-        require(rtree.all().size == featureCollection.features.size)
+        require(rtree.size == featureCollection.features.size)
     }
 
     @Benchmark
     fun insertion32() {
         val rtree = RTree(featureCollection.features, 32)
-        require(rtree.all().size == featureCollection.features.size)
+        require(rtree.size == featureCollection.features.size)
     }
 
     @Benchmark
     fun insertion16() {
         val rtree = RTree(featureCollection.features, 16)
-        require(rtree.all().size == featureCollection.features.size)
+        require(rtree.size == featureCollection.features.size)
     }
 
     @Benchmark
