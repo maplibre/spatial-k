@@ -19,6 +19,7 @@ import kotlinx.serialization.json.JsonEncoder
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureId
+import org.maplibre.spatialk.geojson.GeoJson
 import org.maplibre.spatialk.geojson.Geometry
 
 internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
@@ -44,7 +45,7 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
         buildClassSerialDescriptor(serialName) {
             element("type", typeSerializer.descriptor)
             element("geometry", geometrySerializer.descriptor)
-            element("properties", propertiesSerializer.descriptor, isOptional = true)
+            element("properties", propertiesSerializer.descriptor, isOptional = !GeoJson.STRICT)
             element("id", idSerializer.descriptor, isOptional = true)
             element("bbox", bboxSerializer.descriptor, isOptional = true)
         }
@@ -90,6 +91,8 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
 
             if (type == null) throw MissingFieldException("type", serialName)
             if (geometry == uninitialized) throw MissingFieldException("geometry", serialName)
+            if (properties == uninitialized && GeoJson.STRICT)
+                throw MissingFieldException("properties", serialName)
 
             if (type != serialName)
                 throw SerializationException("Expected type $serialName but found $type")
