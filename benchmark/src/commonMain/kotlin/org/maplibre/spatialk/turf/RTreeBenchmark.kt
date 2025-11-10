@@ -26,8 +26,6 @@ import org.maplibre.spatialk.turf.other.RTree
 open class RTreeBenchmark {
     private lateinit var featureCollection: FeatureCollection<Geometry?, JsonObject?>
     private lateinit var rtree16: RTree<Feature<Geometry?, JsonObject?>>
-    private lateinit var rtree32: RTree<Feature<Geometry?, JsonObject?>>
-    private lateinit var rtree64: RTree<Feature<Geometry?, JsonObject?>>
     private lateinit var rtree128: RTree<Feature<Geometry?, JsonObject?>>
 
     private val random = Random(0)
@@ -50,26 +48,12 @@ open class RTreeBenchmark {
     fun setup() {
         featureCollection = generateDataset()
         rtree16 = RTree(featureCollection.features, 16)
-        rtree32 = RTree(featureCollection.features, 32)
-        rtree64 = RTree(featureCollection.features, 64)
         rtree128 = RTree(featureCollection.features, 128)
     }
 
     @Benchmark
     fun insertion128() {
         val rtree = RTree(featureCollection.features, 128)
-        require(rtree.size == featureCollection.features.size)
-    }
-
-    @Benchmark
-    fun insertion64() {
-        val rtree = RTree(featureCollection.features, 64)
-        require(rtree.size == featureCollection.features.size)
-    }
-
-    @Benchmark
-    fun insertion32() {
-        val rtree = RTree(featureCollection.features, 32)
         require(rtree.size == featureCollection.features.size)
     }
 
@@ -86,30 +70,8 @@ open class RTreeBenchmark {
     }
 
     @Benchmark
-    fun search64() {
-        val result = rtree64.search(BoundingBox(Position(10.0, 10.0), Position(20.0, 20.0)))
-        require(result.size == 149) { "Wrong number of results (${result.size})" }
-    }
-
-    @Benchmark
-    fun search32() {
-        val result = rtree32.search(BoundingBox(Position(10.0, 10.0), Position(20.0, 20.0)))
-        require(result.size == 149) { "Wrong number of results (${result.size})" }
-    }
-
-    @Benchmark
     fun search16() {
         val result = rtree16.search(BoundingBox(Position(10.0, 10.0), Position(20.0, 20.0)))
         require(result.size == 149) { "Wrong number of results (${result.size})" }
-    }
-
-    @Benchmark
-    fun sumList() {
-        require(rtree16.toList().drop(80000).sumOf { 1 } == 20000)
-    }
-
-    @Benchmark
-    fun sumIterator() {
-        require(rtree16.drop(80000).sumOf { 1 } == 20000)
     }
 }
