@@ -44,9 +44,9 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
         buildClassSerialDescriptor(serialName) {
             element("type", typeSerializer.descriptor)
             element("geometry", geometrySerializer.descriptor)
-            element("properties", propertiesSerializer.descriptor)
-            element("id", idSerializer.descriptor)
-            element("bbox", bboxSerializer.descriptor)
+            element("properties", propertiesSerializer.descriptor, isOptional = true)
+            element("id", idSerializer.descriptor, isOptional = true)
+            element("bbox", bboxSerializer.descriptor, isOptional = true)
         }
 
     override fun serialize(encoder: Encoder, value: Feature<T, P>) {
@@ -90,12 +90,17 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
 
             if (type == null) throw MissingFieldException("type", serialName)
             if (geometry == uninitialized) throw MissingFieldException("geometry", serialName)
-            if (properties == uninitialized) throw MissingFieldException("properties", serialName)
 
             if (type != serialName)
                 throw SerializationException("Expected type $serialName but found $type")
 
-            @Suppress("UNCHECKED_CAST") Feature(geometry as T, properties as P, id, bbox)
+            @Suppress("UNCHECKED_CAST")
+            Feature(
+                geometry as T,
+                if (properties == uninitialized) null as P else properties as P,
+                id,
+                bbox,
+            )
         }
     }
 }
