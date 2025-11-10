@@ -102,4 +102,14 @@ open class RTreeBenchmark {
         val result = rtree16.search(BoundingBox(Position(10.0, 10.0), Position(20.0, 20.0)))
         require(result.size == 149) { "Wrong number of results (${result.size})" }
     }
+
+    @Benchmark
+    fun sumList() {
+        require(rtree16.toList().drop(80000).sumOf { 1 } == 20000)
+    }
+
+    @Benchmark
+    fun sumIterator() {
+        require(rtree16.drop(80000).sumOf { 1 } == 20000)
+    }
 }

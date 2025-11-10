@@ -106,7 +106,7 @@ public class RTree<T : GeoJsonObject>(
     }
 
     override fun iterator(): Iterator<T> {
-        return all(data, mutableListOf()).iterator()
+        return RTreeIterator(data)
     }
 
     override fun contains(element: T): Boolean {
@@ -609,6 +609,46 @@ public class RTree<T : GeoJsonObject>(
             return node.children.size
         }
         return node.children.sumOf { countItems(it) }
+    }
+
+    private inner class RTreeIterator(root: Node<T>) : Iterator<T> {
+        private val nodeStack = mutableListOf<Pair<Node<T>, Int>>()
+        private var nextItem: T? = null
+
+        init {
+            if (root.children.isNotEmpty()) {
+                nodeStack.add(root to 0)
+                advance()
+            }
+        }
+
+        private fun advance() {
+            nextItem = null
+            while (nodeStack.isNotEmpty() && nextItem == null) {
+                val (currentNode, childIndex) = nodeStack.removeAt(nodeStack.size - 1)
+
+                if (childIndex < currentNode.children.size) {
+                    nodeStack.add(currentNode to childIndex + 1)
+                    val child = currentNode.children[childIndex]
+
+                    if (currentNode.leaf) {
+                        nextItem = child.item
+                    } else {
+                        nodeStack.add(child to 0)
+                    }
+                }
+            }
+        }
+
+        override fun hasNext(): Boolean {
+            return nextItem != null
+        }
+
+        override fun next(): T {
+            val item = nextItem ?: throw NoSuchElementException()
+            advance()
+            return item
+        }
     }
 
     private companion object {
