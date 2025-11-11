@@ -404,6 +404,20 @@ class FeatureCollectionTest {
         }
     }
 
+    @Test
+    fun emptyStarProjection() {
+        // should fall back to JsonObject properties
+        val features: FeatureCollection<*, *> = featureCollectionOf()
+        val json =
+            """
+                {
+                  "type": "FeatureCollection",
+                  "features": []
+                }
+            """
+        assertJsonEquals(json, features.toJson())
+    }
+
     companion object {
         private const val SAMPLE_FEATURECOLLECTION = "sample-featurecollection.json"
         private const val SAMPLE_FEATURECOLLECTION_BBOX = "sample-feature-collection-with-bbox.json"

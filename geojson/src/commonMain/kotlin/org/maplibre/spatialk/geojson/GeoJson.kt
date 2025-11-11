@@ -52,7 +52,9 @@ public data object GeoJson {
                         is FeatureCollection<*, *> ->
                             FeatureCollection.serializer(
                                 Geometry.serializer().nullable,
-                                when (val props = obj.features.firstNotNullOf { it.properties }) {
+                                when (
+                                    val props = obj.features.firstNotNullOfOrNull { it.properties }
+                                ) {
                                     is JsonObject? -> JsonObject.serializer().nullable
                                     else -> {
                                         @OptIn(InternalSerializationApi::class)
