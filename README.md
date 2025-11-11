@@ -1,6 +1,7 @@
 # Spatial K
 
 [![Maven Central Version](https://img.shields.io/maven-central/v/org.maplibre.spatialk/geojson?label=Maven)](https://central.sonatype.com/namespace/org.maplibre.spatialk)
+[![Snapshot Version](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Forg%2Fmaplibre%2Fspatialk%2Fgeojson%2Fmaven-metadata.xml&label=Snapshot)](https://central.sonatype.com/repository/maven-snapshots/org/maplibre/spatialk/geojson/maven-metadata.xml)
 [![License](https://img.shields.io/github/license/maplibre/spatial-k?label=License)](https://github.com/maplibre/spatial-k/blob/main/LICENSE)
 [![Kotlin Version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaplibre%2Fspatial-k%2Frefs%2Fheads%2Fmain%2Fgradle%2Flibs.versions.toml&query=versions.kotlin&prefix=v&logo=kotlin&label=Kotlin)](./gradle/libs.versions.toml)
 [![Documentation](https://img.shields.io/badge/Documentation-blue?logo=MaterialForMkDocs&logoColor=white)](https://maplibre.org/spatial-k/)
