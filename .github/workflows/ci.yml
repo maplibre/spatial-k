@@ -39,7 +39,7 @@ jobs:
               name: Generate coverage summary
               run: |
                   echo '## Coverage' >> $GITHUB_STEP_SUMMARY
-                  ./gradlew -q :koverLog >> $GITHUB_STEP_SUMMARY
+                  ./gradlew -q :koverLog | tee $GITHUB_STEP_SUMMARY
 
     benchmark:
         runs-on: ubuntu-latest
@@ -56,7 +56,7 @@ jobs:
             - name: Run benchmark
               run: |
                   echo '## Benchmark' >> $GITHUB_STEP_SUMMARY
-                  ./gradlew -q benchmark -PbenchmarkIterations=1 >> $GITHUB_STEP_SUMMARY
+                  ./gradlew -q benchmark -PbenchmarkWarmups=1 -PbenchmarkIterations=1 | tee $GITHUB_STEP_SUMMARY
 
     build-docs:
         runs-on: ubuntu-latest

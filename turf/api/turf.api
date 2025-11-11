@@ -205,6 +205,34 @@ public final class org/maplibre/spatialk/turf/misc/NearestPointProps$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class org/maplibre/spatialk/turf/other/RTree : java/util/Collection, kotlin/jvm/internal/markers/KMappedMarker {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;I)V
+	public synthetic fun <init> (Ljava/util/List;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun add (Ljava/lang/Object;)Z
+	public fun add (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Z
+	public fun addAll (Ljava/util/Collection;)Z
+	public final fun clear ()V
+	public final fun collides (Lorg/maplibre/spatialk/geojson/BoundingBox;)Z
+	public final fun contains (Ljava/lang/Object;)Z
+	public fun contains (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Z
+	public fun containsAll (Ljava/util/Collection;)Z
+	public fun getSize ()I
+	public final fun insert (Ljava/util/List;)V
+	public final fun insert (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)V
+	public fun isEmpty ()Z
+	public fun iterator ()Ljava/util/Iterator;
+	public final fun remove (Ljava/lang/Object;)Z
+	public final fun remove (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Z
+	public fun removeAll (Ljava/util/Collection;)Z
+	public fun removeIf (Ljava/util/function/Predicate;)Z
+	public fun retainAll (Ljava/util/Collection;)Z
+	public final fun search (Lorg/maplibre/spatialk/geojson/BoundingBox;)Ljava/util/List;
+	public final fun size ()I
+	public fun toArray ()[Ljava/lang/Object;
+	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
+}
+
 public final class org/maplibre/spatialk/turf/transformation/Transformation {
 	public static final fun bezierSpline (Lorg/maplibre/spatialk/geojson/LineString;ID)Lorg/maplibre/spatialk/geojson/LineString;
 	public static synthetic fun bezierSpline$default (Lorg/maplibre/spatialk/geojson/LineString;IDILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/LineString;

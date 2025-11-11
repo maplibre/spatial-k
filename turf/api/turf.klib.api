@@ -6,6 +6,24 @@
 // - Show declarations: true
 
 // Library unique name: <org.maplibre.spatialk:turf>
+final class <#A: org.maplibre.spatialk.geojson/GeoJsonObject> org.maplibre.spatialk.turf.other/RTree : kotlin.collections/Collection<#A> { // org.maplibre.spatialk.turf.other/RTree|null[0]
+    constructor <init>(kotlin.collections/List<#A> = ..., kotlin/Int = ...) // org.maplibre.spatialk.turf.other/RTree.<init>|<init>(kotlin.collections.List<1:0>;kotlin.Int){}[0]
+
+    final val size // org.maplibre.spatialk.turf.other/RTree.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // org.maplibre.spatialk.turf.other/RTree.size.<get-size>|<get-size>(){}[0]
+
+    final fun clear() // org.maplibre.spatialk.turf.other/RTree.clear|clear(){}[0]
+    final fun collides(org.maplibre.spatialk.geojson/BoundingBox): kotlin/Boolean // org.maplibre.spatialk.turf.other/RTree.collides|collides(org.maplibre.spatialk.geojson.BoundingBox){}[0]
+    final fun contains(#A): kotlin/Boolean // org.maplibre.spatialk.turf.other/RTree.contains|contains(1:0){}[0]
+    final fun containsAll(kotlin.collections/Collection<#A>): kotlin/Boolean // org.maplibre.spatialk.turf.other/RTree.containsAll|containsAll(kotlin.collections.Collection<1:0>){}[0]
+    final fun insert(#A) // org.maplibre.spatialk.turf.other/RTree.insert|insert(1:0){}[0]
+    final fun insert(kotlin.collections/List<#A>) // org.maplibre.spatialk.turf.other/RTree.insert|insert(kotlin.collections.List<1:0>){}[0]
+    final fun isEmpty(): kotlin/Boolean // org.maplibre.spatialk.turf.other/RTree.isEmpty|isEmpty(){}[0]
+    final fun iterator(): kotlin.collections/Iterator<#A> // org.maplibre.spatialk.turf.other/RTree.iterator|iterator(){}[0]
+    final fun remove(#A): kotlin/Boolean // org.maplibre.spatialk.turf.other/RTree.remove|remove(1:0){}[0]
+    final fun search(org.maplibre.spatialk.geojson/BoundingBox): kotlin.collections/List<#A> // org.maplibre.spatialk.turf.other/RTree.search|search(org.maplibre.spatialk.geojson.BoundingBox){}[0]
+}
+
 final class org.maplibre.spatialk.turf.misc/NearestPointOnLineProps { // org.maplibre.spatialk.turf.misc/NearestPointOnLineProps|null[0]
     final val distance // org.maplibre.spatialk.turf.misc/NearestPointOnLineProps.distance|{}distance[0]
         final fun <get-distance>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.turf.misc/NearestPointOnLineProps.distance.<get-distance>|<get-distance>(){}[0]

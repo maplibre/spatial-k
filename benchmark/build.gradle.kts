@@ -24,6 +24,7 @@ benchmark {
     configurations {
         named("main") {
             iterations = project.findProperty("benchmarkIterations")?.toString()?.toInt() ?: 5
+            warmups = project.findProperty("benchmarkWarmups")?.toString()?.toInt() ?: 5
         }
     }
 
