@@ -411,7 +411,7 @@ class FeatureCollectionTest {
         val json =
             """
                 {
-                  "type": "FeatureCollection", 
+                  "type": "FeatureCollection",
                   "features": []
                 }
             """
