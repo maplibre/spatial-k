@@ -527,4 +527,22 @@ class FeatureTest {
         assertIs<JsonObject>(dataClassDeserialized.properties)
         assertEquals(JsonPrimitive("test"), dataClassDeserialized.properties["name"])
     }
+
+    @Test
+    fun testLenientNoProperties() {
+        val json =
+            """
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [125.6, 10.1]
+                }
+            }
+            """
+                .trimIndent()
+        val feature = Feature.fromJson<Point, NameProp>(json)
+        assertEquals(feature.geometry.coordinates.longitude, 125.6, DELTA)
+        assertEquals(feature.geometry.coordinates.latitude, 10.1, DELTA)
+    }
 }
