@@ -2,7 +2,7 @@
 jetbrains-annotations = "26.0.2-1"
 kotlin = "2.2.21"
 kotlinx-benchmark = "0.4.14"
-kotlinx-kover = "0.9.3"
+kotlinx-kover = "0.9.4"
 kotlinx-serialization = "1.9.0"
 kotlinx-io = "0.8.2"
 kotlinx-datetime = "0.7.1"
