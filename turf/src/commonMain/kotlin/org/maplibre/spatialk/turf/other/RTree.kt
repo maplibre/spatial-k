@@ -110,11 +110,9 @@ public class RTree<T : GeoJsonObject>(
     }
 
     override fun contains(element: T): Boolean {
-        val elementWithBbox = element.withBoundingBox()
-        val bbox = elementWithBbox.bbox ?: return false
-
-        val candidates = search(bbox)
-        return candidates.any { it == element }
+        val element = element.withBoundingBox()
+        val bbox = element.bbox ?: return false
+        return search(bbox).any { it == element }
     }
 
     override fun containsAll(elements: Collection<T>): Boolean {
@@ -442,7 +440,6 @@ public class RTree<T : GeoJsonObject>(
     private fun split(insertPath: MutableList<Node<T>>, level: Int) {
         val node = insertPath[level]
         val m = node.children.size
-        val minEntries = this.minEntries
 
         chooseSplitAxis(node, minEntries, m)
 
