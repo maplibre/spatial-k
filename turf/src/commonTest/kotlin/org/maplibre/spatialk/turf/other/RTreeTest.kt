@@ -53,6 +53,14 @@ class RTreeTest {
     }
 
     @Test
+    fun testContains() {
+        val feature = Feature(Point(0.0, 0.0), null)
+        val tree = RTree<Feature<Point, Nothing?>>()
+        tree.insert(feature)
+        assertTrue(tree.contains(feature))
+    }
+
+    @Test
     fun testCollides() {
         val features = listOf(Feature(Point(0.0, 0.0), null), Feature(Point(1.0, 1.0), null))
         val tree = RTree<Feature<Point, Nothing?>>()
