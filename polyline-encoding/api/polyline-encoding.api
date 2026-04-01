@@ -1,0 +1,6 @@
+public final class org/maplibre/spatialk/polyline/PolylineEncoding {
+	public static final field INSTANCE Lorg/maplibre/spatialk/polyline/PolylineEncoding;
+	public final fun decode (Ljava/lang/String;I)Ljava/util/List;
+	public final fun encode (Ljava/util/List;I)Ljava/lang/String;
+}
+
