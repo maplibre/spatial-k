@@ -4,8 +4,8 @@ pin = true
 
 [hooks]
 postinstall = [
-  "[ -f $MISE_DATA_DIR/ktfmt/ktfmt.jar ] || (mkdir -p $MISE_DATA_DIR/ktfmt && curl -fsSL https://github.com/facebook/ktfmt/releases/download/v0.62/ktfmt-0.62-jar-with-dependencies.jar -o $MISE_DATA_DIR/ktfmt/ktfmt.jar)",
-  "[ -f $MISE_DATA_DIR/google-java-format/gjf.jar ] || (mkdir -p $MISE_DATA_DIR/google-java-format && curl -fsSL https://github.com/google/google-java-format/releases/download/v1.35.0/google-java-format-1.35.0-all-deps.jar -o $MISE_DATA_DIR/google-java-format/gjf.jar)",
+  # "[ -f $MISE_DATA_DIR/ktfmt/ktfmt.jar ] || (mkdir -p $MISE_DATA_DIR/ktfmt && curl -fsSL https://github.com/facebook/ktfmt/releases/download/v0.62/ktfmt-0.62-jar-with-dependencies.jar -o $MISE_DATA_DIR/ktfmt/ktfmt.jar)",
+  # "[ -f $MISE_DATA_DIR/google-java-format/gjf.jar ] || (mkdir -p $MISE_DATA_DIR/google-java-format && curl -fsSL https://github.com/google/google-java-format/releases/download/v1.35.0/google-java-format-1.35.0-all-deps.jar -o $MISE_DATA_DIR/google-java-format/gjf.jar)",
   "hk install --mise",
 ]
 
@@ -14,6 +14,8 @@ java = "21.0.2"
 dprint = "0.53.2"
 hk = "1.40.0"
 pkl = "0.30.2"
+"aqua:facebook/ktfmt" = "0.62"
+"github:google/google-java-format" = "1.35.0"
 
 [tasks.build]
 description = "Build and check all targets"
@@ -39,14 +41,6 @@ run = "./gradlew $( uname | grep -q Darwin && (uname -m | grep -q arm64 && echo 
 description = "Run all tests"
 depends = ["test:jvm", "test:jsnode", "test:wasmjsnode", "test:native"]
 
-[tasks.ktfmt]
-description = "Format Kotlin via ktfmt stdin→stdout (called by dprint)"
-run = 'java -jar "$MISE_DATA_DIR/ktfmt/ktfmt.jar" --kotlinlang-style -'
-
-[tasks.gjf]
-description = "Format Java via google-java-format stdin→stdout (called by dprint)"
-run = 'java -jar "$MISE_DATA_DIR/google-java-format/gjf.jar" -'
-
 [tasks.docs]
 description = "Serve documentation locally"
 run = "./gradlew :mkdocsServe"
@@ -58,3 +52,8 @@ run = "hk check --all"
 [tasks.fix]
 description = "Auto-fix formatting issues"
 run = "hk fix --all"
+
+[tasks._ktfmt]
+description = "Called by dprint.json"
+hide = true
+run = 'java -jar {{ tools["aqua:facebook/ktfmt"].path }}/ktfmt'

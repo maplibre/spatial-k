@@ -36,8 +36,8 @@ for setting up a Kotlin Multiplatform environment.
 
 As there's no stable LSP for Kotlin Multiplatform, you'll want to use either IntelliJ IDEA or
 Android Studio for developing Spatial-K. Install the
-[dprint](https://plugins.jetbrains.com/plugin/18492-dprint) plugin for format-on-save support —
-it orchestrates all the other formatters (ktfmt for Kotlin, etc.).
+[dprint](https://plugins.jetbrains.com/plugin/18492-dprint) plugin for format-on-save support — it
+orchestrates all the other formatters (ktfmt for Kotlin, etc.).
 
 ### Tests
 
@@ -58,8 +58,8 @@ targets, etc.
 
 The content of the documentation website is written in Markdown using
 [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) and is located in the `docs`
-directory. Run `mise run docs` to run a local server to view the docs. The server will
-automatically reload when you make changes to the docs.
+directory. Run `mise run docs` to run a local server to view the docs. The server will automatically
+reload when you make changes to the docs.
 
 ## Make CI happy
 
@@ -70,8 +70,8 @@ requests. To regenerate the ABI files after a public API change, run `mise run f
 
 ### Formatting
 
-A git pre-commit hook is installed by `mise install` via [hk](https://hk.jdx.dev/). It
-automatically formats staged files before each commit.
+A git pre-commit hook is installed by `mise install` via [hk](https://hk.jdx.dev/). It automatically
+formats staged files before each commit.
 
 To run formatters manually:
 
