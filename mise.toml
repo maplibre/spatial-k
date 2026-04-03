@@ -4,8 +4,6 @@ pin = true
 
 [hooks]
 postinstall = [
-  # "[ -f $MISE_DATA_DIR/ktfmt/ktfmt.jar ] || (mkdir -p $MISE_DATA_DIR/ktfmt && curl -fsSL https://github.com/facebook/ktfmt/releases/download/v0.62/ktfmt-0.62-jar-with-dependencies.jar -o $MISE_DATA_DIR/ktfmt/ktfmt.jar)",
-  # "[ -f $MISE_DATA_DIR/google-java-format/gjf.jar ] || (mkdir -p $MISE_DATA_DIR/google-java-format && curl -fsSL https://github.com/google/google-java-format/releases/download/v1.35.0/google-java-format-1.35.0-all-deps.jar -o $MISE_DATA_DIR/google-java-format/gjf.jar)",
   "hk install --mise",
 ]
 
