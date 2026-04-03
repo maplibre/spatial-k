@@ -14,6 +14,10 @@
       {
         "command": "mise x -- java -jar $HOME/.local/share/ktfmt/ktfmt.jar --kotlinlang-style --stdin-name={{file_path}}",
         "exts": ["kt", "kts"]
+      },
+      {
+        "command": "mise x -- java -jar $HOME/.local/share/google-java-format/gjf.jar -",
+        "exts": ["java"]
       }
     ]
   },

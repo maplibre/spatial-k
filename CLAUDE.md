@@ -12,13 +12,11 @@ Key tasks:
 - `mise run test:jvm` / `test:jsnode` / `test:wasmjsnode` / `test:native` — individual platforms
 - `mise run check` — lint and format checks (hk)
 - `mise run fix` — auto-fix formatting
-- `mise run generate` — regenerate ABI dumps (run after any public API change)
-
 Run a single test: `./gradlew :module:jvmTest --tests "*SomeTest*"`
 
 ## Pitfalls
 
-**After changing any public API**, run `mise run generate` to update the `.api` files — the build
+**After changing any public API**, run `mise run fix` to regenerate the `.api` files — the build
 fails without this.
 
 **Floating-point comparisons in tests**: use helpers from `testutil` instead of `assertEquals` to
