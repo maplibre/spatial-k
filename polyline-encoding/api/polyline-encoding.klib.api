@@ -1,0 +1,16 @@
+// Klib ABI Dump
+// Targets: [androidNativeArm32, androidNativeArm64, androidNativeX64, androidNativeX86, iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, wasmWasi, watchosArm32, watchosArm64, watchosDeviceArm64, watchosSimulatorArm64, watchosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <org.maplibre.spatialk:polyline-encoding>
+final object org.maplibre.spatialk.polyline/PolylineEncoding { // org.maplibre.spatialk.polyline/PolylineEncoding|null[0]
+    final fun decode(kotlin/String, kotlin/Int = ...): kotlin.collections/List<org.maplibre.spatialk.geojson/Position> // org.maplibre.spatialk.polyline/PolylineEncoding.decode|decode(kotlin.String;kotlin.Int){}[0]
+    final fun decodeOrNull(kotlin/String, kotlin/Int = ...): kotlin.collections/List<org.maplibre.spatialk.geojson/Position>? // org.maplibre.spatialk.polyline/PolylineEncoding.decodeOrNull|decodeOrNull(kotlin.String;kotlin.Int){}[0]
+    final fun encode(kotlin.collections/List<org.maplibre.spatialk.geojson/Position>, kotlin/Int = ...): kotlin/String // org.maplibre.spatialk.polyline/PolylineEncoding.encode|encode(kotlin.collections.List<org.maplibre.spatialk.geojson.Position>;kotlin.Int){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.polyline/PolylineEncoding.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.polyline/PolylineEncoding.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.polyline/PolylineEncoding.toString|toString(){}[0]
+}
