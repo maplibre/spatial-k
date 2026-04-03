@@ -1,89 +1,89 @@
 name: Publish Snapshot
 
 on:
-  schedule:
-    - cron: 00 10 * * *
-  workflow_dispatch:
+    schedule:
+        - cron: 00 10 * * *
+    workflow_dispatch:
 
 permissions:
-  contents: read
+    contents: read
 
 jobs:
-  check-last-run:
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-    steps:
-      - uses: octokit/request-action@v2.x
-        id: check-last-run
-        with:
-          route: |
-            GET /repos/${{github.repository}}/actions/workflows/snapshot.yml/runs?per_page=1&status=completed
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    outputs:
-      last_sha: |
-        ${{ fromJson(steps.check-last-run.outputs.data).workflow_runs[0].head_sha }}
+    check-last-run:
+        runs-on: ubuntu-latest
+        permissions:
+            actions: read
+        steps:
+            - uses: octokit/request-action@v2.x
+              id: check-last-run
+              with:
+                  route: |
+                      GET /repos/${{github.repository}}/actions/workflows/snapshot.yml/runs?per_page=1&status=completed
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        outputs:
+            last_sha: |
+                ${{ fromJson(steps.check-last-run.outputs.data).workflow_runs[0].head_sha }}
 
-  publish-maven-snapshot:
-    needs: [check-last-run]
-    if: ${{ needs.check-last-run.outputs.last_sha != github.sha }}
-    runs-on: ubuntu-latest
-    environment:
-      name: maven-central
-      url: https://central.sonatype.com/namespace/org.maplibre.spatialk
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
-        with:
-          distribution: temurin
-          java-version: 21
-      - run: |
-          ./gradlew publishAndReleaseToMavenCentral -Psemver.stage=snapshot -Psemver.scope=minor
-        env:
-          ORG_GRADLE_PROJECT_mavenCentralUsername:
-            ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralPassword:
-            ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey:
-            ${{ secrets.GPG_PRIVATE_KEY }}
-          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword:
-            ${{ secrets.GPG_PASSPHRASE }}
+    publish-maven-snapshot:
+        needs: [check-last-run]
+        if: ${{ needs.check-last-run.outputs.last_sha != github.sha }}
+        runs-on: ubuntu-latest
+        environment:
+            name: maven-central
+            url: https://central.sonatype.com/namespace/org.maplibre.spatialk
+        steps:
+            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+              with:
+                  fetch-depth: 0
+                  fetch-tags: true
+            - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+              with:
+                  distribution: temurin
+                  java-version: 21
+            - run: |
+                  ./gradlew publishAndReleaseToMavenCentral -Psemver.stage=snapshot -Psemver.scope=minor
+              env:
+                  ORG_GRADLE_PROJECT_mavenCentralUsername:
+                      ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+                  ORG_GRADLE_PROJECT_mavenCentralPassword:
+                      ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+                  ORG_GRADLE_PROJECT_signingInMemoryKey:
+                      ${{ secrets.GPG_PRIVATE_KEY }}
+                  ORG_GRADLE_PROJECT_signingInMemoryKeyPassword:
+                      ${{ secrets.GPG_PASSPHRASE }}
 
-  dryrun-pages:
-    needs: [check-last-run]
-    if: ${{ needs.check-last-run.outputs.last_sha != github.sha }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
-        with:
-          distribution: temurin
-          java-version: 21
-      - run: |
-          ./gradlew :mkdocsBuild -Psemver.stage=snapshot -Psemver.scope=minor
-      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
-        with:
-          path: build/mkdocs
+    dryrun-pages:
+        needs: [check-last-run]
+        if: ${{ needs.check-last-run.outputs.last_sha != github.sha }}
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+              with:
+                  fetch-depth: 0
+                  fetch-tags: true
+            - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+              with:
+                  distribution: temurin
+                  java-version: 21
+            - run: |
+                  ./gradlew :mkdocsBuild -Psemver.stage=snapshot -Psemver.scope=minor
+            - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
+              with:
+                  path: build/mkdocs
 
-  dryrun-tag:
-    needs: [check-last-run, publish-maven-snapshot, dryrun-pages]
-    if: ${{ needs.check-last-run.outputs.last_sha != github.sha }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
-        with:
-          distribution: temurin
-          java-version: 21
-      - run: |
-          ./gradlew :createSemverTag -Psemver.stage=snapshot -Psemver.scope=minor
+    dryrun-tag:
+        needs: [check-last-run, publish-maven-snapshot, dryrun-pages]
+        if: ${{ needs.check-last-run.outputs.last_sha != github.sha }}
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+              with:
+                  fetch-depth: 0
+                  fetch-tags: true
+            - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+              with:
+                  distribution: temurin
+                  java-version: 21
+            - run: |
+                  ./gradlew :createSemverTag -Psemver.stage=snapshot -Psemver.scope=minor
