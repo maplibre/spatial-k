@@ -10,7 +10,12 @@
   "toml": {},
   "yaml": {},
   "exec": {
-    "commands": [{"command": "mise run ktfmt", "exts": ["kt", "kts"]}]
+    "commands": [
+      {
+        "command": "mise x -- java -jar $HOME/.local/share/ktfmt/ktfmt.jar --kotlinlang-style --stdin-name={{file_path}}",
+        "exts": ["kt", "kts"]
+      }
+    ]
   },
   "plugins": [
     "https://plugins.dprint.dev/json-0.21.3.wasm",

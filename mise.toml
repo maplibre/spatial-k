@@ -38,6 +38,3 @@ run = "hk fix --all"
 description = "Regenerate ABI dumps after public API changes"
 run = "./gradlew updateLegacyAbi"
 
-[tasks.ktfmt]
-description = "Format Kotlin via ktfmt (reads from stdin, writes to stdout; called by dprint)"
-run = "java -jar ~/.local/share/ktfmt/ktfmt.jar --kotlinlang-style -"
