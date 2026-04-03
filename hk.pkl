@@ -10,6 +10,7 @@ local allSteps = new Mapping<String, Step> {
   ["detekt"] {
     glob = List("**/src/commonMain/kotlin/**/*.kt")
     check = "./gradlew detekt"
+    exclusive = true
   }
 
   // generators
@@ -17,6 +18,7 @@ local allSteps = new Mapping<String, Step> {
     glob = List("**/src/commonMain/kotlin/**/*.kt", "**/api/*.api", "**/api/*.klib.api")
     check = "./gradlew checkLegacyAbi"
     fix = "./gradlew updateLegacyAbi"
+    exclusive = true
   }
 }
 
