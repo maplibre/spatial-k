@@ -8,8 +8,8 @@ jar, and sets up git hooks).
 Key tasks:
 
 - `mise run build` — compile and run all checks across all platforms
-- `mise run test` — JVM, JS, and WASM tests
-- `mise run test-native` — native tests for the current platform
+- `mise run test` — all tests (JVM, JS, WASM, native)
+- `mise run test:jvm` / `test:jsnode` / `test:wasmjsnode` / `test:native` — individual platforms
 - `mise run check` — lint and format checks (hk)
 - `mise run fix` — auto-fix formatting
 - `mise run generate` — regenerate ABI dumps (run after any public API change)

@@ -18,13 +18,25 @@ pkl = "0.30.2"
 description = "Build and check all targets"
 run = "./gradlew build"
 
-[tasks.test]
-description = "Run JVM, JS, and WASM tests"
-run = "./gradlew jvmTest jsNodeTest wasmJsNodeTest"
+[tasks."test:jvm"]
+description = "Run JVM tests"
+run = "./gradlew jvmTest"
 
-[tasks.test-native]
+[tasks."test:jsnode"]
+description = "Run JS Node tests"
+run = "./gradlew jsNodeTest"
+
+[tasks."test:wasmjsnode"]
+description = "Run WASM JS Node tests"
+run = "./gradlew wasmJsNodeTest"
+
+[tasks."test:native"]
 description = "Run native tests for the current platform"
 run = "./gradlew $( uname | grep -q Darwin && (uname -m | grep -q arm64 && echo macosArm64Test || echo macosX64Test) || echo linuxX64Test )"
+
+[tasks.test]
+description = "Run all tests"
+depends = ["test:jvm", "test:jsnode", "test:wasmjsnode", "test:native"]
 
 [tasks.check]
 description = "Run all linting and formatting checks"
