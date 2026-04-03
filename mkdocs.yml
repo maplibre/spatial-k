@@ -11,96 +11,96 @@ edit_uri: edit/main/docs/
 copyright: "Copyright &copy; 2025 MapLibre Contributors"
 
 nav:
-    - Introduction: index.md
-    - GeoJSON:
-          - geojson/index.md
-    - Turf:
-          - turf/index.md
-          - "Ported Functions": turf/ported-functions.md
-    - Units:
-          - units/index.md
-    - GPX:
-          - gpx/index.md
-    - "API Reference": api/index.html
+  - Introduction: index.md
+  - GeoJSON:
+      - geojson/index.md
+  - Turf:
+      - turf/index.md
+      - "Ported Functions": turf/ported-functions.md
+  - Units:
+      - units/index.md
+  - GPX:
+      - gpx/index.md
+  - "API Reference": api/index.html
 
 theme:
-    name: "material"
-    favicon: images/logo-icon.svg
-    logo: images/logo-icon.svg
-    icon:
-        repo: fontawesome/brands/github
-    features:
-        - content.code.copy
-        - content.code.annotate
-        - navigation.instant
-        - navigation.instant.prefetch
-        - navigation.instant.progress
-        - navigation.instant.preview
-        - navigation.tracking
-        - navigation.path
-        - navigation.indexes
-        - toc.follow
-        - content.action.edit
-        - content.tabs.link
-    palette:
-        - media: (prefers-color-scheme)
-          toggle:
-              icon: material/brightness-auto
-              name: Switch to light mode
-          primary: "green"
-          accent: "blue"
-        - media: "(prefers-color-scheme: light)"
-          scheme: default
-          toggle:
-              icon: material/brightness-7
-              name: Switch to dark mode
-          primary: "green"
-          accent: "blue"
-        - media: "(prefers-color-scheme: dark)"
-          scheme: slate
-          toggle:
-              icon: material/brightness-4
-              name: Switch to system preference
-          primary: "green"
-          accent: "blue"
+  name: "material"
+  favicon: images/logo-icon.svg
+  logo: images/logo-icon.svg
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.instant.preview
+    - navigation.tracking
+    - navigation.path
+    - navigation.indexes
+    - toc.follow
+    - content.action.edit
+    - content.tabs.link
+  palette:
+    - media: (prefers-color-scheme)
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+      primary: "green"
+      accent: "blue"
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+      primary: "green"
+      accent: "blue"
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+      primary: "green"
+      accent: "blue"
 
 plugins:
-    - search
-    - markdownextradata
+  - search
+  - markdownextradata
 
 markdown_extensions:
-    # Python Markdown
-    - abbr
-    - admonition
-    - attr_list
-    - def_list
-    - footnotes
-    - meta
-    - md_in_html
-    - toc:
-          permalink: true
-    - tables
+  # Python Markdown
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
+  - toc:
+      permalink: true
+  - tables
 
-    # Python Markdown Extensions
-    - pymdownx.arithmatex:
-          generic: true
-    - pymdownx.betterem:
-          smart_enable: all
-    - pymdownx.caret
-    - pymdownx.details
-    - pymdownx.emoji:
-          emoji_index: !!python/name:material.extensions.emoji.twemoji
-          emoji_generator: !!python/name:material.extensions.emoji.to_svg
-    - pymdownx.highlight
-    - pymdownx.inlinehilite
-    - pymdownx.keys
-    - pymdownx.mark
-    - pymdownx.smartsymbols
-    - pymdownx.snippets:
-          dedent_subsections: true
-    - pymdownx.superfences
-    - pymdownx.tabbed:
-          alternate_style: true
-    - pymdownx.tasklist:
-          custom_checkbox: true
-    - pymdownx.tilde
+  # Python Markdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets:
+      dedent_subsections: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde

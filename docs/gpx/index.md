@@ -1,7 +1,6 @@
 # GPX
 
-The `gpx` module contains data types for the GPS Exchange Format (GPX) version
-1.1.
+The `gpx` module contains data types for the GPS Exchange Format (GPX) version 1.1.
 
 === "Kotlin"
 
@@ -25,8 +24,8 @@ Details can be found in the [API reference](../api/gpx/index.html).
 
 ## GeoJson conversion
 
-This module provides extension functions to convert GPX data into GeoJson. The
-original Gpx type is attached as feature properties.
+This module provides extension functions to convert GPX data into GeoJson. The original Gpx type is
+attached as feature properties.
 
 === "Kotlin"
 

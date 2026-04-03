@@ -4,21 +4,21 @@
   "indentWidth": 2,
   "useTabs": false,
   "newLineKind": "lf",
-  "excludes": ["**/build", "**/.gradle", "kotlin-js-store", "**/*.api"],
-  "json": {"preferSingleLine": true},
-  "markdown": {"textWrap": "always"},
+  "excludes": [
+    "**/build",
+    "**/.gradle",
+    "kotlin-js-store",
+    "**/*.api",
+    "geojson/src/commonMain/kotlin/org/maplibre/spatialk/geojson/serialization/GeoUriParser.kt"
+  ],
+  "json": { "preferSingleLine": true },
+  "markdown": { "textWrap": "always" },
   "toml": {},
   "yaml": {},
   "exec": {
     "commands": [
-      {
-        "command": "mise x -- java -jar $HOME/.local/share/ktfmt/ktfmt.jar --kotlinlang-style --stdin-name={{file_path}}",
-        "exts": ["kt", "kts"]
-      },
-      {
-        "command": "mise x -- java -jar $HOME/.local/share/google-java-format/gjf.jar -",
-        "exts": ["java"]
-      }
+      { "command": "mise run ktfmt", "exts": ["kt", "kts"] },
+      { "command": "mise run gjf", "exts": ["java"] }
     ]
   },
   "plugins": [

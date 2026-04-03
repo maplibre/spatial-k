@@ -1,15 +1,13 @@
 # Turf
 
-[Turf.js](https://turfjs.org) is a spatial analysis library for JavaScript
-applications. The `turf` module is a Kotlin port with support for Kotlin
-Multiplatform and Java projects.
+[Turf.js](https://turfjs.org) is a spatial analysis library for JavaScript applications. The `turf`
+module is a Kotlin port with support for Kotlin Multiplatform and Java projects.
 
-This module uses the classes from the [`geojson`](../geojson/index.md) module as
-GeoJSON inputs to turf functions.
+This module uses the classes from the [`geojson`](../geojson/index.md) module as GeoJSON inputs to
+turf functions.
 
-Documentation for ported functions can be found in the
-[API docs](../api/turf/index.html), while details on each function are available
-on the [Turf.js](https://turfjs.org) site.
+Documentation for ported functions can be found in the [API docs](../api/turf/index.html), while
+details on each function are available on the [Turf.js](https://turfjs.org) site.
 
 ## Installation
 
@@ -33,8 +31,7 @@ on the [Turf.js](https://turfjs.org) site.
 
 ## Example
 
-Turf functions are available as top-level functions in Kotlin and as static
-methods in Java.
+Turf functions are available as top-level functions in Kotlin and as static methods in Java.
 
 === "Kotlin"
 

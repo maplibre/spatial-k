@@ -67,8 +67,8 @@
 - [ ] `kinks`
 - [ ] `lineArc`
 - [ ] `lineChunk`
-- [ ] [`lineIntersect`](../api/turf/org.maplibre.spatialk.turf.misc/intersect.html)
-      Partially implemented.
+- [ ] [`lineIntersect`](../api/turf/org.maplibre.spatialk.turf.misc/intersect.html) Partially
+      implemented.
 - [ ] `lineOverlap`
 - [ ] `lineSegment`
 - [x] [`lineSlice`](../api/turf/org.maplibre.spatialk.turf.misc/slice.html)
@@ -127,8 +127,8 @@ Use the [GeoJson DSL](../geojson/index.md#geojson-dsl) instead.
 
 ## Meta
 
-Many GeoJson objects implement `Collection`, enabling standard Kotlin collection
-operations to replace Turf meta functions.
+Many GeoJson objects implement `Collection`, enabling standard Kotlin collection operations to
+replace Turf meta functions.
 
 ## Assertations
 
@@ -152,8 +152,7 @@ operations to replace Turf meta functions.
 
 ## Unit Conversion
 
-For converting between units of length, area, and angle, see the
-[Units](../units/index.md) module.
+For converting between units of length, area, and angle, see the [Units](../units/index.md) module.
 
 - [ ] `toMercator`
 - [ ] `toWgs84`

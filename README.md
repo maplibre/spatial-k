@@ -66,8 +66,7 @@ See the [project site](https://maplibre.org/spatial-k/) for more info.
 
 ## Getting Involved
 
-Join the [#maplibre Slack channel](https://osmus.slack.com/archives/maplibre) at
-OSMUS (get an invite at https://slack.openstreetmap.us/).
+Join the [#maplibre Slack channel](https://osmus.slack.com/archives/maplibre) at OSMUS (get an
+invite at https://slack.openstreetmap.us/).
 
-Read the [CONTRIBUTING.md](CONTRIBUTING.md) guide to get familiar with how we do
-things around here.
+Read the [CONTRIBUTING.md](CONTRIBUTING.md) guide to get familiar with how we do things around here.

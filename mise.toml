@@ -4,8 +4,8 @@ pin = true
 
 [hooks]
 postinstall = [
-  "[ -f ~/.local/share/ktfmt/ktfmt.jar ] || (mkdir -p ~/.local/share/ktfmt && curl -fsSL https://github.com/facebook/ktfmt/releases/download/v0.62/ktfmt-0.62-jar-with-dependencies.jar -o ~/.local/share/ktfmt/ktfmt.jar)",
-  "[ -f ~/.local/share/google-java-format/gjf.jar ] || (mkdir -p ~/.local/share/google-java-format && curl -fsSL https://github.com/google/google-java-format/releases/download/v1.35.0/google-java-format-1.35.0-all-deps.jar -o ~/.local/share/google-java-format/gjf.jar)",
+  "[ -f $MISE_DATA_DIR/ktfmt/ktfmt.jar ] || (mkdir -p $MISE_DATA_DIR/ktfmt && curl -fsSL https://github.com/facebook/ktfmt/releases/download/v0.62/ktfmt-0.62-jar-with-dependencies.jar -o $MISE_DATA_DIR/ktfmt/ktfmt.jar)",
+  "[ -f $MISE_DATA_DIR/google-java-format/gjf.jar ] || (mkdir -p $MISE_DATA_DIR/google-java-format && curl -fsSL https://github.com/google/google-java-format/releases/download/v1.35.0/google-java-format-1.35.0-all-deps.jar -o $MISE_DATA_DIR/google-java-format/gjf.jar)",
   "hk install --mise",
 ]
 
@@ -39,6 +39,14 @@ run = "./gradlew $( uname | grep -q Darwin && (uname -m | grep -q arm64 && echo 
 description = "Run all tests"
 depends = ["test:jvm", "test:jsnode", "test:wasmjsnode", "test:native"]
 
+[tasks.ktfmt]
+description = "Format Kotlin via ktfmt stdin→stdout (called by dprint)"
+run = 'java -jar "$MISE_DATA_DIR/ktfmt/ktfmt.jar" --kotlinlang-style -'
+
+[tasks.gjf]
+description = "Format Java via google-java-format stdin→stdout (called by dprint)"
+run = 'java -jar "$MISE_DATA_DIR/google-java-format/gjf.jar" -'
+
 [tasks.check]
 description = "Run all linting and formatting checks"
 run = "hk check --all"
@@ -46,5 +54,3 @@ run = "hk check --all"
 [tasks.fix]
 description = "Auto-fix formatting issues"
 run = "hk fix --all"
-
-

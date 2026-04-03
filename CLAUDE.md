@@ -11,8 +11,8 @@ Key tasks:
 - `mise run test` — all tests (JVM, JS, WASM, native)
 - `mise run test:jvm` / `test:jsnode` / `test:wasmjsnode` / `test:native` — individual platforms
 - `mise run check` — lint and format checks (hk)
-- `mise run fix` — auto-fix formatting
-Run a single test: `./gradlew :module:jvmTest --tests "*SomeTest*"`
+- `mise run fix` — auto-fix formatting Run a single test:
+  `./gradlew :module:jvmTest --tests "*SomeTest*"`
 
 ## Pitfalls
 

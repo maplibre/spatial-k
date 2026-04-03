@@ -30,12 +30,11 @@ Details can be found in the [API reference](../api/units/index.html).
 
 ## Simple unit conversion
 
-In Kotlin, `Length`, `Area`, and `Rotation` are type-safe value classes wrapping
-a `Double`. They can be converted to and from raw `Double` values using the
-provided unit accessors.
+In Kotlin, `Length`, `Area`, and `Rotation` are type-safe value classes wrapping a `Double`. They
+can be converted to and from raw `Double` values using the provided unit accessors.
 
-In Java, use the `convert` helper from
-`org.maplibre.spatialk.units.extensions.Utils` to convert between units.
+In Java, use the `convert` helper from `org.maplibre.spatialk.units.extensions.Utils` to convert
+between units.
 
 === "Kotlin"
 
@@ -51,8 +50,8 @@ In Java, use the `convert` helper from
 
 ## Arithmetic
 
-In Kotlin, `Area` and `Length` support arithmetic operations through operator
-overloading, converting between scalars, lengths, and areas as needed.
+In Kotlin, `Area` and `Length` support arithmetic operations through operator overloading,
+converting between scalars, lengths, and areas as needed.
 
 === "Kotlin"
 
@@ -62,10 +61,9 @@ overloading, converting between scalars, lengths, and areas as needed.
 
 ## Bearings and Rotations
 
-`Bearing` represents an absolute geographic heading (e.g., North, East), while
-`Rotation` represents a relative angular displacement. In Kotlin, bearings can
-be rotated using operators, and the difference between two bearings is a
-rotation.
+`Bearing` represents an absolute geographic heading (e.g., North, East), while `Rotation` represents
+a relative angular displacement. In Kotlin, bearings can be rotated using operators, and the
+difference between two bearings is a rotation.
 
 === "Kotlin"
 
@@ -75,8 +73,8 @@ rotation.
 
 ## Custom units
 
-Predefined SI (International System of Units) and Imperial units are available,
-but you can define custom units as needed.
+Predefined SI (International System of Units) and Imperial units are available, but you can define
+custom units as needed.
 
 === "Kotlin"
 
