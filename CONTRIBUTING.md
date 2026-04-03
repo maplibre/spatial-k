@@ -18,6 +18,11 @@ Check out
 [the official instructions](https://www.jetbrains.com/help/kotlin-multiplatform-dev/multiplatform-setup.html)
 for setting up a Kotlin Multiplatform environment.
 
+### Tooling
+
+Install [mise](https://mise.jdx.dev/), then run `mise install` from the repo root. This will
+install Java, dprint, hk, and download the ktfmt and google-java-format jars, and set up git hooks.
+
 ### IDE
 
 As there's no stable LSP for Kotlin Multiplatform, you'll want to use either IntelliJ IDEA or
@@ -25,13 +30,13 @@ Android Studio for developing Spatial-K.
 
 ### Tests
 
-Run `./gradlew build` to compile and run all checks, including tests across multiple platforms.
+Run `mise run build` to compile and run all checks, including tests across multiple platforms.
 
 To run tests for specific platforms:
 
-- `./gradlew jvmTest` - Run JVM tests only
-- `./gradlew jsNodeTest` - Run JS tests
-- `./gradlew wasmJsNodeTest` - Run WASM tests
+- `mise run test:jvm` - Run JVM tests only
+- `mise run test:jsnode` - Run JS tests
+- `mise run test:wasmjsnode` - Run WASM tests
 - `./gradlew :geojson:jvmTest --tests "*SpecificTest*"` - Run specific tests in a module
 
 Tests make use of JSON data loaded from files, so platforms where it's not convenient to load files
@@ -50,17 +55,17 @@ automatically reload when you make changes to the docs.
 ### Dump ABIs
 
 We commit the ABI files to the repository so that changes to the ABI can be inspected in pull
-requests. To dump the ABIs, run `./gradlew updateLegacyAbi`.
+requests. To regenerate the ABI files after a public API change, run `mise run fix`.
 
 ### Formatting
 
-A Git pre-commit hook is available to ensure that the code is formatted before every commit.
+A git pre-commit hook is installed by `mise install` via [hk](https://hk.jdx.dev/). It
+automatically formats staged files before each commit.
 
-The easiest way to run all formatters is to install [pre-commit](https://pre-commit.com/), and then:
+To run formatters manually:
 
-- To run the formatter once on staged files, `pre-commit run`
-- To run the formatter in a git hook, `pre-commit install`
-- To stop running the formatter in a git hook, `pre-commit uninstall`
+- `mise run fix` - Format all files
+- `mise run check` - Check formatting without modifying files
 
 If you'd like to run formatters in your IDE, see the following plugins for IntelliJ IDEA:
 
@@ -68,6 +73,3 @@ If you'd like to run formatters in your IDE, see the following plugins for Intel
   settings and set the style to `kotlinlang`.
 - [editorconfig](https://plugins.jetbrains.com/plugin/7294-editorconfig) automatically handles
   things like tab size and line endings.
-- [prettier](https://plugins.jetbrains.com/plugin/10456-prettier) formats JSON, YAML, and Markdown
-  files. Enable it in settings with "automatic configuration" and configure it to run on
-  `**/*.{md,json,yml,yaml}`
