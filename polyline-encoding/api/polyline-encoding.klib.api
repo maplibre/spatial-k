@@ -7,6 +7,10 @@
 
 // Library unique name: <org.maplibre.spatialk:polyline-encoding>
 final object org.maplibre.spatialk.polyline/PolylineEncoding { // org.maplibre.spatialk.polyline/PolylineEncoding|null[0]
-    final fun decode(kotlin/String, kotlin/Int): kotlin.collections/List<org.maplibre.spatialk.geojson/Position> // org.maplibre.spatialk.polyline/PolylineEncoding.decode|decode(kotlin.String;kotlin.Int){}[0]
-    final fun encode(kotlin.collections/List<org.maplibre.spatialk.geojson/Position>, kotlin/Int): kotlin/String // org.maplibre.spatialk.polyline/PolylineEncoding.encode|encode(kotlin.collections.List<org.maplibre.spatialk.geojson.Position>;kotlin.Int){}[0]
+    final fun decode(kotlin/String, kotlin/Int = ...): kotlin.collections/List<org.maplibre.spatialk.geojson/Position> // org.maplibre.spatialk.polyline/PolylineEncoding.decode|decode(kotlin.String;kotlin.Int){}[0]
+    final fun decodeOrNull(kotlin/String, kotlin/Int = ...): kotlin.collections/List<org.maplibre.spatialk.geojson/Position>? // org.maplibre.spatialk.polyline/PolylineEncoding.decodeOrNull|decodeOrNull(kotlin.String;kotlin.Int){}[0]
+    final fun encode(kotlin.collections/List<org.maplibre.spatialk.geojson/Position>, kotlin/Int = ...): kotlin/String // org.maplibre.spatialk.polyline/PolylineEncoding.encode|encode(kotlin.collections.List<org.maplibre.spatialk.geojson.Position>;kotlin.Int){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.polyline/PolylineEncoding.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.polyline/PolylineEncoding.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.polyline/PolylineEncoding.toString|toString(){}[0]
 }

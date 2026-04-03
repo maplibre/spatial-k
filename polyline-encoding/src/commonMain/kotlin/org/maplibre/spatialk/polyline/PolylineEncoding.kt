@@ -23,23 +23,23 @@ import org.maplibre.spatialk.geojson.Position
  * @see <a href="https://developers.google.com/maps/documentation/utilities/polylinealgorithm">
  *     Google Encoded Polyline Algorithm Format</a>
  */
-public object PolylineEncoding {
+public data object PolylineEncoding {
 
     /**
-     * Encode a list of coordinates to an encoded polyline string.
+     * Encode a list of positions to an encoded polyline string.
      *
-     * @param coordinates the list of [Position] objects to encode
+     * @param positions the list of [Position] objects to encode
      * @param precision the number of decimal digits to encode (e.g. 5 for 1e5, the standard Google
      *   precision)
      * @return the encoded polyline string
      */
-    public fun encode(coordinates: List<Position>, precision: Int): String {
+    public fun encode(positions: List<Position>, precision: Int = 5): String {
         val factor = 10.0.pow(precision)
         val result = StringBuilder()
         var prevLat = 0L
         var prevLon = 0L
 
-        for (position in coordinates) {
+        for (position in positions) {
             val lat = (position.latitude * factor).roundToLong()
             val lon = (position.longitude * factor).roundToLong()
 
@@ -54,14 +54,15 @@ public object PolylineEncoding {
     }
 
     /**
-     * Decode an encoded polyline string to a list of coordinates.
+     * Decode an encoded polyline string to a list of positions.
      *
      * @param encoded the encoded polyline string
      * @param precision the number of decimal digits used during encoding (e.g. 5 for the standard
      *   Google precision)
      * @return the decoded list of [Position] objects
+     * @throws IllegalArgumentException if the encoded string is malformed or truncated
      */
-    public fun decode(encoded: String, precision: Int): List<Position> {
+    public fun decode(encoded: String, precision: Int = 5): List<Position> {
         val factor = 10.0.pow(precision)
         val result = mutableListOf<Position>()
         var index = 0
@@ -78,6 +79,22 @@ public object PolylineEncoding {
         return result
     }
 
+    /**
+     * Decode an encoded polyline string to a list of positions, returning null if the string is
+     * malformed or truncated.
+     *
+     * @param encoded the encoded polyline string
+     * @param precision the number of decimal digits used during encoding (e.g. 5 for the standard
+     *   Google precision)
+     * @return the decoded list of [Position] objects, or null if decoding fails
+     */
+    public fun decodeOrNull(encoded: String, precision: Int = 5): List<Position>? =
+        try {
+            decode(encoded, precision)
+        } catch (e: IllegalArgumentException) {
+            null
+        }
+
     private fun encodeValue(value: Long, result: StringBuilder) {
         var encoded = if (value < 0) (value shl 1).inv() else value shl 1
 
@@ -91,12 +108,22 @@ public object PolylineEncoding {
     private data class DecodedValue(val value: Long, val chunkCount: Int)
 
     private fun decodeValue(encoded: String, startIndex: Int): DecodedValue {
+        if (startIndex >= encoded.length) {
+            throw IllegalArgumentException(
+                "Encoded string ended unexpectedly at index $startIndex — truncated or odd number of values"
+            )
+        }
         var result = 0L
         var shift = 0
         var index = startIndex
 
         var b: Int
         do {
+            if (index >= encoded.length) {
+                throw IllegalArgumentException(
+                    "Encoded string ended unexpectedly at index $index — truncated input"
+                )
+            }
             b = encoded[index++].code - 63
             result = result or ((b and 0x1F).toLong() shl shift)
             shift += 5
