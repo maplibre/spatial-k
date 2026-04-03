@@ -47,6 +47,10 @@ run = 'java -jar "$MISE_DATA_DIR/ktfmt/ktfmt.jar" --kotlinlang-style -'
 description = "Format Java via google-java-format stdin→stdout (called by dprint)"
 run = 'java -jar "$MISE_DATA_DIR/google-java-format/gjf.jar" -'
 
+[tasks.docs]
+description = "Serve documentation locally"
+run = "./gradlew :mkdocsServe"
+
 [tasks.check]
 description = "Run all linting and formatting checks"
 run = "hk check --all"

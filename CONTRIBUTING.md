@@ -35,14 +35,9 @@ for setting up a Kotlin Multiplatform environment.
 ### IDE
 
 As there's no stable LSP for Kotlin Multiplatform, you'll want to use either IntelliJ IDEA or
-Android Studio for developing Spatial-K. For formatting, install these plugins:
-
-- [ktfmt](https://plugins.jetbrains.com/plugin/14912-ktfmt) — formats Kotlin on save. Enable it in
-  settings and set the style to `kotlinlang`.
-- [dprint](https://plugins.jetbrains.com/plugin/18492-dprint) — formats JSON, YAML, Markdown, and
-  TOML on save (invokes ktfmt for Kotlin as well, so you can use either or both).
-- [editorconfig](https://plugins.jetbrains.com/plugin/7294-editorconfig) — automatically handles
-  tab size and line endings.
+Android Studio for developing Spatial-K. Install the
+[dprint](https://plugins.jetbrains.com/plugin/18492-dprint) plugin for format-on-save support —
+it orchestrates all the other formatters (ktfmt for Kotlin, etc.).
 
 ### Tests
 
@@ -63,7 +58,7 @@ targets, etc.
 
 The content of the documentation website is written in Markdown using
 [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) and is located in the `docs`
-directory. Run `./gradlew :mkdocsServe` to run a local server to view the docs. The server will
+directory. Run `mise run docs` to run a local server to view the docs. The server will
 automatically reload when you make changes to the docs.
 
 ## Make CI happy
