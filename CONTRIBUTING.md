@@ -12,21 +12,37 @@ label.
 
 ## Set up your development environment
 
+### Mise
+
+This project uses [mise](https://mise.jdx.dev/) for environment management. You can either:
+
+#### Option 1: Use mise (Recommended)
+
+1. Install mise if you haven't already: https://mise.jdx.dev/getting-started.html.
+2. Run `mise install` in the project root to install all required tools and set up git hooks.
+
+#### Option 2: Manual Setup
+
+If you prefer not to use mise, check `mise.toml` for the list of required tools and versions, then
+install them manually.
+
 ### Kotlin Multiplatform
 
 Check out
 [the official instructions](https://www.jetbrains.com/help/kotlin-multiplatform-dev/multiplatform-setup.html)
 for setting up a Kotlin Multiplatform environment.
 
-### Tooling
-
-Install [mise](https://mise.jdx.dev/), then run `mise install` from the repo root. This will
-install Java, dprint, hk, and download the ktfmt and google-java-format jars, and set up git hooks.
-
 ### IDE
 
 As there's no stable LSP for Kotlin Multiplatform, you'll want to use either IntelliJ IDEA or
-Android Studio for developing Spatial-K.
+Android Studio for developing Spatial-K. For formatting, install these plugins:
+
+- [ktfmt](https://plugins.jetbrains.com/plugin/14912-ktfmt) — formats Kotlin on save. Enable it in
+  settings and set the style to `kotlinlang`.
+- [dprint](https://plugins.jetbrains.com/plugin/18492-dprint) — formats JSON, YAML, Markdown, and
+  TOML on save (invokes ktfmt for Kotlin as well, so you can use either or both).
+- [editorconfig](https://plugins.jetbrains.com/plugin/7294-editorconfig) — automatically handles
+  tab size and line endings.
 
 ### Tests
 
@@ -66,10 +82,3 @@ To run formatters manually:
 
 - `mise run fix` - Format all files
 - `mise run check` - Check formatting without modifying files
-
-If you'd like to run formatters in your IDE, see the following plugins for IntelliJ IDEA:
-
-- [ktfmt](https://plugins.jetbrains.com/plugin/14912-ktfmt) formats Kotlin code. Enable it in
-  settings and set the style to `kotlinlang`.
-- [editorconfig](https://plugins.jetbrains.com/plugin/7294-editorconfig) automatically handles
-  things like tab size and line endings.
