@@ -21,12 +21,8 @@ Run a single test: `./gradlew :module:jvmTest --tests "*SomeTest*"`
 **After changing any public API**, run `mise run generate` to update the `.api` files — the build
 fails without this.
 
-**detekt only covers `src/commonMain`** — it won't report issues in test sources.
-
 **Floating-point comparisons in tests**: use helpers from `testutil` instead of `assertEquals` to
 handle platform-specific precision differences.
-
-**KDoc is required on all public declarations** in `commonMain`. Missing KDoc is a detekt error.
 
 ## Modules
 
@@ -37,19 +33,3 @@ handle platform-specific precision differences.
 - `polyline-encoding` — Google Encoded Polyline Algorithm
 - `testutil` — shared test helpers
 - `benchmark` — performance benchmarks
-
-## Conventions
-
-- All public declarations use explicit `public` modifier
-- Package: `org.maplibre.spatialk.{module}`
-- Prefer `data object` over plain `object` for singleton entry points (see `GeoJson`, `Gpx`)
-- KDoc: prefer imports over fully qualified names in doc comments
-- Convention plugins in `buildSrc/src/main/kotlin/` configure shared build behavior
-
-## Commits
-
-Never commit unless explicitly asked. Include in commit message:
-
-```
-Co-Authored-By: Claude <noreply@anthropic.com>
-```
