@@ -1,0 +1,13 @@
+public final class org/maplibre/spatialk/polyline/PolylineEncoding {
+	public static final field INSTANCE Lorg/maplibre/spatialk/polyline/PolylineEncoding;
+	public final fun decode (Ljava/lang/String;I)Ljava/util/List;
+	public static synthetic fun decode$default (Lorg/maplibre/spatialk/polyline/PolylineEncoding;Ljava/lang/String;IILjava/lang/Object;)Ljava/util/List;
+	public final fun decodeOrNull (Ljava/lang/String;I)Ljava/util/List;
+	public static synthetic fun decodeOrNull$default (Lorg/maplibre/spatialk/polyline/PolylineEncoding;Ljava/lang/String;IILjava/lang/Object;)Ljava/util/List;
+	public final fun encode (Ljava/util/List;I)Ljava/lang/String;
+	public static synthetic fun encode$default (Lorg/maplibre/spatialk/polyline/PolylineEncoding;Ljava/util/List;IILjava/lang/Object;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
