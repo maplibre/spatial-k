@@ -1,0 +1,43 @@
+[settings]
+experimental = true
+pin = true
+
+[hooks]
+postinstall = [
+  "[ -f ~/.local/share/ktfmt/ktfmt.jar ] || (mkdir -p ~/.local/share/ktfmt && curl -fsSL https://github.com/facebook/ktfmt/releases/download/v0.62/ktfmt-0.62-jar-with-dependencies.jar -o ~/.local/share/ktfmt/ktfmt.jar)",
+  "hk install --mise",
+]
+
+[tools]
+java = "21.0.2"
+dprint = "0.53.2"
+hk = "1.40.0"
+pkl = "0.30.2"
+
+[tasks.build]
+description = "Build and check all targets"
+run = "./gradlew build"
+
+[tasks.test]
+description = "Run JVM, JS, and WASM tests"
+run = "./gradlew jvmTest jsNodeTest wasmJsNodeTest"
+
+[tasks.test-native]
+description = "Run native tests for the current platform"
+run = "./gradlew $( uname | grep -q Darwin && (uname -m | grep -q arm64 && echo macosArm64Test || echo macosX64Test) || echo linuxX64Test )"
+
+[tasks.check]
+description = "Run all linting and formatting checks"
+run = "hk check --all"
+
+[tasks.fix]
+description = "Auto-fix formatting issues"
+run = "hk fix --all"
+
+[tasks.generate]
+description = "Regenerate ABI dumps after public API changes"
+run = "./gradlew updateLegacyAbi"
+
+[tasks.ktfmt]
+description = "Format Kotlin via ktfmt (reads from stdin, writes to stdout; called by dprint)"
+run = "java -jar ~/.local/share/ktfmt/ktfmt.jar --kotlinlang-style -"

@@ -1,0 +1,42 @@
+amends "package://github.com/jdx/hk/releases/download/v1.40.0/hk@1.40.0#/Config.pkl"
+
+import "package://github.com/jdx/hk/releases/download/v1.40.0/hk@1.40.0#/Builtins.pkl"
+
+local allSteps = new Mapping<String, Step> {
+  // formatters
+  ["dprint"] = Builtins.dprint
+
+  // linters
+  ["detekt"] {
+    glob = List("**/src/commonMain/kotlin/**/*.kt")
+    check = "./gradlew detekt"
+  }
+
+  // generators
+  ["abi-dump"] {
+    glob = List("**/src/commonMain/kotlin/**/*.kt")
+    check = "./gradlew checkLegacyAbi"
+    fix = "./gradlew updateLegacyAbi"
+  }
+}
+
+hooks {
+  ["pre-commit"] {
+    fix = true
+    stash = "git"
+    steps {
+      ...allSteps
+    }
+  }
+  ["check"] {
+    steps {
+      ...allSteps
+    }
+  }
+  ["fix"] {
+    fix = true
+    steps {
+      ...allSteps
+    }
+  }
+}
