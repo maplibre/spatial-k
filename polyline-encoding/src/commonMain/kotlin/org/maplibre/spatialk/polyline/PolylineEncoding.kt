@@ -10,7 +10,8 @@ import org.maplibre.spatialk.geojson.Position
  * The encoding logic is run following steps. Decoding the same in reversed order.
  * 1. Take the initial signed value
  * 2. Take the decimal value and multiply it by 10^precision, rounding the result
- * 3. Convert the decimal value to binary. Note that a negative value must be calculated using its two's complement by inverting the binary value and adding one to the result:
+ * 3. Convert the decimal value to binary. Note that a negative value must be calculated using its
+ *    two's complement by inverting the binary value and adding one to the result:
  * 4. Left-shift the binary value one bit:
  * 5. If the original decimal value is negative, invert this encoding
  * 6. Break the binary value out into 5-bit chunks (starting from the right hand side)
@@ -21,7 +22,7 @@ import org.maplibre.spatialk.geojson.Position
  * 11. Convert each value to its ASCII equivalent
  *
  * @see <a href="https://developers.google.com/maps/documentation/utilities/polylinealgorithm">
- *     Google Encoded Polyline Algorithm Format</a>
+ *   Google Encoded Polyline Algorithm Format</a>
  */
 public data object PolylineEncoding {
 
