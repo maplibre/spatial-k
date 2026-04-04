@@ -12,8 +12,7 @@ Functions for mutating coordinates including rounding and flattening operations.
 
 # Package org.maplibre.spatialk.turf.featureconversion
 
-GeoJSON feature conversion utilities including combine, explode, and
-geometry/property mapping.
+GeoJSON feature conversion utilities including combine, explode, and geometry/property mapping.
 
 # Package org.maplibre.spatialk.turf.grids
 
@@ -21,16 +20,14 @@ Grid generation functions for creating spatial grids (e.g., square grid).
 
 # Package org.maplibre.spatialk.turf.measurement
 
-Measurement functions for calculating distances, areas, bearings, centers,
-bounding boxes, and other geospatial metrics using the Haversine formula and
-related algorithms.
+Measurement functions for calculating distances, areas, bearings, centers, bounding boxes, and other
+geospatial metrics using the Haversine formula and related algorithms.
 
 # Package org.maplibre.spatialk.turf.misc
 
-Miscellaneous utilities including line slicing, nearest point calculations,
-filtering, and intersection operations.
+Miscellaneous utilities including line slicing, nearest point calculations, filtering, and
+intersection operations.
 
 # Package org.maplibre.spatialk.turf.transformation
 
-Geometry transformation functions including circle generation, Bezier splines,
-and simplification.
+Geometry transformation functions including circle generation, Bezier splines, and simplification.

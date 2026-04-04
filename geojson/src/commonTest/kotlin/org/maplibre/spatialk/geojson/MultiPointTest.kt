@@ -97,13 +97,13 @@ class MultiPointTest {
     fun fromJson() {
         val json =
             """
-                {
-                    "type": "MultiPoint",
-                    "coordinates": [
-                        [100, 0],
-                        [101, 1]
-                    ]
-                }
+            {
+                "type": "MultiPoint",
+                "coordinates": [
+                    [100, 0],
+                    [101, 1]
+                ]
+            }
             """
                 .trimIndent()
         val geo: MultiPoint = MultiPoint.fromJson(json)

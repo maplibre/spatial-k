@@ -27,15 +27,14 @@ See below for constructing GeoJSON objects using the DSL.
 
 ## GeoJSON Objects
 
-The `GeoJsonObject` interface represents all GeoJSON objects. All GeoJSON
-objects can have a `bbox` property specified on them which is a `BoundingBox`
-that represents the bounds of that object's geometry.
+The `GeoJsonObject` interface represents all GeoJSON objects. All GeoJSON objects can have a `bbox`
+property specified on them which is a `BoundingBox` that represents the bounds of that object's
+geometry.
 
 ### Geometry
 
-Geometry objects are a sealed hierarchy of classes that inherit from the
-`Geometry` class. This allows for exhaustive type checks in Kotlin using a
-`when` block.
+Geometry objects are a sealed hierarchy of classes that inherit from the `Geometry` class. This
+allows for exhaustive type checks in Kotlin using a `when` block.
 
 === "Kotlin"
 
@@ -43,15 +42,14 @@ Geometry objects are a sealed hierarchy of classes that inherit from the
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:geometryExhaustiveTypeChecks"
     ```
 
-All seven types of GeoJSON geometries are implemented and summarized below. Full
-documentation can be found in the [API pages](../api/geojson/index.html).
+All seven types of GeoJSON geometries are implemented and summarized below. Full documentation can
+be found in the [API pages](../api/geojson/index.html).
 
 #### Position
 
-`Position` is a `DoubleArray`-backed class where longitude, latitude, and
-optionally an altitude are accessible as properties. Coordinates follow the
-order specified in RFC 7946: `[longitude, latitude, altitude?]`. The class
-supports destructuring in Kotlin.
+`Position` is a `DoubleArray`-backed class where longitude, latitude, and optionally an altitude are
+accessible as properties. Coordinates follow the order specified in RFC 7946:
+`[longitude, latitude, altitude?]`. The class supports destructuring in Kotlin.
 
 === "Kotlin"
 
@@ -161,10 +159,9 @@ A `MultiLineString` is an array of LineStrings.
 
 #### Polygon
 
-A `Polygon` is an array of rings. Each ring is a sequence of points with the
-last point matching the first point to indicate a closed area. The first ring
-defines the outer shape of the polygon, while all the following rings define
-"holes" inside the polygon.
+A `Polygon` is an array of rings. Each ring is a sequence of points with the last point matching the
+first point to indicate a closed area. The first ring defines the outer shape of the polygon, while
+all the following rings define "holes" inside the polygon.
 
 === "Kotlin"
 
@@ -230,13 +227,12 @@ A `GeometryCollection` contains multiple, heterogeneous geometries.
 
 ### Feature
 
-A `Feature` can contain a `Geometry` object, as well as a set of data
-properties, and optionally a commonly used identifier (`id`).
+A `Feature` can contain a `Geometry` object, as well as a set of data properties, and optionally a
+commonly used identifier (`id`).
 
-Properties can be any object that serializes into a JSON object. For dynamic or
-unknown property schemas, use `JsonObject`. For known schemas, use a
-`@Serializable` data class. Helper methods for accessing properties are
-available when properties are of type `JsonObject` (see the
+Properties can be any object that serializes into a JSON object. For dynamic or unknown property
+schemas, use `JsonObject`. For known schemas, use a `@Serializable` data class. Helper methods for
+accessing properties are available when properties are of type `JsonObject` (see the
 [API documentation](../api/geojson/index.html) for details).
 
 === "Kotlin"
@@ -259,9 +255,8 @@ available when properties are of type `JsonObject` (see the
 
 ### FeatureCollection
 
-A `FeatureCollection` is a collection of multiple features. It implements the
-`Collection` interface and can be used in any place that a collection can be
-used.
+A `FeatureCollection` is a collection of multiple features. It implements the `Collection` interface
+and can be used in any place that a collection can be used.
 
 === "Kotlin"
 
@@ -283,10 +278,10 @@ used.
 
 ### BoundingBox
 
-The `BoundingBox` class is used to represent the bounding boxes that can be set
-for any `GeoJsonObject`. Like the `Position` class, bounding boxes are backed by
-a `DoubleArray` with each component accessible by its propery (`southwest` and
-`northeast`). Bounding boxes also support destructuring.
+The `BoundingBox` class is used to represent the bounding boxes that can be set for any
+`GeoJsonObject`. Like the `Position` class, bounding boxes are backed by a `DoubleArray` with each
+component accessible by its propery (`southwest` and `northeast`). Bounding boxes also support
+destructuring.
 
 === "Kotlin"
 
@@ -310,8 +305,7 @@ a `DoubleArray` with each component accessible by its propery (`southwest` and
 
 ### To JSON
 
-Any `GeoJsonObject` can be serialized to a JSON string using the `toJson()`
-method.
+Any `GeoJsonObject` can be serialized to a JSON string using the `toJson()` method.
 
 === "Kotlin"
 
@@ -327,9 +321,8 @@ method.
 
 ### From JSON
 
-The `fromJson` and `fromJsonOrNull` companion (or static) functions are
-available on each `GeoJsonObject` class to decode each type of object from a
-JSON string.
+The `fromJson` and `fromJsonOrNull` companion (or static) functions are available on each
+`GeoJsonObject` class to decode each type of object from a JSON string.
 
 === "Kotlin"
 
@@ -347,8 +340,8 @@ JSON string.
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:serializationFromJsonJava2"
     ```
 
-Like with encoding, Spatial-K objects can also be decoded using
-`kotlinx.serialization` using the `GeoJson` serializer.
+Like with encoding, Spatial-K objects can also be decoded using `kotlinx.serialization` using the
+`GeoJson` serializer.
 
 === "Kotlin"
 
@@ -358,9 +351,8 @@ Like with encoding, Spatial-K objects can also be decoded using
 
 ## GeoJSON Builders
 
-It's recommended to construct GeoJSON objects in-code using builder classes. In
-Kotlin, these are available through a convenient DSL. In Java, use the builder
-classes directly.
+It's recommended to construct GeoJSON objects in-code using builder classes. In Kotlin, these are
+available through a convenient DSL. In Java, use the builder classes directly.
 
 ### Geometry
 
@@ -392,9 +384,8 @@ The `MultiPoint` builder uses `add()` to add positions or `Point` geometries.
 
 #### LineString
 
-A `LineString` contains two or more positions, in order. The builder uses
-`add()` to add positions. The order in which positions are added is the order
-that the line will follow.
+A `LineString` contains two or more positions, in order. The builder uses `add()` to add positions.
+The order in which positions are added is the order that the line will follow.
 
 === "Kotlin"
 
@@ -416,8 +407,8 @@ that the line will follow.
 
 #### MultiLineString
 
-The `MultiLineString` builder uses `addLineString()` to define line strings
-inline, or `add()` to add existing `LineString` objects.
+The `MultiLineString` builder uses `addLineString()` to define line strings inline, or `add()` to
+add existing `LineString` objects.
 
 === "Kotlin"
 
@@ -439,11 +430,10 @@ inline, or `add()` to add existing `LineString` objects.
 
 #### Polygon
 
-The `Polygon` builder uses `addRing()` (Kotlin DSL) or `add()` with `LineString`
-objects (Java/Kotlin) to define linear rings. The first ring is the exterior
-ring with four or more positions. The last position must be the same as the
-first position. All subsequent rings represent interior rings (i.e., holes) in
-the polygon.
+The `Polygon` builder uses `addRing()` (Kotlin DSL) or `add()` with `LineString` objects
+(Java/Kotlin) to define linear rings. The first ring is the exterior ring with four or more
+positions. The last position must be the same as the first position. All subsequent rings represent
+interior rings (i.e., holes) in the polygon.
 
 === "Kotlin"
 
@@ -465,8 +455,8 @@ the polygon.
 
 #### MultiPolygon
 
-The `MultiPolygon` builder uses `addPolygon()` to define polygons inline, or
-`add()` to add existing `Polygon` objects.
+The `MultiPolygon` builder uses `addPolygon()` to define polygons inline, or `add()` to add existing
+`Polygon` objects.
 
 === "Kotlin"
 
@@ -488,10 +478,9 @@ The `MultiPolygon` builder uses `addPolygon()` to define polygons inline, or
 
 #### GeometryCollection
 
-The `GeometryCollection` builder provides `addPoint()`, `addLineString()`,
-`addPolygon()`, `addMultiPoint()`, `addMultiLineString()`, `addMultiPolygon()`,
-and `addGeometryCollection()` to define geometries inline (Kotlin only), or
-`add()` to add existing geometry objects.
+The `GeometryCollection` builder provides `addPoint()`, `addLineString()`, `addPolygon()`,
+`addMultiPoint()`, `addMultiLineString()`, `addMultiPolygon()`, and `addGeometryCollection()` to
+define geometries inline (Kotlin only), or `add()` to add existing geometry objects.
 
 === "Kotlin"
 
@@ -513,9 +502,9 @@ and `addGeometryCollection()` to define geometries inline (Kotlin only), or
 
 ### Feature
 
-The `Feature` builder constructs a `Feature` object with a geometry, bounding
-box, id, and properties. Properties can be any serializable object, such as a
-`JsonObject` built with `buildJsonObject` from kotlinx.serialization.
+The `Feature` builder constructs a `Feature` object with a geometry, bounding box, id, and
+properties. Properties can be any serializable object, such as a `JsonObject` built with
+`buildJsonObject` from kotlinx.serialization.
 
 === "Kotlin"
 
@@ -537,8 +526,8 @@ box, id, and properties. Properties can be any serializable object, such as a
 
 ### FeatureCollection
 
-The `FeatureCollection` builder uses `addFeature()` to define features inline
-(Kotlin only), or `add()` to add existing `Feature` objects.
+The `FeatureCollection` builder uses `addFeature()` to define features inline (Kotlin only), or
+`add()` to add existing `Feature` objects.
 
 === "Kotlin"
 

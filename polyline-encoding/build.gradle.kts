@@ -3,13 +3,7 @@ plugins {
     id("test-resources")
 }
 
-kotlin {
-    sourceSets {
-        commonMain.dependencies {
-            api(project(":geojson"))
-        }
-    }
-}
+kotlin { sourceSets { commonMain.dependencies { api(project(":geojson")) } } }
 
 mavenPublishing {
     pom {

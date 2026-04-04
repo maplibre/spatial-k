@@ -33,8 +33,9 @@ public fun <G : PointGeometry> GeometryCollection<G>.filterInside(
             is Point ->
                 if (polygons.any { pointGeometry.coordinates in it }) results.add(pointGeometry)
             is MultiPoint -> {
-                val pointsInside =
-                    pointGeometry.filter { point -> polygons.any { point.coordinates in it } }
+                val pointsInside = pointGeometry.filter { point ->
+                    polygons.any { point.coordinates in it }
+                }
                 @Suppress("UNCHECKED_CAST")
                 if (pointsInside.isNotEmpty())
                     results.add(MultiPoint(pointsInside.map { it.coordinates }) as G)

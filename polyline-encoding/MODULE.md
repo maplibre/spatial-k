@@ -1,6 +1,7 @@
 # Module polyline-encoding
 
-Encoding and decoding of coordinate sequences using the [Google Encoded Polyline Algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
+Encoding and decoding of coordinate sequences using the
+[Google Encoded Polyline Algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
 
 ## Usage
 
@@ -22,9 +23,9 @@ val safe = PolylineEncoding.decodeOrNull(encoded)
 
 The `precision` parameter controls how many decimal digits are preserved (default: `5`).
 
-| Value | Resolution | Common use |
-|-------|-----------|------------|
-| `5`   | ~1.1 m    | Google Maps, OSRM, Valhalla |
-| `6`   | ~0.11 m   | OpenTripPlanner, some routing APIs |
+| Value | Resolution | Common use                         |
+| ----- | ---------- | ---------------------------------- |
+| `5`   | ~1.1 m     | Google Maps, OSRM, Valhalla        |
+| `6`   | ~0.11 m    | OpenTripPlanner, some routing APIs |
 
 Encode and decode must use the same precision value.

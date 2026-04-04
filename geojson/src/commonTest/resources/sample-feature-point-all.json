@@ -7,8 +7,5 @@
         "type": "Point"
     },
     "type": "Feature",
-    "properties": {
-        "prop0": "value0",
-        "prop1": "value1"
-    }
+    "properties": { "prop0": "value0", "prop1": "value1" }
 }

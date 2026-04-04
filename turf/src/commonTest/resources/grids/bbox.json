@@ -9,10 +9,5 @@
             [13.16949919, 52.51513922]
         ]
     ],
-    "crs": {
-        "type": "name",
-        "properties": {
-            "name": "EPSG:3857"
-        }
-    }
+    "crs": { "type": "name", "properties": { "name": "EPSG:3857" } }
 }

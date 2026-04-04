@@ -3774,18 +3774,12 @@
         {
             "type": "Feature",
             "properties": {},
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-112.606601, 45.960219]
-            }
+            "geometry": { "type": "Point", "coordinates": [-112.606601, 45.960219] }
         },
         {
             "type": "Feature",
             "properties": {},
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-111.972656, 48.843028]
-            }
+            "geometry": { "type": "Point", "coordinates": [-111.972656, 48.843028] }
         }
     ]
 }

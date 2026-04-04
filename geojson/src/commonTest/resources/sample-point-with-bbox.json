@@ -1,5 +1,1 @@
-{
-    "type": "Point",
-    "bbox": [-100, -10, 100, 10],
-    "coordinates": [100, 0]
-}
+{ "type": "Point", "bbox": [-100, -10, 100, 10], "coordinates": [100, 0] }

@@ -3,11 +3,7 @@
     "features": [
         {
             "type": "Feature",
-            "properties": {
-                "stroke": "#ff0088",
-                "stroke-width": 5,
-                "stroke-opacity": 0.6
-            },
+            "properties": { "stroke": "#ff0088", "stroke-width": 5, "stroke-opacity": 0.6 },
             "geometry": {
                 "type": "LineString",
                 "coordinates": [
@@ -18,11 +14,7 @@
         },
         {
             "type": "Feature",
-            "properties": {
-                "stroke": "#00ffcc",
-                "stroke-width": 5,
-                "stroke-opacity": 0.6
-            },
+            "properties": { "stroke": "#00ffcc", "stroke-width": 5, "stroke-opacity": 0.6 },
             "geometry": {
                 "type": "LineString",
                 "coordinates": [

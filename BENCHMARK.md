@@ -10,15 +10,14 @@ Benchmarks are set up for GeoJSON serialization and deserialization.
 
 This will run benchmarks on the JVM, NodeJS, and Kotlin/Native.
 
-These benchmarks measure the time taken to serialize and deserialize a
-`FeatureCollection` containing 15,000 randomly generated features. See
+These benchmarks measure the time taken to serialize and deserialize a `FeatureCollection`
+containing 15,000 randomly generated features. See
 [GeoJsonBenchmark.kt](geojson/src/commonBench/kotlin/org/maplibre/spatialk/geojson/GeoJsonBenchmark.kt)
 for details.
 
 ## Results
 
-All measurements are in ms/op (milliseconds per operation). Lower score is
-better.
+All measurements are in ms/op (milliseconds per operation). Lower score is better.
 
 | Target              | Serialization     | Deserialization   |
 | ------------------- | ----------------- | ----------------- |

@@ -3,10 +3,7 @@
     "features": [
         {
             "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-122.4194, 37.7749, 15.0]
-            },
+            "geometry": { "type": "Point", "coordinates": [-122.4194, 37.7749, 15.0] },
             "properties": {
                 "lat": 37.7749,
                 "lon": -122.4194,
@@ -36,10 +33,7 @@
         },
         {
             "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-122.4862, 37.7694, 45.3]
-            },
+            "geometry": { "type": "Point", "coordinates": [-122.4862, 37.7694, 45.3] },
             "properties": {
                 "lat": 37.7694,
                 "lon": -122.4862,
@@ -69,10 +63,7 @@
         },
         {
             "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-122.4488, 37.8021, 92.7]
-            },
+            "geometry": { "type": "Point", "coordinates": [-122.4488, 37.8021, 92.7] },
             "properties": {
                 "lat": 37.8021,
                 "lon": -122.4488,
