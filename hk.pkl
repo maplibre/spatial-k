@@ -16,8 +16,8 @@ local allSteps = new Mapping<String, Step> {
   // generators
   ["abi-dump"] {
     glob = List("**/src/commonMain/kotlin/**/*.kt", "**/api/*.api", "**/api/*.klib.api")
-    check = "./gradlew checkLegacyAbi"
-    fix = "./gradlew updateLegacyAbi"
+    check = "./gradlew checkKotlinAbiCompatibility"
+    fix = "./gradlew dumpKotlinAbi"
     exclusive = true
   }
 }
