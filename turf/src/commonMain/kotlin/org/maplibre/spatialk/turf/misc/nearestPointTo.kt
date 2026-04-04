@@ -65,7 +65,7 @@ public fun Collection<Point>.nearestPointTo(point: Point): Feature<Point, Neares
  * Result properties from [nearestPointTo] from a `LineString`.
  *
  * @property distance Distance between the input position and the point
- * @property location Distance along the line from the stat to the the point
+ * @property location Distance along the line from the start to the the point
  * @property index Index of the segment of the line on which the point lies.
  */
 @Serializable
