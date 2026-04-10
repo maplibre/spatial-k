@@ -328,9 +328,7 @@ public inline fun GeometryCollectionBuilder<in MultiPolygon>.addMultiPolygon(
  * @param builderAction The builder configuration block for the geometry collection.
  */
 public inline fun <T : Geometry> GeometryCollectionBuilder<in GeometryCollection<T>>
-    .addGeometryCollection(
-    builderAction: GeometryCollectionBuilder<T>.() -> Unit
-) {
+    .addGeometryCollection(builderAction: GeometryCollectionBuilder<T>.() -> Unit) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(GeometryCollectionBuilder<T>().apply { builderAction() }.build())
 }
@@ -346,11 +344,7 @@ public inline fun <T : Geometry> GeometryCollectionBuilder<in GeometryCollection
  * @param builderAction The builder configuration block for the feature.
  */
 public inline fun <G : Geometry?, P : @Serializable Any?> FeatureCollectionBuilder<in G, in P>
-    .addFeature(
-    geometry: G,
-    properties: P,
-    builderAction: FeatureBuilder<G, P>.() -> Unit = {},
-) {
+    .addFeature(geometry: G, properties: P, builderAction: FeatureBuilder<G, P>.() -> Unit = {}) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(FeatureBuilder(geometry, properties).apply { builderAction() }.build())
 }
@@ -364,10 +358,7 @@ public inline fun <G : Geometry?, P : @Serializable Any?> FeatureCollectionBuild
  * @param builderAction The builder configuration block for the feature.
  */
 public inline fun <G : Geometry?, P : @Serializable Any> FeatureCollectionBuilder<in G, in P?>
-    .addFeature(
-    geometry: G,
-    builderAction: FeatureBuilder<G, P?>.() -> Unit = {},
-) {
+    .addFeature(geometry: G, builderAction: FeatureBuilder<G, P?>.() -> Unit = {}) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(FeatureBuilder<G, P?>(geometry, null).apply { builderAction() }.build())
 }
