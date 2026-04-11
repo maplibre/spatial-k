@@ -17,6 +17,7 @@ See the [API Reference](api/index.html) for detailed documentation.
 - [`turf`](./turf/index.md) - Turf.js port
 - [`units`](./units/index.md) - Units of measure
 - [`gpx`](./gpx/index.md) - GPX implementation
+- [`polyline-encoding`](./polyline-encoding/index.md) - Google Encoded Polyline Algorithm support
 
 ### Snapshots
 

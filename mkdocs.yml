@@ -21,6 +21,8 @@ nav:
           - units/index.md
     - GPX:
           - gpx/index.md
+    - "Polyline Encoding":
+          - polyline-encoding/index.md
     - "API Reference": api/index.html
 
 theme:
