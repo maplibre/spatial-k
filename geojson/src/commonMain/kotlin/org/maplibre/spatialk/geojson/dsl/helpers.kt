@@ -38,7 +38,6 @@ import org.maplibre.spatialk.geojson.Position
  * @throws IllegalArgumentException if fewer than two positions have been added.
  * @see LineStringBuilder
  */
-@GeoJsonDsl
 public inline fun buildLineString(builderAction: LineStringBuilder.() -> Unit): LineString {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return LineStringBuilder().apply { builderAction() }.build()
@@ -53,7 +52,6 @@ public inline fun buildLineString(builderAction: LineStringBuilder.() -> Unit): 
  *   [Position] objects.
  * @see PolygonBuilder
  */
-@GeoJsonDsl
 public inline fun buildPolygon(builderAction: PolygonBuilder.() -> Unit): Polygon {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return PolygonBuilder().apply { builderAction() }.build()
@@ -66,7 +64,6 @@ public inline fun buildPolygon(builderAction: PolygonBuilder.() -> Unit): Polygo
  * @return The constructed [MultiPoint].
  * @see MultiPointBuilder
  */
-@GeoJsonDsl
 public inline fun buildMultiPoint(builderAction: MultiPointBuilder.() -> Unit): MultiPoint {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return MultiPointBuilder().apply { builderAction() }.build()
@@ -79,7 +76,6 @@ public inline fun buildMultiPoint(builderAction: MultiPointBuilder.() -> Unit): 
  * @return The constructed [MultiLineString].
  * @see MultiLineStringBuilder
  */
-@GeoJsonDsl
 public inline fun buildMultiLineString(
     builderAction: MultiLineStringBuilder.() -> Unit
 ): MultiLineString {
@@ -94,7 +90,6 @@ public inline fun buildMultiLineString(
  * @return The constructed [MultiPolygon].
  * @see MultiPolygonBuilder
  */
-@GeoJsonDsl
 public inline fun buildMultiPolygon(builderAction: MultiPolygonBuilder.() -> Unit): MultiPolygon {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return MultiPolygonBuilder().apply { builderAction() }.build()
@@ -107,9 +102,8 @@ public inline fun buildMultiPolygon(builderAction: MultiPolygonBuilder.() -> Uni
  * @return The constructed [GeometryCollection].
  * @see GeometryCollectionBuilder
  */
-@GeoJsonDsl
 public inline fun <G : Geometry> buildGeometryCollection(
-    @BuilderInference builderAction: GeometryCollectionBuilder<G>.() -> Unit
+    builderAction: GeometryCollectionBuilder<G>.() -> Unit
 ): GeometryCollection<G> {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return GeometryCollectionBuilder<G>().apply { builderAction() }.build()
@@ -131,11 +125,10 @@ public inline fun <G : Geometry> buildGeometryCollection(
  * @return The constructed [Feature].
  * @see FeatureBuilder
  */
-@GeoJsonDsl
 public inline fun <G : Geometry?, P : @Serializable Any?> buildFeature(
     geometry: G,
     properties: P,
-    @BuilderInference builderAction: FeatureBuilder<G, P>.() -> Unit = {},
+    builderAction: FeatureBuilder<G, P>.() -> Unit = {},
 ): Feature<G, P> {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return FeatureBuilder(geometry, properties).apply { builderAction() }.build()
@@ -158,10 +151,9 @@ public inline fun <G : Geometry?, P : @Serializable Any?> buildFeature(
  * @return The constructed [Feature].
  * @see FeatureBuilder
  */
-@GeoJsonDsl
 public inline fun <G : Geometry?, P : @Serializable Any> buildFeature(
     geometry: G,
-    @BuilderInference builderAction: FeatureBuilder<G, P?>.() -> Unit = {},
+    builderAction: FeatureBuilder<G, P?>.() -> Unit = {},
 ): Feature<G, P?> {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return FeatureBuilder<G, P?>(geometry, null).apply { builderAction() }.build()
@@ -182,9 +174,8 @@ public inline fun <G : Geometry?, P : @Serializable Any> buildFeature(
  * @return The constructed [Feature].
  * @see FeatureBuilder
  */
-@GeoJsonDsl
 public inline fun <G : Geometry, P : @Serializable Any> buildFeature(
-    @BuilderInference builderAction: FeatureBuilder<G?, P?>.() -> Unit = {}
+    builderAction: FeatureBuilder<G?, P?>.() -> Unit = {}
 ): Feature<G?, P?> {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return FeatureBuilder<G?, P?>(null, null).apply { builderAction() }.build()
@@ -197,9 +188,8 @@ public inline fun <G : Geometry, P : @Serializable Any> buildFeature(
  * @return The constructed [FeatureCollection].
  * @see FeatureCollectionBuilder
  */
-@GeoJsonDsl
 public inline fun <G : Geometry?, P : @Serializable Any?> buildFeatureCollection(
-    @BuilderInference builderAction: FeatureCollectionBuilder<G, P>.() -> Unit
+    builderAction: FeatureCollectionBuilder<G, P>.() -> Unit
 ): FeatureCollection<G, P> {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return FeatureCollectionBuilder<G, P>().apply { builderAction() }.build()
@@ -245,7 +235,6 @@ public fun GeometryCollectionBuilder<in Point>.addPoint(
  *
  * @param builderAction The builder configuration block for the line string.
  */
-@GeoJsonDsl
 public inline fun MultiLineStringBuilder.addLineString(
     builderAction: LineStringBuilder.() -> Unit
 ) {
@@ -258,7 +247,6 @@ public inline fun MultiLineStringBuilder.addLineString(
  *
  * @param builderAction The builder configuration block for the line string.
  */
-@GeoJsonDsl
 public inline fun GeometryCollectionBuilder<in LineString>.addLineString(
     builderAction: LineStringBuilder.() -> Unit
 ) {
@@ -271,7 +259,6 @@ public inline fun GeometryCollectionBuilder<in LineString>.addLineString(
  *
  * @param builderAction The builder configuration block for the ring.
  */
-@GeoJsonDsl
 public inline fun PolygonBuilder.addRing(builderAction: LineStringBuilder.() -> Unit) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(LineStringBuilder().apply { builderAction() }.build())
@@ -282,7 +269,6 @@ public inline fun PolygonBuilder.addRing(builderAction: LineStringBuilder.() -> 
  *
  * @param builderAction The builder configuration block for the polygon.
  */
-@GeoJsonDsl
 public inline fun MultiPolygonBuilder.addPolygon(builderAction: PolygonBuilder.() -> Unit) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(PolygonBuilder().apply { builderAction() }.build())
@@ -293,7 +279,6 @@ public inline fun MultiPolygonBuilder.addPolygon(builderAction: PolygonBuilder.(
  *
  * @param builderAction The builder configuration block for the polygon.
  */
-@GeoJsonDsl
 public inline fun GeometryCollectionBuilder<in Polygon>.addPolygon(
     builderAction: PolygonBuilder.() -> Unit
 ) {
@@ -306,7 +291,6 @@ public inline fun GeometryCollectionBuilder<in Polygon>.addPolygon(
  *
  * @param builderAction The builder configuration block for the multi-point.
  */
-@GeoJsonDsl
 public inline fun GeometryCollectionBuilder<in MultiPoint>.addMultiPoint(
     builderAction: MultiPointBuilder.() -> Unit
 ) {
@@ -319,7 +303,6 @@ public inline fun GeometryCollectionBuilder<in MultiPoint>.addMultiPoint(
  *
  * @param builderAction The builder configuration block for the multi-line string.
  */
-@GeoJsonDsl
 public inline fun GeometryCollectionBuilder<in MultiLineString>.addMultiLineString(
     builderAction: MultiLineStringBuilder.() -> Unit
 ) {
@@ -332,7 +315,6 @@ public inline fun GeometryCollectionBuilder<in MultiLineString>.addMultiLineStri
  *
  * @param builderAction The builder configuration block for the multi-polygon.
  */
-@GeoJsonDsl
 public inline fun GeometryCollectionBuilder<in MultiPolygon>.addMultiPolygon(
     builderAction: MultiPolygonBuilder.() -> Unit
 ) {
@@ -345,11 +327,8 @@ public inline fun GeometryCollectionBuilder<in MultiPolygon>.addMultiPolygon(
  *
  * @param builderAction The builder configuration block for the geometry collection.
  */
-@GeoJsonDsl
 public inline fun <T : Geometry> GeometryCollectionBuilder<in GeometryCollection<T>>
-    .addGeometryCollection(
-    @BuilderInference builderAction: GeometryCollectionBuilder<T>.() -> Unit
-) {
+    .addGeometryCollection(builderAction: GeometryCollectionBuilder<T>.() -> Unit) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(GeometryCollectionBuilder<T>().apply { builderAction() }.build())
 }
@@ -364,13 +343,8 @@ public inline fun <T : Geometry> GeometryCollectionBuilder<in GeometryCollection
  * @param properties The properties associated with the feature.
  * @param builderAction The builder configuration block for the feature.
  */
-@GeoJsonDsl
 public inline fun <G : Geometry?, P : @Serializable Any?> FeatureCollectionBuilder<in G, in P>
-    .addFeature(
-    geometry: G,
-    properties: P,
-    @BuilderInference builderAction: FeatureBuilder<G, P>.() -> Unit = {},
-) {
+    .addFeature(geometry: G, properties: P, builderAction: FeatureBuilder<G, P>.() -> Unit = {}) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(FeatureBuilder(geometry, properties).apply { builderAction() }.build())
 }
@@ -383,12 +357,8 @@ public inline fun <G : Geometry?, P : @Serializable Any?> FeatureCollectionBuild
  * @param geometry The geometry associated with the feature.
  * @param builderAction The builder configuration block for the feature.
  */
-@GeoJsonDsl
 public inline fun <G : Geometry?, P : @Serializable Any> FeatureCollectionBuilder<in G, in P?>
-    .addFeature(
-    geometry: G,
-    @BuilderInference builderAction: FeatureBuilder<G, P?>.() -> Unit = {},
-) {
+    .addFeature(geometry: G, builderAction: FeatureBuilder<G, P?>.() -> Unit = {}) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(FeatureBuilder<G, P?>(geometry, null).apply { builderAction() }.build())
 }
@@ -400,9 +370,8 @@ public inline fun <G : Geometry?, P : @Serializable Any> FeatureCollectionBuilde
  *
  * @param builderAction The builder configuration block for the feature.
  */
-@GeoJsonDsl
 public inline fun <G : Geometry, P : @Serializable Any> FeatureCollectionBuilder<in G?, in P?>
-    .addFeature(@BuilderInference builderAction: FeatureBuilder<G?, P?>.() -> Unit = {}) {
+    .addFeature(builderAction: FeatureBuilder<G?, P?>.() -> Unit = {}) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(FeatureBuilder<G?, P?>(null, null).apply { builderAction() }.build())
 }
