@@ -37,6 +37,10 @@ class KotlinDocsTest {
         val turnedRight: Bearing = heading + 90.degrees
         val turnedLeft: Bearing = heading - 45.degrees
         val diff: Rotation = turnedRight - turnedLeft
+
+        val bearing: Bearing = Bearing.Northwest
+        val clockwiseFromNorth: Double = (bearing - Bearing.North).inDegrees
+        val signedFromNorth: Double = Bearing.North.smallestRotationTo(bearing).inDegrees
         // --8<-- [end:bearings]
     }
 

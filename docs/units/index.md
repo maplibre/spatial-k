@@ -63,7 +63,9 @@ converting between scalars, lengths, and areas as needed.
 
 `Bearing` represents an absolute geographic heading (e.g., North, East), while `Rotation` represents
 a relative angular displacement. In Kotlin, bearings can be rotated using operators, and the
-difference between two bearings is a rotation.
+difference between two bearings is a rotation. To convert a `Bearing` to a numeric angle, first
+choose a reference direction and range, such as `0..360` degrees clockwise from north or `-180..180`
+degrees relative to north.
 
 === "Kotlin"
 
