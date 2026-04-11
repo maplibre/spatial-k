@@ -5,6 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlinx.serialization.json.JsonObject
+import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.MultiPolygon
 import org.maplibre.spatialk.geojson.Point
@@ -46,6 +47,26 @@ class PointInPolygonTest {
 
         assertTrue(concavePoly.contains(ptConcaveIn.coordinates), "point inside concave polygon")
         assertFalse(concavePoly.contains(ptConcaveOut.coordinates), "point outside concave polygon")
+    }
+
+    @Test
+    fun testContainsUsesExistingBbox() {
+        val poly = buildPolygon {
+            addRing {
+                add(0.0, 0.0)
+                add(0.0, 100.0)
+                add(100.0, 0.0)
+            }
+        }
+        val ptIn = Point(50.0, 50.0)
+
+        assertTrue(poly.contains(ptIn.coordinates), "point inside simple polygon")
+
+        val polyWithWrongBbox = poly.copy(bbox = BoundingBox(0.0, 0.0, 10.0, 10.0))
+        assertFalse(
+            polyWithWrongBbox.contains(ptIn.coordinates),
+            "contains should respect an existing bbox",
+        )
     }
 
     @Test

@@ -33,7 +33,7 @@ public operator fun PolygonGeometry.contains(pos: Position): Boolean = this.cont
  *   Polygon
  */
 public fun PolygonGeometry.contains(pos: Position, ignoreBoundary: Boolean): Boolean {
-    val bbox = this.computeBbox()
+    val bbox = this.bbox ?: this.computeBbox()
     // normalize to multipolygon
     val polys =
         when (this) {
