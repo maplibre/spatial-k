@@ -90,7 +90,7 @@ jobs:
               run: |
                   GRADLE_VERSION=$(grep distributionUrl gradle/wrapper/gradle-wrapper.properties \
                     | sed 's/.*gradle-\(.*\)-bin\.zip.*/\1/')
-                  mise x gradle -- gradle wrapper --gradle-version "$GRADLE_VERSION"
+                  mise x "gradle@$GRADLE_VERSION" -- gradle wrapper --gradle-version "$GRADLE_VERSION"
                   git diff --exit-code gradle/wrapper/ gradlew gradlew.bat
             - name: Verify yarn lockfile integrity
               env:
