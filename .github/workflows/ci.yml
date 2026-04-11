@@ -77,9 +77,29 @@ jobs:
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - run: mise run check
 
+    check-integrity:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+              with:
+                  fetch-depth: 0
+                  fetch-tags: true
+                  persist-credentials: false
+            - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+            - name: Verify gradle wrapper
+              run: |
+                  GRADLE_VERSION=$(grep distributionUrl gradle/wrapper/gradle-wrapper.properties \
+                    | sed 's/.*gradle-\(.*\)-bin\.zip.*/\1/')
+                  mise x gradle -- gradle wrapper --gradle-version "$GRADLE_VERSION"
+                  git diff --exit-code gradle/wrapper/ gradlew gradlew.bat
+            - name: Verify yarn lockfile integrity
+              env:
+                  YARN_ENABLE_HARDENED_MODE: "1"
+              run: ./gradlew kotlinNpmInstall
+
     # stub to use as a "required" check on github
     all-good:
-        needs: [build, check-format, build-docs, benchmark]
+        needs: [build, check-format, build-docs, benchmark, check-integrity]
         runs-on: ubuntu-latest
         steps:
             - run: echo 'All checks passed!'
