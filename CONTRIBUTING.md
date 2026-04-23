@@ -1,5 +1,11 @@
 # Contributing
 
+## AI policy
+
+This project follows the
+[MapLibre AI policy](https://github.com/maplibre/maplibre/blob/main/AI_POLICY.md). Contributors must
+review all AI-generated code before submitting and disclose substantial AI usage in pull requests.
+
 ## Find or file an issue to work on
 
 If you're looking to add a feature or fix a bug and there's no issue filed yet,
