@@ -1,5 +1,3 @@
-# CLAUDE.md
-
 ## AI policy
 
 Follow the [MapLibre AI policy](https://github.com/maplibre/maplibre/blob/main/AI_POLICY.md). All
