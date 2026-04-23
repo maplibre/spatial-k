@@ -1,5 +1,11 @@
 # CLAUDE.md
 
+## AI policy
+
+Follow the [MapLibre AI policy](https://github.com/maplibre/maplibre/blob/main/AI_POLICY.md). All
+AI-generated code must be reviewed by a human before submission. Disclose substantial AI usage in
+pull request descriptions.
+
 ## Dev workflow
 
 Tooling is managed by `mise`. Run `mise install` first (installs Java, dprint, hk, downloads ktfmt
