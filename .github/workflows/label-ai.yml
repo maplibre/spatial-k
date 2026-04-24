@@ -1,12 +1,6 @@
 name: Label AI-generated PRs
 
 on:
-    # TODO: remove `pull_request` once detection is verified working on main.
-    # `pull_request_target` runs the workflow file from the target branch, so
-    # changes to this file don't take effect until merged. `pull_request` runs
-    # from the PR branch, which lets us iterate.
-    pull_request:
-        types: [opened, reopened, synchronize]
     pull_request_target:
         types: [opened, reopened, synchronize]
 
