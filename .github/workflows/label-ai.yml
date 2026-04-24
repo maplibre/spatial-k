@@ -1,0 +1,23 @@
+name: Label AI-generated PRs
+
+on:
+    # TODO: remove `pull_request` once detection is verified working on main.
+    # `pull_request_target` runs the workflow file from the target branch, so
+    # changes to this file don't take effect until merged. `pull_request` runs
+    # from the PR branch, which lets us iterate.
+    pull_request:
+        types: [opened, reopened, synchronize]
+    pull_request_target:
+        types: [opened, reopened, synchronize]
+
+permissions:
+    contents: read
+    pull-requests: write
+
+jobs:
+    label:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: sargunv/ai-pr-detector@a04d6c93ea3900a27a8dafa6be725b61d2176fac # main as of 2026-04-24
+              with:
+                  label: ai-generated
