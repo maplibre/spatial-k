@@ -12,6 +12,6 @@ jobs:
     label:
         runs-on: ubuntu-latest
         steps:
-            - uses: sargunv/ai-pr-detector@a04d6c93ea3900a27a8dafa6be725b61d2176fac # main as of 2026-04-24
+            - uses: sargunv/ai-pr-detector@64b95ea7b4b037eec2a4c7afb62e117fc006d77e # v0.1.0
               with:
                   label: ai-generated
