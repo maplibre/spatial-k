@@ -42,7 +42,7 @@ mise run fix
 hk fix [FILES...]
 
 # Run a specific JVM test
-mise exec -- ./gradlew :module:jvmTest --tests "*SomeTest*"`
+mise exec -- ./gradlew :module:jvmTest --tests "*SomeTest*"
 ```
 
 Formatters and linters run automatically on pre-commit; you usually don't need to run them manually.
