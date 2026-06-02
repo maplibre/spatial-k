@@ -1,0 +1,7 @@
+{
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "dprint.dprint",
+    "git.ignoreSubmodules": true,
+    "git.detectSubmodules": false,
+    "json.schemaDownload.trustedDomains": { "https://dprint.dev": true }
+}

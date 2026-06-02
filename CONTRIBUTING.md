@@ -1,12 +1,8 @@
 # Contributing
 
-## AI policy
+Discuss changes in `#maplibre` on the [OSM-US Slack](https://slack.openstreetmap.us/).
 
-This project follows the
-[MapLibre AI policy](https://github.com/maplibre/maplibre/blob/main/AI_POLICY.md). Contributors must
-review all AI-generated code before submitting and disclose substantial AI usage in pull requests.
-
-## Find or file an issue to work on
+## Before Making Changes
 
 If you're looking to add a feature or fix a bug and there's no issue filed yet,
 [file an issue](https://github.com/maplibre/spatial-k/issues/new/choose) first to discuss the change
@@ -15,6 +11,9 @@ before you start working on it.
 If you're new and looking for things to contribute, see our
 [good first issue](https://github.com/maplibre/spatial-k/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22)
 label.
+
+Keep pull requests focused on one reviewable change. The reviewer should be able to connect the use
+case, public behavior, implementation, and validation without separating unrelated work.
 
 ## Set up your development environment
 
@@ -60,14 +59,12 @@ Tests make use of JSON data loaded from files, so platforms where it's not conve
 from the file system have their tests disabled. This includes mobile native targets, browser
 targets, etc.
 
-## Editing documentation
+### Documentation
 
 The content of the documentation website is written in Markdown using
 [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) and is located in the `docs`
 directory. Run `mise run docs` to run a local server to view the docs. The server will automatically
 reload when you make changes to the docs.
-
-## Make CI happy
 
 ### Dump ABIs
 
@@ -83,3 +80,14 @@ To run formatters manually:
 
 - `mise run fix` - Format all files
 - `mise run check` - Check formatting without modifying files
+
+## Pull Requests
+
+Open a pull request when the change is ready for review and include:
+
+- the problem or use case;
+- the public API or behavior change, if any;
+- the validation you ran;
+- platform limitations or native MapLibre behavior you checked;
+
+If you use AI assistance, follow the [AI policy](./AI_POLICY.md).
