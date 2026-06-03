@@ -1,5 +1,6 @@
 package org.maplibre.spatialk.pmtiles
 
+import kotlin.coroutines.cancellation.CancellationException
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
 
 /**
@@ -16,9 +17,10 @@ public data class ByteRange(
 /** Caller-provided byte range source used by the PMTiles reader. */
 public interface ByteRangeSource {
     /** Returns the stable archive size in bytes. */
-    public suspend fun size(): ULong
+    @Throws(PmTilesException::class, CancellationException::class) public suspend fun size(): ULong
 
     /** Reads exactly [range.length] bytes from [range]. */
+    @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun read(range: ByteRange): ByteArray
 }
 
@@ -203,12 +205,14 @@ public data class TileCoord(
 /** PMTiles TileID conversion utilities. */
 public object TileIds {
     /** Converts a Web tile coordinate to a PMTiles TileID. */
+    @Throws(PmTilesException::class)
     public fun fromZxy(z: Int, x: Int, y: Int): Long {
         validateZxy(z, x, y)
         return zoomStart(z) + hilbertIndex(z, x, y)
     }
 
     /** Converts a PMTiles TileID to a Web tile coordinate. */
+    @Throws(PmTilesException::class)
     public fun toZxy(tileId: Long): TileCoord {
         if (tileId < 0 || tileId > MAX_SUPPORTED_TILE_ID) {
             throw invalidTileCoordinate("TileID $tileId is outside the supported range.")
@@ -225,6 +229,7 @@ public object TileIds {
     }
 
     /** Returns the first PMTiles TileID for [z]. */
+    @Throws(PmTilesException::class)
     public fun zoomStart(z: Int): Long {
         validateZoom(z)
         return if (z == 0) 0 else ((1L shl (2 * z)) - 1) / 3
