@@ -309,7 +309,7 @@ private constructor(
                 "MVT metadata must contain `vector_layers`.",
             )
         }
-        appendWarningLocked(
+        appendWarning(
             ArchiveWarning(
                 code = ArchiveWarningCode.MissingVectorLayers,
                 message = "MVT metadata does not contain `vector_layers`.",
@@ -321,7 +321,7 @@ private constructor(
         if (options.validationMode == ValidationMode.Strict) {
             throw pmTilesException(PmTilesErrorCode.InvalidMetadata, message, cause)
         }
-        appendWarningLocked(
+        appendWarning(
             ArchiveWarning(
                 code = ArchiveWarningCode.InvalidMetadataRecovered,
                 message = message,
@@ -365,7 +365,7 @@ private constructor(
                     "Nested leaf directories are not allowed in strict mode.",
                 )
             }
-            appendWarningLocked(
+            appendWarning(
                 ArchiveWarning(
                     code = ArchiveWarningCode.NestedLeafDirectory,
                     message = "Lookup traversed a nested leaf directory.",
@@ -469,7 +469,13 @@ private constructor(
     private suspend fun parseAndCacheMetadata(rawJson: String): ArchiveMetadata =
         stateMutex.withLock {
             checkOpenLocked()
-            metadataCache ?: parseMetadata(rawJson).also { metadataCache = it }
+            metadataCache?.let {
+                return@withLock it
+            }
+
+            val metadata = parseMetadata(rawJson)
+            checkOpenLocked()
+            metadataCache ?: metadata.also { metadataCache = it }
         }
 
     private suspend fun cachedLeafDirectory(range: ByteRange): List<DirectoryEntry>? =
@@ -569,8 +575,12 @@ private constructor(
             }
         }
 
-    private fun appendWarningLocked(warning: ArchiveWarning) {
-        archiveWarnings.store(archiveWarnings.load() + warning)
+    private fun appendWarning(warning: ArchiveWarning) {
+        while (true) {
+            val currentWarnings = archiveWarnings.load()
+            val nextWarnings = currentWarnings + warning
+            if (archiveWarnings.compareAndSet(currentWarnings, nextWarnings)) return
+        }
     }
 
     private fun clearStateForCloseLocked() {
