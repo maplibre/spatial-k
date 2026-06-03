@@ -138,7 +138,6 @@ public final class org/maplibre/spatialk/turf/measurement/Measurement {
 public final class org/maplibre/spatialk/turf/misc/Miscellaneous {
 	public static final fun filterInside (Lorg/maplibre/spatialk/geojson/GeometryCollection;Lorg/maplibre/spatialk/geojson/GeometryCollection;)Lorg/maplibre/spatialk/geojson/GeometryCollection;
 	public static final fun intersect (Lorg/maplibre/spatialk/geojson/LineString;Lorg/maplibre/spatialk/geojson/LineString;)Lorg/maplibre/spatialk/geojson/MultiPoint;
-	public static final fun nearestPointTo (Ljava/util/Collection;Lorg/maplibre/spatialk/geojson/Point;)Lorg/maplibre/spatialk/geojson/Feature;
 	public static final fun nearestPointTo (Lorg/maplibre/spatialk/geojson/LineStringGeometry;Lorg/maplibre/spatialk/geojson/Position;)Lorg/maplibre/spatialk/geojson/Feature;
 	public static final fun slice (Lorg/maplibre/spatialk/geojson/LineString;DD)Lorg/maplibre/spatialk/geojson/LineString;
 	public static final fun slice (Lorg/maplibre/spatialk/geojson/LineString;DDLorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/geojson/LineString;
@@ -175,33 +174,6 @@ public final synthetic class org/maplibre/spatialk/turf/misc/NearestPointOnLineP
 }
 
 public final class org/maplibre/spatialk/turf/misc/NearestPointOnLineProps$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class org/maplibre/spatialk/turf/misc/NearestPointProps {
-	public static final field Companion Lorg/maplibre/spatialk/turf/misc/NearestPointProps$Companion;
-	public final fun component1-_8uq4Z0 ()D
-	public final fun component2 ()I
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getDistance (Lorg/maplibre/spatialk/units/LengthUnit;)D
-	public final fun getDistance-_8uq4Z0 ()D
-	public final fun getIndex ()I
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final synthetic class org/maplibre/spatialk/turf/misc/NearestPointProps$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lorg/maplibre/spatialk/turf/misc/NearestPointProps$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/maplibre/spatialk/turf/misc/NearestPointProps;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/maplibre/spatialk/turf/misc/NearestPointProps;)V
-	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
-}
-
-public final class org/maplibre/spatialk/turf/misc/NearestPointProps$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
