@@ -18,6 +18,36 @@ internal data class DirectoryEntry(
         get() = runLength > 0
 }
 
+internal fun List<DirectoryEntry>.findPredecessor(targetTileId: Long): DirectoryEntry? {
+    var low = 0
+    var high = lastIndex
+    var predecessor: DirectoryEntry? = null
+
+    while (low <= high) {
+        val mid = low + (high - low) / 2
+        val entry = this[mid]
+        if (entry.tileId <= targetTileId) {
+            predecessor = entry
+            low = mid + 1
+        } else {
+            high = mid - 1
+        }
+    }
+
+    return predecessor
+}
+
+internal fun DirectoryEntry.coversTile(targetTileId: Long): Boolean {
+    if (!isTile) return false
+    if (tileId > Long.MAX_VALUE - runLength.toLong()) {
+        throw pmTilesException(
+            PmTilesErrorCode.InvalidDirectory,
+            "Directory tile run overflows the supported TileID range.",
+        )
+    }
+    return targetTileId < tileId + runLength
+}
+
 internal fun decodeDirectory(
     bytes: ByteArray,
     header: ArchiveHeader,
