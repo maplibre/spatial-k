@@ -79,6 +79,50 @@ internal fun buildArchive(
     return bytes
 }
 
+internal fun buildArchiveWithSections(
+    fields: TestHeaderFields,
+    rootBytes: ByteArray,
+    leafBytes: ByteArray = ByteArray(0),
+    tileBytes: ByteArray = ByteArray(0),
+    minimumArchiveSize: ULong = 400uL,
+): ByteArray {
+    var archiveSize = minimumArchiveSize
+    archiveSize = maxOf(archiveSize, fields.rootOffset + fields.rootLength)
+    archiveSize = maxOf(archiveSize, fields.metadataOffset + fields.metadataLength)
+    archiveSize = maxOf(archiveSize, fields.leafDirectoriesOffset + fields.leafDirectoriesLength)
+    archiveSize = maxOf(archiveSize, fields.tileDataOffset + fields.tileDataLength)
+
+    return buildArchive(fields, archiveSize = archiveSize.toInt(), rootBytes = rootBytes).also {
+        bytes ->
+        if (leafBytes.isNotEmpty()) {
+            leafBytes.copyInto(bytes, destinationOffset = fields.leafDirectoriesOffset.toInt())
+        }
+        if (tileBytes.isNotEmpty()) {
+            tileBytes.copyInto(bytes, destinationOffset = fields.tileDataOffset.toInt())
+        }
+    }
+}
+
+internal fun buildSingleTileArchive(
+    tileBytes: ByteArray,
+    tileCompression: UInt = Compression.None.code,
+    tileType: UInt = TileType.Unknown.code,
+): ByteArray {
+    val rootBytes =
+        encodeDirectory(
+            DirectoryEntry(tileId = 0, offset = 0uL, length = tileBytes.size, runLength = 1)
+        )
+    val fields =
+        TestHeaderFields(
+            rootLength = rootBytes.size.toULong(),
+            tileDataOffset = HEADER_BYTES.toULong() + rootBytes.size.toULong(),
+            tileDataLength = tileBytes.size.toULong(),
+            tileCompression = tileCompression,
+            tileType = tileType,
+        )
+    return buildArchiveWithSections(fields, rootBytes = rootBytes, tileBytes = tileBytes)
+}
+
 internal fun encodeDirectory(vararg entries: DirectoryEntry): ByteArray {
     require(entries.isNotEmpty()) { "Directory entries are required." }
     val bytes = mutableListOf<Byte>()

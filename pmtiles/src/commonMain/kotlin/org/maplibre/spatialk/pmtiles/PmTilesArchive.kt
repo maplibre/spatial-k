@@ -64,7 +64,11 @@ private constructor(
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun getTile(z: Int, x: Int, y: Int): ArchiveTile? {
         TileIds.validateZxy(z, x, y)
-        throw NotImplementedError()
+        return readTile(
+            tileId = TileIds.fromZxy(z, x, y),
+            coord = TileCoord(z = z, x = x, y = y),
+            readMode = options.tileReadMode,
+        )
     }
 
     /** Returns the tile at [coord], or null when absent. */
@@ -74,8 +78,11 @@ private constructor(
     /** Returns the tile with [tileId], or null when absent. */
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun getTileById(tileId: Long): ArchiveTile? {
-        TileIds.toZxy(tileId)
-        throw NotImplementedError()
+        return readTile(
+            tileId = tileId,
+            coord = TileIds.toZxy(tileId),
+            readMode = options.tileReadMode,
+        )
     }
 
     /** Returns the archive byte range for the tile at [z], [x], and [y]. */
@@ -92,7 +99,11 @@ private constructor(
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun getTileCompressed(z: Int, x: Int, y: Int): ArchiveTile? {
         TileIds.validateZxy(z, x, y)
-        throw NotImplementedError()
+        return readTile(
+            tileId = TileIds.fromZxy(z, x, y),
+            coord = TileCoord(z = z, x = x, y = y),
+            readMode = TileReadMode.CompressedBytes,
+        )
     }
 
     /** Returns true when the archive contains a tile at [z], [x], and [y]. */
@@ -127,6 +138,57 @@ private constructor(
             coord = coord,
             depth = 0,
             visitedLeafRanges = mutableSetOf(),
+        )
+    }
+
+    private suspend fun readTile(
+        tileId: Long,
+        coord: TileCoord,
+        readMode: TileReadMode,
+    ): ArchiveTile? {
+        val range = findTileRange(tileId, coord) ?: return null
+        val compressedTile = readCompressedTile(range)
+        return when (readMode) {
+            TileReadMode.CompressedBytes -> compressedTile
+            TileReadMode.DecompressedBytes -> compressedTile.decompressed()
+        }
+    }
+
+    private suspend fun readCompressedTile(range: TileRange): ArchiveTile {
+        val bytes =
+            source.readSourceRange(
+                range.archiveRange,
+                archiveSize = archiveSize,
+                maxBytes = options.limits.maxTileCompressedBytes,
+            )
+        return ArchiveTile(
+            tileId = range.tileId,
+            coord = range.coord,
+            bytes = bytes,
+            tileType = range.tileType,
+            compression = range.compression,
+            wasDecompressed = false,
+            range = range,
+        )
+    }
+
+    private fun ArchiveTile.decompressed(): ArchiveTile {
+        if (compression == Compression.None) return this
+
+        val decompressedBytes =
+            decodeCompression(
+                compression,
+                bytes,
+                DecodeLimits(
+                    maxCompressedBytes = options.limits.maxTileCompressedBytes,
+                    maxDecompressedBytes = options.limits.maxTileDecompressedBytes,
+                    purpose = DecodePurpose.Tile,
+                ),
+            )
+        return copy(
+            bytes = decompressedBytes,
+            compression = Compression.None,
+            wasDecompressed = true,
         )
     }
 

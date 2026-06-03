@@ -9,6 +9,7 @@ import org.maplibre.spatialk.pmtiles.internal.HEADER_BYTES
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
 import org.maplibre.spatialk.pmtiles.internal.TestHeaderFields
 import org.maplibre.spatialk.pmtiles.internal.buildArchive
+import org.maplibre.spatialk.pmtiles.internal.buildArchiveWithSections
 import org.maplibre.spatialk.pmtiles.internal.encodeDirectory
 import org.maplibre.spatialk.pmtiles.internal.runSuspending
 
@@ -245,16 +246,6 @@ class TileLookupTest {
         fields: TestHeaderFields,
         rootBytes: ByteArray,
         leafBytes: ByteArray,
-    ): ByteArray {
-        var archiveSize = 400uL
-        archiveSize = maxOf(archiveSize, fields.rootOffset + fields.rootLength)
-        archiveSize = maxOf(archiveSize, fields.metadataOffset + fields.metadataLength)
-        archiveSize =
-            maxOf(archiveSize, fields.leafDirectoriesOffset + fields.leafDirectoriesLength)
-        archiveSize = maxOf(archiveSize, fields.tileDataOffset + fields.tileDataLength)
-        return buildArchive(fields, archiveSize = archiveSize.toInt(), rootBytes = rootBytes)
-            .also { bytes ->
-                leafBytes.copyInto(bytes, destinationOffset = fields.leafDirectoriesOffset.toInt())
-            }
-    }
+    ): ByteArray =
+        buildArchiveWithSections(fields = fields, rootBytes = rootBytes, leafBytes = leafBytes)
 }
