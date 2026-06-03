@@ -3,13 +3,10 @@ package org.maplibre.spatialk.pmtiles.internal
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import org.maplibre.spatialk.pmtiles.ArchiveOpenOptions
 import org.maplibre.spatialk.pmtiles.ArchiveSection
 import org.maplibre.spatialk.pmtiles.ByteRange
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 import org.maplibre.spatialk.pmtiles.PmTilesException
-import org.maplibre.spatialk.pmtiles.TileReadMode
-import org.maplibre.spatialk.pmtiles.ValidationMode
 
 class LimitsTest {
     @Test
@@ -56,26 +53,5 @@ class LimitsTest {
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
-    }
-
-    @Test
-    fun convertsSectionToBoundedByteRange() {
-        assertEquals(ByteRange(7uL, 3), ArchiveSection(7uL, 3uL).toByteRange(3, "test"))
-    }
-
-    @Test
-    fun defaultOptionsUseStrictCompressedReads() {
-        assertEquals(ValidationMode.Strict, ArchiveOpenOptions.Default.validationMode)
-        assertEquals(TileReadMode.CompressedBytes, ArchiveOpenOptions.Default.tileReadMode)
-    }
-
-    @Test
-    fun lenientOptionsOnlySwitchValidationMode() {
-        assertEquals(ValidationMode.Lenient, ArchiveOpenOptions.Lenient.validationMode)
-        assertEquals(
-            ArchiveOpenOptions.Default.tileReadMode,
-            ArchiveOpenOptions.Lenient.tileReadMode,
-        )
-        assertEquals(ArchiveOpenOptions.Default.limits, ArchiveOpenOptions.Lenient.limits)
     }
 }

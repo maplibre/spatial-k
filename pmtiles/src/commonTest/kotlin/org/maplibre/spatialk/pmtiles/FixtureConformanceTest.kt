@@ -1,13 +1,16 @@
 package org.maplibre.spatialk.pmtiles
 
+import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
 import org.maplibre.spatialk.pmtiles.internal.runSuspending
+import org.maplibre.spatialk.testutil.readResourceBytes
 
-internal class FixtureConformanceCases(private val readFixture: (String) -> ByteArray) {
+class FixtureConformanceTest {
+    @Test
     fun opensValidUpstreamFixtures() = runSuspending {
         validFixtures.forEach { fixture ->
             val archive = PmTilesArchive.open(TestByteRangeSource(readFixture(fixture.path)))
@@ -29,6 +32,7 @@ internal class FixtureConformanceCases(private val readFixture: (String) -> Byte
         }
     }
 
+    @Test
     fun parsesFixtureMetadata() = runSuspending {
         val vector =
             PmTilesArchive.open(
@@ -52,6 +56,7 @@ internal class FixtureConformanceCases(private val readFixture: (String) -> Byte
         assertEquals(TilesetKind("raster"), webpMetadata.type)
     }
 
+    @Test
     fun decodesGzipMvtTileFixture() = runSuspending {
         val archive =
             PmTilesArchive.open(
@@ -69,6 +74,7 @@ internal class FixtureConformanceCases(private val readFixture: (String) -> Byte
         assertEquals(0x1a, tile.bytes.first().toInt() and 0xff)
     }
 
+    @Test
     fun readsRasterFixtureThroughLeafDirectories() = runSuspending {
         val archive =
             PmTilesArchive.open(
@@ -91,6 +97,7 @@ internal class FixtureConformanceCases(private val readFixture: (String) -> Byte
         )
     }
 
+    @Test
     fun rejectsInvalidUpstreamFixtures() {
         invalidFixtures.forEach { fixture ->
             val error =
@@ -103,6 +110,7 @@ internal class FixtureConformanceCases(private val readFixture: (String) -> Byte
         }
     }
 
+    @Test
     fun opensPinnedGeneratedGoPmtilesFixture() = runSuspending {
         val archive =
             PmTilesArchive.open(
@@ -117,6 +125,8 @@ internal class FixtureConformanceCases(private val readFixture: (String) -> Byte
         assertEquals(true, archive.containsTile(1, 0, 1))
         assertEquals(false, archive.containsTile(1, 1, 0))
     }
+
+    private fun readFixture(path: String): ByteArray = readResourceBytes("fixtures/$path")
 }
 
 private data class ValidFixture(
