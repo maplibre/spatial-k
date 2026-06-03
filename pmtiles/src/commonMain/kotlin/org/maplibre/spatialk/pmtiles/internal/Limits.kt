@@ -8,7 +8,15 @@ import org.maplibre.spatialk.pmtiles.PmTilesException
 internal data class DecodeLimits(
     val maxCompressedBytes: Int,
     val maxDecompressedBytes: Int,
+    val purpose: DecodePurpose,
 )
+
+internal enum class DecodePurpose {
+    RootDirectory,
+    LeafDirectory,
+    Metadata,
+    Tile,
+}
 
 internal fun pmTilesException(
     code: PmTilesErrorCode,
