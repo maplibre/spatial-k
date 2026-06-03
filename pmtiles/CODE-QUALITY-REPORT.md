@@ -60,27 +60,31 @@ dumps, `pmtiles/SPEC-CHECKLIST.md`, and PMTiles benchmark code in `benchmark/src
 
 - Area: build verification
 - Affected file and line: Repository-wide
-- Issue: `mise run build` currently fails before completion on this machine because browser tests
-  require ChromeHeadless at `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`, and
-  Chrome is not installed. With PMTiles browser test tasks excluded, the PMTiles build passes and
-  the repository build later fails at `:units:jsBrowserTest` for the same missing Chrome binary. The
-  previously observed PMTiles aggregate JVM test compile failure is tracked and resolved as CQ-006.
-- Risk: Release verification depends on local browser availability, so the exact `mise run build`
-  gate cannot complete on this machine until Chrome or an equivalent `CHROME_BIN` is available.
+- Issue: `mise run build` depends on JS and WASM browser test tasks from the shared
+  `multiplatform-module` convention. Those tasks look for Google Chrome by default on macOS, so a
+  local Chromium install must be exposed with `CHROME_BIN` unless Google Chrome is installed at the
+  default path. This affects every module that uses `published-library` or `multiplatform-module`,
+  not just PMTiles. CI runs `./gradlew build` on `ubuntu-latest`, where browser tooling is provided
+  by the runner image. The previously observed PMTiles aggregate JVM test compile failure is tracked
+  and resolved as CQ-006.
+- Risk: Local release verification can appear blocked even when the code is correct if Chromium is
+  installed but `CHROME_BIN` is not set.
 - Resolution options:
-  - Do nothing: acceptable for this documentation/code-quality phase if the passing split test tasks
-    remain the supported verification path, but the phase's exact `mise run build` check remains
-    blocked locally.
-  - Install Chrome locally or set `CHROME_BIN`: satisfies the browser launcher on this machine.
+  - Do nothing: leaves local `mise run build` dependent on the default Google Chrome app path.
+  - Install Google Chrome locally: satisfies the default browser launcher path on macOS.
+  - Install Chromium locally and set `CHROME_BIN`: satisfies the browser launcher without requiring
+    Google Chrome.
   - Add repository-level browser provisioning or skip rules: improves repeatability, but changes
     project-wide build policy and should be handled outside this PMTiles audit.
-- Tradeoffs: Installing Chrome is a local environment action, not a repo fix. Build-policy changes
-  affect every module and should be made with maintainer agreement. The split test commands already
-  cover JVM, JS Node, WASM JS Node, and native PMTiles paths.
-- Recommended option: Track as a repository build-infra issue; keep PMTiles verification on
-  `mise run test` plus targeted PMTiles tasks until browser provisioning is defined.
-- Confidence: 3
-- Status: Needs Triage
+- Tradeoffs: Browser installation and `CHROME_BIN` are local environment actions, not PMTiles code
+  changes. Build-policy changes affect every module and should be made with maintainer agreement.
+  The split test commands already cover JVM, JS Node, WASM JS Node, and native PMTiles paths.
+- Recommended option: Install Chromium locally and set `CHROME_BIN` to
+  `/Applications/Chromium.app/Contents/MacOS/Chromium` on this machine.
+- Confidence: 4
+- Status: Completed
+- Implementation reference: Full workspace `mise run build` passed with
+  `CHROME_BIN=/Applications/Chromium.app/Contents/MacOS/Chromium`.
 
 ### CQ-004
 
