@@ -110,7 +110,7 @@ coverage checklist, not a restatement of the spec.
 - No JavaScript or TypeScript API in this specification.
 - No map renderer integration in core.
 - No package publishing, Gradle metadata, artifact-coordinate, build-system, or repository-layout
-  specification.
+  specification. Kotlin package names are public API and are specified below.
 
 ---
 
@@ -154,7 +154,19 @@ Header, root directory, options, and source are fixed after `open`.
 | Future enum tolerance | Unknown compression/tile-type codes are preserved in raw header models. Operations that require decoding fail explicitly.                  |
 | Deterministic errors  | All failures carry a stable error code suitable for Kotlin and Swift consumers.                                                            |
 
-### 6.1 Public naming policy
+### 6.1 Package policy
+
+All public declarations in this specification are in one Kotlin package:
+
+```kotlin
+package org.maplibre.spatialk.pmtiles
+```
+
+The initial public API has no public subpackages. Implementation-only packages are allowed under the
+same package root but must expose no public declarations. If a future PMTiles writer is added, it
+gets a separate specification before adding public subpackages or new artifacts.
+
+### 6.2 Public naming policy
 
 Public names avoid repeating the module name. The `PmTiles` prefix is reserved for types whose
 unprefixed names would be too generic in exported host-language APIs and whose identity is the
