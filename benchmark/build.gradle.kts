@@ -17,17 +17,6 @@ kotlin {
             implementation(project(":turf"))
             implementation(libs.kotlinx.benchmark)
         }
-
-        val jvmAndMacosMain by creating {
-            dependsOn(commonMain.get())
-            dependencies {
-                implementation(project(":pmtiles"))
-                implementation(libs.kotlinx.coroutines.core)
-            }
-        }
-
-        jvmMain.get().dependsOn(jvmAndMacosMain)
-        macosArm64Main.get().dependsOn(jvmAndMacosMain)
     }
 }
 
@@ -41,6 +30,9 @@ benchmark {
 
     targets {
         register("jvm")
+        register("js")
+        register("linuxX64")
         register("macosArm64")
+        register("mingwX64")
     }
 }
