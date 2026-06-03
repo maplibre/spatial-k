@@ -57,3 +57,26 @@ fails without this.
 
 **Floating-point comparisons in tests**: use helpers from `testutil` instead of `assertEquals` to
 handle platform-specific precision differences.
+
+## Cursor Cloud specific instructions
+
+This is a **Kotlin Multiplatform library monorepo** — there is no runnable application. End-to-end
+validation is `./gradlew build` (via `mise run build`), which compiles all targets, runs Detekt, ABI
+checks, and tests on JVM, JS Node, WASM Node, and Linux native.
+
+**Mise trust**: On a fresh VM, run `mise trust` in the repo root before `mise install`. Without
+this, mise refuses to load `/workspace/mise.toml`.
+
+**First build is slow**: The initial `./gradlew build` downloads Kotlin/Native prebuilts, Android
+NDK pieces, and npm dependencies for JS/WASM tests. Expect roughly 6–10 minutes; subsequent builds
+are much faster thanks to the Gradle daemon and caches.
+
+**Docs require Python venv**: Building or serving docs (`./gradlew :mkdocsBuild`, `mise run docs`)
+needs the system package `python3-venv` (Debian/Ubuntu: `apt install python3-venv`). The Gradle
+python plugin creates `.gradle/python` automatically once venv is available.
+
+**Lint/format**: Use `mise run check` (verify) or `mise run fix` (auto-fix + regenerate `.api` files
+after public API changes). Standard workflow commands are listed above.
+
+**Optional long-running process**: `mise run docs` starts an MkDocs live-reload server for
+documentation editing — not required for normal library development.
