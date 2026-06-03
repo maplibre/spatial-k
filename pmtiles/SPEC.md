@@ -44,16 +44,16 @@ belongs in a separate compatibility tool.
 The library must follow the official PMTiles v3 format definition. This document maps the format
 into library behavior and APIs.
 
-| Reference                                                                                                                                            | Role in this library spec                                                                                                                                                                          |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [PMTiles Version 3 Specification](https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md)                                                    | Normative binary format definition: header, sections, directories, metadata, compression, TileIDs, and pseudocode.                                                                                 |
-| [PMTiles v3 Changelog](https://github.com/protomaps/PMTiles/blob/main/spec/v3/CHANGELOG.md)                                                          | Normative change history for v3.x clarifications and enum additions. Current notable entries include AVIF, MLT, `terrarium`, MIME type, directory length clarifications, and nested-leaf guidance. |
-| [Protomaps PMTiles documentation](https://docs.protomaps.com/pmtiles/)                                                                               | Conceptual background and practical PMTiles usage model.                                                                                                                                           |
-| [Protomaps go-pmtiles](https://github.com/protomaps/go-pmtiles)                                                                                      | Compatibility target for archives produced by the primary Protomaps PMTiles tooling.                                                                                                               |
-| [TileJSON 3.0 vector_layers](https://github.com/mapbox/tilejson-spec/blob/22f5f91e643e8980ef2656674bef84c2869fbe76/3.0.0/README.md#33-vector_layers) | Required metadata key when the PMTiles header tile type is MVT.                                                                                                                                    |
-| [Kotlin releases](https://kotlinlang.org/docs/releases.html)                                                                                         | Kotlin release currency. This spec assumes the Kotlin 2.3.x-era feature set as of 2026-06-03.                                                                                                      |
-| [Kotlin Swift/Objective-C interop](https://kotlinlang.org/docs/native-objc-interop.html)                                                             | Stable Apple interop baseline.                                                                                                                                                                     |
-| [Kotlin Swift export](https://kotlinlang.org/docs/native-swift-export.html)                                                                          | Experimental direct Swift export constraints and future-facing API hygiene.                                                                                                                        |
+| Reference                                                                                                                                            | Role in this library spec                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| [PMTiles Version 3 Specification](https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md)                                                    | Normative binary format definition: header, sections, directories, metadata, compression, TileIDs, and pseudocode.                         |
+| [PMTiles v3 Changelog](https://github.com/protomaps/PMTiles/blob/main/spec/v3/CHANGELOG.md)                                                          | Normative change history for v3.x clarifications and enum additions, MIME type, directory length clarifications, and nested-leaf guidance. |
+| [Protomaps PMTiles documentation](https://docs.protomaps.com/pmtiles/)                                                                               | Conceptual background and practical PMTiles usage model.                                                                                   |
+| [Protomaps go-pmtiles](https://github.com/protomaps/go-pmtiles)                                                                                      | Compatibility target for archives produced by the primary Protomaps PMTiles tooling.                                                       |
+| [TileJSON 3.0 vector_layers](https://github.com/mapbox/tilejson-spec/blob/22f5f91e643e8980ef2656674bef84c2869fbe76/3.0.0/README.md#33-vector_layers) | Required metadata key when the PMTiles header tile type is MVT.                                                                            |
+| [Kotlin releases](https://kotlinlang.org/docs/releases.html)                                                                                         | Kotlin release currency. This spec assumes the Kotlin 2.3.x-era feature set as of 2026-06-03.                                              |
+| [Kotlin Swift/Objective-C interop](https://kotlinlang.org/docs/native-objc-interop.html)                                                             | Stable Apple interop baseline.                                                                                                             |
+| [Kotlin Swift export](https://kotlinlang.org/docs/native-swift-export.html)                                                                          | Experimental direct Swift export constraints and future-facing API hygiene.                                                                |
 
 ---
 
@@ -83,7 +83,6 @@ coverage checklist, not a restatement of the spec.
 | Counts                             | Header counts are exposed as nullable semantic values because PMTiles uses `0` for “unknown”. Raw unsigned values remain accessible for diagnostics.                                                                                               |
 | Bounds and center                  | Header positions are decoded into lon/lat models, with strict validation of sane coordinate ranges.                                                                                                                                                |
 | MVT metadata requirement           | Strict mode requires `vector_layers` when tile type is MVT. Lenient mode warns.                                                                                                                                                                    |
-| `terrarium` metadata encoding      | Reported as metadata. Core does not decode elevation pixels.                                                                                                                                                                                       |
 
 ---
 
@@ -175,7 +174,7 @@ Header, root directory, options, source identity, and codec registry are fixed a
 | Source agnostic       | All reads go through caller-provided byte ranges. Storage-specific behavior belongs to the caller’s `ByteRangeSource`.                     |
 | Coroutine core        | Kotlin IO APIs are suspending. Kotlin/Native exports suspension into Swift/Apple’s async idiom.                                            |
 | Range-first design    | `getTileRange` and `getTileCompressed` are first-class; not every caller wants decompressed bytes.                                         |
-| Validation by mode    | Strict mode rejects spec violations; lenient mode surfaces warnings for recoverable anomalies; server mode favors range serving.           |
+| Validation by mode    | Strict mode rejects spec violations; lenient mode surfaces warnings for recoverable anomalies.                                             |
 | Interop-safe DTOs     | Public APIs use simple DTOs, `UInt`/`ULong`, no deep generics, no Kotlin collections in hot paths, and no overloaded exported names.       |
 | Explicit limits       | Metadata bytes, directory bytes, tile bytes, varint length, directory entries, recursion depth, and coalesced read sizes are configurable. |
 | Future enum tolerance | Unknown compression/tile-type codes are preserved in raw header models. Operations that require decoding fail explicitly.                  |
@@ -507,36 +506,33 @@ public enum class TileReadMode {
 ```kotlin
 public enum class ValidationMode {
     STRICT,
-    LENIENT,
-    SERVER
+    LENIENT
 }
 ```
 
-| Mode      | Behavior                                                                                                                                                                                                   |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `STRICT`  | Rejects spec violations during open and traversal. Intended for ingestion, tests, and validators.                                                                                                          |
-| `LENIENT` | Allows recoverable anomalies, records warnings, and fails only when safe operation is impossible. It never ignores malformed byte lengths, overflow, or unsafe ranges.                                     |
-| `SERVER`  | Strict about archive structure, defaults to compressed-range APIs, performs tile decompression only when the caller sets `tileReadMode=DECOMPRESSED_BYTES`, and tunes cache behavior for repeated lookups. |
+| Mode      | Behavior                                                                                                                               |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `STRICT`  | Rejects spec violations during open and traversal. Intended for ingestion, tests, and validators.                                      |
+| `LENIENT` | Allows recoverable anomalies, records warnings, and fails only when safe operation is impossible. It never ignores unsafe byte ranges. |
 
 ---
 
 ## 10. Metadata
 
-Metadata is internal-compressed UTF-8 JSON. Core exposes both raw JSON and a typed convenience
-projection.
+Metadata is internal-compressed UTF-8 JSON. Core exposes the complete raw JSON string through
+`rawMetadataJson()` and parses typed metadata with `kotlinx.serialization.json`. Typed metadata
+contains fields for the keys defined by the PMTiles v3 metadata section. Arbitrary custom keys
+remain available through `rawMetadataJson()`; the core library does not model them.
 
 ```kotlin
 public data class PmTilesMetadata(
-    public val json: String,
     public val name: String?,
     public val description: String?,
     public val attribution: String?,
     public val type: TilesetKind?,
     public val version: String?,
     public val encoding: String?,
-    public val vectorLayersJson: String?,
-    public val knownFields: PmTilesKnownMetadataFields,
-    public val warnings: List<PmTilesWarning>
+    public val vectorLayersJson: String?
 )
 ```
 
@@ -546,14 +542,17 @@ public data class PmTilesMetadata(
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Valid JSON object    | Strict mode fails if metadata is not a JSON object. Lenient mode preserves raw JSON after successful UTF-8 decoding and records `INVALID_METADATA_RECOVERED`. |
 | UTF-8                | Invalid UTF-8 fails.                                                                                                                                          |
-| Unknown keys         | Preserved in raw JSON.                                                                                                                                        |
+| Custom keys          | Preserved in `rawMetadataJson()`. The core library does not expose custom-key lookup APIs.                                                                    |
 | MVT `vector_layers`  | Strict reader mode requires it when tile type is MVT; lenient mode warns.                                                                                     |
 | Attribution          | Preserved verbatim.                                                                                                                                           |
-| `encoding=terrarium` | Reported as metadata.                                                                                                                                         |
-| TileJSON fields      | Lift known values when types are compatible.                                                                                                                  |
+| Encoding             | The PMTiles-defined `encoding` string is exposed as metadata. Core does not interpret its value.                                                              |
+| PMTiles-defined keys | Lift `name`, `description`, `attribution`, `type`, `version`, `encoding`, and `vector_layers` when their JSON types match the PMTiles spec.                   |
 
-The typed metadata model is intentionally shallow. Nested vector layer information remains raw JSON
-in this library.
+The typed metadata model is intentionally shallow. `vector_layers` is exposed as raw JSON in
+`vectorLayersJson` because its structure is TileJSON-specific and can contain nested implementation
+details. If a PMTiles-defined key has the wrong JSON type, strict mode records `INVALID_METADATA`
+and fails; lenient mode leaves the typed field `null`, preserves the full raw metadata JSON, and
+records `INVALID_METADATA_RECOVERED`.
 
 ---
 
@@ -636,8 +635,8 @@ boundary, not a performance optimization.
 - Opening a normal archive costs one source read of at most 16 KiB.
 - Neighboring tile requests often share leaf directories; cache leaf directories aggressively
   relative to tile payloads.
-- Server mode favors `getTileRange` and `getTileCompressed` by using `COMPRESSED_BYTES` as its
-  default `tileReadMode`.
+- `COMPRESSED_BYTES` is the default `tileReadMode` so range-first callers do not need tile
+  decompression codecs.
 
 ### 12.3 Concurrency
 
@@ -665,7 +664,7 @@ public class PmTilesArchive private constructor(...) : AutoCloseable {
     public val tileCompression: Compression
     public val warnings: List<PmTilesWarning>
 
-    public suspend fun metadataJson(): String
+    public suspend fun rawMetadataJson(): String
     public suspend fun metadata(): PmTilesMetadata
 
     public suspend fun getTile(z: Int, x: Int, y: Int): PmTile?
@@ -699,7 +698,6 @@ public data class PmTilesOpenOptions(
 ) {
     public companion object {
         public val Default: PmTilesOpenOptions
-        public val Server: PmTilesOpenOptions
         public val Lenient: PmTilesOpenOptions
     }
 }
@@ -710,10 +708,11 @@ public data class PmTilesOpenOptions(
 ```kotlin
 val archive = PmTilesArchive.open(
     source = source,
-    options = PmTilesOpenOptions.Server
+    options = PmTilesOpenOptions.Default
 )
 
 val metadata = archive.metadata()
+val rawMetadataJson = archive.rawMetadataJson()
 val range = archive.getTileRange(12, 654, 1583)
 val tile = archive.getTile(12, 654, 1583)
 
@@ -761,6 +760,7 @@ not provide a duplicate Apple wrapper.
 let archive = try await PmTilesArchive.open(source: source)
 let header = archive.header
 let metadata = try await archive.metadata()
+let rawMetadataJson = try await archive.rawMetadataJson()
 
 if let tile = try await archive.getTile(z: 12, x: 654, y: 1583) {
     let data: Data = tile.data
@@ -871,7 +871,7 @@ decompression failures must fail even in lenient mode.
 | `maxDirectoryDecompressedBytes` | Prevent directory decompression bombs.      | Configurable.                                                                                     |
 | `maxDirectoryEntries`           | Prevent CPU/memory abuse.                   | Equal to `maxDirectoryDecompressedBytes / 17`, the minimum encoded bytes for one valid entry set. |
 | `maxTileCompressedBytes`        | Bound tile allocation for compressed reads. | Configurable.                                                                                     |
-| `maxTileDecompressedBytes`      | Bound tile decompression.                   | Configurable; `SERVER` mode defaults to `COMPRESSED_BYTES`.                                       |
+| `maxTileDecompressedBytes`      | Bound tile decompression.                   | Configurable; unused when `tileReadMode=COMPRESSED_BYTES`.                                        |
 | `maxDirectoryDepth`             | Prevent pathological nested leaf traversal. | Small default, configurable.                                                                      |
 | `maxVarintBytes`                | Reject unterminated/overflowing varints.    | Must be fixed and small enough for 64-bit values.                                                 |
 
@@ -909,7 +909,7 @@ This section defines required validation coverage for the completed library.
 
 The implementation must include tests or equivalent verification for:
 
-- official PMTiles v3 fixture archives across vector, raster, and terrain-like metadata cases
+- official PMTiles v3 fixture archives across vector, raster, and metadata cases
 - header parsing for every field and raw-code value
 - invalid magic/version/header length cases
 - section offset/length arithmetic, including overflow and legal non-canonical section order
@@ -921,7 +921,7 @@ The implementation must include tests or equivalent verification for:
 - zero-length directory entries, empty directories, unsorted TileIDs, overflowed run ranges,
   malformed offset encodings
 - metadata JSON object validation, MVT `vector_layers`, unknown metadata keys, invalid UTF-8, and
-  `terrarium` encoding
+  PMTiles-defined metadata keys
 - each compression code with present and absent codecs
 
 ### 18.2 Source conformance
