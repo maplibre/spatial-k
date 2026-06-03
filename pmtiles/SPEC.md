@@ -22,8 +22,7 @@ ByteRangeSource -> PmTilesArchive -> tile ranges / tile bytes / metadata
 Most of the library lives in `commonMain`: binary decoding, unsigned/varint handling, Hilbert math,
 directory decode, metadata parsing, validation, caches, read orchestration, and API models. The core
 library does not provide HTTP, filesystem, object-store, Blob/File, or Node source implementations.
-Callers provide a `ByteRangeSource`; future Ktor, kotlinx-io, and provider-specific integrations
-belong in separate source modules.
+Callers provide a `ByteRangeSource`.
 
 The public API is a single Kotlin API designed to export cleanly to Swift/Apple through
 Kotlin/Native interop:
@@ -53,7 +52,7 @@ into library behavior and APIs.
 | [TileJSON 3.0 vector_layers](https://github.com/mapbox/tilejson-spec/blob/22f5f91e643e8980ef2656674bef84c2869fbe76/3.0.0/README.md#33-vector_layers) | Required metadata key when the PMTiles header tile type is MVT.                                                                            |
 | [Kotlin releases](https://kotlinlang.org/docs/releases.html)                                                                                         | Kotlin release currency. This spec assumes the Kotlin 2.3.x-era feature set as of 2026-06-03.                                              |
 | [Kotlin Swift/Objective-C interop](https://kotlinlang.org/docs/native-objc-interop.html)                                                             | Stable Apple interop baseline.                                                                                                             |
-| [Kotlin Swift export](https://kotlinlang.org/docs/native-swift-export.html)                                                                          | Experimental direct Swift export constraints and future-facing API hygiene.                                                                |
+| [Kotlin Swift export](https://kotlinlang.org/docs/native-swift-export.html)                                                                          | Experimental direct Swift export constraints and API hygiene.                                                                              |
 
 ---
 
@@ -66,23 +65,23 @@ coverage checklist, not a restatement of the spec.
 | PMTiles v3 area                    | Library behavior                                                                                                                                                                                                                                   |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Magic and version                  | Reader validates `PMTiles` magic and version `3`. Unsupported versions fail with a deterministic error.                                                                                                                                            |
-| Fixed 127-byte header              | Reader parses all fields into an immutable `PmTilesHeader`. Unknown/future enum values are preserved in raw-code models.                                                                                                                           |
+| Fixed 127-byte header              | Reader parses all fields into an immutable `PmTilesHeader`. Unknown enum values are preserved in raw-code models.                                                                                                                                  |
 | Section offsets and lengths        | Reader validates section arithmetic, overflow, overlap policy, and configured operational limits. Reader supports legal non-canonical relocation except where the official spec restricts layout.                                                  |
 | Root directory within first 16 KiB | Reader opens with an initial first-16-KiB range read and requires the complete compressed root directory to be available there.                                                                                                                    |
 | JSON metadata                      | Reader exposes raw UTF-8 JSON and typed known fields.                                                                                                                                                                                              |
 | Optional leaf directories          | Reader supports leaf traversal, caching, and configurable nested-leaf depth.                                                                                                                                                                       |
 | Tile data section                  | Reader returns compressed ranges, compressed tile bytes, or PMTiles-decompressed tile bytes according to read mode.                                                                                                                                |
 | Hilbert TileID scheme              | Common code implements Z/X/Y to TileID conversion and reverse conversion, including zoom-start offsets and overflow checks.                                                                                                                        |
-| Directory entries                  | Common code supports TileID deltas, run lengths, lengths, offsets, leaf entries, tile entries, contiguous-offset shorthand, whole-directory encode/decode, and binary search by predecessor entry.                                                 |
+| Directory entries                  | Common code supports TileID deltas, run lengths, lengths, offsets, leaf entries, tile entries, contiguous-offset shorthand, whole-directory decoding, and binary search by predecessor entry.                                                      |
 | Varint encoding                    | Common code implements bounded unsigned varint reads with malformed, unterminated, and overflow detection.                                                                                                                                         |
 | Internal compression               | Applies to root directory, metadata, and each leaf directory independently. Required for opening and directory traversal.                                                                                                                          |
 | Tile compression                   | Applies uniformly to all tile payloads in the archive. Required only when callers request decompressed tile payloads. Range APIs work without tile decompression.                                                                                  |
 | Compression codes                  | Supports `Unknown`, `None`, `gzip`, `brotli`, and `zstd` model values. Unknown values are preserved in raw header models; unregistered internal compression fails at open and unregistered tile compression fails when tile decoding is requested. |
 | Tile type codes                    | Supports `Unknown/Other`, `MVT`, `PNG`, `JPEG`, `WebP`, `AVIF`, and `MLT`, plus unknown raw codes. Tile payloads remain opaque.                                                                                                                    |
-| Clustered flag                     | Reader reports the flag. Strict full-archive validation verifies clustered constraints.                                                                                                                                                            |
-| Counts                             | Header counts are exposed as nullable semantic values because PMTiles uses `0` for “unknown”. Raw unsigned values remain accessible for diagnostics.                                                                                               |
+| Clustered flag                     | Reader reports the flag. Normal tile reads do not prove clustered layout.                                                                                                                                                                          |
+| Counts                             | Header counts are exposed as nullable semantic `ULong` values because PMTiles uses `0` for “unknown”. Raw unsigned values remain accessible for diagnostics.                                                                                       |
 | Bounds and center                  | Header positions are decoded into lon/lat models, with strict validation of sane coordinate ranges.                                                                                                                                                |
-| MVT metadata requirement           | Strict mode requires `vector_layers` when tile type is MVT. Lenient mode warns.                                                                                                                                                                    |
+| MVT metadata requirement           | Strict metadata parsing requires `vector_layers` when tile type is MVT. Lenient mode warns.                                                                                                                                                        |
 
 ---
 
@@ -104,7 +103,7 @@ coverage checklist, not a restatement of the spec.
 ### Non-goals
 
 - No PMTiles v1/v2 support in the core reader.
-- No PMTiles writing. Writer behavior belongs in a separate future specification.
+- No PMTiles writing. Writer behavior belongs in a separate specification.
 - No MVT, MLT, image, raster terrain, or vector-tile semantic decoding in core.
 - No in-place PMTiles mutation.
 - No built-in HTTP, filesystem, object-store, Blob/File, or Node source implementations.
@@ -144,16 +143,16 @@ coverage checklist, not a restatement of the spec.
 
 ### 5.1 Core responsibilities
 
-| Subsystem                   | Location             | Responsibility                                                                                                                                                   |
-| --------------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Binary primitives           | `commonMain`         | Little-endian numeric reads/writes, unsigned 64-bit parsing policy, varints, bounds checks.                                                                      |
-| Tile ID math                | `commonMain`         | Hilbert conversion, zoom-start offsets, coordinate validation, TileID-to-Z/X/Y reverse conversion.                                                               |
-| Directories                 | `commonMain`         | Directory encode/decode, validation, predecessor binary search, run-length handling, leaf traversal.                                                             |
-| Metadata                    | `commonMain`         | Load internal-compressed UTF-8 JSON; expose raw JSON and typed convenience fields.                                                                               |
-| Compression API             | `commonMain`         | Codec registry, codec lookup, decode limits, read modes.                                                                                                         |
-| Compression implementations | platform source sets | `None` and gzip are built-in on every supported target; brotli/zstd are available only through `CompressionRegistry` extension codecs.                           |
-| Cache                       | `commonMain`         | Header/root memoization, lazy metadata, leaf-directory LRU, tile LRU enabled only when `PmTilesCache.tilePayloadCapacity > 0`, in-flight request de-duplication. |
-| Host exports                | target source sets   | Export annotations and names for Swift/Apple; JVM remains Kotlin-first.                                                                                          |
+| Subsystem                   | Location             | Responsibility                                                                                                                         |
+| --------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Binary primitives           | `commonMain`         | Little-endian numeric reads, unsigned 64-bit parsing policy, varints, bounds checks.                                                   |
+| Tile ID math                | `commonMain`         | Hilbert conversion, zoom-start offsets, coordinate validation, TileID-to-Z/X/Y reverse conversion.                                     |
+| Directories                 | `commonMain`         | Directory decoding, validation, predecessor binary search, run-length handling, leaf traversal.                                        |
+| Metadata                    | `commonMain`         | Load internal-compressed UTF-8 JSON; expose raw JSON and typed convenience fields.                                                     |
+| Compression API             | `commonMain`         | Codec registry, codec lookup, decode limits, read modes.                                                                               |
+| Compression implementations | platform source sets | `None` and gzip are built-in on every supported target; brotli/zstd are available only through `CompressionRegistry` extension codecs. |
+| Cache                       | `commonMain`         | Header/root memoization, lazy metadata, leaf-directory LRU, and in-flight request de-duplication.                                      |
+| Host exports                | target source sets   | Export annotations and names for Swift/Apple; JVM remains Kotlin-first.                                                                |
 
 ### 5.2 Object lifecycle
 
@@ -162,7 +161,7 @@ coverage checklist, not a restatement of the spec.
 cancels archive-managed in-flight work, and leaves the source open. Closing is idempotent.
 
 The archive object is immutable except for caches, request de-duplication maps, and close state.
-Header, root directory, options, source identity, and codec registry are fixed after `open`.
+Header, root directory, options, source, and codec registry are fixed after `open`.
 
 ---
 
@@ -188,23 +187,20 @@ Header, root directory, options, source identity, and codec registry are fixed a
 
 ```kotlin
 public data class ByteRange(
-    public val offset: Long,
+    public val offset: ULong,
     public val length: Int
 )
 
 public interface ByteRangeSource {
-    public val description: String?
     public suspend fun size(): ULong
     public suspend fun read(range: ByteRange): ByteArray
-    public suspend fun close()
 }
 ```
 
 `offset` is absolute from the start of the archive. `length` is an `Int` because all supported
 targets ultimately allocate byte arrays with platform-specific maximum sizes. PMTiles unsigned
-64-bit offsets and lengths are parsed into `ULong` models. Any read whose offset cannot fit signed
-`Long`, or whose byte allocation exceeds configured limits, fails with `LIMIT_EXCEEDED` or
-`RANGE_OUT_OF_BOUNDS`.
+64-bit offsets and lengths are parsed into `ULong` models. Any read whose byte allocation exceeds
+configured limits fails with `LIMIT_EXCEEDED` or `RANGE_OUT_OF_BOUNDS`.
 
 The reader calls `size()` during open. The source must return a stable archive size for the lifetime
 of the archive object.
@@ -235,9 +231,9 @@ public data class ArchiveSection(
 )
 
 public data class PmTilesCounts(
-    public val addressedTiles: Long?,
-    public val tileEntries: Long?,
-    public val tileContents: Long?,
+    public val addressedTiles: ULong?,
+    public val tileEntries: ULong?,
+    public val tileContents: ULong?,
     public val rawAddressedTiles: ULong,
     public val rawTileEntries: ULong,
     public val rawTileContents: ULong
@@ -312,14 +308,14 @@ TileIDs outside the `z <= 31` range with `INVALID_TILE_COORDINATE`.
 ### 7.5 Directory entries
 
 ```kotlin
-public data class DirectoryEntry(
-    public val tileId: Long,
-    public val offset: Long,
-    public val length: Int,
-    public val runLength: Int
+internal data class DirectoryEntry(
+    internal val tileId: Long,
+    internal val offset: ULong,
+    internal val length: Int,
+    internal val runLength: Int
 ) {
-    public val isLeaf: Boolean get() = runLength == 0
-    public val isTile: Boolean get() = runLength > 0
+    internal val isLeaf: Boolean get() = runLength == 0
+    internal val isTile: Boolean get() = runLength > 0
 }
 ```
 
@@ -340,11 +336,8 @@ Semantics:
 ```kotlin
 public data class TileRange(
     public val tileId: Long,
-    public val z: Int?,
-    public val x: Int?,
-    public val y: Int?,
+    public val coord: TileCoord,
     public val archiveRange: ByteRange,
-    public val compressedLength: Int,
     public val tileType: TileType,
     public val compression: Compression,
     public val directoryDepth: Int
@@ -352,9 +345,7 @@ public data class TileRange(
 
 public data class PmTile(
     public val tileId: Long,
-    public val z: Int?,
-    public val x: Int?,
-    public val y: Int?,
+    public val coord: TileCoord,
     public val bytes: ByteArray,
     public val tileType: TileType,
     public val compression: Compression,
@@ -362,9 +353,6 @@ public data class PmTile(
     public val range: TileRange
 )
 ```
-
-Coordinates are nullable for APIs that start from raw TileID or for future archive-like operations
-where reverse coordinate conversion is intentionally skipped.
 
 ---
 
@@ -375,16 +363,15 @@ exactly the requested bytes or throw a typed source error.
 
 ### 8.1 Source contract
 
-| Requirement       | Behavior                                                                                                                   |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Addressing        | `offset` is absolute from the start of the archive. `length` is a non-negative byte count.                                 |
-| Exact reads       | `read(range)` returns exactly `length` bytes or fails. Partial arrays are never returned.                                  |
-| Zero-length reads | Allowed and return an empty array. PMTiles reader code uses zero-length reads only in tests and adapter probes.            |
-| Concurrency       | Sources accept concurrent reads. Adapters for non-thread-safe APIs serialize internally before exposing `ByteRangeSource`. |
-| Stability         | Sources represent a stable archive snapshot or fail with `SOURCE_CHANGED`.                                                 |
-| Size              | `size()` returns the stable total archive size in bytes.                                                                   |
-| Close             | `close()` is idempotent and releases source-owned resources. `PmTilesArchive.close()` does not call it.                    |
-| Errors            | Source failures are wrapped or mapped to stable PMTiles error codes.                                                       |
+| Requirement       | Behavior                                                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Addressing        | `offset` is absolute from the start of the archive. `length` is a non-negative byte count.                                           |
+| Exact reads       | `read(range)` returns exactly `length` bytes or fails. Partial arrays are never returned.                                            |
+| Zero-length reads | Allowed and return an empty array. PMTiles reader code uses zero-length reads only in tests and adapter probes.                      |
+| Concurrency       | Sources accept concurrent reads. Implementations for non-thread-safe storage serialize internally before exposing `ByteRangeSource`. |
+| Stability         | Sources represent a stable archive snapshot or fail with `SOURCE_CHANGED`.                                                           |
+| Size              | `size()` returns the stable total archive size in bytes.                                                                             |
+| Errors            | `PmTilesException` from the source is preserved. Other source exceptions are wrapped as `SOURCE_UNAVAILABLE`.                        |
 
 The core library does not inspect storage-specific state. Protocols, paths, validators, redirects,
 file identity, object-store metadata, retries, authentication, and similar concerns belong to the
@@ -480,12 +467,12 @@ would exceed that depth.
 
 The reader exposes range APIs independently from payload decoding.
 
-| API                          | Returns                                                                                          | Use case                                                  |
-| ---------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------- |
-| `getTileRange(z, x, y)`      | Absolute archive byte range, compressed length, TileID, tile type, compression, directory depth. | Range serving, diagnostics, CDN-aware serving, custom IO. |
-| `getTileCompressed(z, x, y)` | Compressed bytes exactly as stored.                                                              | Tile servers preserving PMTiles tile compression.         |
-| `getTile(z, x, y)`           | Bytes according to configured read mode.                                                         | Application consumption and tests.                        |
-| `containsTile(z, x, y)`      | Boolean without fetching tile payload.                                                           | Render planning, sparse coverage checks.                  |
+| API                          | Returns                                                                                       | Use case                                                  |
+| ---------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `getTileRange(z, x, y)`      | Absolute archive byte range, TileID, coordinate, tile type, compression, and directory depth. | Range serving, diagnostics, CDN-aware serving, custom IO. |
+| `getTileCompressed(z, x, y)` | Compressed bytes exactly as stored.                                                           | Callers preserving PMTiles tile compression.              |
+| `getTile(z, x, y)`           | Bytes according to configured read mode.                                                      | Application consumption and tests.                        |
+| `containsTile(z, x, y)`      | Boolean without fetching tile payload.                                                        | Render planning, sparse coverage checks.                  |
 
 ### 9.6 Tile read modes
 
@@ -543,7 +530,7 @@ public data class PmTilesMetadata(
 | Valid JSON object    | Strict mode fails if metadata is not a JSON object. Lenient mode preserves raw JSON after successful UTF-8 decoding and records `INVALID_METADATA_RECOVERED`. |
 | UTF-8                | Invalid UTF-8 fails.                                                                                                                                          |
 | Custom keys          | Preserved in `rawMetadataJson()`. The core library does not expose custom-key lookup APIs.                                                                    |
-| MVT `vector_layers`  | Strict reader mode requires it when tile type is MVT; lenient mode warns.                                                                                     |
+| MVT `vector_layers`  | Strict metadata parsing requires it when tile type is MVT; lenient mode warns.                                                                                |
 | Attribution          | Preserved verbatim.                                                                                                                                           |
 | Encoding             | The PMTiles-defined `encoding` string is exposed as metadata. Core does not interpret its value.                                                              |
 | PMTiles-defined keys | Lift `name`, `description`, `attribution`, `type`, `version`, `encoding`, and `vector_layers` when their JSON types match the PMTiles spec.                   |
@@ -622,13 +609,12 @@ boundary, not a performance optimization.
 
 ### 12.1 Cache layers
 
-| Layer            | Default                       | Key                                                       | Invalidation                                    |
-| ---------------- | ----------------------------- | --------------------------------------------------------- | ----------------------------------------------- |
-| Header/root      | Always cached per archive.    | Archive instance.                                         | Archive close.                                  |
-| Metadata         | Lazy cached after first read. | Archive instance + metadata section.                      | Archive close or explicit clear.                |
-| Leaf directories | Enabled LRU.                  | Source identity + offset + length + internal compression. | Archive close or explicit clear.                |
-| Tile payloads    | Disabled by default.          | Source identity + TileID + range + read mode.             | Archive close, memory pressure, explicit clear. |
-| In-flight reads  | Enabled de-duplication.       | Range + read mode + compression purpose.                  | Completion or cancellation.                     |
+| Layer            | Default                       | Key                                      | Invalidation                |
+| ---------------- | ----------------------------- | ---------------------------------------- | --------------------------- |
+| Header/root      | Always cached per archive.    | Archive instance.                        | Archive close.              |
+| Metadata         | Lazy cached after first read. | Archive instance + metadata section.     | Archive close.              |
+| Leaf directories | Enabled LRU.                  | Offset + length + internal compression.  | Archive close.              |
+| In-flight reads  | Enabled de-duplication.       | Range + read mode + compression purpose. | Completion or cancellation. |
 
 ### 12.2 Performance
 
@@ -662,7 +648,6 @@ public class PmTilesArchive private constructor(...) : AutoCloseable {
     public val tileType: TileType
     public val internalCompression: Compression
     public val tileCompression: Compression
-    public val warnings: List<PmTilesWarning>
 
     public suspend fun rawMetadataJson(): String
     public suspend fun metadata(): PmTilesMetadata
@@ -674,6 +659,7 @@ public class PmTilesArchive private constructor(...) : AutoCloseable {
     public suspend fun getTileRange(z: Int, x: Int, y: Int): TileRange?
     public suspend fun getTileCompressed(z: Int, x: Int, y: Int): PmTile?
     public suspend fun containsTile(z: Int, x: Int, y: Int): Boolean
+    public fun warnings(): List<PmTilesWarning>
 
     override public fun close()
 
@@ -686,6 +672,9 @@ public class PmTilesArchive private constructor(...) : AutoCloseable {
 }
 ```
 
+`warnings()` returns a snapshot of archive-level warnings accumulated so far. Lenient metadata
+parsing and lazy leaf traversal can add warnings after `open`.
+
 ### 13.2 Open options
 
 ```kotlin
@@ -693,7 +682,6 @@ public data class PmTilesOpenOptions(
     public val validationMode: ValidationMode = ValidationMode.STRICT,
     public val tileReadMode: TileReadMode = TileReadMode.COMPRESSED_BYTES,
     public val codecRegistry: CompressionRegistry = CompressionRegistry.Default,
-    public val cache: PmTilesCache = PmTilesCache.Default,
     public val limits: PmTilesLimits = PmTilesLimits.Default
 ) {
     public companion object {
@@ -706,10 +694,7 @@ public data class PmTilesOpenOptions(
 ### 13.3 Kotlin usage
 
 ```kotlin
-val archive = PmTilesArchive.open(
-    source = source,
-    options = PmTilesOpenOptions.Default
-)
+val archive = PmTilesArchive.open(source)
 
 val metadata = archive.metadata()
 val rawMetadataJson = archive.rawMetadataJson()
@@ -785,9 +770,8 @@ if let tile = try await archive.getTile(z: 12, x: 654, y: 1583) {
 
 ```swift
 public protocol PmTilesByteRangeProvider {
-    func read(offset: Int64, length: Int32) async throws -> Data
+    func read(offset: UInt64, length: Int32) async throws -> Data
     func size() async throws -> UInt64
-    func close()
 }
 ```
 
@@ -822,8 +806,6 @@ public enum class PmTilesErrorCode {
     RANGE_OUT_OF_BOUNDS,
     SOURCE_CHANGED,
     SOURCE_UNAVAILABLE,
-    SOURCE_PROTOCOL_ERROR,
-    SOURCE_PERMISSION_DENIED,
     LIMIT_EXCEEDED,
     CLOSED,
     CANCELLED,
@@ -916,8 +898,8 @@ The implementation must include tests or equivalent verification for:
 - root directory contained in first 16 KiB
 - TileID examples from the PMTiles spec
 - Z/X/Y ↔ TileID round trips, including random high-zoom samples
-- directory encode/decode with contiguous offsets, explicit offsets, leaf entries, run-length
-  entries, and deduplicated offsets
+- directory decoding with contiguous offsets, explicit offsets, leaf entries, run-length entries,
+  and deduplicated offsets
 - zero-length directory entries, empty directories, unsorted TileIDs, overflowed run ranges,
   malformed offset encodings
 - metadata JSON object validation, MVT `vector_layers`, unknown metadata keys, invalid UTF-8, and
