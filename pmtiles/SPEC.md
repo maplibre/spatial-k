@@ -97,7 +97,8 @@ coverage checklist, not a restatement of the spec.
   disabled by default, and in-flight request de-duplication.
 - Safe behavior on untrusted archives: explicit limits, bounded decompression, overflow checks,
   deterministic errors.
-- Kotlin API that exports cleanly to Swift/Apple using Kotlin Multiplatform export support.
+- Kotlin API that works for Kotlin Multiplatform consumers and exports cleanly to Swift/Apple using
+  Kotlin Multiplatform export support.
 - Simple DTOs that work for Kotlin callers and Swift/Apple consumers without a separate rich API.
 
 ### Non-goals
@@ -107,7 +108,9 @@ coverage checklist, not a restatement of the spec.
 - No MVT, MLT, image, raster terrain, or vector-tile semantic decoding in core.
 - No in-place PMTiles mutation.
 - No built-in HTTP, filesystem, object-store, Blob/File, or Node source implementations.
-- No JavaScript or TypeScript API in this specification.
+- No JavaScript or TypeScript foreign export API in this specification. Kotlin/JS consumers use the
+  same Kotlin Multiplatform API as other Kotlin callers. The implementation does not add
+  `@JsExport`, generated TypeScript declarations, or JavaScript facade APIs.
 - No map renderer integration in core.
 - No package publishing, Gradle metadata, artifact-coordinate, build-system, or repository-layout
   specification. Kotlin package names are public API and are specified below.
@@ -118,16 +121,16 @@ coverage checklist, not a restatement of the spec.
 
 ### 5.1 Core responsibilities
 
-| Subsystem                   | Location             | Responsibility                                                                                                                        |
-| --------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Binary primitives           | `commonMain`         | Little-endian numeric reads, unsigned 64-bit parsing policy, varints, bounds checks.                                                  |
-| Tile ID math                | `commonMain`         | Hilbert conversion, zoom-start offsets, coordinate validation, TileID-to-Z/X/Y reverse conversion.                                    |
-| Directories                 | `commonMain`         | Directory decoding, validation, predecessor binary search, run-length handling, leaf traversal.                                       |
-| Metadata                    | `commonMain`         | Load internal-compressed UTF-8 JSON; expose raw JSON and typed convenience fields.                                                    |
-| Compression                 | `commonMain`         | Compression code modeling, built-in decoder lookup, decode limits, and read modes.                                                    |
-| Compression implementations | platform source sets | `None` and gzip are built-in on every supported target; brotli/zstd are recognized values but are not decoded by this implementation. |
-| Cache                       | `commonMain`         | Header/root memoization, lazy metadata, leaf-directory LRU, and in-flight request de-duplication.                                     |
-| Host exports                | target source sets   | Export annotations and names for Swift/Apple; JVM remains Kotlin-first.                                                               |
+| Subsystem                   | Location             | Responsibility                                                                                                                                                                                                                                           |
+| --------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Binary primitives           | `commonMain`         | Little-endian numeric reads, unsigned 64-bit parsing policy, varints, bounds checks.                                                                                                                                                                     |
+| Tile ID math                | `commonMain`         | Hilbert conversion, zoom-start offsets, coordinate validation, TileID-to-Z/X/Y reverse conversion.                                                                                                                                                       |
+| Directories                 | `commonMain`         | Directory decoding, validation, predecessor binary search, run-length handling, leaf traversal.                                                                                                                                                          |
+| Metadata                    | `commonMain`         | Load internal-compressed UTF-8 JSON; expose raw JSON and typed convenience fields.                                                                                                                                                                       |
+| Compression                 | `commonMain`         | Compression code modeling, built-in decoder lookup, decode limits, and read modes.                                                                                                                                                                       |
+| Compression implementations | platform source sets | `None` is built in on every supported target. gzip is built in on JVM and Kotlin/Native targets. JavaScript and WASM gzip actuals compile and throw `NotImplementedError`. brotli/zstd are recognized values but are not decoded by this implementation. |
+| Cache                       | `commonMain`         | Header/root memoization, lazy metadata, leaf-directory LRU, and in-flight request de-duplication.                                                                                                                                                        |
+| Host exports                | target source sets   | Export annotations and names for Swift/Apple; JVM remains Kotlin-first.                                                                                                                                                                                  |
 
 ### 5.2 Object lifecycle
 
@@ -146,7 +149,7 @@ Header, root directory, options, and source are fixed after `open`.
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | Opaque tile payloads  | Tiles are bytes plus tile type/compression metadata. Core never parses MVT, MLT, raster image formats, or terrain pixels.                  |
 | Source agnostic       | All reads go through caller-provided byte ranges. Storage-specific behavior belongs to the caller’s `ByteRangeSource`.                     |
-| Coroutine core        | Kotlin IO APIs are suspending. Kotlin/Native exports suspension into Swift/Apple’s async idiom.                                            |
+| Coroutine core        | Kotlin IO APIs are suspending. Kotlin/JS callers use Kotlin coroutines. Kotlin/Native exports suspension into Swift/Apple’s async idiom.   |
 | Range-first design    | `getTileRange` and `getTileCompressed` are first-class; not every caller wants decompressed bytes.                                         |
 | Validation by mode    | Strict mode rejects spec violations; lenient mode surfaces warnings for recoverable anomalies.                                             |
 | Interop-safe DTOs     | Public APIs use simple DTOs, `UInt`/`ULong`, no deep generics, no Kotlin collections in hot paths, and no overloaded exported names.       |
@@ -568,23 +571,24 @@ implementation detail selected from the PMTiles compression code and the decode 
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Unknown     | Preserve code in header models. Fail at `open` when used as internal compression. Fail only at tile decode time when used as tile compression.                                  |
 | None        | Built-in on every supported target.                                                                                                                                             |
-| gzip        | Built-in on every supported target for internal compression, metadata, and decompressed tile APIs. This is required for compatibility with archives produced by go-pmtiles.     |
+| gzip        | Built-in on JVM and Kotlin/Native targets for internal compression, metadata, and decompressed tile APIs. JavaScript and WASM actuals compile and throw `NotImplementedError`.  |
 | brotli      | Enum value is supported, but brotli decoding is not implemented. Fail at `open` when used as internal compression. Fail only at tile decode time when used as tile compression. |
 | zstd        | Enum value is supported, but zstd decoding is not implemented. Fail at `open` when used as internal compression. Fail only at tile decode time when used as tile compression.   |
 
-The base library deliberately standardizes on gzip rather than making compression availability vary
-by platform. JVM uses `java.util.zip.GZIPInputStream` over `ByteArrayInputStream`. Apple/native
-targets use zlib through Kotlin/Native C interop, specifically `inflateInit2` with `16 + MAX_WBITS`
-so the decoder accepts gzip-wrapped deflate, followed by `inflate` until `Z_STREAM_END` and
-`inflateEnd` in all exit paths. The implementation does not use Foundation’s Compression framework
-for PMTiles gzip decoding. Brotli and zstd remain valid PMTiles enum values, but supporting them
-would require additional target-specific dependencies and is not needed for current
-Protomaps-generated archives.
+The base library standardizes on gzip for JVM and Kotlin/Native targets. JVM uses
+`java.util.zip.GZIPInputStream` over `ByteArrayInputStream`. Kotlin/Native targets use zlib through
+Kotlin/Native C interop, specifically `inflateInit2` with `16 + MAX_WBITS` so the decoder accepts
+gzip-wrapped deflate, followed by `inflate` until `Z_STREAM_END` and `inflateEnd` in all exit paths.
+The implementation does not use Foundation’s Compression framework for PMTiles gzip decoding.
+JavaScript and WASM gzip actuals compile and throw `NotImplementedError` when invoked. Brotli and
+zstd remain valid PMTiles enum values, but supporting them would require additional target-specific
+dependencies and is not needed for current Protomaps-generated archives.
 
-Both gzip implementations decode into bounded chunks and check `DecodeLimits.maxDecompressedBytes`
-before appending output. JVM `GZIPInputStream` `IOException`/`ZipException`, zlib initialization
-failure, zlib stream errors, truncated input, and output beyond the configured limit fail with
-`DecompressionFailed` or `LimitExceeded` as appropriate.
+JVM and Kotlin/Native gzip implementations decode into bounded chunks and check
+`DecodeLimits.maxDecompressedBytes` before appending output. JVM `GZIPInputStream`
+`IOException`/`ZipException`, zlib initialization failure, zlib stream errors, truncated input, and
+output beyond the configured limit fail with `DecompressionFailed` or `LimitExceeded` as
+appropriate.
 
 ### 11.3 Decompression limits
 

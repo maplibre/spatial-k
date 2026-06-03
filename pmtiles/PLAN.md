@@ -14,27 +14,31 @@ Operating rules:
   that change understandable.
 - Split a phase into multiple commits when the phase contains independent implementation,
   test/fixture, benchmark, documentation, or API-dump changes.
-- Do not add PMTiles writing, built-in HTTP/filesystem sources, JavaScript API, or caller codec
-  registration in this implementation series.
+- Do not add PMTiles writing, built-in HTTP/filesystem sources, foreign JavaScript export surfaces,
+  or caller codec registration in this implementation series. Foreign JavaScript export surfaces are
+  `@JsExport`, generated TypeScript declarations, and JavaScript facade APIs. Kotlin/JS consumers
+  use the same Kotlin API as other Kotlin Multiplatform consumers.
 
 ## Phase 1: Module Scaffold And API Skeleton
 
 Scope:
 
 - Add the `pmtiles` module and wire it into the workspace build.
-- Add source sets needed by the spec: `commonMain`, platform gzip implementation source sets, and
-  Apple source set for Foundation conveniences.
-- Configure exactly these `pmtiles` targets: `jvm`, `macosArm64`, `macosX64`, `iosArm64`, `iosX64`,
-  and `iosSimulatorArm64`. Do not add JavaScript, TypeScript, WASM, Linux, Windows, watchOS, tvOS,
-  Android Native, or pure-Java wrapper targets.
+- Add source sets needed by the spec: `commonMain`, platform gzip implementation source sets,
+  JavaScript/WASM gzip placeholder source sets, and Apple source set for Foundation conveniences.
+- Configure the standard repository Kotlin Multiplatform target set used by `multiplatform-module`:
+  `jvm`, `js` browser and Node, `wasmJs` browser/Node/D8, `wasmWasi` Node, `macosArm64`, `macosX64`,
+  `iosArm64`, `iosX64`, `iosSimulatorArm64`, `linuxX64`, `linuxArm64`, `mingwX64`,
+  `watchosSimulatorArm64`, `watchosX64`, `watchosArm32`, `watchosArm64`, `watchosDeviceArm64`,
+  `tvosSimulatorArm64`, `tvosX64`, `tvosArm64`, `androidNativeArm32`, `androidNativeArm64`,
+  `androidNativeX86`, and `androidNativeX64`.
 - Add public DTOs, enums, error types, source interfaces, and `PmTilesArchive` method signatures.
 - Functions not implemented in Phase 1 throw `NotImplementedError`.
 
 Tests and checks:
 
 - API dump generation with `mise run fix`.
-- Compile the six `pmtiles` targets:
-  `mise exec -- ./gradlew :pmtiles:jvmMainClasses :pmtiles:compileKotlinMacosArm64 :pmtiles:compileKotlinMacosX64 :pmtiles:compileKotlinIosArm64 :pmtiles:compileKotlinIosX64 :pmtiles:compileKotlinIosSimulatorArm64`
+- Compile the standard repository `pmtiles` target set: `mise exec -- ./gradlew :pmtiles:assemble`
 
 Completion criteria:
 
@@ -87,8 +91,10 @@ Scope:
 
 - Implement `None` decoding in common code.
 - Implement JVM gzip decoding with `java.util.zip.GZIPInputStream` over `ByteArrayInputStream`.
-- Implement Apple/native gzip decoding with zlib C interop: `inflateInit2(16 + MAX_WBITS)`, repeated
-  `inflate`, and `inflateEnd` on every exit path.
+- Implement Kotlin/Native gzip decoding with zlib C interop: `inflateInit2(16 + MAX_WBITS)`,
+  repeated `inflate`, and `inflateEnd` on every exit path.
+- Add JavaScript and WASM gzip actual implementations that compile and throw `NotImplementedError`
+  when gzip decoding is invoked.
 - Preserve `Unknown`, `Brotli`, and `Zstd` compression codes without decoding them.
 - Enforce decode limits before allocation and during decompression.
 
@@ -97,8 +103,9 @@ Tests:
 - `None` and gzip decode for metadata/directory/tile purposes.
 - JVM gzip tests cover valid gzip, truncated gzip, invalid gzip, and decompressed-size limit
   failures from `GZIPInputStream`.
-- Apple/native gzip tests cover valid gzip, truncated gzip, invalid gzip, zlib stream errors, and
+- Kotlin/Native gzip tests cover valid gzip, truncated gzip, invalid gzip, zlib stream errors, and
   decompressed-size limit failures from the zlib path.
+- JavaScript and WASM gzip tests assert that invoking gzip decoding throws `NotImplementedError`.
 - Unsupported unknown/brotli/zstd failures when decompression is required.
 - Decompression limit failures.
 
@@ -268,7 +275,7 @@ Scope:
 
 Tests:
 
-- Compile the six `pmtiles` targets listed in Phase 1 after adding the Apple declarations.
+- Compile the standard repository `pmtiles` target set after adding the Apple declarations.
 - Exact, short, and long `NSData` results from `ByteRangeDataSource`.
 - Copy behavior for `NSData` conversions.
 - API dump generation with `mise run fix`.
@@ -353,7 +360,8 @@ Scope:
 - Document source ownership, close behavior, compression support, warning behavior, and metadata
   behavior.
 - Document unsupported scope in user-facing docs and release notes: no PMTiles writing, no built-in
-  HTTP/filesystem sources, no JS API, and no custom compression registry.
+  HTTP/filesystem sources, no foreign JavaScript export surface, no JavaScript/WASM gzip
+  decompression, and no custom compression registry.
 - Produce `pmtiles/SPEC-CHECKLIST.md`, a markdown checklist mapping each normative claim in
   `SPEC.md` to implementation files and tests. Each row must include the spec section, claim,
   implementation reference, test reference, and status.
