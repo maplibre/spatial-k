@@ -38,9 +38,10 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveHeader {
 public final class org/maplibre/spatialk/pmtiles/ArchiveLimits {
 	public static final field Companion Lorg/maplibre/spatialk/pmtiles/ArchiveLimits$Companion;
 	public fun <init> ()V
-	public fun <init> (IIIIIIIII)V
-	public synthetic fun <init> (IIIIIIIIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (IIIIIIIIII)V
+	public synthetic fun <init> (IIIIIIIIIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()I
+	public final fun component10 ()I
 	public final fun component2 ()I
 	public final fun component3 ()I
 	public final fun component4 ()I
@@ -49,14 +50,15 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveLimits {
 	public final fun component7 ()I
 	public final fun component8 ()I
 	public final fun component9 ()I
-	public final fun copy (IIIIIIIII)Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;
-	public static synthetic fun copy$default (Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;IIIIIIIIIILjava/lang/Object;)Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;
+	public final fun copy (IIIIIIIIII)Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;IIIIIIIIIIILjava/lang/Object;)Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMaxDirectoryCompressedBytes ()I
 	public final fun getMaxDirectoryDecompressedBytes ()I
 	public final fun getMaxDirectoryDepth ()I
 	public final fun getMaxDirectoryEntries ()I
 	public final fun getMaxInitialReadBytes ()I
+	public final fun getMaxLeafDirectoryCacheEntries ()I
 	public final fun getMaxMetadataBytes ()I
 	public final fun getMaxTileCompressedBytes ()I
 	public final fun getMaxTileDecompressedBytes ()I

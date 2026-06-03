@@ -933,6 +933,7 @@ Strict mode and lenient mode handle warning-code conditions as follows:
 | `maxTileCompressedBytes`        | Bound tile allocation for compressed reads. | Configurable.                                                                                     |
 | `maxTileDecompressedBytes`      | Bound tile decompression.                   | Configurable; unused when `tileReadMode=CompressedBytes`.                                         |
 | `maxDirectoryDepth`             | Prevent pathological nested leaf traversal. | Small default, configurable.                                                                      |
+| `maxLeafDirectoryCacheEntries`  | Bound per-archive leaf directory cache.     | 128 entries.                                                                                      |
 | `maxVarintBytes`                | Reject unterminated/overflowing varints.    | Must be fixed and small enough for 64-bit values.                                                 |
 
 ---

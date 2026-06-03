@@ -29,6 +29,7 @@ public enum class ValidationMode {
  * @property maxTileCompressedBytes Maximum compressed tile payload bytes.
  * @property maxTileDecompressedBytes Maximum decompressed tile payload bytes.
  * @property maxDirectoryDepth Maximum leaf-directory traversal depth.
+ * @property maxLeafDirectoryCacheEntries Maximum leaf directories cached per archive.
  * @property maxVarintBytes Maximum bytes in a decoded varint.
  */
 public data class ArchiveLimits(
@@ -40,6 +41,7 @@ public data class ArchiveLimits(
     public val maxTileCompressedBytes: Int = 64 * 1024 * 1024,
     public val maxTileDecompressedBytes: Int = 64 * 1024 * 1024,
     public val maxDirectoryDepth: Int = 3,
+    public val maxLeafDirectoryCacheEntries: Int = 128,
     public val maxVarintBytes: Int = 10,
 ) {
     /** Default archive read limits. */

@@ -1,13 +1,21 @@
 @file:OptIn(
+    kotlin.concurrent.atomics.ExperimentalAtomicApi::class,
     kotlin.experimental.ExperimentalObjCName::class,
     kotlin.experimental.ExperimentalObjCRefinement::class,
 )
 
 package org.maplibre.spatialk.pmtiles
 
+import kotlin.concurrent.atomics.AtomicBoolean
+import kotlin.concurrent.atomics.AtomicReference
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.native.HiddenFromObjC
 import kotlin.native.ObjCName
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -44,12 +52,15 @@ private constructor(
     private val options: ArchiveOpenOptions,
     private val archiveSize: ULong,
     private val rootDirectory: List<DirectoryEntry>,
-    private val archiveWarnings: MutableList<ArchiveWarning>,
+    initialWarnings: List<ArchiveWarning>,
 ) : AutoCloseable {
-    private val leafDirectoryCache = mutableMapOf<ByteRange, List<DirectoryEntry>>()
+    private val stateMutex = Mutex()
+    private val closed = AtomicBoolean(false)
+    private val archiveWarnings = AtomicReference(initialWarnings)
+    private val leafDirectoryCache = LinkedHashMap<ByteRange, List<DirectoryEntry>>()
+    private val inFlightSourceReads = mutableMapOf<SourceReadKey, CompletableDeferred<ByteArray>>()
     private var rawMetadataJsonCache: String? = null
     private var metadataCache: ArchiveMetadata? = null
-    private var closed = false
 
     /** Tile payload type from the header. */
     public val tileType: TileType = header.tileType
@@ -63,8 +74,7 @@ private constructor(
     /** Returns the raw metadata JSON string. */
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun rawMetadataJson(): String {
-        checkOpen()
-        rawMetadataJsonCache?.let {
+        cachedRawMetadataJson()?.let {
             return it
         }
 
@@ -73,12 +83,11 @@ private constructor(
                 ""
             } else {
                 val compressedBytes =
-                    source.readSourceRange(
+                    readSourceRangeDeduplicated(
                         header.metadata.toByteRange(
                             options.limits.maxMetadataBytes,
                             "Metadata",
                         ),
-                        archiveSize = archiveSize,
                         maxBytes = options.limits.maxMetadataBytes,
                     )
                 val metadataBytes =
@@ -94,21 +103,18 @@ private constructor(
                 metadataBytes.decodeMetadataUtf8()
             }
 
-        rawMetadataJsonCache = json
-        return json
+        return cacheRawMetadataJson(json)
     }
 
     /** Returns typed PMTiles metadata fields. */
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun metadata(): ArchiveMetadata {
-        checkOpen()
-        metadataCache?.let {
+        cachedMetadata()?.let {
             return it
         }
 
-        val parsed = parseMetadata(rawMetadataJson())
-        metadataCache = parsed
-        return parsed
+        val rawJson = rawMetadataJson()
+        return parseAndCacheMetadata(rawJson)
     }
 
     /** Returns the tile at [z], [x], and [y], or null when absent. */
@@ -165,20 +171,26 @@ private constructor(
 
     /** Number of warnings recorded by this archive. */
     public val warningCount: Int
-        get() = archiveWarnings.size
+        get() = archiveWarnings.load().size
 
     /** Returns the warning at [index], or null when [index] is outside the warning list. */
     @ObjCName(name = "warningAt", swiftName = "warning")
     public fun warningAt(@ObjCName(name = "at", swiftName = "at") index: Int): ArchiveWarning? =
-        archiveWarnings.getOrNull(index)
+        archiveWarnings.load().getOrNull(index)
 
     /** Returns a snapshot of warnings recorded by this archive. */
-    @HiddenFromObjC public fun warnings(): List<ArchiveWarning> = archiveWarnings.toList()
+    @HiddenFromObjC public fun warnings(): List<ArchiveWarning> = archiveWarnings.load()
 
     /** Releases archive-owned caches and in-flight work. */
     override public fun close() {
-        closed = true
-        leafDirectoryCache.clear()
+        if (!closed.compareAndSet(expectedValue = false, newValue = true)) return
+        if (stateMutex.tryLock()) {
+            try {
+                clearStateForCloseLocked()
+            } finally {
+                stateMutex.unlock()
+            }
+        }
     }
 
     private suspend fun findTileRange(tileId: Long, coord: TileCoord): TileRange? {
@@ -207,9 +219,8 @@ private constructor(
 
     private suspend fun readCompressedTile(range: TileRange): ArchiveTile {
         val bytes =
-            source.readSourceRange(
+            readSourceRangeDeduplicated(
                 range.archiveRange,
-                archiveSize = archiveSize,
                 maxBytes = options.limits.maxTileCompressedBytes,
             )
         return ArchiveTile(
@@ -298,22 +309,24 @@ private constructor(
                 "MVT metadata must contain `vector_layers`.",
             )
         }
-        archiveWarnings +=
+        appendWarningLocked(
             ArchiveWarning(
                 code = ArchiveWarningCode.MissingVectorLayers,
                 message = "MVT metadata does not contain `vector_layers`.",
             )
+        )
     }
 
     private fun recoverMetadata(message: String, cause: Throwable? = null) {
         if (options.validationMode == ValidationMode.Strict) {
             throw pmTilesException(PmTilesErrorCode.InvalidMetadata, message, cause)
         }
-        archiveWarnings +=
+        appendWarningLocked(
             ArchiveWarning(
                 code = ArchiveWarningCode.InvalidMetadataRecovered,
                 message = message,
             )
+        )
     }
 
     private suspend fun findTileRange(
@@ -352,12 +365,13 @@ private constructor(
                     "Nested leaf directories are not allowed in strict mode.",
                 )
             }
-            archiveWarnings +=
+            appendWarningLocked(
                 ArchiveWarning(
                     code = ArchiveWarningCode.NestedLeafDirectory,
                     message = "Lookup traversed a nested leaf directory.",
                     context = "depth=$depth tileId=${entry.tileId}",
                 )
+            )
         }
 
         val range = entry.toLeafRange()
@@ -368,14 +382,13 @@ private constructor(
             )
         }
 
-        leafDirectoryCache[range]?.let {
+        cachedLeafDirectory(range)?.let {
             return it
         }
 
         val compressedBytes =
-            source.readSourceRange(
+            readSourceRangeDeduplicated(
                 range,
-                archiveSize = archiveSize,
                 maxBytes = options.limits.maxDirectoryCompressedBytes,
             )
         val directoryBytes =
@@ -388,9 +401,8 @@ private constructor(
                     purpose = DecodePurpose.LeafDirectory,
                 ),
             )
-        return decodeDirectory(directoryBytes, header, options.limits).also { directory ->
-            leafDirectoryCache[range] = directory
-        }
+        val directory = decodeDirectory(directoryBytes, header, options.limits)
+        return cacheLeafDirectory(range, directory)
     }
 
     private fun DirectoryEntry.toTileRange(tileId: Long, coord: TileCoord, depth: Int): TileRange =
@@ -424,9 +436,150 @@ private constructor(
         )
 
     private fun checkOpen() {
-        if (closed) {
+        if (closed.load()) {
             throw pmTilesException(PmTilesErrorCode.Closed, "PMTiles archive is closed.")
         }
+    }
+
+    private fun checkOpenLocked() {
+        if (closed.load()) {
+            clearStateForCloseLocked()
+            throw closedException()
+        }
+    }
+
+    private fun closedException(): PmTilesException =
+        pmTilesException(PmTilesErrorCode.Closed, "PMTiles archive is closed.")
+
+    private suspend fun cachedRawMetadataJson(): String? = stateMutex.withLock {
+        checkOpenLocked()
+        rawMetadataJsonCache
+    }
+
+    private suspend fun cacheRawMetadataJson(json: String): String = stateMutex.withLock {
+        checkOpenLocked()
+        rawMetadataJsonCache ?: json.also { rawMetadataJsonCache = it }
+    }
+
+    private suspend fun cachedMetadata(): ArchiveMetadata? = stateMutex.withLock {
+        checkOpenLocked()
+        metadataCache
+    }
+
+    private suspend fun parseAndCacheMetadata(rawJson: String): ArchiveMetadata =
+        stateMutex.withLock {
+            checkOpenLocked()
+            metadataCache ?: parseMetadata(rawJson).also { metadataCache = it }
+        }
+
+    private suspend fun cachedLeafDirectory(range: ByteRange): List<DirectoryEntry>? =
+        stateMutex.withLock {
+            checkOpenLocked()
+            val cached = leafDirectoryCache.remove(range) ?: return@withLock null
+            leafDirectoryCache[range] = cached
+            cached
+        }
+
+    private suspend fun cacheLeafDirectory(
+        range: ByteRange,
+        directory: List<DirectoryEntry>,
+    ): List<DirectoryEntry> = stateMutex.withLock {
+        checkOpenLocked()
+        leafDirectoryCache.remove(range)?.let { cached ->
+            leafDirectoryCache[range] = cached
+            return@withLock cached
+        }
+        if (options.limits.maxLeafDirectoryCacheEntries > 0) {
+            leafDirectoryCache[range] = directory
+            while (leafDirectoryCache.size > options.limits.maxLeafDirectoryCacheEntries) {
+                leafDirectoryCache.remove(leafDirectoryCache.keys.first())
+            }
+        }
+        directory
+    }
+
+    private suspend fun readSourceRangeDeduplicated(
+        range: ByteRange,
+        maxBytes: Int,
+    ): ByteArray {
+        val key = SourceReadKey(range = range, maxBytes = maxBytes)
+        var ownsRead = false
+        val inFlight = stateMutex.withLock {
+            checkOpenLocked()
+            inFlightSourceReads[key]?.let {
+                return@withLock it
+            }
+            CompletableDeferred<ByteArray>().also {
+                inFlightSourceReads[key] = it
+                ownsRead = true
+            }
+        }
+
+        if (!ownsRead) return inFlight.await()
+
+        return try {
+            val bytes =
+                source.readSourceRange(
+                    range,
+                    archiveSize = archiveSize,
+                    maxBytes = maxBytes,
+                )
+            completeSourceRead(key, inFlight, bytes)
+            bytes
+        } catch (error: Throwable) {
+            val completionError = failSourceRead(key, inFlight, error)
+            throw completionError
+        }
+    }
+
+    private suspend fun completeSourceRead(
+        key: SourceReadKey,
+        inFlight: CompletableDeferred<ByteArray>,
+        bytes: ByteArray,
+    ) {
+        stateMutex.withLock {
+            inFlightSourceReads.remove(key)
+            if (closed.load()) {
+                clearStateForCloseLocked()
+                val error = closedException()
+                inFlight.completeExceptionally(error)
+                throw error
+            }
+            inFlight.complete(bytes)
+        }
+    }
+
+    private suspend fun failSourceRead(
+        key: SourceReadKey,
+        inFlight: CompletableDeferred<ByteArray>,
+        error: Throwable,
+    ): Throwable =
+        withContext(NonCancellable) {
+            stateMutex.withLock {
+                inFlightSourceReads.remove(key)
+                val completionError =
+                    if (closed.load() && error !is CancellationException) {
+                        closedException()
+                    } else {
+                        error
+                    }
+                if (closed.load()) clearStateForCloseLocked()
+                inFlight.completeExceptionally(completionError)
+                completionError
+            }
+        }
+
+    private fun appendWarningLocked(warning: ArchiveWarning) {
+        archiveWarnings.store(archiveWarnings.load() + warning)
+    }
+
+    private fun clearStateForCloseLocked() {
+        rawMetadataJsonCache = null
+        metadataCache = null
+        leafDirectoryCache.clear()
+        val error = closedException()
+        inFlightSourceReads.values.forEach { it.completeExceptionally(error) }
+        inFlightSourceReads.clear()
     }
 
     /** Factory methods for PMTiles archives. */
@@ -472,11 +625,16 @@ private constructor(
                 options = options,
                 archiveSize = sourceSize,
                 rootDirectory = rootDirectory,
-                archiveWarnings = parsedHeader.warnings.toMutableList(),
+                initialWarnings = parsedHeader.warnings,
             )
         }
     }
 }
+
+private data class SourceReadKey(
+    val range: ByteRange,
+    val maxBytes: Int,
+)
 
 private fun ByteArray.decodeMetadataUtf8(): String =
     try {
