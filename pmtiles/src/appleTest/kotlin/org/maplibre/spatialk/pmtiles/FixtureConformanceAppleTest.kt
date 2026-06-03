@@ -1,8 +1,7 @@
 package org.maplibre.spatialk.pmtiles
 
 import kotlin.test.Test
-import platform.Foundation.NSFileManager
-import platform.Foundation.NSProcessInfo
+import org.maplibre.spatialk.testutil.readResourceBytes
 
 class FixtureConformanceAppleTest {
     private val fixtures = FixtureConformanceCases(::readFixtureBytes)
@@ -22,19 +21,5 @@ class FixtureConformanceAppleTest {
     @Test
     fun opensPinnedGeneratedGoPmtilesFixture() = fixtures.opensPinnedGeneratedGoPmtilesFixture()
 
-    private fun readFixtureBytes(path: String): ByteArray {
-        val candidates =
-            listOfNotNull(
-                "src/commonTest/resources/fixtures/$path",
-                projectDir()?.let { "$it/src/commonTest/resources/fixtures/$path" },
-            )
-        val data =
-            candidates.firstNotNullOfOrNull { fixturePath ->
-                NSFileManager.defaultManager.contentsAtPath(fixturePath)
-            } ?: error("Missing fixture $path; tried ${candidates.joinToString()}")
-        return data.toByteArray()
-    }
-
-    private fun projectDir(): String? =
-        NSProcessInfo.processInfo.environment["PMTILES_PROJECT_DIR"] as? String
+    private fun readFixtureBytes(path: String): ByteArray = readResourceBytes("fixtures/$path")
 }

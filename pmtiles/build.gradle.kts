@@ -1,17 +1,7 @@
-plugins { id("published-library") }
-
-tasks
-    .withType<org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeHostTest>()
-    .configureEach {
-        environment("PMTILES_PROJECT_DIR", projectDir.absolutePath)
-    }
-
-tasks
-    .withType<org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeSimulatorTest>()
-    .configureEach {
-        environment("PMTILES_PROJECT_DIR", projectDir.absolutePath)
-        environment("SIMCTL_CHILD_PMTILES_PROJECT_DIR", projectDir.absolutePath)
-    }
+plugins {
+    id("published-library")
+    id("test-resources")
+}
 
 kotlin {
     sourceSets {
@@ -32,6 +22,7 @@ kotlin {
 
         commonTest.dependencies {
             implementation(libs.kotlinx.coroutines.test)
+            implementation(project(":testutil"))
         }
 
         jvmTest.dependencies {

@@ -1,8 +1,7 @@
 package org.maplibre.spatialk.pmtiles
 
-import java.nio.file.Files
-import java.nio.file.Path
 import kotlin.test.Test
+import org.maplibre.spatialk.testutil.readResourceBytes
 
 class FixtureConformanceJvmTest {
     private val fixtures = FixtureConformanceCases(::readFixtureBytes)
@@ -22,6 +21,5 @@ class FixtureConformanceJvmTest {
     @Test
     fun opensPinnedGeneratedGoPmtilesFixture() = fixtures.opensPinnedGeneratedGoPmtilesFixture()
 
-    private fun readFixtureBytes(path: String): ByteArray =
-        Files.readAllBytes(Path.of("src/commonTest/resources/fixtures/$path"))
+    private fun readFixtureBytes(path: String): ByteArray = readResourceBytes("fixtures/$path")
 }
