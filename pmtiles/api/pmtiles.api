@@ -275,7 +275,7 @@ public final class org/maplibre/spatialk/pmtiles/LonLatBounds {
 
 public final class org/maplibre/spatialk/pmtiles/PmTilesArchive : java/lang/AutoCloseable {
 	public static final field Companion Lorg/maplibre/spatialk/pmtiles/PmTilesArchive$Companion;
-	public synthetic fun <init> (Lorg/maplibre/spatialk/pmtiles/ArchiveHeader;Lorg/maplibre/spatialk/pmtiles/ByteRangeSource;Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;J[BLjava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lorg/maplibre/spatialk/pmtiles/ArchiveHeader;Lorg/maplibre/spatialk/pmtiles/ByteRangeSource;Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;JLjava/util/List;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun close ()V
 	public final fun containsTile (IIILkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun getHeader ()Lorg/maplibre/spatialk/pmtiles/ArchiveHeader;

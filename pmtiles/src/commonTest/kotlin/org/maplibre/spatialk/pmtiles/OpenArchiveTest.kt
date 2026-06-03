@@ -6,6 +6,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import org.maplibre.spatialk.pmtiles.internal.FIRST_READ_BYTES
 import org.maplibre.spatialk.pmtiles.internal.HEADER_BYTES
+import org.maplibre.spatialk.pmtiles.internal.MINIMAL_ROOT_DIRECTORY_BYTES
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
 import org.maplibre.spatialk.pmtiles.internal.TestHeaderFields
 import org.maplibre.spatialk.pmtiles.internal.buildArchive
@@ -21,11 +22,20 @@ class OpenArchiveTest {
         val archive = PmTilesArchive.open(source)
 
         assertEquals(3, archive.header.specVersion)
-        assertEquals(ArchiveSection(HEADER_BYTES.toULong(), 1uL), archive.header.rootDirectory)
+        assertEquals(
+            ArchiveSection(
+                HEADER_BYTES.toULong(),
+                MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong(),
+            ),
+            archive.header.rootDirectory,
+        )
         assertEquals(Compression.None, archive.internalCompression)
         assertEquals(TileType.Unknown, archive.tileType)
         assertEquals(1, source.reads.size)
-        assertEquals(ByteRange(0uL, HEADER_BYTES + 1), source.reads.single())
+        assertEquals(
+            ByteRange(0uL, HEADER_BYTES + MINIMAL_ROOT_DIRECTORY_BYTES.size + 1),
+            source.reads.single(),
+        )
     }
 
     @Test
@@ -33,7 +43,7 @@ class OpenArchiveTest {
         val fields =
             TestHeaderFields(
                 rootOffset = 127uL,
-                rootLength = 1uL,
+                rootLength = MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong(),
                 metadataOffset = 200uL,
                 metadataLength = 10uL,
                 leafDirectoriesOffset = 300uL,
@@ -60,7 +70,10 @@ class OpenArchiveTest {
         val archive = PmTilesArchive.open(TestByteRangeSource(buildArchive(fields)))
         val header = archive.header
 
-        assertEquals(ArchiveSection(127uL, 1uL), header.rootDirectory)
+        assertEquals(
+            ArchiveSection(127uL, MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong()),
+            header.rootDirectory,
+        )
         assertEquals(ArchiveSection(200uL, 10uL), header.metadata)
         assertEquals(ArchiveSection(300uL, 20uL), header.leafDirectories)
         assertEquals(ArchiveSection(500uL, 30uL), header.tileData)
@@ -126,25 +139,27 @@ class OpenArchiveTest {
                 tileDataOffset = 250uL,
                 tileDataLength = 10uL,
                 rootOffset = 300uL,
-                rootLength = 1uL,
+                rootLength = MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong(),
             )
 
         val archive = PmTilesArchive.open(TestByteRangeSource(buildArchive(fields)))
 
-        assertEquals(ArchiveSection(300uL, 1uL), archive.header.rootDirectory)
+        assertEquals(
+            ArchiveSection(300uL, MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong()),
+            archive.header.rootDirectory,
+        )
     }
 
     @Test
     fun rejectsRootOutsideFirstRead() {
-        val fields =
-            TestHeaderFields(
-                rootOffset = FIRST_READ_BYTES.toULong(),
-                rootLength = 1uL,
-            )
+        val fields = TestHeaderFields(rootOffset = FIRST_READ_BYTES.toULong())
 
         assertOpenFails(
             PmTilesErrorCode.InvalidRootDirectoryLocation,
-            buildArchive(fields, archiveSize = FIRST_READ_BYTES + 1),
+            buildArchive(
+                fields,
+                archiveSize = FIRST_READ_BYTES + MINIMAL_ROOT_DIRECTORY_BYTES.size,
+            ),
         )
     }
 
@@ -153,6 +168,17 @@ class OpenArchiveTest {
         val fields = TestHeaderFields(internalCompression = Compression.Brotli.code)
 
         assertOpenFails(PmTilesErrorCode.UnsupportedCompression, buildArchive(fields))
+    }
+
+    @Test
+    fun rejectsMalformedRootDirectoryAtOpen() {
+        val rootBytes = byteArrayOf(0)
+        val fields = TestHeaderFields(rootLength = rootBytes.size.toULong())
+
+        assertOpenFails(
+            PmTilesErrorCode.InvalidDirectory,
+            buildArchive(fields, rootBytes = rootBytes),
+        )
     }
 
     @Test

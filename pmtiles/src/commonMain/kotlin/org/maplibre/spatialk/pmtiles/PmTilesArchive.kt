@@ -10,9 +10,11 @@ import kotlin.native.HiddenFromObjC
 import kotlin.native.ObjCName
 import org.maplibre.spatialk.pmtiles.internal.DecodeLimits
 import org.maplibre.spatialk.pmtiles.internal.DecodePurpose
+import org.maplibre.spatialk.pmtiles.internal.DirectoryEntry
 import org.maplibre.spatialk.pmtiles.internal.FIRST_READ_BYTES
 import org.maplibre.spatialk.pmtiles.internal.allocationLength
 import org.maplibre.spatialk.pmtiles.internal.decodeCompression
+import org.maplibre.spatialk.pmtiles.internal.decodeDirectory
 import org.maplibre.spatialk.pmtiles.internal.parseHeader
 import org.maplibre.spatialk.pmtiles.internal.readSourceRange
 import org.maplibre.spatialk.pmtiles.internal.sourceSize
@@ -31,7 +33,7 @@ private constructor(
     private val source: ByteRangeSource,
     private val options: ArchiveOpenOptions,
     private val archiveSize: Long,
-    private val rootDirectoryBytes: ByteArray,
+    private val rootDirectory: List<DirectoryEntry>,
     private val archiveWarnings: List<ArchiveWarning>,
 ) : AutoCloseable {
     /** Tile payload type from the header. */
@@ -139,13 +141,14 @@ private constructor(
                         purpose = DecodePurpose.RootDirectory,
                     ),
                 )
+            val rootDirectory = decodeDirectory(rootDirectoryBytes, header, options.limits)
 
             return PmTilesArchive(
                 header = header,
                 source = source,
                 options = options,
                 archiveSize = sourceSize.toLong(),
-                rootDirectoryBytes = rootDirectoryBytes,
+                rootDirectory = rootDirectory,
                 archiveWarnings = emptyList(),
             )
         }

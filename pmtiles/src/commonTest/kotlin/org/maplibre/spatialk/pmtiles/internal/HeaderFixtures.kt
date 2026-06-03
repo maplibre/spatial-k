@@ -5,15 +5,19 @@ import org.maplibre.spatialk.pmtiles.ByteRangeSource
 import org.maplibre.spatialk.pmtiles.Compression
 import org.maplibre.spatialk.pmtiles.TileType
 
+internal val MINIMAL_ROOT_DIRECTORY_BYTES: ByteArray =
+    encodeDirectory(DirectoryEntry(tileId = 0, offset = 0uL, length = 1, runLength = 1))
+
 internal data class TestHeaderFields(
     val rootOffset: ULong = HEADER_BYTES.toULong(),
-    val rootLength: ULong = 1uL,
+    val rootLength: ULong = MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong(),
     val metadataOffset: ULong = 0uL,
     val metadataLength: ULong = 0uL,
     val leafDirectoriesOffset: ULong = 0uL,
     val leafDirectoriesLength: ULong = 0uL,
-    val tileDataOffset: ULong = 0uL,
-    val tileDataLength: ULong = 0uL,
+    val tileDataOffset: ULong =
+        HEADER_BYTES.toULong() + MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong(),
+    val tileDataLength: ULong = 1uL,
     val addressedTiles: ULong = 0uL,
     val tileEntries: ULong = 0uL,
     val tileContents: ULong = 0uL,
@@ -62,7 +66,7 @@ internal fun buildHeader(fields: TestHeaderFields = TestHeaderFields()): ByteArr
 internal fun buildArchive(
     fields: TestHeaderFields = TestHeaderFields(),
     archiveSize: Int = fields.minimumArchiveSize(),
-    rootBytes: ByteArray = byteArrayOf(0),
+    rootBytes: ByteArray = MINIMAL_ROOT_DIRECTORY_BYTES,
 ): ByteArray {
     val bytes = ByteArray(archiveSize)
     buildHeader(fields).copyInto(bytes)
@@ -73,6 +77,33 @@ internal fun buildArchive(
         rootBytes.copyInto(bytes, destinationOffset = fields.rootOffset.toInt())
     }
     return bytes
+}
+
+internal fun encodeDirectory(vararg entries: DirectoryEntry): ByteArray {
+    require(entries.isNotEmpty()) { "Directory entries are required." }
+    val bytes = mutableListOf<Byte>()
+    bytes.writeVarint(entries.size.toULong())
+
+    var lastTileId = 0uL
+    entries.forEach { entry ->
+        val tileId = entry.tileId.toULong()
+        bytes.writeVarint(tileId - lastTileId)
+        lastTileId = tileId
+    }
+    entries.forEach { entry -> bytes.writeVarint(entry.runLength.toULong()) }
+    entries.forEach { entry -> bytes.writeVarint(entry.length.toULong()) }
+
+    var nextOffset = 0uL
+    entries.forEachIndexed { index, entry ->
+        if (index > 0 && entry.offset == nextOffset) {
+            bytes.writeVarint(0uL)
+        } else {
+            bytes.writeVarint(entry.offset + 1uL)
+        }
+        nextOffset = entry.offset + entry.length.toULong()
+    }
+
+    return bytes.toByteArray()
 }
 
 internal class TestByteRangeSource(
@@ -131,4 +162,13 @@ private fun ByteArray.writeI32(offset: Int, value: Int) {
     repeat(Int.SIZE_BYTES) { index ->
         this[offset + index] = (value ushr (index * Byte.SIZE_BITS)).toByte()
     }
+}
+
+private fun MutableList<Byte>.writeVarint(value: ULong) {
+    var remaining = value
+    while (remaining >= 0x80uL) {
+        add(((remaining and 0x7fuL) or 0x80uL).toByte())
+        remaining = remaining shr 7
+    }
+    add(remaining.toByte())
 }
