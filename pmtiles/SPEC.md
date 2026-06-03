@@ -752,7 +752,8 @@ decisions solely for pure-Java consumption.
 Apple consumers use the Kotlin/Native-exported Kotlin API. Kotlin suspend functions are exported to
 Objective-C headers as completion-handler APIs, and Swift 5.5+ can call them as `async` functions
 with the Kotlin/Native toolchain version targeted by this library. The initial implementation does
-not provide a duplicate Apple wrapper.
+not provide a duplicate Apple wrapper. The initial implementation does not add a Swift toolchain,
+SwiftPM package, XCTest target, `swiftc` compilation test, or generated-framework test.
 
 ### 15.1 Swift usage shape
 
@@ -874,10 +875,10 @@ public enum class PmTilesErrorCode {
 
 Host-language mappings:
 
-| Platform   | Mapping                                                          |
-| ---------- | ---------------------------------------------------------------- |
-| Kotlin/JVM | Throw `PmTilesException`; missing tile is `null`.                |
-| Swift      | `NSError`/Swift `Error` domain plus code; missing tile is `nil`. |
+| Platform     | Mapping                                                                     |
+| ------------ | --------------------------------------------------------------------------- |
+| Kotlin/JVM   | Throw `PmTilesException`; missing tile is `null`.                           |
+| Apple export | Kotlin/Native exports `PmTilesException` as `NSError`; missing tile is nil. |
 
 ### 16.2 Warning model
 
@@ -980,12 +981,16 @@ The archive reader must be tested with fake `ByteRangeSource` implementations co
 
 ### 18.3 Interop conformance
 
-Exported APIs must be tested from the host language, not only from Kotlin:
+Exported JVM APIs must be tested from Kotlin source. Apple interop must be tested through
+Kotlin/Native Apple target compilation, Apple-source-set Kotlin tests, and API dumps:
 
-| Surface    | Required checks                                                                                                                                                                                                                                |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| JVM Kotlin | Kotlin source compilation, coroutine calls, exceptions, `AutoCloseable`, `UInt`/`ULong`, and custom `ByteRangeSource` implementation.                                                                                                          |
-| Swift      | Swift source compilation, async or completion usage, `ByteArray` payload access, `NSData` extension access, warning count/index access, hidden common-source opener, `ByteRangeDataSource` opener, errors, missing tiles, and `UInt`/`UInt64`. |
+| Surface              | Required checks                                                                                                                                                                                     |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| JVM Kotlin           | Kotlin source compilation, coroutine calls, exceptions, `AutoCloseable`, `UInt`/`ULong`, and custom `ByteRangeSource` implementation.                                                               |
+| Apple Kotlin/Native  | Apple target compilation, `NSData` extension access, `ByteRangeDataSource` opener behavior, exact/short/long `NSData` reads, copy behavior, missing tiles, errors, and `UInt`/`ULong` declarations. |
+| Apple export hygiene | API dumps include the public Apple declarations. Public source declarations include the `@HiddenFromObjC`, `@ObjCName`, and `@Throws(PmTilesException::class)` annotations required by this spec.   |
+
+The implementation series does not add SwiftPM, XCTest, `swiftc`, or generated-framework tests.
 
 ---
 

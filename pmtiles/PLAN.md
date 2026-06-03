@@ -1,14 +1,19 @@
 # PMTiles Implementation Plan
 
-This plan breaks the PMTiles v3 reader in `SPEC.md` into implementation checkpoints. Each checkpoint
-should leave the repository compiling and should keep the public API aligned with the spec.
+This plan breaks the PMTiles v3 reader in `SPEC.md` into implementation checkpoints. Every
+checkpoint leaves the repository compiling and keeps the public API aligned with the spec.
 
-Global rules:
+Operating rules:
 
 - Public API lives in `org.maplibre.spatialk.pmtiles`.
 - Run `mise run fix` after public API changes so API dumps are regenerated.
-- Each checkpoint should run the narrowest relevant tests locally; milestone checkpoints should run
-  broader platform tests.
+- Each checkpoint lists its required tests and checks. Run every command or test category named in a
+  checkpoint before starting the next checkpoint.
+- Commit at least once per phase. Each commit is atomic: it contains one coherent change, preserves
+  compilation for completed implementation paths, and includes the tests or docs required to make
+  that change understandable.
+- Split a phase into multiple commits when the phase contains independent implementation,
+  test/fixture, benchmark, documentation, or API-dump changes.
 - Do not add PMTiles writing, built-in HTTP/filesystem sources, JavaScript API, or caller codec
   registration in this implementation series.
 
@@ -19,15 +24,17 @@ Scope:
 - Add the `pmtiles` module and wire it into the workspace build.
 - Add source sets needed by the spec: `commonMain`, platform gzip implementation source sets, and
   Apple source set for Foundation conveniences.
-- Configure only the targets supported by the spec for this module. Do not add a JavaScript,
-  TypeScript, or WASM public API surface.
+- Configure exactly these `pmtiles` targets: `jvm`, `macosArm64`, `macosX64`, `iosArm64`, `iosX64`,
+  and `iosSimulatorArm64`. Do not add JavaScript, TypeScript, WASM, Linux, Windows, watchOS, tvOS,
+  Android Native, or pure-Java wrapper targets.
 - Add public DTOs, enums, error types, source interfaces, and `PmTilesArchive` method signatures.
-- Keep implementation bodies minimal or throwing until later phases.
+- Functions not implemented in Phase 1 throw `NotImplementedError`.
 
 Tests and checks:
 
 - API dump generation with `mise run fix`.
-- Compile all configured `pmtiles` targets that can compile without real implementation.
+- Compile the six `pmtiles` targets:
+  `mise exec -- ./gradlew :pmtiles:jvmMainClasses :pmtiles:compileKotlinMacosArm64 :pmtiles:compileKotlinMacosX64 :pmtiles:compileKotlinIosArm64 :pmtiles:compileKotlinIosX64 :pmtiles:compileKotlinIosSimulatorArm64`
 
 Completion criteria:
 
@@ -72,7 +79,7 @@ Tests:
 
 Completion criteria:
 
-- Tile ID functions are platform-independent and deterministic.
+- Tile ID functions return identical results on JVM, macOS, and iOS targets.
 
 ## Phase 4: Built-In Compression
 
@@ -261,17 +268,20 @@ Scope:
 
 Tests:
 
-- Swift compilation for async open, metadata, tile reads, `ArchiveTile.data`, warning count/index,
-  and custom `ByteRangeDataSource`.
+- Compile the six `pmtiles` targets listed in Phase 1 after adding the Apple declarations.
 - Exact, short, and long `NSData` results from `ByteRangeDataSource`.
 - Copy behavior for `NSData` conversions.
-- Swift error handling verifies thrown `PmTilesException` maps to the expected error domain/code and
-  missing tiles map to `nil`.
+- API dump generation with `mise run fix`.
+- API dumps include the public Apple declarations required by the spec.
+- Public source declarations contain the `@HiddenFromObjC`, `@ObjCName`, and
+  `@Throws(PmTilesException::class)` annotations required by the spec.
+- Do not add SwiftPM, XCTest, `swiftc`, or generated-framework tests in this implementation series.
 
 Completion criteria:
 
-- Swift callers do not need to implement `ByteRangeSource` or consume Kotlin collections for
-  warnings.
+- Apple source sets compile, `NSData` behavior tests pass, API dumps include the public Apple
+  declarations, and public source declarations include the Apple export annotations required by the
+  spec.
 
 ## Phase 13: Fixture Conformance
 
@@ -284,49 +294,56 @@ Scope:
     - <https://github.com/protomaps/PMTiles/tree/main/js/test/data>
   - `protomaps/go-pmtiles/pmtiles/fixtures/`
     - <https://github.com/protomaps/go-pmtiles/tree/main/pmtiles/fixtures>
-- Add generated fixtures produced during tests from small in-repo tile maps using the current
-  `go-pmtiles` CLI or library as the compatibility oracle. Generated fixtures must be deterministic
-  and must document the exact command or helper used to create them.
+- Add `pmtiles/fixtures/MANIFEST.md`. For each copied fixture, record upstream repository, commit
+  SHA, path, filename, license, and reason for inclusion.
+- Add generated fixtures from inputs stored under `pmtiles/src/commonTest/resources/fixtures/input/`
+  using a pinned `go-pmtiles` version recorded in `pmtiles/fixtures/MANIFEST.md`. Generated fixtures
+  are checked into the repository. The manifest records the exact command or helper used to create
+  each generated fixture.
 - Add conformance tests for vector, raster, metadata, root-only, leaf-directory, gzip, unknown
   values, and malformed archives.
-- Verify compatibility with archives produced by current Protomaps/go-pmtiles tooling.
+- Verify compatibility with archives produced by the pinned `go-pmtiles` version recorded in
+  `pmtiles/fixtures/MANIFEST.md`.
 
 Tests:
 
-- JVM, Apple/native, and common test suites as appropriate.
+- Run JVM tests, macOS ARM64 native tests, and iOS simulator ARM64 tests.
 - JVM Kotlin interop tests for source compilation, coroutine calls, exceptions, `AutoCloseable`,
   `UInt`/`ULong`, and custom `ByteRangeSource` implementation.
 - Fixture tests covering all format-conformance bullets in `SPEC.md`.
 
 Completion criteria:
 
-- The reader passes representative real-world Protomaps archives.
+- The reader passes every fixture listed in `pmtiles/fixtures/MANIFEST.md`.
 
-## Phase 14: Performance And Robustness Polish
+## Phase 14: Performance Benchmarks And Robustness Tests
 
 Scope:
 
 - Add PMTiles benchmarks to the existing `benchmark` module, which already uses
   `org.jetbrains.kotlinx.benchmark` and `kotlinx.benchmark`.
-- Add focused benchmark methods for open, root lookup, leaf lookup, repeated tile lookup, and tile
-  byte reads using deterministic fixture-backed `ByteRangeSource` implementations.
-- Add `pmtiles` as a dependency of the `benchmark` module and register only benchmark targets that
-  are supported by the PMTiles module.
-- Tune default limits and cache defaults.
-- Add targeted tests for compressed bombs, huge metadata, huge directories, huge tiles, and
-  cancellation races.
-- Review all public errors for deterministic codes and useful messages.
+- Add benchmark methods named `openArchive`, `rootTileRangeLookup`, `leafTileRangeLookup`,
+  `repeatedTileRangeLookup`, `compressedTileRead`, and `decompressedTileRead` using fixtures listed
+  in `pmtiles/fixtures/MANIFEST.md` and in-memory `ByteRangeSource` implementations.
+- Add `pmtiles` as a dependency of the `benchmark` module and register exactly these PMTiles
+  benchmark targets: `jvm` and `macosArm64`.
+- Set default limits and cache defaults to the values recorded in `SPEC-CHECKLIST.md`.
+- Add tests named `compressedBombFails`, `hugeMetadataFails`, `hugeDirectoryFails`, `hugeTileFails`,
+  and `cancellationRaceDoesNotReturnPartialData`.
+- For every `PmTilesErrorCode`, add or update one test that asserts that code is emitted by a
+  concrete failure path.
 
 Tests:
 
 - Security/robustness regression tests.
-- Benchmark smoke run through Gradle using the existing `benchmark` module with reduced warmups and
-  iterations, for example `benchmarkWarmups=1` and `benchmarkIterations=1`.
+- Benchmark command:
+  `mise exec -- ./gradlew :benchmark:benchmark -PbenchmarkWarmups=1 -PbenchmarkIterations=1`
 - `mise run test`
 
 Completion criteria:
 
-- Defaults are defensible for untrusted archives and normal Protomaps-generated archives.
+- `SPEC-CHECKLIST.md` lists the chosen defaults for every `ArchiveLimits` and cache setting, and
+  every Phase 14 robustness test passes.
 
 ## Phase 15: Documentation And Release Readiness
 
@@ -349,4 +366,45 @@ Tests and checks:
 
 Completion criteria:
 
-- `SPEC-CHECKLIST.md` has no unchecked required claims, and public API, docs, tests, and spec agree.
+- Every `SPEC-CHECKLIST.md` row has status `Implemented`, `Tested`, or `Not Applicable`. No row has
+  status `Missing`, `Untested`, or `Unknown`.
+
+## Phase 16: Code Quality Audit
+
+Scope:
+
+- Inspect `pmtiles/src/**`, PMTiles fixture files, PMTiles docs and examples, PMTiles API dump
+  changes, `pmtiles/SPEC-CHECKLIST.md`, and PMTiles benchmark code in `benchmark/src/**`.
+- Audit for correctness risk, code smells, brittle tests, unclear ownership boundaries, avoidable
+  complexity, duplicated logic, weak error messages, concurrency hazards, allocation hazards,
+  platform-specific drift, and spec/API mismatches.
+- Produce `pmtiles/CODE-QUALITY-REPORT.md`.
+- For each finding, the report records:
+  - finding ID
+  - area
+  - affected file and line, or `Repository-wide`
+  - issue
+  - risk
+  - resolution options, including `Do nothing`
+  - tradeoffs for each resolution option
+  - recommended option
+  - confidence from `1` through `5`
+  - status: `Completed` or `Needs Triage`
+  - implementation reference for `Completed` findings
+- Apply every finding with confidence `4` or `5` in the same phase.
+- Leave every finding with confidence `1`, `2`, or `3` unapplied for manual triage.
+
+Tests and checks:
+
+- After applying confidence `4` and `5` findings, run `mise run fix`, `mise run build`, and
+  `mise run test`.
+- Run the Phase 14 benchmark command after applying confidence `4` and `5` findings.
+
+Completion criteria:
+
+- `pmtiles/CODE-QUALITY-REPORT.md` exists.
+- Every confidence `4` or `5` finding has status `Completed` and includes an implementation
+  reference.
+- Every confidence `1`, `2`, or `3` finding has status `Needs Triage` and has no implementation
+  reference.
+- No code change from this phase lacks a corresponding completed report finding.
