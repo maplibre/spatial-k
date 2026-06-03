@@ -233,7 +233,9 @@ Scope:
 Tests:
 
 - Warning append order, snapshot behavior, out-of-range `warningAt`, and lazy warning additions.
-- Strict failures vs lenient warnings for every warning code.
+- Strict behavior vs lenient warnings for every warning code. Strict mode rejects metadata recovery
+  cases and nested leaf directories, and preserves legal header raw-code/count/order anomalies
+  without warnings.
 
 Completion criteria:
 

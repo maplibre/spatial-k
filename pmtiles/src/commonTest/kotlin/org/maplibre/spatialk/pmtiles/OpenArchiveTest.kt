@@ -70,6 +70,7 @@ class OpenArchiveTest {
         val archive = PmTilesArchive.open(TestByteRangeSource(buildArchive(fields)))
         val header = archive.header
 
+        assertEquals(0, archive.warningCount)
         assertEquals(
             ArchiveSection(127uL, MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong()),
             header.rootDirectory,

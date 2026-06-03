@@ -909,6 +909,18 @@ public enum class ArchiveWarningCode {
 Warnings are not a substitute for errors. Unsafe ranges, overflow, malformed directories, and
 decompression failures must fail even in lenient mode.
 
+Strict mode and lenient mode handle warning-code conditions as follows:
+
+| Warning code               | Strict behavior                                                                                                   | Lenient behavior                                                                                                     |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `UnknownTileType`          | Preserve the raw tile type code without a warning.                                                                | Preserve the raw tile type code and warn when the code is not a known concrete tile payload type.                    |
+| `UnknownCompressionCode`   | Preserve the raw tile compression code without a warning. Unsupported internal compression still fails at `open`. | Preserve the raw tile compression code and warn when tile compression is `Unknown` or an unregistered raw code.      |
+| `UnknownCount`             | Expose the count as `null` and preserve the raw `0` value without a warning.                                      | Expose the count as `null`, preserve the raw `0` value, and warn once for each unknown count field.                  |
+| `NonCanonicalSectionOrder` | Accept valid legal section layouts without a warning.                                                             | Accept valid legal section layouts and warn when non-empty sections are not ordered root, metadata, leaf, tile data. |
+| `MissingVectorLayers`      | `metadata()` fails for MVT archives whose metadata object does not contain `vector_layers`.                       | `metadata()` returns typed metadata and warns.                                                                       |
+| `InvalidMetadataRecovered` | `metadata()` fails for malformed JSON, non-object JSON, or PMTiles-defined keys with the wrong JSON type.         | `metadata()` preserves raw JSON, drops invalid typed fields, and warns.                                              |
+| `NestedLeafDirectory`      | Tile lookup fails when traversal encounters a leaf directory entry inside a leaf directory.                       | Tile lookup traverses the nested leaf directory and warns.                                                           |
+
 ### 16.3 Default limits
 
 | Limit                           | Purpose                                     | Default guidance                                                                                  |

@@ -23,7 +23,7 @@ import org.maplibre.spatialk.pmtiles.internal.coversTile
 import org.maplibre.spatialk.pmtiles.internal.decodeCompression
 import org.maplibre.spatialk.pmtiles.internal.decodeDirectory
 import org.maplibre.spatialk.pmtiles.internal.findPredecessor
-import org.maplibre.spatialk.pmtiles.internal.parseHeader
+import org.maplibre.spatialk.pmtiles.internal.parseHeaderForOpen
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
 import org.maplibre.spatialk.pmtiles.internal.readSourceRange
 import org.maplibre.spatialk.pmtiles.internal.sourceSize
@@ -346,6 +346,12 @@ private constructor(
             )
         }
         if (depth > 1) {
+            if (options.validationMode == ValidationMode.Strict) {
+                throw pmTilesException(
+                    PmTilesErrorCode.InvalidDirectory,
+                    "Nested leaf directories are not allowed in strict mode.",
+                )
+            }
             archiveWarnings +=
                 ArchiveWarning(
                     code = ArchiveWarningCode.NestedLeafDirectory,
@@ -445,7 +451,8 @@ private constructor(
                     archiveSize = sourceSize,
                     maxBytes = options.limits.maxInitialReadBytes,
                 )
-            val header = parseHeader(initialBytes, sourceSize)
+            val parsedHeader = parseHeaderForOpen(initialBytes, sourceSize, options.validationMode)
+            val header = parsedHeader.header
             val compressedRoot = initialBytes.slice(header.rootDirectory, options.limits)
             val rootDirectoryBytes =
                 decodeCompression(
@@ -465,7 +472,7 @@ private constructor(
                 options = options,
                 archiveSize = sourceSize,
                 rootDirectory = rootDirectory,
-                archiveWarnings = mutableListOf(),
+                archiveWarnings = parsedHeader.warnings.toMutableList(),
             )
         }
     }

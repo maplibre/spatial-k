@@ -107,7 +107,66 @@ class TileLookupTest {
     }
 
     @Test
-    fun locatesNestedLeafAndRecordsWarning() = runSuspending {
+    fun lenientModeLocatesNestedLeafAndRecordsWarning() = runSuspending {
+        val tileLeafBytes =
+            encodeDirectory(DirectoryEntry(tileId = 2, offset = 1uL, length = 2, runLength = 1))
+        val nestedLeafOffset = 20uL
+        val firstLeafBytes =
+            encodeDirectory(
+                DirectoryEntry(
+                    tileId = 2,
+                    offset = nestedLeafOffset,
+                    length = tileLeafBytes.size,
+                    runLength = 0,
+                )
+            )
+        val rootBytes =
+            encodeDirectory(
+                DirectoryEntry(
+                    tileId = 1,
+                    offset = 0uL,
+                    length = firstLeafBytes.size,
+                    runLength = 0,
+                )
+            )
+        val leafSection = ByteArray(nestedLeafOffset.toInt() + tileLeafBytes.size)
+        firstLeafBytes.copyInto(leafSection)
+        tileLeafBytes.copyInto(leafSection, destinationOffset = nestedLeafOffset.toInt())
+        val fields =
+            TestHeaderFields(
+                rootLength = rootBytes.size.toULong(),
+                leafDirectoriesOffset = 200uL,
+                leafDirectoriesLength = leafSection.size.toULong(),
+                tileDataOffset = 400uL,
+                tileDataLength = 3uL,
+                addressedTiles = 1uL,
+                tileEntries = 1uL,
+                tileContents = 1uL,
+                tileType = TileType.Png.code,
+            )
+        val archive =
+            PmTilesArchive.open(
+                TestByteRangeSource(
+                    buildArchiveWithLeafBytes(
+                        fields = fields,
+                        rootBytes = rootBytes,
+                        leafBytes = leafSection,
+                    )
+                ),
+                options = ArchiveOpenOptions.Lenient,
+            )
+        val coord = TileIds.toZxy(2)
+
+        val range = archive.getTileRange(coord.z, coord.x, coord.y)
+
+        assertEquals(ByteRange(401uL, 2), range?.archiveRange)
+        assertEquals(2, range?.directoryDepth)
+        assertEquals(1, archive.warningCount)
+        assertEquals(ArchiveWarningCode.NestedLeafDirectory, archive.warningAt(0)?.code)
+    }
+
+    @Test
+    fun strictModeRejectsNestedLeafDirectory() {
         val tileLeafBytes =
             encodeDirectory(DirectoryEntry(tileId = 2, offset = 1uL, length = 2, runLength = 1))
         val nestedLeafOffset = 20uL
@@ -140,24 +199,26 @@ class TileLookupTest {
                 tileDataOffset = 400uL,
                 tileDataLength = 3uL,
             )
-        val archive =
-            PmTilesArchive.open(
-                TestByteRangeSource(
-                    buildArchiveWithLeafBytes(
-                        fields = fields,
-                        rootBytes = rootBytes,
-                        leafBytes = leafSection,
-                    )
-                )
-            )
-        val coord = TileIds.toZxy(2)
 
-        val range = archive.getTileRange(coord.z, coord.x, coord.y)
+        val error =
+            assertFailsWith<PmTilesException> {
+                runSuspending {
+                    val archive =
+                        PmTilesArchive.open(
+                            TestByteRangeSource(
+                                buildArchiveWithLeafBytes(
+                                    fields = fields,
+                                    rootBytes = rootBytes,
+                                    leafBytes = leafSection,
+                                )
+                            )
+                        )
+                    val coord = TileIds.toZxy(2)
+                    archive.getTileRange(coord.z, coord.x, coord.y)
+                }
+            }
 
-        assertEquals(ByteRange(401uL, 2), range?.archiveRange)
-        assertEquals(2, range?.directoryDepth)
-        assertEquals(1, archive.warningCount)
-        assertEquals(ArchiveWarningCode.NestedLeafDirectory, archive.warningAt(0)?.code)
+        assertEquals(PmTilesErrorCode.InvalidDirectory, error.code)
     }
 
     @Test
@@ -233,7 +294,8 @@ class TileLookupTest {
                                     rootBytes = rootBytes,
                                     leafBytes = recursiveLeafBytes,
                                 )
-                            )
+                            ),
+                            options = ArchiveOpenOptions.Lenient,
                         )
                     archive.getTileRange(0, 0, 0)
                 }

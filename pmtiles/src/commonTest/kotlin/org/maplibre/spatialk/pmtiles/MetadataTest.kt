@@ -136,7 +136,7 @@ class MetadataTest {
     private fun assertMetadataFails(
         code: PmTilesErrorCode,
         json: String,
-        tileType: TileType = TileType.Unknown,
+        tileType: TileType = TileType.Png,
     ) {
         val error =
             assertFailsWith<PmTilesException> {
@@ -156,7 +156,7 @@ class MetadataTest {
 
     private fun buildMetadataArchive(
         metadataBytes: ByteArray,
-        tileType: TileType = TileType.Unknown,
+        tileType: TileType = TileType.Png,
     ): ByteArray {
         val metadataOffset = HEADER_BYTES.toULong() + MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong()
         val fields =
@@ -165,6 +165,9 @@ class MetadataTest {
                 metadataLength = metadataBytes.size.toULong(),
                 tileDataOffset = metadataOffset + metadataBytes.size.toULong(),
                 tileDataLength = 1uL,
+                addressedTiles = 1uL,
+                tileEntries = 1uL,
+                tileContents = 1uL,
                 tileType = tileType.code,
             )
         return buildArchiveWithSections(

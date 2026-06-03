@@ -2,6 +2,8 @@ package org.maplibre.spatialk.pmtiles.internal
 
 import org.maplibre.spatialk.pmtiles.ArchiveHeader
 import org.maplibre.spatialk.pmtiles.ArchiveSection
+import org.maplibre.spatialk.pmtiles.ArchiveWarning
+import org.maplibre.spatialk.pmtiles.ArchiveWarningCode
 import org.maplibre.spatialk.pmtiles.Clustered
 import org.maplibre.spatialk.pmtiles.Compression
 import org.maplibre.spatialk.pmtiles.HeaderCounts
@@ -9,11 +11,24 @@ import org.maplibre.spatialk.pmtiles.LonLatBounds
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 import org.maplibre.spatialk.pmtiles.TileCenter
 import org.maplibre.spatialk.pmtiles.TileType
+import org.maplibre.spatialk.pmtiles.ValidationMode
 
 internal const val HEADER_BYTES = 127
 internal const val FIRST_READ_BYTES = 16 * 1024
 
-internal fun parseHeader(bytes: ByteArray, archiveSize: ULong): ArchiveHeader {
+internal data class ParsedHeader(
+    val header: ArchiveHeader,
+    val warnings: List<ArchiveWarning>,
+)
+
+internal fun parseHeader(bytes: ByteArray, archiveSize: ULong): ArchiveHeader =
+    parseHeaderForOpen(bytes, archiveSize, ValidationMode.Strict).header
+
+internal fun parseHeaderForOpen(
+    bytes: ByteArray,
+    archiveSize: ULong,
+    validationMode: ValidationMode,
+): ParsedHeader {
     if (bytes.size < HEADER_BYTES) {
         throw pmTilesException(
             PmTilesErrorCode.InvalidHeader,
@@ -86,8 +101,12 @@ internal fun parseHeader(bytes: ByteArray, archiveSize: ULong): ArchiveHeader {
                 ),
         )
 
+    val warnings = mutableListOf<ArchiveWarning>()
     validateHeader(header, archiveSize)
-    return header
+    if (validationMode == ValidationMode.Lenient) {
+        collectLenientHeaderWarnings(header, warnings)
+    }
+    return ParsedHeader(header, warnings)
 }
 
 private fun validateMagic(reader: BinaryReader) {
@@ -127,6 +146,84 @@ private fun validateHeader(header: ArchiveHeader, archiveSize: ULong) {
     validateCoordinates(header)
     validateSections(header, archiveSize)
     validateRootLocation(header.rootDirectory)
+}
+
+private fun collectLenientHeaderWarnings(
+    header: ArchiveHeader,
+    warnings: MutableList<ArchiveWarning>,
+) {
+    collectUnknownCountWarnings(header, warnings)
+    collectSectionOrderWarning(header, warnings)
+    collectUnknownCompressionWarnings(header, warnings)
+    collectUnknownTileTypeWarning(header, warnings)
+}
+
+private fun collectUnknownCountWarnings(
+    header: ArchiveHeader,
+    warnings: MutableList<ArchiveWarning>,
+) {
+    listOf(
+            "addressedTiles" to header.counts.rawAddressedTiles,
+            "tileEntries" to header.counts.rawTileEntries,
+            "tileContents" to header.counts.rawTileContents,
+        )
+        .filter { (_, rawValue) -> rawValue == 0uL }
+        .forEach { (field, _) ->
+            warnings +=
+                ArchiveWarning(
+                    code = ArchiveWarningCode.UnknownCount,
+                    message = "Header count `$field` is unknown.",
+                    context = field,
+                )
+        }
+}
+
+private fun collectSectionOrderWarning(
+    header: ArchiveHeader,
+    warnings: MutableList<ArchiveWarning>,
+) {
+    val orderedSections =
+        listOf(
+                header.rootDirectory,
+                header.metadata,
+                header.leafDirectories,
+                header.tileData,
+            )
+            .filter { it.length > 0uL }
+    if (orderedSections.zipWithNext().all { (left, right) -> left.offset <= right.offset }) {
+        return
+    }
+    warnings +=
+        ArchiveWarning(
+            code = ArchiveWarningCode.NonCanonicalSectionOrder,
+            message = "Header sections are valid but not in canonical order.",
+        )
+}
+
+private fun collectUnknownCompressionWarnings(
+    header: ArchiveHeader,
+    warnings: MutableList<ArchiveWarning>,
+) {
+    if (header.tileCompression.code in KNOWN_CONCRETE_COMPRESSION_CODES) return
+    warnings +=
+        ArchiveWarning(
+            code = ArchiveWarningCode.UnknownCompressionCode,
+            message = "Tile compression code ${header.tileCompression.code} is unknown.",
+            context = "tileCompression=${header.tileCompression.code}",
+        )
+}
+
+private fun collectUnknownTileTypeWarning(
+    header: ArchiveHeader,
+    warnings: MutableList<ArchiveWarning>,
+) {
+    if (header.tileType.code in KNOWN_CONCRETE_TILE_TYPE_CODES) return
+    warnings +=
+        ArchiveWarning(
+            code = ArchiveWarningCode.UnknownTileType,
+            message = "Tile type code ${header.tileType.code} is unknown.",
+            context = "tileType=${header.tileType.code}",
+        )
 }
 
 private fun validateZooms(header: ArchiveHeader) {
@@ -237,3 +334,19 @@ private const val SUPPORTED_VERSION = 3
 private const val MAX_HEADER_ZOOM = 31
 private const val POSITION_SCALE = 10_000_000.0
 private val MAGIC_BYTES = byteArrayOf(0x50, 0x4d, 0x54, 0x69, 0x6c, 0x65, 0x73)
+private val KNOWN_CONCRETE_COMPRESSION_CODES =
+    setOf(
+        Compression.None.code,
+        Compression.Gzip.code,
+        Compression.Brotli.code,
+        Compression.Zstd.code,
+    )
+private val KNOWN_CONCRETE_TILE_TYPE_CODES =
+    setOf(
+        TileType.Mvt.code,
+        TileType.Png.code,
+        TileType.Jpeg.code,
+        TileType.Webp.code,
+        TileType.Avif.code,
+        TileType.Mlt.code,
+    )
