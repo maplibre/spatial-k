@@ -669,8 +669,10 @@ public class PmTilesArchive private constructor(...) : AutoCloseable {
     public suspend fun getTileCompressed(z: Int, x: Int, y: Int): ArchiveTile?
     public suspend fun containsTile(z: Int, x: Int, y: Int): Boolean
     public val warningCount: Int
-    @ObjCName(swiftName = "warning(at:)")
-    public fun warningAt(index: Int): ArchiveWarning?
+    @ObjCName(name = "warningAt", swiftName = "warning")
+    public fun warningAt(
+        @ObjCName(name = "at", swiftName = "at") index: Int
+    ): ArchiveWarning?
     @HiddenFromObjC
     public fun warnings(): List<ArchiveWarning>
 
