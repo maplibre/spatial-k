@@ -1,6 +1,6 @@
-# PMTiles Fixture Manifest
+# PMTiles Fixtures
 
-This manifest records every checked-in PMTiles fixture used by the PMTiles reader conformance tests.
+This document records every checked-in PMTiles fixture used by the PMTiles reader conformance tests.
 
 ## Upstream Sources
 
