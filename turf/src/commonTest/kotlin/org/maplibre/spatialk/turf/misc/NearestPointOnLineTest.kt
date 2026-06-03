@@ -13,6 +13,7 @@ import org.maplibre.spatialk.geojson.dsl.lineStringOf
 import org.maplibre.spatialk.testutil.assertDoubleEquals
 import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
+import org.maplibre.spatialk.turf.measurement.distance
 import org.maplibre.spatialk.units.extensions.inKilometers
 
 class NearestPointOnLineTest {
@@ -67,22 +68,26 @@ class NearestPointOnLineTest {
         assertPositionEquals(target, nearestPoint.coordinates)
         assertDoubleEquals(0.0, props.location.inKilometers)
         assertDoubleEquals(0.0, props.distance.inKilometers)
+        assertEquals(0, props.index)
     }
 
     @Test
     fun testNearestPointOnLinePointOnVertex() {
+        val start = Position(-122.456161, 37.721259)
+        val middle = Position(-122.457175, 37.720033)
         val line =
             lineStringOf(
-                Position(-122.456161, 37.721259),
-                Position(-122.457175, 37.720033),
+                start,
+                middle,
                 Position(-122.457175, 37.718242),
             )
-        val target = Position(-122.457175, 37.720033)
 
-        val (nearestPoint, props) = line.nearestPointTo(target)
+        val (nearestPoint, props) = line.nearestPointTo(middle)
 
-        assertPositionEquals(target, nearestPoint.coordinates)
+        assertPositionEquals(middle, nearestPoint.coordinates)
         assertDoubleEquals(0.0, props.distance.inKilometers)
+        assertEquals(1, props.index)
+        assertDoubleEquals(distance(start, middle).inKilometers, props.location.inKilometers)
     }
 
     @Test
