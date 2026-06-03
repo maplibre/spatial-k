@@ -49,6 +49,7 @@ into library behavior and APIs.
 | [PMTiles Version 3 Specification](https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md)                                                    | Normative binary format definition: header, sections, directories, metadata, compression, TileIDs, and pseudocode.                                                                                 |
 | [PMTiles v3 Changelog](https://github.com/protomaps/PMTiles/blob/main/spec/v3/CHANGELOG.md)                                                          | Normative change history for v3.x clarifications and enum additions. Current notable entries include AVIF, MLT, `terrarium`, MIME type, directory length clarifications, and nested-leaf guidance. |
 | [Protomaps PMTiles documentation](https://docs.protomaps.com/pmtiles/)                                                                               | Conceptual background and practical PMTiles usage model.                                                                                                                                           |
+| [Protomaps go-pmtiles](https://github.com/protomaps/go-pmtiles)                                                                                      | Compatibility target for archives produced by the primary Protomaps PMTiles tooling.                                                                                                               |
 | [TileJSON 3.0 vector_layers](https://github.com/mapbox/tilejson-spec/blob/22f5f91e643e8980ef2656674bef84c2869fbe76/3.0.0/README.md#33-vector_layers) | Required metadata key when the PMTiles header tile type is MVT.                                                                                                                                    |
 | [MDN: HTTP range requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests)                                                  | HTTP source behavior reference.                                                                                                                                                                    |
 | [Kotlin releases](https://kotlinlang.org/docs/releases.html)                                                                                         | Kotlin release currency. This spec assumes the Kotlin 2.3.x-era feature set as of 2026-06-03.                                                                                                      |
@@ -72,7 +73,7 @@ checklist, not a restatement of the spec.
 | Fixed 127-byte header              | Reader parses all fields into an immutable `PmTilesHeader`. Writer emits a canonical 127-byte header. Unknown/future enum values are preserved where safe.                                                                                                                                                   |
 | Section offsets and lengths        | Reader validates section arithmetic, overflow, overlap policy, and configured operational limits. Writer emits canonical section order: header, root directory, metadata, leaf directories, tile data. Reader still supports legal non-canonical relocation except where the official spec restricts layout. |
 | Root directory within first 16 KiB | Reader opens with an initial first-16-KiB range read and requires the complete compressed root directory to be available there. Writer ensures the compressed root directory plus preceding bytes fit in the first 16 KiB.                                                                                   |
-| JSON metadata                      | Reader exposes raw UTF-8 JSON and typed known fields. Writer requires valid metadata JSON object in strict mode.                                                                                                                                                                                             |
+| JSON metadata                      | Reader exposes raw UTF-8 JSON and typed known fields. Writer emits a valid UTF-8 JSON object.                                                                                                                                                                                                                |
 | Optional leaf directories          | Reader supports leaf traversal, caching, and configurable nested-leaf depth. Writer emits leaf directories when needed and orders them by starting TileID. Writer does not intentionally create nested leaf directories.                                                                                     |
 | Tile data section                  | Reader returns compressed ranges, compressed tile bytes, or PMTiles-decompressed tile bytes according to read mode. Writer lays out tile blobs and directory offsets relative to the tile data section.                                                                                                      |
 | Hilbert TileID scheme              | Common code implements Z/X/Y to TileID conversion and reverse conversion, including zoom-start offsets and overflow checks.                                                                                                                                                                                  |
@@ -80,12 +81,12 @@ checklist, not a restatement of the spec.
 | Varint encoding                    | Common code implements bounded unsigned varint read/write with malformed, unterminated, and overflow detection.                                                                                                                                                                                              |
 | Internal compression               | Applies to root directory, metadata, and each leaf directory independently. Required for opening and directory traversal.                                                                                                                                                                                    |
 | Tile compression                   | Applies uniformly to all tile payloads in the archive. Required only when callers request decompressed tile payloads. Range APIs work without tile decompression.                                                                                                                                            |
-| Compression enum                   | Supports `Unknown`, `None`, `gzip`, `brotli`, and `zstd` model values. Unknown values can be preserved but not decoded without a registered codec.                                                                                                                                                           |
+| Compression enum                   | Supports `Unknown`, `None`, `gzip`, `brotli`, and `zstd` model values. Unknown values can be preserved in models; unregistered internal compression fails at open and unregistered tile compression fails when tile decoding is requested.                                                                   |
 | Tile type enum                     | Supports `Unknown/Other`, `MVT`, `PNG`, `JPEG`, `WebP`, `AVIF`, and `MLT`, plus unknown raw codes. Tile payloads remain opaque.                                                                                                                                                                              |
 | Clustered flag                     | Reader reports the flag. Strict validation can verify clustered constraints during full validation. Writer sets the flag only when the emitted tile layout satisfies it.                                                                                                                                     |
 | Counts                             | Header counts are exposed as nullable semantic values because PMTiles uses `0` for “unknown”. Raw unsigned values remain accessible for diagnostics.                                                                                                                                                         |
 | Bounds and center                  | Header positions are decoded into lon/lat models, with strict validation of sane coordinate ranges. Writer encodes bounds/center using PMTiles’ integer-scaled representation.                                                                                                                               |
-| MVT metadata requirement           | Strict mode requires `vector_layers` when tile type is MVT. Lenient mode warns. Writer strict mode fails without it.                                                                                                                                                                                         |
+| MVT metadata requirement           | Strict mode requires `vector_layers` when tile type is MVT. Lenient mode warns. Writer fails without it when tile type is MVT.                                                                                                                                                                               |
 | `terrarium` metadata encoding      | Reported as metadata. Core does not decode elevation pixels.                                                                                                                                                                                                                                                 |
 | Recommended MIME type              | Server helpers may report `application/vnd.pmtiles` for full archive responses. Tile responses use tile-type-specific content types where helper APIs are requested.                                                                                                                                         |
 
@@ -164,18 +165,18 @@ checklist, not a restatement of the spec.
 
 ### 5.1 Core responsibilities
 
-| Subsystem                   | Location                     | Responsibility                                                                                                   |
-| --------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Binary primitives           | `commonMain`                 | Little-endian numeric reads/writes, unsigned 64-bit parsing policy, varints, bounds checks.                      |
-| Tile ID math                | `commonMain`                 | Hilbert conversion, zoom-start offsets, coordinate validation, TileID-to-Z/X/Y reverse conversion.               |
-| Directories                 | `commonMain`                 | Directory encode/decode, validation, predecessor binary search, run-length handling, leaf traversal.             |
-| Metadata                    | `commonMain`                 | Load internal-compressed UTF-8 JSON; expose raw JSON and typed convenience fields.                               |
-| Compression API             | `commonMain`                 | Codec registry, codec lookup, decode/encode limits, read modes.                                                  |
-| Compression implementations | platform/common as available | `None` always; gzip expected by default where practical; brotli/zstd pluggable or platform-specific.             |
-| Cache                       | `commonMain`                 | Header/root memoization, lazy metadata, leaf-directory LRU, optional tile LRU, in-flight request de-duplication. |
-| HTTP/file adapters          | target source sets           | Bridge JDK, Foundation, JS fetch/Blob/Node, and similar APIs into `ByteRangeSource`.                             |
-| Ktor/kotlinx-io adapters    | separate KMP source modules  | Kotlin-consumer convenience without making Ktor or kotlinx-io part of the archive core.                          |
-| Foreign facades             | target-specific public APIs  | Stable, idiomatic consumption surfaces for Java, Swift/Apple, and JS/TS.                                         |
+| Subsystem                   | Location                    | Responsibility                                                                                                        |
+| --------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Binary primitives           | `commonMain`                | Little-endian numeric reads/writes, unsigned 64-bit parsing policy, varints, bounds checks.                           |
+| Tile ID math                | `commonMain`                | Hilbert conversion, zoom-start offsets, coordinate validation, TileID-to-Z/X/Y reverse conversion.                    |
+| Directories                 | `commonMain`                | Directory encode/decode, validation, predecessor binary search, run-length handling, leaf traversal.                  |
+| Metadata                    | `commonMain`                | Load internal-compressed UTF-8 JSON; expose raw JSON and typed convenience fields.                                    |
+| Compression API             | `commonMain`                | Codec registry, codec lookup, decode/encode limits, read modes.                                                       |
+| Compression implementations | platform source sets        | `None` and gzip are built-in on every target; brotli/zstd are extension codecs unless added as explicit dependencies. |
+| Cache                       | `commonMain`                | Header/root memoization, lazy metadata, leaf-directory LRU, optional tile LRU, in-flight request de-duplication.      |
+| HTTP/file adapters          | target source sets          | Bridge JDK, Foundation, JS fetch/Blob/Node, and similar APIs into `ByteRangeSource`.                                  |
+| Ktor/kotlinx-io adapters    | separate KMP source modules | Kotlin-consumer convenience without making Ktor or kotlinx-io part of the archive core.                               |
+| Foreign facades             | target-specific public APIs | Stable, idiomatic consumption surfaces for Java, Swift/Apple, and JS/TS.                                              |
 
 ### 5.2 Object lifecycle
 
@@ -645,7 +646,7 @@ public data class PmTilesWriteOptions(
 | `inputTileCompression` | Prevents accidental double-compression when callers supply precompressed tile bytes.                                                                                                     |
 | `clustered`            | Writer sets true only if emitted tile offsets satisfy PMTiles clustered semantics.                                                                                                       |
 | `deduplicate`          | Identical tile contents may share one tile data blob. Non-consecutive duplicates use separate entries pointing to the same offset; consecutive duplicates may become run-length entries. |
-| `metadataValidation`   | Strict writer mode requires valid JSON object and MVT `vector_layers` when tile type is MVT.                                                                                             |
+| `metadataValidation`   | Writer always emits valid JSON object metadata. Strict writer mode also validates known metadata fields before writing. MVT archives require `vector_layers`.                            |
 | `directoryStrategy`    | Chooses root/leaf split to satisfy the first-16-KiB root constraint.                                                                                                                     |
 
 ### 10.3 Writer layout
@@ -731,10 +732,10 @@ public data class PmTilesMetadata(
 
 | Requirement          | Reader behavior                                                                                              | Writer behavior                                                                          |
 | -------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| Valid JSON object    | Strict mode fails if metadata is not a JSON object. Lenient mode preserves raw JSON when possible and warns. | Strict mode fails before writing.                                                        |
+| Valid JSON object    | Strict mode fails if metadata is not a JSON object. Lenient mode preserves raw JSON when possible and warns. | Always required before writing.                                                          |
 | UTF-8                | Invalid UTF-8 fails.                                                                                         | Writer encodes JSON as UTF-8.                                                            |
 | Unknown keys         | Preserved in raw JSON.                                                                                       | Preserved when caller supplies raw JSON.                                                 |
-| MVT `vector_layers`  | Strict reader mode requires it when tile type is MVT; lenient mode warns.                                    | Strict writer mode requires it when tile type is MVT.                                    |
+| MVT `vector_layers`  | Strict reader mode requires it when tile type is MVT; lenient mode warns.                                    | Always required when tile type is MVT.                                                   |
 | Attribution          | Preserved verbatim.                                                                                          | Writer does not sanitize or interpret HTML.                                              |
 | `encoding=terrarium` | Reported as metadata.                                                                                        | Allowed. Core does not verify raster payload semantics.                                  |
 | TileJSON fields      | Lift known values when types are compatible.                                                                 | Writer can help build a JSON object but should allow raw JSON for forward compatibility. |
@@ -770,13 +771,20 @@ public class CompressionRegistry private constructor(...) {
 
 ### 12.2 Codec policy
 
-| Compression | Reader policy                                                         | Writer policy                                                      |
-| ----------- | --------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| Unknown     | Preserve code. Fail if decode is required and no custom codec exists. | Do not emit unless explicitly requested for experimental archives. |
-| None        | Always supported.                                                     | Always supported.                                                  |
-| gzip        | Expected default support where practical.                             | Expected when encoder registered.                                  |
-| brotli      | Supported through registry; default availability may vary by target.  | Supported through registry.                                        |
-| zstd        | Supported through registry; default availability may vary by target.  | Supported through registry.                                        |
+| Compression | Reader policy                                                                                                                                                               | Writer policy                                                      |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Unknown     | Preserve code in header models. Fail at `open` when used as internal compression. Fail only at tile decode time when used as tile compression and no custom codec exists.   | Do not emit.                                                       |
+| None        | Built-in on every target.                                                                                                                                                   | Built-in on every target.                                          |
+| gzip        | Built-in on every target for internal compression, metadata, and decompressed tile APIs. This is required for compatibility with archives produced by Protomaps go-pmtiles. | Built-in on every target for internal compression and tile output. |
+| brotli      | Enum value is supported and custom codecs may be registered. The base library does not ship brotli support.                                                                 | Available only through registered custom codecs.                   |
+| zstd        | Enum value is supported and custom codecs may be registered. The base library does not ship zstd support.                                                                   | Available only through registered custom codecs.                   |
+
+The base library deliberately standardizes on gzip rather than making compression availability vary
+by platform. JVM uses `java.util.zip`; Apple/native targets use platform zlib bindings; JS and WASM
+targets use the platform `DecompressionStream`/`CompressionStream` APIs when available and bundled
+fallback code otherwise. Brotli and zstd remain valid PMTiles enum values, but supporting them in
+the base library would require target-specific dependencies and is not needed for current
+Protomaps-generated archives.
 
 ### 12.3 Decompression limits
 
@@ -1284,7 +1292,7 @@ Foreign facades must be tested from the foreign language, not only from Kotlin:
 Writer output must round-trip through the strict reader and through at least one independent PMTiles
 v3 implementation or fixture validator. Required cases:
 
-- empty or minimal valid archive policy, if supported
+- rejection of empty archives and output of a minimal one-tile archive
 - single tile
 - dense adjacent tile runs
 - sparse tile set requiring leaf directories
@@ -1294,7 +1302,7 @@ v3 implementation or fixture validator. Required cases:
 - MVT metadata with `vector_layers`
 - raster tile types
 - unknown tile type
-- `None` and gzip internal compression at minimum where codecs are available
+- `None` and gzip internal compression
 - precompressed tile input without double-compression
 
 ---
@@ -1304,12 +1312,13 @@ v3 implementation or fixture validator. Required cases:
 1. [PMTiles Version 3 Specification](https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md)
 2. [PMTiles v3 Changelog](https://github.com/protomaps/PMTiles/blob/main/spec/v3/CHANGELOG.md)
 3. [Protomaps PMTiles documentation](https://docs.protomaps.com/pmtiles/)
-4. [TileJSON 3.0 `vector_layers`](https://github.com/mapbox/tilejson-spec/blob/22f5f91e643e8980ef2656674bef84c2869fbe76/3.0.0/README.md#33-vector_layers)
-5. [MDN: HTTP range requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests)
-6. [Kotlin release process and release history](https://kotlinlang.org/docs/releases.html)
-7. [Kotlin: Interoperability with Swift/Objective-C](https://kotlinlang.org/docs/native-objc-interop.html)
-8. [Kotlin: Interoperability with Swift using Swift export](https://kotlinlang.org/docs/native-swift-export.html)
-9. [Kotlin: Use Kotlin code from JavaScript](https://kotlinlang.org/docs/js-to-kotlin-interop.html)
-10. [Kotlin: What’s new in Kotlin 2.3.0](https://kotlinlang.org/docs/whatsnew23.html)
-11. [Kotlin: What’s new in Kotlin 2.3.20](https://kotlinlang.org/docs/whatsnew2320.html)
-12. [Kotlin: Calling Kotlin from Java](https://kotlinlang.org/docs/java-to-kotlin-interop.html)
+4. [Protomaps go-pmtiles](https://github.com/protomaps/go-pmtiles)
+5. [TileJSON 3.0 `vector_layers`](https://github.com/mapbox/tilejson-spec/blob/22f5f91e643e8980ef2656674bef84c2869fbe76/3.0.0/README.md#33-vector_layers)
+6. [MDN: HTTP range requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests)
+7. [Kotlin release process and release history](https://kotlinlang.org/docs/releases.html)
+8. [Kotlin: Interoperability with Swift/Objective-C](https://kotlinlang.org/docs/native-objc-interop.html)
+9. [Kotlin: Interoperability with Swift using Swift export](https://kotlinlang.org/docs/native-swift-export.html)
+10. [Kotlin: Use Kotlin code from JavaScript](https://kotlinlang.org/docs/js-to-kotlin-interop.html)
+11. [Kotlin: What’s new in Kotlin 2.3.0](https://kotlinlang.org/docs/whatsnew23.html)
+12. [Kotlin: What’s new in Kotlin 2.3.20](https://kotlinlang.org/docs/whatsnew2320.html)
+13. [Kotlin: Calling Kotlin from Java](https://kotlinlang.org/docs/java-to-kotlin-interop.html)
