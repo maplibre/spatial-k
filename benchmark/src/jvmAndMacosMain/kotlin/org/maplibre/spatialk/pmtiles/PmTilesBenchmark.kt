@@ -8,6 +8,7 @@ import kotlinx.benchmark.OutputTimeUnit
 import kotlinx.benchmark.Scope
 import kotlinx.benchmark.Setup
 import kotlinx.benchmark.State
+import kotlinx.benchmark.TearDown
 import kotlinx.coroutines.runBlocking
 
 @State(Scope.Benchmark)
@@ -37,6 +38,13 @@ open class PmTilesBenchmark {
                 options = ArchiveOpenOptions(tileReadMode = TileReadMode.DecompressedBytes),
             )
         }
+    }
+
+    @TearDown
+    fun tearDown() {
+        rootOnlyArchive.close()
+        leafDirectoryArchive.close()
+        decompressedArchive.close()
     }
 
     @Benchmark
