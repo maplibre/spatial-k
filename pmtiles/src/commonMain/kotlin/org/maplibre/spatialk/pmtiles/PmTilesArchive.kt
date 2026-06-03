@@ -8,6 +8,14 @@ package org.maplibre.spatialk.pmtiles
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.native.HiddenFromObjC
 import kotlin.native.ObjCName
+import org.maplibre.spatialk.pmtiles.internal.DecodeLimits
+import org.maplibre.spatialk.pmtiles.internal.DecodePurpose
+import org.maplibre.spatialk.pmtiles.internal.FIRST_READ_BYTES
+import org.maplibre.spatialk.pmtiles.internal.allocationLength
+import org.maplibre.spatialk.pmtiles.internal.decodeCompression
+import org.maplibre.spatialk.pmtiles.internal.parseHeader
+import org.maplibre.spatialk.pmtiles.internal.readSourceRange
+import org.maplibre.spatialk.pmtiles.internal.sourceSize
 
 /**
  * Open PMTiles archive reader.
@@ -20,11 +28,21 @@ import kotlin.native.ObjCName
 public class PmTilesArchive
 private constructor(
     public val header: ArchiveHeader,
-    public val tileType: TileType,
-    public val internalCompression: Compression,
-    public val tileCompression: Compression,
+    private val source: ByteRangeSource,
+    private val options: ArchiveOpenOptions,
+    private val archiveSize: Long,
+    private val rootDirectoryBytes: ByteArray,
     private val archiveWarnings: List<ArchiveWarning>,
 ) : AutoCloseable {
+    /** Tile payload type from the header. */
+    public val tileType: TileType = header.tileType
+
+    /** Compression used for directories and metadata. */
+    public val internalCompression: Compression = header.internalCompression
+
+    /** Compression used for tile payloads. */
+    public val tileCompression: Compression = header.tileCompression
+
     /** Returns the raw metadata JSON string. */
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun rawMetadataJson(): String = throw NotImplementedError()
@@ -95,6 +113,52 @@ private constructor(
         public suspend fun open(
             source: ByteRangeSource,
             options: ArchiveOpenOptions = ArchiveOpenOptions.Default,
-        ): PmTilesArchive = throw NotImplementedError()
+        ): PmTilesArchive {
+            val sourceSize = source.sourceSize()
+            val initialReadLength =
+                allocationLength(
+                    minOf(sourceSize, FIRST_READ_BYTES.toULong()),
+                    options.limits.maxInitialReadBytes,
+                    "Initial read",
+                )
+            val initialBytes =
+                source.readSourceRange(
+                    ByteRange(offset = 0uL, length = initialReadLength),
+                    archiveSize = sourceSize,
+                    maxBytes = options.limits.maxInitialReadBytes,
+                )
+            val header = parseHeader(initialBytes, sourceSize)
+            val compressedRoot = initialBytes.slice(header.rootDirectory, options.limits)
+            val rootDirectoryBytes =
+                decodeCompression(
+                    header.internalCompression,
+                    compressedRoot,
+                    DecodeLimits(
+                        maxCompressedBytes = options.limits.maxDirectoryCompressedBytes,
+                        maxDecompressedBytes = options.limits.maxDirectoryDecompressedBytes,
+                        purpose = DecodePurpose.RootDirectory,
+                    ),
+                )
+
+            return PmTilesArchive(
+                header = header,
+                source = source,
+                options = options,
+                archiveSize = sourceSize.toLong(),
+                rootDirectoryBytes = rootDirectoryBytes,
+                archiveWarnings = emptyList(),
+            )
+        }
     }
+}
+
+private fun ByteArray.slice(section: ArchiveSection, limits: ArchiveLimits): ByteArray {
+    val length =
+        allocationLength(
+            section.length,
+            limits.maxDirectoryCompressedBytes,
+            "Root directory",
+        )
+    val offset = section.offset.toInt()
+    return copyOfRange(offset, offset + length)
 }

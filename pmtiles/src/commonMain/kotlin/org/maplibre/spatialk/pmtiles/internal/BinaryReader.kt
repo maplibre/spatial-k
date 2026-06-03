@@ -41,6 +41,8 @@ internal class BinaryReader(
             (bytes[start + 3].unsigned() shl 24)
     }
 
+    fun readInt32Le(): Int = readUInt32Le().toInt()
+
     fun readULong64Le(): ULong {
         requireAvailable(8)
         var value = 0uL
