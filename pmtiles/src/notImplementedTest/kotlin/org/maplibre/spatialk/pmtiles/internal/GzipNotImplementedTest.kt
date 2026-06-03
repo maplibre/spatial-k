@@ -4,7 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import org.maplibre.spatialk.pmtiles.Compression
 
-class GzipWasmWasiTest {
+class GzipNotImplementedTest {
     @Test
     fun gzipPlaceholderThrowsWhenInvoked() {
         assertFailsWith<NotImplementedError> {

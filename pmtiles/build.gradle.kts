@@ -15,22 +15,15 @@ tasks
 
 kotlin {
     sourceSets {
-        listOf(
-                "iosArm64Main",
-                "iosSimulatorArm64Main",
-                "iosX64Main",
-                "macosArm64Main",
-                "macosX64Main",
-                "tvosArm64Main",
-                "tvosSimulatorArm64Main",
-                "tvosX64Main",
-                "watchosArm64Main",
-                "watchosDeviceArm64Main",
-                "watchosSimulatorArm64Main",
-                "watchosX64Main",
-                "watchosArm32Main",
-            )
-            .forEach { getByName(it).kotlin.srcDir("src/appleConcreteMain/kotlin") }
+        val notImplementedMain by creating { dependsOn(commonMain.get()) }
+        jsMain.get().dependsOn(notImplementedMain)
+        wasmJsMain.get().dependsOn(notImplementedMain)
+        wasmWasiMain.get().dependsOn(notImplementedMain)
+
+        val notImplementedTest by creating { dependsOn(commonTest.get()) }
+        jsTest.get().dependsOn(notImplementedTest)
+        wasmJsTest.get().dependsOn(notImplementedTest)
+        wasmWasiTest.get().dependsOn(notImplementedTest)
 
         commonMain.dependencies {
             implementation(libs.kotlinx.coroutines.core)

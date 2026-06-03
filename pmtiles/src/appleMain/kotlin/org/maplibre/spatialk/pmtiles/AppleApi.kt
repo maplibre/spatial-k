@@ -1,11 +1,18 @@
-@file:OptIn(kotlin.experimental.ExperimentalObjCName::class)
-
 package org.maplibre.spatialk.pmtiles
 
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.experimental.ExperimentalObjCName
 import kotlin.native.ObjCName
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.UnsafeNumber
+import kotlinx.cinterop.addressOf
+import kotlinx.cinterop.convert
+import kotlinx.cinterop.readBytes
+import kotlinx.cinterop.usePinned
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
 import platform.Foundation.NSData
+import platform.Foundation.NSMutableData
+import platform.posix.memcpy
 
 public val ArchiveTile.data: NSData
     get() = bytes.toNSData()
@@ -17,6 +24,7 @@ public interface ByteRangeDataSource {
     public suspend fun read(offset: ULong, length: Int): NSData
 }
 
+@OptIn(ExperimentalObjCName::class)
 @ObjCName(name = "open", swiftName = "open")
 @Throws(PmTilesException::class, CancellationException::class)
 public suspend fun PmTilesArchive.Companion.open(
@@ -34,10 +42,9 @@ public suspend fun PmTilesArchive.Companion.open(
         options = options,
     )
 
-internal expect fun ByteArray.toNSData(): NSData
-
 internal fun NSData.toByteArray(): ByteArray {
-    val byteCount = byteCount()
+    val byteCount =
+        @OptIn(ExperimentalForeignApi::class, UnsafeNumber::class) length.convert<ULong>()
     if (byteCount == 0uL) return ByteArray(0)
     if (byteCount > Int.MAX_VALUE.toULong()) {
         throw pmTilesException(
@@ -48,6 +55,25 @@ internal fun NSData.toByteArray(): ByteArray {
     return readBytes(byteCount.toInt())
 }
 
-internal expect fun NSData.byteCount(): ULong
+internal fun ByteArray.toNSData(): NSData {
+    val data = NSMutableData()
+    @OptIn(ExperimentalForeignApi::class, UnsafeNumber::class) data.setLength(size.convert())
+    if (isNotEmpty()) {
+        @OptIn(ExperimentalForeignApi::class)
+        usePinned { pinned ->
+            @OptIn(ExperimentalForeignApi::class, UnsafeNumber::class)
+            memcpy(data.mutableBytes, pinned.addressOf(0), size.convert())
+        }
+    }
+    return data
+}
 
-internal expect fun NSData.readBytes(length: Int): ByteArray
+internal fun NSData.readBytes(length: Int): ByteArray {
+    val bytesPointer =
+        @OptIn(ExperimentalForeignApi::class) bytes
+            ?: throw pmTilesException(
+                PmTilesErrorCode.SourceUnavailable,
+                "Byte range data source returned non-empty NSData with a null bytes pointer.",
+            )
+    return (@OptIn(ExperimentalForeignApi::class) bytesPointer.readBytes(length))
+}
