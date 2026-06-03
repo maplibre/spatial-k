@@ -66,7 +66,6 @@ class DirectoryDecodingTest {
 
     @Test
     fun rejectsMalformedDirectories() {
-        assertDirectoryFails(PmTilesErrorCode.InvalidDirectory, byteArrayOf(0))
         assertDirectoryFails(PmTilesErrorCode.InvalidDirectory, bytes(1uL, 0uL, 1uL, 0uL, 1uL))
         assertDirectoryFails(PmTilesErrorCode.InvalidDirectory, bytes(1uL, 0uL, 1uL, 1uL, 0uL))
         assertDirectoryFails(PmTilesErrorCode.InvalidDirectory, bytes(2uL, 5uL, 0uL))

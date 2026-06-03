@@ -172,14 +172,18 @@ class OpenArchiveTest {
     }
 
     @Test
-    fun rejectsMalformedRootDirectoryAtOpen() {
+    fun opensEmptyRootDirectory() = runSuspending {
         val rootBytes = byteArrayOf(0)
-        val fields = TestHeaderFields(rootLength = rootBytes.size.toULong())
+        val fields =
+            TestHeaderFields(
+                rootLength = rootBytes.size.toULong(),
+                tileDataLength = 0uL,
+            )
 
-        assertOpenFails(
-            PmTilesErrorCode.InvalidDirectory,
-            buildArchive(fields, rootBytes = rootBytes),
-        )
+        val archive =
+            PmTilesArchive.open(TestByteRangeSource(buildArchive(fields, rootBytes = rootBytes)))
+
+        assertNull(archive.getTileRange(0, 0, 0))
     }
 
     @Test

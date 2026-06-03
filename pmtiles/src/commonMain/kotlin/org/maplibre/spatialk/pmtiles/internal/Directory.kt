@@ -80,9 +80,6 @@ internal fun decodeDirectory(
 
 private fun BinaryReader.readEntryCount(limits: ArchiveLimits): Int {
     val count = readVarint(limits.maxVarintBytes)
-    if (count == 0uL) {
-        throw pmTilesException(PmTilesErrorCode.InvalidDirectory, "Directory entry count is zero.")
-    }
     if (limits.maxDirectoryEntries < 0 || count > limits.maxDirectoryEntries.toULong()) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,

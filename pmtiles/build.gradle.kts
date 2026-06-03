@@ -1,5 +1,18 @@
 plugins { id("published-library") }
 
+tasks
+    .withType<org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeHostTest>()
+    .configureEach {
+        environment("PMTILES_PROJECT_DIR", projectDir.absolutePath)
+    }
+
+tasks
+    .withType<org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeSimulatorTest>()
+    .configureEach {
+        environment("PMTILES_PROJECT_DIR", projectDir.absolutePath)
+        environment("SIMCTL_CHILD_PMTILES_PROJECT_DIR", projectDir.absolutePath)
+    }
+
 kotlin {
     sourceSets {
         listOf(
