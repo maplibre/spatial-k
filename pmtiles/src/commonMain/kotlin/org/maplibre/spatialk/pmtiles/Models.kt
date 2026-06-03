@@ -1,5 +1,7 @@
 package org.maplibre.spatialk.pmtiles
 
+import org.maplibre.spatialk.pmtiles.internal.pmTilesException
+
 /**
  * Absolute byte range in a PMTiles archive.
  *
@@ -201,13 +203,114 @@ public data class TileCoord(
 /** PMTiles TileID conversion utilities. */
 public object TileIds {
     /** Converts a Web tile coordinate to a PMTiles TileID. */
-    public fun fromZxy(z: Int, x: Int, y: Int): Long = throw NotImplementedError()
+    public fun fromZxy(z: Int, x: Int, y: Int): Long {
+        validateZxy(z, x, y)
+        return zoomStart(z) + hilbertIndex(z, x, y)
+    }
 
     /** Converts a PMTiles TileID to a Web tile coordinate. */
-    public fun toZxy(tileId: Long): TileCoord = throw NotImplementedError()
+    public fun toZxy(tileId: Long): TileCoord {
+        if (tileId < 0 || tileId > MAX_SUPPORTED_TILE_ID) {
+            throw invalidTileCoordinate("TileID $tileId is outside the supported range.")
+        }
+
+        var z = 0
+        while (z < MAX_ZOOM && tileId >= zoomStart(z + 1)) {
+            z += 1
+        }
+
+        val position = tileId - zoomStart(z)
+        val (x, y) = hilbertCoordinate(z, position)
+        return TileCoord(z = z, x = x, y = y)
+    }
 
     /** Returns the first PMTiles TileID for [z]. */
-    public fun zoomStart(z: Int): Long = throw NotImplementedError()
+    public fun zoomStart(z: Int): Long {
+        validateZoom(z)
+        return if (z == 0) 0 else ((1L shl (2 * z)) - 1) / 3
+    }
+
+    internal fun validateZxy(z: Int, x: Int, y: Int) {
+        validateZoom(z)
+        val limit = 1L shl z
+        if (x < 0 || y < 0 || x.toLong() >= limit || y.toLong() >= limit) {
+            throw invalidTileCoordinate(
+                "Tile coordinate z=$z x=$x y=$y is outside the supported range."
+            )
+        }
+    }
+
+    private fun validateZoom(z: Int) {
+        if (z !in 0..MAX_ZOOM) {
+            throw invalidTileCoordinate("Zoom $z is outside the supported range 0..$MAX_ZOOM.")
+        }
+    }
+
+    private fun hilbertIndex(z: Int, x: Int, y: Int): Long {
+        if (z == 0) return 0
+
+        var mutableX = x
+        var mutableY = y
+        var index = 0L
+        var scale = 1 shl (z - 1)
+
+        while (scale > 0) {
+            val rx = if ((mutableX and scale) > 0) 1 else 0
+            val ry = if ((mutableY and scale) > 0) 1 else 0
+            index += scale.toLong() * scale * ((3 * rx) xor ry)
+
+            if (ry == 0) {
+                if (rx == 1) {
+                    mutableX = scale - 1 - mutableX
+                    mutableY = scale - 1 - mutableY
+                }
+
+                val nextX = mutableY
+                mutableY = mutableX
+                mutableX = nextX
+            }
+
+            scale /= 2
+        }
+
+        return index
+    }
+
+    private fun hilbertCoordinate(z: Int, position: Long): Pair<Int, Int> {
+        var remaining = position
+        var x = 0L
+        var y = 0L
+        var scale = 1L
+
+        while (scale < (1L shl z)) {
+            val rx = ((remaining / 2) and 1).toInt()
+            val ry = ((remaining xor rx.toLong()) and 1).toInt()
+
+            if (ry == 0) {
+                if (rx == 1) {
+                    x = scale - 1 - x
+                    y = scale - 1 - y
+                }
+
+                val nextX = y
+                y = x
+                x = nextX
+            }
+
+            x += scale * rx
+            y += scale * ry
+            remaining /= 4
+            scale *= 2
+        }
+
+        return x.toInt() to y.toInt()
+    }
+
+    private fun invalidTileCoordinate(message: String): PmTilesException =
+        pmTilesException(PmTilesErrorCode.InvalidTileCoordinate, message)
+
+    private const val MAX_ZOOM = 31
+    private val MAX_SUPPORTED_TILE_ID: Long = zoomStart(MAX_ZOOM) + (1L shl (2 * MAX_ZOOM)) - 1
 }
 
 /**
