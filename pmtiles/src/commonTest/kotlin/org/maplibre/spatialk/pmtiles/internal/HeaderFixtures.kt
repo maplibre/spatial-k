@@ -82,6 +82,7 @@ internal fun buildArchive(
 internal fun buildArchiveWithSections(
     fields: TestHeaderFields,
     rootBytes: ByteArray,
+    metadataBytes: ByteArray = ByteArray(0),
     leafBytes: ByteArray = ByteArray(0),
     tileBytes: ByteArray = ByteArray(0),
     minimumArchiveSize: ULong = 400uL,
@@ -94,6 +95,9 @@ internal fun buildArchiveWithSections(
 
     return buildArchive(fields, archiveSize = archiveSize.toInt(), rootBytes = rootBytes).also {
         bytes ->
+        if (metadataBytes.isNotEmpty()) {
+            metadataBytes.copyInto(bytes, destinationOffset = fields.metadataOffset.toInt())
+        }
         if (leafBytes.isNotEmpty()) {
             leafBytes.copyInto(bytes, destinationOffset = fields.leafDirectoriesOffset.toInt())
         }

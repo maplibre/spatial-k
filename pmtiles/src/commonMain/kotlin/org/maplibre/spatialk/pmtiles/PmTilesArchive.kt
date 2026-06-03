@@ -8,6 +8,11 @@ package org.maplibre.spatialk.pmtiles
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.native.HiddenFromObjC
 import kotlin.native.ObjCName
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import org.maplibre.spatialk.pmtiles.internal.DecodeLimits
 import org.maplibre.spatialk.pmtiles.internal.DecodePurpose
 import org.maplibre.spatialk.pmtiles.internal.DirectoryEntry
@@ -22,6 +27,7 @@ import org.maplibre.spatialk.pmtiles.internal.parseHeader
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
 import org.maplibre.spatialk.pmtiles.internal.readSourceRange
 import org.maplibre.spatialk.pmtiles.internal.sourceSize
+import org.maplibre.spatialk.pmtiles.internal.toByteRange
 
 /**
  * Open PMTiles archive reader.
@@ -41,6 +47,8 @@ private constructor(
     private val archiveWarnings: MutableList<ArchiveWarning>,
 ) : AutoCloseable {
     private val leafDirectoryCache = mutableMapOf<ByteRange, List<DirectoryEntry>>()
+    private var rawMetadataJsonCache: String? = null
+    private var metadataCache: ArchiveMetadata? = null
     private var closed = false
 
     /** Tile payload type from the header. */
@@ -54,11 +62,54 @@ private constructor(
 
     /** Returns the raw metadata JSON string. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun rawMetadataJson(): String = throw NotImplementedError()
+    public suspend fun rawMetadataJson(): String {
+        checkOpen()
+        rawMetadataJsonCache?.let {
+            return it
+        }
+
+        val json =
+            if (header.metadata.length == 0uL) {
+                ""
+            } else {
+                val compressedBytes =
+                    source.readSourceRange(
+                        header.metadata.toByteRange(
+                            options.limits.maxMetadataBytes,
+                            "Metadata",
+                        ),
+                        archiveSize = archiveSize,
+                        maxBytes = options.limits.maxMetadataBytes,
+                    )
+                val metadataBytes =
+                    decodeCompression(
+                        header.internalCompression,
+                        compressedBytes,
+                        DecodeLimits(
+                            maxCompressedBytes = options.limits.maxMetadataBytes,
+                            maxDecompressedBytes = options.limits.maxMetadataBytes,
+                            purpose = DecodePurpose.Metadata,
+                        ),
+                    )
+                metadataBytes.decodeMetadataUtf8()
+            }
+
+        rawMetadataJsonCache = json
+        return json
+    }
 
     /** Returns typed PMTiles metadata fields. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun metadata(): ArchiveMetadata = throw NotImplementedError()
+    public suspend fun metadata(): ArchiveMetadata {
+        checkOpen()
+        metadataCache?.let {
+            return it
+        }
+
+        val parsed = parseMetadata(rawMetadataJson())
+        metadataCache = parsed
+        return parsed
+    }
 
     /** Returns the tile at [z], [x], and [y], or null when absent. */
     @Throws(PmTilesException::class, CancellationException::class)
@@ -190,6 +241,79 @@ private constructor(
             compression = Compression.None,
             wasDecompressed = true,
         )
+    }
+
+    private fun parseMetadata(rawJson: String): ArchiveMetadata {
+        if (rawJson.isEmpty()) {
+            return emptyMetadata().also { validateMvtVectorLayers(hasVectorLayers = false) }
+        }
+
+        val jsonObject =
+            try {
+                Json.parseToJsonElement(rawJson) as? JsonObject
+            } catch (error: SerializationException) {
+                recoverMetadata("Metadata JSON is malformed.", error)
+                return emptyMetadata()
+            }
+
+        if (jsonObject == null) {
+            recoverMetadata("Metadata JSON is not an object.")
+            return emptyMetadata()
+        }
+
+        val metadata =
+            ArchiveMetadata(
+                name = jsonObject.optionalString("name"),
+                description = jsonObject.optionalString("description"),
+                attribution = jsonObject.optionalString("attribution"),
+                type = jsonObject.optionalString("type")?.let(::TilesetKind),
+                version = jsonObject.optionalString("version"),
+                encoding = jsonObject.optionalString("encoding"),
+                vectorLayersJson = jsonObject.optionalVectorLayersJson(),
+            )
+
+        validateMvtVectorLayers(hasVectorLayers = metadata.vectorLayersJson != null)
+        return metadata
+    }
+
+    private fun JsonObject.optionalString(key: String): String? {
+        val value = this[key] ?: return null
+        if (value is JsonPrimitive && value.isString) return value.content
+        recoverMetadata("Metadata key `$key` is not a string.")
+        return null
+    }
+
+    private fun JsonObject.optionalVectorLayersJson(): String? {
+        val value = this["vector_layers"] ?: return null
+        if (value is JsonArray) return value.toString()
+        recoverMetadata("Metadata key `vector_layers` is not an array.")
+        return null
+    }
+
+    private fun validateMvtVectorLayers(hasVectorLayers: Boolean) {
+        if (header.tileType != TileType.Mvt || hasVectorLayers) return
+        if (options.validationMode == ValidationMode.Strict) {
+            throw pmTilesException(
+                PmTilesErrorCode.InvalidMetadata,
+                "MVT metadata must contain `vector_layers`.",
+            )
+        }
+        archiveWarnings +=
+            ArchiveWarning(
+                code = ArchiveWarningCode.MissingVectorLayers,
+                message = "MVT metadata does not contain `vector_layers`.",
+            )
+    }
+
+    private fun recoverMetadata(message: String, cause: Throwable? = null) {
+        if (options.validationMode == ValidationMode.Strict) {
+            throw pmTilesException(PmTilesErrorCode.InvalidMetadata, message, cause)
+        }
+        archiveWarnings +=
+            ArchiveWarning(
+                code = ArchiveWarningCode.InvalidMetadataRecovered,
+                message = message,
+            )
     }
 
     private suspend fun findTileRange(
@@ -346,6 +470,28 @@ private constructor(
         }
     }
 }
+
+private fun ByteArray.decodeMetadataUtf8(): String =
+    try {
+        decodeToString(throwOnInvalidSequence = true)
+    } catch (error: Throwable) {
+        throw pmTilesException(
+            PmTilesErrorCode.InvalidMetadata,
+            "Metadata is not valid UTF-8.",
+            error,
+        )
+    }
+
+private fun emptyMetadata(): ArchiveMetadata =
+    ArchiveMetadata(
+        name = null,
+        description = null,
+        attribution = null,
+        type = null,
+        version = null,
+        encoding = null,
+        vectorLayersJson = null,
+    )
 
 private fun ByteArray.slice(section: ArchiveSection, limits: ArchiveLimits): ByteArray {
     val length =
