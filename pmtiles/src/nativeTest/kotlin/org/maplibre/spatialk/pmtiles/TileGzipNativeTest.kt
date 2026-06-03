@@ -34,7 +34,7 @@ class TileGzipNativeTest {
     }
 
     @Test
-    fun decompressedModeEnforcesTileDecompressedLimit() {
+    fun compressedBombFails() {
         val error =
             assertFailsWith<PmTilesException> {
                 runSuspending {
