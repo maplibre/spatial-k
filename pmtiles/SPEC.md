@@ -65,7 +65,7 @@ coverage checklist, not a restatement of the spec.
 | PMTiles v3 area                    | Library behavior                                                                                                                                                                                                               |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Magic and version                  | Reader validates `PMTiles` magic and version `3`. Unsupported versions fail with a deterministic error.                                                                                                                        |
-| Fixed 127-byte header              | Reader parses all fields into an immutable `PmTilesHeader`. Unknown enum values are preserved in raw-code models.                                                                                                              |
+| Fixed 127-byte header              | Reader parses all fields into an immutable `ArchiveHeader`. Unknown enum values are preserved in raw-code models.                                                                                                              |
 | Section offsets and lengths        | Reader validates section arithmetic, overflow, overlap policy, and configured operational limits. Reader supports legal non-canonical relocation except where the official spec restricts layout.                              |
 | Root directory within first 16 KiB | Reader opens with an initial first-16-KiB range read and requires the complete compressed root directory to be available there.                                                                                                |
 | JSON metadata                      | Reader exposes raw UTF-8 JSON and typed known fields.                                                                                                                                                                          |
@@ -116,31 +116,6 @@ coverage checklist, not a restatement of the spec.
 
 ## 5. Architecture
 
-```text
-+----------------------------------------------------------------------------------+
-| Kotlin API exported to Swift/Apple                                                |
-|                                                                                  |
-| Kotlin/JVM: suspend API + caller-provided ByteRangeSource                         |
-| Swift/Apple: suspend functions as completions / async calls                       |
-+-------------------------------------+--------------------------------------------+
-                                      |
-                                      v
-+----------------------------------------------------------------------------------+
-| pmtiles-core commonMain                                                          |
-|                                                                                  |
-| PmTilesArchive                                                                   |
-|   - Header parser and validator                                                   |
-|   - Directory codec and binary search                                             |
-|   - Hilbert TileID math                                                           |
-|   - Metadata loader                                                               |
-|   - Built-in compression decoding                                                 |
-|   - Directory/tile cache                                                          |
-|   - Reader orchestration                                                          |
-|                                                                                  |
-| ByteRangeSource abstraction                                                     |
-+----------------------------------------------------------------------------------+
-```
-
 ### 5.1 Core responsibilities
 
 | Subsystem                   | Location             | Responsibility                                                                                                                        |
@@ -179,6 +154,24 @@ Header, root directory, options, and source are fixed after `open`.
 | Future enum tolerance | Unknown compression/tile-type codes are preserved in raw header models. Operations that require decoding fail explicitly.                  |
 | Deterministic errors  | All failures carry a stable error code suitable for Kotlin and Swift consumers.                                                            |
 
+### 6.1 Public naming policy
+
+Public names avoid repeating the module name. The `PmTiles` prefix is reserved for types whose
+unprefixed names would be too generic in exported host-language APIs and whose identity is the
+library entry point or error domain:
+
+- `PmTilesArchive`
+- `PmTilesException`
+- `PmTilesErrorCode`
+
+Archive-owned DTOs use domain names instead of the module prefix: `ArchiveHeader`,
+`ArchiveMetadata`, `ArchiveOpenOptions`, `ArchiveLimits`, `ArchiveTile`, `ArchiveWarning`, and
+`ArchiveWarningCode`. Header-specific submodels use `Header*`, such as `HeaderCounts`.
+
+PMTiles format concepts and byte-range abstractions keep their natural names without a `PmTiles`
+prefix: `Compression`, `TileType`, `TileCoord`, `TileIds`, `TileRange`, `ByteRange`,
+`ByteRangeSource`, and `ByteRangeDataSource`.
+
 ---
 
 ## 7. Core domain model
@@ -208,13 +201,13 @@ of the archive object.
 ### 7.2 Header
 
 ```kotlin
-public data class PmTilesHeader(
+public data class ArchiveHeader(
     public val specVersion: Int,
     public val rootDirectory: ArchiveSection,
     public val metadata: ArchiveSection,
     public val leafDirectories: ArchiveSection,
     public val tileData: ArchiveSection,
-    public val counts: PmTilesCounts,
+    public val counts: HeaderCounts,
     public val clustered: Clustered,
     public val internalCompression: Compression,
     public val tileCompression: Compression,
@@ -230,7 +223,7 @@ public data class ArchiveSection(
     public val length: ULong
 )
 
-public data class PmTilesCounts(
+public data class HeaderCounts(
     public val addressedTiles: ULong?,
     public val tileEntries: ULong?,
     public val tileContents: ULong?,
@@ -343,7 +336,7 @@ public data class TileRange(
     public val directoryDepth: Int
 )
 
-public data class PmTile(
+public data class ArchiveTile(
     public val tileId: Long,
     public val coord: TileCoord,
     public val bytes: ByteArray,
@@ -405,7 +398,7 @@ archives, because the first-16-KiB root constraint is central to PMTiles v3’s 
 Tile lookup by Z/X/Y:
 
 ```kotlin
-public suspend fun getTile(z: Int, x: Int, y: Int): PmTile? {
+public suspend fun getTile(z: Int, x: Int, y: Int): ArchiveTile? {
     val tileId = TileIds.fromZxy(z, x, y)
     return getTileById(tileId)?.withCoord(z, x, y)
 }
@@ -512,7 +505,7 @@ contains fields for the keys defined by the PMTiles v3 metadata section. Arbitra
 remain available through `rawMetadataJson()`; the core library does not model them.
 
 ```kotlin
-public data class PmTilesMetadata(
+public data class ArchiveMetadata(
     public val name: String?,
     public val description: String?,
     public val attribution: String?,
@@ -635,26 +628,26 @@ The Kotlin API is the single public API. It is suspending, nullable, and export-
 
 ```kotlin
 public class PmTilesArchive private constructor(...) : AutoCloseable {
-    public val header: PmTilesHeader
+    public val header: ArchiveHeader
     public val tileType: TileType
     public val internalCompression: Compression
     public val tileCompression: Compression
 
     public suspend fun rawMetadataJson(): String
-    public suspend fun metadata(): PmTilesMetadata
+    public suspend fun metadata(): ArchiveMetadata
 
-    public suspend fun getTile(z: Int, x: Int, y: Int): PmTile?
-    public suspend fun getTile(coord: TileCoord): PmTile?
-    public suspend fun getTileById(tileId: Long): PmTile?
+    public suspend fun getTile(z: Int, x: Int, y: Int): ArchiveTile?
+    public suspend fun getTile(coord: TileCoord): ArchiveTile?
+    public suspend fun getTileById(tileId: Long): ArchiveTile?
 
     public suspend fun getTileRange(z: Int, x: Int, y: Int): TileRange?
-    public suspend fun getTileCompressed(z: Int, x: Int, y: Int): PmTile?
+    public suspend fun getTileCompressed(z: Int, x: Int, y: Int): ArchiveTile?
     public suspend fun containsTile(z: Int, x: Int, y: Int): Boolean
     public val warningCount: Int
     @ObjCName(swiftName = "warning(at:)")
-    public fun warningAt(index: Int): PmTilesWarning?
+    public fun warningAt(index: Int): ArchiveWarning?
     @HiddenFromObjC
-    public fun warnings(): List<PmTilesWarning>
+    public fun warnings(): List<ArchiveWarning>
 
     override public fun close()
 
@@ -662,7 +655,7 @@ public class PmTilesArchive private constructor(...) : AutoCloseable {
         @HiddenFromObjC
         public suspend fun open(
             source: ByteRangeSource,
-            options: PmTilesOpenOptions = PmTilesOpenOptions.Default
+            options: ArchiveOpenOptions = ArchiveOpenOptions.Default
         ): PmTilesArchive
     }
 }
@@ -677,14 +670,14 @@ Lenient metadata parsing and lazy leaf traversal can add warnings after `open`.
 ### 13.2 Open options
 
 ```kotlin
-public data class PmTilesOpenOptions(
+public data class ArchiveOpenOptions(
     public val validationMode: ValidationMode = ValidationMode.Strict,
     public val tileReadMode: TileReadMode = TileReadMode.CompressedBytes,
-    public val limits: PmTilesLimits = PmTilesLimits.Default
+    public val limits: ArchiveLimits = ArchiveLimits.Default
 ) {
     public companion object {
-        public val Default: PmTilesOpenOptions
-        public val Lenient: PmTilesOpenOptions
+        public val Default: ArchiveOpenOptions
+        public val Lenient: ArchiveOpenOptions
     }
 }
 ```
@@ -708,8 +701,8 @@ if (tile != null && tile.tileType == TileType.Mvt) {
 
 The Kotlin API uses data classes, nullable returns, `UInt`/`ULong`, and `suspend`. The common public
 API is used by Kotlin callers and Swift/Apple consumers; Apple targets additionally expose the
-`PmTile.data` and `ByteRangeDataSource` conveniences defined in section 15. Internal parser, cache,
-and codec helper types are not exported. The public API follows these rules:
+`ArchiveTile.data` and `ByteRangeDataSource` conveniences defined in section 15. Internal parser,
+cache, and codec helper types are not exported. The public API follows these rules:
 
 - no public mutable state
 - no overloaded hot-path methods in exported declarations
@@ -758,7 +751,7 @@ if let tile = try await archive.getTile(z: 12, x: 654, y: 1583) {
 }
 ```
 
-`PmTile` is the common Kotlin data class defined in section 7.6. It is not an `expect`/`actual`
+`ArchiveTile` is the common Kotlin data class defined in section 7.6. It is not an `expect`/`actual`
 class. The common result payload property is `bytes`. Apple targets also expose `data` as a copying
 extension property for Swift and Objective-C consumers.
 
@@ -767,14 +760,14 @@ The Apple source set defines:
 ```kotlin
 import platform.Foundation.NSData
 
-public val PmTile.data: NSData
+public val ArchiveTile.data: NSData
     get() = bytes.toNSData()
 ```
 
 `data` returns a new immutable `NSData` containing the current `bytes` contents each time it is
 accessed. It is an `appleMain` extension property, not a constructor property and not an
-`expect`/`actual` specialization of `PmTile`. `toNSData()` is an internal Apple-source-set helper,
-not exported public API.
+`expect`/`actual` specialization of `ArchiveTile`. `toNSData()` is an internal Apple-source-set
+helper, not exported public API.
 
 ### 15.2 Apple export requirements
 
@@ -783,8 +776,8 @@ not exported public API.
 | Classes     | Export final classes and simple DTOs. Do not export inheritance-heavy models.                                                                              |
 | Errors      | Annotate every exported Kotlin API that throws `PmTilesException` with `@Throws(PmTilesException::class)`.                                                 |
 | Async       | Use exported Kotlin `suspend` functions. Completion handlers are the Objective-C header shape; Swift async calls are the Swift usage shape.                |
-| Bytes       | Export `PmTile.bytes` as the common Kotlin `ByteArray` payload. Apple targets also export `PmTile.data: NSData` as a copying extension property.           |
-| Collections | Hide `warnings(): List<PmTilesWarning>` from Objective-C and Swift. Export `warningCount` and `warning(at:)` instead.                                      |
+| Bytes       | Export `ArchiveTile.bytes` as the common Kotlin `ByteArray` payload. Apple targets also export `ArchiveTile.data: NSData` as a copying extension property. |
+| Collections | Hide `warnings(): List<ArchiveWarning>` from Objective-C and Swift. Export `warningCount` and `warning(at:)` instead.                                      |
 | Enums       | Export raw-code DTOs for compression and tile type. Export Kotlin `enum class` for validation mode, tile read mode, and options without unknown raw codes. |
 | Sources     | Hide the common `open(ByteRangeSource, ...)` from Objective-C and Swift. Export `open(ByteRangeDataSource, ...)` for Apple callers.                        |
 | Names       | Use explicit exported names for every exported declaration whose generated Objective-C or Swift name differs from the Kotlin source name.                  |
@@ -803,7 +796,7 @@ public interface ByteRangeDataSource {
 
 public suspend fun PmTilesArchive.Companion.open(
     source: ByteRangeDataSource,
-    options: PmTilesOpenOptions = PmTilesOpenOptions.Default
+    options: ArchiveOpenOptions = ArchiveOpenOptions.Default
 ): PmTilesArchive
 ```
 
@@ -868,13 +861,13 @@ Host-language mappings:
 ### 16.2 Warning model
 
 ```kotlin
-public data class PmTilesWarning(
-    public val code: PmTilesWarningCode,
+public data class ArchiveWarning(
+    public val code: ArchiveWarningCode,
     public val message: String,
     public val context: String? = null
 )
 
-public enum class PmTilesWarningCode {
+public enum class ArchiveWarningCode {
     UnknownTileType,
     UnknownCompressionCode,
     UnknownCount,
