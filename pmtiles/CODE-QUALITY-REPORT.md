@@ -60,24 +60,20 @@ dumps, `pmtiles/SPEC-CHECKLIST.md`, and PMTiles benchmark code in `benchmark/src
 
 - Area: build verification
 - Affected file and line: Repository-wide
-- Issue: `mise run build` currently fails before completion on this machine because
-  `:pmtiles:jsBrowserTest` requires ChromeHeadless at
-  `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`, and Chrome is not installed.
-  Attempts to exclude only `:pmtiles:jsBrowserTest` then reached a separate aggregate-task failure
-  where `:pmtiles:compileTestKotlinJvm` could not resolve `kotlin.test.Test`, while direct
-  `:pmtiles:jvmTest` and `mise run test` passed.
-- Risk: Release verification depends on local browser availability and may also have an aggregate
-  Gradle task-graph issue that is masked by the repository's normal `mise run test` split.
+- Issue: `mise run build` currently fails before completion on this machine because browser tests
+  require ChromeHeadless at `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`, and
+  Chrome is not installed. With PMTiles browser test tasks excluded, the PMTiles build passes and
+  the repository build later fails at `:units:jsBrowserTest` for the same missing Chrome binary. The
+  previously observed PMTiles aggregate JVM test compile failure is tracked and resolved as CQ-006.
+- Risk: Release verification depends on local browser availability, so the exact `mise run build`
+  gate cannot complete on this machine until Chrome or an equivalent `CHROME_BIN` is available.
 - Resolution options:
   - Do nothing: acceptable for this documentation/code-quality phase if the passing split test tasks
     remain the supported verification path, but the phase's exact `mise run build` check remains
     blocked locally.
-  - Install Chrome locally: satisfies the browser launcher on this machine, but does not address the
-    aggregate-task behavior seen when the browser test is excluded.
+  - Install Chrome locally or set `CHROME_BIN`: satisfies the browser launcher on this machine.
   - Add repository-level browser provisioning or skip rules: improves repeatability, but changes
     project-wide build policy and should be handled outside this PMTiles audit.
-  - Investigate the aggregate `compileTestKotlinJvm` classpath separately: targets the non-browser
-    failure, but it is broader than the PMTiles docs/API quality audit.
 - Tradeoffs: Installing Chrome is a local environment action, not a repo fix. Build-policy changes
   affect every module and should be made with maintainer agreement. The split test commands already
   cover JVM, JS Node, WASM JS Node, and native PMTiles paths.
@@ -131,3 +127,29 @@ dumps, `pmtiles/SPEC-CHECKLIST.md`, and PMTiles benchmark code in `benchmark/src
   for the registered JVM and macOS targets.
 - Confidence: 3
 - Status: Needs Triage
+
+### CQ-006
+
+- Area: build verification
+- Affected file and line: `pmtiles/build.gradle.kts:44`
+- Issue: `:pmtiles:compileTestKotlinJvm` could compile in isolation while failing in larger
+  aggregate build graphs with unresolved `kotlin.test.Test`. The base convention plugin contributes
+  `kotlin("test")` to `commonTest`, and the dependency appeared in `jvmTestCompileClasspath`, but
+  the PMTiles JVM test compile still dropped the test annotation package when the task ran after the
+  module's JS and native test graph.
+- Risk: PMTiles implementation checks could pass through `mise run test` while aggregate build
+  verification remained brittle or order-sensitive.
+- Resolution options:
+  - Do nothing: leaves the split test path green, but preserves a reproducible aggregate build
+    failure.
+  - Move all test dependency wiring from the convention plugin into each module: may avoid the
+    graph-sensitive behavior, but changes every module and is broader than the PMTiles scope.
+  - Add an explicit PMTiles `jvmTest` dependency on `kotlin("test")`: keeps the repository
+    convention intact while making the failing target's classpath unambiguous.
+- Tradeoffs: The explicit dependency duplicates the convention-provided common test dependency for
+  this module, but it is target-scoped and fixes the failing PMTiles aggregate path without changing
+  sibling modules.
+- Recommended option: Add an explicit PMTiles `jvmTest` dependency on `kotlin("test")`.
+- Confidence: 4
+- Status: Completed
+- Implementation reference: `pmtiles/build.gradle.kts:44`
