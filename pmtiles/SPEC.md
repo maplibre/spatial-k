@@ -573,9 +573,18 @@ implementation detail selected from the PMTiles compression code and the decode 
 | zstd        | Enum value is supported, but zstd decoding is not implemented. Fail at `open` when used as internal compression. Fail only at tile decode time when used as tile compression.   |
 
 The base library deliberately standardizes on gzip rather than making compression availability vary
-by platform. JVM uses `java.util.zip`; Apple/native targets use platform zlib bindings. Brotli and
-zstd remain valid PMTiles enum values, but supporting them would require additional target-specific
-dependencies and is not needed for current Protomaps-generated archives.
+by platform. JVM uses `java.util.zip.GZIPInputStream` over `ByteArrayInputStream`. Apple/native
+targets use zlib through Kotlin/Native C interop, specifically `inflateInit2` with `16 + MAX_WBITS`
+so the decoder accepts gzip-wrapped deflate, followed by `inflate` until `Z_STREAM_END` and
+`inflateEnd` in all exit paths. The implementation does not use Foundation’s Compression framework
+for PMTiles gzip decoding. Brotli and zstd remain valid PMTiles enum values, but supporting them
+would require additional target-specific dependencies and is not needed for current
+Protomaps-generated archives.
+
+Both gzip implementations decode into bounded chunks and check `DecodeLimits.maxDecompressedBytes`
+before appending output. JVM `GZIPInputStream` `IOException`/`ZipException`, zlib initialization
+failure, zlib stream errors, truncated input, and output beyond the configured limit fail with
+`DecompressionFailed` or `LimitExceeded` as appropriate.
 
 ### 11.3 Decompression limits
 
