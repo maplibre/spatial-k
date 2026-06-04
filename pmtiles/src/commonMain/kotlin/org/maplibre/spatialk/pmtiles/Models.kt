@@ -596,16 +596,17 @@ internal constructor(
  * Typed PMTiles metadata fields.
  *
  * @property name Tileset name.
- * @property description Tileset description.
+ * @property summary Tileset description.
  * @property attribution Tileset attribution.
  * @property type Tileset kind.
  * @property version Tileset version.
  * @property encoding PMTiles-defined encoding string.
  * @property vectorLayersJson Raw JSON for the `vector_layers` value.
  */
-public data class ArchiveMetadata(
+public data class ArchiveMetadata
+internal constructor(
     public val name: String?,
-    public val description: String?,
+    public val summary: String?,
     public val attribution: String?,
     public val type: TilesetKind?,
     public val version: String?,
