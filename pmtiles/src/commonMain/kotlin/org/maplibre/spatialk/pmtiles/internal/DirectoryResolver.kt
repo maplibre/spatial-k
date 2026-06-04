@@ -12,7 +12,6 @@ import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 import org.maplibre.spatialk.pmtiles.TileCoord
 import org.maplibre.spatialk.pmtiles.TileRange
 import org.maplibre.spatialk.pmtiles.ValidationMode
-import org.maplibre.spatialk.pmtiles.decompress
 
 internal class DirectoryResolver(
     private val header: ArchiveHeader,

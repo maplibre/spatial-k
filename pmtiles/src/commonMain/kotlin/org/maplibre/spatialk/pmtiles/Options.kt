@@ -73,6 +73,32 @@ public data class ArchiveLimits(
 }
 
 /**
+ * Controls source-range coalescing for batch tile reads.
+ *
+ * @property maxCoalescedBytes Maximum bytes when combining multiple tile payload reads. Individual
+ *   tile payload reads may be larger. Set to zero to disable coalescing.
+ * @property maxGapBytes Maximum unread bytes to include between adjacent tile payloads.
+ */
+public data class TileReadCoalescing(
+    public val maxCoalescedBytes: Int = 512 * 1024,
+    public val maxGapBytes: Int = 0,
+) {
+    init {
+        require(maxCoalescedBytes >= 0) { "maxCoalescedBytes must be non-negative." }
+        require(maxGapBytes >= 0) { "maxGapBytes must be non-negative." }
+    }
+
+    /** Common tile read coalescing presets. */
+    public companion object {
+        /** Coalesce contiguous tile payloads into source reads up to 512 KiB. */
+        public val Default: TileReadCoalescing = TileReadCoalescing()
+
+        /** Do not coalesce batch tile payload reads. */
+        public val Disabled: TileReadCoalescing = TileReadCoalescing(maxCoalescedBytes = 0)
+    }
+}
+
+/**
  * Options used when opening a PMTiles archive.
  *
  * @property validationMode Validation behavior for archive parsing and traversal.

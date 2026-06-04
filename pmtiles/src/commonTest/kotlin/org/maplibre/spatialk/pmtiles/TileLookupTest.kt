@@ -163,8 +163,8 @@ class TileLookupTest {
         assertEquals(ByteRange(401uL, 2), range?.archiveRange)
         assertEquals(ByteRange(401uL, 2), repeatedRange?.archiveRange)
         assertEquals(2, range?.directoryDepth)
-        assertEquals(1, archive.warningCount)
-        assertEquals(ArchiveWarningCode.NestedLeafDirectory, archive.warningAt(0)?.code)
+        assertEquals(1, archive.warnings().size)
+        assertEquals(ArchiveWarningCode.NestedLeafDirectory, archive.warnings().single().code)
     }
 
     @Test

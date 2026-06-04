@@ -56,6 +56,18 @@ class KotlinDocsTest {
     }
 
     @Test
+    fun batchTiles() = runTest {
+        val source = loadPmTilesBytes().asByteRangeSource()
+
+        // --8<-- [start:batchTiles]
+        PmTilesArchive.open(source).use { archive ->
+            val coords = listOf(TileCoord(z = 0, x = 0, y = 0))
+            val tiles = archive.getTiles(coords)
+        }
+        // --8<-- [end:batchTiles]
+    }
+
+    @Test
     fun customDecompressor() = runTest {
         val source = loadPmTilesBytes().asByteRangeSource()
 
@@ -77,8 +89,7 @@ class KotlinDocsTest {
 
         // --8<-- [start:lenientWarnings]
         PmTilesArchive.open(source, ArchiveOpenOptions.Lenient).use { archive ->
-            val warning = archive.warningAt(0)
-            val allWarnings = archive.warnings()
+            val warnings = archive.warnings()
         }
         // --8<-- [end:lenientWarnings]
     }

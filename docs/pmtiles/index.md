@@ -56,6 +56,14 @@ stored bytes explicitly, or `getTileDecompressed` to decompress supported tile p
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:decompressedTiles"
     ```
 
+Use `getTiles` to read a batch of tile payloads with coalesced source ranges.
+
+=== "Kotlin"
+
+    ```kotlin
+    --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:batchTiles"
+    ```
+
 ## Decompressors
 
 Spatial-K includes platform defaults for uncompressed data and gzip where available. Register other

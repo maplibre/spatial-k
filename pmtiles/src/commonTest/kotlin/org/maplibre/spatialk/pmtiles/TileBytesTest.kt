@@ -6,8 +6,12 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlinx.coroutines.test.runTest
+import org.maplibre.spatialk.pmtiles.internal.DirectoryEntry
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
+import org.maplibre.spatialk.pmtiles.internal.TestHeaderFields
+import org.maplibre.spatialk.pmtiles.internal.buildArchiveWithSections
 import org.maplibre.spatialk.pmtiles.internal.buildSingleTileArchive
+import org.maplibre.spatialk.pmtiles.internal.encodeDirectory
 import org.maplibre.spatialk.pmtiles.internal.helloBytes
 import org.maplibre.spatialk.pmtiles.internal.helloGzipBytes
 
@@ -41,6 +45,195 @@ class TileBytesTest {
         assertContentEquals(tileBytes, defaultRead.bytes)
         assertContentEquals(tileBytes, coordRead.bytes)
         assertContentEquals(tileBytes, idRead.bytes)
+    }
+
+    @Test
+    fun batchReadCoalescesContiguousTilesAndPreservesInputOrder() = runTest {
+        val tileData = byteArrayOf(1, 2, 3, 4, 5)
+        val rootBytes =
+            encodeDirectory(
+                DirectoryEntry(tileId = 0, offset = 0uL, length = 2, runLength = 1),
+                DirectoryEntry(tileId = 1, offset = 2uL, length = 3, runLength = 1),
+            )
+        val tileDataOffset = 20_000uL
+        val fields =
+            TestHeaderFields(
+                rootLength = rootBytes.size.toULong(),
+                tileDataOffset = tileDataOffset,
+                tileDataLength = tileData.size.toULong(),
+                clustered = 1u,
+            )
+        val source =
+            TestByteRangeSource(
+                buildArchiveWithSections(
+                    fields = fields,
+                    rootBytes = rootBytes,
+                    tileBytes = tileData,
+                    minimumArchiveSize = tileDataOffset + tileData.size.toULong(),
+                )
+            )
+        val archive = PmTilesArchive.open(source)
+        source.reads.clear()
+
+        val tiles =
+            archive.getTiles(
+                listOf(
+                    TileIds.toZxy(1),
+                    TileIds.toZxy(2),
+                    TileIds.toZxy(0),
+                )
+            )
+
+        assertEquals(3, tiles.size)
+        assertContentEquals(byteArrayOf(3, 4, 5), tiles[0]?.bytes)
+        assertNull(tiles[1])
+        assertContentEquals(byteArrayOf(1, 2), tiles[2]?.bytes)
+        assertEquals(listOf(ByteRange(tileDataOffset, tileData.size)), source.reads)
+    }
+
+    @Test
+    fun batchReadOnlyCoalescesAcrossGapsWhenConfigured() = runTest {
+        val tileData = byteArrayOf(1, 2, 0, 0, 0, 6, 7)
+        val rootBytes =
+            encodeDirectory(
+                DirectoryEntry(tileId = 0, offset = 0uL, length = 2, runLength = 1),
+                DirectoryEntry(tileId = 1, offset = 5uL, length = 2, runLength = 1),
+            )
+        val tileDataOffset = 20_000uL
+        val fields =
+            TestHeaderFields(
+                rootLength = rootBytes.size.toULong(),
+                tileDataOffset = tileDataOffset,
+                tileDataLength = tileData.size.toULong(),
+                clustered = 1u,
+            )
+        val source =
+            TestByteRangeSource(
+                buildArchiveWithSections(
+                    fields = fields,
+                    rootBytes = rootBytes,
+                    tileBytes = tileData,
+                    minimumArchiveSize = tileDataOffset + tileData.size.toULong(),
+                )
+            )
+        val archive = PmTilesArchive.open(source)
+        val coords = listOf(TileIds.toZxy(0), TileIds.toZxy(1))
+        source.reads.clear()
+
+        archive.getTiles(coords)
+
+        assertEquals(
+            listOf(
+                ByteRange(tileDataOffset, 2),
+                ByteRange(tileDataOffset + 5uL, 2),
+            ),
+            source.reads,
+        )
+
+        source.reads.clear()
+        archive.getTiles(
+            coords,
+            coalescing = TileReadCoalescing(maxCoalescedBytes = 16, maxGapBytes = 3),
+        )
+
+        assertEquals(listOf(ByteRange(tileDataOffset, tileData.size)), source.reads)
+    }
+
+    @Test
+    fun batchReadSplitsContiguousTilesOverMaxCoalescedBytes() = runTest {
+        val tileData = byteArrayOf(1, 2, 3, 4, 5)
+        val rootBytes =
+            encodeDirectory(
+                DirectoryEntry(tileId = 0, offset = 0uL, length = 2, runLength = 1),
+                DirectoryEntry(tileId = 1, offset = 2uL, length = 3, runLength = 1),
+            )
+        val tileDataOffset = 20_000uL
+        val fields =
+            TestHeaderFields(
+                rootLength = rootBytes.size.toULong(),
+                tileDataOffset = tileDataOffset,
+                tileDataLength = tileData.size.toULong(),
+                clustered = 1u,
+            )
+        val source =
+            TestByteRangeSource(
+                buildArchiveWithSections(
+                    fields = fields,
+                    rootBytes = rootBytes,
+                    tileBytes = tileData,
+                    minimumArchiveSize = tileDataOffset + tileData.size.toULong(),
+                )
+            )
+        val archive = PmTilesArchive.open(source)
+        source.reads.clear()
+
+        archive.getTiles(
+            listOf(TileIds.toZxy(0), TileIds.toZxy(1)),
+            coalescing = TileReadCoalescing(maxCoalescedBytes = 4),
+        )
+
+        assertEquals(
+            listOf(
+                ByteRange(tileDataOffset, 2),
+                ByteRange(tileDataOffset + 2uL, 3),
+            ),
+            source.reads,
+        )
+    }
+
+    @Test
+    fun batchDecompressedReadDecodesEachTile() = runTest {
+        val compressedTileData = byteArrayOf(1, 2, 3, 4)
+        val rootBytes =
+            encodeDirectory(
+                DirectoryEntry(tileId = 0, offset = 0uL, length = 2, runLength = 1),
+                DirectoryEntry(tileId = 1, offset = 2uL, length = 2, runLength = 1),
+            )
+        val tileDataOffset = 20_000uL
+        val fields =
+            TestHeaderFields(
+                rootLength = rootBytes.size.toULong(),
+                tileDataOffset = tileDataOffset,
+                tileDataLength = compressedTileData.size.toULong(),
+                tileCompression = Compression.Brotli.code,
+                clustered = 1u,
+            )
+        val source =
+            TestByteRangeSource(
+                buildArchiveWithSections(
+                    fields = fields,
+                    rootBytes = rootBytes,
+                    tileBytes = compressedTileData,
+                    minimumArchiveSize = tileDataOffset + compressedTileData.size.toULong(),
+                )
+            )
+        val archive =
+            PmTilesArchive.open(
+                source,
+                options =
+                    ArchiveOpenOptions().withDecompressor(Compression.Brotli) { bytes, _ ->
+                        bytes.map { (it.toInt() + 10).toByte() }.toByteArray()
+                    },
+            )
+        source.reads.clear()
+
+        val tiles = archive.getTilesDecompressed(listOf(TileIds.toZxy(0), TileIds.toZxy(1)))
+
+        assertContentEquals(byteArrayOf(11, 12), tiles[0]?.bytes)
+        assertContentEquals(byteArrayOf(13, 14), tiles[1]?.bytes)
+        assertEquals(Compression.None, tiles[0]?.compression)
+        assertEquals(true, tiles[0]?.wasDecompressed)
+        assertEquals(listOf(ByteRange(tileDataOffset, compressedTileData.size)), source.reads)
+    }
+
+    @Test
+    fun rejectsInvalidTileReadCoalescing() {
+        assertFailsWith<IllegalArgumentException> {
+            TileReadCoalescing(maxCoalescedBytes = -1)
+        }
+        assertFailsWith<IllegalArgumentException> {
+            TileReadCoalescing(maxGapBytes = -1)
+        }
     }
 
     @Test

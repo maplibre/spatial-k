@@ -10,8 +10,6 @@ import org.maplibre.spatialk.pmtiles.DecompressionLimits
 import org.maplibre.spatialk.pmtiles.Decompressor
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 import org.maplibre.spatialk.pmtiles.PmTilesException
-import org.maplibre.spatialk.pmtiles.decompress
-import org.maplibre.spatialk.pmtiles.platformDefaultDecompressors
 
 class CompressionTest {
     @Test

@@ -27,11 +27,6 @@ internal class ArchiveReadState(initialWarnings: List<ArchiveWarning>) {
     private var rawMetadataJsonCache: String? = null
     private var metadataCache: ArchiveMetadata? = null
 
-    val warningCount: Int
-        get() = archiveWarnings.load().warnings.size
-
-    fun warningAt(index: Int): ArchiveWarning? = archiveWarnings.load().warnings.getOrNull(index)
-
     fun warnings(): List<ArchiveWarning> = archiveWarnings.load().warnings
 
     fun close() {

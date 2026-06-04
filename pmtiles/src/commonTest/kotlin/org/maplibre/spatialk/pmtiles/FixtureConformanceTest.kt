@@ -29,7 +29,7 @@ class FixtureConformanceTest {
             )
             assertEquals(fixture.tileEntries, archive.header.counts.rawTileEntries, fixture.path)
             assertEquals(fixture.tileContents, archive.header.counts.rawTileContents, fixture.path)
-            assertEquals(0, archive.warningCount, fixture.path)
+            assertEquals(0, archive.warnings().size, fixture.path)
         }
     }
 

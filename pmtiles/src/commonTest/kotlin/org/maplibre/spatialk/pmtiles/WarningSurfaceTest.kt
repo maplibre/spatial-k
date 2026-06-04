@@ -2,7 +2,6 @@ package org.maplibre.spatialk.pmtiles
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
 import kotlinx.coroutines.test.runTest
 import org.maplibre.spatialk.pmtiles.internal.MINIMAL_ROOT_DIRECTORY_BYTES
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
@@ -11,7 +10,7 @@ import org.maplibre.spatialk.pmtiles.internal.buildArchiveWithSections
 
 class WarningSurfaceTest {
     @Test
-    fun warningAccessorsReturnSnapshotsAndSupportLazyWarnings() = runTest {
+    fun warningsReturnSnapshotsAndSupportLazyWarnings() = runTest {
         val metadataBytes = "[]".encodeToByteArray()
         val fields =
             TestHeaderFields(
@@ -38,15 +37,14 @@ class WarningSurfaceTest {
             )
         val snapshot = archive.warnings()
 
-        assertEquals(1, archive.warningCount)
+        assertEquals(1, archive.warnings().size)
         assertEquals(ArchiveWarningCode.UnknownTileType, snapshot.single().code)
-        assertNull(archive.warningAt(-1))
-        assertNull(archive.warningAt(1))
 
         archive.metadata()
 
         assertEquals(1, snapshot.size)
-        assertEquals(2, archive.warningCount)
-        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warningAt(1)?.code)
+        val warnings = archive.warnings()
+        assertEquals(2, warnings.size)
+        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, warnings[1].code)
     }
 }

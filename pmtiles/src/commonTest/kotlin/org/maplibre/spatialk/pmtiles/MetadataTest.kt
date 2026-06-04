@@ -81,7 +81,7 @@ class MetadataTest {
 
         assertEquals("[]", archive.rawMetadataJson())
         assertNull(metadata.name)
-        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warningAt(0)?.code)
+        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warnings().single().code)
     }
 
     @Test
@@ -98,7 +98,7 @@ class MetadataTest {
 
         assertNull(metadata.name)
         assertEquals("ok", metadata.description)
-        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warningAt(0)?.code)
+        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warnings().single().code)
     }
 
     @Test
@@ -126,7 +126,7 @@ class MetadataTest {
         val metadata = archive.metadata()
 
         assertEquals("Tiles", metadata.name)
-        assertEquals(ArchiveWarningCode.MissingVectorLayers, archive.warningAt(0)?.code)
+        assertEquals(ArchiveWarningCode.MissingVectorLayers, archive.warnings().single().code)
     }
 
     private suspend fun assertMetadataFails(
