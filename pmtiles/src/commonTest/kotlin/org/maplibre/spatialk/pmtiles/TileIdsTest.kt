@@ -34,6 +34,7 @@ class TileIdsTest {
                 for (y in 0 until limit) {
                     val tileId = TileIds.fromZxy(z, x, y)
                     assertEquals(TileCoord(z, x, y), TileIds.toZxy(tileId))
+                    assertEquals(TileCoord(z, x, y), TileCoord(tileId))
                 }
             }
         }
@@ -50,6 +51,7 @@ class TileIdsTest {
             val tileId = TileIds.fromZxy(z, x, y)
 
             assertEquals(TileCoord(z, x, y), TileIds.toZxy(tileId))
+            assertEquals(TileCoord(z, x, y), TileCoord(tileId))
         }
     }
 
@@ -58,6 +60,7 @@ class TileIdsTest {
         val max = Int.MAX_VALUE
 
         assertEquals(TileCoord(31, 0, 0), TileIds.toZxy(TileIds.fromZxy(31, 0, 0)))
+        assertEquals(TileCoord(31, 0, 0), TileCoord(TileIds.fromZxy(31, 0, 0)))
         assertEquals(TileCoord(31, max, 0), TileIds.toZxy(TileIds.fromZxy(31, max, 0)))
         assertEquals(TileCoord(31, 0, max), TileIds.toZxy(TileIds.fromZxy(31, 0, max)))
         assertEquals(TileCoord(31, max, max), TileIds.toZxy(TileIds.fromZxy(31, max, max)))
@@ -65,6 +68,8 @@ class TileIdsTest {
 
     @Test
     fun rejectsOutOfRangeZooms() {
+        assertInvalidCoordinate { TileCoord(-1, 0, 0) }
+        assertInvalidCoordinate { TileCoord(32, 0, 0) }
         assertInvalidCoordinate { TileIds.zoomStart(-1) }
         assertInvalidCoordinate { TileIds.zoomStart(32) }
         assertInvalidCoordinate { TileIds.fromZxy(-1, 0, 0) }
@@ -73,6 +78,12 @@ class TileIdsTest {
 
     @Test
     fun rejectsOutOfRangeCoordinates() {
+        assertInvalidCoordinate { TileCoord(0, 1, 0) }
+        assertInvalidCoordinate { TileCoord(1, -1, 0) }
+        assertInvalidCoordinate { TileCoord(1, 0, -1) }
+        assertInvalidCoordinate { TileCoord(1, 2, 0) }
+        assertInvalidCoordinate { TileCoord(1, 0, 2) }
+        assertInvalidCoordinate { TileCoord(31, Int.MIN_VALUE, 0) }
         assertInvalidCoordinate { TileIds.fromZxy(0, 1, 0) }
         assertInvalidCoordinate { TileIds.fromZxy(1, -1, 0) }
         assertInvalidCoordinate { TileIds.fromZxy(1, 0, -1) }
@@ -84,6 +95,7 @@ class TileIdsTest {
     @Test
     fun rejectsOutOfRangeTileIds() {
         assertInvalidCoordinate { TileIds.toZxy(-1) }
+        assertInvalidCoordinate { TileCoord(-1) }
         assertInvalidCoordinate { TileIds.toZxy(6148914691236517205L) }
     }
 

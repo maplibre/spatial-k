@@ -335,13 +335,41 @@ private val knownTileTypeByCode: Map<UInt, KnownTileType> =
  * @property x Tile column.
  * @property y Tile row.
  */
-public data class TileCoord(
+public class TileCoord
+@Throws(PmTilesException::class)
+constructor(
     public val z: Int,
     public val x: Int,
     public val y: Int,
-)
+) {
+    init {
+        TileIds.validateZxy(z, x, y)
+    }
+
+    /** Converts [tileId] to a Web tile coordinate. */
+    @Throws(PmTilesException::class) public constructor(tileId: Long) : this(TileIds.toZxy(tileId))
+
+    private constructor(coord: TileCoord) : this(z = coord.z, x = coord.x, y = coord.y)
+
+    /** Converts this Web tile coordinate to a PMTiles TileID. */
+    @Throws(PmTilesException::class) public fun toTileId(): Long = TileIds.fromZxy(z, x, y)
+
+    override fun equals(other: Any?): Boolean =
+        other is TileCoord && z == other.z && x == other.x && y == other.y
+
+    override fun hashCode(): Int {
+        var result = z
+        result = 31 * result + x
+        result = 31 * result + y
+        return result
+    }
+
+    override fun toString(): String = "TileCoord(z=$z, x=$x, y=$y)"
+}
 
 /** PMTiles TileID conversion utilities. */
+@OptIn(ExperimentalObjCRefinement::class)
+@HiddenFromObjC
 public object TileIds {
     /** Converts a Web tile coordinate to a PMTiles TileID. */
     @Throws(PmTilesException::class)
