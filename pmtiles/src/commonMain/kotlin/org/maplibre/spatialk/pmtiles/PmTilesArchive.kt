@@ -187,7 +187,7 @@ internal constructor(
 
     /** Returns stored tile bytes for the tile at [z], [x], and [y], or null when absent. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getStoredTile(z: Int, x: Int, y: Int): ArchiveTile? {
+    public suspend fun readStoredTile(z: Int, x: Int, y: Int): ArchiveTile? {
         return readTile(
             tileId = TileIds.fromZxy(z, x, y),
             coord = TileCoord(z = z, x = x, y = y),
@@ -196,12 +196,12 @@ internal constructor(
 
     /** Returns stored tile bytes for [coord], or null when absent. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getStoredTile(coord: TileCoord): ArchiveTile? =
-        getStoredTile(coord.z, coord.x, coord.y)
+    public suspend fun readStoredTile(coord: TileCoord): ArchiveTile? =
+        readStoredTile(coord.z, coord.x, coord.y)
 
     /** Returns stored tile bytes for [tileId], or null when absent. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getStoredTileById(tileId: Long): ArchiveTile? {
+    public suspend fun readStoredTile(tileId: Long): ArchiveTile? {
         return readTile(
             tileId = tileId,
             coord = TileIds.toZxy(tileId),
@@ -209,49 +209,69 @@ internal constructor(
     }
 
     /**
-     * Returns stored tiles for [coords], preserving input order and nulls for absent tiles.
+     * Returns stored tile read results for [coords], preserving input order.
      *
      * Tile payload source reads may be coalesced according to [coalescing].
      */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getStoredTiles(
+    public suspend fun readStoredTiles(
         coords: List<TileCoord>,
-        coalescing: TileReadCoalescing = TileReadCoalescing.Default,
-    ): List<ArchiveTile?> =
+        coalescing: TileReadCoalescing = TileReadCoalescing(),
+    ): List<TileReadResult> =
         readTiles(
             coords = coords,
             coalescing = coalescing,
             decompress = false,
         )
 
+    /** Returns stored tiles for [coords] using default read coalescing. */
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun readStoredTiles(coords: List<TileCoord>): List<TileReadResult> =
+        readStoredTiles(coords = coords, coalescing = TileReadCoalescing())
+
     /**
-     * Returns decompressed tiles for [coords], preserving input order and nulls for absent tiles.
+     * Returns decompressed tile read results for [coords], preserving input order.
      *
      * Tile payload source reads may be coalesced according to [coalescing].
      */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getDecompressedTiles(
+    public suspend fun readDecompressedTiles(
         coords: List<TileCoord>,
-        coalescing: TileReadCoalescing = TileReadCoalescing.Default,
-    ): List<ArchiveTile?> =
+        coalescing: TileReadCoalescing = TileReadCoalescing(),
+    ): List<TileReadResult> =
         readTiles(
             coords = coords,
             coalescing = coalescing,
             decompress = true,
         )
 
+    /** Returns decompressed tiles for [coords] using default read coalescing. */
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun readDecompressedTiles(coords: List<TileCoord>): List<TileReadResult> =
+        readDecompressedTiles(coords = coords, coalescing = TileReadCoalescing())
+
     /** Returns the archive byte range for the tile at [z], [x], and [y]. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getTileRange(z: Int, x: Int, y: Int): TileRange? {
+    public suspend fun findTileRange(z: Int, x: Int, y: Int): TileRange? {
         return directoryResolver.findTileRange(
             tileId = TileIds.fromZxy(z, x, y),
             coord = TileCoord(z = z, x = x, y = y),
         )
     }
 
+    /** Returns the archive byte range for [coord]. */
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun findTileRange(coord: TileCoord): TileRange? =
+        findTileRange(coord.z, coord.x, coord.y)
+
+    /** Returns the archive byte range for [tileId]. */
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun findTileRange(tileId: Long): TileRange? =
+        directoryResolver.findTileRange(tileId = tileId, coord = TileIds.toZxy(tileId))
+
     /** Returns decompressed tile bytes for the tile at [z], [x], and [y]. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getDecompressedTile(z: Int, x: Int, y: Int): ArchiveTile? {
+    public suspend fun readDecompressedTile(z: Int, x: Int, y: Int): ArchiveTile? {
         return readTile(
             tileId = TileIds.fromZxy(z, x, y),
             coord = TileCoord(z = z, x = x, y = y),
@@ -261,12 +281,12 @@ internal constructor(
 
     /** Returns decompressed tile bytes for [coord], or null when absent. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getDecompressedTile(coord: TileCoord): ArchiveTile? =
-        getDecompressedTile(coord.z, coord.x, coord.y)
+    public suspend fun readDecompressedTile(coord: TileCoord): ArchiveTile? =
+        readDecompressedTile(coord.z, coord.x, coord.y)
 
     /** Returns decompressed tile bytes for [tileId], or null when absent. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getDecompressedTileById(tileId: Long): ArchiveTile? =
+    public suspend fun readDecompressedTile(tileId: Long): ArchiveTile? =
         readTile(
             tileId = tileId,
             coord = TileIds.toZxy(tileId),
@@ -274,13 +294,27 @@ internal constructor(
         )
 
     /** Returns true when the archive contains a tile at [z], [x], and [y]. */
+    @HiddenFromObjC
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun containsTile(z: Int, x: Int, y: Int): Boolean {
-        return getTileRange(z, x, y) != null
+        return findTileRange(z, x, y) != null
     }
 
-    /** Returns a snapshot of warnings recorded by this archive. */
-    public fun warnings(): List<ArchiveWarning> = state.warnings()
+    /** Returns true when the archive contains [coord]. */
+    @HiddenFromObjC
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun containsTile(coord: TileCoord): Boolean =
+        containsTile(coord.z, coord.x, coord.y)
+
+    /** Returns true when the archive contains [tileId]. */
+    @HiddenFromObjC
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun containsTile(tileId: Long): Boolean =
+        directoryResolver.findTileRange(tileId = tileId, coord = TileIds.toZxy(tileId)) != null
+
+    /** Snapshot of warnings recorded by this archive. */
+    public val warnings: List<ArchiveWarning>
+        get() = state.warnings()
 
     /** Releases archive-owned caches and in-flight work. */
     override public fun close(): Unit = state.close()
@@ -294,7 +328,7 @@ internal constructor(
         return readLocatedTiles(
             locatedTiles = listOf(LocatedTile(index = 0, range = range)),
             outputSize = 1,
-            coalescing = TileReadCoalescing.Disabled,
+            coalescing = TileReadCoalescing(maxCoalescedBytes = 0uL),
             decompress = decompress,
         )[0]
     }
@@ -303,13 +337,17 @@ internal constructor(
         coords: List<TileCoord>,
         coalescing: TileReadCoalescing,
         decompress: Boolean,
-    ): List<ArchiveTile?> {
-        return readLocatedTiles(
-            locatedTiles = locateTiles(coords),
-            outputSize = coords.size,
-            coalescing = coalescing,
-            decompress = decompress,
-        )
+    ): List<TileReadResult> {
+        val tiles =
+            readLocatedTiles(
+                locatedTiles = locateTiles(coords),
+                outputSize = coords.size,
+                coalescing = coalescing,
+                decompress = decompress,
+            )
+        return coords.mapIndexed { index, coord ->
+            TileReadResult(coord = coord, tile = tiles[index])
+        }
     }
 
     private suspend fun readLocatedTiles(
@@ -407,7 +445,7 @@ internal constructor(
         val metadata =
             ArchiveMetadata(
                 name = jsonObject.optionalString("name"),
-                description = jsonObject.optionalString("description"),
+                summary = jsonObject.optionalString("description"),
                 attribution = jsonObject.optionalString("attribution"),
                 type = jsonObject.optionalString("type")?.let(::TilesetKind),
                 version = jsonObject.optionalString("version"),
@@ -505,7 +543,7 @@ private fun List<LocatedTile>.coalescedReads(
                 range =
                     ByteRange(
                         offset = readStart,
-                        length = (readEnd - readStart).toInt(),
+                        length = readEnd - readStart,
                     ),
                 tiles = readTiles.toList(),
             )
@@ -541,28 +579,31 @@ private fun canCoalesce(
     nextRange: ByteRange,
     coalescing: TileReadCoalescing,
 ): Boolean {
-    if (coalescing.maxCoalescedBytes == 0) return false
+    if (coalescing.maxCoalescedBytes == 0uL) return false
 
     val nextStart = nextRange.offset
     val nextEnd = nextRange.endOffset()
     val gap = if (nextStart > currentEnd) nextStart - currentEnd else 0uL
-    if (gap > coalescing.maxGapBytes.toULong()) return false
+    if (gap > coalescing.maxGapBytes) return false
 
     val mergedLength = maxOf(currentEnd, nextEnd) - currentStart
-    return mergedLength <= coalescing.maxCoalescedBytes.toULong()
+    return mergedLength <= coalescing.maxCoalescedBytes
 }
 
-private fun ByteRange.endOffset(): ULong = offset + length.toULong()
+private fun ByteRange.endOffset(): ULong = offset + length
 
 private fun ByteArray.sliceTile(readRange: ByteRange, tileRange: TileRange): ByteArray {
     val offset = (tileRange.archiveRange.offset - readRange.offset).toInt()
-    return copyOfRange(offset, offset + tileRange.archiveRange.length)
+    return copyOfRange(offset, offset + tileRange.archiveRange.lengthAsInt("Tile payload"))
 }
+
+private fun ByteRange.lengthAsInt(purpose: String): Int =
+    allocationLength(length, Int.MAX_VALUE.toULong(), purpose)
 
 private fun emptyMetadata(): ArchiveMetadata =
     ArchiveMetadata(
         name = null,
-        description = null,
+        summary = null,
         attribution = null,
         type = null,
         version = null,
