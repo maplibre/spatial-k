@@ -90,4 +90,7 @@ public enum class ArchiveWarningCode {
 
     /** A lookup traversed a nested leaf directory. */
     NestedLeafDirectory,
+
+    /** The archive root directory has zero entries and was accepted in lenient mode. */
+    EmptyRootDirectory,
 }

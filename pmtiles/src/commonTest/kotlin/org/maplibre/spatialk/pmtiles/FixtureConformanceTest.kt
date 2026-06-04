@@ -5,6 +5,7 @@ import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
 import org.maplibre.spatialk.testutil.readResourceBytes
@@ -109,6 +110,30 @@ class FixtureConformanceTest {
     }
 
     @Test
+    fun opensEmptyRootFixtureInLenientMode() = runTest {
+        val path = "upstream/pmtiles-js-test-data/test-fixture-mlt.pmtiles"
+        val strictError =
+            assertFailsWith<PmTilesException>(path) {
+                PmTilesArchive.open(TestByteRangeSource(readFixture(path)))
+            }
+        val archive =
+            PmTilesArchive.open(
+                TestByteRangeSource(readFixture(path)),
+                options = ArchiveOpenOptions.Lenient,
+            )
+
+        assertEquals(PmTilesErrorCode.InvalidDirectory, strictError.code)
+        assertEquals(TileType.Mlt, archive.tileType)
+        assertEquals(Compression.Gzip, archive.internalCompression)
+        assertEquals(Compression.Gzip, archive.tileCompression)
+        assertEquals(Clustered.Yes, archive.header.clustered)
+        assertTrue(
+            archive.warnings().any { it.code == ArchiveWarningCode.EmptyRootDirectory },
+            "Expected EmptyRootDirectory warning.",
+        )
+    }
+
+    @Test
     fun opensPinnedGeneratedGoPmtilesFixture() = runTest {
         val archive =
             PmTilesArchive.open(
@@ -206,18 +231,6 @@ private val validFixtures =
             addressedTiles = 1uL,
             tileEntries = 1uL,
             tileContents = 1uL,
-        ),
-        ValidFixture(
-            path = "upstream/pmtiles-js-test-data/test-fixture-mlt.pmtiles",
-            tileType = TileType.Mlt,
-            internalCompression = Compression.Gzip,
-            tileCompression = Compression.Gzip,
-            minZoom = 0,
-            maxZoom = 0,
-            clustered = Clustered.Yes,
-            addressedTiles = 0uL,
-            tileEntries = 0uL,
-            tileContents = 0uL,
         ),
         ValidFixture(
             path = "upstream/go-pmtiles/test-fixture-1.pmtiles",

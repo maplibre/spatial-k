@@ -158,6 +158,7 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveWarning {
 }
 
 public final class org/maplibre/spatialk/pmtiles/ArchiveWarningCode : java/lang/Enum {
+	public static final field EmptyRootDirectory Lorg/maplibre/spatialk/pmtiles/ArchiveWarningCode;
 	public static final field InvalidMetadataRecovered Lorg/maplibre/spatialk/pmtiles/ArchiveWarningCode;
 	public static final field MissingVectorLayers Lorg/maplibre/spatialk/pmtiles/ArchiveWarningCode;
 	public static final field NestedLeafDirectory Lorg/maplibre/spatialk/pmtiles/ArchiveWarningCode;

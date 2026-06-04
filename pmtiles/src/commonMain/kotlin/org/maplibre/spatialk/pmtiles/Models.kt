@@ -342,7 +342,8 @@ public data class TileRange(
  *
  * @property tileId PMTiles TileID for the tile.
  * @property coord Web tile coordinate for the tile.
- * @property bytes Tile payload bytes.
+ * @property bytes Tile payload bytes. The array is owned by this tile object but remains mutable;
+ *   callers that modify it should make their own copy.
  * @property tileType Tile payload type.
  * @property compression Compression represented by [bytes].
  * @property wasDecompressed True when [bytes] were decompressed by the reader.

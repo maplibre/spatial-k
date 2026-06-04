@@ -4,6 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.maplibre.spatialk.pmtiles.internal.FIRST_READ_BYTES
 import org.maplibre.spatialk.pmtiles.internal.HEADER_BYTES
@@ -172,17 +173,30 @@ class OpenArchiveTest {
     }
 
     @Test
-    fun opensEmptyRootDirectory() = runTest {
+    fun rejectsEmptyRootDirectoryUnlessLenient() = runTest {
         val rootBytes = byteArrayOf(0)
         val fields =
             TestHeaderFields(
                 rootLength = rootBytes.size.toULong(),
                 tileDataLength = 0uL,
             )
+        val archiveBytes = buildArchive(fields, rootBytes = rootBytes)
 
+        val strictError =
+            assertFailsWith<PmTilesException> {
+                PmTilesArchive.open(TestByteRangeSource(archiveBytes))
+            }
         val archive =
-            PmTilesArchive.open(TestByteRangeSource(buildArchive(fields, rootBytes = rootBytes)))
+            PmTilesArchive.open(
+                TestByteRangeSource(archiveBytes),
+                options = ArchiveOpenOptions.Lenient,
+            )
 
+        assertEquals(PmTilesErrorCode.InvalidDirectory, strictError.code)
+        assertTrue(
+            archive.warnings().any { it.code == ArchiveWarningCode.EmptyRootDirectory },
+            "Expected EmptyRootDirectory warning.",
+        )
         assertNull(archive.getTileRange(0, 0, 0))
     }
 

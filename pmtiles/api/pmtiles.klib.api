@@ -8,6 +8,7 @@
 
 // Library unique name: <org.maplibre.spatialk:pmtiles>
 final enum class org.maplibre.spatialk.pmtiles/ArchiveWarningCode : kotlin/Enum<org.maplibre.spatialk.pmtiles/ArchiveWarningCode> { // org.maplibre.spatialk.pmtiles/ArchiveWarningCode|null[0]
+    enum entry EmptyRootDirectory // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.EmptyRootDirectory|null[0]
     enum entry InvalidMetadataRecovered // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.InvalidMetadataRecovered|null[0]
     enum entry MissingVectorLayers // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.MissingVectorLayers|null[0]
     enum entry NestedLeafDirectory // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.NestedLeafDirectory|null[0]

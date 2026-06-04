@@ -52,9 +52,10 @@ internal fun decodeDirectory(
     bytes: ByteArray,
     header: ArchiveHeader,
     limits: ArchiveLimits,
+    allowEmpty: Boolean = false,
 ): List<DirectoryEntry> {
     val reader = BinaryReader(bytes, PmTilesErrorCode.InvalidDirectory)
-    val entryCount = reader.readEntryCount(limits)
+    val entryCount = reader.readEntryCount(limits, allowEmpty)
     val tileIds = reader.readTileIds(entryCount, limits)
     val runLengths = reader.readRunLengths(entryCount, limits)
     val lengths = reader.readLengths(entryCount, runLengths, header, limits)
@@ -78,8 +79,14 @@ internal fun decodeDirectory(
     }
 }
 
-private fun BinaryReader.readEntryCount(limits: ArchiveLimits): Int {
+private fun BinaryReader.readEntryCount(limits: ArchiveLimits, allowEmpty: Boolean): Int {
     val count = readVarint(limits.maxVarintBytes)
+    if (count == 0uL && !allowEmpty) {
+        throw pmTilesException(
+            PmTilesErrorCode.InvalidDirectory,
+            "Directory entry count is zero.",
+        )
+    }
     if (limits.maxDirectoryEntries < 0 || count > limits.maxDirectoryEntries.toULong()) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,

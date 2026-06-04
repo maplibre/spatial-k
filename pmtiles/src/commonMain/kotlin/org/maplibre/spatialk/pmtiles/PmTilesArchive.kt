@@ -1,36 +1,27 @@
 @file:OptIn(
-    kotlin.concurrent.atomics.ExperimentalAtomicApi::class,
     kotlin.experimental.ExperimentalObjCName::class,
     kotlin.experimental.ExperimentalObjCRefinement::class,
 )
 
 package org.maplibre.spatialk.pmtiles
 
-import kotlin.concurrent.atomics.AtomicBoolean
-import kotlin.concurrent.atomics.AtomicReference
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.native.HiddenFromObjC
 import kotlin.native.ObjCName
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import org.maplibre.spatialk.pmtiles.internal.ArchiveReadState
 import org.maplibre.spatialk.pmtiles.internal.DecodeLimits
 import org.maplibre.spatialk.pmtiles.internal.DecodePurpose
 import org.maplibre.spatialk.pmtiles.internal.DirectoryEntry
+import org.maplibre.spatialk.pmtiles.internal.DirectoryResolver
 import org.maplibre.spatialk.pmtiles.internal.FIRST_READ_BYTES
 import org.maplibre.spatialk.pmtiles.internal.allocationLength
-import org.maplibre.spatialk.pmtiles.internal.checkedAdd
-import org.maplibre.spatialk.pmtiles.internal.coversTile
 import org.maplibre.spatialk.pmtiles.internal.decodeCompression
 import org.maplibre.spatialk.pmtiles.internal.decodeDirectory
-import org.maplibre.spatialk.pmtiles.internal.findPredecessor
 import org.maplibre.spatialk.pmtiles.internal.parseHeaderForOpen
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
 import org.maplibre.spatialk.pmtiles.internal.readSourceRange
@@ -51,16 +42,19 @@ private constructor(
     private val source: ByteRangeSource,
     private val options: ArchiveOpenOptions,
     private val archiveSize: ULong,
-    private val rootDirectory: List<DirectoryEntry>,
+    rootDirectory: List<DirectoryEntry>,
     initialWarnings: List<ArchiveWarning>,
 ) : AutoCloseable {
-    private val stateMutex = Mutex()
-    private val closed = AtomicBoolean(false)
-    private val archiveWarnings = AtomicReference(WarningState.from(initialWarnings))
-    private val leafDirectoryCache = LinkedHashMap<ByteRange, List<DirectoryEntry>>()
-    private val inFlightSourceReads = mutableMapOf<SourceReadKey, CompletableDeferred<ByteArray>>()
-    private var rawMetadataJsonCache: String? = null
-    private var metadataCache: ArchiveMetadata? = null
+    private val state = ArchiveReadState(initialWarnings)
+    private val directoryResolver =
+        DirectoryResolver(
+            header = header,
+            source = source,
+            options = options,
+            archiveSize = archiveSize,
+            rootDirectory = rootDirectory,
+            state = state,
+        )
 
     /** Tile payload type from the header. */
     public val tileType: TileType = header.tileType
@@ -74,7 +68,7 @@ private constructor(
     /** Returns the raw metadata JSON string. */
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun rawMetadataJson(): String {
-        cachedRawMetadataJson()?.let {
+        state.cachedRawMetadataJson()?.let {
             return it
         }
 
@@ -83,11 +77,14 @@ private constructor(
                 ""
             } else {
                 val compressedBytes =
-                    readSourceRangeDeduplicated(
-                        header.metadata.toByteRange(
-                            options.limits.maxMetadataBytes,
-                            "Metadata",
-                        ),
+                    state.readSourceRangeDeduplicated(
+                        source = source,
+                        archiveSize = archiveSize,
+                        range =
+                            header.metadata.toByteRange(
+                                options.limits.maxMetadataBytes,
+                                "Metadata",
+                            ),
                         maxBytes = options.limits.maxMetadataBytes,
                     )
                 val metadataBytes =
@@ -103,18 +100,18 @@ private constructor(
                 metadataBytes.decodeMetadataUtf8()
             }
 
-        return cacheRawMetadataJson(json)
+        return state.cacheRawMetadataJson(json)
     }
 
     /** Returns typed PMTiles metadata fields. */
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun metadata(): ArchiveMetadata {
-        cachedMetadata()?.let {
+        state.cachedMetadata()?.let {
             return it
         }
 
         val rawJson = rawMetadataJson()
-        return parseAndCacheMetadata(rawJson)
+        return state.cacheMetadata(parseMetadata(rawJson))
     }
 
     /** Returns the tile at [z], [x], and [y], or null when absent. */
@@ -146,7 +143,7 @@ private constructor(
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun getTileRange(z: Int, x: Int, y: Int): TileRange? {
         TileIds.validateZxy(z, x, y)
-        return findTileRange(
+        return directoryResolver.findTileRange(
             tileId = TileIds.fromZxy(z, x, y),
             coord = TileCoord(z = z, x = x, y = y),
         )
@@ -171,45 +168,25 @@ private constructor(
 
     /** Number of warnings recorded by this archive. */
     public val warningCount: Int
-        get() = archiveWarnings.load().warnings.size
+        get() = state.warningCount
 
     /** Returns the warning at [index], or null when [index] is outside the warning list. */
     @ObjCName(name = "warningAt", swiftName = "warning")
     public fun warningAt(@ObjCName(name = "at", swiftName = "at") index: Int): ArchiveWarning? =
-        archiveWarnings.load().warnings.getOrNull(index)
+        state.warningAt(index)
 
     /** Returns a snapshot of warnings recorded by this archive. */
-    @HiddenFromObjC public fun warnings(): List<ArchiveWarning> = archiveWarnings.load().warnings
+    @HiddenFromObjC public fun warnings(): List<ArchiveWarning> = state.warnings()
 
     /** Releases archive-owned caches and in-flight work. */
-    override public fun close() {
-        if (!closed.compareAndSet(expectedValue = false, newValue = true)) return
-        if (stateMutex.tryLock()) {
-            try {
-                clearStateForCloseLocked()
-            } finally {
-                stateMutex.unlock()
-            }
-        }
-    }
-
-    private suspend fun findTileRange(tileId: Long, coord: TileCoord): TileRange? {
-        checkOpen()
-        return findTileRange(
-            directory = rootDirectory,
-            tileId = tileId,
-            coord = coord,
-            depth = 0,
-            visitedLeafRanges = mutableSetOf(),
-        )
-    }
+    override public fun close(): Unit = state.close()
 
     private suspend fun readTile(
         tileId: Long,
         coord: TileCoord,
         readMode: TileReadMode,
     ): ArchiveTile? {
-        val range = findTileRange(tileId, coord) ?: return null
+        val range = directoryResolver.findTileRange(tileId, coord) ?: return null
         val compressedTile = readCompressedTile(range)
         return when (readMode) {
             TileReadMode.CompressedBytes -> compressedTile
@@ -219,8 +196,10 @@ private constructor(
 
     private suspend fun readCompressedTile(range: TileRange): ArchiveTile {
         val bytes =
-            readSourceRangeDeduplicated(
-                range.archiveRange,
+            state.readSourceRangeDeduplicated(
+                source = source,
+                archiveSize = archiveSize,
+                range = range.archiveRange,
                 maxBytes = options.limits.maxTileCompressedBytes,
             )
         return ArchiveTile(
@@ -313,7 +292,7 @@ private constructor(
                 "MVT metadata must contain `vector_layers`.",
             )
         }
-        appendWarning(
+        state.appendWarning(
             ArchiveWarning(
                 code = ArchiveWarningCode.MissingVectorLayers,
                 message = "MVT metadata does not contain `vector_layers`.",
@@ -325,284 +304,12 @@ private constructor(
         if (options.validationMode == ValidationMode.Strict) {
             throw pmTilesException(PmTilesErrorCode.InvalidMetadata, message, cause)
         }
-        appendWarning(
+        state.appendWarning(
             ArchiveWarning(
                 code = ArchiveWarningCode.InvalidMetadataRecovered,
                 message = message,
             )
         )
-    }
-
-    private suspend fun findTileRange(
-        directory: List<DirectoryEntry>,
-        tileId: Long,
-        coord: TileCoord,
-        depth: Int,
-        visitedLeafRanges: MutableSet<ByteRange>,
-    ): TileRange? {
-        val entry = directory.findPredecessor(tileId) ?: return null
-
-        if (entry.isTile) {
-            return if (entry.coversTile(tileId)) entry.toTileRange(tileId, coord, depth) else null
-        }
-
-        val leafDepth = depth + 1
-        val leaf = loadLeafDirectory(entry, leafDepth, visitedLeafRanges)
-        return findTileRange(leaf, tileId, coord, leafDepth, visitedLeafRanges)
-    }
-
-    private suspend fun loadLeafDirectory(
-        entry: DirectoryEntry,
-        depth: Int,
-        visitedLeafRanges: MutableSet<ByteRange>,
-    ): List<DirectoryEntry> {
-        if (depth > options.limits.maxDirectoryDepth) {
-            throw pmTilesException(
-                PmTilesErrorCode.LimitExceeded,
-                "Directory depth $depth exceeds limit ${options.limits.maxDirectoryDepth}.",
-            )
-        }
-        if (depth > 1) {
-            if (options.validationMode == ValidationMode.Strict) {
-                throw pmTilesException(
-                    PmTilesErrorCode.InvalidDirectory,
-                    "Nested leaf directories are not allowed in strict mode.",
-                )
-            }
-            appendWarning(
-                ArchiveWarning(
-                    code = ArchiveWarningCode.NestedLeafDirectory,
-                    message = "Lookup traversed a nested leaf directory.",
-                    context = "depth=$depth tileId=${entry.tileId}",
-                )
-            )
-        }
-
-        val range = entry.toLeafRange()
-        if (!visitedLeafRanges.add(range)) {
-            throw pmTilesException(
-                PmTilesErrorCode.LimitExceeded,
-                "Lookup revisited leaf directory range $range.",
-            )
-        }
-
-        cachedLeafDirectory(range)?.let {
-            return it
-        }
-
-        val compressedBytes =
-            readSourceRangeDeduplicated(
-                range,
-                maxBytes = options.limits.maxDirectoryCompressedBytes,
-            )
-        val directoryBytes =
-            decodeCompression(
-                header.internalCompression,
-                compressedBytes,
-                DecodeLimits(
-                    maxCompressedBytes = options.limits.maxDirectoryCompressedBytes,
-                    maxDecompressedBytes = options.limits.maxDirectoryDecompressedBytes,
-                    purpose = DecodePurpose.LeafDirectory,
-                ),
-            )
-        val directory = decodeDirectory(directoryBytes, header, options.limits)
-        return cacheLeafDirectory(range, directory)
-    }
-
-    private fun DirectoryEntry.toTileRange(tileId: Long, coord: TileCoord, depth: Int): TileRange =
-        TileRange(
-            tileId = tileId,
-            coord = coord,
-            archiveRange =
-                ByteRange(
-                    offset =
-                        checkedAdd(
-                            header.tileData.offset,
-                            offset,
-                            PmTilesErrorCode.InvalidDirectory,
-                        ),
-                    length = length,
-                ),
-            tileType = header.tileType,
-            compression = header.tileCompression,
-            directoryDepth = depth,
-        )
-
-    private fun DirectoryEntry.toLeafRange(): ByteRange =
-        ByteRange(
-            offset =
-                checkedAdd(
-                    header.leafDirectories.offset,
-                    offset,
-                    PmTilesErrorCode.InvalidDirectory,
-                ),
-            length = length,
-        )
-
-    private fun checkOpen() {
-        if (closed.load()) {
-            throw pmTilesException(PmTilesErrorCode.Closed, "PMTiles archive is closed.")
-        }
-    }
-
-    private fun checkOpenLocked() {
-        if (closed.load()) {
-            clearStateForCloseLocked()
-            throw closedException()
-        }
-    }
-
-    private fun closedException(): PmTilesException =
-        pmTilesException(PmTilesErrorCode.Closed, "PMTiles archive is closed.")
-
-    private suspend fun cachedRawMetadataJson(): String? = withOpenStateLock {
-        rawMetadataJsonCache
-    }
-
-    private suspend fun cacheRawMetadataJson(json: String): String = withOpenStateLock {
-        rawMetadataJsonCache ?: json.also { rawMetadataJsonCache = it }
-    }
-
-    private suspend fun cachedMetadata(): ArchiveMetadata? = withOpenStateLock {
-        metadataCache
-    }
-
-    private suspend fun parseAndCacheMetadata(rawJson: String): ArchiveMetadata =
-        withOpenStateLock {
-            metadataCache?.let {
-                return@withOpenStateLock it
-            }
-
-            val metadata = parseMetadata(rawJson)
-            checkOpenLocked()
-            metadataCache ?: metadata.also { metadataCache = it }
-        }
-
-    private suspend fun cachedLeafDirectory(range: ByteRange): List<DirectoryEntry>? =
-        withOpenStateLock {
-            val cached = leafDirectoryCache.remove(range) ?: return@withOpenStateLock null
-            leafDirectoryCache[range] = cached
-            cached
-        }
-
-    private suspend fun cacheLeafDirectory(
-        range: ByteRange,
-        directory: List<DirectoryEntry>,
-    ): List<DirectoryEntry> = withOpenStateLock {
-        leafDirectoryCache.remove(range)?.let { cached ->
-            leafDirectoryCache[range] = cached
-            return@withOpenStateLock cached
-        }
-        if (options.limits.maxLeafDirectoryCacheEntries > 0) {
-            leafDirectoryCache[range] = directory
-            while (leafDirectoryCache.size > options.limits.maxLeafDirectoryCacheEntries) {
-                leafDirectoryCache.remove(leafDirectoryCache.keys.first())
-            }
-        }
-        directory
-    }
-
-    private suspend fun readSourceRangeDeduplicated(
-        range: ByteRange,
-        maxBytes: Int,
-    ): ByteArray {
-        val key = SourceReadKey(range = range, maxBytes = maxBytes)
-        var ownsRead = false
-        val inFlight = withOpenStateLock {
-            inFlightSourceReads[key]?.let {
-                return@withOpenStateLock it
-            }
-            CompletableDeferred<ByteArray>().also {
-                inFlightSourceReads[key] = it
-                ownsRead = true
-            }
-        }
-
-        if (!ownsRead) return inFlight.await()
-
-        return try {
-            val bytes =
-                source.readSourceRange(
-                    range,
-                    archiveSize = archiveSize,
-                    maxBytes = maxBytes,
-                )
-            completeSourceRead(key, inFlight, bytes)
-            bytes
-        } catch (error: Throwable) {
-            val completionError = failSourceRead(key, inFlight, error)
-            throw completionError
-        }
-    }
-
-    private suspend fun completeSourceRead(
-        key: SourceReadKey,
-        inFlight: CompletableDeferred<ByteArray>,
-        bytes: ByteArray,
-    ) {
-        withStateLock {
-            inFlightSourceReads.remove(key)
-            if (closed.load()) {
-                clearStateForCloseLocked()
-                val error = closedException()
-                inFlight.completeExceptionally(error)
-                throw error
-            }
-            inFlight.complete(bytes)
-        }
-    }
-
-    private suspend fun failSourceRead(
-        key: SourceReadKey,
-        inFlight: CompletableDeferred<ByteArray>,
-        error: Throwable,
-    ): Throwable =
-        withContext(NonCancellable) {
-            withStateLock {
-                inFlightSourceReads.remove(key)
-                val completionError =
-                    if (closed.load() && error !is CancellationException) {
-                        closedException()
-                    } else {
-                        error
-                    }
-                if (closed.load()) clearStateForCloseLocked()
-                inFlight.completeExceptionally(completionError)
-                completionError
-            }
-        }
-
-    private suspend fun <T> withOpenStateLock(block: () -> T): T = withStateLock {
-        checkOpenLocked()
-        block()
-    }
-
-    private suspend fun <T> withStateLock(block: () -> T): T = stateMutex.withLock {
-        try {
-            block()
-        } finally {
-            if (closed.load()) clearStateForCloseLocked()
-        }
-    }
-
-    private fun appendWarning(warning: ArchiveWarning) {
-        val key = warning.dedupeKey
-        while (true) {
-            val current = archiveWarnings.load()
-            if (key in current.keys) return
-            val next =
-                WarningState(warnings = current.warnings + warning, keys = current.keys + key)
-            if (archiveWarnings.compareAndSet(current, next)) return
-        }
-    }
-
-    private fun clearStateForCloseLocked() {
-        rawMetadataJsonCache = null
-        metadataCache = null
-        leafDirectoryCache.clear()
-        val error = closedException()
-        inFlightSourceReads.values.forEach { it.completeExceptionally(error) }
-        inFlightSourceReads.clear()
     }
 
     /** Factory methods for PMTiles archives. */
@@ -640,7 +347,24 @@ private constructor(
                         purpose = DecodePurpose.RootDirectory,
                     ),
                 )
-            val rootDirectory = decodeDirectory(rootDirectoryBytes, header, options.limits)
+            val rootDirectory =
+                decodeDirectory(
+                    rootDirectoryBytes,
+                    header,
+                    options.limits,
+                    allowEmpty = options.validationMode == ValidationMode.Lenient,
+                )
+            val warnings =
+                if (rootDirectory.isEmpty()) {
+                    parsedHeader.warnings +
+                        ArchiveWarning(
+                            code = ArchiveWarningCode.EmptyRootDirectory,
+                            message =
+                                "Root directory has zero entries and was accepted in lenient mode.",
+                        )
+                } else {
+                    parsedHeader.warnings
+                }
 
             return PmTilesArchive(
                 header = header,
@@ -648,40 +372,11 @@ private constructor(
                 options = options,
                 archiveSize = sourceSize,
                 rootDirectory = rootDirectory,
-                initialWarnings = parsedHeader.warnings,
+                initialWarnings = warnings,
             )
         }
     }
 }
-
-private data class SourceReadKey(
-    val range: ByteRange,
-    val maxBytes: Int,
-)
-
-private val ArchiveWarning.dedupeKey: WarningDedupeKey
-    get() = WarningDedupeKey(code = code, context = context)
-
-private data class WarningState(
-    val warnings: List<ArchiveWarning>,
-    val keys: Set<WarningDedupeKey>,
-) {
-    companion object {
-        fun from(warnings: List<ArchiveWarning>): WarningState {
-            val dedupedWarnings = mutableListOf<ArchiveWarning>()
-            val keys = mutableSetOf<WarningDedupeKey>()
-            warnings.forEach { warning ->
-                if (keys.add(warning.dedupeKey)) dedupedWarnings += warning
-            }
-            return WarningState(warnings = dedupedWarnings.toList(), keys = keys.toSet())
-        }
-    }
-}
-
-private data class WarningDedupeKey(
-    val code: ArchiveWarningCode,
-    val context: String?,
-)
 
 private fun ByteArray.decodeMetadataUtf8(): String =
     try {
