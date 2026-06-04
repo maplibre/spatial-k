@@ -9,10 +9,35 @@ module is a distinct library.
 - `turf` — geospatial analysis (port of Turf.js)
 - `units` — units of measure
 - `gpx` — GPX format support
+- `pmtiles` — PMTiles v3 archive reader
 - `polyline-encoding` — Google Encoded Polyline Algorithm
 - `testutil` — shared test helpers
 - `benchmark` — performance benchmarks
 - `docs` — API documentation
+
+## Reference resources
+
+- GeoJSON: [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946).
+- Turf: [Turf.js docs](https://turfjs.org/docs/) and
+  [source repository](https://github.com/Turfjs/turf).
+- Units: [BIPM SI Brochure](https://www.bipm.org/en/publications/si-brochure) and
+  [NIST SI units guide](https://www.nist.gov/pml/weights-and-measures/metric-si/si-units).
+- GPX: [GPX 1.1 schema documentation](https://www.topografix.com/gpx/1/1/) and
+  [XSD](https://www.topografix.com/GPX/1/1/gpx.xsd).
+- PMTiles v3: [spec](https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md),
+  [changelog](https://github.com/protomaps/PMTiles/blob/main/spec/v3/CHANGELOG.md),
+  [Protomaps docs](https://docs.protomaps.com/pmtiles/), and
+  [go-pmtiles](https://github.com/protomaps/go-pmtiles).
+- Polyline encoding:
+  [Google Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
+- Kotlin interop:
+  [Objective-C and Swift interop](https://kotlinlang.org/docs/native-objc-interop.html#importing-swift-objective-c-libraries-to-kotlin),
+  [Swift export](https://kotlinlang.org/docs/native-swift-export.html),
+  [C interop](https://kotlinlang.org/docs/native-c-interop.html),
+  [JS interop](https://kotlinlang.org/docs/js-interop.html),
+  [JS to Kotlin interop](https://kotlinlang.org/docs/js-to-kotlin-interop.html),
+  [Java interop](https://kotlinlang.org/docs/java-interop.html), and
+  [Java to Kotlin interop](https://kotlinlang.org/docs/java-to-kotlin-interop.html).
 
 ## Workflow
 

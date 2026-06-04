@@ -1,0 +1,66 @@
+package org.maplibre.spatialk.pmtiles.internal
+
+import org.maplibre.spatialk.pmtiles.DecompressionLimits
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+
+// It's a suspend fun only because CompressionStreams on web requires it
+internal expect suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLimits): ByteArray
+
+internal class BoundedByteArraySink(private val limits: DecompressionLimits) {
+    private var bytes = ByteArray(0)
+    private var size = 0
+
+    fun append(chunk: ByteArray, length: Int) {
+        if (length <= 0) return
+        val nextSize = checkedDecompressedSize(size, length, limits)
+        ensureCapacity(nextSize)
+        chunk.copyInto(
+            destination = bytes,
+            destinationOffset = size,
+            startIndex = 0,
+            endIndex = length,
+        )
+        size = nextSize
+    }
+
+    fun toByteArray(): ByteArray = bytes.copyOf(size)
+
+    private fun ensureCapacity(required: Int) {
+        if (required <= bytes.size) return
+
+        var nextCapacity = if (bytes.isEmpty()) INITIAL_OUTPUT_CAPACITY else bytes.size
+        while (nextCapacity < required) {
+            val doubled = nextCapacity.toLong() * 2
+            nextCapacity = if (doubled <= Int.MAX_VALUE) doubled.toInt() else required
+        }
+        bytes = bytes.copyOf(nextCapacity.coerceAtMost(limits.maxDecompressedBytes))
+    }
+}
+
+internal fun checkedDecompressedSize(
+    current: Int,
+    nextChunk: Int,
+    limits: DecompressionLimits,
+): Int {
+    if (nextChunk < 0 || current > limits.maxDecompressedBytes - nextChunk) {
+        throw pmTilesException(
+            PmTilesErrorCode.LimitExceeded,
+            "Decompressed length exceeds limit ${limits.maxDecompressedBytes}.",
+        )
+    }
+    return current + nextChunk
+}
+
+internal fun decompressionFailed(message: String, cause: Throwable? = null): Nothing =
+    throw pmTilesException(PmTilesErrorCode.DecompressionFailed, message, cause)
+
+internal val DecodePurpose.displayName: String
+    get() =
+        when (this) {
+            DecodePurpose.RootDirectory -> "Root directory"
+            DecodePurpose.LeafDirectory -> "Leaf directory"
+            DecodePurpose.Metadata -> "Metadata"
+            DecodePurpose.Tile -> "Tile"
+        }
+
+private const val INITIAL_OUTPUT_CAPACITY = 8 * 1024
