@@ -10,23 +10,23 @@ import platform.Foundation.NSData
 
 class AppleApiTest {
     @Test
-    fun archiveTileDataReturnsCopyingNSData() {
+    fun archiveTileDataReturnsSnapshotNSData() {
         val bytes = byteArrayOf(1, 2, 3)
         val tile =
             ArchiveTile(
                 tileId = 0,
                 coord = TileCoord(0, 0, 0),
                 bytes = bytes,
-                tileType = TileType.Png,
-                compression = Compression.None,
+                tileType = TileType(KnownTileType.Png),
+                compression = Compression(KnownCompression.None),
                 wasDecompressed = false,
                 range =
                     TileRange(
                         tileId = 0,
                         coord = TileCoord(0, 0, 0),
                         archiveRange = ByteRange(0uL, 3),
-                        tileType = TileType.Png,
-                        compression = Compression.None,
+                        tileType = TileType(KnownTileType.Png),
+                        compression = Compression(KnownCompression.None),
                         directoryDepth = 0,
                     ),
             )
@@ -36,7 +36,7 @@ class AppleApiTest {
         val secondData = tile.data
 
         assertContentEquals(byteArrayOf(1, 2, 3), firstData.toByteArray())
-        assertContentEquals(byteArrayOf(9, 2, 3), secondData.toByteArray())
+        assertContentEquals(byteArrayOf(1, 2, 3), secondData.toByteArray())
     }
 
     @Test

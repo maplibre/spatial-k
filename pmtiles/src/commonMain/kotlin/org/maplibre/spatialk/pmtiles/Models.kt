@@ -514,22 +514,83 @@ internal constructor(
  *
  * @property tileId PMTiles TileID for the tile.
  * @property coord Web tile coordinate for the tile.
- * @property bytes Tile payload bytes. The array is owned by this tile object but remains mutable;
- *   callers that modify it should make their own copy.
  * @property tileType Tile payload type.
- * @property compression Compression represented by [bytes].
- * @property wasDecompressed True when [bytes] were decompressed by the reader.
+ * @property compression Compression represented by the payload bytes.
+ * @property wasDecompressed True when the payload bytes were decompressed by the reader.
  * @property range Located source range for this tile.
  */
-public class ArchiveTile(
+public class ArchiveTile
+internal constructor(
     public val tileId: Long,
     public val coord: TileCoord,
-    public val bytes: ByteArray,
+    bytes: ByteArray,
     public val tileType: TileType,
     public val compression: Compression,
     public val wasDecompressed: Boolean,
     public val range: TileRange,
-)
+) {
+    private val byteStorage: ByteArray = bytes.copyOf()
+
+    /** Tile payload byte count. */
+    public val byteCount: ULong
+        get() = byteStorage.size.toULong()
+
+    /** Tile payload bytes. The returned array is a copy. */
+    @OptIn(ExperimentalObjCRefinement::class)
+    @HiddenFromObjC
+    public val bytes: ByteArray
+        get() = byteStorage.copyOf()
+
+    internal fun <T> withPayloadBytesUnsafe(block: (ByteArray) -> T): T = block(byteStorage)
+
+    override fun equals(other: Any?): Boolean =
+        other is ArchiveTile &&
+            tileId == other.tileId &&
+            coord == other.coord &&
+            byteStorage.contentEquals(other.byteStorage) &&
+            tileType == other.tileType &&
+            compression == other.compression &&
+            wasDecompressed == other.wasDecompressed &&
+            range == other.range
+
+    override fun hashCode(): Int {
+        var result = tileId.hashCode()
+        result = 31 * result + coord.hashCode()
+        result = 31 * result + byteStorage.contentHashCode()
+        result = 31 * result + tileType.hashCode()
+        result = 31 * result + compression.hashCode()
+        result = 31 * result + wasDecompressed.hashCode()
+        result = 31 * result + range.hashCode()
+        return result
+    }
+
+    override fun toString(): String =
+        "ArchiveTile(" +
+            "tileId=$tileId, " +
+            "coord=$coord, " +
+            "byteCount=$byteCount, " +
+            "tileType=$tileType, " +
+            "compression=$compression, " +
+            "wasDecompressed=$wasDecompressed, " +
+            "range=$range" +
+            ")"
+}
+
+/**
+ * Result for one coordinate in a batch tile read.
+ *
+ * @property coord Requested tile coordinate.
+ * @property tile Tile payload, or null when the archive does not contain [coord].
+ */
+public data class TileReadResult
+internal constructor(
+    public val coord: TileCoord,
+    public val tile: ArchiveTile?,
+) {
+    /** True when [tile] is present. */
+    public val isFound: Boolean
+        get() = tile != null
+}
 
 /**
  * Typed PMTiles metadata fields.

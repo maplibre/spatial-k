@@ -14,8 +14,9 @@ import platform.Foundation.NSData
 import platform.Foundation.NSMutableData
 import platform.posix.memcpy
 
+/** Tile payload data as a Foundation value. The returned data is a copy. */
 public val ArchiveTile.data: NSData
-    get() = bytes.toNSData()
+    get() = withPayloadBytesUnsafe { it.toNSData() }
 
 public interface ByteRangeDataSource {
     @Throws(PmTilesException::class, CancellationException::class) public suspend fun size(): ULong
