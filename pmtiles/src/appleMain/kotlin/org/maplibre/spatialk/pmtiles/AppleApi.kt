@@ -19,10 +19,10 @@ public val ArchiveTile.data: NSData
     get() = withPayloadBytesUnsafe { it.toNSData() }
 
 public interface ByteRangeDataSource {
-    @Throws(PmTilesException::class, CancellationException::class) public suspend fun size(): ULong
+    public fun size(): ULong
 
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun read(offset: ULong, length: Int): NSData
+    public suspend fun read(offset: ULong, length: ULong): NSData
 }
 
 /** Apple-friendly decompressor that uses [NSData] payloads. */
@@ -33,12 +33,14 @@ public interface DataDecompressor {
      * Implementations should enforce [limits] while decoding. The reader also validates the
      * returned byte count before using it.
      */
-    @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun decompress(data: NSData, limits: DecompressionLimits): NSData
+    @Throws(PmTilesException::class)
+    public fun decompress(data: NSData, limits: DecompressionLimits): NSData
 }
 
 /** Returns a copy of these options with [decompressor] registered for [compression]. */
-public fun ArchiveOpenOptions.withDecompressor(
+@OptIn(ExperimentalObjCName::class)
+@ObjCName(name = "withRawDecompressor", swiftName = "withRawDecompressor")
+public fun ArchiveOpenOptions.withRawDecompressor(
     compression: Compression,
     decompressor: DataDecompressor,
 ): ArchiveOpenOptions =
@@ -48,6 +50,14 @@ public fun ArchiveOpenOptions.withDecompressor(
             decompressor.decompress(bytes.toNSData(), limits).toByteArray()
         },
     )
+
+/** Returns a copy of these options with [decompressor] registered for known [compression]. */
+@OptIn(ExperimentalObjCName::class)
+@ObjCName(name = "withDecompressor", swiftName = "withDecompressor")
+public fun ArchiveOpenOptions.withDecompressor(
+    compression: KnownCompression,
+    decompressor: DataDecompressor,
+): ArchiveOpenOptions = withRawDecompressor(Compression(compression), decompressor)
 
 @OptIn(ExperimentalObjCName::class)
 @ObjCName(name = "open", swiftName = "open")

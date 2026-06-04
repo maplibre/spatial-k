@@ -44,9 +44,9 @@ class AppleApiTest {
         val tileBytes = byteArrayOf(4, 5, 6)
         val source = TestByteRangeDataSource(buildSingleTileArchive(tileBytes))
 
-        val archive = PmTilesArchive.open(source)
+        val archive = PmTiles.open(source)
 
-        assertContentEquals(tileBytes, archive.getStoredTile(0, 0, 0)?.bytes)
+        assertContentEquals(tileBytes, archive.readStoredTile(0, 0, 0)?.bytes)
         assertEquals(2, source.reads.size)
     }
 
@@ -58,21 +58,21 @@ class AppleApiTest {
             TestByteRangeDataSource(
                 buildSingleTileArchive(
                     tileBytes = compressedBytes,
-                    tileCompression = Compression.Brotli.code,
+                    tileCompression = KnownCompression.Brotli.code,
                 )
             )
         val options =
             ArchiveOpenOptions()
                 .withDecompressor(
-                    Compression.Brotli,
+                    KnownCompression.Brotli,
                     object : DataDecompressor {
-                        override suspend fun decompress(
+                        override fun decompress(
                             data: NSData,
                             limits: DecompressionLimits,
                         ): NSData {
                             assertContentEquals(compressedBytes, data.toByteArray())
                             assertEquals(
-                                ArchiveLimits.Default.maxTileCompressedBytes,
+                                ArchiveLimits().maxTileCompressedBytes,
                                 limits.maxCompressedBytes,
                             )
                             return decompressedBytes.toNSData()
@@ -80,12 +80,12 @@ class AppleApiTest {
                     },
                 )
 
-        val archive = PmTilesArchive.open(source, options)
-        val tile = archive.getDecompressedTile(0, 0, 0)
+        val archive = PmTiles.open(source, options)
+        val tile = archive.readDecompressedTile(0, 0, 0)
 
         requireNotNull(tile)
         assertContentEquals(decompressedBytes, tile.bytes)
-        assertEquals(Compression.None, tile.compression)
+        assertEquals(Compression(KnownCompression.None), tile.compression)
     }
 
     @Test
@@ -95,9 +95,7 @@ class AppleApiTest {
         val shortError =
             assertFailsWith<PmTilesException> {
                 runSuspending {
-                    PmTilesArchive.open(
-                        TestByteRangeDataSource(archiveBytes, lengthAdjustment = -1)
-                    )
+                    PmTiles.open(TestByteRangeDataSource(archiveBytes, lengthAdjustment = -1))
                 }
             }
         assertEquals(PmTilesErrorCode.SourceUnavailable, shortError.code)
@@ -105,7 +103,7 @@ class AppleApiTest {
         val longError =
             assertFailsWith<PmTilesException> {
                 runSuspending {
-                    PmTilesArchive.open(TestByteRangeDataSource(archiveBytes, lengthAdjustment = 1))
+                    PmTiles.open(TestByteRangeDataSource(archiveBytes, lengthAdjustment = 1))
                 }
             }
         assertEquals(PmTilesErrorCode.SourceUnavailable, longError.code)
@@ -117,12 +115,13 @@ class AppleApiTest {
     ) : ByteRangeDataSource {
         val reads = mutableListOf<ByteRange>()
 
-        override suspend fun size(): ULong = bytes.size.toULong()
+        override fun size(): ULong = bytes.size.toULong()
 
-        override suspend fun read(offset: ULong, length: Int): NSData {
-            reads += ByteRange(offset, length)
+        override suspend fun read(offset: ULong, length: ULong): NSData {
+            val byteCount = length.toInt()
+            reads += ByteRange(offset, byteCount)
             val start = offset.toInt()
-            val adjustedLength = length + lengthAdjustment
+            val adjustedLength = byteCount + lengthAdjustment
             val end = start + adjustedLength
             return bytes.copyOfRange(start, end).toNSData()
         }
