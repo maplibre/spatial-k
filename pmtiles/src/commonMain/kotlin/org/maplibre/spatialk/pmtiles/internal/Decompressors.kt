@@ -61,16 +61,16 @@ internal suspend fun Map<Compression, Decompressor>.decompress(
 }
 
 private fun validateDecodeLimits(limits: DecompressionLimits, purpose: DecodePurpose?) {
-    if (limits.maxCompressedBytes < 0) {
+    if (limits.maxCompressedBytes > Int.MAX_VALUE.toULong()) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
-            "${purposePrefix(purpose)}compressed byte limit is negative.",
+            "${purposePrefix(purpose)}compressed byte limit ${limits.maxCompressedBytes} exceeds the supported Int range.",
         )
     }
-    if (limits.maxDecompressedBytes < 0) {
+    if (limits.maxDecompressedBytes > Int.MAX_VALUE.toULong()) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
-            "${purposePrefix(purpose)}decompressed byte limit is negative.",
+            "${purposePrefix(purpose)}decompressed byte limit ${limits.maxDecompressedBytes} exceeds the supported Int range.",
         )
     }
 }
@@ -80,7 +80,7 @@ private fun validateCompressedSize(
     limits: DecompressionLimits,
     purpose: DecodePurpose?,
 ) {
-    if (size > limits.maxCompressedBytes) {
+    if (size.toULong() > limits.maxCompressedBytes) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
             "${purposePrefix(purpose)}compressed length $size exceeds limit ${limits.maxCompressedBytes}.",
@@ -93,7 +93,7 @@ internal fun validateDecompressedSize(
     limits: DecompressionLimits,
     purpose: DecodePurpose? = null,
 ) {
-    if (size > limits.maxDecompressedBytes) {
+    if (size.toULong() > limits.maxDecompressedBytes) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
             "${purposePrefix(purpose)}decompressed length $size exceeds limit ${limits.maxDecompressedBytes}.",

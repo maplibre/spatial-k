@@ -92,7 +92,7 @@ internal class ArchiveReadState(initialWarnings: List<ArchiveWarning>) {
         source: ByteRangeSource,
         archiveSize: ULong,
         range: ByteRange,
-        maxBytes: Int,
+        maxBytes: ULong,
     ): ByteArray {
         val key = SourceReadKey(range = range, maxBytes = maxBytes)
         var ownsRead = false
@@ -206,7 +206,7 @@ internal class ArchiveReadState(initialWarnings: List<ArchiveWarning>) {
 
 private data class SourceReadKey(
     val range: ByteRange,
-    val maxBytes: Int,
+    val maxBytes: ULong,
 )
 
 private val ArchiveWarning.dedupeKey: WarningDedupeKey

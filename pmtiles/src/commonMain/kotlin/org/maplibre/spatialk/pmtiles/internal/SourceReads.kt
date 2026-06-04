@@ -9,7 +9,7 @@ import org.maplibre.spatialk.pmtiles.PmTilesException
 internal suspend fun ByteRangeSource.readSourceRange(
     range: ByteRange,
     archiveSize: ULong,
-    maxBytes: Int,
+    maxBytes: ULong,
 ): ByteArray {
     validateReadRange(range, archiveSize, maxBytes)
     val bytes =
@@ -27,7 +27,7 @@ internal suspend fun ByteRangeSource.readSourceRange(
             )
         }
 
-    if (bytes.size != range.length) {
+    if (bytes.size.toULong() != range.length) {
         throw pmTilesException(
             PmTilesErrorCode.SourceUnavailable,
             "Byte range source returned ${bytes.size} bytes for requested length ${range.length}.",

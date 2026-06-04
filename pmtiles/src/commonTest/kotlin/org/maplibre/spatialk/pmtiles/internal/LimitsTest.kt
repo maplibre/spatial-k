@@ -30,7 +30,7 @@ class LimitsTest {
     fun rejectsNegativeRangeLength() {
         val error =
             assertFailsWith<PmTilesException> {
-                validateReadRange(ByteRange(0uL, -1), archiveSize = 1uL, maxBytes = 1)
+                validateReadRange(ByteRange(0uL, -1), archiveSize = 1uL, maxBytes = 1uL)
             }
 
         assertEquals(PmTilesErrorCode.RangeOutOfBounds, error.code)
@@ -40,7 +40,7 @@ class LimitsTest {
     fun rejectsReadRangeBeyondArchiveSize() {
         val error =
             assertFailsWith<PmTilesException> {
-                validateReadRange(ByteRange(8uL, 3), archiveSize = 10uL, maxBytes = 3)
+                validateReadRange(ByteRange(8uL, 3), archiveSize = 10uL, maxBytes = 3uL)
             }
 
         assertEquals(PmTilesErrorCode.RangeOutOfBounds, error.code)
@@ -50,7 +50,7 @@ class LimitsTest {
     fun rejectsReadRangeBeyondAllocationLimit() {
         val error =
             assertFailsWith<PmTilesException> {
-                validateReadRange(ByteRange(0uL, 4), archiveSize = 10uL, maxBytes = 3)
+                validateReadRange(ByteRange(0uL, 4), archiveSize = 10uL, maxBytes = 3uL)
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
@@ -59,16 +59,13 @@ class LimitsTest {
     @Test
     fun rejectsInvalidArchiveLimitConfiguration() {
         assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits(maxInitialReadBytes = 16 * 1024 - 1)
+            ArchiveLimits(maxInitialReadBytes = (16 * 1024 - 1).toULong())
         }
         assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits(maxMetadataBytes = -1)
+            ArchiveLimits().copy(maxDirectoryDecompressedBytes = 1024uL)
         }
         assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits.Default.copy(maxDirectoryDecompressedBytes = 1024)
-        }
-        assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits(maxDirectoryDecompressedBytes = 1024, maxDirectoryEntries = 256)
+            ArchiveLimits(maxDirectoryDecompressedBytes = 1024uL, maxDirectoryEntries = 256)
         }
         assertFailsWith<IllegalArgumentException> {
             ArchiveLimits(maxDirectoryEntries = -1)
@@ -85,7 +82,7 @@ class LimitsTest {
     fun acceptsDirectoryEntryLimitThatFitsDecompressedDirectoryBudget() {
         val limits =
             ArchiveLimits(
-                maxDirectoryDecompressedBytes = 1024,
+                maxDirectoryDecompressedBytes = 1024uL,
                 maxDirectoryEntries = 255,
             )
 

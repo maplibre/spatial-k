@@ -116,8 +116,8 @@ internal fun testDecodeLimits(
     maxDecompressedBytes: Int = 1024,
 ): DecodeLimits =
     DecodeLimits(
-        maxCompressedBytes = maxCompressedBytes,
-        maxDecompressedBytes = maxDecompressedBytes,
+        maxCompressedBytes = maxCompressedBytes.toULong(),
+        maxDecompressedBytes = maxDecompressedBytes.toULong(),
         purpose = DecodePurpose.Metadata,
     )
 

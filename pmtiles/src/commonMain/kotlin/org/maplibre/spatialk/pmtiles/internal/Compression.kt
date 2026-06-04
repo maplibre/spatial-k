@@ -33,7 +33,7 @@ internal class BoundedByteArraySink(private val limits: DecompressionLimits) {
             val doubled = nextCapacity.toLong() * 2
             nextCapacity = if (doubled <= Int.MAX_VALUE) doubled.toInt() else required
         }
-        bytes = bytes.copyOf(nextCapacity.coerceAtMost(limits.maxDecompressedBytes))
+        bytes = bytes.copyOf(nextCapacity.coerceAtMost(limits.maxDecompressedBytesAsInt()))
     }
 }
 
@@ -42,7 +42,8 @@ internal fun checkedDecompressedSize(
     nextChunk: Int,
     limits: DecompressionLimits,
 ): Int {
-    if (nextChunk < 0 || current > limits.maxDecompressedBytes - nextChunk) {
+    val maxDecompressedBytes = limits.maxDecompressedBytesAsInt()
+    if (nextChunk < 0 || current > maxDecompressedBytes - nextChunk) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
             "Decompressed length exceeds limit ${limits.maxDecompressedBytes}.",
@@ -64,3 +65,13 @@ internal val DecodePurpose.displayName: String
         }
 
 private const val INITIAL_OUTPUT_CAPACITY = 8 * 1024
+
+private fun DecompressionLimits.maxDecompressedBytesAsInt(): Int {
+    if (maxDecompressedBytes > Int.MAX_VALUE.toULong()) {
+        throw pmTilesException(
+            PmTilesErrorCode.LimitExceeded,
+            "Decompressed byte limit $maxDecompressedBytes exceeds the supported Int range.",
+        )
+    }
+    return maxDecompressedBytes.toInt()
+}
