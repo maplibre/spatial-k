@@ -1,6 +1,10 @@
+@file:OptIn(ExperimentalObjCName::class)
+
 package org.maplibre.spatialk.pmtiles
 
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.experimental.ExperimentalObjCName
+import kotlin.native.ObjCName
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
 
 /**
@@ -134,60 +138,173 @@ public data class TileCenter(
 )
 
 /**
- * PMTiles compression code.
+ * Known PMTiles compression code.
  *
  * @property code Raw PMTiles compression code.
  */
-public data class Compression(public val code: UInt) {
-    /** Known PMTiles compression constants. */
-    public companion object {
-        /** Unknown compression code. */
-        public val Unknown: Compression = Compression(0u)
+public enum class KnownCompression(public val code: UInt) {
+    /** Unknown compression code. */
+    Unknown(0u),
 
-        /** No compression. */
-        public val None: Compression = Compression(1u)
+    /** No compression. */
+    None(1u),
 
-        /** gzip compression. */
-        public val Gzip: Compression = Compression(2u)
+    /** gzip compression. */
+    Gzip(2u),
 
-        /** brotli compression. */
-        public val Brotli: Compression = Compression(3u)
+    /** brotli compression. */
+    Brotli(3u),
 
-        /** zstd compression. */
-        public val Zstd: Compression = Compression(4u)
-    }
+    /** zstd compression. */
+    Zstd(4u),
+}
+
+/**
+ * PMTiles compression code.
+ *
+ * PMTiles can contain future compression codes, so this type stores the raw code. Use
+ * [KnownCompression] when you need one of the currently defined codes.
+ *
+ * @property code Raw PMTiles compression code.
+ */
+public class Compression(public val code: UInt) {
+    /** Creates a compression value from a known PMTiles compression code. */
+    public constructor(known: KnownCompression) : this(known.code)
+
+    /** Known compression code, or null when [code] is not currently defined by PMTiles. */
+    public val known: KnownCompression?
+        get() = knownCompressionByCode[code]
+
+    /** True when [code] is currently defined by PMTiles. */
+    public val isKnown: Boolean
+        get() = known != null
+
+    /**
+     * Returns the known compression code, or [defaultValue] when [code] is not currently defined.
+     */
+    public fun knownOr(
+        @ObjCName(swiftName = "_") defaultValue: KnownCompression
+    ): KnownCompression = known ?: defaultValue
+
+    /** True when this value is the PMTiles unknown compression code. */
+    public val isUnknown: Boolean
+        get() = known == KnownCompression.Unknown
+
+    /** True when payload bytes are not compressed. */
+    public val isNone: Boolean
+        get() = known == KnownCompression.None
+
+    /** True when payload bytes use gzip compression. */
+    public val isGzip: Boolean
+        get() = known == KnownCompression.Gzip
+
+    /** True when payload bytes use brotli compression. */
+    public val isBrotli: Boolean
+        get() = known == KnownCompression.Brotli
+
+    /** True when payload bytes use zstd compression. */
+    public val isZstd: Boolean
+        get() = known == KnownCompression.Zstd
+
+    override fun equals(other: Any?): Boolean = other is Compression && code == other.code
+
+    override fun hashCode(): Int = code.hashCode()
+
+    override fun toString(): String = "Compression(code=$code)"
+}
+
+private val knownCompressionByCode: Map<UInt, KnownCompression> =
+    KnownCompression.entries.associateBy { it.code }
+
+/**
+ * Known PMTiles tile type code.
+ *
+ * @property code Raw PMTiles tile type code.
+ */
+public enum class KnownTileType(public val code: UInt) {
+    /** Unknown tile type. */
+    Unknown(0u),
+
+    /** Mapbox Vector Tile payload. */
+    Mvt(1u),
+
+    /** PNG raster payload. */
+    Png(2u),
+
+    /** JPEG raster payload. */
+    Jpeg(3u),
+
+    /** WebP raster payload. */
+    Webp(4u),
+
+    /** AVIF raster payload. */
+    Avif(5u),
+
+    /** MapLibre Tile payload. */
+    Mlt(6u),
 }
 
 /**
  * PMTiles tile type code.
  *
+ * PMTiles can contain future tile type codes, so this type stores the raw code. Use [KnownTileType]
+ * when you need one of the currently defined codes.
+ *
  * @property code Raw PMTiles tile type code.
  */
-public data class TileType(public val code: UInt) {
-    /** Known PMTiles tile type constants. */
-    public companion object {
-        /** Unknown tile type. */
-        public val Unknown: TileType = TileType(0u)
+public class TileType(public val code: UInt) {
+    /** Creates a tile type value from a known PMTiles tile type code. */
+    public constructor(known: KnownTileType) : this(known.code)
 
-        /** Mapbox Vector Tile payload. */
-        public val Mvt: TileType = TileType(1u)
+    /** Known tile type code, or null when [code] is not currently defined by PMTiles. */
+    public val known: KnownTileType?
+        get() = knownTileTypeByCode[code]
 
-        /** PNG raster payload. */
-        public val Png: TileType = TileType(2u)
+    /** True when [code] is currently defined by PMTiles. */
+    public val isKnown: Boolean
+        get() = known != null
 
-        /** JPEG raster payload. */
-        public val Jpeg: TileType = TileType(3u)
+    /** Returns the known tile type code, or [defaultValue] when [code] is not currently defined. */
+    public fun knownOr(@ObjCName(swiftName = "_") defaultValue: KnownTileType): KnownTileType =
+        known ?: defaultValue
 
-        /** WebP raster payload. */
-        public val Webp: TileType = TileType(4u)
+    /** True when this value is the PMTiles unknown tile type code. */
+    public val isUnknown: Boolean
+        get() = known == KnownTileType.Unknown
 
-        /** AVIF raster payload. */
-        public val Avif: TileType = TileType(5u)
+    /** True when this value is Mapbox Vector Tile. */
+    public val isMvt: Boolean
+        get() = known == KnownTileType.Mvt
 
-        /** MapLibre Tile payload. */
-        public val Mlt: TileType = TileType(6u)
-    }
+    /** True when this value is PNG raster. */
+    public val isPng: Boolean
+        get() = known == KnownTileType.Png
+
+    /** True when this value is JPEG raster. */
+    public val isJpeg: Boolean
+        get() = known == KnownTileType.Jpeg
+
+    /** True when this value is WebP raster. */
+    public val isWebp: Boolean
+        get() = known == KnownTileType.Webp
+
+    /** True when this value is AVIF raster. */
+    public val isAvif: Boolean
+        get() = known == KnownTileType.Avif
+
+    /** True when this value is MapLibre Tile. */
+    public val isMlt: Boolean
+        get() = known == KnownTileType.Mlt
+
+    override fun equals(other: Any?): Boolean = other is TileType && code == other.code
+
+    override fun hashCode(): Int = code.hashCode()
+
+    override fun toString(): String = "TileType(code=$code)"
 }
+
+private val knownTileTypeByCode: Map<UInt, KnownTileType> =
+    KnownTileType.entries.associateBy { it.code }
 
 /**
  * Web tile coordinate.

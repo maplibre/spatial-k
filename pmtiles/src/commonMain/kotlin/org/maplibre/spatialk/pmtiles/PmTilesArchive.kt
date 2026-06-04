@@ -280,7 +280,7 @@ private constructor(
     }
 
     private suspend fun ArchiveTile.decompressed(): ArchiveTile {
-        if (compression == Compression.None) return this
+        if (compression.isNone) return this
 
         val decompressedBytes =
             decompressors.decompress(
@@ -297,7 +297,7 @@ private constructor(
             coord = coord,
             bytes = decompressedBytes,
             tileType = tileType,
-            compression = Compression.None,
+            compression = Compression(KnownCompression.None),
             wasDecompressed = true,
             range = range,
         )
@@ -362,7 +362,7 @@ private constructor(
     }
 
     private fun validateMvtVectorLayers(hasVectorLayers: Boolean) {
-        if (header.tileType != TileType.Mvt || hasVectorLayers) return
+        if (!header.tileType.isMvt || hasVectorLayers) return
         if (options.validationMode == ValidationMode.Strict) {
             throw pmTilesException(
                 PmTilesErrorCode.InvalidMetadata,

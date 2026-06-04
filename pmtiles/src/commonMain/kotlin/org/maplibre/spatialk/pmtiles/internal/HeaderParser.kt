@@ -7,6 +7,8 @@ import org.maplibre.spatialk.pmtiles.ArchiveWarningCode
 import org.maplibre.spatialk.pmtiles.Clustered
 import org.maplibre.spatialk.pmtiles.Compression
 import org.maplibre.spatialk.pmtiles.HeaderCounts
+import org.maplibre.spatialk.pmtiles.KnownCompression
+import org.maplibre.spatialk.pmtiles.KnownTileType
 import org.maplibre.spatialk.pmtiles.LonLatBounds
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 import org.maplibre.spatialk.pmtiles.TileCenter
@@ -336,17 +338,17 @@ private const val POSITION_SCALE = 10_000_000.0
 private val MAGIC_BYTES = byteArrayOf(0x50, 0x4d, 0x54, 0x69, 0x6c, 0x65, 0x73)
 private val KNOWN_CONCRETE_COMPRESSION_CODES =
     setOf(
-        Compression.None.code,
-        Compression.Gzip.code,
-        Compression.Brotli.code,
-        Compression.Zstd.code,
+        KnownCompression.None.code,
+        KnownCompression.Gzip.code,
+        KnownCompression.Brotli.code,
+        KnownCompression.Zstd.code,
     )
 private val KNOWN_CONCRETE_TILE_TYPE_CODES =
     setOf(
-        TileType.Mvt.code,
-        TileType.Png.code,
-        TileType.Jpeg.code,
-        TileType.Webp.code,
-        TileType.Avif.code,
-        TileType.Mlt.code,
+        KnownTileType.Mvt.code,
+        KnownTileType.Png.code,
+        KnownTileType.Jpeg.code,
+        KnownTileType.Webp.code,
+        KnownTileType.Avif.code,
+        KnownTileType.Mlt.code,
     )
