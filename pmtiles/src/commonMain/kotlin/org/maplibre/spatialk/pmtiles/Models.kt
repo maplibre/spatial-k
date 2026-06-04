@@ -498,20 +498,60 @@ public data class ArchiveMetadata(
 )
 
 /**
- * PMTiles metadata tileset kind.
+ * Known PMTiles metadata tileset kind.
  *
  * @property value Raw metadata `type` string.
  */
-public data class TilesetKind(public val value: String) {
-    /** Known tileset kind constants. */
-    public companion object {
-        /** Overlay tileset. */
-        public val Overlay: TilesetKind = TilesetKind("overlay")
+public enum class KnownTilesetKind(public val value: String) {
+    /** Overlay tileset. */
+    Overlay("overlay"),
 
-        /** Base layer tileset. */
-        public val BaseLayer: TilesetKind = TilesetKind("baselayer")
-    }
+    /** Base layer tileset. */
+    @ObjCName(swiftName = "baseLayer") BaseLayer("baselayer"),
 }
+
+/**
+ * PMTiles metadata tileset kind.
+ *
+ * PMTiles metadata can contain future or custom tileset kind values, so this type stores the raw
+ * string. Use [KnownTilesetKind] when you need one of the currently defined values.
+ *
+ * @property value Raw metadata `type` string.
+ */
+public class TilesetKind(public val value: String) {
+    /** Creates a tileset kind value from a known PMTiles metadata type. */
+    public constructor(known: KnownTilesetKind) : this(known.value)
+
+    /** Known tileset kind, or null when [value] is not currently defined by PMTiles. */
+    public val known: KnownTilesetKind?
+        get() = knownTilesetKindByValue[value]
+
+    /** True when [value] is currently defined by PMTiles. */
+    public val isKnown: Boolean
+        get() = known != null
+
+    /** Returns the known tileset kind, or [defaultValue] when [value] is not currently defined. */
+    public fun knownOr(
+        @ObjCName(swiftName = "_") defaultValue: KnownTilesetKind
+    ): KnownTilesetKind = known ?: defaultValue
+
+    /** True when this metadata type is `overlay`. */
+    public val isOverlay: Boolean
+        get() = known == KnownTilesetKind.Overlay
+
+    /** True when this metadata type is `baselayer`. */
+    public val isBaseLayer: Boolean
+        get() = known == KnownTilesetKind.BaseLayer
+
+    override fun equals(other: Any?): Boolean = other is TilesetKind && value == other.value
+
+    override fun hashCode(): Int = value.hashCode()
+
+    override fun toString(): String = "TilesetKind(value=$value)"
+}
+
+private val knownTilesetKindByValue: Map<String, KnownTilesetKind> =
+    KnownTilesetKind.entries.associateBy { it.value }
 
 /**
  * Warning recorded by a lenient archive operation.
