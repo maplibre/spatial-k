@@ -132,16 +132,6 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveSection {
 
 public final class org/maplibre/spatialk/pmtiles/ArchiveTile {
 	public fun <init> (JLorg/maplibre/spatialk/pmtiles/TileCoord;[BLorg/maplibre/spatialk/pmtiles/TileType;Lorg/maplibre/spatialk/pmtiles/Compression;ZLorg/maplibre/spatialk/pmtiles/TileRange;)V
-	public final fun component1 ()J
-	public final fun component2 ()Lorg/maplibre/spatialk/pmtiles/TileCoord;
-	public final fun component3 ()[B
-	public final fun component4 ()Lorg/maplibre/spatialk/pmtiles/TileType;
-	public final fun component5 ()Lorg/maplibre/spatialk/pmtiles/Compression;
-	public final fun component6 ()Z
-	public final fun component7 ()Lorg/maplibre/spatialk/pmtiles/TileRange;
-	public final fun copy (JLorg/maplibre/spatialk/pmtiles/TileCoord;[BLorg/maplibre/spatialk/pmtiles/TileType;Lorg/maplibre/spatialk/pmtiles/Compression;ZLorg/maplibre/spatialk/pmtiles/TileRange;)Lorg/maplibre/spatialk/pmtiles/ArchiveTile;
-	public static synthetic fun copy$default (Lorg/maplibre/spatialk/pmtiles/ArchiveTile;JLorg/maplibre/spatialk/pmtiles/TileCoord;[BLorg/maplibre/spatialk/pmtiles/TileType;Lorg/maplibre/spatialk/pmtiles/Compression;ZLorg/maplibre/spatialk/pmtiles/TileRange;ILjava/lang/Object;)Lorg/maplibre/spatialk/pmtiles/ArchiveTile;
-	public fun equals (Ljava/lang/Object;)Z
 	public final fun getBytes ()[B
 	public final fun getCompression ()Lorg/maplibre/spatialk/pmtiles/Compression;
 	public final fun getCoord ()Lorg/maplibre/spatialk/pmtiles/TileCoord;
@@ -149,8 +139,6 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveTile {
 	public final fun getTileId ()J
 	public final fun getTileType ()Lorg/maplibre/spatialk/pmtiles/TileType;
 	public final fun getWasDecompressed ()Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
 }
 
 public final class org/maplibre/spatialk/pmtiles/ArchiveWarning {

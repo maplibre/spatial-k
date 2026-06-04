@@ -1,5 +1,9 @@
 package org.maplibre.spatialk.pmtiles.internal
 
-// TODO: future PR will add a codec registry, until then wasmWasi is build only
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+
 internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecodeLimits): ByteArray =
-    throw NotImplementedError("gzip decoding is not implemented for this Kotlin target.")
+    throw pmTilesException(
+        PmTilesErrorCode.UnsupportedCompression,
+        "${limits.purpose.displayName} gzip decompression is not supported on wasmWasi.",
+    )

@@ -247,10 +247,14 @@ private constructor(
                     purpose = DecodePurpose.Tile,
                 ),
             )
-        return copy(
+        return ArchiveTile(
+            tileId = tileId,
+            coord = coord,
             bytes = decompressedBytes,
+            tileType = tileType,
             compression = Compression.None,
             wasDecompressed = true,
+            range = range,
         )
     }
 
