@@ -4,6 +4,8 @@ package org.maplibre.spatialk.pmtiles
 
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.experimental.ExperimentalObjCName
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 import kotlin.native.ObjCName
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
 

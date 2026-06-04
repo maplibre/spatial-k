@@ -11,8 +11,8 @@ Swift. Each entry references the rewritten branch commit that introduced the cha
 let url = Bundle.module.url(forResource: "pmtiles-js-test-fixture-1", withExtension: "pmtiles")!
 ```
 
-Justification: SwiftPM resources are easiest to consume when fixture names are unique and addressable
-directly from `Bundle.module`.
+Justification: SwiftPM resources are easiest to consume when fixture names are unique and
+addressable directly from `Bundle.module`.
 
 Impact: Swift tests can reuse the Kotlin fixture corpus through a single linked resource directory
 instead of maintaining copied fixtures.
@@ -110,8 +110,8 @@ Foundation `Data` on Apple targets.
 let archive = try await PmTiles.shared.open(source: source)
 ```
 
-Justification: A named factory object imports more naturally to Swift than opening through an archive
-companion.
+Justification: A named factory object imports more naturally to Swift than opening through an
+archive companion.
 
 Impact: Swift call sites use `PmTiles.shared.open(...)`; `PmTilesArchive` construction stays
 internal to the reader.
@@ -124,8 +124,8 @@ let range = try await archive.findTileRange(tileId: 0)
 let warnings = archive.warnings
 ```
 
-Justification: `get*` names and function-style warnings read like Kotlin internals rather than
-Swift archive operations.
+Justification: `get*` names and function-style warnings read like Kotlin internals rather than Swift
+archive operations.
 
 Impact: Swift gets `readStoredTile`, `readDecompressedTile`, `findTileRange`, batch result objects,
 and a property-style warnings snapshot.
