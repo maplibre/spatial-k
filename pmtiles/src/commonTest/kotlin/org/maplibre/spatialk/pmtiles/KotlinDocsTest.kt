@@ -56,6 +56,22 @@ class KotlinDocsTest {
     }
 
     @Test
+    fun customDecompressor() = runTest {
+        val source = loadPmTilesBytes().asByteRangeSource()
+
+        // --8<-- [start:customDecompressor]
+        val options =
+            ArchiveOpenOptions().withDecompressor(Compression.Brotli) { bytes, limits ->
+                decodeBrotli(bytes, maxOutputBytes = limits.maxDecompressedBytes)
+            }
+
+        PmTilesArchive.open(source, options).use { archive ->
+            val tile = archive.getTileDecompressed(z = 0, x = 0, y = 0)
+        }
+        // --8<-- [end:customDecompressor]
+    }
+
+    @Test
     fun lenientWarnings() = runTest {
         val source = loadPmTilesBytes().asByteRangeSource()
 
@@ -69,6 +85,11 @@ class KotlinDocsTest {
 }
 
 private fun loadPmTilesBytes(): ByteArray = buildSingleTileArchive(tileBytes = byteArrayOf(1, 2, 3))
+
+private fun decodeBrotli(bytes: ByteArray, maxOutputBytes: Int): ByteArray {
+    require(bytes.size <= maxOutputBytes) { "Decoded output exceeds $maxOutputBytes bytes." }
+    return bytes
+}
 
 private fun ByteArray.asByteRangeSource(): ByteRangeSource =
     object : ByteRangeSource {

@@ -48,13 +48,23 @@ payload bytes.
     ```
 
 By default, tile reads return bytes as stored in the archive. Use `getTileCompressed` to request
-stored bytes explicitly, or open the archive with `TileReadMode.DecompressedBytes` to decompress
-supported tile payloads when reading with `getTile`.
+stored bytes explicitly, or `getTileDecompressed` to decompress supported tile payloads.
 
 === "Kotlin"
 
     ```kotlin
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:decompressedTiles"
+    ```
+
+## Decompressors
+
+Spatial-K includes platform defaults for uncompressed data and gzip where available. Register other
+compression codecs, such as brotli or zstd, with `ArchiveOpenOptions.withDecompressor`.
+
+=== "Kotlin"
+
+    ```kotlin
+    --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:customDecompressor"
     ```
 
 ## Validation
