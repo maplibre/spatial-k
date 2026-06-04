@@ -17,6 +17,9 @@ It includes:
 - GeoJSON implementation and DSL for building GeoJSON objects
 - Port of Turf.js geospatial analysis functions in pure Kotlin
 - Library for working with units of measure
+- GPX implementation
+- PMTiles v3 archive reader
+- Google Encoded Polyline Algorithm support
 
 Spatial K supports Kotlin Multiplatform and Java projects.
 
@@ -29,6 +32,9 @@ dependencies {
     implementation("org.maplibre.spatialk:geojson:VERSION")
     implementation("org.maplibre.spatialk:turf:VERSION")
     implementation("org.maplibre.spatialk:units:VERSION")
+    implementation("org.maplibre.spatialk:gpx:VERSION")
+    implementation("org.maplibre.spatialk:pmtiles:VERSION")
+    implementation("org.maplibre.spatialk:polyline-encoding:VERSION")
 }
 ```
 
@@ -60,6 +66,40 @@ val bearing = from.bearingTo(to)
 val distance = 5.kilometers
 val inMeters = distance.inMeters     // 5000.0
 val formatted = distance.toString()  // "5000 m"
+```
+
+### GPX
+
+```kotlin
+val document = Document(
+    metadata = Metadata(name = "My GPX File"),
+    waypoints = listOf(
+        Waypoint(latitude = 1.0, longitude = 2.0),
+        Waypoint(latitude = 3.0, longitude = 4.0),
+    ),
+)
+val gpxString = Gpx.encodeToString(document)
+```
+
+### PMTiles
+
+```kotlin
+// Inside a suspend function or coroutine scope:
+PmTilesArchive.open(source).use { archive ->
+    val header = archive.header
+    val tile = archive.getDecompressedTile(z = 0, x = 0, y = 0)
+}
+```
+
+### Polyline Encoding
+
+```kotlin
+val positions = listOf(
+    Position(longitude = -120.2, latitude = 38.5),
+    Position(longitude = -120.95, latitude = 40.7),
+)
+val encoded = PolylineEncoding.encode(positions)
+val decoded = PolylineEncoding.decode(encoded)
 ```
 
 See the [project site](https://maplibre.org/spatial-k/) for more info.
