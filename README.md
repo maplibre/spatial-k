@@ -17,6 +17,9 @@ It includes:
 - GeoJSON implementation and DSL for building GeoJSON objects
 - Port of Turf.js geospatial analysis functions in pure Kotlin
 - Library for working with units of measure
+- GPX implementation
+- PMTiles v3 archive reader
+- Google Encoded Polyline Algorithm support
 
 Spatial K supports Kotlin Multiplatform and Java projects.
 
@@ -29,6 +32,9 @@ dependencies {
     implementation("org.maplibre.spatialk:geojson:VERSION")
     implementation("org.maplibre.spatialk:turf:VERSION")
     implementation("org.maplibre.spatialk:units:VERSION")
+    implementation("org.maplibre.spatialk:gpx:VERSION")
+    implementation("org.maplibre.spatialk:pmtiles:VERSION")
+    implementation("org.maplibre.spatialk:polyline-encoding:VERSION")
 }
 ```
 
