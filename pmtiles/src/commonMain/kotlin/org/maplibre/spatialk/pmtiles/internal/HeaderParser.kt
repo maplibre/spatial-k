@@ -4,8 +4,8 @@ import org.maplibre.spatialk.pmtiles.ArchiveHeader
 import org.maplibre.spatialk.pmtiles.ArchiveSection
 import org.maplibre.spatialk.pmtiles.ArchiveWarning
 import org.maplibre.spatialk.pmtiles.ArchiveWarningCode
-import org.maplibre.spatialk.pmtiles.Clustered
 import org.maplibre.spatialk.pmtiles.Compression
+import org.maplibre.spatialk.pmtiles.HeaderCount
 import org.maplibre.spatialk.pmtiles.HeaderCounts
 import org.maplibre.spatialk.pmtiles.KnownCompression
 import org.maplibre.spatialk.pmtiles.KnownTileType
@@ -75,14 +75,11 @@ internal fun parseHeaderForOpen(
             tileData = tileData,
             counts =
                 HeaderCounts(
-                    addressedTiles = rawAddressedTiles.knownCount(),
-                    tileEntries = rawTileEntries.knownCount(),
-                    tileContents = rawTileContents.knownCount(),
-                    rawAddressedTiles = rawAddressedTiles,
-                    rawTileEntries = rawTileEntries,
-                    rawTileContents = rawTileContents,
+                    addressedTiles = HeaderCount(rawAddressedTiles),
+                    tileEntries = HeaderCount(rawTileEntries),
+                    tileContents = HeaderCount(rawTileContents),
                 ),
-            clustered = clustered,
+            isClustered = clustered,
             internalCompression = internalCompression,
             tileCompression = tileCompression,
             tileType = tileType,
@@ -126,10 +123,10 @@ private fun validateMagic(reader: BinaryReader) {
 private fun BinaryReader.readSection(): ArchiveSection =
     ArchiveSection(offset = readULong64Le(), length = readULong64Le())
 
-private fun BinaryReader.readClustered(): Clustered =
+private fun BinaryReader.readClustered(): Boolean =
     when (val code = readUInt8().toInt()) {
-        0 -> Clustered.No
-        1 -> Clustered.Yes
+        0 -> false
+        1 -> true
         else ->
             throw pmTilesException(
                 PmTilesErrorCode.InvalidHeader,
@@ -165,9 +162,9 @@ private fun collectUnknownCountWarnings(
     warnings: MutableList<ArchiveWarning>,
 ) {
     listOf(
-            "addressedTiles" to header.counts.rawAddressedTiles,
-            "tileEntries" to header.counts.rawTileEntries,
-            "tileContents" to header.counts.rawTileContents,
+            "addressedTiles" to header.counts.addressedTiles.rawValue,
+            "tileEntries" to header.counts.tileEntries.rawValue,
+            "tileContents" to header.counts.tileContents.rawValue,
         )
         .filter { (_, rawValue) -> rawValue == 0uL }
         .forEach { (field, _) ->
@@ -315,8 +312,6 @@ private fun validateRootLocation(rootDirectory: ArchiveSection) {
         )
     }
 }
-
-private fun ULong.knownCount(): ULong? = if (this == 0uL) null else this
 
 private fun Double.isLongitude(): Boolean = this in -180.0..180.0
 

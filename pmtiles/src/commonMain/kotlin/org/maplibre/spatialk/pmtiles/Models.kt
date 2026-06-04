@@ -13,12 +13,31 @@ import org.maplibre.spatialk.pmtiles.internal.pmTilesException
  * @property offset Absolute byte offset from the start of the archive.
  * @property length Number of bytes to read.
  */
-public data class ByteRange(
+public data class ByteRange
+internal constructor(
     public val offset: ULong,
-    public val length: Int,
-)
+    public val length: ULong,
+) {
+    internal constructor(
+        offset: ULong,
+        length: Int,
+    ) : this(
+        offset = offset,
+        length =
+            if (length >= 0) {
+                length.toULong()
+            } else {
+                throw pmTilesException(
+                    PmTilesErrorCode.RangeOutOfBounds,
+                    "Byte range length $length is negative.",
+                )
+            },
+    )
+}
 
 /** Caller-provided byte range source used by the PMTiles reader. */
+@OptIn(ExperimentalObjCRefinement::class)
+@HiddenFromObjC
 public interface ByteRangeSource {
     /** Returns the stable archive size in bytes. */
     @Throws(PmTilesException::class, CancellationException::class) public suspend fun size(): ULong
@@ -37,7 +56,7 @@ public interface ByteRangeSource {
  * @property leafDirectories Leaf directory section.
  * @property tileData Tile payload section.
  * @property counts Header tile counts.
- * @property clustered Header clustered flag.
+ * @property isClustered True when the archive declares clustered tile ordering.
  * @property internalCompression Compression used for directories and metadata.
  * @property tileCompression Compression used for tile payloads.
  * @property tileType Tile payload type.
@@ -53,7 +72,7 @@ public data class ArchiveHeader(
     public val leafDirectories: ArchiveSection,
     public val tileData: ArchiveSection,
     public val counts: HeaderCounts,
-    public val clustered: Clustered,
+    public val isClustered: Boolean,
     public val internalCompression: Compression,
     public val tileCompression: Compression,
     public val tileType: TileType,
@@ -77,36 +96,39 @@ public data class ArchiveSection(
 /**
  * PMTiles header counts.
  *
- * @property addressedTiles Semantic addressed tile count, or null when unknown.
- * @property tileEntries Semantic tile-entry count, or null when unknown.
- * @property tileContents Semantic tile-content count, or null when unknown.
- * @property rawAddressedTiles Raw addressed tile count value from the header.
- * @property rawTileEntries Raw tile-entry count value from the header.
- * @property rawTileContents Raw tile-content count value from the header.
+ * @property addressedTiles Addressed tile count from the header.
+ * @property tileEntries Tile-entry count from the header.
+ * @property tileContents Tile-content count from the header.
  */
-public data class HeaderCounts(
-    public val addressedTiles: ULong?,
-    public val tileEntries: ULong?,
-    public val tileContents: ULong?,
-    public val rawAddressedTiles: ULong,
-    public val rawTileEntries: ULong,
-    public val rawTileContents: ULong,
+public data class HeaderCounts
+internal constructor(
+    public val addressedTiles: HeaderCount,
+    public val tileEntries: HeaderCount,
+    public val tileContents: HeaderCount,
 )
 
 /**
- * PMTiles clustered flag.
+ * PMTiles header count value.
  *
- * @property value True when the archive declares clustered tile ordering.
+ * PMTiles stores zero for unknown counts, so [isKnown] must be checked before treating [rawValue]
+ * as a semantic tile count.
+ *
+ * @property rawValue Raw count value from the header.
  */
-public data class Clustered(public val value: Boolean) {
-    /** Clustered flag constants. */
-    public companion object {
-        /** Archive does not declare clustered tile ordering. */
-        public val No: Clustered = Clustered(false)
+public data class HeaderCount internal constructor(public val rawValue: ULong) {
+    /** True when [rawValue] is a known semantic count. */
+    public val isKnown: Boolean
+        get() = rawValue != 0uL
 
-        /** Archive declares clustered tile ordering. */
-        public val Yes: Clustered = Clustered(true)
-    }
+    /** Semantic count, or null when unknown. */
+    @OptIn(ExperimentalObjCRefinement::class)
+    @HiddenFromObjC
+    public val value: ULong?
+        get() = if (isKnown) rawValue else null
+
+    /** Returns the semantic count, or [defaultValue] when unknown. */
+    public fun valueOr(@ObjCName(swiftName = "_") defaultValue: ULong): ULong =
+        if (isKnown) rawValue else defaultValue
 }
 
 /**

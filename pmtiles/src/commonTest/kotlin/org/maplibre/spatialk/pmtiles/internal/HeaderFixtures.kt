@@ -2,8 +2,8 @@ package org.maplibre.spatialk.pmtiles.internal
 
 import org.maplibre.spatialk.pmtiles.ByteRange
 import org.maplibre.spatialk.pmtiles.ByteRangeSource
-import org.maplibre.spatialk.pmtiles.Compression
-import org.maplibre.spatialk.pmtiles.TileType
+import org.maplibre.spatialk.pmtiles.KnownCompression
+import org.maplibre.spatialk.pmtiles.KnownTileType
 
 internal val MINIMAL_ROOT_DIRECTORY_BYTES: ByteArray =
     encodeDirectory(DirectoryEntry(tileId = 0, offset = 0uL, length = 1, runLength = 1))
@@ -22,9 +22,9 @@ internal data class TestHeaderFields(
     val tileEntries: ULong = 0uL,
     val tileContents: ULong = 0uL,
     val clustered: UInt = 0u,
-    val internalCompression: UInt = Compression.None.code,
-    val tileCompression: UInt = Compression.None.code,
-    val tileType: UInt = TileType.Unknown.code,
+    val internalCompression: UInt = KnownCompression.None.code,
+    val tileCompression: UInt = KnownCompression.None.code,
+    val tileType: UInt = KnownTileType.Unknown.code,
     val minZoom: UInt = 0u,
     val maxZoom: UInt = 0u,
     val minLongitude: Double = 0.0,
@@ -109,8 +109,8 @@ internal fun buildArchiveWithSections(
 
 internal fun buildSingleTileArchive(
     tileBytes: ByteArray,
-    tileCompression: UInt = Compression.None.code,
-    tileType: UInt = TileType.Unknown.code,
+    tileCompression: UInt = KnownCompression.None.code,
+    tileType: UInt = KnownTileType.Unknown.code,
 ): ByteArray {
     val rootBytes =
         encodeDirectory(
@@ -170,9 +170,9 @@ internal class TestByteRangeSource(
     override suspend fun read(range: ByteRange): ByteArray {
         readError?.let { throw it }
         reads += range
-        if (range.length == 0) return ByteArray(0)
+        if (range.length == 0uL) return ByteArray(0)
         val start = range.offset.toInt()
-        val end = start + range.length
+        val end = start + range.length.toInt()
         val result = bytes.copyOfRange(start, end)
         return if (shortRead) result.copyOf(result.size - 1) else result
     }
