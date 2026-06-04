@@ -36,10 +36,16 @@ requests, memory, or any other source that can return exact byte ranges.
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:byteRangeSource"
     ```
 
+=== "Swift"
+
+    ```swift
+    --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:byteRangeDataSource"
+    ```
+
 ## Opening archives
 
-Open an archive with `PmTilesArchive.open`, then read header fields, metadata, tile ranges, or tile
-payload bytes.
+Open an archive with `PmTiles.open`, then read header fields, metadata, tile ranges, or tile payload
+bytes.
 
 === "Kotlin"
 
@@ -47,8 +53,14 @@ payload bytes.
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:openArchive"
     ```
 
-Use `getStoredTile` to read tile payload bytes as stored in the archive, or `getDecompressedTile` to
-decompress supported tile payloads.
+=== "Swift"
+
+    ```swift
+    --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:openArchive"
+    ```
+
+Use `readStoredTile` to read tile payload bytes as stored in the archive, or `readDecompressedTile`
+to decompress supported tile payloads.
 
 === "Kotlin"
 
@@ -56,12 +68,24 @@ decompress supported tile payloads.
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:decompressedTiles"
     ```
 
-Use `getStoredTiles` to read a batch of tile payloads with coalesced source ranges.
+=== "Swift"
+
+    ```swift
+    --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:decompressedTiles"
+    ```
+
+Use `readStoredTiles` to read a batch of tile payloads with coalesced source ranges.
 
 === "Kotlin"
 
     ```kotlin
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:batchTiles"
+    ```
+
+=== "Swift"
+
+    ```swift
+    --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:batchTiles"
     ```
 
 ## Decompressors
@@ -75,6 +99,12 @@ compression codecs, such as brotli or zstd, with `ArchiveOpenOptions.withDecompr
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:customDecompressor"
     ```
 
+=== "Swift"
+
+    ```swift
+    --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:customDecompressor"
+    ```
+
 ## Validation
 
 Archives open in strict mode by default. `ArchiveOpenOptions.Lenient` preserves recoverable issues
@@ -84,4 +114,10 @@ as warnings, which can be inspected after opening or after metadata and tile loo
 
     ```kotlin
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:lenientWarnings"
+    ```
+
+=== "Swift"
+
+    ```swift
+    --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:lenientWarnings"
     ```
