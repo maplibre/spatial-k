@@ -15,6 +15,7 @@ import org.maplibre.spatialk.pmtiles.internal.buildArchive
 import org.maplibre.spatialk.pmtiles.internal.buildHeader
 import org.maplibre.spatialk.pmtiles.internal.parseHeader
 import org.maplibre.spatialk.pmtiles.internal.readSourceRange
+import org.maplibre.spatialk.testutil.assertDoubleEquals
 
 class OpenArchiveTest {
     @Test
@@ -87,8 +88,17 @@ class OpenArchiveTest {
         assertEquals(TileType(99u), header.tileType)
         assertEquals(4, header.minZoom)
         assertEquals(8, header.maxZoom)
-        assertEquals(LonLatBounds(-10.0, -20.0, 30.0, 40.0), header.bounds)
-        assertEquals(TileCenter(12.5, -7.25, 6), header.center)
+
+        val bounds = header.bounds
+        assertDoubleEquals(-10.0, bounds.west)
+        assertDoubleEquals(-20.0, bounds.south)
+        assertDoubleEquals(30.0, bounds.east)
+        assertDoubleEquals(40.0, bounds.north)
+
+        val center = header.center
+        assertDoubleEquals(12.5, center.longitude)
+        assertDoubleEquals(-7.25, center.latitude)
+        assertEquals(6, center.zoom)
     }
 
     @Test

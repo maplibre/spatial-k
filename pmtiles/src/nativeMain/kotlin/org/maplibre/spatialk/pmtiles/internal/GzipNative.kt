@@ -30,6 +30,10 @@ internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLi
         }
 
         val stream = alloc<z_stream>()
+        stream.zalloc = null
+        stream.zfree = null
+        stream.opaque = null
+
         val sink = BoundedByteArraySink(limits)
         val buffer = ByteArray(GZIP_BUFFER_SIZE)
 
@@ -70,6 +74,13 @@ internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLi
                 }
             } finally {
                 val endStatus = inflateEnd(stream.ptr)
+                stream.next_in = null
+                stream.next_out = null
+                stream.avail_in = 0u
+                stream.avail_out = 0u
+                stream.zalloc = null
+                stream.zfree = null
+                stream.opaque = null
                 if (endStatus == Z_STREAM_ERROR || endStatus == Z_VERSION_ERROR) {
                     // zlib reports this only for a corrupted stream state; the primary error above
                     // wins.

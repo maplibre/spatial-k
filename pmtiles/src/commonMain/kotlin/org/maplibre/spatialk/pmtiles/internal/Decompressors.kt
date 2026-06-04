@@ -52,7 +52,7 @@ internal suspend fun Map<Compression, Decompressor>.decompress(
             throw error
         } catch (error: CancellationException) {
             throw error
-        } catch (error: Throwable) {
+        } catch (error: Exception) {
             decompressionFailed("${purposePrefix(purpose)}decompression failed.", error)
         }
 

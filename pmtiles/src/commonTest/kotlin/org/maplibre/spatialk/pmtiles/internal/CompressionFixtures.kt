@@ -84,7 +84,33 @@ internal fun truncatedGzipBombBytes(decompressedBytes: Int): ByteArray {
     }
     bits.writeFixedHuffmanSymbol(END_OF_BLOCK)
 
-    return gzipHeader + bits.toByteArray()
+    val decompressed = ByteArray(decompressedBytes)
+    return gzipHeader + bits.toByteArray() + gzipTrailer(decompressed)
+}
+
+private fun gzipTrailer(decompressedBytes: ByteArray): ByteArray {
+    val checksum = crc32(decompressedBytes)
+    val size = decompressedBytes.size.toUInt()
+    return littleEndian(checksum) + littleEndian(size)
+}
+
+private fun littleEndian(value: UInt): ByteArray =
+    byteArrayOf(
+        (value and 0xffu).toByte(),
+        ((value shr 8) and 0xffu).toByte(),
+        ((value shr 16) and 0xffu).toByte(),
+        ((value shr 24) and 0xffu).toByte(),
+    )
+
+private fun crc32(bytes: ByteArray): UInt {
+    var crc = 0xffffffffu
+    bytes.forEach { byte ->
+        crc = crc xor byte.toUByte().toUInt()
+        repeat(Byte.SIZE_BITS) {
+            crc = if ((crc and 1u) == 0u) crc shr 1 else (crc shr 1) xor CRC32_POLYNOMIAL
+        }
+    }
+    return crc xor 0xffffffffu
 }
 
 internal fun testDecodeLimits(
@@ -207,3 +233,4 @@ private val LENGTH_CODES =
 
 private const val END_OF_BLOCK = 256
 private const val MAX_DEFLATE_LENGTH = 258
+private val CRC32_POLYNOMIAL: UInt = 0xedb88320u

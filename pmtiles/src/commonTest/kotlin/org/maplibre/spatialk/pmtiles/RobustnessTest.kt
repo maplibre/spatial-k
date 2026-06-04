@@ -103,9 +103,11 @@ class RobustnessTest {
     @Test
     fun cancellationRaceDoesNotReturnPartialData() = runTest {
         val tileBytes = byteArrayOf(9, 8, 7)
-        val source = FirstTileReadBlockingSource(buildSingleTileArchive(tileBytes), tileBytes.size)
+        val source = FirstTileReadBlockingSource(buildSingleTileArchive(tileBytes))
         val archive = PmTilesArchive.open(source)
+        val expectedTileRange = requireNotNull(archive.getTileRange(0, 0, 0)).archiveRange
 
+        source.blockNextRead(expectedTileRange)
         val cancelledRead = async { archive.getStoredTile(0, 0, 0) }
         source.blockedReadStarted.await()
         cancelledRead.cancelAndJoin()
@@ -128,19 +130,20 @@ class RobustnessTest {
     }
 }
 
-private class FirstTileReadBlockingSource(
-    private val bytes: ByteArray,
-    private val tileByteLength: Int,
-) : ByteRangeSource {
+private class FirstTileReadBlockingSource(private val bytes: ByteArray) : ByteRangeSource {
     val blockedReadStarted = CompletableDeferred<Unit>()
     val releaseBlockedRead = CompletableDeferred<Unit>()
-    private var blockNextTileRead = true
+    private var blockedByteRange: ByteRange? = null
+
+    fun blockNextRead(range: ByteRange) {
+        blockedByteRange = range
+    }
 
     override suspend fun size(): ULong = bytes.size.toULong()
 
     override suspend fun read(range: ByteRange): ByteArray {
-        if (blockNextTileRead && range.length == tileByteLength) {
-            blockNextTileRead = false
+        if (range == blockedByteRange) {
+            blockedByteRange = null
             blockedReadStarted.complete(Unit)
             releaseBlockedRead.await()
         }

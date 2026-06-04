@@ -74,7 +74,11 @@ class KotlinDocsTest {
         // --8<-- [start:customDecompressor]
         val options =
             ArchiveOpenOptions().withDecompressor(Compression.Brotli) { bytes, limits ->
-                decodeBrotli(bytes, maxOutputBytes = limits.maxDecompressedBytes)
+                val decoded = decodeBrotli(bytes)
+                require(decoded.size <= limits.maxDecompressedBytes) {
+                    "Decoded output exceeds ${limits.maxDecompressedBytes} bytes."
+                }
+                decoded
             }
 
         PmTilesArchive.open(source, options).use { archive ->
@@ -97,10 +101,7 @@ class KotlinDocsTest {
 
 private fun loadPmTilesBytes(): ByteArray = buildSingleTileArchive(tileBytes = byteArrayOf(1, 2, 3))
 
-private fun decodeBrotli(bytes: ByteArray, maxOutputBytes: Int): ByteArray {
-    require(bytes.size <= maxOutputBytes) { "Decoded output exceeds $maxOutputBytes bytes." }
-    return bytes
-}
+private fun decodeBrotli(bytes: ByteArray): ByteArray = bytes
 
 private fun ByteArray.asByteRangeSource(): ByteRangeSource =
     object : ByteRangeSource {
