@@ -38,7 +38,7 @@ class KotlinDocsTest {
         PmTilesArchive.open(source).use { archive ->
             val header = archive.header
             val metadata = archive.metadata()
-            val tile = archive.getTile(z = 0, x = 0, y = 0)
+            val tile = archive.getStoredTile(z = 0, x = 0, y = 0)
             val tileRange = archive.getTileRange(z = 0, x = 0, y = 0)
         }
         // --8<-- [end:openArchive]
@@ -50,7 +50,7 @@ class KotlinDocsTest {
 
         // --8<-- [start:decompressedTiles]
         PmTilesArchive.open(source).use { archive ->
-            val tile = archive.getTileDecompressed(z = 0, x = 0, y = 0)
+            val tile = archive.getDecompressedTile(z = 0, x = 0, y = 0)
         }
         // --8<-- [end:decompressedTiles]
     }
@@ -62,7 +62,7 @@ class KotlinDocsTest {
         // --8<-- [start:batchTiles]
         PmTilesArchive.open(source).use { archive ->
             val coords = listOf(TileCoord(z = 0, x = 0, y = 0))
-            val tiles = archive.getTiles(coords)
+            val tiles = archive.getStoredTiles(coords)
         }
         // --8<-- [end:batchTiles]
     }
@@ -78,7 +78,7 @@ class KotlinDocsTest {
             }
 
         PmTilesArchive.open(source, options).use { archive ->
-            val tile = archive.getTileDecompressed(z = 0, x = 0, y = 0)
+            val tile = archive.getDecompressedTile(z = 0, x = 0, y = 0)
         }
         // --8<-- [end:customDecompressor]
     }

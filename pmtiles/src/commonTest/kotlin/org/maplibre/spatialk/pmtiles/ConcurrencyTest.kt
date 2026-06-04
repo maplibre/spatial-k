@@ -70,7 +70,7 @@ class ConcurrencyTest {
         var readError: Throwable? = null
         val read = launch {
             try {
-                archive.getTile(0, 0, 0)
+                archive.getStoredTile(0, 0, 0)
             } catch (error: Throwable) {
                 readError = error
             }
@@ -90,7 +90,7 @@ class ConcurrencyTest {
 
         val afterCloseError =
             assertSuspendFailsWith<PmTilesException> {
-                archive.getTile(0, 0, 0)
+                archive.getStoredTile(0, 0, 0)
             }
         assertEquals(PmTilesErrorCode.Closed, afterCloseError.code)
     }

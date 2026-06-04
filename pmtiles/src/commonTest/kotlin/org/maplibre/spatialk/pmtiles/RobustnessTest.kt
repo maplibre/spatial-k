@@ -94,7 +94,7 @@ class RobustnessTest {
                                     )
                             ),
                     )
-                archive.getTileCompressed(0, 0, 0)
+                archive.getStoredTile(0, 0, 0)
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
@@ -106,7 +106,7 @@ class RobustnessTest {
         val source = FirstTileReadBlockingSource(buildSingleTileArchive(tileBytes), tileBytes.size)
         val archive = PmTilesArchive.open(source)
 
-        val cancelledRead = async { archive.getTile(0, 0, 0) }
+        val cancelledRead = async { archive.getStoredTile(0, 0, 0) }
         source.blockedReadStarted.await()
         cancelledRead.cancelAndJoin()
 
@@ -121,7 +121,7 @@ class RobustnessTest {
         }
 
         source.releaseBlockedRead.complete(Unit)
-        val tile = archive.getTile(0, 0, 0)
+        val tile = archive.getStoredTile(0, 0, 0)
 
         requireNotNull(tile)
         assertContentEquals(tileBytes, tile.bytes)

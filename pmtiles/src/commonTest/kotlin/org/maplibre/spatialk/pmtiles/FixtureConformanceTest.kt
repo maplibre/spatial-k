@@ -66,7 +66,7 @@ class FixtureConformanceTest {
                 )
             )
 
-        val tile = assertNotNull(archive.getTileDecompressed(0, 0, 0))
+        val tile = assertNotNull(archive.getDecompressedTile(0, 0, 0))
 
         assertEquals(TileType.Mvt, tile.tileType)
         assertEquals(Compression.None, tile.compression)
@@ -86,7 +86,7 @@ class FixtureConformanceTest {
             )
 
         val range = assertNotNull(archive.getTileRange(3, 4, 3))
-        val tile = assertNotNull(archive.getTileCompressed(3, 4, 3))
+        val tile = assertNotNull(archive.getStoredTile(3, 4, 3))
 
         assertEquals(TileType.Png, range.tileType)
         assertEquals(Compression.None, range.compression)

@@ -113,9 +113,9 @@ private constructor(
         return state.cacheMetadata(parseMetadata(rawJson))
     }
 
-    /** Returns the tile at [z], [x], and [y], or null when absent. */
+    /** Returns stored tile bytes for the tile at [z], [x], and [y], or null when absent. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getTile(z: Int, x: Int, y: Int): ArchiveTile? {
+    public suspend fun getStoredTile(z: Int, x: Int, y: Int): ArchiveTile? {
         TileIds.validateZxy(z, x, y)
         return readTile(
             tileId = TileIds.fromZxy(z, x, y),
@@ -123,13 +123,14 @@ private constructor(
         )
     }
 
-    /** Returns the tile at [coord], or null when absent. */
+    /** Returns stored tile bytes for [coord], or null when absent. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getTile(coord: TileCoord): ArchiveTile? = getTile(coord.z, coord.x, coord.y)
+    public suspend fun getStoredTile(coord: TileCoord): ArchiveTile? =
+        getStoredTile(coord.z, coord.x, coord.y)
 
-    /** Returns the tile with [tileId], or null when absent. */
+    /** Returns stored tile bytes for [tileId], or null when absent. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getTileById(tileId: Long): ArchiveTile? {
+    public suspend fun getStoredTileById(tileId: Long): ArchiveTile? {
         return readTile(
             tileId = tileId,
             coord = TileIds.toZxy(tileId),
@@ -137,12 +138,12 @@ private constructor(
     }
 
     /**
-     * Returns tiles for [coords], preserving input order and nulls for absent tiles.
+     * Returns stored tiles for [coords], preserving input order and nulls for absent tiles.
      *
      * Tile payload source reads may be coalesced according to [coalescing].
      */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getTiles(
+    public suspend fun getStoredTiles(
         coords: List<TileCoord>,
         coalescing: TileReadCoalescing = TileReadCoalescing.Default,
     ): List<ArchiveTile?> =
@@ -158,7 +159,7 @@ private constructor(
      * Tile payload source reads may be coalesced according to [coalescing].
      */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getTilesDecompressed(
+    public suspend fun getDecompressedTiles(
         coords: List<TileCoord>,
         coalescing: TileReadCoalescing = TileReadCoalescing.Default,
     ): List<ArchiveTile?> =
@@ -178,19 +179,9 @@ private constructor(
         )
     }
 
-    /** Returns compressed tile bytes for the tile at [z], [x], and [y]. */
-    @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getTileCompressed(z: Int, x: Int, y: Int): ArchiveTile? {
-        TileIds.validateZxy(z, x, y)
-        return readTile(
-            tileId = TileIds.fromZxy(z, x, y),
-            coord = TileCoord(z = z, x = x, y = y),
-        )
-    }
-
     /** Returns decompressed tile bytes for the tile at [z], [x], and [y]. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getTileDecompressed(z: Int, x: Int, y: Int): ArchiveTile? {
+    public suspend fun getDecompressedTile(z: Int, x: Int, y: Int): ArchiveTile? {
         TileIds.validateZxy(z, x, y)
         return readTile(
             tileId = TileIds.fromZxy(z, x, y),
@@ -201,12 +192,12 @@ private constructor(
 
     /** Returns decompressed tile bytes for [coord], or null when absent. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getTileDecompressed(coord: TileCoord): ArchiveTile? =
-        getTileDecompressed(coord.z, coord.x, coord.y)
+    public suspend fun getDecompressedTile(coord: TileCoord): ArchiveTile? =
+        getDecompressedTile(coord.z, coord.x, coord.y)
 
     /** Returns decompressed tile bytes for [tileId], or null when absent. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun getTileDecompressedById(tileId: Long): ArchiveTile? =
+    public suspend fun getDecompressedTileById(tileId: Long): ArchiveTile? =
         readTile(
             tileId = tileId,
             coord = TileIds.toZxy(tileId),

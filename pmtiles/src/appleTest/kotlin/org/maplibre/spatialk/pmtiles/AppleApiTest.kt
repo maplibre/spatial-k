@@ -46,7 +46,7 @@ class AppleApiTest {
 
         val archive = PmTilesArchive.open(source)
 
-        assertContentEquals(tileBytes, archive.getTile(0, 0, 0)?.bytes)
+        assertContentEquals(tileBytes, archive.getStoredTile(0, 0, 0)?.bytes)
         assertEquals(2, source.reads.size)
     }
 
@@ -81,7 +81,7 @@ class AppleApiTest {
                 )
 
         val archive = PmTilesArchive.open(source, options)
-        val tile = archive.getTileDecompressed(0, 0, 0)
+        val tile = archive.getDecompressedTile(0, 0, 0)
 
         requireNotNull(tile)
         assertContentEquals(decompressedBytes, tile.bytes)

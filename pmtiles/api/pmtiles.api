@@ -280,22 +280,21 @@ public final class org/maplibre/spatialk/pmtiles/PmTilesArchive : java/lang/Auto
 	public synthetic fun <init> (Lorg/maplibre/spatialk/pmtiles/ArchiveHeader;Lorg/maplibre/spatialk/pmtiles/ByteRangeSource;Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;JLjava/util/List;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun close ()V
 	public final fun containsTile (IIILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getDecompressedTile (IIILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getDecompressedTile (Lorg/maplibre/spatialk/pmtiles/TileCoord;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getDecompressedTileById (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getDecompressedTiles (Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun getDecompressedTiles$default (Lorg/maplibre/spatialk/pmtiles/PmTilesArchive;Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun getHeader ()Lorg/maplibre/spatialk/pmtiles/ArchiveHeader;
 	public final fun getInternalCompression ()Lorg/maplibre/spatialk/pmtiles/Compression;
-	public final fun getTile (IIILkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun getTile (Lorg/maplibre/spatialk/pmtiles/TileCoord;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun getTileById (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun getTileCompressed (IIILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getStoredTile (IIILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getStoredTile (Lorg/maplibre/spatialk/pmtiles/TileCoord;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getStoredTileById (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getStoredTiles (Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun getStoredTiles$default (Lorg/maplibre/spatialk/pmtiles/PmTilesArchive;Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun getTileCompression ()Lorg/maplibre/spatialk/pmtiles/Compression;
-	public final fun getTileDecompressed (IIILkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun getTileDecompressed (Lorg/maplibre/spatialk/pmtiles/TileCoord;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun getTileDecompressedById (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun getTileRange (IIILkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun getTileType ()Lorg/maplibre/spatialk/pmtiles/TileType;
-	public final fun getTiles (Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun getTiles$default (Lorg/maplibre/spatialk/pmtiles/PmTilesArchive;Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
-	public final fun getTilesDecompressed (Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun getTilesDecompressed$default (Lorg/maplibre/spatialk/pmtiles/PmTilesArchive;Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun metadata (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun rawMetadataJson (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun warnings ()Ljava/util/List;

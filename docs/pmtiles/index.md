@@ -47,8 +47,8 @@ payload bytes.
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:openArchive"
     ```
 
-By default, tile reads return bytes as stored in the archive. Use `getTileCompressed` to request
-stored bytes explicitly, or `getTileDecompressed` to decompress supported tile payloads.
+Use `getStoredTile` to read tile payload bytes as stored in the archive, or `getDecompressedTile` to
+decompress supported tile payloads.
 
 === "Kotlin"
 
@@ -56,7 +56,7 @@ stored bytes explicitly, or `getTileDecompressed` to decompress supported tile p
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:decompressedTiles"
     ```
 
-Use `getTiles` to read a batch of tile payloads with coalesced source ranges.
+Use `getStoredTiles` to read a batch of tile payloads with coalesced source ranges.
 
 === "Kotlin"
 
