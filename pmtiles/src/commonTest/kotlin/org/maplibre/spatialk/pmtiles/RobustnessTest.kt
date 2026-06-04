@@ -34,14 +34,13 @@ class RobustnessTest {
         val error =
             assertFailsWith<PmTilesException> {
                 val archive =
-                    PmTilesArchive.open(
+                    PmTiles.open(
                         TestByteRangeSource(bytes),
                         options =
                             ArchiveOpenOptions(
                                 limits =
-                                    ArchiveLimits.Default.copy(
-                                        maxMetadataBytes = metadataBytes.size - 1
-                                    )
+                                    ArchiveLimits()
+                                        .copy(maxMetadataBytes = (metadataBytes.size - 1).toULong())
                             ),
                     )
                 archive.rawMetadataJson()
@@ -54,7 +53,7 @@ class RobustnessTest {
     fun hugeDirectoryFails() = runTest {
         val error =
             assertFailsWith<PmTilesException> {
-                PmTilesArchive.open(
+                PmTiles.open(
                     TestByteRangeSource(
                         buildArchiveWithSections(
                             fields =
@@ -67,10 +66,11 @@ class RobustnessTest {
                     options =
                         ArchiveOpenOptions(
                             limits =
-                                ArchiveLimits.Default.copy(
-                                    maxDirectoryCompressedBytes =
-                                        MINIMAL_ROOT_DIRECTORY_BYTES.size - 1
-                                )
+                                ArchiveLimits()
+                                    .copy(
+                                        maxDirectoryCompressedBytes =
+                                            (MINIMAL_ROOT_DIRECTORY_BYTES.size - 1).toULong()
+                                    )
                         ),
                 )
             }
@@ -84,17 +84,18 @@ class RobustnessTest {
         val error =
             assertFailsWith<PmTilesException> {
                 val archive =
-                    PmTilesArchive.open(
+                    PmTiles.open(
                         TestByteRangeSource(buildSingleTileArchive(tileBytes)),
                         options =
                             ArchiveOpenOptions(
                                 limits =
-                                    ArchiveLimits.Default.copy(
-                                        maxTileCompressedBytes = tileBytes.size - 1
-                                    )
+                                    ArchiveLimits()
+                                        .copy(
+                                            maxTileCompressedBytes = (tileBytes.size - 1).toULong()
+                                        )
                             ),
                     )
-                archive.getStoredTile(0, 0, 0)
+                archive.readStoredTile(0, 0, 0)
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
@@ -104,11 +105,11 @@ class RobustnessTest {
     fun cancellationRaceDoesNotReturnPartialData() = runTest {
         val tileBytes = byteArrayOf(9, 8, 7)
         val source = FirstTileReadBlockingSource(buildSingleTileArchive(tileBytes))
-        val archive = PmTilesArchive.open(source)
-        val expectedTileRange = requireNotNull(archive.getTileRange(0, 0, 0)).archiveRange
+        val archive = PmTiles.open(source)
+        val expectedTileRange = requireNotNull(archive.findTileRange(0, 0, 0)).archiveRange
 
         source.blockNextRead(expectedTileRange)
-        val cancelledRead = async { archive.getStoredTile(0, 0, 0) }
+        val cancelledRead = async { archive.readStoredTile(0, 0, 0) }
         source.blockedReadStarted.await()
         cancelledRead.cancelAndJoin()
 
@@ -123,7 +124,7 @@ class RobustnessTest {
         }
 
         source.releaseBlockedRead.complete(Unit)
-        val tile = archive.getStoredTile(0, 0, 0)
+        val tile = archive.readStoredTile(0, 0, 0)
 
         requireNotNull(tile)
         assertContentEquals(tileBytes, tile.bytes)
@@ -148,6 +149,7 @@ private class FirstTileReadBlockingSource(private val bytes: ByteArray) : ByteRa
             releaseBlockedRead.await()
         }
         val start = range.offset.toInt()
-        return bytes.copyOfRange(start, start + range.length)
+        val length = range.length.toInt()
+        return bytes.copyOfRange(start, start + length)
     }
 }

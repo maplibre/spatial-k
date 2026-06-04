@@ -17,8 +17,10 @@ class MetadataTest {
         val json =
             """{"name":"Tiles","description":"Desc","attribution":"Attr","type":"baselayer","version":"1","encoding":"mvt","vector_layers":[{"id":"roads"}],"custom":{"x":1}}"""
         val source =
-            TestByteRangeSource(buildMetadataArchive(json.encodeToByteArray(), TileType.Mvt))
-        val archive = PmTilesArchive.open(source)
+            TestByteRangeSource(
+                buildMetadataArchive(json.encodeToByteArray(), TileType(KnownTileType.Mvt))
+            )
+        val archive = PmTiles.open(source)
 
         val raw = archive.rawMetadataJson()
         val rawAgain = archive.rawMetadataJson()
@@ -28,9 +30,9 @@ class MetadataTest {
         assertEquals(json, raw)
         assertEquals(json, rawAgain)
         assertEquals("Tiles", metadata.name)
-        assertEquals("Desc", metadata.description)
+        assertEquals("Desc", metadata.summary)
         assertEquals("Attr", metadata.attribution)
-        assertEquals(TilesetKind.BaseLayer, metadata.type)
+        assertEquals(TilesetKind(KnownTilesetKind.BaseLayer), metadata.type)
         assertEquals("1", metadata.version)
         assertEquals("mvt", metadata.encoding)
         assertEquals("""[{"id":"roads"}]""", metadata.vectorLayersJson)
@@ -40,7 +42,7 @@ class MetadataTest {
 
     @Test
     fun returnsEmptyTypedMetadataForEmptyMetadataSection() = runTest {
-        val archive = PmTilesArchive.open(TestByteRangeSource(buildMetadataArchive(ByteArray(0))))
+        val archive = PmTiles.open(TestByteRangeSource(buildMetadataArchive(ByteArray(0))))
 
         val metadata = archive.metadata()
 
@@ -54,7 +56,7 @@ class MetadataTest {
         val error =
             assertFailsWith<PmTilesException> {
                 val archive =
-                    PmTilesArchive.open(
+                    PmTiles.open(
                         TestByteRangeSource(buildMetadataArchive(byteArrayOf(0xc3.toByte(), 0x28)))
                     )
                 archive.rawMetadataJson()
@@ -72,33 +74,33 @@ class MetadataTest {
     @Test
     fun lenientModePreservesRawJsonForNonObjectMetadata() = runTest {
         val archive =
-            PmTilesArchive.open(
+            PmTiles.open(
                 TestByteRangeSource(buildMetadataArchive("[]".encodeToByteArray())),
-                options = ArchiveOpenOptions.Lenient,
+                options = ArchiveOpenOptions(validationMode = ValidationMode.Lenient),
             )
 
         val metadata = archive.metadata()
 
         assertEquals("[]", archive.rawMetadataJson())
         assertNull(metadata.name)
-        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warnings().single().code)
+        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warnings.single().code)
     }
 
     @Test
     fun lenientModeDropsWrongTypedFieldsAndKeepsValidFields() = runTest {
         val archive =
-            PmTilesArchive.open(
+            PmTiles.open(
                 TestByteRangeSource(
                     buildMetadataArchive("""{"name":1,"description":"ok"}""".encodeToByteArray())
                 ),
-                options = ArchiveOpenOptions.Lenient,
+                options = ArchiveOpenOptions(validationMode = ValidationMode.Lenient),
             )
 
         val metadata = archive.metadata()
 
         assertNull(metadata.name)
-        assertEquals("ok", metadata.description)
-        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warnings().single().code)
+        assertEquals("ok", metadata.summary)
+        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warnings.single().code)
     }
 
     @Test
@@ -106,38 +108,38 @@ class MetadataTest {
         assertMetadataFails(
             PmTilesErrorCode.InvalidMetadata,
             """{"name":"Tiles"}""",
-            tileType = TileType.Mvt,
+            tileType = TileType(KnownTileType.Mvt),
         )
     }
 
     @Test
     fun lenientMvtMetadataWarnsWhenVectorLayersIsMissing() = runTest {
         val archive =
-            PmTilesArchive.open(
+            PmTiles.open(
                 TestByteRangeSource(
                     buildMetadataArchive(
                         """{"name":"Tiles"}""".encodeToByteArray(),
-                        tileType = TileType.Mvt,
+                        tileType = TileType(KnownTileType.Mvt),
                     )
                 ),
-                options = ArchiveOpenOptions.Lenient,
+                options = ArchiveOpenOptions(validationMode = ValidationMode.Lenient),
             )
 
         val metadata = archive.metadata()
 
         assertEquals("Tiles", metadata.name)
-        assertEquals(ArchiveWarningCode.MissingVectorLayers, archive.warnings().single().code)
+        assertEquals(ArchiveWarningCode.MissingVectorLayers, archive.warnings.single().code)
     }
 
     private suspend fun assertMetadataFails(
         code: PmTilesErrorCode,
         json: String,
-        tileType: TileType = TileType.Png,
+        tileType: TileType = TileType(KnownTileType.Png),
     ) {
         val error =
             assertFailsWith<PmTilesException> {
                 val archive =
-                    PmTilesArchive.open(
+                    PmTiles.open(
                         TestByteRangeSource(
                             buildMetadataArchive(json.encodeToByteArray(), tileType)
                         )
@@ -150,7 +152,7 @@ class MetadataTest {
 
     private fun buildMetadataArchive(
         metadataBytes: ByteArray,
-        tileType: TileType = TileType.Png,
+        tileType: TileType = TileType(KnownTileType.Png),
     ): ByteArray {
         val metadataOffset = HEADER_BYTES.toULong() + MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong()
         val fields =

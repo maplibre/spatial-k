@@ -23,25 +23,32 @@ class TileBytesTest {
             TestByteRangeSource(
                 buildSingleTileArchive(
                     tileBytes = tileBytes,
-                    tileCompression = Compression.Brotli.code,
-                    tileType = TileType.Png.code,
+                    tileCompression = KnownCompression.Brotli.code,
+                    tileType = KnownTileType.Png.code,
                 )
             )
-        val archive = PmTilesArchive.open(source)
+        val archive = PmTiles.open(source)
 
-        val stored = archive.getStoredTile(0, 0, 0)
-        val coordRead = archive.getStoredTile(TileCoord(0, 0, 0))
-        val idRead = archive.getStoredTileById(0)
+        val stored = archive.readStoredTile(0, 0, 0)
+        val coordRead = archive.readStoredTile(TileCoord(0, 0, 0))
+        val idRead = archive.readStoredTile(0)
 
         requireNotNull(stored)
         requireNotNull(coordRead)
         requireNotNull(idRead)
         assertContentEquals(tileBytes, stored.bytes)
-        assertEquals(Compression.Brotli, stored.compression)
+        assertEquals(tileBytes.size.toULong(), stored.byteCount)
+        assertEquals(Compression(KnownCompression.Brotli), stored.compression)
         assertEquals(false, stored.wasDecompressed)
-        assertEquals(TileType.Png, stored.tileType)
+        assertEquals(TileType(KnownTileType.Png), stored.tileType)
         assertContentEquals(tileBytes, coordRead.bytes)
         assertContentEquals(tileBytes, idRead.bytes)
+        assertEquals(stored, coordRead)
+        assertEquals(stored, idRead)
+
+        val mutableBytes = stored.bytes
+        mutableBytes[0] = 9
+        assertContentEquals(tileBytes, stored.bytes)
     }
 
     @Test
@@ -69,11 +76,11 @@ class TileBytesTest {
                     minimumArchiveSize = tileDataOffset + tileData.size.toULong(),
                 )
             )
-        val archive = PmTilesArchive.open(source)
+        val archive = PmTiles.open(source)
         source.reads.clear()
 
         val tiles =
-            archive.getStoredTiles(
+            archive.readStoredTiles(
                 listOf(
                     TileIds.toZxy(1),
                     TileIds.toZxy(2),
@@ -82,9 +89,9 @@ class TileBytesTest {
             )
 
         assertEquals(3, tiles.size)
-        assertContentEquals(byteArrayOf(3, 4, 5), tiles[0]?.bytes)
-        assertNull(tiles[1])
-        assertContentEquals(byteArrayOf(1, 2), tiles[2]?.bytes)
+        assertContentEquals(byteArrayOf(3, 4, 5), tiles[0].tile?.bytes)
+        assertEquals(false, tiles[1].isFound)
+        assertContentEquals(byteArrayOf(1, 2), tiles[2].tile?.bytes)
         assertEquals(listOf(ByteRange(tileDataOffset, tileData.size)), source.reads)
     }
 
@@ -113,11 +120,11 @@ class TileBytesTest {
                     minimumArchiveSize = tileDataOffset + tileData.size.toULong(),
                 )
             )
-        val archive = PmTilesArchive.open(source)
+        val archive = PmTiles.open(source)
         val coords = listOf(TileIds.toZxy(0), TileIds.toZxy(1))
         source.reads.clear()
 
-        archive.getStoredTiles(coords)
+        archive.readStoredTiles(coords)
 
         assertEquals(
             listOf(
@@ -128,9 +135,9 @@ class TileBytesTest {
         )
 
         source.reads.clear()
-        archive.getStoredTiles(
+        archive.readStoredTiles(
             coords,
-            coalescing = TileReadCoalescing(maxCoalescedBytes = 16, maxGapBytes = 3),
+            coalescing = TileReadCoalescing(maxCoalescedBytes = 16uL, maxGapBytes = 3uL),
         )
 
         assertEquals(listOf(ByteRange(tileDataOffset, tileData.size)), source.reads)
@@ -161,12 +168,12 @@ class TileBytesTest {
                     minimumArchiveSize = tileDataOffset + tileData.size.toULong(),
                 )
             )
-        val archive = PmTilesArchive.open(source)
+        val archive = PmTiles.open(source)
         source.reads.clear()
 
-        archive.getStoredTiles(
+        archive.readStoredTiles(
             listOf(TileIds.toZxy(0), TileIds.toZxy(1)),
-            coalescing = TileReadCoalescing(maxCoalescedBytes = 4),
+            coalescing = TileReadCoalescing(maxCoalescedBytes = 4uL),
         )
 
         assertEquals(
@@ -192,7 +199,7 @@ class TileBytesTest {
                 rootLength = rootBytes.size.toULong(),
                 tileDataOffset = tileDataOffset,
                 tileDataLength = compressedTileData.size.toULong(),
-                tileCompression = Compression.Brotli.code,
+                tileCompression = KnownCompression.Brotli.code,
                 clustered = 1u,
             )
         val source =
@@ -205,79 +212,69 @@ class TileBytesTest {
                 )
             )
         val archive =
-            PmTilesArchive.open(
+            PmTiles.open(
                 source,
                 options =
-                    ArchiveOpenOptions().withDecompressor(Compression.Brotli) { bytes, _ ->
+                    ArchiveOpenOptions().withDecompressor(Compression(KnownCompression.Brotli)) {
+                        bytes,
+                        _ ->
                         bytes.map { (it.toInt() + 10).toByte() }.toByteArray()
                     },
             )
         source.reads.clear()
 
-        val tiles = archive.getDecompressedTiles(listOf(TileIds.toZxy(0), TileIds.toZxy(1)))
+        val tiles = archive.readDecompressedTiles(listOf(TileIds.toZxy(0), TileIds.toZxy(1)))
 
-        assertContentEquals(byteArrayOf(11, 12), tiles[0]?.bytes)
-        assertContentEquals(byteArrayOf(13, 14), tiles[1]?.bytes)
-        assertEquals(Compression.None, tiles[0]?.compression)
-        assertEquals(true, tiles[0]?.wasDecompressed)
+        assertContentEquals(byteArrayOf(11, 12), tiles[0].tile?.bytes)
+        assertContentEquals(byteArrayOf(13, 14), tiles[1].tile?.bytes)
+        assertEquals(Compression(KnownCompression.None), tiles[0].tile?.compression)
+        assertEquals(true, tiles[0].tile?.wasDecompressed)
         assertEquals(listOf(ByteRange(tileDataOffset, compressedTileData.size)), source.reads)
-    }
-
-    @Test
-    fun rejectsInvalidTileReadCoalescing() {
-        assertFailsWith<IllegalArgumentException> {
-            TileReadCoalescing(maxCoalescedBytes = -1)
-        }
-        assertFailsWith<IllegalArgumentException> {
-            TileReadCoalescing(maxGapBytes = -1)
-        }
     }
 
     @Test
     fun decompressedReadLeavesNoneCompressedTilesUnchanged() = runTest {
         val tileBytes = byteArrayOf(5, 6, 7)
         val archive =
-            PmTilesArchive.open(TestByteRangeSource(buildSingleTileArchive(tileBytes = tileBytes)))
+            PmTiles.open(TestByteRangeSource(buildSingleTileArchive(tileBytes = tileBytes)))
 
-        val tile = archive.getDecompressedTile(0, 0, 0)
+        val tile = archive.readDecompressedTile(0, 0, 0)
 
         requireNotNull(tile)
         assertContentEquals(tileBytes, tile.bytes)
-        assertEquals(Compression.None, tile.compression)
+        assertEquals(Compression(KnownCompression.None), tile.compression)
         assertEquals(false, tile.wasDecompressed)
     }
 
     @Test
     fun decompressedReadDecodesGzipTiles() = runTest {
         val archive =
-            PmTilesArchive.open(
+            PmTiles.open(
                 TestByteRangeSource(
                     buildSingleTileArchive(
                         tileBytes = helloGzipBytes,
-                        tileCompression = Compression.Gzip.code,
+                        tileCompression = KnownCompression.Gzip.code,
                     )
                 )
             )
 
-        val tile = archive.getDecompressedTile(0, 0, 0)
+        val tile = archive.readDecompressedTile(0, 0, 0)
 
         requireNotNull(tile)
         assertContentEquals(helloBytes, tile.bytes)
-        assertEquals(Compression.None, tile.compression)
-        assertEquals(Compression.Gzip, tile.range.compression)
+        assertEquals(Compression(KnownCompression.None), tile.compression)
+        assertEquals(Compression(KnownCompression.Gzip), tile.range.compression)
         assertEquals(true, tile.wasDecompressed)
     }
 
     @Test
     fun returnsNullForMissingTilePayload() = runTest {
         val archive =
-            PmTilesArchive.open(
-                TestByteRangeSource(buildSingleTileArchive(tileBytes = byteArrayOf(1)))
-            )
+            PmTiles.open(TestByteRangeSource(buildSingleTileArchive(tileBytes = byteArrayOf(1))))
         val missingCoord = TileIds.toZxy(1)
 
-        assertNull(archive.getStoredTile(missingCoord.z, missingCoord.x, missingCoord.y))
-        assertNull(archive.getDecompressedTile(missingCoord.z, missingCoord.x, missingCoord.y))
+        assertNull(archive.readStoredTile(missingCoord.z, missingCoord.x, missingCoord.y))
+        assertNull(archive.readDecompressedTile(missingCoord.z, missingCoord.x, missingCoord.y))
     }
 
     @Test
@@ -286,15 +283,15 @@ class TileBytesTest {
         val bytes =
             buildSingleTileArchive(
                 tileBytes = tileBytes,
-                tileCompression = Compression.Brotli.code,
+                tileCompression = KnownCompression.Brotli.code,
             )
 
-        val archive = PmTilesArchive.open(TestByteRangeSource(bytes))
-        assertContentEquals(tileBytes, archive.getStoredTile(0, 0, 0)?.bytes)
+        val archive = PmTiles.open(TestByteRangeSource(bytes))
+        assertContentEquals(tileBytes, archive.readStoredTile(0, 0, 0)?.bytes)
 
         val error =
             assertFailsWith<PmTilesException> {
-                archive.getDecompressedTile(0, 0, 0)
+                archive.readDecompressedTile(0, 0, 0)
             }
 
         assertEquals(PmTilesErrorCode.UnsupportedCompression, error.code)
@@ -305,17 +302,17 @@ class TileBytesTest {
         val compressedBytes = byteArrayOf(1, 2, 3)
         val decompressedBytes = byteArrayOf(4, 5, 6)
         val archive =
-            PmTilesArchive.open(
+            PmTiles.open(
                 TestByteRangeSource(
                     buildSingleTileArchive(
                         tileBytes = compressedBytes,
-                        tileCompression = Compression.Brotli.code,
+                        tileCompression = KnownCompression.Brotli.code,
                     )
                 ),
                 options =
                     ArchiveOpenOptions()
                         .withDecompressor(
-                            Compression.Brotli,
+                            Compression(KnownCompression.Brotli),
                             Decompressor { bytes, _ ->
                                 assertContentEquals(compressedBytes, bytes)
                                 decompressedBytes
@@ -323,11 +320,11 @@ class TileBytesTest {
                         ),
             )
 
-        val tile = archive.getDecompressedTile(0, 0, 0)
+        val tile = archive.readDecompressedTile(0, 0, 0)
 
         requireNotNull(tile)
         assertContentEquals(decompressedBytes, tile.bytes)
-        assertEquals(Compression.None, tile.compression)
+        assertEquals(Compression(KnownCompression.None), tile.compression)
         assertEquals(true, tile.wasDecompressed)
     }
 
@@ -336,14 +333,13 @@ class TileBytesTest {
         val tileBytes = byteArrayOf(11, 12, 13)
         val error =
             assertFailsWith<PmTilesException> {
-                PmTilesArchive.open(
+                PmTiles.open(
                     TestByteRangeSource(buildSingleTileArchive(tileBytes = tileBytes)),
                     options =
                         ArchiveOpenOptions(
                             limits =
-                                ArchiveLimits.Default.copy(
-                                    maxTileCompressedBytes = tileBytes.size - 1
-                                )
+                                ArchiveLimits()
+                                    .copy(maxTileCompressedBytes = (tileBytes.size - 1).toULong())
                         ),
                 )
             }
@@ -356,22 +352,24 @@ class TileBytesTest {
         val error =
             assertFailsWith<PmTilesException> {
                 val archive =
-                    PmTilesArchive.open(
+                    PmTiles.open(
                         TestByteRangeSource(
                             buildSingleTileArchive(
                                 tileBytes = helloGzipBytes,
-                                tileCompression = Compression.Gzip.code,
+                                tileCompression = KnownCompression.Gzip.code,
                             )
                         ),
                         options =
                             ArchiveOpenOptions(
                                 limits =
-                                    ArchiveLimits.Default.copy(
-                                        maxTileDecompressedBytes = helloBytes.size - 1
-                                    )
+                                    ArchiveLimits()
+                                        .copy(
+                                            maxTileDecompressedBytes =
+                                                (helloBytes.size - 1).toULong()
+                                        )
                             ),
                     )
-                archive.getDecompressedTile(0, 0, 0)
+                archive.readDecompressedTile(0, 0, 0)
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)

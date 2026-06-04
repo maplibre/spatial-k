@@ -35,7 +35,7 @@ class ConcurrencyTest {
                     TestHeaderFields(
                         rootLength = rootBytes.size.toULong(),
                         leafDirectoriesOffset = leafRange.offset,
-                        leafDirectoriesLength = leafRange.length.toULong(),
+                        leafDirectoriesLength = leafRange.length,
                         tileDataOffset = 400uL,
                         tileDataLength = 3uL,
                     ),
@@ -43,12 +43,12 @@ class ConcurrencyTest {
                 leafBytes = leafBytes,
             )
         val source = BlockingRangeSource(archiveBytes, blockedRange = leafRange)
-        val archive = PmTilesArchive.open(source)
+        val archive = PmTiles.open(source)
         val coord = TileIds.toZxy(tileId)
 
-        val first = async { archive.getTileRange(coord.z, coord.x, coord.y) }
+        val first = async { archive.findTileRange(coord.z, coord.x, coord.y) }
         source.blockedReadStarted.await()
-        val second = async { archive.getTileRange(coord.z, coord.x, coord.y) }
+        val second = async { archive.findTileRange(coord.z, coord.x, coord.y) }
         runCurrent()
 
         assertEquals(1, source.blockedReadCount)
@@ -65,12 +65,12 @@ class ConcurrencyTest {
         val archiveBytes = buildSingleTileArchive(byteArrayOf(1, 2, 3))
         val tileRange = ByteRange(132uL, 3)
         val source = BlockingRangeSource(archiveBytes, blockedRange = tileRange)
-        val archive = PmTilesArchive.open(source)
+        val archive = PmTiles.open(source)
 
         var readError: Throwable? = null
         val read = launch {
             try {
-                archive.getStoredTile(0, 0, 0)
+                archive.readStoredTile(0, 0, 0)
             } catch (error: Throwable) {
                 readError = error
             }
@@ -90,7 +90,7 @@ class ConcurrencyTest {
 
         val afterCloseError =
             assertSuspendFailsWith<PmTilesException> {
-                archive.getStoredTile(0, 0, 0)
+                archive.readStoredTile(0, 0, 0)
             }
         assertEquals(PmTilesErrorCode.Closed, afterCloseError.code)
     }
@@ -140,19 +140,19 @@ class ConcurrencyTest {
             )
         val source = BlockingRangeSource(archiveBytes)
         val archive =
-            PmTilesArchive.open(
+            PmTiles.open(
                 source,
                 options =
                     ArchiveOpenOptions(
-                        limits = ArchiveLimits.Default.copy(maxLeafDirectoryCacheEntries = 1)
+                        limits = ArchiveLimits().copy(maxLeafDirectoryCacheEntries = 1)
                     ),
             )
         val firstCoord = TileIds.toZxy(firstTileId)
         val secondCoord = TileIds.toZxy(secondTileId)
 
-        archive.getTileRange(firstCoord.z, firstCoord.x, firstCoord.y)
-        archive.getTileRange(secondCoord.z, secondCoord.x, secondCoord.y)
-        archive.getTileRange(firstCoord.z, firstCoord.x, firstCoord.y)
+        archive.findTileRange(firstCoord.z, firstCoord.x, firstCoord.y)
+        archive.findTileRange(secondCoord.z, secondCoord.x, secondCoord.y)
+        archive.findTileRange(firstCoord.z, firstCoord.x, firstCoord.y)
 
         assertEquals(2, source.reads.count { it == firstLeafRange })
         assertEquals(1, source.reads.count { it == secondLeafRange })
@@ -179,7 +179,8 @@ private class BlockingRangeSource(
             releaseBlockedRead.await()
         }
         val start = range.offset.toInt()
-        return bytes.copyOfRange(start, start + range.length)
+        val length = range.length.toInt()
+        return bytes.copyOfRange(start, start + length)
     }
 }
 

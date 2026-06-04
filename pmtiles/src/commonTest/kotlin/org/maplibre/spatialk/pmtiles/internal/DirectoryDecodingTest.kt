@@ -93,7 +93,7 @@ class DirectoryDecodingTest {
                         DirectoryEntry(tileId = 0, offset = 0uL, length = 2, runLength = 1)
                     ),
                     header(tileDataLength = 2uL),
-                    limits = defaultLimits.copy(maxTileCompressedBytes = 1),
+                    limits = defaultLimits.copy(maxTileCompressedBytes = 1uL),
                 )
             }
         assertEquals(PmTilesErrorCode.LimitExceeded, tooLargeTile.code)
@@ -171,5 +171,5 @@ class DirectoryDecodingTest {
         add(remaining.toByte())
     }
 
-    private val defaultLimits = org.maplibre.spatialk.pmtiles.ArchiveLimits.Default
+    private val defaultLimits = org.maplibre.spatialk.pmtiles.ArchiveLimits()
 }

@@ -25,7 +25,7 @@ class WarningSurfaceTest {
                 tileType = 99u,
             )
         val archive =
-            PmTilesArchive.open(
+            PmTiles.open(
                 TestByteRangeSource(
                     buildArchiveWithSections(
                         fields = fields,
@@ -33,17 +33,17 @@ class WarningSurfaceTest {
                         metadataBytes = metadataBytes,
                     )
                 ),
-                options = ArchiveOpenOptions.Lenient,
+                options = ArchiveOpenOptions(validationMode = ValidationMode.Lenient),
             )
-        val snapshot = archive.warnings()
+        val snapshot = archive.warnings
 
-        assertEquals(1, archive.warnings().size)
+        assertEquals(1, archive.warnings.size)
         assertEquals(ArchiveWarningCode.UnknownTileType, snapshot.single().code)
 
         archive.metadata()
 
         assertEquals(1, snapshot.size)
-        val warnings = archive.warnings()
+        val warnings = archive.warnings
         assertEquals(2, warnings.size)
         assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, warnings[1].code)
     }

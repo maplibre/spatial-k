@@ -21,13 +21,14 @@ class KotlinDocsTest {
 
                 override suspend fun read(range: ByteRange): ByteArray {
                     val start = range.offset.toInt()
-                    return copyOfRange(start, start + range.length)
+                    val length = range.length.toInt()
+                    return copyOfRange(start, start + length)
                 }
             }
         // --8<-- [end:byteRangeSource]
 
         val source = pmTilesBytes.asByteRangeSource()
-        PmTilesArchive.open(source).close()
+        PmTiles.open(source).close()
     }
 
     @Test
@@ -35,11 +36,11 @@ class KotlinDocsTest {
         val source = loadPmTilesBytes().asByteRangeSource()
 
         // --8<-- [start:openArchive]
-        PmTilesArchive.open(source).use { archive ->
+        PmTiles.open(source).use { archive ->
             val header = archive.header
             val metadata = archive.metadata()
-            val tile = archive.getStoredTile(z = 0, x = 0, y = 0)
-            val tileRange = archive.getTileRange(z = 0, x = 0, y = 0)
+            val tile = archive.readStoredTile(z = 0, x = 0, y = 0)
+            val tileRange = archive.findTileRange(z = 0, x = 0, y = 0)
         }
         // --8<-- [end:openArchive]
     }
@@ -49,8 +50,8 @@ class KotlinDocsTest {
         val source = loadPmTilesBytes().asByteRangeSource()
 
         // --8<-- [start:decompressedTiles]
-        PmTilesArchive.open(source).use { archive ->
-            val tile = archive.getDecompressedTile(z = 0, x = 0, y = 0)
+        PmTiles.open(source).use { archive ->
+            val tile = archive.readDecompressedTile(z = 0, x = 0, y = 0)
         }
         // --8<-- [end:decompressedTiles]
     }
@@ -60,9 +61,9 @@ class KotlinDocsTest {
         val source = loadPmTilesBytes().asByteRangeSource()
 
         // --8<-- [start:batchTiles]
-        PmTilesArchive.open(source).use { archive ->
+        PmTiles.open(source).use { archive ->
             val coords = listOf(TileCoord(z = 0, x = 0, y = 0))
-            val tiles = archive.getStoredTiles(coords)
+            val results = archive.readStoredTiles(coords)
         }
         // --8<-- [end:batchTiles]
     }
@@ -73,16 +74,19 @@ class KotlinDocsTest {
 
         // --8<-- [start:customDecompressor]
         val options =
-            ArchiveOpenOptions().withDecompressor(Compression.Brotli) { bytes, limits ->
+            ArchiveOpenOptions().withDecompressor(KnownCompression.Brotli) { bytes, limits ->
                 val decoded = decodeBrotli(bytes)
-                require(decoded.size <= limits.maxDecompressedBytes) {
-                    "Decoded output exceeds ${limits.maxDecompressedBytes} bytes."
+                if (decoded.size.toULong() > limits.maxDecompressedBytes) {
+                    throw PmTilesException(
+                        PmTilesErrorCode.LimitExceeded,
+                        "Decoded output exceeds ${limits.maxDecompressedBytes} bytes.",
+                    )
                 }
                 decoded
             }
 
-        PmTilesArchive.open(source, options).use { archive ->
-            val tile = archive.getDecompressedTile(z = 0, x = 0, y = 0)
+        PmTiles.open(source, options).use { archive ->
+            val tile = archive.readDecompressedTile(z = 0, x = 0, y = 0)
         }
         // --8<-- [end:customDecompressor]
     }
@@ -92,8 +96,9 @@ class KotlinDocsTest {
         val source = loadPmTilesBytes().asByteRangeSource()
 
         // --8<-- [start:lenientWarnings]
-        PmTilesArchive.open(source, ArchiveOpenOptions.Lenient).use { archive ->
-            val warnings = archive.warnings()
+        PmTiles.open(source, ArchiveOpenOptions(validationMode = ValidationMode.Lenient)).use {
+            archive ->
+            val warnings = archive.warnings
         }
         // --8<-- [end:lenientWarnings]
     }
@@ -109,6 +114,7 @@ private fun ByteArray.asByteRangeSource(): ByteRangeSource =
 
         override suspend fun read(range: ByteRange): ByteArray {
             val start = range.offset.toInt()
-            return copyOfRange(start, start + range.length)
+            val length = range.length.toInt()
+            return copyOfRange(start, start + length)
         }
     }
