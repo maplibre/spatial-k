@@ -68,6 +68,39 @@ val inMeters = distance.inMeters     // 5000.0
 val formatted = distance.toString()  // "5000 m"
 ```
 
+### GPX
+
+```kotlin
+val document = Document(
+    metadata = Metadata(name = "My GPX File"),
+    waypoints = listOf(
+        Waypoint(1.0, 2.0),
+        Waypoint(3.0, 4.0),
+    ),
+)
+val gpxString = Gpx.encodeToString(document)
+```
+
+### PMTiles
+
+```kotlin
+PmTilesArchive.open(source).use { archive ->
+    val header = archive.header
+    val tile = archive.getDecompressedTile(z = 0, x = 0, y = 0)
+}
+```
+
+### Polyline Encoding
+
+```kotlin
+val positions = listOf(
+    Position(longitude = -120.2, latitude = 38.5),
+    Position(longitude = -120.95, latitude = 40.7),
+)
+val encoded = PolylineEncoding.encode(positions)
+val decoded = PolylineEncoding.decode(encoded)
+```
+
 See the [project site](https://maplibre.org/spatial-k/) for more info.
 
 ## Getting Involved
