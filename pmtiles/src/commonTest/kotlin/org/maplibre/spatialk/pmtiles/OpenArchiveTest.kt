@@ -173,6 +173,27 @@ class OpenArchiveTest {
     }
 
     @Test
+    fun customDecompressorDecodesInternalSectionsAtOpen() = runTest {
+        val fields = TestHeaderFields(internalCompression = Compression.Brotli.code)
+        val archive =
+            PmTilesArchive.open(
+                TestByteRangeSource(buildArchive(fields)),
+                options =
+                    ArchiveOpenOptions()
+                        .withDecompressor(
+                            Compression.Brotli,
+                            Decompressor { bytes, _ -> bytes },
+                        ),
+            )
+
+        assertEquals(Compression.Brotli, archive.internalCompression)
+        assertEquals(
+            ArchiveSection(HEADER_BYTES.toULong(), MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong()),
+            archive.header.rootDirectory,
+        )
+    }
+
+    @Test
     fun rejectsEmptyRootDirectoryUnlessLenient() = runTest {
         val rootBytes = byteArrayOf(0)
         val fields =

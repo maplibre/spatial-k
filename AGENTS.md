@@ -30,6 +30,14 @@ module is a distinct library.
   [go-pmtiles](https://github.com/protomaps/go-pmtiles).
 - Polyline encoding:
   [Google Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
+- Kotlin interop:
+  [Objective-C and Swift interop](https://kotlinlang.org/docs/native-objc-interop.html#importing-swift-objective-c-libraries-to-kotlin),
+  [Swift export](https://kotlinlang.org/docs/native-swift-export.html),
+  [C interop](https://kotlinlang.org/docs/native-c-interop.html),
+  [JS interop](https://kotlinlang.org/docs/js-interop.html),
+  [JS to Kotlin interop](https://kotlinlang.org/docs/js-to-kotlin-interop.html),
+  [Java interop](https://kotlinlang.org/docs/java-interop.html), and
+  [Java to Kotlin interop](https://kotlinlang.org/docs/java-to-kotlin-interop.html).
 
 ## Workflow
 

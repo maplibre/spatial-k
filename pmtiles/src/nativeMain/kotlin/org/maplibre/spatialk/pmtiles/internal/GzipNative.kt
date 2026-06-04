@@ -11,6 +11,7 @@ import kotlinx.cinterop.ptr
 import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.sizeOf
 import kotlinx.cinterop.usePinned
+import org.maplibre.spatialk.pmtiles.DecompressionLimits
 import platform.zlib.ZLIB_VERSION
 import platform.zlib.Z_NO_FLUSH
 import platform.zlib.Z_OK
@@ -22,10 +23,10 @@ import platform.zlib.inflateEnd
 import platform.zlib.inflateInit2_
 import platform.zlib.z_stream
 
-internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecodeLimits): ByteArray =
+internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLimits): ByteArray =
     memScoped {
         if (bytes.isEmpty()) {
-            decompressionFailed("${limits.purpose.displayName} gzip input is empty.")
+            decompressionFailed("gzip input is empty.")
         }
 
         val stream = alloc<z_stream>()
@@ -44,9 +45,7 @@ internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecodeLimits): 
                     sizeOf<z_stream>().convert(),
                 )
             if (initStatus != Z_OK) {
-                decompressionFailed(
-                    "${limits.purpose.displayName} gzip initialization failed: $initStatus."
-                )
+                decompressionFailed("gzip initialization failed: $initStatus.")
             }
 
             try {
@@ -61,15 +60,11 @@ internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecodeLimits): 
 
                         if (status == Z_STREAM_END) return@memScoped sink.toByteArray()
                         if (status != Z_OK) {
-                            decompressionFailed(
-                                "${limits.purpose.displayName} gzip stream failed: $status."
-                            )
+                            decompressionFailed("gzip stream failed: $status.")
                         }
 
                         if (produced == 0 && stream.avail_in == 0u) {
-                            decompressionFailed(
-                                "${limits.purpose.displayName} gzip stream ended before trailer."
-                            )
+                            decompressionFailed("gzip stream ended before trailer.")
                         }
                     }
                 }
@@ -82,7 +77,7 @@ internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecodeLimits): 
             }
         }
 
-        decompressionFailed("${limits.purpose.displayName} gzip decompression failed.")
+        decompressionFailed("gzip decompression failed.")
     }
 
 private const val GZIP_BUFFER_SIZE = 8 * 1024

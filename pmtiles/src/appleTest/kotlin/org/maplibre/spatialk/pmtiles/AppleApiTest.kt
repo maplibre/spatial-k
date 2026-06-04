@@ -51,6 +51,44 @@ class AppleApiTest {
     }
 
     @Test
+    fun dataDecompressorDecodesTiles() = runSuspending {
+        val compressedBytes = byteArrayOf(7, 8, 9)
+        val decompressedBytes = byteArrayOf(10, 11, 12)
+        val source =
+            TestByteRangeDataSource(
+                buildSingleTileArchive(
+                    tileBytes = compressedBytes,
+                    tileCompression = Compression.Brotli.code,
+                )
+            )
+        val options =
+            ArchiveOpenOptions()
+                .withDecompressor(
+                    Compression.Brotli,
+                    object : DataDecompressor {
+                        override suspend fun decompress(
+                            data: NSData,
+                            limits: DecompressionLimits,
+                        ): NSData {
+                            assertContentEquals(compressedBytes, data.toByteArray())
+                            assertEquals(
+                                ArchiveLimits.Default.maxTileCompressedBytes,
+                                limits.maxCompressedBytes,
+                            )
+                            return decompressedBytes.toNSData()
+                        }
+                    },
+                )
+
+        val archive = PmTilesArchive.open(source, options)
+        val tile = archive.getTileDecompressed(0, 0, 0)
+
+        requireNotNull(tile)
+        assertContentEquals(decompressedBytes, tile.bytes)
+        assertEquals(Compression.None, tile.compression)
+    }
+
+    @Test
     fun rejectsShortAndLongByteRangeDataSourceReads() {
         val archiveBytes = buildSingleTileArchive(byteArrayOf(7))
 

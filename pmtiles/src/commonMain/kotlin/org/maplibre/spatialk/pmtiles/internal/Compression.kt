@@ -1,31 +1,12 @@
 package org.maplibre.spatialk.pmtiles.internal
 
-import org.maplibre.spatialk.pmtiles.Compression
+import org.maplibre.spatialk.pmtiles.DecompressionLimits
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 
-internal suspend fun decodeCompression(
-    compression: Compression,
-    bytes: ByteArray,
-    limits: DecodeLimits,
-): ByteArray {
-    validateDecodeLimits(limits)
-    validateCompressedSize(bytes.size, limits)
-
-    return when (compression.code) {
-        Compression.None.code -> {
-            validateDecompressedSize(bytes.size, limits)
-            bytes
-        }
-
-        Compression.Gzip.code -> decodeGzip(bytes, limits)
-        else -> unsupportedCompression(compression, limits)
-    }
-}
-
 // It's a suspend fun only because CompressionStreams on web requires it
-internal expect suspend fun decodeGzip(bytes: ByteArray, limits: DecodeLimits): ByteArray
+internal expect suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLimits): ByteArray
 
-internal class BoundedByteArraySink(private val limits: DecodeLimits) {
+internal class BoundedByteArraySink(private val limits: DecompressionLimits) {
     private var bytes = ByteArray(0)
     private var size = 0
 
@@ -56,44 +37,15 @@ internal class BoundedByteArraySink(private val limits: DecodeLimits) {
     }
 }
 
-private fun validateDecodeLimits(limits: DecodeLimits) {
-    if (limits.maxCompressedBytes < 0) {
-        throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
-            "${limits.purpose.displayName} compressed byte limit is negative.",
-        )
-    }
-    if (limits.maxDecompressedBytes < 0) {
-        throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
-            "${limits.purpose.displayName} decompressed byte limit is negative.",
-        )
-    }
-}
-
-private fun validateCompressedSize(size: Int, limits: DecodeLimits) {
-    if (size > limits.maxCompressedBytes) {
-        throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
-            "${limits.purpose.displayName} compressed length $size exceeds limit ${limits.maxCompressedBytes}.",
-        )
-    }
-}
-
-internal fun validateDecompressedSize(size: Int, limits: DecodeLimits) {
-    if (size > limits.maxDecompressedBytes) {
-        throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
-            "${limits.purpose.displayName} decompressed length $size exceeds limit ${limits.maxDecompressedBytes}.",
-        )
-    }
-}
-
-internal fun checkedDecompressedSize(current: Int, nextChunk: Int, limits: DecodeLimits): Int {
+internal fun checkedDecompressedSize(
+    current: Int,
+    nextChunk: Int,
+    limits: DecompressionLimits,
+): Int {
     if (nextChunk < 0 || current > limits.maxDecompressedBytes - nextChunk) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
-            "${limits.purpose.displayName} decompressed length exceeds limit ${limits.maxDecompressedBytes}.",
+            "Decompressed length exceeds limit ${limits.maxDecompressedBytes}.",
         )
     }
     return current + nextChunk
@@ -101,12 +53,6 @@ internal fun checkedDecompressedSize(current: Int, nextChunk: Int, limits: Decod
 
 internal fun decompressionFailed(message: String, cause: Throwable? = null): Nothing =
     throw pmTilesException(PmTilesErrorCode.DecompressionFailed, message, cause)
-
-private fun unsupportedCompression(compression: Compression, limits: DecodeLimits): Nothing =
-    throw pmTilesException(
-        PmTilesErrorCode.UnsupportedCompression,
-        "${limits.purpose.displayName} compression code ${compression.code} is not supported.",
-    )
 
 internal val DecodePurpose.displayName: String
     get() =

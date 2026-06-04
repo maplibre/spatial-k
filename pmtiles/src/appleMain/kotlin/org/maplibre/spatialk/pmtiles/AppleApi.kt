@@ -24,6 +24,30 @@ public interface ByteRangeDataSource {
     public suspend fun read(offset: ULong, length: Int): NSData
 }
 
+/** Apple-friendly decompressor that uses [NSData] payloads. */
+public interface DataDecompressor {
+    /**
+     * Returns decompressed [data].
+     *
+     * Implementations should enforce [limits] while decoding. The reader also validates the
+     * returned byte count before using it.
+     */
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun decompress(data: NSData, limits: DecompressionLimits): NSData
+}
+
+/** Returns a copy of these options with [decompressor] registered for [compression]. */
+public fun ArchiveOpenOptions.withDecompressor(
+    compression: Compression,
+    decompressor: DataDecompressor,
+): ArchiveOpenOptions =
+    withDecompressor(
+        compression,
+        Decompressor { bytes, limits ->
+            decompressor.decompress(bytes.toNSData(), limits).toByteArray()
+        },
+    )
+
 @OptIn(ExperimentalObjCName::class)
 @ObjCName(name = "open", swiftName = "open")
 @Throws(PmTilesException::class, CancellationException::class)

@@ -51,17 +51,6 @@ final enum class org.maplibre.spatialk.pmtiles/PmTilesErrorCode : kotlin/Enum<or
     final fun values(): kotlin/Array<org.maplibre.spatialk.pmtiles/PmTilesErrorCode> // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.values|values#static(){}[0]
 }
 
-final enum class org.maplibre.spatialk.pmtiles/TileReadMode : kotlin/Enum<org.maplibre.spatialk.pmtiles/TileReadMode> { // org.maplibre.spatialk.pmtiles/TileReadMode|null[0]
-    enum entry CompressedBytes // org.maplibre.spatialk.pmtiles/TileReadMode.CompressedBytes|null[0]
-    enum entry DecompressedBytes // org.maplibre.spatialk.pmtiles/TileReadMode.DecompressedBytes|null[0]
-
-    final val entries // org.maplibre.spatialk.pmtiles/TileReadMode.entries|#static{}entries[0]
-        final fun <get-entries>(): kotlin.enums/EnumEntries<org.maplibre.spatialk.pmtiles/TileReadMode> // org.maplibre.spatialk.pmtiles/TileReadMode.entries.<get-entries>|<get-entries>#static(){}[0]
-
-    final fun valueOf(kotlin/String): org.maplibre.spatialk.pmtiles/TileReadMode // org.maplibre.spatialk.pmtiles/TileReadMode.valueOf|valueOf#static(kotlin.String){}[0]
-    final fun values(): kotlin/Array<org.maplibre.spatialk.pmtiles/TileReadMode> // org.maplibre.spatialk.pmtiles/TileReadMode.values|values#static(){}[0]
-}
-
 final enum class org.maplibre.spatialk.pmtiles/ValidationMode : kotlin/Enum<org.maplibre.spatialk.pmtiles/ValidationMode> { // org.maplibre.spatialk.pmtiles/ValidationMode|null[0]
     enum entry Lenient // org.maplibre.spatialk.pmtiles/ValidationMode.Lenient|null[0]
     enum entry Strict // org.maplibre.spatialk.pmtiles/ValidationMode.Strict|null[0]
@@ -71,6 +60,10 @@ final enum class org.maplibre.spatialk.pmtiles/ValidationMode : kotlin/Enum<org.
 
     final fun valueOf(kotlin/String): org.maplibre.spatialk.pmtiles/ValidationMode // org.maplibre.spatialk.pmtiles/ValidationMode.valueOf|valueOf#static(kotlin.String){}[0]
     final fun values(): kotlin/Array<org.maplibre.spatialk.pmtiles/ValidationMode> // org.maplibre.spatialk.pmtiles/ValidationMode.values|values#static(){}[0]
+}
+
+abstract fun interface org.maplibre.spatialk.pmtiles/Decompressor { // org.maplibre.spatialk.pmtiles/Decompressor|null[0]
+    abstract suspend fun decompress(kotlin/ByteArray, org.maplibre.spatialk.pmtiles/DecompressionLimits): kotlin/ByteArray // org.maplibre.spatialk.pmtiles/Decompressor.decompress|decompress(kotlin.ByteArray;org.maplibre.spatialk.pmtiles.DecompressionLimits){}[0]
 }
 
 abstract interface org.maplibre.spatialk.pmtiles/ByteRangeSource { // org.maplibre.spatialk.pmtiles/ByteRangeSource|null[0]
@@ -207,22 +200,16 @@ final class org.maplibre.spatialk.pmtiles/ArchiveMetadata { // org.maplibre.spat
 }
 
 final class org.maplibre.spatialk.pmtiles/ArchiveOpenOptions { // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions|null[0]
-    constructor <init>(org.maplibre.spatialk.pmtiles/ValidationMode = ..., org.maplibre.spatialk.pmtiles/TileReadMode = ..., org.maplibre.spatialk.pmtiles/ArchiveLimits = ...) // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.<init>|<init>(org.maplibre.spatialk.pmtiles.ValidationMode;org.maplibre.spatialk.pmtiles.TileReadMode;org.maplibre.spatialk.pmtiles.ArchiveLimits){}[0]
+    constructor <init>(org.maplibre.spatialk.pmtiles/ValidationMode = ..., org.maplibre.spatialk.pmtiles/ArchiveLimits = ...) // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.<init>|<init>(org.maplibre.spatialk.pmtiles.ValidationMode;org.maplibre.spatialk.pmtiles.ArchiveLimits){}[0]
 
     final val limits // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.limits|{}limits[0]
         final fun <get-limits>(): org.maplibre.spatialk.pmtiles/ArchiveLimits // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.limits.<get-limits>|<get-limits>(){}[0]
-    final val tileReadMode // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.tileReadMode|{}tileReadMode[0]
-        final fun <get-tileReadMode>(): org.maplibre.spatialk.pmtiles/TileReadMode // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.tileReadMode.<get-tileReadMode>|<get-tileReadMode>(){}[0]
     final val validationMode // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.validationMode|{}validationMode[0]
         final fun <get-validationMode>(): org.maplibre.spatialk.pmtiles/ValidationMode // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.validationMode.<get-validationMode>|<get-validationMode>(){}[0]
 
-    final fun component1(): org.maplibre.spatialk.pmtiles/ValidationMode // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.component1|component1(){}[0]
-    final fun component2(): org.maplibre.spatialk.pmtiles/TileReadMode // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.component2|component2(){}[0]
-    final fun component3(): org.maplibre.spatialk.pmtiles/ArchiveLimits // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.component3|component3(){}[0]
-    final fun copy(org.maplibre.spatialk.pmtiles/ValidationMode = ..., org.maplibre.spatialk.pmtiles/TileReadMode = ..., org.maplibre.spatialk.pmtiles/ArchiveLimits = ...): org.maplibre.spatialk.pmtiles/ArchiveOpenOptions // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.copy|copy(org.maplibre.spatialk.pmtiles.ValidationMode;org.maplibre.spatialk.pmtiles.TileReadMode;org.maplibre.spatialk.pmtiles.ArchiveLimits){}[0]
-    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.equals|equals(kotlin.Any?){}[0]
-    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.hashCode|hashCode(){}[0]
+    final fun copy(org.maplibre.spatialk.pmtiles/ValidationMode = ..., org.maplibre.spatialk.pmtiles/ArchiveLimits = ...): org.maplibre.spatialk.pmtiles/ArchiveOpenOptions // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.copy|copy(org.maplibre.spatialk.pmtiles.ValidationMode;org.maplibre.spatialk.pmtiles.ArchiveLimits){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.toString|toString(){}[0]
+    final fun withDecompressor(org.maplibre.spatialk.pmtiles/Compression, org.maplibre.spatialk.pmtiles/Decompressor): org.maplibre.spatialk.pmtiles/ArchiveOpenOptions // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.withDecompressor|withDecompressor(org.maplibre.spatialk.pmtiles.Compression;org.maplibre.spatialk.pmtiles.Decompressor){}[0]
 
     final object Companion { // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.Companion|null[0]
         final val Default // org.maplibre.spatialk.pmtiles/ArchiveOpenOptions.Companion.Default|{}Default[0]
@@ -348,6 +335,22 @@ final class org.maplibre.spatialk.pmtiles/Compression { // org.maplibre.spatialk
     }
 }
 
+final class org.maplibre.spatialk.pmtiles/DecompressionLimits { // org.maplibre.spatialk.pmtiles/DecompressionLimits|null[0]
+    constructor <init>(kotlin/Int, kotlin/Int) // org.maplibre.spatialk.pmtiles/DecompressionLimits.<init>|<init>(kotlin.Int;kotlin.Int){}[0]
+
+    final val maxCompressedBytes // org.maplibre.spatialk.pmtiles/DecompressionLimits.maxCompressedBytes|{}maxCompressedBytes[0]
+        final fun <get-maxCompressedBytes>(): kotlin/Int // org.maplibre.spatialk.pmtiles/DecompressionLimits.maxCompressedBytes.<get-maxCompressedBytes>|<get-maxCompressedBytes>(){}[0]
+    final val maxDecompressedBytes // org.maplibre.spatialk.pmtiles/DecompressionLimits.maxDecompressedBytes|{}maxDecompressedBytes[0]
+        final fun <get-maxDecompressedBytes>(): kotlin/Int // org.maplibre.spatialk.pmtiles/DecompressionLimits.maxDecompressedBytes.<get-maxDecompressedBytes>|<get-maxDecompressedBytes>(){}[0]
+
+    final fun component1(): kotlin/Int // org.maplibre.spatialk.pmtiles/DecompressionLimits.component1|component1(){}[0]
+    final fun component2(): kotlin/Int // org.maplibre.spatialk.pmtiles/DecompressionLimits.component2|component2(){}[0]
+    final fun copy(kotlin/Int = ..., kotlin/Int = ...): org.maplibre.spatialk.pmtiles/DecompressionLimits // org.maplibre.spatialk.pmtiles/DecompressionLimits.copy|copy(kotlin.Int;kotlin.Int){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/DecompressionLimits.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/DecompressionLimits.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/DecompressionLimits.toString|toString(){}[0]
+}
+
 final class org.maplibre.spatialk.pmtiles/HeaderCounts { // org.maplibre.spatialk.pmtiles/HeaderCounts|null[0]
     constructor <init>(kotlin/ULong?, kotlin/ULong?, kotlin/ULong?, kotlin/ULong, kotlin/ULong, kotlin/ULong) // org.maplibre.spatialk.pmtiles/HeaderCounts.<init>|<init>(kotlin.ULong?;kotlin.ULong?;kotlin.ULong?;kotlin.ULong;kotlin.ULong;kotlin.ULong){}[0]
 
@@ -418,6 +421,9 @@ final class org.maplibre.spatialk.pmtiles/PmTilesArchive : kotlin/AutoCloseable 
     final suspend fun getTile(org.maplibre.spatialk.pmtiles/TileCoord): org.maplibre.spatialk.pmtiles/ArchiveTile? // org.maplibre.spatialk.pmtiles/PmTilesArchive.getTile|getTile(org.maplibre.spatialk.pmtiles.TileCoord){}[0]
     final suspend fun getTileById(kotlin/Long): org.maplibre.spatialk.pmtiles/ArchiveTile? // org.maplibre.spatialk.pmtiles/PmTilesArchive.getTileById|getTileById(kotlin.Long){}[0]
     final suspend fun getTileCompressed(kotlin/Int, kotlin/Int, kotlin/Int): org.maplibre.spatialk.pmtiles/ArchiveTile? // org.maplibre.spatialk.pmtiles/PmTilesArchive.getTileCompressed|getTileCompressed(kotlin.Int;kotlin.Int;kotlin.Int){}[0]
+    final suspend fun getTileDecompressed(kotlin/Int, kotlin/Int, kotlin/Int): org.maplibre.spatialk.pmtiles/ArchiveTile? // org.maplibre.spatialk.pmtiles/PmTilesArchive.getTileDecompressed|getTileDecompressed(kotlin.Int;kotlin.Int;kotlin.Int){}[0]
+    final suspend fun getTileDecompressed(org.maplibre.spatialk.pmtiles/TileCoord): org.maplibre.spatialk.pmtiles/ArchiveTile? // org.maplibre.spatialk.pmtiles/PmTilesArchive.getTileDecompressed|getTileDecompressed(org.maplibre.spatialk.pmtiles.TileCoord){}[0]
+    final suspend fun getTileDecompressedById(kotlin/Long): org.maplibre.spatialk.pmtiles/ArchiveTile? // org.maplibre.spatialk.pmtiles/PmTilesArchive.getTileDecompressedById|getTileDecompressedById(kotlin.Long){}[0]
     final suspend fun getTileRange(kotlin/Int, kotlin/Int, kotlin/Int): org.maplibre.spatialk.pmtiles/TileRange? // org.maplibre.spatialk.pmtiles/PmTilesArchive.getTileRange|getTileRange(kotlin.Int;kotlin.Int;kotlin.Int){}[0]
     final suspend fun metadata(): org.maplibre.spatialk.pmtiles/ArchiveMetadata // org.maplibre.spatialk.pmtiles/PmTilesArchive.metadata|metadata(){}[0]
     final suspend fun rawMetadataJson(): kotlin/String // org.maplibre.spatialk.pmtiles/PmTilesArchive.rawMetadataJson|rawMetadataJson(){}[0]
@@ -563,8 +569,16 @@ abstract interface org.maplibre.spatialk.pmtiles/ByteRangeDataSource { // org.ma
 }
 
 // Targets: [apple]
+abstract interface org.maplibre.spatialk.pmtiles/DataDecompressor { // org.maplibre.spatialk.pmtiles/DataDecompressor|null[0]
+    abstract suspend fun decompress(platform.Foundation/NSData, org.maplibre.spatialk.pmtiles/DecompressionLimits): platform.Foundation/NSData // org.maplibre.spatialk.pmtiles/DataDecompressor.decompress|decompress(platform.Foundation.NSData;org.maplibre.spatialk.pmtiles.DecompressionLimits){}[0]
+}
+
+// Targets: [apple]
 final val org.maplibre.spatialk.pmtiles/data // org.maplibre.spatialk.pmtiles/data|@org.maplibre.spatialk.pmtiles.ArchiveTile{}data[0]
     final fun (org.maplibre.spatialk.pmtiles/ArchiveTile).<get-data>(): platform.Foundation/NSData // org.maplibre.spatialk.pmtiles/data.<get-data>|<get-data>@org.maplibre.spatialk.pmtiles.ArchiveTile(){}[0]
+
+// Targets: [apple]
+final fun (org.maplibre.spatialk.pmtiles/ArchiveOpenOptions).org.maplibre.spatialk.pmtiles/withDecompressor(org.maplibre.spatialk.pmtiles/Compression, org.maplibre.spatialk.pmtiles/DataDecompressor): org.maplibre.spatialk.pmtiles/ArchiveOpenOptions // org.maplibre.spatialk.pmtiles/withDecompressor|withDecompressor@org.maplibre.spatialk.pmtiles.ArchiveOpenOptions(org.maplibre.spatialk.pmtiles.Compression;org.maplibre.spatialk.pmtiles.DataDecompressor){}[0]
 
 // Targets: [apple]
 final suspend fun (org.maplibre.spatialk.pmtiles/PmTilesArchive.Companion).org.maplibre.spatialk.pmtiles/open(org.maplibre.spatialk.pmtiles/ByteRangeDataSource, org.maplibre.spatialk.pmtiles/ArchiveOpenOptions = ...): org.maplibre.spatialk.pmtiles/PmTilesArchive // org.maplibre.spatialk.pmtiles/open|open@org.maplibre.spatialk.pmtiles.PmTilesArchive.Companion(org.maplibre.spatialk.pmtiles.ByteRangeDataSource;org.maplibre.spatialk.pmtiles.ArchiveOpenOptions){}[0]

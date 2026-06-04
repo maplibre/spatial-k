@@ -6,13 +6,23 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlinx.coroutines.test.runTest
 import org.maplibre.spatialk.pmtiles.Compression
+import org.maplibre.spatialk.pmtiles.DecompressionLimits
+import org.maplibre.spatialk.pmtiles.Decompressor
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 import org.maplibre.spatialk.pmtiles.PmTilesException
+import org.maplibre.spatialk.pmtiles.decompress
+import org.maplibre.spatialk.pmtiles.platformDefaultDecompressors
 
 class CompressionTest {
     @Test
     fun decodesNone() = runTest {
-        val decoded = decodeCompression(Compression.None, helloBytes, testDecodeLimits())
+        val decoded =
+            platformDefaultDecompressors()
+                .decompress(
+                    Compression.None,
+                    helloBytes,
+                    testDecodeLimits(),
+                )
 
         assertContentEquals(helloBytes, decoded)
     }
@@ -21,11 +31,12 @@ class CompressionTest {
     fun noneEnforcesCompressedLimit() = runTest {
         val error =
             assertFailsWith<PmTilesException> {
-                decodeCompression(
-                    Compression.None,
-                    helloBytes,
-                    testDecodeLimits(maxCompressedBytes = helloBytes.size - 1),
-                )
+                platformDefaultDecompressors()
+                    .decompress(
+                        Compression.None,
+                        helloBytes,
+                        testDecodeLimits(maxCompressedBytes = helloBytes.size - 1),
+                    )
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
@@ -35,11 +46,12 @@ class CompressionTest {
     fun noneEnforcesDecompressedLimit() = runTest {
         val error =
             assertFailsWith<PmTilesException> {
-                decodeCompression(
-                    Compression.None,
-                    helloBytes,
-                    testDecodeLimits(maxDecompressedBytes = helloBytes.size - 1),
-                )
+                platformDefaultDecompressors()
+                    .decompress(
+                        Compression.None,
+                        helloBytes,
+                        testDecodeLimits(maxDecompressedBytes = helloBytes.size - 1),
+                    )
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
@@ -47,14 +59,26 @@ class CompressionTest {
 
     @Test
     fun decodesGzip() = runTest {
-        val decoded = decodeCompression(Compression.Gzip, helloGzipBytes, testDecodeLimits())
+        val decoded =
+            platformDefaultDecompressors()
+                .decompress(
+                    Compression.Gzip,
+                    helloGzipBytes,
+                    testDecodeLimits(),
+                )
 
         assertContentEquals(helloBytes, decoded)
     }
 
     @Test
     fun decodesEmptyGzip() = runTest {
-        val decoded = decodeCompression(Compression.Gzip, emptyGzipBytes, testDecodeLimits())
+        val decoded =
+            platformDefaultDecompressors()
+                .decompress(
+                    Compression.Gzip,
+                    emptyGzipBytes,
+                    testDecodeLimits(),
+                )
 
         assertContentEquals(ByteArray(0), decoded)
     }
@@ -63,7 +87,12 @@ class CompressionTest {
     fun rejectsTruncatedGzip() = runTest {
         val error =
             assertFailsWith<PmTilesException> {
-                decodeCompression(Compression.Gzip, helloGzipBytes.copyOf(12), testDecodeLimits())
+                platformDefaultDecompressors()
+                    .decompress(
+                        Compression.Gzip,
+                        helloGzipBytes.copyOf(12),
+                        testDecodeLimits(),
+                    )
             }
 
         assertEquals(PmTilesErrorCode.DecompressionFailed, error.code)
@@ -73,7 +102,12 @@ class CompressionTest {
     fun rejectsInvalidGzip() = runTest {
         val error =
             assertFailsWith<PmTilesException> {
-                decodeCompression(Compression.Gzip, byteArrayOf(1, 2, 3), testDecodeLimits())
+                platformDefaultDecompressors()
+                    .decompress(
+                        Compression.Gzip,
+                        byteArrayOf(1, 2, 3),
+                        testDecodeLimits(),
+                    )
             }
 
         assertEquals(PmTilesErrorCode.DecompressionFailed, error.code)
@@ -83,11 +117,12 @@ class CompressionTest {
     fun gzipEnforcesDecompressedLimit() = runTest {
         val error =
             assertFailsWith<PmTilesException> {
-                decodeCompression(
-                    Compression.Gzip,
-                    helloGzipBytes,
-                    testDecodeLimits(maxDecompressedBytes = helloBytes.size - 1),
-                )
+                platformDefaultDecompressors()
+                    .decompress(
+                        Compression.Gzip,
+                        helloGzipBytes,
+                        testDecodeLimits(maxDecompressedBytes = helloBytes.size - 1),
+                    )
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
@@ -97,11 +132,12 @@ class CompressionTest {
     fun gzipBombFailsOnLimitBeforeTrailingCorruption() = runTest {
         val error =
             assertFailsWith<PmTilesException> {
-                decodeCompression(
-                    Compression.Gzip,
-                    truncatedGzipBombBytes(decompressedBytes = 4096),
-                    testDecodeLimits(maxDecompressedBytes = 1024),
-                )
+                platformDefaultDecompressors()
+                    .decompress(
+                        Compression.Gzip,
+                        truncatedGzipBombBytes(decompressedBytes = 4096),
+                        testDecodeLimits(maxDecompressedBytes = 1024),
+                    )
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
@@ -118,7 +154,12 @@ class CompressionTest {
             .forEach { compression ->
                 val error =
                     assertFailsWith<PmTilesException> {
-                        decodeCompression(compression, helloBytes, testDecodeLimits())
+                        platformDefaultDecompressors()
+                            .decompress(
+                                compression,
+                                helloBytes,
+                                testDecodeLimits(),
+                            )
                     }
 
                 assertEquals(PmTilesErrorCode.UnsupportedCompression, error.code)
@@ -129,10 +170,63 @@ class CompressionTest {
     fun rejectsNegativeDecodeLimits() = runTest {
         val error =
             assertFailsWith<PmTilesException> {
-                decodeCompression(
-                    Compression.None,
-                    helloBytes,
-                    testDecodeLimits(maxCompressedBytes = -1),
+                platformDefaultDecompressors()
+                    .decompress(
+                        Compression.None,
+                        helloBytes,
+                        testDecodeLimits(maxCompressedBytes = -1),
+                    )
+            }
+
+        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+    }
+
+    @Test
+    fun customDecompressorsOverrideDefaultEntriesByCompressionCode() = runTest {
+        val decodedBytes = byteArrayOf(4, 5, 6)
+        val decompressors =
+            platformDefaultDecompressors() +
+                mapOf(Compression.None to Decompressor { _, _ -> decodedBytes })
+
+        val decoded =
+            decompressors.decompress(
+                Compression.None,
+                byteArrayOf(1, 2, 3),
+                DecompressionLimits(maxCompressedBytes = 3, maxDecompressedBytes = 3),
+            )
+
+        assertContentEquals(decodedBytes, decoded)
+        assertEquals(true, Compression.Gzip in decompressors)
+    }
+
+    @Test
+    fun customDecompressorsCanAddCompressionCodes() = runTest {
+        val decodedBytes = byteArrayOf(4, 5, 6)
+        val decompressors =
+            platformDefaultDecompressors() +
+                mapOf(Compression.Brotli to Decompressor { _, _ -> decodedBytes })
+
+        val decoded =
+            decompressors.decompress(
+                Compression.Brotli,
+                byteArrayOf(1, 2, 3),
+                DecompressionLimits(maxCompressedBytes = 3, maxDecompressedBytes = 3),
+            )
+
+        assertContentEquals(decodedBytes, decoded)
+        assertEquals(true, Compression.Brotli in decompressors)
+    }
+
+    @Test
+    fun registryEnforcesCustomDecompressedLimit() = runTest {
+        val decompressors = mapOf(Compression.Brotli to Decompressor { _, _ -> byteArrayOf(1, 2) })
+
+        val error =
+            assertFailsWith<PmTilesException> {
+                decompressors.decompress(
+                    Compression.Brotli,
+                    byteArrayOf(1),
+                    DecompressionLimits(maxCompressedBytes = 1, maxDecompressedBytes = 1),
                 )
             }
 

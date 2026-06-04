@@ -1,13 +1,7 @@
 package org.maplibre.spatialk.pmtiles
 
-/** Tile payload read mode. */
-public enum class TileReadMode {
-    /** Return tile payload bytes exactly as stored in the archive. */
-    CompressedBytes,
-
-    /** Return decompressed tile payload bytes. */
-    DecompressedBytes,
-}
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 /** Archive validation mode. */
 public enum class ValidationMode {
@@ -82,14 +76,50 @@ public data class ArchiveLimits(
  * Options used when opening a PMTiles archive.
  *
  * @property validationMode Validation behavior for archive parsing and traversal.
- * @property tileReadMode Default behavior for tile payload reads.
  * @property limits Operational read limits.
  */
-public data class ArchiveOpenOptions(
-    public val validationMode: ValidationMode = ValidationMode.Strict,
-    public val tileReadMode: TileReadMode = TileReadMode.CompressedBytes,
-    public val limits: ArchiveLimits = ArchiveLimits.Default,
+public class ArchiveOpenOptions
+private constructor(
+    public val validationMode: ValidationMode,
+    public val limits: ArchiveLimits,
+    internal val decompressors: Map<Compression, Decompressor>,
 ) {
+    public constructor(
+        validationMode: ValidationMode = ValidationMode.Strict,
+        limits: ArchiveLimits = ArchiveLimits.Default,
+    ) : this(
+        validationMode = validationMode,
+        limits = limits,
+        decompressors = emptyMap(),
+    )
+
+    /** Returns a copy of these options with [validationMode] and [limits]. */
+    public fun copy(
+        validationMode: ValidationMode = this.validationMode,
+        limits: ArchiveLimits = this.limits,
+    ): ArchiveOpenOptions =
+        ArchiveOpenOptions(
+            validationMode = validationMode,
+            limits = limits,
+            decompressors = decompressors,
+        )
+
+    /** Returns a copy of these options with [decompressor] registered for [compression]. */
+    @OptIn(ExperimentalObjCRefinement::class)
+    @HiddenFromObjC
+    public fun withDecompressor(
+        compression: Compression,
+        decompressor: Decompressor,
+    ): ArchiveOpenOptions =
+        ArchiveOpenOptions(
+            validationMode = validationMode,
+            limits = limits,
+            decompressors = decompressors + (compression to decompressor),
+        )
+
+    override fun toString(): String =
+        "ArchiveOpenOptions(validationMode=$validationMode, limits=$limits, decompressors=$decompressors)"
+
     /** Common open option presets. */
     public companion object {
         /** Strict validation with compressed tile bytes. */

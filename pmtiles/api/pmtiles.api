@@ -96,20 +96,14 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveMetadata {
 
 public final class org/maplibre/spatialk/pmtiles/ArchiveOpenOptions {
 	public static final field Companion Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions$Companion;
-	public fun <init> ()V
-	public fun <init> (Lorg/maplibre/spatialk/pmtiles/ValidationMode;Lorg/maplibre/spatialk/pmtiles/TileReadMode;Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;)V
-	public synthetic fun <init> (Lorg/maplibre/spatialk/pmtiles/ValidationMode;Lorg/maplibre/spatialk/pmtiles/TileReadMode;Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()Lorg/maplibre/spatialk/pmtiles/ValidationMode;
-	public final fun component2 ()Lorg/maplibre/spatialk/pmtiles/TileReadMode;
-	public final fun component3 ()Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;
-	public final fun copy (Lorg/maplibre/spatialk/pmtiles/ValidationMode;Lorg/maplibre/spatialk/pmtiles/TileReadMode;Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;)Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;
-	public static synthetic fun copy$default (Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;Lorg/maplibre/spatialk/pmtiles/ValidationMode;Lorg/maplibre/spatialk/pmtiles/TileReadMode;Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;ILjava/lang/Object;)Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;
-	public fun equals (Ljava/lang/Object;)Z
+	public fun <init> (Lorg/maplibre/spatialk/pmtiles/ValidationMode;Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;)V
+	public synthetic fun <init> (Lorg/maplibre/spatialk/pmtiles/ValidationMode;Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun copy (Lorg/maplibre/spatialk/pmtiles/ValidationMode;Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;)Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;Lorg/maplibre/spatialk/pmtiles/ValidationMode;Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;ILjava/lang/Object;)Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;
 	public final fun getLimits ()Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;
-	public final fun getTileReadMode ()Lorg/maplibre/spatialk/pmtiles/TileReadMode;
 	public final fun getValidationMode ()Lorg/maplibre/spatialk/pmtiles/ValidationMode;
-	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+	public final fun withDecompressor (Lorg/maplibre/spatialk/pmtiles/Compression;Lorg/maplibre/spatialk/pmtiles/Decompressor;)Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;
 }
 
 public final class org/maplibre/spatialk/pmtiles/ArchiveOpenOptions$Companion {
@@ -226,6 +220,23 @@ public final class org/maplibre/spatialk/pmtiles/Compression$Companion {
 	public final fun getZstd ()Lorg/maplibre/spatialk/pmtiles/Compression;
 }
 
+public final class org/maplibre/spatialk/pmtiles/DecompressionLimits {
+	public fun <init> (II)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun copy (II)Lorg/maplibre/spatialk/pmtiles/DecompressionLimits;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/pmtiles/DecompressionLimits;IIILjava/lang/Object;)Lorg/maplibre/spatialk/pmtiles/DecompressionLimits;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaxCompressedBytes ()I
+	public final fun getMaxDecompressedBytes ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class org/maplibre/spatialk/pmtiles/Decompressor {
+	public abstract fun decompress ([BLorg/maplibre/spatialk/pmtiles/DecompressionLimits;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class org/maplibre/spatialk/pmtiles/HeaderCounts {
 	public synthetic fun <init> (Lkotlin/ULong;Lkotlin/ULong;Lkotlin/ULong;JJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-6VbMDqA ()Lkotlin/ULong;
@@ -276,6 +287,9 @@ public final class org/maplibre/spatialk/pmtiles/PmTilesArchive : java/lang/Auto
 	public final fun getTileById (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun getTileCompressed (IIILkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun getTileCompression ()Lorg/maplibre/spatialk/pmtiles/Compression;
+	public final fun getTileDecompressed (IIILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getTileDecompressed (Lorg/maplibre/spatialk/pmtiles/TileCoord;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getTileDecompressedById (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun getTileRange (IIILkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun getTileType ()Lorg/maplibre/spatialk/pmtiles/TileType;
 	public final fun getWarningCount ()I
@@ -376,14 +390,6 @@ public final class org/maplibre/spatialk/pmtiles/TileRange {
 	public final fun getTileType ()Lorg/maplibre/spatialk/pmtiles/TileType;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/maplibre/spatialk/pmtiles/TileReadMode : java/lang/Enum {
-	public static final field CompressedBytes Lorg/maplibre/spatialk/pmtiles/TileReadMode;
-	public static final field DecompressedBytes Lorg/maplibre/spatialk/pmtiles/TileReadMode;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lorg/maplibre/spatialk/pmtiles/TileReadMode;
-	public static fun values ()[Lorg/maplibre/spatialk/pmtiles/TileReadMode;
 }
 
 public final class org/maplibre/spatialk/pmtiles/TileType {

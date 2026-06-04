@@ -20,7 +20,6 @@ import org.maplibre.spatialk.pmtiles.internal.DirectoryEntry
 import org.maplibre.spatialk.pmtiles.internal.DirectoryResolver
 import org.maplibre.spatialk.pmtiles.internal.FIRST_READ_BYTES
 import org.maplibre.spatialk.pmtiles.internal.allocationLength
-import org.maplibre.spatialk.pmtiles.internal.decodeCompression
 import org.maplibre.spatialk.pmtiles.internal.decodeDirectory
 import org.maplibre.spatialk.pmtiles.internal.parseHeaderForOpen
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
@@ -46,11 +45,13 @@ private constructor(
     initialWarnings: List<ArchiveWarning>,
 ) : AutoCloseable {
     private val state = ArchiveReadState(initialWarnings)
+    private val decompressors = options.effectiveDecompressors()
     private val directoryResolver =
         DirectoryResolver(
             header = header,
             source = source,
             options = options,
+            decompressors = decompressors,
             archiveSize = archiveSize,
             rootDirectory = rootDirectory,
             state = state,
@@ -88,7 +89,7 @@ private constructor(
                         maxBytes = options.limits.maxMetadataBytes,
                     )
                 val metadataBytes =
-                    decodeCompression(
+                    decompressors.decompress(
                         header.internalCompression,
                         compressedBytes,
                         DecodeLimits(
@@ -121,7 +122,6 @@ private constructor(
         return readTile(
             tileId = TileIds.fromZxy(z, x, y),
             coord = TileCoord(z = z, x = x, y = y),
-            readMode = options.tileReadMode,
         )
     }
 
@@ -135,7 +135,6 @@ private constructor(
         return readTile(
             tileId = tileId,
             coord = TileIds.toZxy(tileId),
-            readMode = options.tileReadMode,
         )
     }
 
@@ -156,9 +155,33 @@ private constructor(
         return readTile(
             tileId = TileIds.fromZxy(z, x, y),
             coord = TileCoord(z = z, x = x, y = y),
-            readMode = TileReadMode.CompressedBytes,
         )
     }
+
+    /** Returns decompressed tile bytes for the tile at [z], [x], and [y]. */
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun getTileDecompressed(z: Int, x: Int, y: Int): ArchiveTile? {
+        TileIds.validateZxy(z, x, y)
+        return readTile(
+                tileId = TileIds.fromZxy(z, x, y),
+                coord = TileCoord(z = z, x = x, y = y),
+            )
+            ?.decompressed()
+    }
+
+    /** Returns decompressed tile bytes for [coord], or null when absent. */
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun getTileDecompressed(coord: TileCoord): ArchiveTile? =
+        getTileDecompressed(coord.z, coord.x, coord.y)
+
+    /** Returns decompressed tile bytes for [tileId], or null when absent. */
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun getTileDecompressedById(tileId: Long): ArchiveTile? =
+        readTile(
+                tileId = tileId,
+                coord = TileIds.toZxy(tileId),
+            )
+            ?.decompressed()
 
     /** Returns true when the archive contains a tile at [z], [x], and [y]. */
     @Throws(PmTilesException::class, CancellationException::class)
@@ -184,14 +207,9 @@ private constructor(
     private suspend fun readTile(
         tileId: Long,
         coord: TileCoord,
-        readMode: TileReadMode,
     ): ArchiveTile? {
         val range = directoryResolver.findTileRange(tileId, coord) ?: return null
-        val compressedTile = readCompressedTile(range)
-        return when (readMode) {
-            TileReadMode.CompressedBytes -> compressedTile
-            TileReadMode.DecompressedBytes -> compressedTile.decompressed()
-        }
+        return readCompressedTile(range)
     }
 
     private suspend fun readCompressedTile(range: TileRange): ArchiveTile {
@@ -217,7 +235,7 @@ private constructor(
         if (compression == Compression.None) return this
 
         val decompressedBytes =
-            decodeCompression(
+            decompressors.decompress(
                 compression,
                 bytes,
                 DecodeLimits(
@@ -336,9 +354,10 @@ private constructor(
                 )
             val parsedHeader = parseHeaderForOpen(initialBytes, sourceSize, options.validationMode)
             val header = parsedHeader.header
+            val decompressors = options.effectiveDecompressors()
             val compressedRoot = initialBytes.slice(header.rootDirectory, options.limits)
             val rootDirectoryBytes =
-                decodeCompression(
+                decompressors.decompress(
                     header.internalCompression,
                     compressedRoot,
                     DecodeLimits(

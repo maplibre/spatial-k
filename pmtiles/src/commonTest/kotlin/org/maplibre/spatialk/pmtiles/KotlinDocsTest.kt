@@ -49,9 +49,8 @@ class KotlinDocsTest {
         val source = loadPmTilesBytes().asByteRangeSource()
 
         // --8<-- [start:decompressedTiles]
-        val options = ArchiveOpenOptions(tileReadMode = TileReadMode.DecompressedBytes)
-        PmTilesArchive.open(source, options).use { archive ->
-            val tile = archive.getTile(z = 0, x = 0, y = 0)
+        PmTilesArchive.open(source).use { archive ->
+            val tile = archive.getTileDecompressed(z = 0, x = 0, y = 0)
         }
         // --8<-- [end:decompressedTiles]
     }

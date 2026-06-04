@@ -63,11 +63,10 @@ class FixtureConformanceTest {
             PmTilesArchive.open(
                 TestByteRangeSource(
                     readFixture("upstream/pmtiles-js-test-data/test-fixture-1.pmtiles")
-                ),
-                options = ArchiveOpenOptions(tileReadMode = TileReadMode.DecompressedBytes),
+                )
             )
 
-        val tile = assertNotNull(archive.getTile(0, 0, 0))
+        val tile = assertNotNull(archive.getTileDecompressed(0, 0, 0))
 
         assertEquals(TileType.Mvt, tile.tileType)
         assertEquals(Compression.None, tile.compression)

@@ -1,9 +1,10 @@
 package org.maplibre.spatialk.pmtiles.internal
 
+import org.maplibre.spatialk.pmtiles.DecompressionLimits
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 
-internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecodeLimits): ByteArray =
+internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLimits): ByteArray =
     throw pmTilesException(
         PmTilesErrorCode.UnsupportedCompression,
-        "${limits.purpose.displayName} gzip decompression is not supported on wasmWasi.",
+        "gzip decompression is not supported on wasmWasi.",
     )
