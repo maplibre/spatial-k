@@ -74,8 +74,8 @@ val formatted = distance.toString()  // "5000 m"
 val document = Document(
     metadata = Metadata(name = "My GPX File"),
     waypoints = listOf(
-        Waypoint(1.0, 2.0),
-        Waypoint(3.0, 4.0),
+        Waypoint(latitude = 1.0, longitude = 2.0),
+        Waypoint(latitude = 3.0, longitude = 4.0),
     ),
 )
 val gpxString = Gpx.encodeToString(document)
@@ -84,6 +84,7 @@ val gpxString = Gpx.encodeToString(document)
 ### PMTiles
 
 ```kotlin
+// Inside a suspend function or coroutine scope:
 PmTilesArchive.open(source).use { archive ->
     val header = archive.header
     val tile = archive.getDecompressedTile(z = 0, x = 0, y = 0)
