@@ -20,48 +20,6 @@ import org.maplibre.spatialk.units.LengthUnit
 import org.maplibre.spatialk.units.extensions.degrees
 
 /**
- * Result properties from [nearestPointTo] of a `Collection<Point>`.
- *
- * @property distance Distance between the input position and the point
- * @property index Index of the point in the collection
- */
-@Serializable
-public data class NearestPointProps internal constructor(val distance: Length, val index: Int) {
-    @PublishedApi
-    @Suppress("unused")
-    internal fun getDistance(unit: LengthUnit): Double = distance.toDouble(unit)
-}
-
-/**
- * Finds the nearest point in the collection to the given position.
- *
- * @param point The position to find the nearest point to.
- * @return The [Point] in the collection that is closest to the given position.
- * @throws NoSuchElementException if the collection is empty.
- */
-public fun Collection<Point>.nearestPointTo(point: Point): Feature<Point, NearestPointProps> {
-    if (this.isEmpty()) throw NoSuchElementException("No points available.")
-
-    var resultPos = Position(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)
-    var resultDistance = Length.PositiveInfinity
-    var resultIndex = -1
-
-    this.forEachIndexed { i, candidate ->
-        val distance = distance(candidate.coordinates, point.coordinates)
-        if (distance < resultDistance) {
-            resultPos = candidate.coordinates
-            resultDistance = distance
-            resultIndex = i
-        }
-    }
-
-    return Feature(
-        geometry = Point(resultPos),
-        properties = NearestPointProps(resultDistance, resultIndex),
-    )
-}
-
-/**
  * Result properties from [nearestPointTo] from a `LineString`.
  *
  * @property distance Distance between the input position and the point
