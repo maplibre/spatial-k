@@ -1,0 +1,82 @@
+@file:Suppress("UnusedVariable", "unused")
+
+package org.maplibre.spatialk.pmtiles
+
+import kotlin.test.Test
+import kotlinx.coroutines.test.runTest
+import org.maplibre.spatialk.pmtiles.internal.buildSingleTileArchive
+
+// These snippets are primarily intended to be included in documentation. Though they exist as
+// part of the test suite, they are not intended to be comprehensive tests.
+
+class KotlinDocsTest {
+    @Test
+    fun byteRangeSource() = runTest {
+        val pmTilesBytes = loadPmTilesBytes()
+
+        // --8<-- [start:byteRangeSource]
+        fun ByteArray.asByteRangeSource(): ByteRangeSource =
+            object : ByteRangeSource {
+                override suspend fun size(): ULong = this@asByteRangeSource.size.toULong()
+
+                override suspend fun read(range: ByteRange): ByteArray {
+                    val start = range.offset.toInt()
+                    return copyOfRange(start, start + range.length)
+                }
+            }
+        // --8<-- [end:byteRangeSource]
+
+        val source = pmTilesBytes.asByteRangeSource()
+        PmTilesArchive.open(source).close()
+    }
+
+    @Test
+    fun openArchive() = runTest {
+        val source = loadPmTilesBytes().asByteRangeSource()
+
+        // --8<-- [start:openArchive]
+        PmTilesArchive.open(source).use { archive ->
+            val header = archive.header
+            val metadata = archive.metadata()
+            val tile = archive.getTile(z = 0, x = 0, y = 0)
+            val tileRange = archive.getTileRange(z = 0, x = 0, y = 0)
+        }
+        // --8<-- [end:openArchive]
+    }
+
+    @Test
+    fun decompressedTiles() = runTest {
+        val source = loadPmTilesBytes().asByteRangeSource()
+
+        // --8<-- [start:decompressedTiles]
+        val options = ArchiveOpenOptions(tileReadMode = TileReadMode.DecompressedBytes)
+        PmTilesArchive.open(source, options).use { archive ->
+            val tile = archive.getTile(z = 0, x = 0, y = 0)
+        }
+        // --8<-- [end:decompressedTiles]
+    }
+
+    @Test
+    fun lenientWarnings() = runTest {
+        val source = loadPmTilesBytes().asByteRangeSource()
+
+        // --8<-- [start:lenientWarnings]
+        PmTilesArchive.open(source, ArchiveOpenOptions.Lenient).use { archive ->
+            val warning = archive.warningAt(0)
+            val allWarnings = archive.warnings()
+        }
+        // --8<-- [end:lenientWarnings]
+    }
+}
+
+private fun loadPmTilesBytes(): ByteArray = buildSingleTileArchive(tileBytes = byteArrayOf(1, 2, 3))
+
+private fun ByteArray.asByteRangeSource(): ByteRangeSource =
+    object : ByteRangeSource {
+        override suspend fun size(): ULong = this@asByteRangeSource.size.toULong()
+
+        override suspend fun read(range: ByteRange): ByteArray {
+            val start = range.offset.toInt()
+            return copyOfRange(start, start + range.length)
+        }
+    }

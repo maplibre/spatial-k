@@ -57,6 +57,8 @@ dependencies {
     dokka(project(":gpx"))
     kover(project(":gpx"))
 
+    dokka(project(":pmtiles"))
+
     dokka(project(":polyline-encoding"))
     kover(project(":polyline-encoding"))
 }

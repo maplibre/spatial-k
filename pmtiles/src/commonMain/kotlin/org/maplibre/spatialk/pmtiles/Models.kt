@@ -19,7 +19,7 @@ public interface ByteRangeSource {
     /** Returns the stable archive size in bytes. */
     @Throws(PmTilesException::class, CancellationException::class) public suspend fun size(): ULong
 
-    /** Reads exactly [range.length] bytes from [range]. */
+    /** Reads exactly the requested number of bytes from [range]. */
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun read(range: ByteRange): ByteArray
 }
