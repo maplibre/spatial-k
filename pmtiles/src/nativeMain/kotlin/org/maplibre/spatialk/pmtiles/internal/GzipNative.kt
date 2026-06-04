@@ -22,67 +22,68 @@ import platform.zlib.inflateEnd
 import platform.zlib.inflateInit2_
 import platform.zlib.z_stream
 
-internal actual fun decodeGzip(bytes: ByteArray, limits: DecodeLimits): ByteArray = memScoped {
-    if (bytes.isEmpty()) {
-        decompressionFailed("${limits.purpose.displayName} gzip input is empty.")
-    }
-
-    val stream = alloc<z_stream>()
-    val sink = BoundedByteArraySink(limits)
-    val buffer = ByteArray(GZIP_BUFFER_SIZE)
-
-    bytes.usePinned { input ->
-        stream.next_in = input.addressOf(0).reinterpret()
-        stream.avail_in = bytes.size.convert()
-
-        val initStatus =
-            inflateInit2_(
-                stream.ptr,
-                GZIP_WINDOW_BITS,
-                ZLIB_VERSION,
-                sizeOf<z_stream>().convert(),
-            )
-        if (initStatus != Z_OK) {
-            decompressionFailed(
-                "${limits.purpose.displayName} gzip initialization failed: $initStatus."
-            )
+internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecodeLimits): ByteArray =
+    memScoped {
+        if (bytes.isEmpty()) {
+            decompressionFailed("${limits.purpose.displayName} gzip input is empty.")
         }
 
-        try {
-            while (true) {
-                buffer.usePinned { output ->
-                    stream.next_out = output.addressOf(0).reinterpret()
-                    stream.avail_out = buffer.size.convert()
+        val stream = alloc<z_stream>()
+        val sink = BoundedByteArraySink(limits)
+        val buffer = ByteArray(GZIP_BUFFER_SIZE)
 
-                    val status = inflate(stream.ptr, Z_NO_FLUSH)
-                    val produced = buffer.size - stream.avail_out.toInt()
-                    sink.append(buffer, produced)
+        bytes.usePinned { input ->
+            stream.next_in = input.addressOf(0).reinterpret()
+            stream.avail_in = bytes.size.convert()
 
-                    if (status == Z_STREAM_END) return@memScoped sink.toByteArray()
-                    if (status != Z_OK) {
-                        decompressionFailed(
-                            "${limits.purpose.displayName} gzip stream failed: $status."
-                        )
-                    }
+            val initStatus =
+                inflateInit2_(
+                    stream.ptr,
+                    GZIP_WINDOW_BITS,
+                    ZLIB_VERSION,
+                    sizeOf<z_stream>().convert(),
+                )
+            if (initStatus != Z_OK) {
+                decompressionFailed(
+                    "${limits.purpose.displayName} gzip initialization failed: $initStatus."
+                )
+            }
 
-                    if (produced == 0 && stream.avail_in == 0u) {
-                        decompressionFailed(
-                            "${limits.purpose.displayName} gzip stream ended before trailer."
-                        )
+            try {
+                while (true) {
+                    buffer.usePinned { output ->
+                        stream.next_out = output.addressOf(0).reinterpret()
+                        stream.avail_out = buffer.size.convert()
+
+                        val status = inflate(stream.ptr, Z_NO_FLUSH)
+                        val produced = buffer.size - stream.avail_out.toInt()
+                        sink.append(buffer, produced)
+
+                        if (status == Z_STREAM_END) return@memScoped sink.toByteArray()
+                        if (status != Z_OK) {
+                            decompressionFailed(
+                                "${limits.purpose.displayName} gzip stream failed: $status."
+                            )
+                        }
+
+                        if (produced == 0 && stream.avail_in == 0u) {
+                            decompressionFailed(
+                                "${limits.purpose.displayName} gzip stream ended before trailer."
+                            )
+                        }
                     }
                 }
-            }
-        } finally {
-            val endStatus = inflateEnd(stream.ptr)
-            if (endStatus == Z_STREAM_ERROR || endStatus == Z_VERSION_ERROR) {
-                // zlib reports this only for a corrupted stream state; the primary error above
-                // wins.
+            } finally {
+                val endStatus = inflateEnd(stream.ptr)
+                if (endStatus == Z_STREAM_ERROR || endStatus == Z_VERSION_ERROR) {
+                    // zlib reports this only for a corrupted stream state; the primary error above
+                    // wins.
+                }
             }
         }
-    }
 
-    decompressionFailed("${limits.purpose.displayName} gzip decompression failed.")
-}
+        decompressionFailed("${limits.purpose.displayName} gzip decompression failed.")
+    }
 
 private const val GZIP_BUFFER_SIZE = 8 * 1024
 private const val MAX_WBITS = 15

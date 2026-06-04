@@ -5,13 +5,13 @@ import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
+import kotlinx.coroutines.test.runTest
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
-import org.maplibre.spatialk.pmtiles.internal.runSuspending
 import org.maplibre.spatialk.testutil.readResourceBytes
 
 class FixtureConformanceTest {
     @Test
-    fun opensValidUpstreamFixtures() = runSuspending {
+    fun opensValidUpstreamFixtures() = runTest {
         validFixtures.forEach { fixture ->
             val archive = PmTilesArchive.open(TestByteRangeSource(readFixture(fixture.path)))
 
@@ -33,7 +33,7 @@ class FixtureConformanceTest {
     }
 
     @Test
-    fun parsesFixtureMetadata() = runSuspending {
+    fun parsesFixtureMetadata() = runTest {
         val vector =
             PmTilesArchive.open(
                 TestByteRangeSource(
@@ -57,7 +57,7 @@ class FixtureConformanceTest {
     }
 
     @Test
-    fun decodesGzipMvtTileFixture() = runSuspending {
+    fun decodesGzipMvtTileFixture() = runTest {
         val archive =
             PmTilesArchive.open(
                 TestByteRangeSource(
@@ -75,7 +75,7 @@ class FixtureConformanceTest {
     }
 
     @Test
-    fun readsRasterFixtureThroughLeafDirectories() = runSuspending {
+    fun readsRasterFixtureThroughLeafDirectories() = runTest {
         val archive =
             PmTilesArchive.open(
                 TestByteRangeSource(
@@ -98,20 +98,18 @@ class FixtureConformanceTest {
     }
 
     @Test
-    fun rejectsInvalidUpstreamFixtures() {
+    fun rejectsInvalidUpstreamFixtures() = runTest {
         invalidFixtures.forEach { fixture ->
             val error =
                 assertFailsWith<PmTilesException>(fixture.path) {
-                    runSuspending {
-                        PmTilesArchive.open(TestByteRangeSource(readFixture(fixture.path)))
-                    }
+                    PmTilesArchive.open(TestByteRangeSource(readFixture(fixture.path)))
                 }
             assertEquals(fixture.errorCode, error.code, fixture.path)
         }
     }
 
     @Test
-    fun opensPinnedGeneratedGoPmtilesFixture() = runSuspending {
+    fun opensPinnedGeneratedGoPmtilesFixture() = runTest {
         val archive =
             PmTilesArchive.open(
                 TestByteRangeSource(

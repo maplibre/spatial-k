@@ -234,7 +234,7 @@ private constructor(
         )
     }
 
-    private fun ArchiveTile.decompressed(): ArchiveTile {
+    private suspend fun ArchiveTile.decompressed(): ArchiveTile {
         if (compression == Compression.None) return this
 
         val decompressedBytes =

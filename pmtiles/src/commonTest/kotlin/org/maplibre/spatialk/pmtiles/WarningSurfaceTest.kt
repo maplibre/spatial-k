@@ -3,15 +3,15 @@ package org.maplibre.spatialk.pmtiles
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlinx.coroutines.test.runTest
 import org.maplibre.spatialk.pmtiles.internal.MINIMAL_ROOT_DIRECTORY_BYTES
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
 import org.maplibre.spatialk.pmtiles.internal.TestHeaderFields
 import org.maplibre.spatialk.pmtiles.internal.buildArchiveWithSections
-import org.maplibre.spatialk.pmtiles.internal.runSuspending
 
 class WarningSurfaceTest {
     @Test
-    fun warningAccessorsReturnSnapshotsAndSupportLazyWarnings() = runSuspending {
+    fun warningAccessorsReturnSnapshotsAndSupportLazyWarnings() = runTest {
         val metadataBytes = "[]".encodeToByteArray()
         val fields =
             TestHeaderFields(

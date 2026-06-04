@@ -4,6 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
+import kotlinx.coroutines.test.runTest
 import org.maplibre.spatialk.pmtiles.internal.DirectoryEntry
 import org.maplibre.spatialk.pmtiles.internal.HEADER_BYTES
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
@@ -11,11 +12,10 @@ import org.maplibre.spatialk.pmtiles.internal.TestHeaderFields
 import org.maplibre.spatialk.pmtiles.internal.buildArchive
 import org.maplibre.spatialk.pmtiles.internal.buildArchiveWithSections
 import org.maplibre.spatialk.pmtiles.internal.encodeDirectory
-import org.maplibre.spatialk.pmtiles.internal.runSuspending
 
 class TileLookupTest {
     @Test
-    fun locatesDirectRootTileAndMissingTile() = runSuspending {
+    fun locatesDirectRootTileAndMissingTile() = runTest {
         val source = TestByteRangeSource(buildArchive())
         val archive = PmTilesArchive.open(source)
 
@@ -43,7 +43,7 @@ class TileLookupTest {
     }
 
     @Test
-    fun locatesRootRunCoverage() = runSuspending {
+    fun locatesRootRunCoverage() = runTest {
         val rootBytes =
             encodeDirectory(DirectoryEntry(tileId = 1, offset = 5uL, length = 2, runLength = 3))
         val fields =
@@ -65,7 +65,7 @@ class TileLookupTest {
     }
 
     @Test
-    fun locatesLeafTileAndCachesLeafDirectory() = runSuspending {
+    fun locatesLeafTileAndCachesLeafDirectory() = runTest {
         val leafBytes =
             encodeDirectory(DirectoryEntry(tileId = 2, offset = 3uL, length = 4, runLength = 1))
         val rootBytes =
@@ -107,7 +107,7 @@ class TileLookupTest {
     }
 
     @Test
-    fun lenientModeLocatesNestedLeafAndRecordsWarning() = runSuspending {
+    fun lenientModeLocatesNestedLeafAndRecordsWarning() = runTest {
         val tileLeafBytes =
             encodeDirectory(DirectoryEntry(tileId = 2, offset = 1uL, length = 2, runLength = 1))
         val nestedLeafOffset = 20uL
@@ -166,7 +166,7 @@ class TileLookupTest {
     }
 
     @Test
-    fun strictModeRejectsNestedLeafDirectory() {
+    fun strictModeRejectsNestedLeafDirectory() = runTest {
         val tileLeafBytes =
             encodeDirectory(DirectoryEntry(tileId = 2, offset = 1uL, length = 2, runLength = 1))
         val nestedLeafOffset = 20uL
@@ -202,27 +202,25 @@ class TileLookupTest {
 
         val error =
             assertFailsWith<PmTilesException> {
-                runSuspending {
-                    val archive =
-                        PmTilesArchive.open(
-                            TestByteRangeSource(
-                                buildArchiveWithLeafBytes(
-                                    fields = fields,
-                                    rootBytes = rootBytes,
-                                    leafBytes = leafSection,
-                                )
+                val archive =
+                    PmTilesArchive.open(
+                        TestByteRangeSource(
+                            buildArchiveWithLeafBytes(
+                                fields = fields,
+                                rootBytes = rootBytes,
+                                leafBytes = leafSection,
                             )
                         )
-                    val coord = TileIds.toZxy(2)
-                    archive.getTileRange(coord.z, coord.x, coord.y)
-                }
+                    )
+                val coord = TileIds.toZxy(2)
+                archive.getTileRange(coord.z, coord.x, coord.y)
             }
 
         assertEquals(PmTilesErrorCode.InvalidDirectory, error.code)
     }
 
     @Test
-    fun failsWhenLeafDepthLimitIsExceeded() {
+    fun failsWhenLeafDepthLimitIsExceeded() = runTest {
         val leafBytes =
             encodeDirectory(DirectoryEntry(tileId = 2, offset = 0uL, length = 1, runLength = 1))
         val rootBytes =
@@ -239,31 +237,29 @@ class TileLookupTest {
             )
         val error =
             assertFailsWith<PmTilesException> {
-                runSuspending {
-                    val archive =
-                        PmTilesArchive.open(
-                            TestByteRangeSource(
-                                buildArchiveWithLeafBytes(
-                                    fields = fields,
-                                    rootBytes = rootBytes,
-                                    leafBytes = leafBytes,
-                                )
+                val archive =
+                    PmTilesArchive.open(
+                        TestByteRangeSource(
+                            buildArchiveWithLeafBytes(
+                                fields = fields,
+                                rootBytes = rootBytes,
+                                leafBytes = leafBytes,
+                            )
+                        ),
+                        options =
+                            ArchiveOpenOptions(
+                                limits = ArchiveLimits.Default.copy(maxDirectoryDepth = 0)
                             ),
-                            options =
-                                ArchiveOpenOptions(
-                                    limits = ArchiveLimits.Default.copy(maxDirectoryDepth = 0)
-                                ),
-                        )
-                    val coord = TileIds.toZxy(2)
-                    archive.getTileRange(coord.z, coord.x, coord.y)
-                }
+                    )
+                val coord = TileIds.toZxy(2)
+                archive.getTileRange(coord.z, coord.x, coord.y)
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
     }
 
     @Test
-    fun failsWhenLookupRevisitsLeafRange() {
+    fun failsWhenLookupRevisitsLeafRange() = runTest {
         val recursiveLeafBytes =
             encodeDirectory(DirectoryEntry(tileId = 0, offset = 0uL, length = 5, runLength = 0))
         val rootBytes =
@@ -285,20 +281,18 @@ class TileLookupTest {
             )
         val error =
             assertFailsWith<PmTilesException> {
-                runSuspending {
-                    val archive =
-                        PmTilesArchive.open(
-                            TestByteRangeSource(
-                                buildArchiveWithLeafBytes(
-                                    fields = fields,
-                                    rootBytes = rootBytes,
-                                    leafBytes = recursiveLeafBytes,
-                                )
-                            ),
-                            options = ArchiveOpenOptions.Lenient,
-                        )
-                    archive.getTileRange(0, 0, 0)
-                }
+                val archive =
+                    PmTilesArchive.open(
+                        TestByteRangeSource(
+                            buildArchiveWithLeafBytes(
+                                fields = fields,
+                                rootBytes = rootBytes,
+                                leafBytes = recursiveLeafBytes,
+                            )
+                        ),
+                        options = ArchiveOpenOptions.Lenient,
+                    )
+                archive.getTileRange(0, 0, 0)
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)

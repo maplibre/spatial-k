@@ -14,11 +14,10 @@ import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
 import org.maplibre.spatialk.pmtiles.internal.TestHeaderFields
 import org.maplibre.spatialk.pmtiles.internal.buildArchiveWithSections
 import org.maplibre.spatialk.pmtiles.internal.buildSingleTileArchive
-import org.maplibre.spatialk.pmtiles.internal.runSuspending
 
 class RobustnessTest {
     @Test
-    fun hugeMetadataFails() {
+    fun hugeMetadataFails() = runTest {
         val metadataBytes = """{"name":"too large"}""".encodeToByteArray()
         val bytes =
             buildArchiveWithSections(
@@ -34,74 +33,68 @@ class RobustnessTest {
 
         val error =
             assertFailsWith<PmTilesException> {
-                runSuspending {
-                    val archive =
-                        PmTilesArchive.open(
-                            TestByteRangeSource(bytes),
-                            options =
-                                ArchiveOpenOptions(
-                                    limits =
-                                        ArchiveLimits.Default.copy(
-                                            maxMetadataBytes = metadataBytes.size - 1
-                                        )
-                                ),
-                        )
-                    archive.rawMetadataJson()
-                }
-            }
-
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
-    }
-
-    @Test
-    fun hugeDirectoryFails() {
-        val error =
-            assertFailsWith<PmTilesException> {
-                runSuspending {
+                val archive =
                     PmTilesArchive.open(
-                        TestByteRangeSource(
-                            buildArchiveWithSections(
-                                fields =
-                                    TestHeaderFields(
-                                        rootLength = MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong()
-                                    ),
-                                rootBytes = MINIMAL_ROOT_DIRECTORY_BYTES,
-                            )
-                        ),
+                        TestByteRangeSource(bytes),
                         options =
                             ArchiveOpenOptions(
                                 limits =
                                     ArchiveLimits.Default.copy(
-                                        maxDirectoryCompressedBytes =
-                                            MINIMAL_ROOT_DIRECTORY_BYTES.size - 1
+                                        maxMetadataBytes = metadataBytes.size - 1
                                     )
                             ),
                     )
-                }
+                archive.rawMetadataJson()
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
     }
 
     @Test
-    fun hugeTileFails() {
+    fun hugeDirectoryFails() = runTest {
+        val error =
+            assertFailsWith<PmTilesException> {
+                PmTilesArchive.open(
+                    TestByteRangeSource(
+                        buildArchiveWithSections(
+                            fields =
+                                TestHeaderFields(
+                                    rootLength = MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong()
+                                ),
+                            rootBytes = MINIMAL_ROOT_DIRECTORY_BYTES,
+                        )
+                    ),
+                    options =
+                        ArchiveOpenOptions(
+                            limits =
+                                ArchiveLimits.Default.copy(
+                                    maxDirectoryCompressedBytes =
+                                        MINIMAL_ROOT_DIRECTORY_BYTES.size - 1
+                                )
+                        ),
+                )
+            }
+
+        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+    }
+
+    @Test
+    fun hugeTileFails() = runTest {
         val tileBytes = byteArrayOf(1, 2, 3, 4)
         val error =
             assertFailsWith<PmTilesException> {
-                runSuspending {
-                    val archive =
-                        PmTilesArchive.open(
-                            TestByteRangeSource(buildSingleTileArchive(tileBytes)),
-                            options =
-                                ArchiveOpenOptions(
-                                    limits =
-                                        ArchiveLimits.Default.copy(
-                                            maxTileCompressedBytes = tileBytes.size - 1
-                                        )
-                                ),
-                        )
-                    archive.getTileCompressed(0, 0, 0)
-                }
+                val archive =
+                    PmTilesArchive.open(
+                        TestByteRangeSource(buildSingleTileArchive(tileBytes)),
+                        options =
+                            ArchiveOpenOptions(
+                                limits =
+                                    ArchiveLimits.Default.copy(
+                                        maxTileCompressedBytes = tileBytes.size - 1
+                                    )
+                            ),
+                    )
+                archive.getTileCompressed(0, 0, 0)
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)

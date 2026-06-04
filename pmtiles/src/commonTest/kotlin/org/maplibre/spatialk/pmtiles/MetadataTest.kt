@@ -4,16 +4,16 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
+import kotlinx.coroutines.test.runTest
 import org.maplibre.spatialk.pmtiles.internal.HEADER_BYTES
 import org.maplibre.spatialk.pmtiles.internal.MINIMAL_ROOT_DIRECTORY_BYTES
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
 import org.maplibre.spatialk.pmtiles.internal.TestHeaderFields
 import org.maplibre.spatialk.pmtiles.internal.buildArchiveWithSections
-import org.maplibre.spatialk.pmtiles.internal.runSuspending
 
 class MetadataTest {
     @Test
-    fun readsRawMetadataAndTypedFieldsOnce() = runSuspending {
+    fun readsRawMetadataAndTypedFieldsOnce() = runTest {
         val json =
             """{"name":"Tiles","description":"Desc","attribution":"Attr","type":"baselayer","version":"1","encoding":"mvt","vector_layers":[{"id":"roads"}],"custom":{"x":1}}"""
         val source =
@@ -39,7 +39,7 @@ class MetadataTest {
     }
 
     @Test
-    fun returnsEmptyTypedMetadataForEmptyMetadataSection() = runSuspending {
+    fun returnsEmptyTypedMetadataForEmptyMetadataSection() = runTest {
         val archive = PmTilesArchive.open(TestByteRangeSource(buildMetadataArchive(ByteArray(0))))
 
         val metadata = archive.metadata()
@@ -50,31 +50,27 @@ class MetadataTest {
     }
 
     @Test
-    fun rejectsInvalidUtf8() {
+    fun rejectsInvalidUtf8() = runTest {
         val error =
             assertFailsWith<PmTilesException> {
-                runSuspending {
-                    val archive =
-                        PmTilesArchive.open(
-                            TestByteRangeSource(
-                                buildMetadataArchive(byteArrayOf(0xc3.toByte(), 0x28))
-                            )
-                        )
-                    archive.rawMetadataJson()
-                }
+                val archive =
+                    PmTilesArchive.open(
+                        TestByteRangeSource(buildMetadataArchive(byteArrayOf(0xc3.toByte(), 0x28)))
+                    )
+                archive.rawMetadataJson()
             }
 
         assertEquals(PmTilesErrorCode.InvalidMetadata, error.code)
     }
 
     @Test
-    fun strictModeRejectsNonObjectAndWrongTypedFields() {
+    fun strictModeRejectsNonObjectAndWrongTypedFields() = runTest {
         assertMetadataFails(PmTilesErrorCode.InvalidMetadata, "[]")
         assertMetadataFails(PmTilesErrorCode.InvalidMetadata, """{"name":1}""")
     }
 
     @Test
-    fun lenientModePreservesRawJsonForNonObjectMetadata() = runSuspending {
+    fun lenientModePreservesRawJsonForNonObjectMetadata() = runTest {
         val archive =
             PmTilesArchive.open(
                 TestByteRangeSource(buildMetadataArchive("[]".encodeToByteArray())),
@@ -89,7 +85,7 @@ class MetadataTest {
     }
 
     @Test
-    fun lenientModeDropsWrongTypedFieldsAndKeepsValidFields() = runSuspending {
+    fun lenientModeDropsWrongTypedFieldsAndKeepsValidFields() = runTest {
         val archive =
             PmTilesArchive.open(
                 TestByteRangeSource(
@@ -106,7 +102,7 @@ class MetadataTest {
     }
 
     @Test
-    fun mvtMetadataRequiresVectorLayers() {
+    fun mvtMetadataRequiresVectorLayers() = runTest {
         assertMetadataFails(
             PmTilesErrorCode.InvalidMetadata,
             """{"name":"Tiles"}""",
@@ -115,7 +111,7 @@ class MetadataTest {
     }
 
     @Test
-    fun lenientMvtMetadataWarnsWhenVectorLayersIsMissing() = runSuspending {
+    fun lenientMvtMetadataWarnsWhenVectorLayersIsMissing() = runTest {
         val archive =
             PmTilesArchive.open(
                 TestByteRangeSource(
@@ -133,22 +129,20 @@ class MetadataTest {
         assertEquals(ArchiveWarningCode.MissingVectorLayers, archive.warningAt(0)?.code)
     }
 
-    private fun assertMetadataFails(
+    private suspend fun assertMetadataFails(
         code: PmTilesErrorCode,
         json: String,
         tileType: TileType = TileType.Png,
     ) {
         val error =
             assertFailsWith<PmTilesException> {
-                runSuspending {
-                    val archive =
-                        PmTilesArchive.open(
-                            TestByteRangeSource(
-                                buildMetadataArchive(json.encodeToByteArray(), tileType)
-                            )
+                val archive =
+                    PmTilesArchive.open(
+                        TestByteRangeSource(
+                            buildMetadataArchive(json.encodeToByteArray(), tileType)
                         )
-                    archive.metadata()
-                }
+                    )
+                archive.metadata()
             }
 
         assertEquals(code, error.code)

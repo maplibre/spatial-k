@@ -3,7 +3,7 @@ package org.maplibre.spatialk.pmtiles.internal
 import org.maplibre.spatialk.pmtiles.Compression
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 
-internal fun decodeCompression(
+internal suspend fun decodeCompression(
     compression: Compression,
     bytes: ByteArray,
     limits: DecodeLimits,
@@ -18,11 +18,12 @@ internal fun decodeCompression(
         }
 
         Compression.Gzip.code -> decodeGzip(bytes, limits)
-        else -> throw unsupportedCompression(compression, limits)
+        else -> unsupportedCompression(compression, limits)
     }
 }
 
-internal expect fun decodeGzip(bytes: ByteArray, limits: DecodeLimits): ByteArray
+// It's a suspend fun only because CompressionStreams on web requires it
+internal expect suspend fun decodeGzip(bytes: ByteArray, limits: DecodeLimits): ByteArray
 
 internal class BoundedByteArraySink(private val limits: DecodeLimits) {
     private var bytes = ByteArray(0)

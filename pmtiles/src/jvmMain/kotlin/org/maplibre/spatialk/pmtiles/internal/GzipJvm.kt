@@ -5,7 +5,7 @@ import java.io.IOException
 import java.util.zip.GZIPInputStream
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
-internal actual fun decodeGzip(bytes: ByteArray, limits: DecodeLimits): ByteArray {
+internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecodeLimits): ByteArray {
     val sink = BoundedByteArraySink(limits)
     val buffer = ByteArray(GZIP_BUFFER_SIZE)
 
