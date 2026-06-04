@@ -49,9 +49,6 @@ public enum class PmTilesErrorCode {
     /** A requested byte range is outside the archive or configured limits. */
     RangeOutOfBounds,
 
-    /** The caller-provided source changed while the archive was open. */
-    SourceChanged,
-
     /** The caller-provided source could not satisfy a read. */
     SourceUnavailable,
 
@@ -60,12 +57,6 @@ public enum class PmTilesErrorCode {
 
     /** The archive was used after it was closed. */
     Closed,
-
-    /** The operation was cancelled. */
-    Cancelled,
-
-    /** An internal invariant failed. */
-    InternalError,
 }
 
 /** Warning codes recorded by lenient archive operations. */

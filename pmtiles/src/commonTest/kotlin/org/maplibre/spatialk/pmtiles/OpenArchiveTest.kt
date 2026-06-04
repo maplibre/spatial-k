@@ -223,18 +223,18 @@ class OpenArchiveTest {
 
     @Test
     fun wrapsAndPreservesSourceErrors() = runTest {
-        val sourceError = PmTilesException(PmTilesErrorCode.SourceChanged, "changed")
+        val sourceError = PmTilesException(PmTilesErrorCode.SourceUnavailable, "unavailable")
         val sizePreserved =
             assertFailsWith<PmTilesException> {
                 PmTilesArchive.open(TestByteRangeSource(buildArchive(), sizeError = sourceError))
             }
-        assertEquals(PmTilesErrorCode.SourceChanged, sizePreserved.code)
+        assertEquals(PmTilesErrorCode.SourceUnavailable, sizePreserved.code)
 
         val readPreserved =
             assertFailsWith<PmTilesException> {
                 PmTilesArchive.open(TestByteRangeSource(buildArchive(), readError = sourceError))
             }
-        assertEquals(PmTilesErrorCode.SourceChanged, readPreserved.code)
+        assertEquals(PmTilesErrorCode.SourceUnavailable, readPreserved.code)
 
         val sizeWrapped =
             assertFailsWith<PmTilesException> {

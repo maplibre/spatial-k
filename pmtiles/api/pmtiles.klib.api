@@ -25,10 +25,8 @@ final enum class org.maplibre.spatialk.pmtiles/ArchiveWarningCode : kotlin/Enum<
 }
 
 final enum class org.maplibre.spatialk.pmtiles/PmTilesErrorCode : kotlin/Enum<org.maplibre.spatialk.pmtiles/PmTilesErrorCode> { // org.maplibre.spatialk.pmtiles/PmTilesErrorCode|null[0]
-    enum entry Cancelled // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.Cancelled|null[0]
     enum entry Closed // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.Closed|null[0]
     enum entry DecompressionFailed // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.DecompressionFailed|null[0]
-    enum entry InternalError // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InternalError|null[0]
     enum entry InvalidDirectory // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidDirectory|null[0]
     enum entry InvalidHeader // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidHeader|null[0]
     enum entry InvalidMagic // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidMagic|null[0]
@@ -39,7 +37,6 @@ final enum class org.maplibre.spatialk.pmtiles/PmTilesErrorCode : kotlin/Enum<or
     enum entry InvalidVarint // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidVarint|null[0]
     enum entry LimitExceeded // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.LimitExceeded|null[0]
     enum entry RangeOutOfBounds // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.RangeOutOfBounds|null[0]
-    enum entry SourceChanged // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.SourceChanged|null[0]
     enum entry SourceUnavailable // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.SourceUnavailable|null[0]
     enum entry UnsupportedCompression // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.UnsupportedCompression|null[0]
     enum entry UnsupportedVersion // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.UnsupportedVersion|null[0]

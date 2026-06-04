@@ -30,8 +30,8 @@ internal class BoundedByteArraySink(private val limits: DecompressionLimits) {
 
         var nextCapacity = if (bytes.isEmpty()) INITIAL_OUTPUT_CAPACITY else bytes.size
         while (nextCapacity < required) {
-            val doubled = nextCapacity * 2
-            nextCapacity = if (doubled > nextCapacity) doubled else required
+            val doubled = nextCapacity.toLong() * 2
+            nextCapacity = if (doubled <= Int.MAX_VALUE) doubled.toInt() else required
         }
         bytes = bytes.copyOf(nextCapacity.coerceAtMost(limits.maxDecompressedBytes))
     }

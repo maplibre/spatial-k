@@ -116,7 +116,6 @@ private constructor(
     /** Returns stored tile bytes for the tile at [z], [x], and [y], or null when absent. */
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun getStoredTile(z: Int, x: Int, y: Int): ArchiveTile? {
-        TileIds.validateZxy(z, x, y)
         return readTile(
             tileId = TileIds.fromZxy(z, x, y),
             coord = TileCoord(z = z, x = x, y = y),
@@ -172,7 +171,6 @@ private constructor(
     /** Returns the archive byte range for the tile at [z], [x], and [y]. */
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun getTileRange(z: Int, x: Int, y: Int): TileRange? {
-        TileIds.validateZxy(z, x, y)
         return directoryResolver.findTileRange(
             tileId = TileIds.fromZxy(z, x, y),
             coord = TileCoord(z = z, x = x, y = y),
@@ -182,7 +180,6 @@ private constructor(
     /** Returns decompressed tile bytes for the tile at [z], [x], and [y]. */
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun getDecompressedTile(z: Int, x: Int, y: Int): ArchiveTile? {
-        TileIds.validateZxy(z, x, y)
         return readTile(
             tileId = TileIds.fromZxy(z, x, y),
             coord = TileCoord(z = z, x = x, y = y),
@@ -273,7 +270,6 @@ private constructor(
     private suspend fun locateTiles(coords: List<TileCoord>): List<LocatedTile> {
         val located = mutableListOf<LocatedTile>()
         coords.forEachIndexed { index, coord ->
-            TileIds.validateZxy(coord.z, coord.x, coord.y)
             val tileId = TileIds.fromZxy(coord.z, coord.x, coord.y)
             val range = directoryResolver.findTileRange(tileId, coord)
             if (range != null) {

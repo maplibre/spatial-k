@@ -306,10 +306,8 @@ public final class org/maplibre/spatialk/pmtiles/PmTilesArchive$Companion {
 }
 
 public final class org/maplibre/spatialk/pmtiles/PmTilesErrorCode : java/lang/Enum {
-	public static final field Cancelled Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
 	public static final field Closed Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
 	public static final field DecompressionFailed Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
-	public static final field InternalError Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
 	public static final field InvalidDirectory Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
 	public static final field InvalidHeader Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
 	public static final field InvalidMagic Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
@@ -320,7 +318,6 @@ public final class org/maplibre/spatialk/pmtiles/PmTilesErrorCode : java/lang/En
 	public static final field InvalidVarint Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
 	public static final field LimitExceeded Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
 	public static final field RangeOutOfBounds Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
-	public static final field SourceChanged Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
 	public static final field SourceUnavailable Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
 	public static final field UnsupportedCompression Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
 	public static final field UnsupportedVersion Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
