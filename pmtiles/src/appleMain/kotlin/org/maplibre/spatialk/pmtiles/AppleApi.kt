@@ -52,9 +52,15 @@ public fun ArchiveOpenOptions.withDecompressor(
 @OptIn(ExperimentalObjCName::class)
 @ObjCName(name = "open", swiftName = "open")
 @Throws(PmTilesException::class, CancellationException::class)
-public suspend fun PmTilesArchive.Companion.open(
+public suspend fun PmTiles.open(source: ByteRangeDataSource): PmTilesArchive =
+    open(source = source, options = ArchiveOpenOptions())
+
+@OptIn(ExperimentalObjCName::class)
+@ObjCName(name = "open", swiftName = "open")
+@Throws(PmTilesException::class, CancellationException::class)
+public suspend fun PmTiles.open(
     source: ByteRangeDataSource,
-    options: ArchiveOpenOptions = ArchiveOpenOptions.Default,
+    options: ArchiveOpenOptions = ArchiveOpenOptions(),
 ): PmTilesArchive =
     open(
         source =

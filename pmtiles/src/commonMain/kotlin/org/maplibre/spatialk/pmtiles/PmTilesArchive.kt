@@ -25,6 +25,78 @@ import org.maplibre.spatialk.pmtiles.internal.readSourceRange
 import org.maplibre.spatialk.pmtiles.internal.sourceSize
 import org.maplibre.spatialk.pmtiles.internal.toByteRange
 
+/** Factory methods for PMTiles archives. */
+public object PmTiles {
+    /** Opens a PMTiles archive from [source] with [options]. */
+    @HiddenFromObjC
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun open(
+        source: ByteRangeSource,
+        options: ArchiveOpenOptions = ArchiveOpenOptions(),
+    ): PmTilesArchive {
+        val sourceSize = source.sourceSize()
+        val initialReadLength =
+            allocationLength(
+                minOf(sourceSize, FIRST_READ_BYTES.toULong()),
+                options.limits.maxInitialReadBytes,
+                "Initial read",
+            )
+        val initialBytes =
+            source.readSourceRange(
+                ByteRange(offset = 0uL, length = initialReadLength),
+                archiveSize = sourceSize,
+                maxBytes = options.limits.maxInitialReadBytes,
+            )
+        val parsedHeader = parseHeaderForOpen(initialBytes, sourceSize, options.validationMode)
+        val header = parsedHeader.header
+        val decompressors = options.effectiveDecompressors()
+        val compressedRoot = initialBytes.slice(header.rootDirectory, options.limits)
+        val rootDirectoryBytes =
+            decompressors.decompress(
+                header.internalCompression,
+                compressedRoot,
+                DecodeLimits(
+                    maxCompressedBytes = options.limits.maxDirectoryCompressedBytes,
+                    maxDecompressedBytes = options.limits.maxDirectoryDecompressedBytes,
+                    purpose = DecodePurpose.RootDirectory,
+                ),
+            )
+        val rootDirectory =
+            decodeDirectory(
+                rootDirectoryBytes,
+                header,
+                options.limits,
+                allowEmpty = options.validationMode == ValidationMode.Lenient,
+            )
+        val warnings =
+            if (rootDirectory.isEmpty()) {
+                parsedHeader.warnings +
+                    ArchiveWarning(
+                        code = ArchiveWarningCode.EmptyRootDirectory,
+                        message =
+                            "Root directory has zero entries and was accepted in lenient mode.",
+                    )
+            } else {
+                parsedHeader.warnings
+            }
+
+        return PmTilesArchive(
+            header = header,
+            source = source,
+            options = options,
+            archiveSize = sourceSize,
+            rootDirectory = rootDirectory,
+            initialWarnings = warnings,
+        )
+    }
+
+    /** Opens a PMTiles archive from [source] with strict validation. */
+    @HiddenFromObjC
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun open(source: ByteRangeSource): PmTilesArchive =
+        open(source = source, options = ArchiveOpenOptions())
+}
+
 /**
  * Open PMTiles archive reader.
  *
@@ -34,7 +106,7 @@ import org.maplibre.spatialk.pmtiles.internal.toByteRange
  * @property tileCompression Compression used for tile payloads.
  */
 public class PmTilesArchive
-private constructor(
+internal constructor(
     public val header: ArchiveHeader,
     private val source: ByteRangeSource,
     private val options: ArchiveOpenOptions,
@@ -387,72 +459,6 @@ private constructor(
                 message = message,
             )
         )
-    }
-
-    /** Factory methods for PMTiles archives. */
-    public companion object {
-        /** Opens a PMTiles archive from [source] with [options]. */
-        @HiddenFromObjC
-        @Throws(PmTilesException::class, CancellationException::class)
-        public suspend fun open(
-            source: ByteRangeSource,
-            options: ArchiveOpenOptions = ArchiveOpenOptions.Default,
-        ): PmTilesArchive {
-            val sourceSize = source.sourceSize()
-            val initialReadLength =
-                allocationLength(
-                    minOf(sourceSize, FIRST_READ_BYTES.toULong()),
-                    options.limits.maxInitialReadBytes,
-                    "Initial read",
-                )
-            val initialBytes =
-                source.readSourceRange(
-                    ByteRange(offset = 0uL, length = initialReadLength),
-                    archiveSize = sourceSize,
-                    maxBytes = options.limits.maxInitialReadBytes,
-                )
-            val parsedHeader = parseHeaderForOpen(initialBytes, sourceSize, options.validationMode)
-            val header = parsedHeader.header
-            val decompressors = options.effectiveDecompressors()
-            val compressedRoot = initialBytes.slice(header.rootDirectory, options.limits)
-            val rootDirectoryBytes =
-                decompressors.decompress(
-                    header.internalCompression,
-                    compressedRoot,
-                    DecodeLimits(
-                        maxCompressedBytes = options.limits.maxDirectoryCompressedBytes,
-                        maxDecompressedBytes = options.limits.maxDirectoryDecompressedBytes,
-                        purpose = DecodePurpose.RootDirectory,
-                    ),
-                )
-            val rootDirectory =
-                decodeDirectory(
-                    rootDirectoryBytes,
-                    header,
-                    options.limits,
-                    allowEmpty = options.validationMode == ValidationMode.Lenient,
-                )
-            val warnings =
-                if (rootDirectory.isEmpty()) {
-                    parsedHeader.warnings +
-                        ArchiveWarning(
-                            code = ArchiveWarningCode.EmptyRootDirectory,
-                            message =
-                                "Root directory has zero entries and was accepted in lenient mode.",
-                        )
-                } else {
-                    parsedHeader.warnings
-                }
-
-            return PmTilesArchive(
-                header = header,
-                source = source,
-                options = options,
-                archiveSize = sourceSize,
-                rootDirectory = rootDirectory,
-                initialWarnings = warnings,
-            )
-        }
     }
 }
 
