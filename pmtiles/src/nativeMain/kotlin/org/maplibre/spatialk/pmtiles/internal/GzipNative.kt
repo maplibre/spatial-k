@@ -53,7 +53,8 @@ internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLi
             }
 
             try {
-                while (true) {
+                var finished = false
+                while (!finished) {
                     buffer.usePinned { output ->
                         stream.next_out = output.addressOf(0).reinterpret()
                         stream.avail_out = buffer.size.convert()
@@ -62,16 +63,18 @@ internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLi
                         val produced = buffer.size - stream.avail_out.toInt()
                         sink.append(buffer, produced)
 
-                        if (status == Z_STREAM_END) return@memScoped sink.toByteArray()
-                        if (status != Z_OK) {
-                            decompressionFailed("gzip stream failed: $status.")
-                        }
-
-                        if (produced == 0 && stream.avail_in == 0u) {
-                            decompressionFailed("gzip stream ended before trailer.")
+                        when (status) {
+                            Z_STREAM_END -> finished = true
+                            Z_OK -> {
+                                if (produced == 0 && stream.avail_in == 0u) {
+                                    decompressionFailed("gzip stream ended before trailer.")
+                                }
+                            }
+                            else -> decompressionFailed("gzip stream failed: $status.")
                         }
                     }
                 }
+                sink.toByteArray()
             } finally {
                 val endStatus = inflateEnd(stream.ptr)
                 stream.next_in = null
@@ -87,8 +90,6 @@ internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLi
                 }
             }
         }
-
-        decompressionFailed("gzip decompression failed.")
     }
 
 private const val GZIP_BUFFER_SIZE = 8 * 1024

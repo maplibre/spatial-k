@@ -20,7 +20,10 @@ public enum class ValidationMode {
  * @property maxMetadataBytes Maximum metadata payload bytes.
  * @property maxDirectoryCompressedBytes Maximum compressed directory bytes.
  * @property maxDirectoryDecompressedBytes Maximum decompressed directory bytes.
- * @property maxDirectoryEntries Maximum entries in one decoded directory.
+ * @property maxDirectoryEntries Maximum entries in one decoded directory. Defaults to the maximum
+ *   that fits in [maxDirectoryDecompressedBytes]. When using [copy] to change
+ *   [maxDirectoryDecompressedBytes], set this field explicitly if the existing entry limit no
+ *   longer fits.
  * @property maxTileCompressedBytes Maximum compressed tile payload bytes.
  * @property maxTileDecompressedBytes Maximum decompressed tile payload bytes.
  * @property maxDirectoryDepth Maximum leaf-directory traversal depth.

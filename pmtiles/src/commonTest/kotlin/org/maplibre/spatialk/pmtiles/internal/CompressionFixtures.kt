@@ -84,13 +84,12 @@ internal fun truncatedGzipBombBytes(decompressedBytes: Int): ByteArray {
     }
     bits.writeFixedHuffmanSymbol(END_OF_BLOCK)
 
-    val decompressed = ByteArray(decompressedBytes)
-    return gzipHeader + bits.toByteArray() + gzipTrailer(decompressed)
+    return gzipHeader + bits.toByteArray() + gzipTrailerForZeroBytes(decompressedBytes)
 }
 
-private fun gzipTrailer(decompressedBytes: ByteArray): ByteArray {
-    val checksum = crc32(decompressedBytes)
-    val size = decompressedBytes.size.toUInt()
+private fun gzipTrailerForZeroBytes(decompressedBytes: Int): ByteArray {
+    val checksum = crc32OfZeros(decompressedBytes)
+    val size = decompressedBytes.toUInt()
     return littleEndian(checksum) + littleEndian(size)
 }
 
@@ -102,10 +101,9 @@ private fun littleEndian(value: UInt): ByteArray =
         ((value shr 24) and 0xffu).toByte(),
     )
 
-private fun crc32(bytes: ByteArray): UInt {
+private fun crc32OfZeros(length: Int): UInt {
     var crc = 0xffffffffu
-    bytes.forEach { byte ->
-        crc = crc xor byte.toUByte().toUInt()
+    repeat(length) {
         repeat(Byte.SIZE_BITS) {
             crc = if ((crc and 1u) == 0u) crc shr 1 else (crc shr 1) xor CRC32_POLYNOMIAL
         }
