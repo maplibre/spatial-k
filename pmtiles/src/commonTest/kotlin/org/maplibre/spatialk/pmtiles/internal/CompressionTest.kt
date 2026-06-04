@@ -94,6 +94,20 @@ class CompressionTest {
     }
 
     @Test
+    fun gzipBombFailsOnLimitBeforeTrailingCorruption() = runTest {
+        val error =
+            assertFailsWith<PmTilesException> {
+                decodeCompression(
+                    Compression.Gzip,
+                    truncatedGzipBombBytes(decompressedBytes = 4096),
+                    testDecodeLimits(maxDecompressedBytes = 1024),
+                )
+            }
+
+        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+    }
+
+    @Test
     fun rejectsUnsupportedCompressionWhenDecodeIsRequired() = runTest {
         listOf(
                 Compression.Unknown,

@@ -356,7 +356,35 @@ public data class ArchiveTile(
     public val compression: Compression,
     public val wasDecompressed: Boolean,
     public val range: TileRange,
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as ArchiveTile
+
+        if (tileId != other.tileId) return false
+        if (wasDecompressed != other.wasDecompressed) return false
+        if (coord != other.coord) return false
+        if (!bytes.contentEquals(other.bytes)) return false
+        if (tileType != other.tileType) return false
+        if (compression != other.compression) return false
+        if (range != other.range) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = tileId.hashCode()
+        result = 31 * result + wasDecompressed.hashCode()
+        result = 31 * result + coord.hashCode()
+        result = 31 * result + bytes.contentHashCode()
+        result = 31 * result + tileType.hashCode()
+        result = 31 * result + compression.hashCode()
+        result = 31 * result + range.hashCode()
+        return result
+    }
+}
 
 /**
  * Typed PMTiles metadata fields.

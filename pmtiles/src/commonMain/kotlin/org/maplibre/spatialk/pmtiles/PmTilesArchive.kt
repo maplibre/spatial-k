@@ -451,26 +451,22 @@ private constructor(
     private fun closedException(): PmTilesException =
         pmTilesException(PmTilesErrorCode.Closed, "PMTiles archive is closed.")
 
-    private suspend fun cachedRawMetadataJson(): String? = stateMutex.withLock {
-        checkOpenLocked()
+    private suspend fun cachedRawMetadataJson(): String? = withOpenStateLock {
         rawMetadataJsonCache
     }
 
-    private suspend fun cacheRawMetadataJson(json: String): String = stateMutex.withLock {
-        checkOpenLocked()
+    private suspend fun cacheRawMetadataJson(json: String): String = withOpenStateLock {
         rawMetadataJsonCache ?: json.also { rawMetadataJsonCache = it }
     }
 
-    private suspend fun cachedMetadata(): ArchiveMetadata? = stateMutex.withLock {
-        checkOpenLocked()
+    private suspend fun cachedMetadata(): ArchiveMetadata? = withOpenStateLock {
         metadataCache
     }
 
     private suspend fun parseAndCacheMetadata(rawJson: String): ArchiveMetadata =
-        stateMutex.withLock {
-            checkOpenLocked()
+        withOpenStateLock {
             metadataCache?.let {
-                return@withLock it
+                return@withOpenStateLock it
             }
 
             val metadata = parseMetadata(rawJson)
@@ -479,9 +475,8 @@ private constructor(
         }
 
     private suspend fun cachedLeafDirectory(range: ByteRange): List<DirectoryEntry>? =
-        stateMutex.withLock {
-            checkOpenLocked()
-            val cached = leafDirectoryCache.remove(range) ?: return@withLock null
+        withOpenStateLock {
+            val cached = leafDirectoryCache.remove(range) ?: return@withOpenStateLock null
             leafDirectoryCache[range] = cached
             cached
         }
@@ -489,11 +484,10 @@ private constructor(
     private suspend fun cacheLeafDirectory(
         range: ByteRange,
         directory: List<DirectoryEntry>,
-    ): List<DirectoryEntry> = stateMutex.withLock {
-        checkOpenLocked()
+    ): List<DirectoryEntry> = withOpenStateLock {
         leafDirectoryCache.remove(range)?.let { cached ->
             leafDirectoryCache[range] = cached
-            return@withLock cached
+            return@withOpenStateLock cached
         }
         if (options.limits.maxLeafDirectoryCacheEntries > 0) {
             leafDirectoryCache[range] = directory
@@ -510,10 +504,9 @@ private constructor(
     ): ByteArray {
         val key = SourceReadKey(range = range, maxBytes = maxBytes)
         var ownsRead = false
-        val inFlight = stateMutex.withLock {
-            checkOpenLocked()
+        val inFlight = withOpenStateLock {
             inFlightSourceReads[key]?.let {
-                return@withLock it
+                return@withOpenStateLock it
             }
             CompletableDeferred<ByteArray>().also {
                 inFlightSourceReads[key] = it
@@ -543,7 +536,7 @@ private constructor(
         inFlight: CompletableDeferred<ByteArray>,
         bytes: ByteArray,
     ) {
-        stateMutex.withLock {
+        withStateLock {
             inFlightSourceReads.remove(key)
             if (closed.load()) {
                 clearStateForCloseLocked()
@@ -561,7 +554,7 @@ private constructor(
         error: Throwable,
     ): Throwable =
         withContext(NonCancellable) {
-            stateMutex.withLock {
+            withStateLock {
                 inFlightSourceReads.remove(key)
                 val completionError =
                     if (closed.load() && error !is CancellationException) {
@@ -574,6 +567,19 @@ private constructor(
                 completionError
             }
         }
+
+    private suspend fun <T> withOpenStateLock(block: () -> T): T = withStateLock {
+        checkOpenLocked()
+        block()
+    }
+
+    private suspend fun <T> withStateLock(block: () -> T): T = stateMutex.withLock {
+        try {
+            block()
+        } finally {
+            if (closed.load()) clearStateForCloseLocked()
+        }
+    }
 
     private fun appendWarning(warning: ArchiveWarning) {
         while (true) {
