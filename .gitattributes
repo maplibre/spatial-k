@@ -5,6 +5,7 @@ docs/** linguist-documentation
 # Test resources - mark as vendored to exclude from language statistics
 **/resources/**/*.json linguist-vendored
 **/resources/**/*.geojson linguist-vendored
+**/resources/**/*.pmtiles linguist-vendored
 
 # Dependency lock files - mark as vendored
 yarn.lock linguist-vendored

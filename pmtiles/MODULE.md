@@ -1,6 +1,6 @@
 # Module pmtiles
 
-A Kotlin Multiplatform reader for PMTiles v3 archives.
+A Kotlin Multiplatform reader for [PMTiles v3 archives](https://docs.protomaps.com/pmtiles/).
 
 # Package org.maplibre.spatialk.pmtiles
 

@@ -1,42 +1,45 @@
 # PMTiles Fixtures
 
-This document records every checked-in PMTiles fixture used by the PMTiles reader conformance tests.
+Checked-in PMTiles files used by the reader tests.
 
-## Upstream Sources
+## Copied From `protomaps/PMTiles`
 
-- `protomaps/PMTiles`
-  - Commit: `8b8ddea4dbff1b0104cf2bebf2f7ff35c91b41d5`
-  - Repository license note: reference implementation is BSD-3-Clause; the PMTiles specification is
-    public domain/CC0 where applicable; sample tilesets are subject to their own license terms.
-- `protomaps/go-pmtiles`
-  - Commit: `b50d7b1acd72c02bf428e78f0f5c9dab020b6174`
-  - Repository license: BSD-3-Clause.
+- `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-spec-v3/protomaps-vector-odbl-firenze.pmtiles`
+  from
+  [`spec/v3/protomaps(vector)ODbL_firenze.pmtiles`](https://github.com/protomaps/PMTiles/blob/main/spec/v3/protomaps%28vector%29ODbL_firenze.pmtiles)
+- `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-spec-v3/stamen-toner-raster-cc-by-odbl-z3.pmtiles`
+  from
+  [`spec/v3/stamen_toner(raster)CC-BY+ODbL_z3.pmtiles`](https://github.com/protomaps/PMTiles/blob/main/spec/v3/stamen_toner%28raster%29CC-BY%2BODbL_z3.pmtiles)
+- `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-spec-v3/usgs-mt-whitney-8-15-webp-512.pmtiles`
+  from
+  [`spec/v3/usgs-mt-whitney-8-15-webp-512.pmtiles`](https://github.com/protomaps/PMTiles/blob/main/spec/v3/usgs-mt-whitney-8-15-webp-512.pmtiles)
+- `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-js-test-data/empty.pmtiles` from
+  [`js/test/data/empty.pmtiles`](https://github.com/protomaps/PMTiles/blob/main/js/test/data/empty.pmtiles)
+- `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-js-test-data/invalid.pmtiles` from
+  [`js/test/data/invalid.pmtiles`](https://github.com/protomaps/PMTiles/blob/main/js/test/data/invalid.pmtiles)
+- `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-js-test-data/invalid-v4.pmtiles` from
+  [`js/test/data/invalid_v4.pmtiles`](https://github.com/protomaps/PMTiles/blob/main/js/test/data/invalid_v4.pmtiles)
+- `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-js-test-data/test-fixture-1.pmtiles`
+  from
+  [`js/test/data/test_fixture_1.pmtiles`](https://github.com/protomaps/PMTiles/blob/main/js/test/data/test_fixture_1.pmtiles)
+- `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-js-test-data/test-fixture-2.pmtiles`
+  from
+  [`js/test/data/test_fixture_2.pmtiles`](https://github.com/protomaps/PMTiles/blob/main/js/test/data/test_fixture_2.pmtiles)
+- `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-js-test-data/test-fixture-mlt.pmtiles`
+  from
+  [`js/test/data/test_fixture_mlt.pmtiles`](https://github.com/protomaps/PMTiles/blob/main/js/test/data/test_fixture_mlt.pmtiles)
 
-## Upstream Fixtures
+## Copied From `protomaps/go-pmtiles`
 
-| Local path                                                                                                     | Upstream repository    | Upstream commit                            | Upstream path                                       | License                                                              | Reason                                                                                                                | SHA-256                                                            |
-| -------------------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------------------------ | --------------------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-spec-v3/protomaps-vector-odbl-firenze.pmtiles`     | `protomaps/PMTiles`    | `8b8ddea4dbff1b0104cf2bebf2f7ff35c91b41d5` | `spec/v3/protomaps(vector)ODbL_firenze.pmtiles`     | ODbL sample tileset, per filename and upstream license note.         | Vector MVT archive with gzip internal and tile compression, rich metadata, clustered layout, and real-world bounds.   | `7190f3d807a62f4f012b574007c96b809f6842f45a6b0c508639331fc68fd30a` |
-| `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-spec-v3/stamen-toner-raster-cc-by-odbl-z3.pmtiles` | `protomaps/PMTiles`    | `8b8ddea4dbff1b0104cf2bebf2f7ff35c91b41d5` | `spec/v3/stamen_toner(raster)CC-BY+ODbL_z3.pmtiles` | CC-BY + ODbL sample tileset, per filename and upstream license note. | Raster PNG archive with gzip internal compression, no tile compression, multiple zooms, and leaf directory traversal. | `b96efe3ea10b98632c0c0dc229d000b604ebdad6b2f1321ea11d9de931df1ce5` |
-| `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-spec-v3/usgs-mt-whitney-8-15-webp-512.pmtiles`     | `protomaps/PMTiles`    | `8b8ddea4dbff1b0104cf2bebf2f7ff35c91b41d5` | `spec/v3/usgs-mt-whitney-8-15-webp-512.pmtiles`     | Upstream sample tileset license applies.                             | Raster WebP archive with gzip internal compression, no tile compression, WebP tile type, and raster metadata fields.  | `b57423d83c6d964ef1377e49cb2c2aacbc107311a7d8fc16ba2e85cd35cc43a0` |
-| `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-js-test-data/empty.pmtiles`                        | `protomaps/PMTiles`    | `8b8ddea4dbff1b0104cf2bebf2f7ff35c91b41d5` | `js/test/data/empty.pmtiles`                        | BSD-3-Clause repository test fixture.                                | Empty malformed archive failure path.                                                                                 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
-| `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-js-test-data/invalid.pmtiles`                      | `protomaps/PMTiles`    | `8b8ddea4dbff1b0104cf2bebf2f7ff35c91b41d5` | `js/test/data/invalid.pmtiles`                      | BSD-3-Clause repository test fixture.                                | Invalid magic failure path.                                                                                           | `dabac1813c60cc777b4215b030c4815b72ab0c8a5f95a0b9e4ef9fc2a778399e` |
-| `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-js-test-data/invalid-v4.pmtiles`                   | `protomaps/PMTiles`    | `8b8ddea4dbff1b0104cf2bebf2f7ff35c91b41d5` | `js/test/data/invalid_v4.pmtiles`                   | BSD-3-Clause repository test fixture.                                | Unsupported version failure path.                                                                                     | `8326be59a1171c7788411312bce93057d15e9b4e87d4b181c677592c71c3a3ec` |
-| `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-js-test-data/test-fixture-1.pmtiles`               | `protomaps/PMTiles`    | `8b8ddea4dbff1b0104cf2bebf2f7ff35c91b41d5` | `js/test/data/test_fixture_1.pmtiles`               | BSD-3-Clause repository test fixture.                                | Small gzip-compressed MVT archive for tile decompression and metadata checks.                                         | `f3f65093582c81625cdfab11b3d1a27c2fb6aadcf8bd9802b2ad694d4d7cdca5` |
-| `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-js-test-data/test-fixture-2.pmtiles`               | `protomaps/PMTiles`    | `8b8ddea4dbff1b0104cf2bebf2f7ff35c91b41d5` | `js/test/data/test_fixture_2.pmtiles`               | BSD-3-Clause repository test fixture.                                | Alternate small gzip-compressed MVT archive with equivalent structural coverage and different metadata ordering.      | `7ee80a53000bfb15a5d54162bc3161094239e775fef180fffb2d3ff607e46c1a` |
-| `pmtiles/src/commonTest/resources/fixtures/upstream/pmtiles-js-test-data/test-fixture-mlt.pmtiles`             | `protomaps/PMTiles`    | `8b8ddea4dbff1b0104cf2bebf2f7ff35c91b41d5` | `js/test/data/test_fixture_mlt.pmtiles`             | BSD-3-Clause repository test fixture.                                | MLT tile type coverage and valid empty-root-directory archive coverage.                                               | `173d5fb6ef5c87550d4593192c93b60f21c5d8a460a0252fef8a7c783f4c8d1f` |
-| `pmtiles/src/commonTest/resources/fixtures/upstream/go-pmtiles/test-fixture-1.pmtiles`                         | `protomaps/go-pmtiles` | `b50d7b1acd72c02bf428e78f0f5c9dab020b6174` | `pmtiles/fixtures/test_fixture_1.pmtiles`           | BSD-3-Clause repository test fixture.                                | Compatibility with fixtures shipped by the primary Go implementation.                                                 | `f3f65093582c81625cdfab11b3d1a27c2fb6aadcf8bd9802b2ad694d4d7cdca5` |
-| `pmtiles/src/commonTest/resources/fixtures/upstream/go-pmtiles/unclustered.pmtiles`                            | `protomaps/go-pmtiles` | `b50d7b1acd72c02bf428e78f0f5c9dab020b6174` | `pmtiles/fixtures/unclustered.pmtiles`              | BSD-3-Clause repository test fixture.                                | Unclustered archive behavior and input for generated clustered fixture.                                               | `780e253fa684190c1d72d8567ad8e41c3e89af123b60c798135741244130d601` |
+- `pmtiles/src/commonTest/resources/fixtures/upstream/go-pmtiles/test-fixture-1.pmtiles` from
+  [`pmtiles/fixtures/test_fixture_1.pmtiles`](https://github.com/protomaps/go-pmtiles/blob/main/pmtiles/fixtures/test_fixture_1.pmtiles)
+- `pmtiles/src/commonTest/resources/fixtures/upstream/go-pmtiles/unclustered.pmtiles` from
+  [`pmtiles/fixtures/unclustered.pmtiles`](https://github.com/protomaps/go-pmtiles/blob/main/pmtiles/fixtures/unclustered.pmtiles)
 
-## Generated Fixtures
+## Generated Locally
 
-Pinned generator:
-
-```bash
-mise exec -- go run github.com/protomaps/go-pmtiles@b50d7b1acd72c02bf428e78f0f5c9dab020b6174
-```
-
-| Local path                                                                                     | Input path                                                                          | Generator command                                                                                                                                                                                                                                                                                                                                                                             | License                               | Reason                                                                                | SHA-256                                                            |
-| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `pmtiles/src/commonTest/resources/fixtures/input/go-pmtiles-unclustered.pmtiles`               | `pmtiles/src/commonTest/resources/fixtures/upstream/go-pmtiles/unclustered.pmtiles` | Copied from upstream input fixture before generation.                                                                                                                                                                                                                                                                                                                                         | BSD-3-Clause repository test fixture. | Checked-in source input for the generated clustered fixture.                          | `780e253fa684190c1d72d8567ad8e41c3e89af123b60c798135741244130d601` |
-| `pmtiles/src/commonTest/resources/fixtures/generated/go-pmtiles-unclustered-clustered.pmtiles` | `pmtiles/src/commonTest/resources/fixtures/input/go-pmtiles-unclustered.pmtiles`    | `cp pmtiles/src/commonTest/resources/fixtures/input/go-pmtiles-unclustered.pmtiles pmtiles/src/commonTest/resources/fixtures/generated/go-pmtiles-unclustered-clustered.pmtiles && mise exec -- go run github.com/protomaps/go-pmtiles@b50d7b1acd72c02bf428e78f0f5c9dab020b6174 --quiet cluster pmtiles/src/commonTest/resources/fixtures/generated/go-pmtiles-unclustered-clustered.pmtiles` | BSD-3-Clause repository test fixture. | Verifies compatibility with an archive produced by the pinned `go-pmtiles` generator. | `60e8e12c4f4636b21972ad84adc43217123dfc51b40a431100c7d092cd4c47b6` |
+- `pmtiles/src/commonTest/resources/fixtures/input/go-pmtiles-unclustered.pmtiles` copied from
+  `pmtiles/src/commonTest/resources/fixtures/upstream/go-pmtiles/unclustered.pmtiles`
+- `pmtiles/src/commonTest/resources/fixtures/generated/go-pmtiles-unclustered-clustered.pmtiles`
+  generated from `pmtiles/src/commonTest/resources/fixtures/input/go-pmtiles-unclustered.pmtiles`
+  using `go-pmtiles cluster`
