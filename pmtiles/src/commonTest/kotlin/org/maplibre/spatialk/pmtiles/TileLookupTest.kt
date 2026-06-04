@@ -158,8 +158,10 @@ class TileLookupTest {
         val coord = TileIds.toZxy(2)
 
         val range = archive.getTileRange(coord.z, coord.x, coord.y)
+        val repeatedRange = archive.getTileRange(coord.z, coord.x, coord.y)
 
         assertEquals(ByteRange(401uL, 2), range?.archiveRange)
+        assertEquals(ByteRange(401uL, 2), repeatedRange?.archiveRange)
         assertEquals(2, range?.directoryDepth)
         assertEquals(1, archive.warningCount)
         assertEquals(ArchiveWarningCode.NestedLeafDirectory, archive.warningAt(0)?.code)

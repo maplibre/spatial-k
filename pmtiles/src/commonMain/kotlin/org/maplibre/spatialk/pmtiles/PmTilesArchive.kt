@@ -56,7 +56,7 @@ private constructor(
 ) : AutoCloseable {
     private val stateMutex = Mutex()
     private val closed = AtomicBoolean(false)
-    private val archiveWarnings = AtomicReference(initialWarnings)
+    private val archiveWarnings = AtomicReference(WarningState.from(initialWarnings))
     private val leafDirectoryCache = LinkedHashMap<ByteRange, List<DirectoryEntry>>()
     private val inFlightSourceReads = mutableMapOf<SourceReadKey, CompletableDeferred<ByteArray>>()
     private var rawMetadataJsonCache: String? = null
@@ -171,15 +171,15 @@ private constructor(
 
     /** Number of warnings recorded by this archive. */
     public val warningCount: Int
-        get() = archiveWarnings.load().size
+        get() = archiveWarnings.load().warnings.size
 
     /** Returns the warning at [index], or null when [index] is outside the warning list. */
     @ObjCName(name = "warningAt", swiftName = "warning")
     public fun warningAt(@ObjCName(name = "at", swiftName = "at") index: Int): ArchiveWarning? =
-        archiveWarnings.load().getOrNull(index)
+        archiveWarnings.load().warnings.getOrNull(index)
 
     /** Returns a snapshot of warnings recorded by this archive. */
-    @HiddenFromObjC public fun warnings(): List<ArchiveWarning> = archiveWarnings.load()
+    @HiddenFromObjC public fun warnings(): List<ArchiveWarning> = archiveWarnings.load().warnings
 
     /** Releases archive-owned caches and in-flight work. */
     override public fun close() {
@@ -582,10 +582,13 @@ private constructor(
     }
 
     private fun appendWarning(warning: ArchiveWarning) {
+        val key = warning.dedupeKey
         while (true) {
-            val currentWarnings = archiveWarnings.load()
-            val nextWarnings = currentWarnings + warning
-            if (archiveWarnings.compareAndSet(currentWarnings, nextWarnings)) return
+            val current = archiveWarnings.load()
+            if (key in current.keys) return
+            val next =
+                WarningState(warnings = current.warnings + warning, keys = current.keys + key)
+            if (archiveWarnings.compareAndSet(current, next)) return
         }
     }
 
@@ -650,6 +653,30 @@ private constructor(
 private data class SourceReadKey(
     val range: ByteRange,
     val maxBytes: Int,
+)
+
+private val ArchiveWarning.dedupeKey: WarningDedupeKey
+    get() = WarningDedupeKey(code = code, context = context)
+
+private data class WarningState(
+    val warnings: List<ArchiveWarning>,
+    val keys: Set<WarningDedupeKey>,
+) {
+    companion object {
+        fun from(warnings: List<ArchiveWarning>): WarningState {
+            val dedupedWarnings = mutableListOf<ArchiveWarning>()
+            val keys = mutableSetOf<WarningDedupeKey>()
+            warnings.forEach { warning ->
+                if (keys.add(warning.dedupeKey)) dedupedWarnings += warning
+            }
+            return WarningState(warnings = dedupedWarnings.toList(), keys = keys.toSet())
+        }
+    }
+}
+
+private data class WarningDedupeKey(
+    val code: ArchiveWarningCode,
+    val context: String?,
 )
 
 private fun ByteArray.decodeMetadataUtf8(): String =
