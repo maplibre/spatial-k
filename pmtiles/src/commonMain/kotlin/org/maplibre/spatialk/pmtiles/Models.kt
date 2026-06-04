@@ -65,7 +65,8 @@ public interface ByteRangeSource {
  * @property bounds Geographic bounds advertised by the archive.
  * @property center Center coordinate advertised by the archive.
  */
-public data class ArchiveHeader(
+public data class ArchiveHeader
+internal constructor(
     public val specVersion: Int,
     public val rootDirectory: ArchiveSection,
     public val metadata: ArchiveSection,
@@ -88,7 +89,8 @@ public data class ArchiveHeader(
  * @property offset Absolute byte offset from the start of the archive.
  * @property length Section length in bytes.
  */
-public data class ArchiveSection(
+public data class ArchiveSection
+internal constructor(
     public val offset: ULong,
     public val length: ULong,
 )
@@ -139,7 +141,8 @@ public data class HeaderCount internal constructor(public val rawValue: ULong) {
  * @property east Eastern longitude.
  * @property north Northern latitude.
  */
-public data class LonLatBounds(
+public data class LonLatBounds
+internal constructor(
     public val west: Double,
     public val south: Double,
     public val east: Double,
@@ -153,7 +156,8 @@ public data class LonLatBounds(
  * @property latitude Center latitude.
  * @property zoom Center zoom.
  */
-public data class TileCenter(
+public data class TileCenter
+internal constructor(
     public val longitude: Double,
     public val latitude: Double,
     public val zoom: Int,
@@ -495,7 +499,8 @@ public object TileIds {
  * @property compression Tile payload compression.
  * @property directoryDepth Directory traversal depth used to find the tile.
  */
-public data class TileRange(
+public data class TileRange
+internal constructor(
     public val tileId: Long,
     public val coord: TileCoord,
     public val archiveRange: ByteRange,
@@ -610,7 +615,8 @@ private val knownTilesetKindByValue: Map<String, KnownTilesetKind> =
  * @property message Human-readable warning message.
  * @property context Optional warning context.
  */
-public data class ArchiveWarning(
+public data class ArchiveWarning
+internal constructor(
     public val code: ArchiveWarningCode,
     public val message: String,
     public val context: String? = null,
