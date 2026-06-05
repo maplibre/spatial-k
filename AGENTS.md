@@ -81,6 +81,8 @@ use `mise exec -- <command>`.
 
 - For floating-point comparisons in tests, use helpers from `testutil` instead of `assertEquals` to
   handle platform-specific precision differences.
+- Foreign export tests don't need full coverage; they're primarily about proving the api is usable
+  in that language.
 
 ### Objective-C and Swift export
 
