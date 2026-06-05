@@ -195,7 +195,7 @@ class CompressionTest {
             decompressors.decompress(
                 CompressionCodes.None,
                 ByteString(1, 2, 3),
-                DecompressionLimits(maxCompressedBytes = 3, maxDecompressedBytes = 3),
+                DecompressionLimits(maxCompressedBytes = 3uL, maxDecompressedBytes = 3uL),
             )
 
         assertEquals(decodedBytes, decoded)
@@ -213,7 +213,7 @@ class CompressionTest {
             decompressors.decompress(
                 CompressionCodes.Brotli,
                 ByteString(1, 2, 3),
-                DecompressionLimits(maxCompressedBytes = 3, maxDecompressedBytes = 3),
+                DecompressionLimits(maxCompressedBytes = 3uL, maxDecompressedBytes = 3uL),
             )
 
         assertEquals(decodedBytes, decoded)
@@ -230,7 +230,7 @@ class CompressionTest {
                 decompressors.decompress(
                     CompressionCodes.Brotli,
                     ByteString(1),
-                    DecompressionLimits(maxCompressedBytes = 1, maxDecompressedBytes = 1),
+                    DecompressionLimits(maxCompressedBytes = 1uL, maxDecompressedBytes = 1uL),
                 )
             }
 

@@ -101,17 +101,6 @@ public fun ArchiveLimits.withMaxDirectoryDecompressedBytes(
         }
         .build()
 
-/** Returns a copy of these limits with [maxDirectoryEntries]. */
-@ObjCName(swiftName = "with")
-public fun ArchiveLimits.withMaxDirectoryEntries(
-    @ObjCName(swiftName = "maxDirectoryEntries") maxDirectoryEntries: Int
-): ArchiveLimits =
-    toBuilder()
-        .apply {
-            this.maxDirectoryEntries = maxDirectoryEntries
-        }
-        .build()
-
 /** Returns a copy of these limits with [maxTileCompressedBytes]. */
 @ObjCName(swiftName = "with")
 public fun ArchiveLimits.withMaxTileCompressedBytes(

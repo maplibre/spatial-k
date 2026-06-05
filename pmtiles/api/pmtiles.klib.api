@@ -168,9 +168,6 @@ final class org.maplibre.spatialk.pmtiles/ArchiveLimits { // org.maplibre.spatia
         final var maxDirectoryDepth // org.maplibre.spatialk.pmtiles/ArchiveLimits.Builder.maxDirectoryDepth|{}maxDirectoryDepth[0]
             final fun <get-maxDirectoryDepth>(): kotlin/Int // org.maplibre.spatialk.pmtiles/ArchiveLimits.Builder.maxDirectoryDepth.<get-maxDirectoryDepth>|<get-maxDirectoryDepth>(){}[0]
             final fun <set-maxDirectoryDepth>(kotlin/Int) // org.maplibre.spatialk.pmtiles/ArchiveLimits.Builder.maxDirectoryDepth.<set-maxDirectoryDepth>|<set-maxDirectoryDepth>(kotlin.Int){}[0]
-        final var maxDirectoryEntries // org.maplibre.spatialk.pmtiles/ArchiveLimits.Builder.maxDirectoryEntries|{}maxDirectoryEntries[0]
-            final fun <get-maxDirectoryEntries>(): kotlin/Int // org.maplibre.spatialk.pmtiles/ArchiveLimits.Builder.maxDirectoryEntries.<get-maxDirectoryEntries>|<get-maxDirectoryEntries>(){}[0]
-            final fun <set-maxDirectoryEntries>(kotlin/Int) // org.maplibre.spatialk.pmtiles/ArchiveLimits.Builder.maxDirectoryEntries.<set-maxDirectoryEntries>|<set-maxDirectoryEntries>(kotlin.Int){}[0]
         final var maxInitialReadBytes // org.maplibre.spatialk.pmtiles/ArchiveLimits.Builder.maxInitialReadBytes|{}maxInitialReadBytes[0]
             final fun <get-maxInitialReadBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ArchiveLimits.Builder.maxInitialReadBytes.<get-maxInitialReadBytes>|<get-maxInitialReadBytes>(){}[0]
             final fun <set-maxInitialReadBytes>(kotlin/ULong) // org.maplibre.spatialk.pmtiles/ArchiveLimits.Builder.maxInitialReadBytes.<set-maxInitialReadBytes>|<set-maxInitialReadBytes>(kotlin.ULong){}[0]
@@ -599,9 +596,6 @@ final fun (org.maplibre.spatialk.pmtiles/ArchiveLimits).org.maplibre.spatialk.pm
 
 // Targets: [apple]
 final fun (org.maplibre.spatialk.pmtiles/ArchiveLimits).org.maplibre.spatialk.pmtiles/withMaxDirectoryDepth(kotlin/Int): org.maplibre.spatialk.pmtiles/ArchiveLimits // org.maplibre.spatialk.pmtiles/withMaxDirectoryDepth|withMaxDirectoryDepth@org.maplibre.spatialk.pmtiles.ArchiveLimits(kotlin.Int){}[0]
-
-// Targets: [apple]
-final fun (org.maplibre.spatialk.pmtiles/ArchiveLimits).org.maplibre.spatialk.pmtiles/withMaxDirectoryEntries(kotlin/Int): org.maplibre.spatialk.pmtiles/ArchiveLimits // org.maplibre.spatialk.pmtiles/withMaxDirectoryEntries|withMaxDirectoryEntries@org.maplibre.spatialk.pmtiles.ArchiveLimits(kotlin.Int){}[0]
 
 // Targets: [apple]
 final fun (org.maplibre.spatialk.pmtiles/ArchiveLimits).org.maplibre.spatialk.pmtiles/withMaxInitialReadBytes(kotlin/ULong): org.maplibre.spatialk.pmtiles/ArchiveLimits // org.maplibre.spatialk.pmtiles/withMaxInitialReadBytes|withMaxInitialReadBytes@org.maplibre.spatialk.pmtiles.ArchiveLimits(kotlin.ULong){}[0]

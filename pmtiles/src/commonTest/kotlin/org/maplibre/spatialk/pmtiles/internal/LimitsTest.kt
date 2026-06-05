@@ -62,16 +62,7 @@ class LimitsTest {
             ArchiveLimits.build { maxInitialReadBytes = (16 * 1024 - 1).toULong() }
         }
         assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits.build {
-                maxDirectoryDecompressedBytes = 1024uL
-                maxDirectoryEntries = 256
-            }
-        }
-        assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits.build { maxDirectoryEntries = -1 }
-        }
-        assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits.build { maxDirectoryEntries = Int.MAX_VALUE }
+            ArchiveLimits.build { maxDirectoryDecompressedBytes = 0uL }
         }
         assertFailsWith<IllegalArgumentException> {
             ArchiveLimits.build { maxVarintBytes = 0 }
@@ -86,12 +77,14 @@ class LimitsTest {
     }
 
     @Test
-    fun acceptsDirectoryEntryLimitThatFitsDecompressedDirectoryBudget() {
-        val limits = ArchiveLimits.build {
-            maxDirectoryDecompressedBytes = 1024uL
-            maxDirectoryEntries = 255
-        }
+    fun copiedLimitsRecomputeDerivedDirectoryEntryLimitForLargerDirectoryBudget() {
+        val maxDirectoryDecompressedBytes = (32 * 1024 * 1024).toULong()
+        val limits =
+            ArchiveLimits()
+                .toBuilder()
+                .apply { this.maxDirectoryDecompressedBytes = maxDirectoryDecompressedBytes }
+                .build()
 
-        assertEquals(255, limits.maxDirectoryEntries)
+        assertEquals((32 * 1024 * 1024) / 17, limits.maxDirectoryEntries)
     }
 }

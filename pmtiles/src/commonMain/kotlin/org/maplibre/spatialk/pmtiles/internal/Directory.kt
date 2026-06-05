@@ -88,7 +88,7 @@ private fun BinaryReader.readEntryCount(limits: ArchiveLimits, allowEmpty: Boole
             "Directory entry count is zero.",
         )
     }
-    if (limits.maxDirectoryEntries < 0 || count > limits.maxDirectoryEntries.toULong()) {
+    if (count > limits.maxDirectoryEntries.toULong()) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
             "Directory entry count $count exceeds limit ${limits.maxDirectoryEntries}.",

@@ -154,7 +154,6 @@ final class SwiftDocsTest: XCTestCase {
         let directoryLimitedOptions =
             options.with(
                 limits: ArchiveLimits()
-                    .with(maxDirectoryEntries: 16)
                     .with(maxDirectoryDecompressedBytes: 2048)
             )
         _ = lenientOptions

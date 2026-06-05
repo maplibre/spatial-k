@@ -22,7 +22,6 @@ class ArchiveOpenOptionsTest {
         val limits = ArchiveLimits.build {
             maxMetadataBytes = 1024uL
             maxDirectoryDecompressedBytes = 2048uL
-            maxDirectoryEntries = 2048 / 17
             maxTileCompressedBytes = 4096uL
             maxDirectoryDepth = 1
         }
@@ -33,17 +32,6 @@ class ArchiveOpenOptionsTest {
         assertEquals(4096uL, limits.maxTileCompressedBytes)
         assertEquals(1, limits.maxDirectoryDepth)
         assertEquals(ArchiveLimits().maxInitialReadBytes, limits.maxInitialReadBytes)
-    }
-
-    @Test
-    fun archiveLimitsBuilderPreservesExplicitEntryLimit() {
-        val limits = ArchiveLimits.build {
-            maxDirectoryEntries = 16
-            maxDirectoryDecompressedBytes = 2048uL
-        }
-
-        assertEquals(2048uL, limits.maxDirectoryDecompressedBytes)
-        assertEquals(16, limits.maxDirectoryEntries)
     }
 
     @Test

@@ -35,7 +35,7 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveHeader {
 public final class org/maplibre/spatialk/pmtiles/ArchiveLimits {
 	public static final field Companion Lorg/maplibre/spatialk/pmtiles/ArchiveLimits$Companion;
 	public fun <init> ()V
-	public synthetic fun <init> (JJJJIJJIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJJJIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getMaxDirectoryCompressedBytes-s-VKNKU ()J
 	public final fun getMaxDirectoryDecompressedBytes-s-VKNKU ()J
 	public final fun getMaxDirectoryDepth ()I
@@ -55,7 +55,6 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveLimits$Builder {
 	public final fun getMaxDirectoryCompressedBytes-s-VKNKU ()J
 	public final fun getMaxDirectoryDecompressedBytes-s-VKNKU ()J
 	public final fun getMaxDirectoryDepth ()I
-	public final fun getMaxDirectoryEntries ()I
 	public final fun getMaxInitialReadBytes-s-VKNKU ()J
 	public final fun getMaxLeafDirectoryCacheEntries ()I
 	public final fun getMaxMetadataBytes-s-VKNKU ()J
@@ -65,7 +64,6 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveLimits$Builder {
 	public final fun setMaxDirectoryCompressedBytes-VKZWuLQ (J)V
 	public final fun setMaxDirectoryDecompressedBytes-VKZWuLQ (J)V
 	public final fun setMaxDirectoryDepth (I)V
-	public final fun setMaxDirectoryEntries (I)V
 	public final fun setMaxInitialReadBytes-VKZWuLQ (J)V
 	public final fun setMaxLeafDirectoryCacheEntries (I)V
 	public final fun setMaxMetadataBytes-VKZWuLQ (J)V

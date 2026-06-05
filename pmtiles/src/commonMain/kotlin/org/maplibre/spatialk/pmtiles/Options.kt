@@ -22,8 +22,8 @@ public enum class ValidationMode {
  * @property maxMetadataBytes Maximum metadata payload bytes.
  * @property maxDirectoryCompressedBytes Maximum compressed directory bytes.
  * @property maxDirectoryDecompressedBytes Maximum decompressed directory bytes.
- * @property maxDirectoryEntries Maximum entries in one decoded directory. Defaults to a
- *   conservative entry count derived from [maxDirectoryDecompressedBytes].
+ * @property maxDirectoryEntries Maximum entries in one decoded directory, derived from
+ *   [maxDirectoryDecompressedBytes].
  * @property maxTileCompressedBytes Maximum compressed tile payload bytes.
  * @property maxTileDecompressedBytes Maximum decompressed tile payload bytes.
  * @property maxDirectoryDepth Maximum leaf-directory traversal depth.
@@ -32,41 +32,42 @@ public enum class ValidationMode {
  */
 public class ArchiveLimits
 private constructor(
-    public val maxInitialReadBytes: ULong = DEFAULT_INITIAL_READ_BYTES,
-    public val maxMetadataBytes: ULong = DEFAULT_METADATA_BYTES,
-    public val maxDirectoryCompressedBytes: ULong = DEFAULT_DIRECTORY_BYTES,
-    public val maxDirectoryDecompressedBytes: ULong = DEFAULT_DIRECTORY_BYTES,
-    public val maxDirectoryEntries: Int =
-        maxDirectoryDecompressedBytes.defaultDirectoryEntryLimit(),
-    public val maxTileCompressedBytes: ULong = DEFAULT_TILE_BYTES,
-    public val maxTileDecompressedBytes: ULong = DEFAULT_TILE_BYTES,
-    public val maxDirectoryDepth: Int = 3,
-    public val maxLeafDirectoryCacheEntries: Int = 128,
-    public val maxVarintBytes: Int = 10,
+    public val maxInitialReadBytes: ULong,
+    public val maxMetadataBytes: ULong,
+    public val maxDirectoryCompressedBytes: ULong,
+    public val maxDirectoryDecompressedBytes: ULong,
+    public val maxTileCompressedBytes: ULong,
+    public val maxTileDecompressedBytes: ULong,
+    public val maxDirectoryDepth: Int,
+    public val maxLeafDirectoryCacheEntries: Int,
+    public val maxVarintBytes: Int,
 ) {
     public constructor() :
         this(
-            maxInitialReadBytes = DEFAULT_INITIAL_READ_BYTES,
-            maxMetadataBytes = DEFAULT_METADATA_BYTES,
-            maxDirectoryCompressedBytes = DEFAULT_DIRECTORY_BYTES,
-            maxDirectoryDecompressedBytes = DEFAULT_DIRECTORY_BYTES,
-            maxDirectoryEntries = DEFAULT_DIRECTORY_BYTES.defaultDirectoryEntryLimit(),
-            maxTileCompressedBytes = DEFAULT_TILE_BYTES,
-            maxTileDecompressedBytes = DEFAULT_TILE_BYTES,
+            maxInitialReadBytes = (16 * 1024).toULong(),
+            maxMetadataBytes = (16 * 1024 * 1024).toULong(),
+            maxDirectoryCompressedBytes = (16 * 1024 * 1024).toULong(),
+            maxDirectoryDecompressedBytes = (16 * 1024 * 1024).toULong(),
+            maxTileCompressedBytes = (64 * 1024 * 1024).toULong(),
+            maxTileDecompressedBytes = (64 * 1024 * 1024).toULong(),
             maxDirectoryDepth = 3,
             maxLeafDirectoryCacheEntries = 128,
             maxVarintBytes = 10,
         )
 
+    public val maxDirectoryEntries: Int =
+        minOf(
+                maxDirectoryDecompressedBytes / 17uL,
+                Int.MAX_VALUE.toULong(),
+            )
+            .toInt()
+
     init {
         require(maxInitialReadBytes >= MIN_INITIAL_READ_BYTES.toULong()) {
             "maxInitialReadBytes must be at least $MIN_INITIAL_READ_BYTES."
         }
-        require(maxDirectoryEntries >= 0) { "maxDirectoryEntries must be non-negative." }
-        require(
-            minEncodedDirectoryBytes(maxDirectoryEntries).toULong() <= maxDirectoryDecompressedBytes
-        ) {
-            "maxDirectoryEntries must fit within maxDirectoryDecompressedBytes."
+        require(maxDirectoryDecompressedBytes > 0uL) {
+            "maxDirectoryDecompressedBytes must be positive."
         }
         require(maxDirectoryDepth >= 0) { "maxDirectoryDepth must be non-negative." }
         require(maxLeafDirectoryCacheEntries >= 0) {
@@ -82,44 +83,22 @@ private constructor(
     @HiddenFromObjC
     public class Builder public constructor() {
         /** Maximum bytes read during archive open. */
-        public var maxInitialReadBytes: ULong = DEFAULT_INITIAL_READ_BYTES
+        public var maxInitialReadBytes: ULong = (16 * 1024).toULong()
 
         /** Maximum metadata payload bytes. */
-        public var maxMetadataBytes: ULong = DEFAULT_METADATA_BYTES
+        public var maxMetadataBytes: ULong = (16 * 1024 * 1024).toULong()
 
         /** Maximum compressed directory bytes. */
-        public var maxDirectoryCompressedBytes: ULong = DEFAULT_DIRECTORY_BYTES
+        public var maxDirectoryCompressedBytes: ULong = (16 * 1024 * 1024).toULong()
 
         /** Maximum decompressed directory bytes. */
-        public var maxDirectoryDecompressedBytes: ULong = DEFAULT_DIRECTORY_BYTES
-            set(value) {
-                field = value
-                if (
-                    !maxDirectoryEntriesWasExplicit ||
-                        minEncodedDirectoryBytes(maxDirectoryEntries).toULong() > value
-                ) {
-                    maxDirectoryEntriesBacking = value.defaultDirectoryEntryLimit()
-                    maxDirectoryEntriesWasExplicit = false
-                }
-            }
-
-        private var maxDirectoryEntriesBacking: Int =
-            DEFAULT_DIRECTORY_BYTES.defaultDirectoryEntryLimit()
-        private var maxDirectoryEntriesWasExplicit: Boolean = false
-
-        /** Maximum entries in one decoded directory. */
-        public var maxDirectoryEntries: Int
-            get() = maxDirectoryEntriesBacking
-            set(value) {
-                maxDirectoryEntriesBacking = value
-                maxDirectoryEntriesWasExplicit = true
-            }
+        public var maxDirectoryDecompressedBytes: ULong = (16 * 1024 * 1024).toULong()
 
         /** Maximum compressed tile payload bytes. */
-        public var maxTileCompressedBytes: ULong = DEFAULT_TILE_BYTES
+        public var maxTileCompressedBytes: ULong = (64 * 1024 * 1024).toULong()
 
         /** Maximum decompressed tile payload bytes. */
-        public var maxTileDecompressedBytes: ULong = DEFAULT_TILE_BYTES
+        public var maxTileDecompressedBytes: ULong = (64 * 1024 * 1024).toULong()
 
         /** Maximum leaf-directory traversal depth. */
         public var maxDirectoryDepth: Int = 3
@@ -135,10 +114,6 @@ private constructor(
             maxMetadataBytes = limits.maxMetadataBytes
             maxDirectoryCompressedBytes = limits.maxDirectoryCompressedBytes
             maxDirectoryDecompressedBytes = limits.maxDirectoryDecompressedBytes
-            // Built ArchiveLimits only stores the effective entry limit, not whether it was
-            // derived, so toBuilder() preserves it as an explicit caller value.
-            maxDirectoryEntriesBacking = limits.maxDirectoryEntries
-            maxDirectoryEntriesWasExplicit = true
             maxTileCompressedBytes = limits.maxTileCompressedBytes
             maxTileDecompressedBytes = limits.maxTileDecompressedBytes
             maxDirectoryDepth = limits.maxDirectoryDepth
@@ -153,7 +128,6 @@ private constructor(
                 maxMetadataBytes = maxMetadataBytes,
                 maxDirectoryCompressedBytes = maxDirectoryCompressedBytes,
                 maxDirectoryDecompressedBytes = maxDirectoryDecompressedBytes,
-                maxDirectoryEntries = maxDirectoryEntries,
                 maxTileCompressedBytes = maxTileCompressedBytes,
                 maxTileDecompressedBytes = maxTileDecompressedBytes,
                 maxDirectoryDepth = maxDirectoryDepth,
@@ -179,10 +153,10 @@ private constructor(
  * @property maxGapBytes Maximum unread bytes to include between adjacent tile payloads.
  */
 public data class TileReadCoalescing(
-    public val maxCoalescedBytes: ULong = DEFAULT_COALESCED_BYTES,
+    public val maxCoalescedBytes: ULong = (512 * 1024).toULong(),
     public val maxGapBytes: ULong = 0uL,
 ) {
-    public constructor() : this(maxCoalescedBytes = DEFAULT_COALESCED_BYTES, maxGapBytes = 0uL)
+    public constructor() : this(maxCoalescedBytes = (512 * 1024).toULong(), maxGapBytes = 0uL)
 }
 
 /**
@@ -250,34 +224,3 @@ private constructor(
 }
 
 private const val MIN_INITIAL_READ_BYTES = 16 * 1024
-private val DEFAULT_INITIAL_READ_BYTES = (16 * 1024).toULong()
-private val DEFAULT_METADATA_BYTES = (16 * 1024 * 1024).toULong()
-private val DEFAULT_DIRECTORY_BYTES = (16 * 1024 * 1024).toULong()
-private val DEFAULT_TILE_BYTES = (64 * 1024 * 1024).toULong()
-private val DEFAULT_COALESCED_BYTES = (512 * 1024).toULong()
-private const val DEFAULT_MIN_DIRECTORY_ENTRY_BYTES = 17
-private const val MIN_ENCODED_DIRECTORY_ENTRY_BYTES = 4
-private const val VARINT_PAYLOAD_BITS = 7
-
-internal fun ULong.defaultDirectoryEntryLimit(): Int =
-    minOf(
-            this / DEFAULT_MIN_DIRECTORY_ENTRY_BYTES.toULong(),
-            Int.MAX_VALUE.toULong(),
-        )
-        .toInt()
-
-internal fun minEncodedDirectoryBytes(entryCount: Int): Long {
-    val countBytes = varintByteCount(entryCount).toLong()
-    val entryBytes = entryCount.toLong() * MIN_ENCODED_DIRECTORY_ENTRY_BYTES
-    return countBytes + entryBytes
-}
-
-private fun varintByteCount(value: Int): Int {
-    var bytes = 1
-    var remaining = value ushr VARINT_PAYLOAD_BITS
-    while (remaining != 0) {
-        bytes += 1
-        remaining = remaining ushr VARINT_PAYLOAD_BITS
-    }
-    return bytes
-}

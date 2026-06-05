@@ -15,15 +15,7 @@ public data class DecompressionLimits
 internal constructor(
     public val maxCompressedBytes: ULong,
     public val maxDecompressedBytes: ULong,
-) {
-    internal constructor(
-        maxCompressedBytes: Int,
-        maxDecompressedBytes: Int,
-    ) : this(
-        maxCompressedBytes = maxCompressedBytes.toLimitULong("compressed"),
-        maxDecompressedBytes = maxDecompressedBytes.toLimitULong("decompressed"),
-    )
-}
+)
 
 /** Decompresses bytes for one PMTiles compression format. */
 @OptIn(ExperimentalObjCRefinement::class)
@@ -37,14 +29,4 @@ public fun interface Decompressor {
      */
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun decompress(bytes: ByteString, limits: DecompressionLimits): ByteString
-}
-
-private fun Int.toLimitULong(kind: String): ULong {
-    if (this < 0) {
-        throw PmTilesException(
-            PmTilesErrorCode.LimitExceeded,
-            "Configured $kind byte limit is negative.",
-        )
-    }
-    return toULong()
 }

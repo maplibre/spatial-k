@@ -84,7 +84,11 @@ class DirectoryDecodingTest {
                         DirectoryEntry(tileId = 0, offset = 0uL, length = 1, runLength = 1)
                     ),
                     header(),
-                    limits = defaultLimits.toBuilder().apply { maxDirectoryEntries = 0 }.build(),
+                    limits =
+                        defaultLimits
+                            .toBuilder()
+                            .apply { maxDirectoryDecompressedBytes = 16uL }
+                            .build(),
                 )
             }
         assertEquals(PmTilesErrorCode.LimitExceeded, tooManyEntries.code)

@@ -80,6 +80,16 @@ class AppleApiTest {
     }
 
     @Test
+    fun archiveLimitsWithDirectoryBudgetRecomputesDerivedEntryLimit() {
+        val maxDirectoryDecompressedBytes = (32 * 1024 * 1024).toULong()
+
+        val limits =
+            ArchiveLimits().withMaxDirectoryDecompressedBytes(maxDirectoryDecompressedBytes)
+
+        assertEquals((32 * 1024 * 1024) / 17, limits.maxDirectoryEntries)
+    }
+
+    @Test
     fun rejectsShortAndLongByteRangeDataSourceReads() {
         val archiveBytes = buildSingleTileArchive(ByteString(7))
 
