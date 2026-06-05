@@ -67,7 +67,7 @@ class FixtureConformanceTest {
         assertEquals(TileTypeCodes.Mvt, tile.tileType)
         assertEquals(CompressionCodes.None, tile.compression)
         assertEquals(true, tile.wasDecompressed)
-        assertEquals(0x1a, tile.bytes.first().toInt() and 0xff)
+        assertEquals(0x1a, tile.payload.toByteArray().first().toInt() and 0xff)
     }
 
     @Test
@@ -85,7 +85,7 @@ class FixtureConformanceTest {
         assertEquals(TileTypeCodes.Png, tile.tileType)
         assertContentEquals(
             byteArrayOf(0x89.toByte(), 0x50, 0x4e, 0x47),
-            tile.bytes.copyOfRange(0, 4),
+            tile.payload.toByteArray().copyOfRange(0, 4),
         )
     }
 

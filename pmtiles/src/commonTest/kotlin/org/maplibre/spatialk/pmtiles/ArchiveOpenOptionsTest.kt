@@ -90,14 +90,11 @@ class ArchiveOpenOptionsTest {
 
     @Test
     fun toBuilderStartsFromExistingOptions() {
-        val options =
-            ArchiveOpenOptions()
-                .toBuilder()
-                .apply {
-                    validationMode = ValidationMode.Lenient
-                    decompressor(CompressionCodes.Brotli) { bytes, _ -> bytes }
-                }
-                .build()
+        val seeded = ArchiveOpenOptions.build {
+            validationMode = ValidationMode.Lenient
+            decompressor(CompressionCodes.Brotli) { bytes, _ -> bytes }
+        }
+        val options = seeded.toBuilder().build()
 
         assertEquals(ValidationMode.Lenient, options.validationMode)
         assertTrue(CompressionCodes.Brotli in options.decompressors)

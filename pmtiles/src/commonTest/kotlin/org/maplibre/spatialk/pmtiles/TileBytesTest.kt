@@ -36,19 +36,19 @@ class TileBytesTest {
         requireNotNull(stored)
         requireNotNull(coordRead)
         requireNotNull(idRead)
-        assertContentEquals(tileBytes, stored.bytes)
+        assertContentEquals(tileBytes, stored.payload.toByteArray())
         assertEquals(tileBytes.size.toULong(), stored.byteCount)
         assertEquals(CompressionCodes.Brotli, stored.compression)
         assertEquals(false, stored.wasDecompressed)
         assertEquals(TileTypeCodes.Png, stored.tileType)
-        assertContentEquals(tileBytes, coordRead.bytes)
-        assertContentEquals(tileBytes, idRead.bytes)
+        assertContentEquals(tileBytes, coordRead.payload.toByteArray())
+        assertContentEquals(tileBytes, idRead.payload.toByteArray())
         assertEquals(stored, coordRead)
         assertEquals(stored, idRead)
 
-        val mutableBytes = stored.bytes
+        val mutableBytes = stored.payload.toByteArray()
         mutableBytes[0] = 9
-        assertContentEquals(tileBytes, stored.bytes)
+        assertContentEquals(tileBytes, stored.payload.toByteArray())
     }
 
     @Test
@@ -89,9 +89,9 @@ class TileBytesTest {
             )
 
         assertEquals(3, tiles.size)
-        assertContentEquals(byteArrayOf(3, 4, 5), tiles[0].tile?.bytes)
+        assertContentEquals(byteArrayOf(3, 4, 5), tiles[0].tile?.payload?.toByteArray())
         assertEquals(false, tiles[1].isFound)
-        assertContentEquals(byteArrayOf(1, 2), tiles[2].tile?.bytes)
+        assertContentEquals(byteArrayOf(1, 2), tiles[2].tile?.payload?.toByteArray())
         assertEquals(listOf(ByteRange(tileDataOffset, tileData.size)), source.reads)
     }
 
@@ -225,8 +225,8 @@ class TileBytesTest {
 
         val tiles = archive.readDecompressedTiles(listOf(TileIds.toZxy(0), TileIds.toZxy(1)))
 
-        assertContentEquals(byteArrayOf(11, 12), tiles[0].tile?.bytes)
-        assertContentEquals(byteArrayOf(13, 14), tiles[1].tile?.bytes)
+        assertContentEquals(byteArrayOf(11, 12), tiles[0].tile?.payload?.toByteArray())
+        assertContentEquals(byteArrayOf(13, 14), tiles[1].tile?.payload?.toByteArray())
         assertEquals(CompressionCodes.None, tiles[0].tile?.compression)
         assertEquals(true, tiles[0].tile?.wasDecompressed)
         assertEquals(listOf(ByteRange(tileDataOffset, compressedTileData.size)), source.reads)
@@ -241,7 +241,7 @@ class TileBytesTest {
         val tile = archive.readDecompressedTile(0, 0, 0)
 
         requireNotNull(tile)
-        assertContentEquals(tileBytes, tile.bytes)
+        assertContentEquals(tileBytes, tile.payload.toByteArray())
         assertEquals(CompressionCodes.None, tile.compression)
         assertEquals(false, tile.wasDecompressed)
     }
@@ -261,7 +261,7 @@ class TileBytesTest {
         val tile = archive.readDecompressedTile(0, 0, 0)
 
         requireNotNull(tile)
-        assertContentEquals(helloBytes, tile.bytes)
+        assertContentEquals(helloBytes, tile.payload.toByteArray())
         assertEquals(CompressionCodes.None, tile.compression)
         assertEquals(CompressionCodes.Gzip, tile.range.compression)
         assertEquals(true, tile.wasDecompressed)
@@ -287,7 +287,7 @@ class TileBytesTest {
             )
 
         val archive = PmTiles.open(TestByteRangeSource(bytes))
-        assertContentEquals(tileBytes, archive.readStoredTile(0, 0, 0)?.bytes)
+        assertContentEquals(tileBytes, archive.readStoredTile(0, 0, 0)?.payload?.toByteArray())
 
         val error =
             assertFailsWith<PmTilesException> {
@@ -321,7 +321,7 @@ class TileBytesTest {
         val tile = archive.readDecompressedTile(0, 0, 0)
 
         requireNotNull(tile)
-        assertContentEquals(decompressedBytes, tile.bytes)
+        assertContentEquals(decompressedBytes, tile.payload.toByteArray())
         assertEquals(CompressionCodes.None, tile.compression)
         assertEquals(true, tile.wasDecompressed)
     }

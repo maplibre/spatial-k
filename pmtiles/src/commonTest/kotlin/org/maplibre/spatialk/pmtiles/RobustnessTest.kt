@@ -123,7 +123,7 @@ class RobustnessTest {
         val tile = archive.readStoredTile(0, 0, 0)
 
         requireNotNull(tile)
-        assertContentEquals(tileBytes, tile.bytes)
+        assertContentEquals(tileBytes, tile.payload.toByteArray())
     }
 }
 

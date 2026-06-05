@@ -16,6 +16,7 @@ import org.maplibre.spatialk.pmtiles.internal.DirectoryEntry
 import org.maplibre.spatialk.pmtiles.internal.DirectoryResolver
 import org.maplibre.spatialk.pmtiles.internal.FIRST_READ_BYTES
 import org.maplibre.spatialk.pmtiles.internal.allocationLength
+import org.maplibre.spatialk.pmtiles.internal.checkedAdd
 import org.maplibre.spatialk.pmtiles.internal.decodeDirectory
 import org.maplibre.spatialk.pmtiles.internal.decompress
 import org.maplibre.spatialk.pmtiles.internal.effectiveDecompressors
@@ -392,7 +393,7 @@ internal constructor(
     private suspend fun ArchiveTile.decompressed(): ArchiveTile {
         if (compression == CompressionCodes.None) return this
 
-        val decompressedBytes =
+        val decompressedBytes = payload.withBytesUnsafeSuspend { bytes ->
             decompressors.decompress(
                 compression,
                 bytes,
@@ -402,6 +403,7 @@ internal constructor(
                     purpose = DecodePurpose.Tile,
                 ),
             )
+        }
         return ArchiveTile(
             tileId = tileId,
             coord = coord,
@@ -445,7 +447,7 @@ internal constructor(
         val metadata =
             ArchiveMetadata(
                 name = jsonObject.optionalString("name"),
-                summary = jsonObject.optionalString("description"),
+                description = jsonObject.optionalString("description"),
                 attribution = jsonObject.optionalString("attribution"),
                 type = jsonObject.optionalString("type")?.let(::TilesetKind),
                 version = jsonObject.optionalString("version"),
@@ -590,7 +592,8 @@ private fun canCoalesce(
     return mergedLength <= coalescing.maxCoalescedBytes
 }
 
-private fun ByteRange.endOffset(): ULong = offset + length
+private fun ByteRange.endOffset(): ULong =
+    checkedAdd(offset, length, PmTilesErrorCode.RangeOutOfBounds)
 
 private fun ByteArray.sliceTile(readRange: ByteRange, tileRange: TileRange): ByteArray {
     val offset = (tileRange.archiveRange.offset - readRange.offset).toInt()
@@ -603,7 +606,7 @@ private fun ByteRange.lengthAsInt(purpose: String): Int =
 private fun emptyMetadata(): ArchiveMetadata =
     ArchiveMetadata(
         name = null,
-        summary = null,
+        description = null,
         attribution = null,
         type = null,
         version = null,

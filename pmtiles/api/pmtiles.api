@@ -88,9 +88,9 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveMetadata {
 	public final fun component7 ()Ljava/lang/String;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAttribution ()Ljava/lang/String;
+	public final fun getDescription ()Ljava/lang/String;
 	public final fun getEncoding ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
-	public final fun getSummary ()Ljava/lang/String;
 	public final fun getType ()Lorg/maplibre/spatialk/pmtiles/TilesetKind;
 	public final fun getVectorLayersJson ()Ljava/lang/String;
 	public final fun getVersion ()Ljava/lang/String;
@@ -132,16 +132,8 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveSection {
 }
 
 public final class org/maplibre/spatialk/pmtiles/ArchiveTile {
-	public final fun component1 ()J
-	public final fun component2 ()Lorg/maplibre/spatialk/pmtiles/TileCoord;
-	public final fun component3 ()Lorg/maplibre/spatialk/pmtiles/ByteString;
-	public final fun component4-u2j9DLg ()I
-	public final fun component5-KaDf8nc ()I
-	public final fun component6 ()Z
-	public final fun component7 ()Lorg/maplibre/spatialk/pmtiles/TileRange;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getByteCount-s-VKNKU ()J
-	public final fun getBytes ()[B
 	public final fun getCompression-KaDf8nc ()I
 	public final fun getCoord ()Lorg/maplibre/spatialk/pmtiles/TileCoord;
 	public final fun getPayload ()Lorg/maplibre/spatialk/pmtiles/ByteString;
@@ -197,8 +189,8 @@ public abstract interface class org/maplibre/spatialk/pmtiles/ByteRangeSource {
 public final class org/maplibre/spatialk/pmtiles/ByteString {
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getByteCount-s-VKNKU ()J
-	public final fun getBytes ()[B
 	public fun hashCode ()I
+	public final fun toByteArray ()[B
 	public fun toString ()Ljava/lang/String;
 }
 

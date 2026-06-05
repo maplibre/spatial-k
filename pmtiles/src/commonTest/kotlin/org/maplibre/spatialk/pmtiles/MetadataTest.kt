@@ -28,7 +28,7 @@ class MetadataTest {
         assertEquals(json, raw)
         assertEquals(json, rawAgain)
         assertEquals("Tiles", metadata.name)
-        assertEquals("Desc", metadata.summary)
+        assertEquals("Desc", metadata.description)
         assertEquals("Attr", metadata.attribution)
         assertEquals(TilesetKind(KnownTilesetKind.BaseLayer), metadata.type)
         assertEquals("1", metadata.version)
@@ -97,7 +97,7 @@ class MetadataTest {
         val metadata = archive.metadata()
 
         assertNull(metadata.name)
-        assertEquals("ok", metadata.summary)
+        assertEquals("ok", metadata.description)
         assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warnings.single().code)
     }
 

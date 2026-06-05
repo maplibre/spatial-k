@@ -101,9 +101,12 @@ internal constructor(
 /**
  * PMTiles header counts.
  *
- * @property addressedTiles Addressed tile count from the header, or zero when unknown.
- * @property tileEntries Tile-entry count from the header, or zero when unknown.
- * @property tileContents Tile-content count from the header, or zero when unknown.
+ * @property addressedTiles Addressed tile count from the header. PMTiles uses zero as the "unknown
+ *   count" sentinel.
+ * @property tileEntries Tile-entry count from the header. PMTiles uses zero as the "unknown count"
+ *   sentinel.
+ * @property tileContents Tile-content count from the header. PMTiles uses zero as the "unknown
+ *   count" sentinel.
  */
 public data class HeaderCounts
 internal constructor(
@@ -386,11 +389,11 @@ internal constructor(
  * @property wasDecompressed True when the payload bytes were decompressed by the reader.
  * @property range Located source range for this tile.
  */
-public data class ArchiveTile
+public class ArchiveTile
 internal constructor(
     public val tileId: Long,
     public val coord: TileCoord,
-    @HiddenFromObjC public val payload: ByteString,
+    public val payload: ByteString,
     public val tileType: TileTypeCode,
     public val compression: CompressionCode,
     public val wasDecompressed: Boolean,
@@ -418,15 +421,6 @@ internal constructor(
     public val byteCount: ULong
         get() = payload.byteCount
 
-    /** Tile payload bytes. The returned array is a copy. */
-    @OptIn(ExperimentalObjCRefinement::class)
-    @HiddenFromObjC
-    public val bytes: ByteArray
-        get() = payload.bytes
-
-    internal fun <T> withPayloadBytesUnsafe(block: (ByteArray) -> T): T =
-        payload.withBytesUnsafe(block)
-
     override fun toString(): String =
         "ArchiveTile(" +
             "tileId=$tileId, " +
@@ -437,10 +431,30 @@ internal constructor(
             "wasDecompressed=$wasDecompressed, " +
             "range=$range" +
             ")"
+
+    override fun equals(other: Any?): Boolean =
+        other is ArchiveTile &&
+            tileId == other.tileId &&
+            coord == other.coord &&
+            payload == other.payload &&
+            tileType == other.tileType &&
+            compression == other.compression &&
+            wasDecompressed == other.wasDecompressed &&
+            range == other.range
+
+    override fun hashCode(): Int {
+        var result = tileId.hashCode()
+        result = 31 * result + coord.hashCode()
+        result = 31 * result + payload.hashCode()
+        result = 31 * result + tileType.hashCode()
+        result = 31 * result + compression.hashCode()
+        result = 31 * result + wasDecompressed.hashCode()
+        result = 31 * result + range.hashCode()
+        return result
+    }
 }
 
 /** Immutable byte payload. */
-@HiddenFromObjC
 public class ByteString internal constructor(bytes: ByteArray) {
     private val byteStorage: ByteArray = bytes.copyOf()
 
@@ -448,13 +462,13 @@ public class ByteString internal constructor(bytes: ByteArray) {
     public val byteCount: ULong
         get() = byteStorage.size.toULong()
 
-    /** Payload bytes. The returned array is a copy. */
-    @OptIn(ExperimentalObjCRefinement::class)
-    @HiddenFromObjC
-    public val bytes: ByteArray
-        get() = byteStorage.copyOf()
+    /** Returns a copy of this payload as a byte array. */
+    public fun toByteArray(): ByteArray = byteStorage.copyOf()
 
     internal fun <T> withBytesUnsafe(block: (ByteArray) -> T): T = block(byteStorage)
+
+    internal suspend fun <T> withBytesUnsafeSuspend(block: suspend (ByteArray) -> T): T =
+        block(byteStorage)
 
     override fun equals(other: Any?): Boolean =
         other is ByteString && byteStorage.contentEquals(other.byteStorage)
@@ -484,7 +498,7 @@ internal constructor(
  * Typed PMTiles metadata fields.
  *
  * @property name Tileset name.
- * @property summary Tileset description.
+ * @property description PMTiles metadata `description`.
  * @property attribution Tileset attribution.
  * @property type Tileset kind.
  * @property version Tileset version.
@@ -494,7 +508,7 @@ internal constructor(
 public data class ArchiveMetadata
 internal constructor(
     public val name: String?,
-    public val summary: String?,
+    @property:ObjCName(swiftName = "archiveDescription") public val description: String?,
     public val attribution: String?,
     public val type: TilesetKind?,
     public val version: String?,

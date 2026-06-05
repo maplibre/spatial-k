@@ -135,6 +135,8 @@ private constructor(
             maxMetadataBytes = limits.maxMetadataBytes
             maxDirectoryCompressedBytes = limits.maxDirectoryCompressedBytes
             maxDirectoryDecompressedBytes = limits.maxDirectoryDecompressedBytes
+            // Built ArchiveLimits only stores the effective entry limit, not whether it was
+            // derived, so toBuilder() preserves it as an explicit caller value.
             maxDirectoryEntriesBacking = limits.maxDirectoryEntries
             maxDirectoryEntriesWasExplicit = true
             maxTileCompressedBytes = limits.maxTileCompressedBytes

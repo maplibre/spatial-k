@@ -10,7 +10,7 @@ import platform.Foundation.NSData
 
 class AppleApiTest {
     @Test
-    fun archiveTileDataReturnsSnapshotNSData() {
+    fun byteStringDataReturnsSnapshotNSData() {
         val bytes = byteArrayOf(1, 2, 3)
         val tile =
             ArchiveTile(
@@ -31,9 +31,9 @@ class AppleApiTest {
                     ),
             )
 
-        val firstData = tile.data
+        val firstData = tile.payload.toNSData()
         bytes[0] = 9
-        val secondData = tile.data
+        val secondData = tile.payload.toNSData()
 
         assertContentEquals(byteArrayOf(1, 2, 3), firstData.toByteArray())
         assertContentEquals(byteArrayOf(1, 2, 3), secondData.toByteArray())
@@ -46,7 +46,7 @@ class AppleApiTest {
 
         val archive = PmTiles.open(source)
 
-        assertContentEquals(tileBytes, archive.readStoredTile(0, 0, 0)?.bytes)
+        assertContentEquals(tileBytes, archive.readStoredTile(0, 0, 0)?.payload?.toByteArray())
         assertEquals(2, source.reads.size)
     }
 
@@ -73,7 +73,7 @@ class AppleApiTest {
         val tile = archive.readDecompressedTile(0, 0, 0)
 
         requireNotNull(tile)
-        assertContentEquals(decompressedBytes, tile.bytes)
+        assertContentEquals(decompressedBytes, tile.payload.toByteArray())
         assertEquals(CompressionCodes.None, tile.compression)
     }
 
