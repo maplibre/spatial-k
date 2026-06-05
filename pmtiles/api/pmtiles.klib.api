@@ -24,19 +24,6 @@ final enum class org.maplibre.spatialk.pmtiles/ArchiveWarningCode : kotlin/Enum<
     final fun values(): kotlin/Array<org.maplibre.spatialk.pmtiles/ArchiveWarningCode> // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.values|values#static(){}[0]
 }
 
-final enum class org.maplibre.spatialk.pmtiles/KnownTilesetKind : kotlin/Enum<org.maplibre.spatialk.pmtiles/KnownTilesetKind> { // org.maplibre.spatialk.pmtiles/KnownTilesetKind|null[0]
-    enum entry BaseLayer // org.maplibre.spatialk.pmtiles/KnownTilesetKind.BaseLayer|null[0]
-    enum entry Overlay // org.maplibre.spatialk.pmtiles/KnownTilesetKind.Overlay|null[0]
-
-    final val entries // org.maplibre.spatialk.pmtiles/KnownTilesetKind.entries|#static{}entries[0]
-        final fun <get-entries>(): kotlin.enums/EnumEntries<org.maplibre.spatialk.pmtiles/KnownTilesetKind> // org.maplibre.spatialk.pmtiles/KnownTilesetKind.entries.<get-entries>|<get-entries>#static(){}[0]
-    final val value // org.maplibre.spatialk.pmtiles/KnownTilesetKind.value|{}value[0]
-        final fun <get-value>(): kotlin/String // org.maplibre.spatialk.pmtiles/KnownTilesetKind.value.<get-value>|<get-value>(){}[0]
-
-    final fun valueOf(kotlin/String): org.maplibre.spatialk.pmtiles/KnownTilesetKind // org.maplibre.spatialk.pmtiles/KnownTilesetKind.valueOf|valueOf#static(kotlin.String){}[0]
-    final fun values(): kotlin/Array<org.maplibre.spatialk.pmtiles/KnownTilesetKind> // org.maplibre.spatialk.pmtiles/KnownTilesetKind.values|values#static(){}[0]
-}
-
 final enum class org.maplibre.spatialk.pmtiles/PmTilesErrorCode : kotlin/Enum<org.maplibre.spatialk.pmtiles/PmTilesErrorCode> { // org.maplibre.spatialk.pmtiles/PmTilesErrorCode|null[0]
     enum entry Closed // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.Closed|null[0]
     enum entry DecompressionFailed // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.DecompressionFailed|null[0]
@@ -205,7 +192,7 @@ final class org.maplibre.spatialk.pmtiles/ArchiveMetadata { // org.maplibre.spat
     final val name // org.maplibre.spatialk.pmtiles/ArchiveMetadata.name|{}name[0]
         final fun <get-name>(): kotlin/String? // org.maplibre.spatialk.pmtiles/ArchiveMetadata.name.<get-name>|<get-name>(){}[0]
     final val type // org.maplibre.spatialk.pmtiles/ArchiveMetadata.type|{}type[0]
-        final fun <get-type>(): org.maplibre.spatialk.pmtiles/TilesetKind? // org.maplibre.spatialk.pmtiles/ArchiveMetadata.type.<get-type>|<get-type>(){}[0]
+        final fun <get-type>(): kotlin/String? // org.maplibre.spatialk.pmtiles/ArchiveMetadata.type.<get-type>|<get-type>(){}[0]
     final val vectorLayersJson // org.maplibre.spatialk.pmtiles/ArchiveMetadata.vectorLayersJson|{}vectorLayersJson[0]
         final fun <get-vectorLayersJson>(): kotlin/String? // org.maplibre.spatialk.pmtiles/ArchiveMetadata.vectorLayersJson.<get-vectorLayersJson>|<get-vectorLayersJson>(){}[0]
     final val version // org.maplibre.spatialk.pmtiles/ArchiveMetadata.version|{}version[0]
@@ -214,7 +201,7 @@ final class org.maplibre.spatialk.pmtiles/ArchiveMetadata { // org.maplibre.spat
     final fun component1(): kotlin/String? // org.maplibre.spatialk.pmtiles/ArchiveMetadata.component1|component1(){}[0]
     final fun component2(): kotlin/String? // org.maplibre.spatialk.pmtiles/ArchiveMetadata.component2|component2(){}[0]
     final fun component3(): kotlin/String? // org.maplibre.spatialk.pmtiles/ArchiveMetadata.component3|component3(){}[0]
-    final fun component4(): org.maplibre.spatialk.pmtiles/TilesetKind? // org.maplibre.spatialk.pmtiles/ArchiveMetadata.component4|component4(){}[0]
+    final fun component4(): kotlin/String? // org.maplibre.spatialk.pmtiles/ArchiveMetadata.component4|component4(){}[0]
     final fun component5(): kotlin/String? // org.maplibre.spatialk.pmtiles/ArchiveMetadata.component5|component5(){}[0]
     final fun component6(): kotlin/String? // org.maplibre.spatialk.pmtiles/ArchiveMetadata.component6|component6(){}[0]
     final fun component7(): kotlin/String? // org.maplibre.spatialk.pmtiles/ArchiveMetadata.component7|component7(){}[0]
@@ -429,7 +416,6 @@ final class org.maplibre.spatialk.pmtiles/TileCenter { // org.maplibre.spatialk.
 
 final class org.maplibre.spatialk.pmtiles/TileCoord { // org.maplibre.spatialk.pmtiles/TileCoord|null[0]
     constructor <init>(kotlin/Int, kotlin/Int, kotlin/Int) // org.maplibre.spatialk.pmtiles/TileCoord.<init>|<init>(kotlin.Int;kotlin.Int;kotlin.Int){}[0]
-    constructor <init>(kotlin/Long) // org.maplibre.spatialk.pmtiles/TileCoord.<init>|<init>(kotlin.Long){}[0]
 
     final val x // org.maplibre.spatialk.pmtiles/TileCoord.x|{}x[0]
         final fun <get-x>(): kotlin/Int // org.maplibre.spatialk.pmtiles/TileCoord.x.<get-x>|<get-x>(){}[0]
@@ -503,20 +489,6 @@ final class org.maplibre.spatialk.pmtiles/TileReadResult { // org.maplibre.spati
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/TileReadResult.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/TileReadResult.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/TileReadResult.toString|toString(){}[0]
-}
-
-final class org.maplibre.spatialk.pmtiles/TilesetKind { // org.maplibre.spatialk.pmtiles/TilesetKind|null[0]
-    constructor <init>(kotlin/String) // org.maplibre.spatialk.pmtiles/TilesetKind.<init>|<init>(kotlin.String){}[0]
-    constructor <init>(org.maplibre.spatialk.pmtiles/KnownTilesetKind) // org.maplibre.spatialk.pmtiles/TilesetKind.<init>|<init>(org.maplibre.spatialk.pmtiles.KnownTilesetKind){}[0]
-
-    final val known // org.maplibre.spatialk.pmtiles/TilesetKind.known|{}known[0]
-        final fun <get-known>(): org.maplibre.spatialk.pmtiles/KnownTilesetKind? // org.maplibre.spatialk.pmtiles/TilesetKind.known.<get-known>|<get-known>(){}[0]
-    final val value // org.maplibre.spatialk.pmtiles/TilesetKind.value|{}value[0]
-        final fun <get-value>(): kotlin/String // org.maplibre.spatialk.pmtiles/TilesetKind.value.<get-value>|<get-value>(){}[0]
-
-    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/TilesetKind.equals|equals(kotlin.Any?){}[0]
-    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/TilesetKind.hashCode|hashCode(){}[0]
-    final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/TilesetKind.toString|toString(){}[0]
 }
 
 final value class org.maplibre.spatialk.pmtiles/CompressionCode { // org.maplibre.spatialk.pmtiles/CompressionCode|null[0]

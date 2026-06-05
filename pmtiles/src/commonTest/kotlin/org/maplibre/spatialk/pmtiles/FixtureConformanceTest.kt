@@ -47,14 +47,14 @@ class FixtureConformanceTest {
             PmTiles.open(TestByteRangeSource(readFixture("protomaps-vector-odbl-firenze.pmtiles")))
         val vectorMetadata = vector.metadata()
         assertEquals("Protomaps Basemap", vectorMetadata.name)
-        assertEquals(TilesetKind(KnownTilesetKind.BaseLayer), vectorMetadata.type)
+        assertEquals("baselayer", vectorMetadata.type)
         assertNotNull(vectorMetadata.vectorLayersJson)
 
         val webp =
             PmTiles.open(TestByteRangeSource(readFixture("usgs-mt-whitney-8-15-webp-512.pmtiles")))
         val webpMetadata = webp.metadata()
         assertEquals(true, webp.rawMetadataJson().contains(""""format":"webp""""))
-        assertEquals(TilesetKind("raster"), webpMetadata.type)
+        assertEquals("raster", webpMetadata.type)
     }
 
     @Test

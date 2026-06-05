@@ -80,7 +80,7 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveMetadata {
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/lang/String;
-	public final fun component4 ()Lorg/maplibre/spatialk/pmtiles/TilesetKind;
+	public final fun component4 ()Ljava/lang/String;
 	public final fun component5 ()Ljava/lang/String;
 	public final fun component6 ()Ljava/lang/String;
 	public final fun component7 ()Ljava/lang/String;
@@ -89,7 +89,7 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveMetadata {
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getEncoding ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
-	public final fun getType ()Lorg/maplibre/spatialk/pmtiles/TilesetKind;
+	public final fun getType ()Ljava/lang/String;
 	public final fun getVectorLayersJson ()Ljava/lang/String;
 	public final fun getVersion ()Ljava/lang/String;
 	public fun hashCode ()I
@@ -239,15 +239,6 @@ public final class org/maplibre/spatialk/pmtiles/HeaderCounts {
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class org/maplibre/spatialk/pmtiles/KnownTilesetKind : java/lang/Enum {
-	public static final field BaseLayer Lorg/maplibre/spatialk/pmtiles/KnownTilesetKind;
-	public static final field Overlay Lorg/maplibre/spatialk/pmtiles/KnownTilesetKind;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getValue ()Ljava/lang/String;
-	public static fun valueOf (Ljava/lang/String;)Lorg/maplibre/spatialk/pmtiles/KnownTilesetKind;
-	public static fun values ()[Lorg/maplibre/spatialk/pmtiles/KnownTilesetKind;
-}
-
 public final class org/maplibre/spatialk/pmtiles/LonLatBounds {
 	public final fun component1 ()D
 	public final fun component2 ()D
@@ -340,7 +331,6 @@ public final class org/maplibre/spatialk/pmtiles/TileCenter {
 
 public final class org/maplibre/spatialk/pmtiles/TileCoord {
 	public fun <init> (III)V
-	public fun <init> (J)V
 	public final fun component1 ()I
 	public final fun component2 ()I
 	public final fun component3 ()I
@@ -429,16 +419,6 @@ public final class org/maplibre/spatialk/pmtiles/TileTypeCodes {
 	public final fun getPng-u2j9DLg ()I
 	public final fun getUnknown-u2j9DLg ()I
 	public final fun getWebp-u2j9DLg ()I
-}
-
-public final class org/maplibre/spatialk/pmtiles/TilesetKind {
-	public fun <init> (Ljava/lang/String;)V
-	public fun <init> (Lorg/maplibre/spatialk/pmtiles/KnownTilesetKind;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getKnown ()Lorg/maplibre/spatialk/pmtiles/KnownTilesetKind;
-	public final fun getValue ()Ljava/lang/String;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
 }
 
 public final class org/maplibre/spatialk/pmtiles/ValidationMode : java/lang/Enum {

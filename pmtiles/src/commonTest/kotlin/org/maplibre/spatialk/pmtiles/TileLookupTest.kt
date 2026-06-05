@@ -31,7 +31,7 @@ class TileLookupTest {
                 archiveRange =
                     ByteRange(
                         offset = HEADER_BYTES.toULong() + 5uL,
-                        length = 1,
+                        length = 1uL,
                     ),
                 tileType = TileTypeCodes.Unknown,
                 compression = CompressionCodes.None,
@@ -63,7 +63,7 @@ class TileLookupTest {
 
         assertEquals(2, range?.tileId)
         assertEquals(coord, range?.coord)
-        assertEquals(ByteRange(fields.tileDataOffset + 5uL, 2), range?.archiveRange)
+        assertEquals(ByteRange(fields.tileDataOffset + 5uL, 2uL), range?.archiveRange)
         assertEquals(0, range?.directoryDepth)
     }
 
@@ -97,13 +97,13 @@ class TileLookupTest {
         val range = archive.findTileRange(coord.z, coord.x, coord.y)
         val contains = archive.containsTile(coord.z, coord.x, coord.y)
 
-        assertEquals(ByteRange(303uL, 4), range?.archiveRange)
+        assertEquals(ByteRange(303uL, 4uL), range?.archiveRange)
         assertEquals(1, range?.directoryDepth)
         assertEquals(true, contains)
         assertEquals(
             listOf(
-                ByteRange(0uL, 400),
-                ByteRange(200uL, leafBytes.size),
+                ByteRange(0uL, 400uL),
+                ByteRange(200uL, leafBytes.size.toULong()),
             ),
             source.reads,
         )
@@ -165,8 +165,8 @@ class TileLookupTest {
         val range = archive.findTileRange(coord.z, coord.x, coord.y)
         val repeatedRange = archive.findTileRange(coord.z, coord.x, coord.y)
 
-        assertEquals(ByteRange(401uL, 2), range?.archiveRange)
-        assertEquals(ByteRange(401uL, 2), repeatedRange?.archiveRange)
+        assertEquals(ByteRange(401uL, 2uL), range?.archiveRange)
+        assertEquals(ByteRange(401uL, 2uL), repeatedRange?.archiveRange)
         assertEquals(2, range?.directoryDepth)
         assertEquals(1, archive.warnings.size)
         assertEquals(ArchiveWarningCode.NestedLeafDirectory, archive.warnings.single().code)

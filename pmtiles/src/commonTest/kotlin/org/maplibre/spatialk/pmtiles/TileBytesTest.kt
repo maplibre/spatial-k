@@ -93,7 +93,7 @@ class TileBytesTest {
         assertEquals(ByteString(3, 4, 5), tiles[0].tile?.payload)
         assertEquals(false, tiles[1].isFound)
         assertEquals(ByteString(1, 2), tiles[2].tile?.payload)
-        assertEquals(listOf(ByteRange(tileDataOffset, tileData.size)), source.reads)
+        assertEquals(listOf(ByteRange(tileDataOffset, tileData.size.toULong())), source.reads)
     }
 
     @Test
@@ -129,8 +129,8 @@ class TileBytesTest {
 
         assertEquals(
             listOf(
-                ByteRange(tileDataOffset, 2),
-                ByteRange(tileDataOffset + 5uL, 2),
+                ByteRange(tileDataOffset, 2uL),
+                ByteRange(tileDataOffset + 5uL, 2uL),
             ),
             source.reads,
         )
@@ -141,7 +141,7 @@ class TileBytesTest {
             coalescing = TileReadCoalescing(maxCoalescedBytes = 16uL, maxGapBytes = 3uL),
         )
 
-        assertEquals(listOf(ByteRange(tileDataOffset, tileData.size)), source.reads)
+        assertEquals(listOf(ByteRange(tileDataOffset, tileData.size.toULong())), source.reads)
     }
 
     @Test
@@ -179,8 +179,8 @@ class TileBytesTest {
 
         assertEquals(
             listOf(
-                ByteRange(tileDataOffset, 2),
-                ByteRange(tileDataOffset + 2uL, 3),
+                ByteRange(tileDataOffset, 2uL),
+                ByteRange(tileDataOffset + 2uL, 3uL),
             ),
             source.reads,
         )
@@ -234,7 +234,10 @@ class TileBytesTest {
         assertEquals(ByteString(13, 14), tiles[1].tile?.payload)
         assertEquals(CompressionCodes.None, tiles[0].tile?.compression)
         assertEquals(true, tiles[0].tile?.wasDecompressed)
-        assertEquals(listOf(ByteRange(tileDataOffset, compressedTileData.size)), source.reads)
+        assertEquals(
+            listOf(ByteRange(tileDataOffset, compressedTileData.size.toULong())),
+            source.reads,
+        )
     }
 
     @Test

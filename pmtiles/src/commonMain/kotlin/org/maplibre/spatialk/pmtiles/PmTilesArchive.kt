@@ -45,7 +45,7 @@ public object PmTiles {
             )
         val initialBytes =
             source.readSourceRange(
-                ByteRange(offset = 0uL, length = initialReadLength),
+                ByteRange(offset = 0uL, length = initialReadLength.toULong()),
                 archiveSize = sourceSize,
                 maxBytes = options.limits.maxInitialReadBytes,
             )
@@ -451,7 +451,7 @@ internal constructor(
                 name = jsonObject.optionalString("name"),
                 description = jsonObject.optionalString("description"),
                 attribution = jsonObject.optionalString("attribution"),
-                type = jsonObject.optionalString("type")?.let(::TilesetKind),
+                type = jsonObject.optionalString("type"),
                 version = jsonObject.optionalString("version"),
                 encoding = jsonObject.optionalString("encoding"),
                 vectorLayersJson = jsonObject.optionalVectorLayersJson(),

@@ -131,7 +131,7 @@ internal class DirectoryResolver(
                             offset,
                             PmTilesErrorCode.InvalidDirectory,
                         ),
-                    length = length,
+                    length = length.toULong(),
                 ),
             tileType = header.tileType,
             compression = header.tileCompression,
@@ -146,6 +146,6 @@ internal class DirectoryResolver(
                     offset,
                     PmTilesErrorCode.InvalidDirectory,
                 ),
-            length = length,
+            length = length.toULong(),
         )
 }

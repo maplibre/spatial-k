@@ -13,7 +13,7 @@ class LimitsTest {
     @Test
     fun computesCheckedEndOffsets() {
         assertEquals(15uL, ArchiveSection(10uL, 5uL).endOffset(PmTilesErrorCode.InvalidHeader))
-        assertEquals(15uL, ByteRange(10uL, 5).endOffset(PmTilesErrorCode.RangeOutOfBounds))
+        assertEquals(15uL, ByteRange(10uL, 5uL).endOffset(PmTilesErrorCode.RangeOutOfBounds))
     }
 
     @Test
@@ -27,20 +27,10 @@ class LimitsTest {
     }
 
     @Test
-    fun rejectsNegativeRangeLength() {
-        val error =
-            assertFailsWith<PmTilesException> {
-                validateReadRange(ByteRange(0uL, -1), archiveSize = 1uL, maxBytes = 1uL)
-            }
-
-        assertEquals(PmTilesErrorCode.RangeOutOfBounds, error.code)
-    }
-
-    @Test
     fun rejectsReadRangeBeyondArchiveSize() {
         val error =
             assertFailsWith<PmTilesException> {
-                validateReadRange(ByteRange(8uL, 3), archiveSize = 10uL, maxBytes = 3uL)
+                validateReadRange(ByteRange(8uL, 3uL), archiveSize = 10uL, maxBytes = 3uL)
             }
 
         assertEquals(PmTilesErrorCode.RangeOutOfBounds, error.code)
@@ -50,7 +40,7 @@ class LimitsTest {
     fun rejectsReadRangeBeyondAllocationLimit() {
         val error =
             assertFailsWith<PmTilesException> {
-                validateReadRange(ByteRange(0uL, 4), archiveSize = 10uL, maxBytes = 3uL)
+                validateReadRange(ByteRange(0uL, 4uL), archiveSize = 10uL, maxBytes = 3uL)
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)

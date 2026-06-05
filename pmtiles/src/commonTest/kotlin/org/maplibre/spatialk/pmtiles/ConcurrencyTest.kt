@@ -31,7 +31,7 @@ class ConcurrencyTest {
             encodeDirectory(
                 DirectoryEntry(tileId = 1, offset = 0uL, length = leafBytes.size, runLength = 0)
             )
-        val leafRange = ByteRange(200uL, leafBytes.size)
+        val leafRange = ByteRange(200uL, leafBytes.size.toULong())
         val archiveBytes =
             buildArchiveWithSections(
                 fields =
@@ -58,15 +58,15 @@ class ConcurrencyTest {
 
         source.releaseBlockedRead.complete(Unit)
 
-        assertEquals(ByteRange(401uL, 2), first.await()?.archiveRange)
-        assertEquals(ByteRange(401uL, 2), second.await()?.archiveRange)
+        assertEquals(ByteRange(401uL, 2uL), first.await()?.archiveRange)
+        assertEquals(ByteRange(401uL, 2uL), second.await()?.archiveRange)
         assertEquals(1, source.reads.count { it == leafRange })
     }
 
     @Test
     fun closeDuringInFlightReadFailsWithClosedAndIsIdempotent() = runTest {
         val archiveBytes = buildSingleTileArchive(ByteString(1, 2, 3))
-        val tileRange = ByteRange(132uL, 3)
+        val tileRange = ByteRange(132uL, 3uL)
         val source = BlockingRangeSource(archiveBytes, blockedRange = tileRange)
         val archive = PmTiles.open(source)
 
@@ -110,8 +110,9 @@ class ConcurrencyTest {
             encodeDirectory(
                 DirectoryEntry(tileId = secondTileId, offset = 1uL, length = 1, runLength = 1)
             )
-        val firstLeafRange = ByteRange(200uL, firstLeafBytes.size)
-        val secondLeafRange = ByteRange(200uL + firstLeafBytes.size.toULong(), secondLeafBytes.size)
+        val firstLeafRange = ByteRange(200uL, firstLeafBytes.size.toULong())
+        val secondLeafRange =
+            ByteRange(200uL + firstLeafBytes.size.toULong(), secondLeafBytes.size.toULong())
         val rootBytes =
             encodeDirectory(
                 DirectoryEntry(

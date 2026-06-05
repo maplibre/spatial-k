@@ -27,16 +27,4 @@ class ModelPredicatesTest {
         assertEquals(TileTypeCodes.Png, TileTypeCodes.Png)
         assertEquals(99u, TileTypeCode(99u).code)
     }
-
-    @Test
-    fun tilesetKindPreservesKnownAndCustomValues() {
-        assertEquals(KnownTilesetKind.Overlay, TilesetKind(KnownTilesetKind.Overlay).known)
-        assertEquals(KnownTilesetKind.BaseLayer, TilesetKind(KnownTilesetKind.BaseLayer).known)
-        assertEquals(
-            TilesetKind(KnownTilesetKind.BaseLayer),
-            TilesetKind(KnownTilesetKind.BaseLayer),
-        )
-        assertEquals("custom", TilesetKind("custom").value)
-        assertEquals(null, TilesetKind("custom").known)
-    }
 }

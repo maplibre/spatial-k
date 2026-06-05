@@ -32,7 +32,7 @@ class MetadataTest {
         assertEquals("Tiles", metadata.name)
         assertEquals("Desc", metadata.description)
         assertEquals("Attr", metadata.attribution)
-        assertEquals(TilesetKind(KnownTilesetKind.BaseLayer), metadata.type)
+        assertEquals("baselayer", metadata.type)
         assertEquals("1", metadata.version)
         assertEquals("mvt", metadata.encoding)
         assertEquals("""[{"id":"roads"}]""", metadata.vectorLayersJson)

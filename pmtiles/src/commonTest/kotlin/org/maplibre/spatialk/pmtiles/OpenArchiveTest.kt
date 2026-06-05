@@ -36,7 +36,7 @@ class OpenArchiveTest {
         assertEquals(TileTypeCodes.Unknown, archive.tileType)
         assertEquals(1, source.reads.size)
         assertEquals(
-            ByteRange(0uL, HEADER_BYTES + MINIMAL_ROOT_DIRECTORY_BYTES.size + 1),
+            ByteRange(0uL, (HEADER_BYTES + MINIMAL_ROOT_DIRECTORY_BYTES.size + 1).toULong()),
             source.reads.single(),
         )
     }
@@ -277,7 +277,7 @@ class OpenArchiveTest {
             assertFailsWith<PmTilesException> {
                 TestByteRangeSource(ByteString(0, 0, 0, 0))
                     .readSourceRange(
-                        ByteRange(3uL, 2),
+                        ByteRange(3uL, 2uL),
                         archiveSize = 4uL,
                         maxBytes = 2uL,
                     )
@@ -290,7 +290,7 @@ class OpenArchiveTest {
         val bytes =
             TestByteRangeSource(ByteString(0, 0, 0, 0))
                 .readSourceRange(
-                    ByteRange(0uL, 0),
+                    ByteRange(0uL, 0uL),
                     archiveSize = 4uL,
                     maxBytes = 0uL,
                 )

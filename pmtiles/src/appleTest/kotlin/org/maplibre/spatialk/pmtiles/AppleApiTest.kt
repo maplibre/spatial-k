@@ -26,7 +26,7 @@ class AppleApiTest {
                     TileRange(
                         tileId = 0,
                         coord = TileCoord(0, 0, 0),
-                        archiveRange = ByteRange(0uL, 3),
+                        archiveRange = ByteRange(0uL, 3uL),
                         tileType = TileTypeCodes.Png,
                         compression = CompressionCodes.None,
                         directoryDepth = 0,
@@ -120,7 +120,7 @@ class AppleApiTest {
 
         override suspend fun read(offset: ULong, length: ULong): NSData {
             val byteCount = length.toInt()
-            reads += ByteRange(offset, byteCount)
+            reads += ByteRange(offset, byteCount.toULong())
             val start = offset.toInt()
             val adjustedLength = byteCount + lengthAdjustment
             val end = start + adjustedLength

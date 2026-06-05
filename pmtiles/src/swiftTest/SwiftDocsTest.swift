@@ -54,8 +54,6 @@ final class SwiftDocsTest: XCTestCase {
         _ = metadata
         _ = TileTypeCodes.shared.mvt
         _ = CompressionCodes.shared.gzip
-        _ = TilesetKind(known: KnownTilesetKind.baseLayer)
-        _ = TilesetKind(value: "custom")
         XCTAssertNotNil(tile)
         let tileById = try await archive.readStoredTile(tileId: 0)
         let tileRangeByCoord = try await archive.findTileRange(coord: coord)
@@ -65,8 +63,6 @@ final class SwiftDocsTest: XCTestCase {
         _ = tileRangeByCoord
         _ = tileRangeById
         _ = try coord.toTileId()
-        let coordFromId = try TileCoord(tileId: 0)
-        _ = coordFromId
     }
 
     func testDecompressedTiles() async throws {

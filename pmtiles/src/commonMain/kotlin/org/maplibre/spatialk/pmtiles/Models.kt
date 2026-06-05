@@ -21,23 +21,7 @@ public data class ByteRange
 internal constructor(
     public val offset: ULong,
     public val length: ULong,
-) {
-    internal constructor(
-        offset: ULong,
-        length: Int,
-    ) : this(
-        offset = offset,
-        length =
-            if (length >= 0) {
-                length.toULong()
-            } else {
-                throw pmTilesException(
-                    PmTilesErrorCode.RangeOutOfBounds,
-                    "Byte range length $length is negative.",
-                )
-            },
-    )
-}
+)
 
 /** Caller-provided byte range source used by the PMTiles reader. */
 @OptIn(ExperimentalObjCRefinement::class)
@@ -154,10 +138,7 @@ internal constructor(
  *
  * @property code Raw PMTiles compression code.
  */
-@JvmInline
-public value class CompressionCode(public val code: UInt) {
-    override fun toString(): String = "CompressionCode($code)"
-}
+@JvmInline public value class CompressionCode(public val code: UInt)
 
 /** PMTiles compression-code constants. */
 public object CompressionCodes {
@@ -185,10 +166,7 @@ public object CompressionCodes {
  *
  * @property code Raw PMTiles tile type code.
  */
-@JvmInline
-public value class TileTypeCode(public val code: UInt) {
-    override fun toString(): String = "TileTypeCode($code)"
-}
+@JvmInline public value class TileTypeCode(public val code: UInt)
 
 /** PMTiles tile-type-code constants. */
 public object TileTypeCodes {
@@ -231,11 +209,6 @@ constructor(
     init {
         TileIds.validateZxy(z, x, y)
     }
-
-    /** Converts [tileId] to a Web tile coordinate. */
-    @Throws(PmTilesException::class) public constructor(tileId: Long) : this(TileIds.toZxy(tileId))
-
-    private constructor(coord: TileCoord) : this(z = coord.z, x = coord.x, y = coord.y)
 
     /** Converts this Web tile coordinate to a PMTiles TileID. */
     @Throws(PmTilesException::class) public fun toTileId(): Long = TileIds.fromZxy(z, x, y)
@@ -321,43 +294,43 @@ public object TileIds {
 
         return index
     }
+}
 
-    private fun hilbertCoordinate(z: Int, position: Long): Pair<Int, Int> {
-        var remaining = position
-        var x = 0L
-        var y = 0L
-        var scale = 1L
+private fun hilbertCoordinate(z: Int, position: Long): Pair<Int, Int> {
+    var remaining = position
+    var x = 0L
+    var y = 0L
+    var scale = 1L
 
-        while (scale < (1L shl z)) {
-            val rx = ((remaining / 2) and 1).toInt()
-            val ry = ((remaining xor rx.toLong()) and 1).toInt()
+    while (scale < (1L shl z)) {
+        val rx = ((remaining / 2) and 1).toInt()
+        val ry = ((remaining xor rx.toLong()) and 1).toInt()
 
-            if (ry == 0) {
-                if (rx == 1) {
-                    x = scale - 1 - x
-                    y = scale - 1 - y
-                }
-
-                val nextX = y
-                y = x
-                x = nextX
+        if (ry == 0) {
+            if (rx == 1) {
+                x = scale - 1 - x
+                y = scale - 1 - y
             }
 
-            x += scale * rx
-            y += scale * ry
-            remaining /= 4
-            scale *= 2
+            val nextX = y
+            y = x
+            x = nextX
         }
 
-        return x.toInt() to y.toInt()
+        x += scale * rx
+        y += scale * ry
+        remaining /= 4
+        scale *= 2
     }
 
-    private fun invalidTileCoordinate(message: String): PmTilesException =
-        pmTilesException(PmTilesErrorCode.InvalidTileCoordinate, message)
-
-    private const val MAX_ZOOM = 31
-    private val MAX_SUPPORTED_TILE_ID: Long = zoomStart(MAX_ZOOM) + (1L shl (2 * MAX_ZOOM)) - 1
+    return x.toInt() to y.toInt()
 }
+
+private fun invalidTileCoordinate(message: String): PmTilesException =
+    pmTilesException(PmTilesErrorCode.InvalidTileCoordinate, message)
+
+private const val MAX_ZOOM = 31
+private val MAX_SUPPORTED_TILE_ID: Long = TileIds.zoomStart(MAX_ZOOM) + (1L shl (2 * MAX_ZOOM)) - 1
 
 /**
  * Located tile byte range.
@@ -433,50 +406,11 @@ internal constructor(
     public val name: String?,
     @property:ObjCName(swiftName = "archiveDescription") public val description: String?,
     public val attribution: String?,
-    public val type: TilesetKind?,
+    public val type: String?,
     public val version: String?,
     public val encoding: String?,
     public val vectorLayersJson: String?,
 )
-
-/**
- * Known PMTiles metadata tileset kind.
- *
- * @property value Raw metadata `type` string.
- */
-public enum class KnownTilesetKind(public val value: String) {
-    /** Overlay tileset. */
-    Overlay("overlay"),
-
-    /** Base layer tileset. */
-    @ObjCName(swiftName = "baseLayer") BaseLayer("baselayer"),
-}
-
-/**
- * PMTiles metadata tileset kind.
- *
- * PMTiles metadata can contain future or custom tileset kind values, so this type stores the raw
- * string. Use [KnownTilesetKind] when you need one of the currently defined values.
- *
- * @property value Raw metadata `type` string.
- */
-public class TilesetKind(public val value: String) {
-    /** Creates a tileset kind value from a known PMTiles metadata type. */
-    public constructor(known: KnownTilesetKind) : this(known.value)
-
-    /** Known tileset kind, or null when [value] is not currently defined by PMTiles. */
-    public val known: KnownTilesetKind?
-        get() = knownTilesetKindByValue[value]
-
-    override fun equals(other: Any?): Boolean = other is TilesetKind && value == other.value
-
-    override fun hashCode(): Int = value.hashCode()
-
-    override fun toString(): String = "TilesetKind(value=$value)"
-}
-
-private val knownTilesetKindByValue: Map<String, KnownTilesetKind> =
-    KnownTilesetKind.entries.associateBy { it.value }
 
 /**
  * Warning recorded by a lenient archive operation.
