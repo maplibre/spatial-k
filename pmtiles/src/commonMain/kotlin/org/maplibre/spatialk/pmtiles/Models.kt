@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalObjCName::class)
+@file:OptIn(ExperimentalObjCName::class, ExperimentalObjCRefinement::class)
 
 package org.maplibre.spatialk.pmtiles
 
@@ -390,7 +390,7 @@ public data class ArchiveTile
 internal constructor(
     public val tileId: Long,
     public val coord: TileCoord,
-    public val payload: ByteString,
+    @HiddenFromObjC public val payload: ByteString,
     public val tileType: TileTypeCode,
     public val compression: CompressionCode,
     public val wasDecompressed: Boolean,
@@ -440,6 +440,7 @@ internal constructor(
 }
 
 /** Immutable byte payload. */
+@HiddenFromObjC
 public class ByteString internal constructor(bytes: ByteArray) {
     private val byteStorage: ByteArray = bytes.copyOf()
 

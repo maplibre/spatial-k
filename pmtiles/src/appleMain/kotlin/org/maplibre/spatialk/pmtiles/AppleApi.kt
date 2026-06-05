@@ -136,9 +136,7 @@ public fun TileReadCoalescing.withMaxGapBytes(
 ): TileReadCoalescing = copy(maxGapBytes = maxGapBytes)
 
 /** Returns a copy of these options with [decompressor] registered for [compression]. */
-@OptIn(ExperimentalObjCName::class)
-@ObjCName(name = "withRawDecompressor", swiftName = "withRawDecompressor")
-public fun ArchiveOpenOptions.withRawDecompressor(
+public fun ArchiveOpenOptions.withDecompressor(
     compression: CompressionCode,
     decompressor: DataDecompressor,
 ): ArchiveOpenOptions =
@@ -149,22 +147,10 @@ public fun ArchiveOpenOptions.withRawDecompressor(
         },
     )
 
-/** Returns a copy of these options with [decompressor] registered for known [compression]. */
-@OptIn(ExperimentalObjCName::class)
-@ObjCName(name = "withDecompressor", swiftName = "withDecompressor")
-public fun ArchiveOpenOptions.withDecompressor(
-    compression: CompressionCode,
-    decompressor: DataDecompressor,
-): ArchiveOpenOptions = withRawDecompressor(compression, decompressor)
-
-@OptIn(ExperimentalObjCName::class)
-@ObjCName(name = "open", swiftName = "open")
 @Throws(PmTilesException::class, CancellationException::class)
 public suspend fun PmTiles.open(source: ByteRangeDataSource): PmTilesArchive =
     open(source = source, options = ArchiveOpenOptions())
 
-@OptIn(ExperimentalObjCName::class)
-@ObjCName(name = "open", swiftName = "open")
 @Throws(PmTilesException::class, CancellationException::class)
 public suspend fun PmTiles.open(
     source: ByteRangeDataSource,

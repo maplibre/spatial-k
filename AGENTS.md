@@ -82,3 +82,10 @@ fails without this.
 
 **Floating-point comparisons in tests**: use helpers from `testutil` instead of `assertEquals` to
 handle platform-specific precision differences.
+
+**Foreign API export**: keep the common Kotlin API idiomatic first, then add platform-specific shims
+only where export shape needs help. Hide Kotlin-only helpers from foreign APIs with
+`@HiddenFromObjC`/similar annotations, prefer native platform types in shims, and avoid leaking
+awkward Kotlin implementation types like `ByteArray`, internal wrappers, or singleton utilities. Do
+not add redundant export annotations; use `@ObjCName` only when it changes a generated name or
+argument label.

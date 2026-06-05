@@ -209,13 +209,6 @@ final class SwiftDocsTest: XCTestCase {
                 compression: CompressionCodes.shared.gzip,
                 decompressor: ThrowingDecompressor()
             )
-        let rawOptions =
-            ArchiveOpenOptions().withRawDecompressor(
-                compression: CompressionCodes.shared.gzip,
-                decompressor: ThrowingDecompressor()
-            )
-        XCTAssertTrue(rawOptions.validationMode == ValidationMode.strict)
-
         do {
             _ = try await PmTiles.shared.open(source: source, options: options)
             XCTFail("Expected custom decompressor to throw.")

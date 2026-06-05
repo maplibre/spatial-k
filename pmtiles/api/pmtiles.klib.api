@@ -620,9 +620,6 @@ final fun (org.maplibre.spatialk.pmtiles/ArchiveOpenOptions).org.maplibre.spatia
 final fun (org.maplibre.spatialk.pmtiles/ArchiveOpenOptions).org.maplibre.spatialk.pmtiles/withDecompressor(org.maplibre.spatialk.pmtiles/CompressionCode, org.maplibre.spatialk.pmtiles/DataDecompressor): org.maplibre.spatialk.pmtiles/ArchiveOpenOptions // org.maplibre.spatialk.pmtiles/withDecompressor|withDecompressor@org.maplibre.spatialk.pmtiles.ArchiveOpenOptions(org.maplibre.spatialk.pmtiles.CompressionCode;org.maplibre.spatialk.pmtiles.DataDecompressor){}[0]
 
 // Targets: [apple]
-final fun (org.maplibre.spatialk.pmtiles/ArchiveOpenOptions).org.maplibre.spatialk.pmtiles/withRawDecompressor(org.maplibre.spatialk.pmtiles/CompressionCode, org.maplibre.spatialk.pmtiles/DataDecompressor): org.maplibre.spatialk.pmtiles/ArchiveOpenOptions // org.maplibre.spatialk.pmtiles/withRawDecompressor|withRawDecompressor@org.maplibre.spatialk.pmtiles.ArchiveOpenOptions(org.maplibre.spatialk.pmtiles.CompressionCode;org.maplibre.spatialk.pmtiles.DataDecompressor){}[0]
-
-// Targets: [apple]
 final fun (org.maplibre.spatialk.pmtiles/TileReadCoalescing).org.maplibre.spatialk.pmtiles/withMaxCoalescedBytes(kotlin/ULong): org.maplibre.spatialk.pmtiles/TileReadCoalescing // org.maplibre.spatialk.pmtiles/withMaxCoalescedBytes|withMaxCoalescedBytes@org.maplibre.spatialk.pmtiles.TileReadCoalescing(kotlin.ULong){}[0]
 
 // Targets: [apple]
