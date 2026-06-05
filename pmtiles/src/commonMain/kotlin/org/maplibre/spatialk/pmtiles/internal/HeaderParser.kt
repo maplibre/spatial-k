@@ -4,15 +4,14 @@ import org.maplibre.spatialk.pmtiles.ArchiveHeader
 import org.maplibre.spatialk.pmtiles.ArchiveSection
 import org.maplibre.spatialk.pmtiles.ArchiveWarning
 import org.maplibre.spatialk.pmtiles.ArchiveWarningCode
-import org.maplibre.spatialk.pmtiles.Compression
-import org.maplibre.spatialk.pmtiles.HeaderCount
+import org.maplibre.spatialk.pmtiles.CompressionCode
+import org.maplibre.spatialk.pmtiles.CompressionCodes
 import org.maplibre.spatialk.pmtiles.HeaderCounts
-import org.maplibre.spatialk.pmtiles.KnownCompression
-import org.maplibre.spatialk.pmtiles.KnownTileType
 import org.maplibre.spatialk.pmtiles.LonLatBounds
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 import org.maplibre.spatialk.pmtiles.TileCenter
-import org.maplibre.spatialk.pmtiles.TileType
+import org.maplibre.spatialk.pmtiles.TileTypeCode
+import org.maplibre.spatialk.pmtiles.TileTypeCodes
 import org.maplibre.spatialk.pmtiles.ValidationMode
 
 internal const val HEADER_BYTES = 127
@@ -56,9 +55,9 @@ internal fun parseHeaderForOpen(
     val rawTileEntries = reader.readULong64Le()
     val rawTileContents = reader.readULong64Le()
     val clustered = reader.readClustered()
-    val internalCompression = Compression(reader.readUInt8())
-    val tileCompression = Compression(reader.readUInt8())
-    val tileType = TileType(reader.readUInt8())
+    val internalCompression = CompressionCode(reader.readUInt8())
+    val tileCompression = CompressionCode(reader.readUInt8())
+    val tileType = TileTypeCode(reader.readUInt8())
     val minZoom = reader.readUInt8().toInt()
     val maxZoom = reader.readUInt8().toInt()
     val minPosition = reader.readPosition()
@@ -75,9 +74,9 @@ internal fun parseHeaderForOpen(
             tileData = tileData,
             counts =
                 HeaderCounts(
-                    addressedTiles = HeaderCount(rawAddressedTiles),
-                    tileEntries = HeaderCount(rawTileEntries),
-                    tileContents = HeaderCount(rawTileContents),
+                    addressedTiles = rawAddressedTiles,
+                    tileEntries = rawTileEntries,
+                    tileContents = rawTileContents,
                 ),
             isClustered = clustered,
             internalCompression = internalCompression,
@@ -162,9 +161,9 @@ private fun collectUnknownCountWarnings(
     warnings: MutableList<ArchiveWarning>,
 ) {
     listOf(
-            "addressedTiles" to header.counts.addressedTiles.rawValue,
-            "tileEntries" to header.counts.tileEntries.rawValue,
-            "tileContents" to header.counts.tileContents.rawValue,
+            "addressedTiles" to header.counts.addressedTiles,
+            "tileEntries" to header.counts.tileEntries,
+            "tileContents" to header.counts.tileContents,
         )
         .filter { (_, rawValue) -> rawValue == 0uL }
         .forEach { (field, _) ->
@@ -333,17 +332,17 @@ private const val POSITION_SCALE = 10_000_000.0
 private val MAGIC_BYTES = byteArrayOf(0x50, 0x4d, 0x54, 0x69, 0x6c, 0x65, 0x73)
 private val KNOWN_CONCRETE_COMPRESSION_CODES =
     setOf(
-        KnownCompression.None.code,
-        KnownCompression.Gzip.code,
-        KnownCompression.Brotli.code,
-        KnownCompression.Zstd.code,
+        CompressionCodes.None.code,
+        CompressionCodes.Gzip.code,
+        CompressionCodes.Brotli.code,
+        CompressionCodes.Zstd.code,
     )
 private val KNOWN_CONCRETE_TILE_TYPE_CODES =
     setOf(
-        KnownTileType.Mvt.code,
-        KnownTileType.Png.code,
-        KnownTileType.Jpeg.code,
-        KnownTileType.Webp.code,
-        KnownTileType.Avif.code,
-        KnownTileType.Mlt.code,
+        TileTypeCodes.Mvt.code,
+        TileTypeCodes.Png.code,
+        TileTypeCodes.Jpeg.code,
+        TileTypeCodes.Webp.code,
+        TileTypeCodes.Avif.code,
+        TileTypeCodes.Mlt.code,
     )

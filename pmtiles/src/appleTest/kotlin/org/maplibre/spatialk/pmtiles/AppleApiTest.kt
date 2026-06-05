@@ -17,16 +17,16 @@ class AppleApiTest {
                 tileId = 0,
                 coord = TileCoord(0, 0, 0),
                 bytes = bytes,
-                tileType = TileType(KnownTileType.Png),
-                compression = Compression(KnownCompression.None),
+                tileType = TileTypeCodes.Png,
+                compression = CompressionCodes.None,
                 wasDecompressed = false,
                 range =
                     TileRange(
                         tileId = 0,
                         coord = TileCoord(0, 0, 0),
                         archiveRange = ByteRange(0uL, 3),
-                        tileType = TileType(KnownTileType.Png),
-                        compression = Compression(KnownCompression.None),
+                        tileType = TileTypeCodes.Png,
+                        compression = CompressionCodes.None,
                         directoryDepth = 0,
                     ),
             )
@@ -58,15 +58,15 @@ class AppleApiTest {
             TestByteRangeDataSource(
                 buildSingleTileArchive(
                     tileBytes = compressedBytes,
-                    tileCompression = KnownCompression.Brotli.code,
+                    tileCompression = CompressionCodes.Brotli.code,
                 )
             )
         val options =
             ArchiveOpenOptions()
                 .withDecompressor(
-                    KnownCompression.Brotli,
+                    CompressionCodes.Brotli,
                     object : DataDecompressor {
-                        override fun decompress(
+                        override suspend fun decompress(
                             data: NSData,
                             limits: DecompressionLimits,
                         ): NSData {
@@ -85,7 +85,7 @@ class AppleApiTest {
 
         requireNotNull(tile)
         assertContentEquals(decompressedBytes, tile.bytes)
-        assertEquals(Compression(KnownCompression.None), tile.compression)
+        assertEquals(CompressionCodes.None, tile.compression)
     }
 
     @Test

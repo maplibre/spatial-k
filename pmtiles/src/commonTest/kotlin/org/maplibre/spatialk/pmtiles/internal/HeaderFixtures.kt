@@ -2,8 +2,8 @@ package org.maplibre.spatialk.pmtiles.internal
 
 import org.maplibre.spatialk.pmtiles.ByteRange
 import org.maplibre.spatialk.pmtiles.ByteRangeSource
-import org.maplibre.spatialk.pmtiles.KnownCompression
-import org.maplibre.spatialk.pmtiles.KnownTileType
+import org.maplibre.spatialk.pmtiles.CompressionCodes
+import org.maplibre.spatialk.pmtiles.TileTypeCodes
 
 internal val MINIMAL_ROOT_DIRECTORY_BYTES: ByteArray =
     encodeDirectory(DirectoryEntry(tileId = 0, offset = 0uL, length = 1, runLength = 1))
@@ -22,9 +22,9 @@ internal data class TestHeaderFields(
     val tileEntries: ULong = 0uL,
     val tileContents: ULong = 0uL,
     val clustered: UInt = 0u,
-    val internalCompression: UInt = KnownCompression.None.code,
-    val tileCompression: UInt = KnownCompression.None.code,
-    val tileType: UInt = KnownTileType.Unknown.code,
+    val internalCompression: UInt = CompressionCodes.None.code,
+    val tileCompression: UInt = CompressionCodes.None.code,
+    val tileType: UInt = TileTypeCodes.Unknown.code,
     val minZoom: UInt = 0u,
     val maxZoom: UInt = 0u,
     val minLongitude: Double = 0.0,
@@ -109,8 +109,8 @@ internal fun buildArchiveWithSections(
 
 internal fun buildSingleTileArchive(
     tileBytes: ByteArray,
-    tileCompression: UInt = KnownCompression.None.code,
-    tileType: UInt = KnownTileType.Unknown.code,
+    tileCompression: UInt = CompressionCodes.None.code,
+    tileType: UInt = TileTypeCodes.Unknown.code,
 ): ByteArray {
     val rootBytes =
         encodeDirectory(

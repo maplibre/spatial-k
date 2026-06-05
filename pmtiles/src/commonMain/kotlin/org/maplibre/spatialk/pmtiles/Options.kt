@@ -1,9 +1,7 @@
 package org.maplibre.spatialk.pmtiles
 
-import kotlin.experimental.ExperimentalObjCName
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
-import kotlin.native.ObjCName
 
 /** Archive validation mode. */
 public enum class ValidationMode {
@@ -32,7 +30,7 @@ public enum class ValidationMode {
  * @property maxLeafDirectoryCacheEntries Maximum leaf directories cached per archive.
  * @property maxVarintBytes Maximum bytes in a decoded varint.
  */
-public class ArchiveLimits(
+public data class ArchiveLimits(
     public val maxInitialReadBytes: ULong = DEFAULT_INITIAL_READ_BYTES,
     public val maxMetadataBytes: ULong = DEFAULT_METADATA_BYTES,
     public val maxDirectoryCompressedBytes: ULong = DEFAULT_DIRECTORY_BYTES,
@@ -51,7 +49,7 @@ public class ArchiveLimits(
             maxMetadataBytes = DEFAULT_METADATA_BYTES,
             maxDirectoryCompressedBytes = DEFAULT_DIRECTORY_BYTES,
             maxDirectoryDecompressedBytes = DEFAULT_DIRECTORY_BYTES,
-            maxDirectoryEntries = (16 * 1024 * 1024) / 17,
+            maxDirectoryEntries = DEFAULT_DIRECTORY_BYTES.defaultDirectoryEntryLimit(),
             maxTileCompressedBytes = DEFAULT_TILE_BYTES,
             maxTileDecompressedBytes = DEFAULT_TILE_BYTES,
             maxDirectoryDepth = 3,
@@ -75,146 +73,6 @@ public class ArchiveLimits(
         }
         require(maxVarintBytes > 0) { "maxVarintBytes must be positive." }
     }
-
-    /** Returns a copy of these limits with selected fields replaced. */
-    @OptIn(ExperimentalObjCRefinement::class)
-    @HiddenFromObjC
-    public fun copy(
-        maxInitialReadBytes: ULong = this.maxInitialReadBytes,
-        maxMetadataBytes: ULong = this.maxMetadataBytes,
-        maxDirectoryCompressedBytes: ULong = this.maxDirectoryCompressedBytes,
-        maxDirectoryDecompressedBytes: ULong = this.maxDirectoryDecompressedBytes,
-        maxDirectoryEntries: Int = this.maxDirectoryEntries,
-        maxTileCompressedBytes: ULong = this.maxTileCompressedBytes,
-        maxTileDecompressedBytes: ULong = this.maxTileDecompressedBytes,
-        maxDirectoryDepth: Int = this.maxDirectoryDepth,
-        maxLeafDirectoryCacheEntries: Int = this.maxLeafDirectoryCacheEntries,
-        maxVarintBytes: Int = this.maxVarintBytes,
-    ): ArchiveLimits =
-        ArchiveLimits(
-            maxInitialReadBytes = maxInitialReadBytes,
-            maxMetadataBytes = maxMetadataBytes,
-            maxDirectoryCompressedBytes = maxDirectoryCompressedBytes,
-            maxDirectoryDecompressedBytes = maxDirectoryDecompressedBytes,
-            maxDirectoryEntries = maxDirectoryEntries,
-            maxTileCompressedBytes = maxTileCompressedBytes,
-            maxTileDecompressedBytes = maxTileDecompressedBytes,
-            maxDirectoryDepth = maxDirectoryDepth,
-            maxLeafDirectoryCacheEntries = maxLeafDirectoryCacheEntries,
-            maxVarintBytes = maxVarintBytes,
-        )
-
-    /** Returns a copy of these limits with [maxInitialReadBytes]. */
-    @OptIn(ExperimentalObjCName::class)
-    public fun withMaxInitialReadBytes(
-        @ObjCName(swiftName = "_") maxInitialReadBytes: ULong
-    ): ArchiveLimits = copy(maxInitialReadBytes = maxInitialReadBytes)
-
-    /** Returns a copy of these limits with [maxMetadataBytes]. */
-    @OptIn(ExperimentalObjCName::class)
-    public fun withMaxMetadataBytes(
-        @ObjCName(swiftName = "_") maxMetadataBytes: ULong
-    ): ArchiveLimits = copy(maxMetadataBytes = maxMetadataBytes)
-
-    /** Returns a copy of these limits with [maxDirectoryCompressedBytes]. */
-    @OptIn(ExperimentalObjCName::class)
-    public fun withMaxDirectoryCompressedBytes(
-        @ObjCName(swiftName = "_") maxDirectoryCompressedBytes: ULong
-    ): ArchiveLimits = copy(maxDirectoryCompressedBytes = maxDirectoryCompressedBytes)
-
-    /** Returns a copy of these limits with [maxDirectoryDecompressedBytes]. */
-    @OptIn(ExperimentalObjCName::class)
-    public fun withMaxDirectoryDecompressedBytes(
-        @ObjCName(swiftName = "_") maxDirectoryDecompressedBytes: ULong
-    ): ArchiveLimits =
-        copy(
-            maxDirectoryDecompressedBytes = maxDirectoryDecompressedBytes,
-            maxDirectoryEntries =
-                if (
-                    minEncodedDirectoryBytes(maxDirectoryEntries).toULong() <=
-                        maxDirectoryDecompressedBytes
-                ) {
-                    maxDirectoryEntries
-                } else {
-                    maxDirectoryDecompressedBytes.defaultDirectoryEntryLimit()
-                },
-        )
-
-    /** Returns a copy of these limits with [maxDirectoryEntries]. */
-    @OptIn(ExperimentalObjCName::class)
-    public fun withMaxDirectoryEntries(
-        @ObjCName(swiftName = "_") maxDirectoryEntries: Int
-    ): ArchiveLimits = copy(maxDirectoryEntries = maxDirectoryEntries)
-
-    /** Returns a copy of these limits with [maxTileCompressedBytes]. */
-    @OptIn(ExperimentalObjCName::class)
-    public fun withMaxTileCompressedBytes(
-        @ObjCName(swiftName = "_") maxTileCompressedBytes: ULong
-    ): ArchiveLimits = copy(maxTileCompressedBytes = maxTileCompressedBytes)
-
-    /** Returns a copy of these limits with [maxTileDecompressedBytes]. */
-    @OptIn(ExperimentalObjCName::class)
-    public fun withMaxTileDecompressedBytes(
-        @ObjCName(swiftName = "_") maxTileDecompressedBytes: ULong
-    ): ArchiveLimits = copy(maxTileDecompressedBytes = maxTileDecompressedBytes)
-
-    /** Returns a copy of these limits with [maxDirectoryDepth]. */
-    @OptIn(ExperimentalObjCName::class)
-    public fun withMaxDirectoryDepth(
-        @ObjCName(swiftName = "_") maxDirectoryDepth: Int
-    ): ArchiveLimits = copy(maxDirectoryDepth = maxDirectoryDepth)
-
-    /** Returns a copy of these limits with [maxLeafDirectoryCacheEntries]. */
-    @OptIn(ExperimentalObjCName::class)
-    public fun withMaxLeafDirectoryCacheEntries(
-        @ObjCName(swiftName = "_") maxLeafDirectoryCacheEntries: Int
-    ): ArchiveLimits = copy(maxLeafDirectoryCacheEntries = maxLeafDirectoryCacheEntries)
-
-    /** Returns a copy of these limits with [maxVarintBytes]. */
-    @OptIn(ExperimentalObjCName::class)
-    public fun withMaxVarintBytes(@ObjCName(swiftName = "_") maxVarintBytes: Int): ArchiveLimits =
-        copy(maxVarintBytes = maxVarintBytes)
-
-    override fun equals(other: Any?): Boolean =
-        other is ArchiveLimits &&
-            maxInitialReadBytes == other.maxInitialReadBytes &&
-            maxMetadataBytes == other.maxMetadataBytes &&
-            maxDirectoryCompressedBytes == other.maxDirectoryCompressedBytes &&
-            maxDirectoryDecompressedBytes == other.maxDirectoryDecompressedBytes &&
-            maxDirectoryEntries == other.maxDirectoryEntries &&
-            maxTileCompressedBytes == other.maxTileCompressedBytes &&
-            maxTileDecompressedBytes == other.maxTileDecompressedBytes &&
-            maxDirectoryDepth == other.maxDirectoryDepth &&
-            maxLeafDirectoryCacheEntries == other.maxLeafDirectoryCacheEntries &&
-            maxVarintBytes == other.maxVarintBytes
-
-    override fun hashCode(): Int {
-        var result = maxInitialReadBytes.hashCode()
-        result = 31 * result + maxMetadataBytes.hashCode()
-        result = 31 * result + maxDirectoryCompressedBytes.hashCode()
-        result = 31 * result + maxDirectoryDecompressedBytes.hashCode()
-        result = 31 * result + maxDirectoryEntries
-        result = 31 * result + maxTileCompressedBytes.hashCode()
-        result = 31 * result + maxTileDecompressedBytes.hashCode()
-        result = 31 * result + maxDirectoryDepth
-        result = 31 * result + maxLeafDirectoryCacheEntries
-        result = 31 * result + maxVarintBytes
-        return result
-    }
-
-    override fun toString(): String =
-        "ArchiveLimits(" +
-            "maxInitialReadBytes=$maxInitialReadBytes, " +
-            "maxMetadataBytes=$maxMetadataBytes, " +
-            "maxDirectoryCompressedBytes=$maxDirectoryCompressedBytes, " +
-            "maxDirectoryDecompressedBytes=$maxDirectoryDecompressedBytes, " +
-            "maxDirectoryEntries=$maxDirectoryEntries, " +
-            "maxTileCompressedBytes=$maxTileCompressedBytes, " +
-            "maxTileDecompressedBytes=$maxTileDecompressedBytes, " +
-            "maxDirectoryDepth=$maxDirectoryDepth, " +
-            "maxLeafDirectoryCacheEntries=$maxLeafDirectoryCacheEntries, " +
-            "maxVarintBytes=$maxVarintBytes" +
-            ")"
 }
 
 /**
@@ -224,45 +82,11 @@ public class ArchiveLimits(
  *   tile payload reads may be larger. Set to zero to disable coalescing.
  * @property maxGapBytes Maximum unread bytes to include between adjacent tile payloads.
  */
-public class TileReadCoalescing(
+public data class TileReadCoalescing(
     public val maxCoalescedBytes: ULong = DEFAULT_COALESCED_BYTES,
     public val maxGapBytes: ULong = 0uL,
 ) {
     public constructor() : this(maxCoalescedBytes = DEFAULT_COALESCED_BYTES, maxGapBytes = 0uL)
-
-    /** Returns a copy of this coalescing configuration with selected fields replaced. */
-    @OptIn(ExperimentalObjCRefinement::class)
-    @HiddenFromObjC
-    public fun copy(
-        maxCoalescedBytes: ULong = this.maxCoalescedBytes,
-        maxGapBytes: ULong = this.maxGapBytes,
-    ): TileReadCoalescing =
-        TileReadCoalescing(maxCoalescedBytes = maxCoalescedBytes, maxGapBytes = maxGapBytes)
-
-    /** Returns a copy of this coalescing configuration with [maxCoalescedBytes]. */
-    @OptIn(ExperimentalObjCName::class)
-    public fun withMaxCoalescedBytes(
-        @ObjCName(swiftName = "_") maxCoalescedBytes: ULong
-    ): TileReadCoalescing = copy(maxCoalescedBytes = maxCoalescedBytes)
-
-    /** Returns a copy of this coalescing configuration with [maxGapBytes]. */
-    @OptIn(ExperimentalObjCName::class)
-    public fun withMaxGapBytes(@ObjCName(swiftName = "_") maxGapBytes: ULong): TileReadCoalescing =
-        copy(maxGapBytes = maxGapBytes)
-
-    override fun equals(other: Any?): Boolean =
-        other is TileReadCoalescing &&
-            maxCoalescedBytes == other.maxCoalescedBytes &&
-            maxGapBytes == other.maxGapBytes
-
-    override fun hashCode(): Int {
-        var result = maxCoalescedBytes.hashCode()
-        result = 31 * result + maxGapBytes.hashCode()
-        return result
-    }
-
-    override fun toString(): String =
-        "TileReadCoalescing(maxCoalescedBytes=$maxCoalescedBytes, maxGapBytes=$maxGapBytes)"
 }
 
 /**
@@ -275,7 +99,7 @@ public class ArchiveOpenOptions
 private constructor(
     public val validationMode: ValidationMode,
     public val limits: ArchiveLimits,
-    internal val decompressors: Map<Compression, Decompressor>,
+    internal val decompressors: Map<CompressionCode, Decompressor>,
 ) {
     public constructor() :
         this(
@@ -306,19 +130,6 @@ private constructor(
         decompressors = emptyMap(),
     )
 
-    /** Returns a copy of these options with [validationMode]. */
-    public fun with(validationMode: ValidationMode): ArchiveOpenOptions =
-        copy(validationMode = validationMode)
-
-    /** Returns a copy of these options with [limits]. */
-    public fun with(limits: ArchiveLimits): ArchiveOpenOptions = copy(limits = limits)
-
-    /** Returns a copy of these options with [validationMode] and [limits]. */
-    public fun with(
-        validationMode: ValidationMode,
-        limits: ArchiveLimits,
-    ): ArchiveOpenOptions = copy(validationMode = validationMode, limits = limits)
-
     /** Returns a copy of these options with [validationMode] and [limits]. */
     @OptIn(ExperimentalObjCRefinement::class)
     @HiddenFromObjC
@@ -336,7 +147,7 @@ private constructor(
     @OptIn(ExperimentalObjCRefinement::class)
     @HiddenFromObjC
     public fun withDecompressor(
-        compression: Compression,
+        compression: CompressionCode,
         decompressor: Decompressor,
     ): ArchiveOpenOptions =
         ArchiveOpenOptions(
@@ -344,14 +155,6 @@ private constructor(
             limits = limits,
             decompressors = decompressors + (compression to decompressor),
         )
-
-    /** Returns a copy of these options with [decompressor] registered for [compression]. */
-    @OptIn(ExperimentalObjCRefinement::class)
-    @HiddenFromObjC
-    public fun withDecompressor(
-        compression: KnownCompression,
-        decompressor: Decompressor,
-    ): ArchiveOpenOptions = withDecompressor(Compression(compression), decompressor)
 
     override fun toString(): String =
         "ArchiveOpenOptions(validationMode=$validationMode, limits=$limits, decompressors=$decompressors)"

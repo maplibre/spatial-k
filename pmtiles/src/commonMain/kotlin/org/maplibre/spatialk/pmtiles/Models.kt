@@ -5,6 +5,7 @@ package org.maplibre.spatialk.pmtiles
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.experimental.ExperimentalObjCName
 import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.jvm.JvmInline
 import kotlin.native.HiddenFromObjC
 import kotlin.native.ObjCName
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
@@ -59,8 +60,8 @@ public interface ByteRangeSource {
  * @property tileData Tile payload section.
  * @property counts Header tile counts.
  * @property isClustered True when the archive declares clustered tile ordering.
- * @property internalCompression Compression used for directories and metadata.
- * @property tileCompression Compression used for tile payloads.
+ * @property internalCompression CompressionCode used for directories and metadata.
+ * @property tileCompression CompressionCode used for tile payloads.
  * @property tileType Tile payload type.
  * @property minZoom Minimum zoom advertised by the archive.
  * @property maxZoom Maximum zoom advertised by the archive.
@@ -76,9 +77,9 @@ internal constructor(
     public val tileData: ArchiveSection,
     public val counts: HeaderCounts,
     public val isClustered: Boolean,
-    public val internalCompression: Compression,
-    public val tileCompression: Compression,
-    public val tileType: TileType,
+    public val internalCompression: CompressionCode,
+    public val tileCompression: CompressionCode,
+    public val tileType: TileTypeCode,
     public val minZoom: Int,
     public val maxZoom: Int,
     public val bounds: LonLatBounds,
@@ -100,40 +101,16 @@ internal constructor(
 /**
  * PMTiles header counts.
  *
- * @property addressedTiles Addressed tile count from the header.
- * @property tileEntries Tile-entry count from the header.
- * @property tileContents Tile-content count from the header.
+ * @property addressedTiles Addressed tile count from the header, or zero when unknown.
+ * @property tileEntries Tile-entry count from the header, or zero when unknown.
+ * @property tileContents Tile-content count from the header, or zero when unknown.
  */
 public data class HeaderCounts
 internal constructor(
-    public val addressedTiles: HeaderCount,
-    public val tileEntries: HeaderCount,
-    public val tileContents: HeaderCount,
+    public val addressedTiles: ULong,
+    public val tileEntries: ULong,
+    public val tileContents: ULong,
 )
-
-/**
- * PMTiles header count value.
- *
- * PMTiles stores zero for unknown counts, so [isKnown] must be checked before treating [rawValue]
- * as a semantic tile count.
- *
- * @property rawValue Raw count value from the header.
- */
-public data class HeaderCount internal constructor(public val rawValue: ULong) {
-    /** True when [rawValue] is a known semantic count. */
-    public val isKnown: Boolean
-        get() = rawValue != 0uL
-
-    /** Semantic count, or null when unknown. */
-    @OptIn(ExperimentalObjCRefinement::class)
-    @HiddenFromObjC
-    public val value: ULong?
-        get() = if (isKnown) rawValue else null
-
-    /** Returns the semantic count, or [defaultValue] when unknown. */
-    public fun valueOr(@ObjCName(swiftName = "_") defaultValue: ULong): ULong =
-        if (isKnown) rawValue else defaultValue
-}
 
 /**
  * Geographic longitude/latitude bounds.
@@ -166,173 +143,72 @@ internal constructor(
 )
 
 /**
- * Known PMTiles compression code.
- *
- * @property code Raw PMTiles compression code.
- */
-public enum class KnownCompression(public val code: UInt) {
-    /** Unknown compression code. */
-    Unknown(0u),
-
-    /** No compression. */
-    None(1u),
-
-    /** gzip compression. */
-    Gzip(2u),
-
-    /** brotli compression. */
-    Brotli(3u),
-
-    /** zstd compression. */
-    Zstd(4u),
-}
-
-/**
  * PMTiles compression code.
  *
- * PMTiles can contain future compression codes, so this type stores the raw code. Use
- * [KnownCompression] when you need one of the currently defined codes.
+ * PMTiles can contain future compression codes, so this type stores the raw code while providing
+ * constants for currently defined codes.
  *
  * @property code Raw PMTiles compression code.
  */
-public class Compression(public val code: UInt) {
-    /** Creates a compression value from a known PMTiles compression code. */
-    public constructor(known: KnownCompression) : this(known.code)
-
-    /** Known compression code, or null when [code] is not currently defined by PMTiles. */
-    public val known: KnownCompression?
-        get() = knownCompressionByCode[code]
-
-    /** True when [code] is currently defined by PMTiles. */
-    public val isKnown: Boolean
-        get() = known != null
-
-    /**
-     * Returns the known compression code, or [defaultValue] when [code] is not currently defined.
-     */
-    public fun knownOr(
-        @ObjCName(swiftName = "_") defaultValue: KnownCompression
-    ): KnownCompression = known ?: defaultValue
-
-    /** True when this value is the PMTiles unknown compression code. */
-    public val isUnknown: Boolean
-        get() = known == KnownCompression.Unknown
-
-    /** True when payload bytes are not compressed. */
-    public val isNone: Boolean
-        get() = known == KnownCompression.None
-
-    /** True when payload bytes use gzip compression. */
-    public val isGzip: Boolean
-        get() = known == KnownCompression.Gzip
-
-    /** True when payload bytes use brotli compression. */
-    public val isBrotli: Boolean
-        get() = known == KnownCompression.Brotli
-
-    /** True when payload bytes use zstd compression. */
-    public val isZstd: Boolean
-        get() = known == KnownCompression.Zstd
-
-    override fun equals(other: Any?): Boolean = other is Compression && code == other.code
-
-    override fun hashCode(): Int = code.hashCode()
-
-    override fun toString(): String = "Compression(code=$code)"
+@JvmInline
+public value class CompressionCode(public val code: UInt) {
+    override fun toString(): String = "CompressionCode($code)"
 }
 
-private val knownCompressionByCode: Map<UInt, KnownCompression> =
-    KnownCompression.entries.associateBy { it.code }
+/** PMTiles compression-code constants. */
+public object CompressionCodes {
+    /** Unknown compression code. */
+    @ObjCName(swiftName = "unknown") public val Unknown: CompressionCode = CompressionCode(0u)
 
-/**
- * Known PMTiles tile type code.
- *
- * @property code Raw PMTiles tile type code.
- */
-public enum class KnownTileType(public val code: UInt) {
-    /** Unknown tile type. */
-    Unknown(0u),
+    /** No compression. */
+    @ObjCName(swiftName = "none") public val None: CompressionCode = CompressionCode(1u)
 
-    /** Mapbox Vector Tile payload. */
-    Mvt(1u),
+    /** gzip compression. */
+    @ObjCName(swiftName = "gzip") public val Gzip: CompressionCode = CompressionCode(2u)
 
-    /** PNG raster payload. */
-    Png(2u),
+    /** brotli compression. */
+    @ObjCName(swiftName = "brotli") public val Brotli: CompressionCode = CompressionCode(3u)
 
-    /** JPEG raster payload. */
-    Jpeg(3u),
-
-    /** WebP raster payload. */
-    Webp(4u),
-
-    /** AVIF raster payload. */
-    Avif(5u),
-
-    /** MapLibre Tile payload. */
-    Mlt(6u),
+    /** zstd compression. */
+    @ObjCName(swiftName = "zstd") public val Zstd: CompressionCode = CompressionCode(4u)
 }
 
 /**
  * PMTiles tile type code.
  *
- * PMTiles can contain future tile type codes, so this type stores the raw code. Use [KnownTileType]
- * when you need one of the currently defined codes.
+ * PMTiles can contain future tile type codes, so this type stores the raw code while providing
+ * constants for currently defined codes.
  *
  * @property code Raw PMTiles tile type code.
  */
-public class TileType(public val code: UInt) {
-    /** Creates a tile type value from a known PMTiles tile type code. */
-    public constructor(known: KnownTileType) : this(known.code)
-
-    /** Known tile type code, or null when [code] is not currently defined by PMTiles. */
-    public val known: KnownTileType?
-        get() = knownTileTypeByCode[code]
-
-    /** True when [code] is currently defined by PMTiles. */
-    public val isKnown: Boolean
-        get() = known != null
-
-    /** Returns the known tile type code, or [defaultValue] when [code] is not currently defined. */
-    public fun knownOr(@ObjCName(swiftName = "_") defaultValue: KnownTileType): KnownTileType =
-        known ?: defaultValue
-
-    /** True when this value is the PMTiles unknown tile type code. */
-    public val isUnknown: Boolean
-        get() = known == KnownTileType.Unknown
-
-    /** True when this value is Mapbox Vector Tile. */
-    public val isMvt: Boolean
-        get() = known == KnownTileType.Mvt
-
-    /** True when this value is PNG raster. */
-    public val isPng: Boolean
-        get() = known == KnownTileType.Png
-
-    /** True when this value is JPEG raster. */
-    public val isJpeg: Boolean
-        get() = known == KnownTileType.Jpeg
-
-    /** True when this value is WebP raster. */
-    public val isWebp: Boolean
-        get() = known == KnownTileType.Webp
-
-    /** True when this value is AVIF raster. */
-    public val isAvif: Boolean
-        get() = known == KnownTileType.Avif
-
-    /** True when this value is MapLibre Tile. */
-    public val isMlt: Boolean
-        get() = known == KnownTileType.Mlt
-
-    override fun equals(other: Any?): Boolean = other is TileType && code == other.code
-
-    override fun hashCode(): Int = code.hashCode()
-
-    override fun toString(): String = "TileType(code=$code)"
+@JvmInline
+public value class TileTypeCode(public val code: UInt) {
+    override fun toString(): String = "TileTypeCode($code)"
 }
 
-private val knownTileTypeByCode: Map<UInt, KnownTileType> =
-    KnownTileType.entries.associateBy { it.code }
+/** PMTiles tile-type-code constants. */
+public object TileTypeCodes {
+    /** Unknown tile type. */
+    @ObjCName(swiftName = "unknown") public val Unknown: TileTypeCode = TileTypeCode(0u)
+
+    /** Mapbox Vector Tile payload. */
+    @ObjCName(swiftName = "mvt") public val Mvt: TileTypeCode = TileTypeCode(1u)
+
+    /** PNG raster payload. */
+    @ObjCName(swiftName = "png") public val Png: TileTypeCode = TileTypeCode(2u)
+
+    /** JPEG raster payload. */
+    @ObjCName(swiftName = "jpeg") public val Jpeg: TileTypeCode = TileTypeCode(3u)
+
+    /** WebP raster payload. */
+    @ObjCName(swiftName = "webp") public val Webp: TileTypeCode = TileTypeCode(4u)
+
+    /** AVIF raster payload. */
+    @ObjCName(swiftName = "avif") public val Avif: TileTypeCode = TileTypeCode(5u)
+
+    /** MapLibre Tile payload. */
+    @ObjCName(swiftName = "mlt") public val Mlt: TileTypeCode = TileTypeCode(6u)
+}
 
 /**
  * Web tile coordinate.
@@ -341,7 +217,7 @@ private val knownTileTypeByCode: Map<UInt, KnownTileType> =
  * @property x Tile column.
  * @property y Tile row.
  */
-public class TileCoord
+public data class TileCoord
 @Throws(PmTilesException::class)
 constructor(
     public val z: Int,
@@ -359,18 +235,6 @@ constructor(
 
     /** Converts this Web tile coordinate to a PMTiles TileID. */
     @Throws(PmTilesException::class) public fun toTileId(): Long = TileIds.fromZxy(z, x, y)
-
-    override fun equals(other: Any?): Boolean =
-        other is TileCoord && z == other.z && x == other.x && y == other.y
-
-    override fun hashCode(): Int {
-        var result = z
-        result = 31 * result + x
-        result = 31 * result + y
-        return result
-    }
-
-    override fun toString(): String = "TileCoord(z=$z, x=$x, y=$y)"
 }
 
 /** PMTiles TileID conversion utilities. */
@@ -506,8 +370,8 @@ internal constructor(
     public val tileId: Long,
     public val coord: TileCoord,
     public val archiveRange: ByteRange,
-    public val tileType: TileType,
-    public val compression: Compression,
+    public val tileType: TileTypeCode,
+    public val compression: CompressionCode,
     public val directoryDepth: Int,
 )
 
@@ -516,55 +380,52 @@ internal constructor(
  *
  * @property tileId PMTiles TileID for the tile.
  * @property coord Web tile coordinate for the tile.
+ * @property payload Immutable tile payload bytes.
  * @property tileType Tile payload type.
- * @property compression Compression represented by the payload bytes.
+ * @property compression CompressionCode represented by the payload bytes.
  * @property wasDecompressed True when the payload bytes were decompressed by the reader.
  * @property range Located source range for this tile.
  */
-public class ArchiveTile
+public data class ArchiveTile
 internal constructor(
     public val tileId: Long,
     public val coord: TileCoord,
-    bytes: ByteArray,
-    public val tileType: TileType,
-    public val compression: Compression,
+    public val payload: ByteString,
+    public val tileType: TileTypeCode,
+    public val compression: CompressionCode,
     public val wasDecompressed: Boolean,
     public val range: TileRange,
 ) {
-    private val byteStorage: ByteArray = bytes.copyOf()
+    internal constructor(
+        tileId: Long,
+        coord: TileCoord,
+        bytes: ByteArray,
+        tileType: TileTypeCode,
+        compression: CompressionCode,
+        wasDecompressed: Boolean,
+        range: TileRange,
+    ) : this(
+        tileId = tileId,
+        coord = coord,
+        payload = ByteString(bytes),
+        tileType = tileType,
+        compression = compression,
+        wasDecompressed = wasDecompressed,
+        range = range,
+    )
 
     /** Tile payload byte count. */
     public val byteCount: ULong
-        get() = byteStorage.size.toULong()
+        get() = payload.byteCount
 
     /** Tile payload bytes. The returned array is a copy. */
     @OptIn(ExperimentalObjCRefinement::class)
     @HiddenFromObjC
     public val bytes: ByteArray
-        get() = byteStorage.copyOf()
+        get() = payload.bytes
 
-    internal fun <T> withPayloadBytesUnsafe(block: (ByteArray) -> T): T = block(byteStorage)
-
-    override fun equals(other: Any?): Boolean =
-        other is ArchiveTile &&
-            tileId == other.tileId &&
-            coord == other.coord &&
-            byteStorage.contentEquals(other.byteStorage) &&
-            tileType == other.tileType &&
-            compression == other.compression &&
-            wasDecompressed == other.wasDecompressed &&
-            range == other.range
-
-    override fun hashCode(): Int {
-        var result = tileId.hashCode()
-        result = 31 * result + coord.hashCode()
-        result = 31 * result + byteStorage.contentHashCode()
-        result = 31 * result + tileType.hashCode()
-        result = 31 * result + compression.hashCode()
-        result = 31 * result + wasDecompressed.hashCode()
-        result = 31 * result + range.hashCode()
-        return result
-    }
+    internal fun <T> withPayloadBytesUnsafe(block: (ByteArray) -> T): T =
+        payload.withBytesUnsafe(block)
 
     override fun toString(): String =
         "ArchiveTile(" +
@@ -576,6 +437,30 @@ internal constructor(
             "wasDecompressed=$wasDecompressed, " +
             "range=$range" +
             ")"
+}
+
+/** Immutable byte payload. */
+public class ByteString internal constructor(bytes: ByteArray) {
+    private val byteStorage: ByteArray = bytes.copyOf()
+
+    /** Number of bytes in this payload. */
+    public val byteCount: ULong
+        get() = byteStorage.size.toULong()
+
+    /** Payload bytes. The returned array is a copy. */
+    @OptIn(ExperimentalObjCRefinement::class)
+    @HiddenFromObjC
+    public val bytes: ByteArray
+        get() = byteStorage.copyOf()
+
+    internal fun <T> withBytesUnsafe(block: (ByteArray) -> T): T = block(byteStorage)
+
+    override fun equals(other: Any?): Boolean =
+        other is ByteString && byteStorage.contentEquals(other.byteStorage)
+
+    override fun hashCode(): Int = byteStorage.contentHashCode()
+
+    override fun toString(): String = "ByteString(byteCount=$byteCount)"
 }
 
 /**
@@ -644,23 +529,6 @@ public class TilesetKind(public val value: String) {
     /** Known tileset kind, or null when [value] is not currently defined by PMTiles. */
     public val known: KnownTilesetKind?
         get() = knownTilesetKindByValue[value]
-
-    /** True when [value] is currently defined by PMTiles. */
-    public val isKnown: Boolean
-        get() = known != null
-
-    /** Returns the known tileset kind, or [defaultValue] when [value] is not currently defined. */
-    public fun knownOr(
-        @ObjCName(swiftName = "_") defaultValue: KnownTilesetKind
-    ): KnownTilesetKind = known ?: defaultValue
-
-    /** True when this metadata type is `overlay`. */
-    public val isOverlay: Boolean
-        get() = known == KnownTilesetKind.Overlay
-
-    /** True when this metadata type is `baselayer`. */
-    public val isBaseLayer: Boolean
-        get() = known == KnownTilesetKind.BaseLayer
 
     override fun equals(other: Any?): Boolean = other is TilesetKind && value == other.value
 

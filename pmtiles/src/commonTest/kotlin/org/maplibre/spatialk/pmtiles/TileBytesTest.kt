@@ -23,8 +23,8 @@ class TileBytesTest {
             TestByteRangeSource(
                 buildSingleTileArchive(
                     tileBytes = tileBytes,
-                    tileCompression = KnownCompression.Brotli.code,
-                    tileType = KnownTileType.Png.code,
+                    tileCompression = CompressionCodes.Brotli.code,
+                    tileType = TileTypeCodes.Png.code,
                 )
             )
         val archive = PmTiles.open(source)
@@ -38,9 +38,9 @@ class TileBytesTest {
         requireNotNull(idRead)
         assertContentEquals(tileBytes, stored.bytes)
         assertEquals(tileBytes.size.toULong(), stored.byteCount)
-        assertEquals(Compression(KnownCompression.Brotli), stored.compression)
+        assertEquals(CompressionCodes.Brotli, stored.compression)
         assertEquals(false, stored.wasDecompressed)
-        assertEquals(TileType(KnownTileType.Png), stored.tileType)
+        assertEquals(TileTypeCodes.Png, stored.tileType)
         assertContentEquals(tileBytes, coordRead.bytes)
         assertContentEquals(tileBytes, idRead.bytes)
         assertEquals(stored, coordRead)
@@ -199,7 +199,7 @@ class TileBytesTest {
                 rootLength = rootBytes.size.toULong(),
                 tileDataOffset = tileDataOffset,
                 tileDataLength = compressedTileData.size.toULong(),
-                tileCompression = KnownCompression.Brotli.code,
+                tileCompression = CompressionCodes.Brotli.code,
                 clustered = 1u,
             )
         val source =
@@ -215,9 +215,7 @@ class TileBytesTest {
             PmTiles.open(
                 source,
                 options =
-                    ArchiveOpenOptions().withDecompressor(Compression(KnownCompression.Brotli)) {
-                        bytes,
-                        _ ->
+                    ArchiveOpenOptions().withDecompressor(CompressionCodes.Brotli) { bytes, _ ->
                         bytes.map { (it.toInt() + 10).toByte() }.toByteArray()
                     },
             )
@@ -227,7 +225,7 @@ class TileBytesTest {
 
         assertContentEquals(byteArrayOf(11, 12), tiles[0].tile?.bytes)
         assertContentEquals(byteArrayOf(13, 14), tiles[1].tile?.bytes)
-        assertEquals(Compression(KnownCompression.None), tiles[0].tile?.compression)
+        assertEquals(CompressionCodes.None, tiles[0].tile?.compression)
         assertEquals(true, tiles[0].tile?.wasDecompressed)
         assertEquals(listOf(ByteRange(tileDataOffset, compressedTileData.size)), source.reads)
     }
@@ -242,7 +240,7 @@ class TileBytesTest {
 
         requireNotNull(tile)
         assertContentEquals(tileBytes, tile.bytes)
-        assertEquals(Compression(KnownCompression.None), tile.compression)
+        assertEquals(CompressionCodes.None, tile.compression)
         assertEquals(false, tile.wasDecompressed)
     }
 
@@ -253,7 +251,7 @@ class TileBytesTest {
                 TestByteRangeSource(
                     buildSingleTileArchive(
                         tileBytes = helloGzipBytes,
-                        tileCompression = KnownCompression.Gzip.code,
+                        tileCompression = CompressionCodes.Gzip.code,
                     )
                 )
             )
@@ -262,8 +260,8 @@ class TileBytesTest {
 
         requireNotNull(tile)
         assertContentEquals(helloBytes, tile.bytes)
-        assertEquals(Compression(KnownCompression.None), tile.compression)
-        assertEquals(Compression(KnownCompression.Gzip), tile.range.compression)
+        assertEquals(CompressionCodes.None, tile.compression)
+        assertEquals(CompressionCodes.Gzip, tile.range.compression)
         assertEquals(true, tile.wasDecompressed)
     }
 
@@ -283,7 +281,7 @@ class TileBytesTest {
         val bytes =
             buildSingleTileArchive(
                 tileBytes = tileBytes,
-                tileCompression = KnownCompression.Brotli.code,
+                tileCompression = CompressionCodes.Brotli.code,
             )
 
         val archive = PmTiles.open(TestByteRangeSource(bytes))
@@ -306,13 +304,13 @@ class TileBytesTest {
                 TestByteRangeSource(
                     buildSingleTileArchive(
                         tileBytes = compressedBytes,
-                        tileCompression = KnownCompression.Brotli.code,
+                        tileCompression = CompressionCodes.Brotli.code,
                     )
                 ),
                 options =
                     ArchiveOpenOptions()
                         .withDecompressor(
-                            Compression(KnownCompression.Brotli),
+                            CompressionCodes.Brotli,
                             Decompressor { bytes, _ ->
                                 assertContentEquals(compressedBytes, bytes)
                                 decompressedBytes
@@ -324,7 +322,7 @@ class TileBytesTest {
 
         requireNotNull(tile)
         assertContentEquals(decompressedBytes, tile.bytes)
-        assertEquals(Compression(KnownCompression.None), tile.compression)
+        assertEquals(CompressionCodes.None, tile.compression)
         assertEquals(true, tile.wasDecompressed)
     }
 
@@ -356,7 +354,7 @@ class TileBytesTest {
                         TestByteRangeSource(
                             buildSingleTileArchive(
                                 tileBytes = helloGzipBytes,
-                                tileCompression = KnownCompression.Gzip.code,
+                                tileCompression = CompressionCodes.Gzip.code,
                             )
                         ),
                         options =

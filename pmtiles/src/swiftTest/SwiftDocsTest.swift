@@ -54,22 +54,16 @@ final class SwiftDocsTest: XCTestCase {
         let coord = try TileCoord(z: 0, x: 0, y: 0)
         XCTAssertEqual(header.minZoom, 0)
         XCTAssertTrue(header.isClustered)
-        XCTAssertTrue(header.counts.addressedTiles.isKnown)
-        XCTAssertEqual(header.counts.addressedTiles.rawValue, 92)
-        XCTAssertEqual(header.counts.addressedTiles.valueOr(0), 92)
-        XCTAssertTrue(header.tileType.isMvt)
-        XCTAssertTrue(header.tileCompression.isGzip)
+        XCTAssertEqual(header.counts.addressedTiles, 92)
+        XCTAssertEqual(header.tileType, TileTypeCodes.shared.mvt)
+        XCTAssertEqual(header.tileCompression, CompressionCodes.shared.gzip)
         XCTAssertEqual(metadata.name, "Protomaps Basemap")
         XCTAssertNotNil(metadata.summary)
-        XCTAssertTrue(metadata.type?.isBaseLayer == true)
-        XCTAssertTrue(TileType(known: KnownTileType.mvt).known == KnownTileType.mvt)
-        XCTAssertTrue(TileType(known: KnownTileType.mvt).isKnown)
-        XCTAssertFalse(TileType(code: 99).isKnown)
-        XCTAssertTrue(TileType(code: 99).knownOr(KnownTileType.mvt) == KnownTileType.mvt)
-        XCTAssertTrue(TilesetKind(known: KnownTilesetKind.baseLayer).isBaseLayer)
-        XCTAssertTrue(TilesetKind(known: KnownTilesetKind.baseLayer).isKnown)
-        XCTAssertFalse(TilesetKind(value: "custom").isKnown)
-        XCTAssertTrue(TilesetKind(value: "custom").knownOr(KnownTilesetKind.overlay) == KnownTilesetKind.overlay)
+        XCTAssertTrue(metadata.type?.known == KnownTilesetKind.baseLayer)
+        XCTAssertEqual(TileTypeCodes.shared.mvt, 1)
+        XCTAssertEqual(UInt32(99), 99)
+        XCTAssertTrue(TilesetKind(known: KnownTilesetKind.baseLayer).known == KnownTilesetKind.baseLayer)
+        XCTAssertNil(TilesetKind(value: "custom").known)
         XCTAssertNotNil(tile)
         XCTAssertNotNil(tileRange)
         let tileById = try await archive.readStoredTile(tileId: 0)
@@ -102,8 +96,7 @@ final class SwiftDocsTest: XCTestCase {
         // --8<-- [end:decompressedTiles]
 
         let unwrappedTile = try XCTUnwrap(tile)
-        XCTAssertTrue(unwrappedTile.compression.isNone)
-        XCTAssertFalse(unwrappedTile.compression.isGzip)
+        XCTAssertEqual(unwrappedTile.compression, CompressionCodes.shared.none)
         XCTAssertEqual(unwrappedTile.data.firstByte, 0x1a)
         let tileById = try await archive.readDecompressedTile(tileId: 0)
         XCTAssertNotNil(tileById)
@@ -149,7 +142,7 @@ final class SwiftDocsTest: XCTestCase {
             func decompress(
                 data: Data,
                 limits: DecompressionLimits
-            ) throws -> Data {
+            ) async throws -> Data {
                 let decoded = decodeBrotli(data)
                 if UInt64(decoded.count) > limits.maxDecompressedBytes {
                     throw PmTilesException(
@@ -163,7 +156,7 @@ final class SwiftDocsTest: XCTestCase {
 
         let options =
             ArchiveOpenOptions().withDecompressor(
-                compression: KnownCompression.brotli,
+                compression: CompressionCodes.shared.brotli,
                 decompressor: BrotliDecompressor()
             )
 
@@ -175,11 +168,7 @@ final class SwiftDocsTest: XCTestCase {
 
         XCTAssertNotNil(tile)
         XCTAssertTrue(options.validationMode == ValidationMode.strict)
-        XCTAssertTrue(Compression(known: KnownCompression.brotli).isKnown)
-        XCTAssertFalse(Compression(code: 99).isKnown)
-        XCTAssertTrue(Compression(known: KnownCompression.brotli).isBrotli)
-        XCTAssertTrue(Compression(known: KnownCompression.brotli).known == KnownCompression.brotli)
-        XCTAssertTrue(Compression(code: 99).knownOr(KnownCompression.gzip) == KnownCompression.gzip)
+        XCTAssertEqual(CompressionCodes.shared.brotli, 3)
         let lenientOptions = options.with(validationMode: ValidationMode.lenient)
         let limitedOptions = options.with(limits: ArchiveLimits())
         let combinedOptions = options.with(validationMode: ValidationMode.lenient, limits: ArchiveLimits())
@@ -210,19 +199,19 @@ final class SwiftDocsTest: XCTestCase {
             func decompress(
                 data: Data,
                 limits: DecompressionLimits
-            ) throws -> Data {
+            ) async throws -> Data {
                 throw NSError(domain: "SpatialKPmtilesSwiftTests", code: 1)
             }
         }
 
         let options =
             ArchiveOpenOptions().withDecompressor(
-                compression: KnownCompression.gzip,
+                compression: CompressionCodes.shared.gzip,
                 decompressor: ThrowingDecompressor()
             )
         let rawOptions =
             ArchiveOpenOptions().withRawDecompressor(
-                compression: Compression(known: KnownCompression.gzip),
+                compression: CompressionCodes.shared.gzip,
                 decompressor: ThrowingDecompressor()
             )
         XCTAssertTrue(rawOptions.validationMode == ValidationMode.strict)
@@ -243,7 +232,7 @@ final class SwiftDocsTest: XCTestCase {
             func decompress(
                 data: Data,
                 limits: DecompressionLimits
-            ) throws -> Data {
+            ) async throws -> Data {
                 throw PmTilesException(
                     code: PmTilesErrorCode.limitExceeded,
                     message: "Decoded output exceeds \(limits.maxDecompressedBytes) bytes."
@@ -253,7 +242,7 @@ final class SwiftDocsTest: XCTestCase {
 
         let options =
             ArchiveOpenOptions().withDecompressor(
-                compression: KnownCompression.gzip,
+                compression: CompressionCodes.shared.gzip,
                 decompressor: LimitExceededDecompressor()
             )
 
@@ -276,7 +265,7 @@ final class SwiftDocsTest: XCTestCase {
             func decompress(
                 data: Data,
                 limits: DecompressionLimits
-            ) throws -> Data {
+            ) async throws -> Data {
                 maxCompressedBytes = limits.maxCompressedBytes
                 maxDecompressedBytes = limits.maxDecompressedBytes
                 throw PmTilesException(
@@ -289,7 +278,7 @@ final class SwiftDocsTest: XCTestCase {
         let decompressor = RecordingDecompressor()
         let options =
             ArchiveOpenOptions().withDecompressor(
-                compression: KnownCompression.gzip,
+                compression: CompressionCodes.shared.gzip,
                 decompressor: decompressor
             )
 

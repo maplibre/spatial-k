@@ -6,8 +6,8 @@ import kotlin.test.assertTrue
 
 class ArchiveOpenOptionsTest {
     @Test
-    fun tileReadCoalescingWithMethodsUpdateSelectedFields() {
-        val coalescing = TileReadCoalescing().withMaxGapBytes(64uL).withMaxCoalescedBytes(2048uL)
+    fun tileReadCoalescingCopyUpdatesSelectedFields() {
+        val coalescing = TileReadCoalescing().copy(maxGapBytes = 64uL, maxCoalescedBytes = 2048uL)
 
         assertEquals(2048uL, coalescing.maxCoalescedBytes)
         assertEquals(64uL, coalescing.maxGapBytes)
@@ -18,13 +18,16 @@ class ArchiveOpenOptionsTest {
     }
 
     @Test
-    fun archiveLimitsWithMethodsUpdateSelectedFields() {
+    fun archiveLimitsCopyUpdatesSelectedFields() {
         val limits =
             ArchiveLimits()
-                .withMaxMetadataBytes(1024uL)
-                .withMaxDirectoryDecompressedBytes(2048uL)
-                .withMaxTileCompressedBytes(4096uL)
-                .withMaxDirectoryDepth(1)
+                .copy(
+                    maxMetadataBytes = 1024uL,
+                    maxDirectoryDecompressedBytes = 2048uL,
+                    maxDirectoryEntries = 2048 / 17,
+                    maxTileCompressedBytes = 4096uL,
+                    maxDirectoryDepth = 1,
+                )
 
         assertEquals(1024uL, limits.maxMetadataBytes)
         assertEquals(2048uL, limits.maxDirectoryDecompressedBytes)
@@ -35,21 +38,22 @@ class ArchiveOpenOptionsTest {
     }
 
     @Test
-    fun archiveLimitsWithDirectoryBytesPreservesCompatibleEntryLimit() {
+    fun archiveLimitsCopyPreservesExplicitEntryLimit() {
         val limits =
-            ArchiveLimits().withMaxDirectoryEntries(16).withMaxDirectoryDecompressedBytes(2048uL)
+            ArchiveLimits().copy(maxDirectoryEntries = 16, maxDirectoryDecompressedBytes = 2048uL)
 
         assertEquals(2048uL, limits.maxDirectoryDecompressedBytes)
         assertEquals(16, limits.maxDirectoryEntries)
     }
 
     @Test
-    fun withMethodsUpdateValidationAndLimits() {
+    fun copyUpdatesValidationAndLimits() {
         val limits = ArchiveLimits().copy(maxTileCompressedBytes = 1uL)
 
-        val validationOnly = ArchiveOpenOptions().with(ValidationMode.Lenient)
-        val limitsOnly = ArchiveOpenOptions().with(limits)
-        val combined = ArchiveOpenOptions().with(ValidationMode.Lenient, limits)
+        val validationOnly = ArchiveOpenOptions().copy(validationMode = ValidationMode.Lenient)
+        val limitsOnly = ArchiveOpenOptions().copy(limits = limits)
+        val combined =
+            ArchiveOpenOptions().copy(validationMode = ValidationMode.Lenient, limits = limits)
 
         assertEquals(ValidationMode.Lenient, validationOnly.validationMode)
         assertEquals(ArchiveLimits(), validationOnly.limits)
@@ -74,12 +78,12 @@ class ArchiveOpenOptionsTest {
     }
 
     @Test
-    fun withMethodsPreserveCustomDecompressors() {
+    fun copyPreservesCustomDecompressors() {
         val options =
             ArchiveOpenOptions()
-                .withDecompressor(KnownCompression.Brotli) { bytes, _ -> bytes }
-                .with(ValidationMode.Lenient)
+                .withDecompressor(CompressionCodes.Brotli) { bytes, _ -> bytes }
+                .copy(validationMode = ValidationMode.Lenient)
 
-        assertTrue(Compression(KnownCompression.Brotli) in options.decompressors)
+        assertTrue(CompressionCodes.Brotli in options.decompressors)
     }
 }

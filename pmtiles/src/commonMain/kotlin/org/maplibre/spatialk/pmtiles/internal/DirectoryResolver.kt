@@ -6,7 +6,7 @@ import org.maplibre.spatialk.pmtiles.ArchiveWarning
 import org.maplibre.spatialk.pmtiles.ArchiveWarningCode
 import org.maplibre.spatialk.pmtiles.ByteRange
 import org.maplibre.spatialk.pmtiles.ByteRangeSource
-import org.maplibre.spatialk.pmtiles.Compression
+import org.maplibre.spatialk.pmtiles.CompressionCode
 import org.maplibre.spatialk.pmtiles.Decompressor
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 import org.maplibre.spatialk.pmtiles.TileCoord
@@ -17,7 +17,7 @@ internal class DirectoryResolver(
     private val header: ArchiveHeader,
     private val source: ByteRangeSource,
     private val options: ArchiveOpenOptions,
-    private val decompressors: Map<Compression, Decompressor>,
+    private val decompressors: Map<CompressionCode, Decompressor>,
     private val archiveSize: ULong,
     private val rootDirectory: List<DirectoryEntry>,
     private val state: ArchiveReadState,

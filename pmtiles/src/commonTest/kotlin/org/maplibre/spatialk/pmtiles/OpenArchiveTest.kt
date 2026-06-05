@@ -31,8 +31,8 @@ class OpenArchiveTest {
             ),
             archive.header.rootDirectory,
         )
-        assertEquals(Compression(KnownCompression.None), archive.internalCompression)
-        assertEquals(TileType(KnownTileType.Unknown), archive.tileType)
+        assertEquals(CompressionCodes.None, archive.internalCompression)
+        assertEquals(TileTypeCodes.Unknown, archive.tileType)
         assertEquals(1, source.reads.size)
         assertEquals(
             ByteRange(0uL, HEADER_BYTES + MINIMAL_ROOT_DIRECTORY_BYTES.size + 1),
@@ -56,7 +56,7 @@ class OpenArchiveTest {
                 tileEntries = 2uL,
                 tileContents = 3uL,
                 clustered = 1u,
-                internalCompression = KnownCompression.None.code,
+                internalCompression = CompressionCodes.None.code,
                 tileCompression = 99u,
                 tileType = 99u,
                 minZoom = 4u,
@@ -80,14 +80,12 @@ class OpenArchiveTest {
         assertEquals(ArchiveSection(200uL, 10uL), header.metadata)
         assertEquals(ArchiveSection(300uL, 20uL), header.leafDirectories)
         assertEquals(ArchiveSection(500uL, 30uL), header.tileData)
-        assertEquals(null, header.counts.addressedTiles.value)
-        assertEquals(false, header.counts.addressedTiles.isKnown)
-        assertEquals(0uL, header.counts.addressedTiles.rawValue)
-        assertEquals(2uL, header.counts.tileEntries.value)
-        assertEquals(3uL, header.counts.tileContents.value)
+        assertEquals(0uL, header.counts.addressedTiles)
+        assertEquals(2uL, header.counts.tileEntries)
+        assertEquals(3uL, header.counts.tileContents)
         assertEquals(true, header.isClustered)
-        assertEquals(Compression(99u), header.tileCompression)
-        assertEquals(TileType(99u), header.tileType)
+        assertEquals(CompressionCode(99u), header.tileCompression)
+        assertEquals(TileTypeCode(99u), header.tileType)
         assertEquals(4, header.minZoom)
         assertEquals(8, header.maxZoom)
 
@@ -179,26 +177,26 @@ class OpenArchiveTest {
 
     @Test
     fun rejectsUnsupportedInternalCompressionAtOpen() = runTest {
-        val fields = TestHeaderFields(internalCompression = KnownCompression.Brotli.code)
+        val fields = TestHeaderFields(internalCompression = CompressionCodes.Brotli.code)
 
         assertOpenFails(PmTilesErrorCode.UnsupportedCompression, buildArchive(fields))
     }
 
     @Test
     fun customDecompressorDecodesInternalSectionsAtOpen() = runTest {
-        val fields = TestHeaderFields(internalCompression = KnownCompression.Brotli.code)
+        val fields = TestHeaderFields(internalCompression = CompressionCodes.Brotli.code)
         val archive =
             PmTiles.open(
                 TestByteRangeSource(buildArchive(fields)),
                 options =
                     ArchiveOpenOptions()
                         .withDecompressor(
-                            Compression(KnownCompression.Brotli),
+                            CompressionCodes.Brotli,
                             Decompressor { bytes, _ -> bytes },
                         ),
             )
 
-        assertEquals(Compression(KnownCompression.Brotli), archive.internalCompression)
+        assertEquals(CompressionCodes.Brotli, archive.internalCompression)
         assertEquals(
             ArchiveSection(HEADER_BYTES.toULong(), MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong()),
             archive.header.rootDirectory,

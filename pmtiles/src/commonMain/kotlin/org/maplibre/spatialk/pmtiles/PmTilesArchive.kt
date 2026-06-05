@@ -102,8 +102,8 @@ public object PmTiles {
  *
  * @property header Parsed PMTiles header.
  * @property tileType Tile payload type from the header.
- * @property internalCompression Compression used for directories and metadata.
- * @property tileCompression Compression used for tile payloads.
+ * @property internalCompression CompressionCode used for directories and metadata.
+ * @property tileCompression CompressionCode used for tile payloads.
  */
 public class PmTilesArchive
 internal constructor(
@@ -128,13 +128,13 @@ internal constructor(
         )
 
     /** Tile payload type from the header. */
-    public val tileType: TileType = header.tileType
+    public val tileType: TileTypeCode = header.tileType
 
-    /** Compression used for directories and metadata. */
-    public val internalCompression: Compression = header.internalCompression
+    /** CompressionCode used for directories and metadata. */
+    public val internalCompression: CompressionCode = header.internalCompression
 
-    /** Compression used for tile payloads. */
-    public val tileCompression: Compression = header.tileCompression
+    /** CompressionCode used for tile payloads. */
+    public val tileCompression: CompressionCode = header.tileCompression
 
     /** Returns the raw metadata JSON string. */
     @Throws(PmTilesException::class, CancellationException::class)
@@ -390,7 +390,7 @@ internal constructor(
     }
 
     private suspend fun ArchiveTile.decompressed(): ArchiveTile {
-        if (compression.isNone) return this
+        if (compression == CompressionCodes.None) return this
 
         val decompressedBytes =
             decompressors.decompress(
@@ -407,7 +407,7 @@ internal constructor(
             coord = coord,
             bytes = decompressedBytes,
             tileType = tileType,
-            compression = Compression(KnownCompression.None),
+            compression = CompressionCodes.None,
             wasDecompressed = true,
             range = range,
         )
@@ -472,7 +472,7 @@ internal constructor(
     }
 
     private fun validateMvtVectorLayers(hasVectorLayers: Boolean) {
-        if (!header.tileType.isMvt || hasVectorLayers) return
+        if (header.tileType != TileTypeCodes.Mvt || hasVectorLayers) return
         if (options.validationMode == ValidationMode.Strict) {
             throw pmTilesException(
                 PmTilesErrorCode.InvalidMetadata,

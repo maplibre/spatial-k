@@ -24,17 +24,17 @@ class FixtureConformanceTest {
             assertEquals(fixture.isClustered, archive.header.isClustered, fixture.path)
             assertEquals(
                 fixture.addressedTiles,
-                archive.header.counts.addressedTiles.rawValue,
+                archive.header.counts.addressedTiles,
                 fixture.path,
             )
             assertEquals(
                 fixture.tileEntries,
-                archive.header.counts.tileEntries.rawValue,
+                archive.header.counts.tileEntries,
                 fixture.path,
             )
             assertEquals(
                 fixture.tileContents,
-                archive.header.counts.tileContents.rawValue,
+                archive.header.counts.tileContents,
                 fixture.path,
             )
             assertEquals(0, archive.warnings.size, fixture.path)
@@ -64,8 +64,8 @@ class FixtureConformanceTest {
 
         val tile = assertNotNull(archive.readDecompressedTile(0, 0, 0))
 
-        assertEquals(TileType(KnownTileType.Mvt), tile.tileType)
-        assertEquals(Compression(KnownCompression.None), tile.compression)
+        assertEquals(TileTypeCodes.Mvt, tile.tileType)
+        assertEquals(CompressionCodes.None, tile.compression)
         assertEquals(true, tile.wasDecompressed)
         assertEquals(0x1a, tile.bytes.first().toInt() and 0xff)
     }
@@ -80,9 +80,9 @@ class FixtureConformanceTest {
         val range = assertNotNull(archive.findTileRange(3, 4, 3))
         val tile = assertNotNull(archive.readStoredTile(3, 4, 3))
 
-        assertEquals(TileType(KnownTileType.Png), range.tileType)
-        assertEquals(Compression(KnownCompression.None), range.compression)
-        assertEquals(TileType(KnownTileType.Png), tile.tileType)
+        assertEquals(TileTypeCodes.Png, range.tileType)
+        assertEquals(CompressionCodes.None, range.compression)
+        assertEquals(TileTypeCodes.Png, tile.tileType)
         assertContentEquals(
             byteArrayOf(0x89.toByte(), 0x50, 0x4e, 0x47),
             tile.bytes.copyOfRange(0, 4),
@@ -114,9 +114,9 @@ class FixtureConformanceTest {
             )
 
         assertEquals(PmTilesErrorCode.InvalidDirectory, strictError.code)
-        assertEquals(TileType(KnownTileType.Mlt), archive.tileType)
-        assertEquals(Compression(KnownCompression.Gzip), archive.internalCompression)
-        assertEquals(Compression(KnownCompression.Gzip), archive.tileCompression)
+        assertEquals(TileTypeCodes.Mlt, archive.tileType)
+        assertEquals(CompressionCodes.Gzip, archive.internalCompression)
+        assertEquals(CompressionCodes.Gzip, archive.tileCompression)
         assertEquals(true, archive.header.isClustered)
         assertTrue(
             archive.warnings.any { it.code == ArchiveWarningCode.EmptyRootDirectory },
@@ -134,7 +134,7 @@ class FixtureConformanceTest {
             )
 
         assertEquals(true, archive.header.isClustered)
-        assertEquals(Compression(KnownCompression.Gzip), archive.internalCompression)
+        assertEquals(CompressionCodes.Gzip, archive.internalCompression)
         assertEquals(true, archive.containsTile(1, 0, 0))
         assertEquals(true, archive.containsTile(1, 0, 1))
         assertEquals(false, archive.containsTile(1, 1, 0))
@@ -145,9 +145,9 @@ class FixtureConformanceTest {
 
 private data class ValidFixture(
     val path: String,
-    val tileType: TileType,
-    val internalCompression: Compression,
-    val tileCompression: Compression,
+    val tileType: TileTypeCode,
+    val internalCompression: CompressionCode,
+    val tileCompression: CompressionCode,
     val minZoom: Int,
     val maxZoom: Int,
     val isClustered: Boolean,
@@ -165,9 +165,9 @@ private val validFixtures =
     listOf(
         ValidFixture(
             path = "protomaps-vector-odbl-firenze.pmtiles",
-            tileType = TileType(KnownTileType.Mvt),
-            internalCompression = Compression(KnownCompression.Gzip),
-            tileCompression = Compression(KnownCompression.Gzip),
+            tileType = TileTypeCodes.Mvt,
+            internalCompression = CompressionCodes.Gzip,
+            tileCompression = CompressionCodes.Gzip,
             minZoom = 0,
             maxZoom = 15,
             isClustered = true,
@@ -177,9 +177,9 @@ private val validFixtures =
         ),
         ValidFixture(
             path = "stamen-toner-raster-cc-by-odbl-z3.pmtiles",
-            tileType = TileType(KnownTileType.Png),
-            internalCompression = Compression(KnownCompression.Gzip),
-            tileCompression = Compression(KnownCompression.None),
+            tileType = TileTypeCodes.Png,
+            internalCompression = CompressionCodes.Gzip,
+            tileCompression = CompressionCodes.None,
             minZoom = 0,
             maxZoom = 3,
             isClustered = true,
@@ -189,9 +189,9 @@ private val validFixtures =
         ),
         ValidFixture(
             path = "usgs-mt-whitney-8-15-webp-512.pmtiles",
-            tileType = TileType(KnownTileType.Webp),
-            internalCompression = Compression(KnownCompression.Gzip),
-            tileCompression = Compression(KnownCompression.None),
+            tileType = TileTypeCodes.Webp,
+            internalCompression = CompressionCodes.Gzip,
+            tileCompression = CompressionCodes.None,
             minZoom = 8,
             maxZoom = 15,
             isClustered = true,
@@ -201,9 +201,9 @@ private val validFixtures =
         ),
         ValidFixture(
             path = "pmtiles-js-test-fixture-1.pmtiles",
-            tileType = TileType(KnownTileType.Mvt),
-            internalCompression = Compression(KnownCompression.Gzip),
-            tileCompression = Compression(KnownCompression.Gzip),
+            tileType = TileTypeCodes.Mvt,
+            internalCompression = CompressionCodes.Gzip,
+            tileCompression = CompressionCodes.Gzip,
             minZoom = 0,
             maxZoom = 0,
             isClustered = false,
@@ -213,9 +213,9 @@ private val validFixtures =
         ),
         ValidFixture(
             path = "pmtiles-js-test-fixture-2.pmtiles",
-            tileType = TileType(KnownTileType.Mvt),
-            internalCompression = Compression(KnownCompression.Gzip),
-            tileCompression = Compression(KnownCompression.Gzip),
+            tileType = TileTypeCodes.Mvt,
+            internalCompression = CompressionCodes.Gzip,
+            tileCompression = CompressionCodes.Gzip,
             minZoom = 0,
             maxZoom = 0,
             isClustered = false,
@@ -225,9 +225,9 @@ private val validFixtures =
         ),
         ValidFixture(
             path = "go-pmtiles-unclustered.pmtiles",
-            tileType = TileType(KnownTileType.Png),
-            internalCompression = Compression(KnownCompression.None),
-            tileCompression = Compression(KnownCompression.None),
+            tileType = TileTypeCodes.Png,
+            internalCompression = CompressionCodes.None,
+            tileCompression = CompressionCodes.None,
             minZoom = 1,
             maxZoom = 1,
             isClustered = false,

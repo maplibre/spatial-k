@@ -74,7 +74,7 @@ class KotlinDocsTest {
 
         // --8<-- [start:customDecompressor]
         val options =
-            ArchiveOpenOptions().withDecompressor(KnownCompression.Brotli) { bytes, limits ->
+            ArchiveOpenOptions().withDecompressor(CompressionCodes.Brotli) { bytes, limits ->
                 val decoded = decodeBrotli(bytes)
                 if (decoded.size.toULong() > limits.maxDecompressedBytes) {
                     throw PmTilesException(

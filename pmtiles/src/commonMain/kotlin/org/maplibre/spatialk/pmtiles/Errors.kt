@@ -10,19 +10,13 @@ import kotlin.native.ObjCName
  *
  * @property code Stable machine-readable error code.
  */
-public class PmTilesException : Exception {
+public class PmTilesException(
     /** Stable machine-readable error code. */
-    public val code: PmTilesErrorCode
-
+    public val code: PmTilesErrorCode,
+    message: String,
+    cause: Throwable? = null,
+) : Exception(message, cause) {
     public constructor(code: PmTilesErrorCode, message: String) : this(code, message, null)
-
-    public constructor(
-        code: PmTilesErrorCode,
-        message: String,
-        cause: Throwable?,
-    ) : super(message, cause) {
-        this.code = code
-    }
 }
 
 /** Stable error codes emitted by the PMTiles reader. */

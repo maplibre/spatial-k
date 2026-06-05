@@ -32,8 +32,8 @@ class TileLookupTest {
                         offset = HEADER_BYTES.toULong() + 5uL,
                         length = 1,
                     ),
-                tileType = TileType(KnownTileType.Unknown),
-                compression = Compression(KnownCompression.None),
+                tileType = TileTypeCodes.Unknown,
+                compression = CompressionCodes.None,
                 directoryDepth = 0,
             ),
             range,
@@ -144,7 +144,7 @@ class TileLookupTest {
                 addressedTiles = 1uL,
                 tileEntries = 1uL,
                 tileContents = 1uL,
-                tileType = KnownTileType.Png.code,
+                tileType = TileTypeCodes.Png.code,
             )
         val archive =
             PmTiles.open(
