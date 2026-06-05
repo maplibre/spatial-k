@@ -4,6 +4,7 @@ package org.maplibre.spatialk.pmtiles
 
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.internal.buildSingleTileArchive
 
 // These snippets are primarily intended to be included in documentation. Though they exist as
@@ -15,14 +16,14 @@ class KotlinDocsTest {
         val pmTilesBytes = loadPmTilesBytes()
 
         // --8<-- [start:byteRangeSource]
-        fun ByteArray.asByteRangeSource(): ByteRangeSource =
+        fun ByteString.asByteRangeSource(): ByteRangeSource =
             object : ByteRangeSource {
                 override suspend fun size(): ULong = this@asByteRangeSource.size.toULong()
 
-                override suspend fun read(range: ByteRange): ByteArray {
+                override suspend fun read(range: ByteRange): ByteString {
                     val start = range.offset.toInt()
                     val length = range.length.toInt()
-                    return copyOfRange(start, start + length)
+                    return this@asByteRangeSource.substring(start, start + length)
                 }
             }
         // --8<-- [end:byteRangeSource]
@@ -106,17 +107,17 @@ class KotlinDocsTest {
     }
 }
 
-private fun loadPmTilesBytes(): ByteArray = buildSingleTileArchive(tileBytes = byteArrayOf(1, 2, 3))
+private fun loadPmTilesBytes(): ByteString = buildSingleTileArchive(tileBytes = ByteString(1, 2, 3))
 
-private fun decodeBrotli(bytes: ByteArray): ByteArray = bytes
+private fun decodeBrotli(bytes: ByteString): ByteString = bytes
 
-private fun ByteArray.asByteRangeSource(): ByteRangeSource =
+private fun ByteString.asByteRangeSource(): ByteRangeSource =
     object : ByteRangeSource {
         override suspend fun size(): ULong = this@asByteRangeSource.size.toULong()
 
-        override suspend fun read(range: ByteRange): ByteArray {
+        override suspend fun read(range: ByteRange): ByteString {
             val start = range.offset.toInt()
             val length = range.length.toInt()
-            return copyOfRange(start, start + length)
+            return this@asByteRangeSource.substring(start, start + length)
         }
     }

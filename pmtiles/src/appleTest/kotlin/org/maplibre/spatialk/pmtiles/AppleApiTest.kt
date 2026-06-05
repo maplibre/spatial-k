@@ -1,9 +1,11 @@
 package org.maplibre.spatialk.pmtiles
 
 import kotlin.test.Test
-import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlinx.io.bytestring.ByteString
+import kotlinx.io.bytestring.toByteString
+import kotlinx.io.bytestring.toNSData
 import org.maplibre.spatialk.pmtiles.internal.buildSingleTileArchive
 import org.maplibre.spatialk.pmtiles.internal.runSuspending
 import platform.Foundation.NSData
@@ -16,7 +18,7 @@ class AppleApiTest {
             ArchiveTile(
                 tileId = 0,
                 coord = TileCoord(0, 0, 0),
-                bytes = bytes,
+                payload = ByteString(bytes),
                 tileType = TileTypeCodes.Png,
                 compression = CompressionCodes.None,
                 wasDecompressed = false,
@@ -35,25 +37,25 @@ class AppleApiTest {
         bytes[0] = 9
         val secondData = tile.payload.toNSData()
 
-        assertContentEquals(byteArrayOf(1, 2, 3), firstData.toByteArray())
-        assertContentEquals(byteArrayOf(1, 2, 3), secondData.toByteArray())
+        assertEquals(ByteString(1, 2, 3), firstData.toByteString())
+        assertEquals(ByteString(1, 2, 3), secondData.toByteString())
     }
 
     @Test
     fun opensArchiveFromByteRangeDataSource() = runSuspending {
-        val tileBytes = byteArrayOf(4, 5, 6)
+        val tileBytes = ByteString(4, 5, 6)
         val source = TestByteRangeDataSource(buildSingleTileArchive(tileBytes))
 
         val archive = PmTiles.open(source)
 
-        assertContentEquals(tileBytes, archive.readStoredTile(0, 0, 0)?.payload?.toByteArray())
+        assertEquals(tileBytes, archive.readStoredTile(0, 0, 0)?.payload)
         assertEquals(2, source.reads.size)
     }
 
     @Test
     fun customDecompressorDecodesTiles() = runSuspending {
-        val compressedBytes = byteArrayOf(7, 8, 9)
-        val decompressedBytes = byteArrayOf(10, 11, 12)
+        val compressedBytes = ByteString(7, 8, 9)
+        val decompressedBytes = ByteString(10, 11, 12)
         val source =
             TestByteRangeDataSource(
                 buildSingleTileArchive(
@@ -63,7 +65,7 @@ class AppleApiTest {
             )
         val options = ArchiveOpenOptions.build {
             decompressor(CompressionCodes.Brotli) { bytes, limits ->
-                assertContentEquals(compressedBytes, bytes)
+                assertEquals(compressedBytes, bytes)
                 assertEquals(ArchiveLimits().maxTileCompressedBytes, limits.maxCompressedBytes)
                 decompressedBytes
             }
@@ -73,13 +75,13 @@ class AppleApiTest {
         val tile = archive.readDecompressedTile(0, 0, 0)
 
         requireNotNull(tile)
-        assertContentEquals(decompressedBytes, tile.payload.toByteArray())
+        assertEquals(decompressedBytes, tile.payload)
         assertEquals(CompressionCodes.None, tile.compression)
     }
 
     @Test
     fun rejectsShortAndLongByteRangeDataSourceReads() {
-        val archiveBytes = buildSingleTileArchive(byteArrayOf(7))
+        val archiveBytes = buildSingleTileArchive(ByteString(7))
 
         val shortError =
             assertFailsWith<PmTilesException> {
@@ -99,7 +101,7 @@ class AppleApiTest {
     }
 
     private class TestByteRangeDataSource(
-        private val bytes: ByteArray,
+        private val bytes: ByteString,
         private val lengthAdjustment: Int = 0,
     ) : ByteRangeDataSource {
         val reads = mutableListOf<ByteRange>()
@@ -112,7 +114,7 @@ class AppleApiTest {
             val start = offset.toInt()
             val adjustedLength = byteCount + lengthAdjustment
             val end = start + adjustedLength
-            return bytes.copyOfRange(start, end).toNSData()
+            return bytes.substring(start, end).toNSData()
         }
     }
 }

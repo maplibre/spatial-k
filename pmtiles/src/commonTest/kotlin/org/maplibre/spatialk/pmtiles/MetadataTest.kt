@@ -5,6 +5,8 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlinx.coroutines.test.runTest
+import kotlinx.io.bytestring.ByteString
+import kotlinx.io.bytestring.encodeToByteString
 import org.maplibre.spatialk.pmtiles.internal.HEADER_BYTES
 import org.maplibre.spatialk.pmtiles.internal.MINIMAL_ROOT_DIRECTORY_BYTES
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
@@ -17,7 +19,7 @@ class MetadataTest {
         val json =
             """{"name":"Tiles","description":"Desc","attribution":"Attr","type":"baselayer","version":"1","encoding":"mvt","vector_layers":[{"id":"roads"}],"custom":{"x":1}}"""
         val source =
-            TestByteRangeSource(buildMetadataArchive(json.encodeToByteArray(), TileTypeCodes.Mvt))
+            TestByteRangeSource(buildMetadataArchive(json.encodeToByteString(), TileTypeCodes.Mvt))
         val archive = PmTiles.open(source)
 
         val raw = archive.rawMetadataJson()
@@ -40,7 +42,7 @@ class MetadataTest {
 
     @Test
     fun returnsEmptyTypedMetadataForEmptyMetadataSection() = runTest {
-        val archive = PmTiles.open(TestByteRangeSource(buildMetadataArchive(ByteArray(0))))
+        val archive = PmTiles.open(TestByteRangeSource(buildMetadataArchive(ByteString())))
 
         val metadata = archive.metadata()
 
@@ -55,7 +57,7 @@ class MetadataTest {
             assertFailsWith<PmTilesException> {
                 val archive =
                     PmTiles.open(
-                        TestByteRangeSource(buildMetadataArchive(byteArrayOf(0xc3.toByte(), 0x28)))
+                        TestByteRangeSource(buildMetadataArchive(ByteString(0xc3.toByte(), 0x28)))
                     )
                 archive.rawMetadataJson()
             }
@@ -73,7 +75,7 @@ class MetadataTest {
     fun lenientModePreservesRawJsonForNonObjectMetadata() = runTest {
         val archive =
             PmTiles.open(
-                TestByteRangeSource(buildMetadataArchive("[]".encodeToByteArray())),
+                TestByteRangeSource(buildMetadataArchive("[]".encodeToByteString())),
                 options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
 
@@ -89,7 +91,7 @@ class MetadataTest {
         val archive =
             PmTiles.open(
                 TestByteRangeSource(
-                    buildMetadataArchive("""{"name":1,"description":"ok"}""".encodeToByteArray())
+                    buildMetadataArchive("""{"name":1,"description":"ok"}""".encodeToByteString())
                 ),
                 options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
@@ -116,7 +118,7 @@ class MetadataTest {
             PmTiles.open(
                 TestByteRangeSource(
                     buildMetadataArchive(
-                        """{"name":"Tiles"}""".encodeToByteArray(),
+                        """{"name":"Tiles"}""".encodeToByteString(),
                         tileType = TileTypeCodes.Mvt,
                     )
                 ),
@@ -139,7 +141,7 @@ class MetadataTest {
                 val archive =
                     PmTiles.open(
                         TestByteRangeSource(
-                            buildMetadataArchive(json.encodeToByteArray(), tileType)
+                            buildMetadataArchive(json.encodeToByteString(), tileType)
                         )
                     )
                 archive.metadata()
@@ -149,9 +151,9 @@ class MetadataTest {
     }
 
     private fun buildMetadataArchive(
-        metadataBytes: ByteArray,
+        metadataBytes: ByteString,
         tileType: TileTypeCode = TileTypeCodes.Png,
-    ): ByteArray {
+    ): ByteString {
         val metadataOffset = HEADER_BYTES.toULong() + MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong()
         val fields =
             TestHeaderFields(
@@ -168,7 +170,7 @@ class MetadataTest {
             fields = fields,
             rootBytes = MINIMAL_ROOT_DIRECTORY_BYTES,
             metadataBytes = metadataBytes,
-            tileBytes = byteArrayOf(0),
+            tileBytes = ByteString(0),
         )
     }
 }

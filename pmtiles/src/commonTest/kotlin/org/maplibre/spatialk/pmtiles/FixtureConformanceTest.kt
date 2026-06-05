@@ -1,12 +1,12 @@
 package org.maplibre.spatialk.pmtiles
 
 import kotlin.test.Test
-import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
 import org.maplibre.spatialk.testutil.readResourceBytes
 
@@ -67,7 +67,7 @@ class FixtureConformanceTest {
         assertEquals(TileTypeCodes.Mvt, tile.tileType)
         assertEquals(CompressionCodes.None, tile.compression)
         assertEquals(true, tile.wasDecompressed)
-        assertEquals(0x1a, tile.payload.toByteArray().first().toInt() and 0xff)
+        assertEquals(0x1a, tile.payload[0].toInt() and 0xff)
     }
 
     @Test
@@ -83,10 +83,7 @@ class FixtureConformanceTest {
         assertEquals(TileTypeCodes.Png, range.tileType)
         assertEquals(CompressionCodes.None, range.compression)
         assertEquals(TileTypeCodes.Png, tile.tileType)
-        assertContentEquals(
-            byteArrayOf(0x89.toByte(), 0x50, 0x4e, 0x47),
-            tile.payload.toByteArray().copyOfRange(0, 4),
-        )
+        assertEquals(ByteString(0x89.toByte(), 0x50, 0x4e, 0x47), tile.payload.substring(0, 4))
     }
 
     @Test
@@ -140,7 +137,8 @@ class FixtureConformanceTest {
         assertEquals(false, archive.containsTile(1, 1, 0))
     }
 
-    private fun readFixture(path: String): ByteArray = readResourceBytes("fixtures/$path")
+    private fun readFixture(path: String): ByteString =
+        ByteString(readResourceBytes("fixtures/$path"))
 }
 
 private data class ValidFixture(

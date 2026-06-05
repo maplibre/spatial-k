@@ -1,6 +1,7 @@
 package org.maplibre.spatialk.pmtiles.internal
 
 import kotlin.coroutines.cancellation.CancellationException
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.ArchiveOpenOptions
 import org.maplibre.spatialk.pmtiles.CompressionCode
 import org.maplibre.spatialk.pmtiles.DecompressionLimits
@@ -17,9 +18,9 @@ internal fun ArchiveOpenOptions.effectiveDecompressors(): Map<CompressionCode, D
 
 internal suspend fun Map<CompressionCode, Decompressor>.decompress(
     compression: CompressionCode,
-    bytes: ByteArray,
+    bytes: ByteString,
     limits: DecodeLimits,
-): ByteArray =
+): ByteString =
     decompress(
         compression = compression,
         bytes = bytes,
@@ -33,10 +34,10 @@ internal suspend fun Map<CompressionCode, Decompressor>.decompress(
 
 internal suspend fun Map<CompressionCode, Decompressor>.decompress(
     compression: CompressionCode,
-    bytes: ByteArray,
+    bytes: ByteString,
     limits: DecompressionLimits,
     purpose: DecodePurpose? = null,
-): ByteArray {
+): ByteString {
     validateDecodeLimits(limits, purpose)
     validateCompressedSize(bytes.size, limits, purpose)
 

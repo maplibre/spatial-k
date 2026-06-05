@@ -1,5 +1,6 @@
 package org.maplibre.spatialk.pmtiles.internal
 
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.ArchiveHeader
 import org.maplibre.spatialk.pmtiles.ArchiveSection
 import org.maplibre.spatialk.pmtiles.ArchiveWarning
@@ -22,11 +23,11 @@ internal data class ParsedHeader(
     val warnings: List<ArchiveWarning>,
 )
 
-internal fun parseHeader(bytes: ByteArray, archiveSize: ULong): ArchiveHeader =
+internal fun parseHeader(bytes: ByteString, archiveSize: ULong): ArchiveHeader =
     parseHeaderForOpen(bytes, archiveSize, ValidationMode.Strict).header
 
 internal fun parseHeaderForOpen(
-    bytes: ByteArray,
+    bytes: ByteString,
     archiveSize: ULong,
     validationMode: ValidationMode,
 ): ParsedHeader {
@@ -108,7 +109,8 @@ internal fun parseHeaderForOpen(
 }
 
 private fun validateMagic(reader: BinaryReader) {
-    MAGIC_BYTES.forEach { expected ->
+    repeat(MAGIC_BYTES.size) { index ->
+        val expected = MAGIC_BYTES[index]
         val actual = reader.readUInt8().toInt().toByte()
         if (actual != expected) {
             throw pmTilesException(
@@ -329,7 +331,16 @@ private data class NamedSection(
 private const val SUPPORTED_VERSION = 3
 private const val MAX_HEADER_ZOOM = 31
 private const val POSITION_SCALE = 10_000_000.0
-private val MAGIC_BYTES = byteArrayOf(0x50, 0x4d, 0x54, 0x69, 0x6c, 0x65, 0x73)
+private val MAGIC_BYTES =
+    ByteString(
+        0x50.toByte(),
+        0x4d.toByte(),
+        0x54.toByte(),
+        0x69.toByte(),
+        0x6c.toByte(),
+        0x65.toByte(),
+        0x73.toByte(),
+    )
 private val KNOWN_CONCRETE_COMPRESSION_CODES =
     setOf(
         CompressionCodes.None.code,

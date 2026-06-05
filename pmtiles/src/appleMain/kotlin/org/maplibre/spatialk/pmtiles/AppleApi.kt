@@ -5,19 +5,10 @@ package org.maplibre.spatialk.pmtiles
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.experimental.ExperimentalObjCName
 import kotlin.native.ObjCName
-import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.cinterop.UnsafeNumber
-import kotlinx.cinterop.addressOf
-import kotlinx.cinterop.convert
-import kotlinx.cinterop.readBytes
-import kotlinx.cinterop.usePinned
-import org.maplibre.spatialk.pmtiles.internal.pmTilesException
+import kotlinx.io.bytestring.ByteString
+import kotlinx.io.bytestring.toByteString
+import kotlinx.io.bytestring.toNSData
 import platform.Foundation.NSData
-import platform.Foundation.NSMutableData
-import platform.posix.memcpy
-
-/** Returns a copy of this byte payload as a Foundation value. */
-public fun ByteString.toNSData(): NSData = withBytesUnsafe { it.toNSData() }
 
 public interface ByteRangeDataSource {
     public fun size(): ULong
@@ -197,7 +188,7 @@ public fun ArchiveOpenOptions.withDecompressor(
         .decompressor(
             compression,
             Decompressor { bytes, limits ->
-                decompressor.decompress(bytes.toNSData(), limits).toByteArray()
+                decompressor.decompress(bytes.toNSData(), limits).toByteString()
             },
         )
         .build()
@@ -216,44 +207,8 @@ public suspend fun PmTiles.open(
             object : ByteRangeSource {
                 override suspend fun size(): ULong = source.size()
 
-                override suspend fun read(range: ByteRange): ByteArray =
-                    source.read(range.offset, range.length).toByteArray()
+                override suspend fun read(range: ByteRange): ByteString =
+                    source.read(range.offset, range.length).toByteString()
             },
         options = options,
     )
-
-internal fun NSData.toByteArray(): ByteArray {
-    val byteCount =
-        @OptIn(ExperimentalForeignApi::class, UnsafeNumber::class) length.convert<ULong>()
-    if (byteCount == 0uL) return ByteArray(0)
-    if (byteCount > Int.MAX_VALUE.toULong()) {
-        throw pmTilesException(
-            PmTilesErrorCode.SourceUnavailable,
-            "Byte range data source returned $byteCount bytes, which exceeds Int.MAX_VALUE.",
-        )
-    }
-    return readBytes(byteCount.toInt())
-}
-
-internal fun ByteArray.toNSData(): NSData {
-    val data = NSMutableData()
-    @OptIn(ExperimentalForeignApi::class, UnsafeNumber::class) data.setLength(size.convert())
-    if (isNotEmpty()) {
-        @OptIn(ExperimentalForeignApi::class)
-        usePinned { pinned ->
-            @OptIn(ExperimentalForeignApi::class, UnsafeNumber::class)
-            memcpy(data.mutableBytes, pinned.addressOf(0), size.convert())
-        }
-    }
-    return data
-}
-
-internal fun NSData.readBytes(length: Int): ByteArray {
-    val bytesPointer =
-        @OptIn(ExperimentalForeignApi::class) bytes
-            ?: throw pmTilesException(
-                PmTilesErrorCode.SourceUnavailable,
-                "Byte range data source returned non-empty NSData with a null bytes pointer.",
-            )
-    return (@OptIn(ExperimentalForeignApi::class) bytesPointer.readBytes(length))
-}

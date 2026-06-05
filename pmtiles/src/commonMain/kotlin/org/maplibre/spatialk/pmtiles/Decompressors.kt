@@ -3,6 +3,7 @@ package org.maplibre.spatialk.pmtiles
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
+import kotlinx.io.bytestring.ByteString
 
 /**
  * Decompressed byte limits passed to decompressor implementations.
@@ -35,7 +36,7 @@ public fun interface Decompressor {
      * returned byte count before using it.
      */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun decompress(bytes: ByteArray, limits: DecompressionLimits): ByteArray
+    public suspend fun decompress(bytes: ByteString, limits: DecompressionLimits): ByteString
 }
 
 private fun Int.toLimitULong(kind: String): ULong {

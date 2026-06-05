@@ -1,9 +1,10 @@
 package org.maplibre.spatialk.pmtiles.internal
 
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 
 internal class BinaryReader(
-    private val bytes: ByteArray,
+    private val bytes: ByteString,
     private val errorCode: PmTilesErrorCode = PmTilesErrorCode.InvalidHeader,
 ) {
     var position: Int = 0

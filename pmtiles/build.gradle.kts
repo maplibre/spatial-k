@@ -16,6 +16,7 @@ kotlin {
             binaries.framework {
                 baseName = frameworkName
                 isStatic = true
+                export(libs.kotlinx.io.bytestring)
                 binaryOption("bundleId", "org.maplibre.spatialk.pmtiles")
                 xcFramework.add(this)
             }
@@ -24,6 +25,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            api(libs.kotlinx.io.bytestring)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
         }

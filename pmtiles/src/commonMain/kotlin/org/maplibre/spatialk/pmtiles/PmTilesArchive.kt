@@ -4,6 +4,7 @@ package org.maplibre.spatialk.pmtiles
 
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.native.HiddenFromObjC
+import kotlinx.io.bytestring.ByteString
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -369,7 +370,9 @@ internal constructor(
                 )
             read.tiles.forEach { located ->
                 val compressedTile =
-                    located.range.toArchiveTile(bytes = bytes.sliceTile(read.range, located.range))
+                    located.range.toArchiveTile(
+                        payload = bytes.sliceTile(read.range, located.range)
+                    )
                 tiles[located.index] =
                     if (decompress) compressedTile.decompressed() else compressedTile
             }
@@ -393,21 +396,20 @@ internal constructor(
     private suspend fun ArchiveTile.decompressed(): ArchiveTile {
         if (compression == CompressionCodes.None) return this
 
-        val decompressedBytes = payload.withBytesUnsafeSuspend { bytes ->
+        val decompressedBytes =
             decompressors.decompress(
                 compression,
-                bytes,
+                payload,
                 DecodeLimits(
                     maxCompressedBytes = options.limits.maxTileCompressedBytes,
                     maxDecompressedBytes = options.limits.maxTileDecompressedBytes,
                     purpose = DecodePurpose.Tile,
                 ),
             )
-        }
         return ArchiveTile(
             tileId = tileId,
             coord = coord,
-            bytes = decompressedBytes,
+            payload = decompressedBytes,
             tileType = tileType,
             compression = CompressionCodes.None,
             wasDecompressed = true,
@@ -415,11 +417,11 @@ internal constructor(
         )
     }
 
-    private fun TileRange.toArchiveTile(bytes: ByteArray): ArchiveTile =
+    private fun TileRange.toArchiveTile(payload: ByteString): ArchiveTile =
         ArchiveTile(
             tileId = tileId,
             coord = coord,
-            bytes = bytes,
+            payload = payload,
             tileType = tileType,
             compression = compression,
             wasDecompressed = false,
@@ -502,9 +504,9 @@ internal constructor(
     }
 }
 
-private fun ByteArray.decodeMetadataUtf8(): String =
+private fun ByteString.decodeMetadataUtf8(): String =
     try {
-        decodeToString(throwOnInvalidSequence = true)
+        toByteArray().decodeToString(throwOnInvalidSequence = true)
     } catch (error: Throwable) {
         throw pmTilesException(
             PmTilesErrorCode.InvalidMetadata,
@@ -595,9 +597,9 @@ private fun canCoalesce(
 private fun ByteRange.endOffset(): ULong =
     checkedAdd(offset, length, PmTilesErrorCode.RangeOutOfBounds)
 
-private fun ByteArray.sliceTile(readRange: ByteRange, tileRange: TileRange): ByteArray {
+private fun ByteString.sliceTile(readRange: ByteRange, tileRange: TileRange): ByteString {
     val offset = (tileRange.archiveRange.offset - readRange.offset).toInt()
-    return copyOfRange(offset, offset + tileRange.archiveRange.lengthAsInt("Tile payload"))
+    return substring(offset, offset + tileRange.archiveRange.lengthAsInt("Tile payload"))
 }
 
 private fun ByteRange.lengthAsInt(purpose: String): Int =
@@ -614,7 +616,7 @@ private fun emptyMetadata(): ArchiveMetadata =
         vectorLayersJson = null,
     )
 
-private fun ByteArray.slice(section: ArchiveSection, limits: ArchiveLimits): ByteArray {
+private fun ByteString.slice(section: ArchiveSection, limits: ArchiveLimits): ByteString {
     val length =
         allocationLength(
             section.length,
@@ -622,5 +624,5 @@ private fun ByteArray.slice(section: ArchiveSection, limits: ArchiveLimits): Byt
             "Root directory",
         )
     val offset = section.offset.toInt()
-    return copyOfRange(offset, offset + length)
+    return substring(offset, offset + length)
 }

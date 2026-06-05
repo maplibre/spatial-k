@@ -1,10 +1,10 @@
 package org.maplibre.spatialk.pmtiles.internal
 
 import kotlin.test.Test
-import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlinx.coroutines.test.runTest
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.CompressionCode
 import org.maplibre.spatialk.pmtiles.CompressionCodes
 import org.maplibre.spatialk.pmtiles.DecompressionLimits
@@ -23,7 +23,7 @@ class CompressionTest {
                     testDecodeLimits(),
                 )
 
-        assertContentEquals(helloBytes, decoded)
+        assertEquals(helloBytes, decoded)
     }
 
     @Test
@@ -66,7 +66,7 @@ class CompressionTest {
                     testDecodeLimits(),
                 )
 
-        assertContentEquals(helloBytes, decoded)
+        assertEquals(helloBytes, decoded)
     }
 
     @Test
@@ -79,7 +79,7 @@ class CompressionTest {
                     testDecodeLimits(),
                 )
 
-        assertContentEquals(ByteArray(0), decoded)
+        assertEquals(ByteString(), decoded)
     }
 
     @Test
@@ -89,7 +89,7 @@ class CompressionTest {
                 platformDefaultDecompressors()
                     .decompress(
                         CompressionCodes.Gzip,
-                        helloGzipBytes.copyOf(12),
+                        helloGzipBytes.substring(0, 12),
                         testDecodeLimits(),
                     )
             }
@@ -104,7 +104,7 @@ class CompressionTest {
                 platformDefaultDecompressors()
                     .decompress(
                         CompressionCodes.Gzip,
-                        byteArrayOf(1, 2, 3),
+                        ByteString(1, 2, 3),
                         testDecodeLimits(),
                     )
             }
@@ -186,7 +186,7 @@ class CompressionTest {
 
     @Test
     fun customDecompressorsOverrideDefaultEntriesByCompressionCode() = runTest {
-        val decodedBytes = byteArrayOf(4, 5, 6)
+        val decodedBytes = ByteString(4, 5, 6)
         val decompressors =
             platformDefaultDecompressors() +
                 mapOf(CompressionCodes.None to Decompressor { _, _ -> decodedBytes })
@@ -194,17 +194,17 @@ class CompressionTest {
         val decoded =
             decompressors.decompress(
                 CompressionCodes.None,
-                byteArrayOf(1, 2, 3),
+                ByteString(1, 2, 3),
                 DecompressionLimits(maxCompressedBytes = 3, maxDecompressedBytes = 3),
             )
 
-        assertContentEquals(decodedBytes, decoded)
+        assertEquals(decodedBytes, decoded)
         assertEquals(true, CompressionCodes.Gzip in decompressors)
     }
 
     @Test
     fun customDecompressorsCanAddCompressionCodes() = runTest {
-        val decodedBytes = byteArrayOf(4, 5, 6)
+        val decodedBytes = ByteString(4, 5, 6)
         val decompressors =
             platformDefaultDecompressors() +
                 mapOf(CompressionCodes.Brotli to Decompressor { _, _ -> decodedBytes })
@@ -212,24 +212,24 @@ class CompressionTest {
         val decoded =
             decompressors.decompress(
                 CompressionCodes.Brotli,
-                byteArrayOf(1, 2, 3),
+                ByteString(1, 2, 3),
                 DecompressionLimits(maxCompressedBytes = 3, maxDecompressedBytes = 3),
             )
 
-        assertContentEquals(decodedBytes, decoded)
+        assertEquals(decodedBytes, decoded)
         assertEquals(true, CompressionCodes.Brotli in decompressors)
     }
 
     @Test
     fun registryEnforcesCustomDecompressedLimit() = runTest {
         val decompressors =
-            mapOf(CompressionCodes.Brotli to Decompressor { _, _ -> byteArrayOf(1, 2) })
+            mapOf(CompressionCodes.Brotli to Decompressor { _, _ -> ByteString(1, 2) })
 
         val error =
             assertFailsWith<PmTilesException> {
                 decompressors.decompress(
                     CompressionCodes.Brotli,
-                    byteArrayOf(1),
+                    ByteString(1),
                     DecompressionLimits(maxCompressedBytes = 1, maxDecompressedBytes = 1),
                 )
             }

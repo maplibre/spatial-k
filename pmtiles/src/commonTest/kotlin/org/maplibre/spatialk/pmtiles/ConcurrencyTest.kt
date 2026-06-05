@@ -10,6 +10,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import kotlinx.io.bytestring.ByteString
+import kotlinx.io.bytestring.append
+import kotlinx.io.bytestring.buildByteString
 import org.maplibre.spatialk.pmtiles.internal.DirectoryEntry
 import org.maplibre.spatialk.pmtiles.internal.TestHeaderFields
 import org.maplibre.spatialk.pmtiles.internal.buildArchiveWithSections
@@ -62,7 +65,7 @@ class ConcurrencyTest {
 
     @Test
     fun closeDuringInFlightReadFailsWithClosedAndIsIdempotent() = runTest {
-        val archiveBytes = buildSingleTileArchive(byteArrayOf(1, 2, 3))
+        val archiveBytes = buildSingleTileArchive(ByteString(1, 2, 3))
         val tileRange = ByteRange(132uL, 3)
         val source = BlockingRangeSource(archiveBytes, blockedRange = tileRange)
         val archive = PmTiles.open(source)
@@ -136,7 +139,11 @@ class ConcurrencyTest {
                         tileDataLength = 2uL,
                     ),
                 rootBytes = rootBytes,
-                leafBytes = firstLeafBytes + secondLeafBytes,
+                leafBytes =
+                    buildByteString(firstLeafBytes.size + secondLeafBytes.size) {
+                        append(firstLeafBytes)
+                        append(secondLeafBytes)
+                    },
             )
         val source = BlockingRangeSource(archiveBytes)
         val archive =
@@ -160,7 +167,7 @@ class ConcurrencyTest {
 }
 
 private class BlockingRangeSource(
-    private val bytes: ByteArray,
+    private val bytes: ByteString,
     private val blockedRange: ByteRange? = null,
 ) : ByteRangeSource {
     val reads = mutableListOf<ByteRange>()
@@ -171,7 +178,7 @@ private class BlockingRangeSource(
 
     override suspend fun size(): ULong = bytes.size.toULong()
 
-    override suspend fun read(range: ByteRange): ByteArray {
+    override suspend fun read(range: ByteRange): ByteString {
         reads += range
         if (range == blockedRange) {
             blockedReadCount += 1
@@ -180,7 +187,7 @@ private class BlockingRangeSource(
         }
         val start = range.offset.toInt()
         val length = range.length.toInt()
-        return bytes.copyOfRange(start, start + length)
+        return bytes.substring(start, start + length)
     }
 }
 

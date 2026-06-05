@@ -5,6 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlinx.coroutines.test.runTest
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.internal.DirectoryEntry
 import org.maplibre.spatialk.pmtiles.internal.HEADER_BYTES
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
@@ -131,9 +132,11 @@ class TileLookupTest {
                     runLength = 0,
                 )
             )
-        val leafSection = ByteArray(nestedLeafOffset.toInt() + tileLeafBytes.size)
-        firstLeafBytes.copyInto(leafSection)
-        tileLeafBytes.copyInto(leafSection, destinationOffset = nestedLeafOffset.toInt())
+        val leafSection =
+            ByteArray(nestedLeafOffset.toInt() + tileLeafBytes.size).also {
+                firstLeafBytes.copyInto(it)
+                tileLeafBytes.copyInto(it, destinationOffset = nestedLeafOffset.toInt())
+            }
         val fields =
             TestHeaderFields(
                 rootLength = rootBytes.size.toULong(),
@@ -152,7 +155,7 @@ class TileLookupTest {
                     buildArchiveWithLeafBytes(
                         fields = fields,
                         rootBytes = rootBytes,
-                        leafBytes = leafSection,
+                        leafBytes = ByteString(leafSection),
                     )
                 ),
                 options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
@@ -192,9 +195,11 @@ class TileLookupTest {
                     runLength = 0,
                 )
             )
-        val leafSection = ByteArray(nestedLeafOffset.toInt() + tileLeafBytes.size)
-        firstLeafBytes.copyInto(leafSection)
-        tileLeafBytes.copyInto(leafSection, destinationOffset = nestedLeafOffset.toInt())
+        val leafSection =
+            ByteArray(nestedLeafOffset.toInt() + tileLeafBytes.size).also {
+                firstLeafBytes.copyInto(it)
+                tileLeafBytes.copyInto(it, destinationOffset = nestedLeafOffset.toInt())
+            }
         val fields =
             TestHeaderFields(
                 rootLength = rootBytes.size.toULong(),
@@ -212,7 +217,7 @@ class TileLookupTest {
                             buildArchiveWithLeafBytes(
                                 fields = fields,
                                 rootBytes = rootBytes,
-                                leafBytes = leafSection,
+                                leafBytes = ByteString(leafSection),
                             )
                         )
                     )
@@ -305,8 +310,8 @@ class TileLookupTest {
 
     private fun buildArchiveWithLeafBytes(
         fields: TestHeaderFields,
-        rootBytes: ByteArray,
-        leafBytes: ByteArray,
-    ): ByteArray =
+        rootBytes: ByteString,
+        leafBytes: ByteString,
+    ): ByteString =
         buildArchiveWithSections(fields = fields, rootBytes = rootBytes, leafBytes = leafBytes)
 }

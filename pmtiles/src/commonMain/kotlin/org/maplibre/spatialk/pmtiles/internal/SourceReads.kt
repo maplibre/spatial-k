@@ -1,6 +1,7 @@
 package org.maplibre.spatialk.pmtiles.internal
 
 import kotlin.coroutines.cancellation.CancellationException
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.ByteRange
 import org.maplibre.spatialk.pmtiles.ByteRangeSource
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
@@ -10,7 +11,7 @@ internal suspend fun ByteRangeSource.readSourceRange(
     range: ByteRange,
     archiveSize: ULong,
     maxBytes: ULong,
-): ByteArray {
+): ByteString {
     validateReadRange(range, archiveSize, maxBytes)
     val bytes =
         try {

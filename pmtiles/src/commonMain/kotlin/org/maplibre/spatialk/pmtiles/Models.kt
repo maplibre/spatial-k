@@ -8,6 +8,7 @@ import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.jvm.JvmInline
 import kotlin.native.HiddenFromObjC
 import kotlin.native.ObjCName
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
 
 /**
@@ -47,7 +48,7 @@ public interface ByteRangeSource {
 
     /** Reads exactly the requested number of bytes from [range]. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun read(range: ByteRange): ByteArray
+    public suspend fun read(range: ByteRange): ByteString
 }
 
 /**
@@ -399,27 +400,9 @@ internal constructor(
     public val wasDecompressed: Boolean,
     public val range: TileRange,
 ) {
-    internal constructor(
-        tileId: Long,
-        coord: TileCoord,
-        bytes: ByteArray,
-        tileType: TileTypeCode,
-        compression: CompressionCode,
-        wasDecompressed: Boolean,
-        range: TileRange,
-    ) : this(
-        tileId = tileId,
-        coord = coord,
-        payload = ByteString(bytes),
-        tileType = tileType,
-        compression = compression,
-        wasDecompressed = wasDecompressed,
-        range = range,
-    )
-
     /** Tile payload byte count. */
     public val byteCount: ULong
-        get() = payload.byteCount
+        get() = payload.size.toULong()
 
     override fun toString(): String =
         "ArchiveTile(" +
@@ -452,30 +435,6 @@ internal constructor(
         result = 31 * result + range.hashCode()
         return result
     }
-}
-
-/** Immutable byte payload. */
-public class ByteString internal constructor(bytes: ByteArray) {
-    private val byteStorage: ByteArray = bytes.copyOf()
-
-    /** Number of bytes in this payload. */
-    public val byteCount: ULong
-        get() = byteStorage.size.toULong()
-
-    /** Returns a copy of this payload as a byte array. */
-    public fun toByteArray(): ByteArray = byteStorage.copyOf()
-
-    internal fun <T> withBytesUnsafe(block: (ByteArray) -> T): T = block(byteStorage)
-
-    internal suspend fun <T> withBytesUnsafeSuspend(block: suspend (ByteArray) -> T): T =
-        block(byteStorage)
-
-    override fun equals(other: Any?): Boolean =
-        other is ByteString && byteStorage.contentEquals(other.byteStorage)
-
-    override fun hashCode(): Int = byteStorage.contentHashCode()
-
-    override fun toString(): String = "ByteString(byteCount=$byteCount)"
 }
 
 /**

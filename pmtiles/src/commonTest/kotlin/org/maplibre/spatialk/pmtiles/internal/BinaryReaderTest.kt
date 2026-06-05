@@ -3,32 +3,14 @@ package org.maplibre.spatialk.pmtiles.internal
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlinx.io.bytestring.hexToByteString
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
 class BinaryReaderTest {
     @Test
     fun readsLittleEndianUnsignedFields() {
-        val reader =
-            BinaryReader(
-                byteArrayOf(
-                    0x12,
-                    0x34,
-                    0x56,
-                    0x78,
-                    0x9a.toByte(),
-                    0xbc.toByte(),
-                    0xde.toByte(),
-                    0xf0.toByte(),
-                    0x11,
-                    0x22,
-                    0x33,
-                    0x44,
-                    0x55,
-                    0x66,
-                    0x77,
-                )
-            )
+        val reader = BinaryReader("123456789abcdef011223344556677".hexToByteString())
 
         assertEquals(0x12u, reader.readUInt8())
         assertEquals(0x5634u, reader.readUInt16Le())
@@ -40,7 +22,7 @@ class BinaryReaderTest {
     fun rejectsFixedWidthReadsPastEnd() {
         val error =
             assertFailsWith<PmTilesException> {
-                BinaryReader(byteArrayOf(1, 2, 3)).readUInt32Le()
+                BinaryReader("010203".hexToByteString()).readUInt32Le()
             }
 
         assertEquals(PmTilesErrorCode.InvalidHeader, error.code)
@@ -48,28 +30,7 @@ class BinaryReaderTest {
 
     @Test
     fun decodesVarints() {
-        val reader =
-            BinaryReader(
-                byteArrayOf(
-                    0x00,
-                    0x01,
-                    0x7f,
-                    0x80.toByte(),
-                    0x01,
-                    0xff.toByte(),
-                    0x01,
-                    0xff.toByte(),
-                    0xff.toByte(),
-                    0xff.toByte(),
-                    0xff.toByte(),
-                    0xff.toByte(),
-                    0xff.toByte(),
-                    0xff.toByte(),
-                    0xff.toByte(),
-                    0xff.toByte(),
-                    0x01,
-                )
-            )
+        val reader = BinaryReader("00017f8001ff01ffffffffffffffffff01".hexToByteString())
 
         assertEquals(0uL, reader.readVarint(maxBytes = 10))
         assertEquals(1uL, reader.readVarint(maxBytes = 10))
@@ -83,7 +44,7 @@ class BinaryReaderTest {
     fun rejectsUnterminatedVarintAtEndOfInput() {
         val error =
             assertFailsWith<PmTilesException> {
-                BinaryReader(byteArrayOf(0x80.toByte())).readVarint(maxBytes = 10)
+                BinaryReader("80".hexToByteString()).readVarint(maxBytes = 10)
             }
 
         assertEquals(PmTilesErrorCode.InvalidVarint, error.code)
@@ -93,7 +54,7 @@ class BinaryReaderTest {
     fun rejectsVarintPastConfiguredByteLimit() {
         val error =
             assertFailsWith<PmTilesException> {
-                BinaryReader(byteArrayOf(0x80.toByte(), 0x01)).readVarint(maxBytes = 1)
+                BinaryReader("8001".hexToByteString()).readVarint(maxBytes = 1)
             }
 
         assertEquals(PmTilesErrorCode.InvalidVarint, error.code)
@@ -103,21 +64,7 @@ class BinaryReaderTest {
     fun rejectsVarintOverflow() {
         val error =
             assertFailsWith<PmTilesException> {
-                BinaryReader(
-                        byteArrayOf(
-                            0xff.toByte(),
-                            0xff.toByte(),
-                            0xff.toByte(),
-                            0xff.toByte(),
-                            0xff.toByte(),
-                            0xff.toByte(),
-                            0xff.toByte(),
-                            0xff.toByte(),
-                            0xff.toByte(),
-                            0x02,
-                        )
-                    )
-                    .readVarint(maxBytes = 10)
+                BinaryReader("ffffffffffffffffff02".hexToByteString()).readVarint(maxBytes = 10)
             }
 
         assertEquals(PmTilesErrorCode.InvalidVarint, error.code)
@@ -127,22 +74,7 @@ class BinaryReaderTest {
     fun rejectsVarintLongerThanUnsignedLongEvenWithHigherConfiguredLimit() {
         val error =
             assertFailsWith<PmTilesException> {
-                BinaryReader(
-                        byteArrayOf(
-                            0x80.toByte(),
-                            0x80.toByte(),
-                            0x80.toByte(),
-                            0x80.toByte(),
-                            0x80.toByte(),
-                            0x80.toByte(),
-                            0x80.toByte(),
-                            0x80.toByte(),
-                            0x80.toByte(),
-                            0x80.toByte(),
-                            0x00,
-                        )
-                    )
-                    .readVarint(maxBytes = 11)
+                BinaryReader("8080808080808080808000".hexToByteString()).readVarint(maxBytes = 11)
             }
 
         assertEquals(PmTilesErrorCode.InvalidVarint, error.code)

@@ -7,5 +7,5 @@ import org.maplibre.spatialk.pmtiles.Decompressor
 internal actual fun platformDefaultDecompressors(): Map<CompressionCode, Decompressor> =
     mapOf(
         CompressionCodes.None to noneDecompressor,
-        CompressionCodes.Gzip to Decompressor { bytes, limits -> decodeGzip(bytes, limits) },
+        CompressionCodes.Gzip to Decompressor(::decodeGzip),
     )

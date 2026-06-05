@@ -3,6 +3,7 @@ package org.maplibre.spatialk.pmtiles
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlinx.coroutines.test.runTest
+import kotlinx.io.bytestring.encodeToByteString
 import org.maplibre.spatialk.pmtiles.internal.MINIMAL_ROOT_DIRECTORY_BYTES
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
 import org.maplibre.spatialk.pmtiles.internal.TestHeaderFields
@@ -11,7 +12,7 @@ import org.maplibre.spatialk.pmtiles.internal.buildArchiveWithSections
 class WarningSurfaceTest {
     @Test
     fun warningsReturnSnapshotsAndSupportLazyWarnings() = runTest {
-        val metadataBytes = "[]".encodeToByteArray()
+        val metadataBytes = "[]".encodeToByteString()
         val fields =
             TestHeaderFields(
                 rootLength = MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong(),

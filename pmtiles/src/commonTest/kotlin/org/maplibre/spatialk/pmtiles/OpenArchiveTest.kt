@@ -6,6 +6,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.internal.FIRST_READ_BYTES
 import org.maplibre.spatialk.pmtiles.internal.HEADER_BYTES
 import org.maplibre.spatialk.pmtiles.internal.MINIMAL_ROOT_DIRECTORY_BYTES
@@ -103,15 +104,18 @@ class OpenArchiveTest {
 
     @Test
     fun rejectsInvalidMagicVersionAndShortHeaders() = runTest {
-        val invalidMagic = buildArchive().also { it[0] = 0 }
+        val invalidMagic = buildArchive().mutableCopy().also { it[0] = 0 }.let(::ByteString)
         assertOpenFails(PmTilesErrorCode.InvalidMagic, invalidMagic)
 
-        val invalidVersion = buildArchive().also { it[7] = 2 }
+        val invalidVersion = buildArchive().mutableCopy().also { it[7] = 2 }.let(::ByteString)
         assertOpenFails(PmTilesErrorCode.UnsupportedVersion, invalidVersion)
 
         val error =
             assertFailsWith<PmTilesException> {
-                parseHeader(buildHeader().copyOf(HEADER_BYTES - 1), HEADER_BYTES.toULong())
+                parseHeader(
+                    ByteString(buildHeader().copyOf(HEADER_BYTES - 1)),
+                    HEADER_BYTES.toULong(),
+                )
             }
         assertEquals(PmTilesErrorCode.InvalidHeader, error.code)
     }
@@ -125,7 +129,7 @@ class OpenArchiveTest {
             )
         val overflow =
             assertFailsWith<PmTilesException> {
-                parseHeader(buildHeader(overflowFields), ULong.MAX_VALUE)
+                parseHeader(ByteString(buildHeader(overflowFields)), ULong.MAX_VALUE)
             }
         assertEquals(PmTilesErrorCode.InvalidSectionLayout, overflow.code)
 
@@ -203,7 +207,7 @@ class OpenArchiveTest {
 
     @Test
     fun rejectsEmptyRootDirectoryUnlessLenient() = runTest {
-        val rootBytes = byteArrayOf(0)
+        val rootBytes = ByteString(0)
         val fields =
             TestHeaderFields(
                 rootLength = rootBytes.size.toULong(),
@@ -271,7 +275,7 @@ class OpenArchiveTest {
 
         val outOfBounds =
             assertFailsWith<PmTilesException> {
-                TestByteRangeSource(ByteArray(4))
+                TestByteRangeSource(ByteString(0, 0, 0, 0))
                     .readSourceRange(
                         ByteRange(3uL, 2),
                         archiveSize = 4uL,
@@ -284,7 +288,7 @@ class OpenArchiveTest {
     @Test
     fun supportsZeroLengthSourceReads() = runTest {
         val bytes =
-            TestByteRangeSource(ByteArray(4))
+            TestByteRangeSource(ByteString(0, 0, 0, 0))
                 .readSourceRange(
                     ByteRange(0uL, 0),
                     archiveSize = 4uL,
@@ -294,7 +298,7 @@ class OpenArchiveTest {
         assertEquals(0, bytes.size)
     }
 
-    private suspend fun assertOpenFails(code: PmTilesErrorCode, bytes: ByteArray) {
+    private suspend fun assertOpenFails(code: PmTilesErrorCode, bytes: ByteString) {
         val error =
             assertFailsWith<PmTilesException> {
                 PmTiles.open(TestByteRangeSource(bytes))
@@ -302,4 +306,6 @@ class OpenArchiveTest {
 
         assertEquals(code, error.code)
     }
+
+    private fun ByteString.mutableCopy(): ByteArray = toByteArray()
 }

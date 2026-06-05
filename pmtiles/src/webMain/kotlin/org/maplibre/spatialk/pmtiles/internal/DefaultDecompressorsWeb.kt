@@ -9,7 +9,7 @@ internal actual fun platformDefaultDecompressors(): Map<CompressionCode, Decompr
     if (hasDecompressionStream()) {
         put(
             CompressionCodes.Gzip,
-            Decompressor { bytes, limits -> decodeGzip(bytes, limits) },
+            Decompressor(::decodeGzip),
         )
     }
 }

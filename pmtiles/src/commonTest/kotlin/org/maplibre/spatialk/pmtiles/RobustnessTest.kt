@@ -2,13 +2,14 @@ package org.maplibre.spatialk.pmtiles
 
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.test.Test
-import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.test.runTest
+import kotlinx.io.bytestring.ByteString
+import kotlinx.io.bytestring.encodeToByteString
 import org.maplibre.spatialk.pmtiles.internal.MINIMAL_ROOT_DIRECTORY_BYTES
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
 import org.maplibre.spatialk.pmtiles.internal.TestHeaderFields
@@ -18,7 +19,7 @@ import org.maplibre.spatialk.pmtiles.internal.buildSingleTileArchive
 class RobustnessTest {
     @Test
     fun hugeMetadataFails() = runTest {
-        val metadataBytes = """{"name":"too large"}""".encodeToByteArray()
+        val metadataBytes = """{"name":"too large"}""".encodeToByteString()
         val bytes =
             buildArchiveWithSections(
                 fields =
@@ -78,7 +79,7 @@ class RobustnessTest {
 
     @Test
     fun hugeTileFails() = runTest {
-        val tileBytes = byteArrayOf(1, 2, 3, 4)
+        val tileBytes = ByteString(1, 2, 3, 4)
         val error =
             assertFailsWith<PmTilesException> {
                 val archive =
@@ -99,7 +100,7 @@ class RobustnessTest {
 
     @Test
     fun cancellationRaceDoesNotReturnPartialData() = runTest {
-        val tileBytes = byteArrayOf(9, 8, 7)
+        val tileBytes = ByteString(9, 8, 7)
         val source = FirstTileReadBlockingSource(buildSingleTileArchive(tileBytes))
         val archive = PmTiles.open(source)
         val expectedTileRange = requireNotNull(archive.findTileRange(0, 0, 0)).archiveRange
@@ -123,11 +124,11 @@ class RobustnessTest {
         val tile = archive.readStoredTile(0, 0, 0)
 
         requireNotNull(tile)
-        assertContentEquals(tileBytes, tile.payload.toByteArray())
+        assertEquals(tileBytes, tile.payload)
     }
 }
 
-private class FirstTileReadBlockingSource(private val bytes: ByteArray) : ByteRangeSource {
+private class FirstTileReadBlockingSource(private val bytes: ByteString) : ByteRangeSource {
     val blockedReadStarted = CompletableDeferred<Unit>()
     val releaseBlockedRead = CompletableDeferred<Unit>()
     private var blockedByteRange: ByteRange? = null
@@ -138,7 +139,7 @@ private class FirstTileReadBlockingSource(private val bytes: ByteArray) : ByteRa
 
     override suspend fun size(): ULong = bytes.size.toULong()
 
-    override suspend fun read(range: ByteRange): ByteArray {
+    override suspend fun read(range: ByteRange): ByteString {
         if (range == blockedByteRange) {
             blockedByteRange = null
             blockedReadStarted.complete(Unit)
@@ -146,6 +147,6 @@ private class FirstTileReadBlockingSource(private val bytes: ByteArray) : ByteRa
         }
         val start = range.offset.toInt()
         val length = range.length.toInt()
-        return bytes.copyOfRange(start, start + length)
+        return bytes.substring(start, start + length)
     }
 }

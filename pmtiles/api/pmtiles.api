@@ -136,7 +136,7 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveTile {
 	public final fun getByteCount-s-VKNKU ()J
 	public final fun getCompression-KaDf8nc ()I
 	public final fun getCoord ()Lorg/maplibre/spatialk/pmtiles/TileCoord;
-	public final fun getPayload ()Lorg/maplibre/spatialk/pmtiles/ByteString;
+	public final fun getPayload ()Lkotlinx/io/bytestring/ByteString;
 	public final fun getRange ()Lorg/maplibre/spatialk/pmtiles/TileRange;
 	public final fun getTileId ()J
 	public final fun getTileType-u2j9DLg ()I
@@ -186,14 +186,6 @@ public abstract interface class org/maplibre/spatialk/pmtiles/ByteRangeSource {
 	public abstract fun size-I7RO_PI (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class org/maplibre/spatialk/pmtiles/ByteString {
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getByteCount-s-VKNKU ()J
-	public fun hashCode ()I
-	public final fun toByteArray ()[B
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class org/maplibre/spatialk/pmtiles/CompressionCode {
 	public static final synthetic fun box-impl (I)Lorg/maplibre/spatialk/pmtiles/CompressionCode;
 	public static fun constructor-impl (I)I
@@ -228,7 +220,7 @@ public final class org/maplibre/spatialk/pmtiles/DecompressionLimits {
 }
 
 public abstract interface class org/maplibre/spatialk/pmtiles/Decompressor {
-	public abstract fun decompress ([BLorg/maplibre/spatialk/pmtiles/DecompressionLimits;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun decompress (Lkotlinx/io/bytestring/ByteString;Lorg/maplibre/spatialk/pmtiles/DecompressionLimits;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class org/maplibre/spatialk/pmtiles/HeaderCounts {
