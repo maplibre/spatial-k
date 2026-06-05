@@ -77,15 +77,14 @@ use `mise exec -- <command>`.
 
 ## Project invariants
 
-**After changing any public API**, run `mise run fix` to regenerate the `.api` files — the build
-fails without this.
+### Testing
 
-**Floating-point comparisons in tests**: use helpers from `testutil` instead of `assertEquals` to
-handle platform-specific precision differences.
+- For floating-point comparisons in tests, use helpers from `testutil` instead of `assertEquals` to
+  handle platform-specific precision differences.
 
-**Foreign API export**: keep the common Kotlin API idiomatic first, then add platform-specific shims
-only where export shape needs help. Hide Kotlin-only helpers from foreign APIs with
-`@HiddenFromObjC`/similar annotations, prefer native platform types in shims, and avoid leaking
-awkward Kotlin implementation types like `ByteArray`, internal wrappers, or singleton utilities. Do
-not add redundant export annotations; use `@ObjCName` only when it changes a generated name or
-argument label.
+### Objective-C and Swift export
+
+- Prefer Kotlin APIs that are idiomatic and also export predictably.
+- Avoid Kotlin idioms that create unusable foreign APIs, but do not make Kotlin awkward just to
+  perfect a foreign-language call site.
+- Hide Kotlin-only helpers from foreign APIs with `@HiddenFromObjC`/similar annotations.
