@@ -127,8 +127,8 @@ final class SwiftDocsTest: XCTestCase {
         XCTAssertEqual(TileReadCoalescing(maxCoalescedBytes: 0, maxGapBytes: 0).maxCoalescedBytes, 0)
         let coalescing =
             TileReadCoalescing()
-                .withMaxGapBytes(64)
-                .withMaxCoalescedBytes(2048)
+                .with(maxGapBytes: 64)
+                .with(maxCoalescedBytes: 2048)
         let maxGapBytes: UInt64 = coalescing.maxGapBytes
         XCTAssertEqual(coalescing.maxCoalescedBytes, 2048)
         XCTAssertEqual(maxGapBytes, 64)
@@ -173,12 +173,12 @@ final class SwiftDocsTest: XCTestCase {
         let limitedOptions = options.with(limits: ArchiveLimits())
         let combinedOptions = options.with(validationMode: ValidationMode.lenient, limits: ArchiveLimits())
         let metadataLimitedOptions =
-            options.with(limits: ArchiveLimits().withMaxMetadataBytes(1024))
+            options.with(limits: ArchiveLimits().with(maxMetadataBytes: 1024))
         let directoryLimitedOptions =
             options.with(
                 limits: ArchiveLimits()
-                    .withMaxDirectoryEntries(16)
-                    .withMaxDirectoryDecompressedBytes(2048)
+                    .with(maxDirectoryEntries: 16)
+                    .with(maxDirectoryDecompressedBytes: 2048)
             )
         XCTAssertTrue(lenientOptions.validationMode == ValidationMode.lenient)
         XCTAssertEqual(limitedOptions.limits.maxInitialReadBytes, 16 * 1024)

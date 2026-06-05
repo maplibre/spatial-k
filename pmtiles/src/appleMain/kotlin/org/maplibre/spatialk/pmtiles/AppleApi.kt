@@ -68,8 +68,9 @@ public fun ArchiveOpenOptions.with(
         .build()
 
 /** Returns a copy of these limits with [maxInitialReadBytes]. */
+@ObjCName(swiftName = "with")
 public fun ArchiveLimits.withMaxInitialReadBytes(
-    @ObjCName(swiftName = "_") maxInitialReadBytes: ULong
+    @ObjCName(swiftName = "maxInitialReadBytes") maxInitialReadBytes: ULong
 ): ArchiveLimits =
     toBuilder()
         .apply {
@@ -78,8 +79,9 @@ public fun ArchiveLimits.withMaxInitialReadBytes(
         .build()
 
 /** Returns a copy of these limits with [maxMetadataBytes]. */
+@ObjCName(swiftName = "with")
 public fun ArchiveLimits.withMaxMetadataBytes(
-    @ObjCName(swiftName = "_") maxMetadataBytes: ULong
+    @ObjCName(swiftName = "maxMetadataBytes") maxMetadataBytes: ULong
 ): ArchiveLimits =
     toBuilder()
         .apply {
@@ -88,8 +90,9 @@ public fun ArchiveLimits.withMaxMetadataBytes(
         .build()
 
 /** Returns a copy of these limits with [maxDirectoryCompressedBytes]. */
+@ObjCName(swiftName = "with")
 public fun ArchiveLimits.withMaxDirectoryCompressedBytes(
-    @ObjCName(swiftName = "_") maxDirectoryCompressedBytes: ULong
+    @ObjCName(swiftName = "maxDirectoryCompressedBytes") maxDirectoryCompressedBytes: ULong
 ): ArchiveLimits =
     toBuilder()
         .apply {
@@ -98,8 +101,9 @@ public fun ArchiveLimits.withMaxDirectoryCompressedBytes(
         .build()
 
 /** Returns a copy of these limits with [maxDirectoryDecompressedBytes]. */
+@ObjCName(swiftName = "with")
 public fun ArchiveLimits.withMaxDirectoryDecompressedBytes(
-    @ObjCName(swiftName = "_") maxDirectoryDecompressedBytes: ULong
+    @ObjCName(swiftName = "maxDirectoryDecompressedBytes") maxDirectoryDecompressedBytes: ULong
 ): ArchiveLimits =
     toBuilder()
         .apply {
@@ -108,8 +112,9 @@ public fun ArchiveLimits.withMaxDirectoryDecompressedBytes(
         .build()
 
 /** Returns a copy of these limits with [maxDirectoryEntries]. */
+@ObjCName(swiftName = "with")
 public fun ArchiveLimits.withMaxDirectoryEntries(
-    @ObjCName(swiftName = "_") maxDirectoryEntries: Int
+    @ObjCName(swiftName = "maxDirectoryEntries") maxDirectoryEntries: Int
 ): ArchiveLimits =
     toBuilder()
         .apply {
@@ -118,8 +123,9 @@ public fun ArchiveLimits.withMaxDirectoryEntries(
         .build()
 
 /** Returns a copy of these limits with [maxTileCompressedBytes]. */
+@ObjCName(swiftName = "with")
 public fun ArchiveLimits.withMaxTileCompressedBytes(
-    @ObjCName(swiftName = "_") maxTileCompressedBytes: ULong
+    @ObjCName(swiftName = "maxTileCompressedBytes") maxTileCompressedBytes: ULong
 ): ArchiveLimits =
     toBuilder()
         .apply {
@@ -128,8 +134,9 @@ public fun ArchiveLimits.withMaxTileCompressedBytes(
         .build()
 
 /** Returns a copy of these limits with [maxTileDecompressedBytes]. */
+@ObjCName(swiftName = "with")
 public fun ArchiveLimits.withMaxTileDecompressedBytes(
-    @ObjCName(swiftName = "_") maxTileDecompressedBytes: ULong
+    @ObjCName(swiftName = "maxTileDecompressedBytes") maxTileDecompressedBytes: ULong
 ): ArchiveLimits =
     toBuilder()
         .apply {
@@ -138,8 +145,9 @@ public fun ArchiveLimits.withMaxTileDecompressedBytes(
         .build()
 
 /** Returns a copy of these limits with [maxDirectoryDepth]. */
+@ObjCName(swiftName = "with")
 public fun ArchiveLimits.withMaxDirectoryDepth(
-    @ObjCName(swiftName = "_") maxDirectoryDepth: Int
+    @ObjCName(swiftName = "maxDirectoryDepth") maxDirectoryDepth: Int
 ): ArchiveLimits =
     toBuilder()
         .apply {
@@ -148,8 +156,9 @@ public fun ArchiveLimits.withMaxDirectoryDepth(
         .build()
 
 /** Returns a copy of these limits with [maxLeafDirectoryCacheEntries]. */
+@ObjCName(swiftName = "with")
 public fun ArchiveLimits.withMaxLeafDirectoryCacheEntries(
-    @ObjCName(swiftName = "_") maxLeafDirectoryCacheEntries: Int
+    @ObjCName(swiftName = "maxLeafDirectoryCacheEntries") maxLeafDirectoryCacheEntries: Int
 ): ArchiveLimits =
     toBuilder()
         .apply {
@@ -158,8 +167,9 @@ public fun ArchiveLimits.withMaxLeafDirectoryCacheEntries(
         .build()
 
 /** Returns a copy of these limits with [maxVarintBytes]. */
+@ObjCName(swiftName = "with")
 public fun ArchiveLimits.withMaxVarintBytes(
-    @ObjCName(swiftName = "_") maxVarintBytes: Int
+    @ObjCName(swiftName = "maxVarintBytes") maxVarintBytes: Int
 ): ArchiveLimits =
     toBuilder()
         .apply {
@@ -168,13 +178,15 @@ public fun ArchiveLimits.withMaxVarintBytes(
         .build()
 
 /** Returns a copy of this coalescing configuration with [maxCoalescedBytes]. */
+@ObjCName(swiftName = "with")
 public fun TileReadCoalescing.withMaxCoalescedBytes(
-    @ObjCName(swiftName = "_") maxCoalescedBytes: ULong
+    @ObjCName(swiftName = "maxCoalescedBytes") maxCoalescedBytes: ULong
 ): TileReadCoalescing = copy(maxCoalescedBytes = maxCoalescedBytes)
 
 /** Returns a copy of this coalescing configuration with [maxGapBytes]. */
+@ObjCName(swiftName = "with")
 public fun TileReadCoalescing.withMaxGapBytes(
-    @ObjCName(swiftName = "_") maxGapBytes: ULong
+    @ObjCName(swiftName = "maxGapBytes") maxGapBytes: ULong
 ): TileReadCoalescing = copy(maxGapBytes = maxGapBytes)
 
 /** Returns a copy of these options with [decompressor] registered for [compression]. */
