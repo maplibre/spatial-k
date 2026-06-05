@@ -110,7 +110,7 @@ class FixtureConformanceTest {
         val archive =
             PmTiles.open(
                 TestByteRangeSource(readFixture(path)),
-                options = ArchiveOpenOptions(validationMode = ValidationMode.Lenient),
+                options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
 
         assertEquals(PmTilesErrorCode.InvalidDirectory, strictError.code)

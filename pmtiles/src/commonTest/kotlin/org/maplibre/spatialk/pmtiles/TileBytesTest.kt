@@ -215,8 +215,10 @@ class TileBytesTest {
             PmTiles.open(
                 source,
                 options =
-                    ArchiveOpenOptions().withDecompressor(CompressionCodes.Brotli) { bytes, _ ->
-                        bytes.map { (it.toInt() + 10).toByte() }.toByteArray()
+                    ArchiveOpenOptions.build {
+                        decompressor(CompressionCodes.Brotli) { bytes, _ ->
+                            bytes.map { (it.toInt() + 10).toByte() }.toByteArray()
+                        }
                     },
             )
         source.reads.clear()
@@ -308,14 +310,12 @@ class TileBytesTest {
                     )
                 ),
                 options =
-                    ArchiveOpenOptions()
-                        .withDecompressor(
-                            CompressionCodes.Brotli,
-                            Decompressor { bytes, _ ->
-                                assertContentEquals(compressedBytes, bytes)
-                                decompressedBytes
-                            },
-                        ),
+                    ArchiveOpenOptions.build {
+                        decompressor(CompressionCodes.Brotli) { bytes, _ ->
+                            assertContentEquals(compressedBytes, bytes)
+                            decompressedBytes
+                        }
+                    },
             )
 
         val tile = archive.readDecompressedTile(0, 0, 0)
@@ -334,11 +334,11 @@ class TileBytesTest {
                 PmTiles.open(
                     TestByteRangeSource(buildSingleTileArchive(tileBytes = tileBytes)),
                     options =
-                        ArchiveOpenOptions(
-                            limits =
-                                ArchiveLimits()
-                                    .copy(maxTileCompressedBytes = (tileBytes.size - 1).toULong())
-                        ),
+                        ArchiveOpenOptions.build {
+                            limits = ArchiveLimits.build {
+                                maxTileCompressedBytes = (tileBytes.size - 1).toULong()
+                            }
+                        },
                 )
             }
 
@@ -358,14 +358,11 @@ class TileBytesTest {
                             )
                         ),
                         options =
-                            ArchiveOpenOptions(
-                                limits =
-                                    ArchiveLimits()
-                                        .copy(
-                                            maxTileDecompressedBytes =
-                                                (helloBytes.size - 1).toULong()
-                                        )
-                            ),
+                            ArchiveOpenOptions.build {
+                                limits = ArchiveLimits.build {
+                                    maxTileDecompressedBytes = (helloBytes.size - 1).toULong()
+                                }
+                            },
                     )
                 archive.readDecompressedTile(0, 0, 0)
             }

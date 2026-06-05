@@ -41,79 +41,131 @@ public interface DataDecompressor {
 
 /** Returns a copy of these options with [validationMode]. */
 public fun ArchiveOpenOptions.with(validationMode: ValidationMode): ArchiveOpenOptions =
-    copy(validationMode = validationMode)
+    toBuilder()
+        .apply {
+            this.validationMode = validationMode
+        }
+        .build()
 
 /** Returns a copy of these options with [limits]. */
 public fun ArchiveOpenOptions.with(limits: ArchiveLimits): ArchiveOpenOptions =
-    copy(limits = limits)
+    toBuilder()
+        .apply {
+            this.limits = limits
+        }
+        .build()
 
 /** Returns a copy of these options with [validationMode] and [limits]. */
 public fun ArchiveOpenOptions.with(
     validationMode: ValidationMode,
     limits: ArchiveLimits,
-): ArchiveOpenOptions = copy(validationMode = validationMode, limits = limits)
+): ArchiveOpenOptions =
+    toBuilder()
+        .apply {
+            this.validationMode = validationMode
+            this.limits = limits
+        }
+        .build()
 
 /** Returns a copy of these limits with [maxInitialReadBytes]. */
 public fun ArchiveLimits.withMaxInitialReadBytes(
     @ObjCName(swiftName = "_") maxInitialReadBytes: ULong
-): ArchiveLimits = copy(maxInitialReadBytes = maxInitialReadBytes)
+): ArchiveLimits =
+    toBuilder()
+        .apply {
+            this.maxInitialReadBytes = maxInitialReadBytes
+        }
+        .build()
 
 /** Returns a copy of these limits with [maxMetadataBytes]. */
 public fun ArchiveLimits.withMaxMetadataBytes(
     @ObjCName(swiftName = "_") maxMetadataBytes: ULong
-): ArchiveLimits = copy(maxMetadataBytes = maxMetadataBytes)
+): ArchiveLimits =
+    toBuilder()
+        .apply {
+            this.maxMetadataBytes = maxMetadataBytes
+        }
+        .build()
 
 /** Returns a copy of these limits with [maxDirectoryCompressedBytes]. */
 public fun ArchiveLimits.withMaxDirectoryCompressedBytes(
     @ObjCName(swiftName = "_") maxDirectoryCompressedBytes: ULong
-): ArchiveLimits = copy(maxDirectoryCompressedBytes = maxDirectoryCompressedBytes)
+): ArchiveLimits =
+    toBuilder()
+        .apply {
+            this.maxDirectoryCompressedBytes = maxDirectoryCompressedBytes
+        }
+        .build()
 
 /** Returns a copy of these limits with [maxDirectoryDecompressedBytes]. */
 public fun ArchiveLimits.withMaxDirectoryDecompressedBytes(
     @ObjCName(swiftName = "_") maxDirectoryDecompressedBytes: ULong
 ): ArchiveLimits =
-    copy(
-        maxDirectoryDecompressedBytes = maxDirectoryDecompressedBytes,
-        maxDirectoryEntries =
-            if (
-                minEncodedDirectoryBytes(maxDirectoryEntries).toULong() <=
-                    maxDirectoryDecompressedBytes
-            ) {
-                maxDirectoryEntries
-            } else {
-                maxDirectoryDecompressedBytes.defaultDirectoryEntryLimit()
-            },
-    )
+    toBuilder()
+        .apply {
+            this.maxDirectoryDecompressedBytes = maxDirectoryDecompressedBytes
+        }
+        .build()
 
 /** Returns a copy of these limits with [maxDirectoryEntries]. */
 public fun ArchiveLimits.withMaxDirectoryEntries(
     @ObjCName(swiftName = "_") maxDirectoryEntries: Int
-): ArchiveLimits = copy(maxDirectoryEntries = maxDirectoryEntries)
+): ArchiveLimits =
+    toBuilder()
+        .apply {
+            this.maxDirectoryEntries = maxDirectoryEntries
+        }
+        .build()
 
 /** Returns a copy of these limits with [maxTileCompressedBytes]. */
 public fun ArchiveLimits.withMaxTileCompressedBytes(
     @ObjCName(swiftName = "_") maxTileCompressedBytes: ULong
-): ArchiveLimits = copy(maxTileCompressedBytes = maxTileCompressedBytes)
+): ArchiveLimits =
+    toBuilder()
+        .apply {
+            this.maxTileCompressedBytes = maxTileCompressedBytes
+        }
+        .build()
 
 /** Returns a copy of these limits with [maxTileDecompressedBytes]. */
 public fun ArchiveLimits.withMaxTileDecompressedBytes(
     @ObjCName(swiftName = "_") maxTileDecompressedBytes: ULong
-): ArchiveLimits = copy(maxTileDecompressedBytes = maxTileDecompressedBytes)
+): ArchiveLimits =
+    toBuilder()
+        .apply {
+            this.maxTileDecompressedBytes = maxTileDecompressedBytes
+        }
+        .build()
 
 /** Returns a copy of these limits with [maxDirectoryDepth]. */
 public fun ArchiveLimits.withMaxDirectoryDepth(
     @ObjCName(swiftName = "_") maxDirectoryDepth: Int
-): ArchiveLimits = copy(maxDirectoryDepth = maxDirectoryDepth)
+): ArchiveLimits =
+    toBuilder()
+        .apply {
+            this.maxDirectoryDepth = maxDirectoryDepth
+        }
+        .build()
 
 /** Returns a copy of these limits with [maxLeafDirectoryCacheEntries]. */
 public fun ArchiveLimits.withMaxLeafDirectoryCacheEntries(
     @ObjCName(swiftName = "_") maxLeafDirectoryCacheEntries: Int
-): ArchiveLimits = copy(maxLeafDirectoryCacheEntries = maxLeafDirectoryCacheEntries)
+): ArchiveLimits =
+    toBuilder()
+        .apply {
+            this.maxLeafDirectoryCacheEntries = maxLeafDirectoryCacheEntries
+        }
+        .build()
 
 /** Returns a copy of these limits with [maxVarintBytes]. */
 public fun ArchiveLimits.withMaxVarintBytes(
     @ObjCName(swiftName = "_") maxVarintBytes: Int
-): ArchiveLimits = copy(maxVarintBytes = maxVarintBytes)
+): ArchiveLimits =
+    toBuilder()
+        .apply {
+            this.maxVarintBytes = maxVarintBytes
+        }
+        .build()
 
 /** Returns a copy of this coalescing configuration with [maxCoalescedBytes]. */
 public fun TileReadCoalescing.withMaxCoalescedBytes(
@@ -130,12 +182,14 @@ public fun ArchiveOpenOptions.withDecompressor(
     compression: CompressionCode,
     decompressor: DataDecompressor,
 ): ArchiveOpenOptions =
-    withDecompressor(
-        compression,
-        Decompressor { bytes, limits ->
-            decompressor.decompress(bytes.toNSData(), limits).toByteArray()
-        },
-    )
+    toBuilder()
+        .decompressor(
+            compression,
+            Decompressor { bytes, limits ->
+                decompressor.decompress(bytes.toNSData(), limits).toByteArray()
+            },
+        )
+        .build()
 
 @Throws(PmTilesException::class, CancellationException::class)
 public suspend fun PmTiles.open(source: ByteRangeDataSource): PmTilesArchive =

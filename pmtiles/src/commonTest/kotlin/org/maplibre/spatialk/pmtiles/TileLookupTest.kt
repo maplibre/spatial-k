@@ -155,7 +155,7 @@ class TileLookupTest {
                         leafBytes = leafSection,
                     )
                 ),
-                options = ArchiveOpenOptions(validationMode = ValidationMode.Lenient),
+                options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
         val coord = TileIds.toZxy(2)
 
@@ -251,9 +251,9 @@ class TileLookupTest {
                             )
                         ),
                         options =
-                            ArchiveOpenOptions(
-                                limits = ArchiveLimits().copy(maxDirectoryDepth = 0)
-                            ),
+                            ArchiveOpenOptions.build {
+                                limits = ArchiveLimits.build { maxDirectoryDepth = 0 }
+                            },
                     )
                 val coord = TileIds.toZxy(2)
                 archive.findTileRange(coord.z, coord.x, coord.y)
@@ -294,7 +294,8 @@ class TileLookupTest {
                                 leafBytes = recursiveLeafBytes,
                             )
                         ),
-                        options = ArchiveOpenOptions(validationMode = ValidationMode.Lenient),
+                        options =
+                            ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
                     )
                 archive.findTileRange(0, 0, 0)
             }

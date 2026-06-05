@@ -37,11 +37,11 @@ class RobustnessTest {
                     PmTiles.open(
                         TestByteRangeSource(bytes),
                         options =
-                            ArchiveOpenOptions(
-                                limits =
-                                    ArchiveLimits()
-                                        .copy(maxMetadataBytes = (metadataBytes.size - 1).toULong())
-                            ),
+                            ArchiveOpenOptions.build {
+                                limits = ArchiveLimits.build {
+                                    maxMetadataBytes = (metadataBytes.size - 1).toULong()
+                                }
+                            },
                     )
                 archive.rawMetadataJson()
             }
@@ -64,14 +64,12 @@ class RobustnessTest {
                         )
                     ),
                     options =
-                        ArchiveOpenOptions(
-                            limits =
-                                ArchiveLimits()
-                                    .copy(
-                                        maxDirectoryCompressedBytes =
-                                            (MINIMAL_ROOT_DIRECTORY_BYTES.size - 1).toULong()
-                                    )
-                        ),
+                        ArchiveOpenOptions.build {
+                            limits = ArchiveLimits.build {
+                                maxDirectoryCompressedBytes =
+                                    (MINIMAL_ROOT_DIRECTORY_BYTES.size - 1).toULong()
+                            }
+                        },
                 )
             }
 
@@ -87,13 +85,11 @@ class RobustnessTest {
                     PmTiles.open(
                         TestByteRangeSource(buildSingleTileArchive(tileBytes)),
                         options =
-                            ArchiveOpenOptions(
-                                limits =
-                                    ArchiveLimits()
-                                        .copy(
-                                            maxTileCompressedBytes = (tileBytes.size - 1).toULong()
-                                        )
-                            ),
+                            ArchiveOpenOptions.build {
+                                limits = ArchiveLimits.build {
+                                    maxTileCompressedBytes = (tileBytes.size - 1).toULong()
+                                }
+                            },
                     )
                 archive.readStoredTile(0, 0, 0)
             }

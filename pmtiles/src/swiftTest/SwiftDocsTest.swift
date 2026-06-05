@@ -300,7 +300,7 @@ final class SwiftDocsTest: XCTestCase {
         let archive =
             try await PmTiles.shared.open(
                 source: source,
-                options: ArchiveOpenOptions(validationMode: ValidationMode.lenient)
+                options: ArchiveOpenOptions().with(validationMode: ValidationMode.lenient)
             )
         defer { archive.close() }
 
@@ -309,7 +309,7 @@ final class SwiftDocsTest: XCTestCase {
 
         XCTAssertTrue(warnings.contains { $0.code == ArchiveWarningCode.emptyRootDirectory })
         XCTAssertTrue(ArchiveOpenOptions().validationMode == ValidationMode.strict)
-        XCTAssertTrue(ArchiveOpenOptions(validationMode: ValidationMode.lenient).validationMode == ValidationMode.lenient)
+        XCTAssertTrue(ArchiveOpenOptions().with(validationMode: ValidationMode.lenient).validationMode == ValidationMode.lenient)
     }
 
     func testThrowsSwiftError() async throws {

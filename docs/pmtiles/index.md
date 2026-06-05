@@ -91,7 +91,7 @@ Use `readStoredTiles` to read a batch of tile payloads with coalesced source ran
 ## Decompressors
 
 Spatial-K includes platform defaults for uncompressed data and gzip where available. Register other
-compression codecs, such as brotli or zstd, with `ArchiveOpenOptions.withDecompressor`.
+compression codecs, such as brotli or zstd, through `ArchiveOpenOptions`.
 
 === "Kotlin"
 
@@ -107,8 +107,8 @@ compression codecs, such as brotli or zstd, with `ArchiveOpenOptions.withDecompr
 
 ## Validation
 
-Archives open in strict mode by default. `ArchiveOpenOptions.Lenient` preserves recoverable issues
-as warnings, which can be inspected after opening or after metadata and tile lookups.
+Archives open in strict mode by default. `ValidationMode.Lenient` preserves recoverable issues as
+warnings, which can be inspected after opening or after metadata and tile lookups.
 
 === "Kotlin"
 

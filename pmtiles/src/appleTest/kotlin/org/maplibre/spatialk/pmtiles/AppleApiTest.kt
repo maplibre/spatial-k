@@ -51,7 +51,7 @@ class AppleApiTest {
     }
 
     @Test
-    fun dataDecompressorDecodesTiles() = runSuspending {
+    fun customDecompressorDecodesTiles() = runSuspending {
         val compressedBytes = byteArrayOf(7, 8, 9)
         val decompressedBytes = byteArrayOf(10, 11, 12)
         val source =
@@ -61,24 +61,13 @@ class AppleApiTest {
                     tileCompression = CompressionCodes.Brotli.code,
                 )
             )
-        val options =
-            ArchiveOpenOptions()
-                .withDecompressor(
-                    CompressionCodes.Brotli,
-                    object : DataDecompressor {
-                        override suspend fun decompress(
-                            data: NSData,
-                            limits: DecompressionLimits,
-                        ): NSData {
-                            assertContentEquals(compressedBytes, data.toByteArray())
-                            assertEquals(
-                                ArchiveLimits().maxTileCompressedBytes,
-                                limits.maxCompressedBytes,
-                            )
-                            return decompressedBytes.toNSData()
-                        }
-                    },
-                )
+        val options = ArchiveOpenOptions.build {
+            decompressor(CompressionCodes.Brotli) { bytes, limits ->
+                assertContentEquals(compressedBytes, bytes)
+                assertEquals(ArchiveLimits().maxTileCompressedBytes, limits.maxCompressedBytes)
+                decompressedBytes
+            }
+        }
 
         val archive = PmTiles.open(source, options)
         val tile = archive.readDecompressedTile(0, 0, 0)

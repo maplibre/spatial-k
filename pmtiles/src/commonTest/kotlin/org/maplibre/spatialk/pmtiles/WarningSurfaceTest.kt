@@ -33,7 +33,7 @@ class WarningSurfaceTest {
                         metadataBytes = metadataBytes,
                     )
                 ),
-                options = ArchiveOpenOptions(validationMode = ValidationMode.Lenient),
+                options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
         val snapshot = archive.warnings
 

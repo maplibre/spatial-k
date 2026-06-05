@@ -73,8 +73,8 @@ class KotlinDocsTest {
         val source = loadPmTilesBytes().asByteRangeSource()
 
         // --8<-- [start:customDecompressor]
-        val options =
-            ArchiveOpenOptions().withDecompressor(CompressionCodes.Brotli) { bytes, limits ->
+        val options = ArchiveOpenOptions.build {
+            decompressor(CompressionCodes.Brotli) { bytes, limits ->
                 val decoded = decodeBrotli(bytes)
                 if (decoded.size.toULong() > limits.maxDecompressedBytes) {
                     throw PmTilesException(
@@ -84,6 +84,7 @@ class KotlinDocsTest {
                 }
                 decoded
             }
+        }
 
         PmTiles.open(source, options).use { archive ->
             val tile = archive.readDecompressedTile(z = 0, x = 0, y = 0)
@@ -96,8 +97,9 @@ class KotlinDocsTest {
         val source = loadPmTilesBytes().asByteRangeSource()
 
         // --8<-- [start:lenientWarnings]
-        PmTiles.open(source, ArchiveOpenOptions(validationMode = ValidationMode.Lenient)).use {
-            archive ->
+        val options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient }
+
+        PmTiles.open(source, options).use { archive ->
             val warnings = archive.warnings
         }
         // --8<-- [end:lenientWarnings]

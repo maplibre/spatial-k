@@ -18,16 +18,14 @@ class ArchiveOpenOptionsTest {
     }
 
     @Test
-    fun archiveLimitsCopyUpdatesSelectedFields() {
-        val limits =
-            ArchiveLimits()
-                .copy(
-                    maxMetadataBytes = 1024uL,
-                    maxDirectoryDecompressedBytes = 2048uL,
-                    maxDirectoryEntries = 2048 / 17,
-                    maxTileCompressedBytes = 4096uL,
-                    maxDirectoryDepth = 1,
-                )
+    fun archiveLimitsBuilderUpdatesSelectedFields() {
+        val limits = ArchiveLimits.build {
+            maxMetadataBytes = 1024uL
+            maxDirectoryDecompressedBytes = 2048uL
+            maxDirectoryEntries = 2048 / 17
+            maxTileCompressedBytes = 4096uL
+            maxDirectoryDepth = 1
+        }
 
         assertEquals(1024uL, limits.maxMetadataBytes)
         assertEquals(2048uL, limits.maxDirectoryDecompressedBytes)
@@ -38,52 +36,70 @@ class ArchiveOpenOptionsTest {
     }
 
     @Test
-    fun archiveLimitsCopyPreservesExplicitEntryLimit() {
-        val limits =
-            ArchiveLimits().copy(maxDirectoryEntries = 16, maxDirectoryDecompressedBytes = 2048uL)
+    fun archiveLimitsBuilderPreservesExplicitEntryLimit() {
+        val limits = ArchiveLimits.build {
+            maxDirectoryEntries = 16
+            maxDirectoryDecompressedBytes = 2048uL
+        }
 
         assertEquals(2048uL, limits.maxDirectoryDecompressedBytes)
         assertEquals(16, limits.maxDirectoryEntries)
     }
 
     @Test
-    fun copyUpdatesValidationAndLimits() {
-        val limits = ArchiveLimits().copy(maxTileCompressedBytes = 1uL)
+    fun builderUpdatesValidationAndLimits() {
+        val limits = ArchiveLimits.build { maxTileCompressedBytes = 1uL }
 
-        val validationOnly = ArchiveOpenOptions().copy(validationMode = ValidationMode.Lenient)
-        val limitsOnly = ArchiveOpenOptions().copy(limits = limits)
-        val combined =
-            ArchiveOpenOptions().copy(validationMode = ValidationMode.Lenient, limits = limits)
+        val validationOnly = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient }
+        val limitsOnly = ArchiveOpenOptions.build { this.limits = limits }
+        val combined = ArchiveOpenOptions.build {
+            validationMode = ValidationMode.Lenient
+            this.limits = limits
+        }
 
         assertEquals(ValidationMode.Lenient, validationOnly.validationMode)
-        assertEquals(ArchiveLimits(), validationOnly.limits)
+        assertEquals(ArchiveLimits().maxInitialReadBytes, validationOnly.limits.maxInitialReadBytes)
         assertEquals(ValidationMode.Strict, limitsOnly.validationMode)
-        assertEquals(limits, limitsOnly.limits)
+        assertEquals(1uL, limitsOnly.limits.maxTileCompressedBytes)
         assertEquals(ValidationMode.Lenient, combined.validationMode)
-        assertEquals(limits, combined.limits)
-        assertEquals(
-            ArchiveOpenOptions(validationMode = ValidationMode.Lenient, limits = limits),
-            combined,
-        )
+        assertEquals(1uL, combined.limits.maxTileCompressedBytes)
     }
 
     @Test
-    fun copyRemainsAvailableToKotlinCallers() {
-        val limits = ArchiveLimits().copy(maxTileCompressedBytes = 1uL)
-        val options =
-            ArchiveOpenOptions().copy(validationMode = ValidationMode.Lenient, limits = limits)
+    fun builderCreatesOptions() {
+        val limits = ArchiveLimits.build { maxTileCompressedBytes = 1uL }
+        val options = ArchiveOpenOptions.build {
+            validationMode = ValidationMode.Lenient
+            this.limits = limits
+        }
 
         assertEquals(ValidationMode.Lenient, options.validationMode)
-        assertEquals(limits, options.limits)
+        assertEquals(1uL, options.limits.maxTileCompressedBytes)
     }
 
     @Test
-    fun copyPreservesCustomDecompressors() {
+    fun builderRegistersCustomDecompressors() {
+        val options = ArchiveOpenOptions.build {
+            validationMode = ValidationMode.Lenient
+            decompressor(CompressionCodes.Brotli) { bytes, _ -> bytes }
+        }
+
+        assertEquals(ValidationMode.Lenient, options.validationMode)
+        assertTrue(CompressionCodes.Brotli in options.decompressors)
+    }
+
+    @Test
+    fun toBuilderStartsFromExistingOptions() {
         val options =
             ArchiveOpenOptions()
-                .withDecompressor(CompressionCodes.Brotli) { bytes, _ -> bytes }
-                .copy(validationMode = ValidationMode.Lenient)
+                .toBuilder()
+                .apply {
+                    validationMode = ValidationMode.Lenient
+                    decompressor(CompressionCodes.Brotli) { bytes, _ -> bytes }
+                }
+                .build()
 
+        assertEquals(ValidationMode.Lenient, options.validationMode)
         assertTrue(CompressionCodes.Brotli in options.decompressors)
     }
 }

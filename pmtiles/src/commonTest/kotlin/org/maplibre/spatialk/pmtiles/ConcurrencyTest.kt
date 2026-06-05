@@ -143,9 +143,9 @@ class ConcurrencyTest {
             PmTiles.open(
                 source,
                 options =
-                    ArchiveOpenOptions(
-                        limits = ArchiveLimits().copy(maxLeafDirectoryCacheEntries = 1)
-                    ),
+                    ArchiveOpenOptions.build {
+                        limits = ArchiveLimits.build { maxLeafDirectoryCacheEntries = 1 }
+                    },
             )
         val firstCoord = TileIds.toZxy(firstTileId)
         val secondCoord = TileIds.toZxy(secondTileId)

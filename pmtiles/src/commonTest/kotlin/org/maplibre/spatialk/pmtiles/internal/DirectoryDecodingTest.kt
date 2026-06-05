@@ -81,7 +81,7 @@ class DirectoryDecodingTest {
                         DirectoryEntry(tileId = 0, offset = 0uL, length = 1, runLength = 1)
                     ),
                     header(),
-                    limits = defaultLimits.copy(maxDirectoryEntries = 0),
+                    limits = defaultLimits.toBuilder().apply { maxDirectoryEntries = 0 }.build(),
                 )
             }
         assertEquals(PmTilesErrorCode.LimitExceeded, tooManyEntries.code)
@@ -93,7 +93,8 @@ class DirectoryDecodingTest {
                         DirectoryEntry(tileId = 0, offset = 0uL, length = 2, runLength = 1)
                     ),
                     header(tileDataLength = 2uL),
-                    limits = defaultLimits.copy(maxTileCompressedBytes = 1uL),
+                    limits =
+                        defaultLimits.toBuilder().apply { maxTileCompressedBytes = 1uL }.build(),
                 )
             }
         assertEquals(PmTilesErrorCode.LimitExceeded, tooLargeTile.code)

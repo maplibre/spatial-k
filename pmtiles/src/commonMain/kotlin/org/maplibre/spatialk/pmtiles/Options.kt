@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package org.maplibre.spatialk.pmtiles
 
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -21,16 +23,15 @@ public enum class ValidationMode {
  * @property maxDirectoryCompressedBytes Maximum compressed directory bytes.
  * @property maxDirectoryDecompressedBytes Maximum decompressed directory bytes.
  * @property maxDirectoryEntries Maximum entries in one decoded directory. Defaults to a
- *   conservative entry count derived from [maxDirectoryDecompressedBytes]. When using [copy] to
- *   change [maxDirectoryDecompressedBytes], set this field explicitly if the existing entry limit
- *   no longer fits.
+ *   conservative entry count derived from [maxDirectoryDecompressedBytes].
  * @property maxTileCompressedBytes Maximum compressed tile payload bytes.
  * @property maxTileDecompressedBytes Maximum decompressed tile payload bytes.
  * @property maxDirectoryDepth Maximum leaf-directory traversal depth.
  * @property maxLeafDirectoryCacheEntries Maximum leaf directories cached per archive.
  * @property maxVarintBytes Maximum bytes in a decoded varint.
  */
-public data class ArchiveLimits(
+public class ArchiveLimits
+private constructor(
     public val maxInitialReadBytes: ULong = DEFAULT_INITIAL_READ_BYTES,
     public val maxMetadataBytes: ULong = DEFAULT_METADATA_BYTES,
     public val maxDirectoryCompressedBytes: ULong = DEFAULT_DIRECTORY_BYTES,
@@ -73,6 +74,99 @@ public data class ArchiveLimits(
         }
         require(maxVarintBytes > 0) { "maxVarintBytes must be positive." }
     }
+
+    /** Returns a mutable builder initialized from these limits. */
+    @HiddenFromObjC public fun toBuilder(): Builder = Builder(this)
+
+    /** Mutable Kotlin builder for [ArchiveLimits]. */
+    @HiddenFromObjC
+    public class Builder public constructor() {
+        /** Maximum bytes read during archive open. */
+        public var maxInitialReadBytes: ULong = DEFAULT_INITIAL_READ_BYTES
+
+        /** Maximum metadata payload bytes. */
+        public var maxMetadataBytes: ULong = DEFAULT_METADATA_BYTES
+
+        /** Maximum compressed directory bytes. */
+        public var maxDirectoryCompressedBytes: ULong = DEFAULT_DIRECTORY_BYTES
+
+        /** Maximum decompressed directory bytes. */
+        public var maxDirectoryDecompressedBytes: ULong = DEFAULT_DIRECTORY_BYTES
+            set(value) {
+                field = value
+                if (
+                    !maxDirectoryEntriesWasExplicit ||
+                        minEncodedDirectoryBytes(maxDirectoryEntries).toULong() > value
+                ) {
+                    maxDirectoryEntriesBacking = value.defaultDirectoryEntryLimit()
+                    maxDirectoryEntriesWasExplicit = false
+                }
+            }
+
+        private var maxDirectoryEntriesBacking: Int =
+            DEFAULT_DIRECTORY_BYTES.defaultDirectoryEntryLimit()
+        private var maxDirectoryEntriesWasExplicit: Boolean = false
+
+        /** Maximum entries in one decoded directory. */
+        public var maxDirectoryEntries: Int
+            get() = maxDirectoryEntriesBacking
+            set(value) {
+                maxDirectoryEntriesBacking = value
+                maxDirectoryEntriesWasExplicit = true
+            }
+
+        /** Maximum compressed tile payload bytes. */
+        public var maxTileCompressedBytes: ULong = DEFAULT_TILE_BYTES
+
+        /** Maximum decompressed tile payload bytes. */
+        public var maxTileDecompressedBytes: ULong = DEFAULT_TILE_BYTES
+
+        /** Maximum leaf-directory traversal depth. */
+        public var maxDirectoryDepth: Int = 3
+
+        /** Maximum leaf directories cached per archive. */
+        public var maxLeafDirectoryCacheEntries: Int = 128
+
+        /** Maximum bytes in a decoded varint. */
+        public var maxVarintBytes: Int = 10
+
+        internal constructor(limits: ArchiveLimits) : this() {
+            maxInitialReadBytes = limits.maxInitialReadBytes
+            maxMetadataBytes = limits.maxMetadataBytes
+            maxDirectoryCompressedBytes = limits.maxDirectoryCompressedBytes
+            maxDirectoryDecompressedBytes = limits.maxDirectoryDecompressedBytes
+            maxDirectoryEntriesBacking = limits.maxDirectoryEntries
+            maxDirectoryEntriesWasExplicit = true
+            maxTileCompressedBytes = limits.maxTileCompressedBytes
+            maxTileDecompressedBytes = limits.maxTileDecompressedBytes
+            maxDirectoryDepth = limits.maxDirectoryDepth
+            maxLeafDirectoryCacheEntries = limits.maxLeafDirectoryCacheEntries
+            maxVarintBytes = limits.maxVarintBytes
+        }
+
+        /** Builds immutable limits from this builder. */
+        public fun build(): ArchiveLimits =
+            ArchiveLimits(
+                maxInitialReadBytes = maxInitialReadBytes,
+                maxMetadataBytes = maxMetadataBytes,
+                maxDirectoryCompressedBytes = maxDirectoryCompressedBytes,
+                maxDirectoryDecompressedBytes = maxDirectoryDecompressedBytes,
+                maxDirectoryEntries = maxDirectoryEntries,
+                maxTileCompressedBytes = maxTileCompressedBytes,
+                maxTileDecompressedBytes = maxTileDecompressedBytes,
+                maxDirectoryDepth = maxDirectoryDepth,
+                maxLeafDirectoryCacheEntries = maxLeafDirectoryCacheEntries,
+                maxVarintBytes = maxVarintBytes,
+            )
+    }
+
+    /** Factory for Kotlin DSL construction. */
+    public companion object {
+        /** Builds [ArchiveLimits] with a Kotlin DSL. */
+        @HiddenFromObjC
+        public fun build(configure: Builder.() -> Unit): ArchiveLimits =
+            Builder().apply(configure).build()
+    }
 }
 
 /**
@@ -105,71 +199,51 @@ private constructor(
         this(
             validationMode = ValidationMode.Strict,
             limits = ArchiveLimits(),
+            decompressors = emptyMap(),
         )
 
-    public constructor(
-        validationMode: ValidationMode
-    ) : this(
-        validationMode = validationMode,
-        limits = ArchiveLimits(),
-    )
+    /** Returns a mutable builder initialized from these options. */
+    @HiddenFromObjC public fun toBuilder(): Builder = Builder(this)
 
-    public constructor(
-        limits: ArchiveLimits
-    ) : this(
-        validationMode = ValidationMode.Strict,
-        limits = limits,
-    )
-
-    public constructor(
-        validationMode: ValidationMode = ValidationMode.Strict,
-        limits: ArchiveLimits = ArchiveLimits(),
-    ) : this(
-        validationMode = validationMode,
-        limits = limits,
-        decompressors = emptyMap(),
-    )
-
-    /** Returns a copy of these options with [validationMode] and [limits]. */
-    @OptIn(ExperimentalObjCRefinement::class)
+    /** Mutable Kotlin builder for [ArchiveOpenOptions]. */
     @HiddenFromObjC
-    public fun copy(
-        validationMode: ValidationMode = this.validationMode,
-        limits: ArchiveLimits = this.limits,
-    ): ArchiveOpenOptions =
-        ArchiveOpenOptions(
-            validationMode = validationMode,
-            limits = limits,
-            decompressors = decompressors,
-        )
+    public class Builder public constructor() {
+        /** Validation behavior for archive parsing and traversal. */
+        public var validationMode: ValidationMode = ValidationMode.Strict
 
-    /** Returns a copy of these options with [decompressor] registered for [compression]. */
-    @OptIn(ExperimentalObjCRefinement::class)
-    @HiddenFromObjC
-    public fun withDecompressor(
-        compression: CompressionCode,
-        decompressor: Decompressor,
-    ): ArchiveOpenOptions =
-        ArchiveOpenOptions(
-            validationMode = validationMode,
-            limits = limits,
-            decompressors = decompressors + (compression to decompressor),
-        )
+        /** Operational read limits. */
+        public var limits: ArchiveLimits = ArchiveLimits()
+        private val decompressors: MutableMap<CompressionCode, Decompressor> = mutableMapOf()
 
-    override fun toString(): String =
-        "ArchiveOpenOptions(validationMode=$validationMode, limits=$limits, decompressors=$decompressors)"
+        internal constructor(options: ArchiveOpenOptions) : this() {
+            validationMode = options.validationMode
+            limits = options.limits
+            decompressors += options.decompressors
+        }
 
-    override fun equals(other: Any?): Boolean =
-        other is ArchiveOpenOptions &&
-            validationMode == other.validationMode &&
-            limits == other.limits &&
-            decompressors == other.decompressors
+        /** Registers [decompressor] for [compression]. */
+        public fun decompressor(
+            compression: CompressionCode,
+            decompressor: Decompressor,
+        ): Builder = apply {
+            decompressors[compression] = decompressor
+        }
 
-    override fun hashCode(): Int {
-        var result = validationMode.hashCode()
-        result = 31 * result + limits.hashCode()
-        result = 31 * result + decompressors.hashCode()
-        return result
+        /** Builds immutable options from this builder. */
+        public fun build(): ArchiveOpenOptions =
+            ArchiveOpenOptions(
+                validationMode = validationMode,
+                limits = limits,
+                decompressors = decompressors.toMap(),
+            )
+    }
+
+    /** Factory for Kotlin DSL construction. */
+    public companion object {
+        /** Builds [ArchiveOpenOptions] with a Kotlin DSL. */
+        @HiddenFromObjC
+        public fun build(configure: Builder.() -> Unit): ArchiveOpenOptions =
+            Builder().apply(configure).build()
     }
 }
 

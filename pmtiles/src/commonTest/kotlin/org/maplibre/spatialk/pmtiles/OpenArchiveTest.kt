@@ -189,11 +189,9 @@ class OpenArchiveTest {
             PmTiles.open(
                 TestByteRangeSource(buildArchive(fields)),
                 options =
-                    ArchiveOpenOptions()
-                        .withDecompressor(
-                            CompressionCodes.Brotli,
-                            Decompressor { bytes, _ -> bytes },
-                        ),
+                    ArchiveOpenOptions.build {
+                        decompressor(CompressionCodes.Brotli) { bytes, _ -> bytes }
+                    },
             )
 
         assertEquals(CompressionCodes.Brotli, archive.internalCompression)
@@ -220,7 +218,7 @@ class OpenArchiveTest {
         val archive =
             PmTiles.open(
                 TestByteRangeSource(archiveBytes),
-                options = ArchiveOpenOptions(validationMode = ValidationMode.Lenient),
+                options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
 
         assertEquals(PmTilesErrorCode.InvalidDirectory, strictError.code)

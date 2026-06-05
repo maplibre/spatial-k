@@ -74,7 +74,7 @@ class MetadataTest {
         val archive =
             PmTiles.open(
                 TestByteRangeSource(buildMetadataArchive("[]".encodeToByteArray())),
-                options = ArchiveOpenOptions(validationMode = ValidationMode.Lenient),
+                options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
 
         val metadata = archive.metadata()
@@ -91,7 +91,7 @@ class MetadataTest {
                 TestByteRangeSource(
                     buildMetadataArchive("""{"name":1,"description":"ok"}""".encodeToByteArray())
                 ),
-                options = ArchiveOpenOptions(validationMode = ValidationMode.Lenient),
+                options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
 
         val metadata = archive.metadata()
@@ -120,7 +120,7 @@ class MetadataTest {
                         tileType = TileTypeCodes.Mvt,
                     )
                 ),
-                options = ArchiveOpenOptions(validationMode = ValidationMode.Lenient),
+                options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
 
         val metadata = archive.metadata()
