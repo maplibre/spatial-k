@@ -4,9 +4,6 @@ import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.DecompressionLimits
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 
-// It's a suspend fun only because CompressionStreams on web requires it
-internal expect suspend fun decodeGzip(bytes: ByteString, limits: DecompressionLimits): ByteString
-
 internal class BoundedByteArraySink(private val limits: DecompressionLimits) {
     private var bytes = ByteArray(0)
     private var size = 0

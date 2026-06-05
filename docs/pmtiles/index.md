@@ -25,6 +25,17 @@ Details can be found in the [API reference](../api/pmtiles/index.html).
     }
     ```
 
+## Specification coverage
+
+This module implements PMTiles v3 reading. Writing may be implemented in the future.
+
+It does not provide filesystem or HTTP sources, or decode tile payload formats such as MVT, raster
+images, or MLT.
+
+Uncompressed data is supported on all platforms. Gzip is built in on JVM, native, and web targets
+where the runtime provides `DecompressionStream`; brotli, zstd, and other compression codes require
+custom decompressors.
+
 ## Byte range sources
 
 `PmTilesArchive` reads through `ByteRangeSource`, so callers can back archives with files, network

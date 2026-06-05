@@ -21,7 +21,7 @@ import web.streams.ReadableStream
 import web.streams.ReadableWritablePair
 import web.streams.read
 
-internal actual suspend fun decodeGzip(bytes: ByteString, limits: DecompressionLimits): ByteString {
+internal suspend fun decodeGzip(bytes: ByteString, limits: DecompressionLimits): ByteString {
     val decoded =
         try {
             val compressedStream =

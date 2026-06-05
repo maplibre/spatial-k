@@ -24,7 +24,7 @@ import platform.zlib.inflateEnd
 import platform.zlib.inflateInit2_
 import platform.zlib.z_stream
 
-internal actual suspend fun decodeGzip(bytes: ByteString, limits: DecompressionLimits): ByteString =
+internal suspend fun decodeGzip(bytes: ByteString, limits: DecompressionLimits): ByteString =
     memScoped {
         if (bytes.size == 0) {
             decompressionFailed("gzip input is empty.")

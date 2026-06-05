@@ -7,7 +7,7 @@ import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.DecompressionLimits
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
-internal actual suspend fun decodeGzip(bytes: ByteString, limits: DecompressionLimits): ByteString {
+internal suspend fun decodeGzip(bytes: ByteString, limits: DecompressionLimits): ByteString {
     val sink = BoundedByteArraySink(limits)
     val buffer = ByteArray(GZIP_BUFFER_SIZE)
 
