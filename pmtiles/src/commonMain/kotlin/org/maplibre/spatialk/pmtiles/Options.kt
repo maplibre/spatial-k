@@ -183,14 +183,14 @@ private const val DEFAULT_MIN_DIRECTORY_ENTRY_BYTES = 17
 private const val MIN_ENCODED_DIRECTORY_ENTRY_BYTES = 4
 private const val VARINT_PAYLOAD_BITS = 7
 
-private fun ULong.defaultDirectoryEntryLimit(): Int =
+internal fun ULong.defaultDirectoryEntryLimit(): Int =
     minOf(
             this / DEFAULT_MIN_DIRECTORY_ENTRY_BYTES.toULong(),
             Int.MAX_VALUE.toULong(),
         )
         .toInt()
 
-private fun minEncodedDirectoryBytes(entryCount: Int): Long {
+internal fun minEncodedDirectoryBytes(entryCount: Int): Long {
     val countBytes = varintByteCount(entryCount).toLong()
     val entryBytes = entryCount.toLong() * MIN_ENCODED_DIRECTORY_ENTRY_BYTES
     return countBytes + entryBytes

@@ -61,7 +61,7 @@ internal class ArchiveReadState(initialWarnings: List<ArchiveWarning>) {
             return@withOpenStateLock it
         }
 
-        metadataCache ?: metadata.also { metadataCache = it }
+        metadata.also { metadataCache = it }
     }
 
     suspend fun cachedLeafDirectory(range: ByteRange): List<DirectoryEntry>? = withOpenStateLock {
