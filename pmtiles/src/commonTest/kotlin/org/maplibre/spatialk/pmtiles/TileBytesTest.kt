@@ -38,7 +38,7 @@ class TileBytesTest {
         requireNotNull(coordRead)
         requireNotNull(idRead)
         assertEquals(tileBytes, stored.payload)
-        assertEquals(tileBytes.size.toULong(), stored.byteCount)
+        assertEquals(tileBytes.size, stored.payload.size)
         assertEquals(CompressionCodes.Brotli, stored.compression)
         assertEquals(false, stored.wasDecompressed)
         assertEquals(TileTypeCodes.Png, stored.tileType)

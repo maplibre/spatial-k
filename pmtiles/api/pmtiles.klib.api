@@ -266,8 +266,6 @@ final class org.maplibre.spatialk.pmtiles/ArchiveSection { // org.maplibre.spati
 }
 
 final class org.maplibre.spatialk.pmtiles/ArchiveTile { // org.maplibre.spatialk.pmtiles/ArchiveTile|null[0]
-    final val byteCount // org.maplibre.spatialk.pmtiles/ArchiveTile.byteCount|{}byteCount[0]
-        final fun <get-byteCount>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ArchiveTile.byteCount.<get-byteCount>|<get-byteCount>(){}[0]
     final val compression // org.maplibre.spatialk.pmtiles/ArchiveTile.compression|{}compression[0]
         final fun <get-compression>(): org.maplibre.spatialk.pmtiles/CompressionCode // org.maplibre.spatialk.pmtiles/ArchiveTile.compression.<get-compression>|<get-compression>(){}[0]
     final val coord // org.maplibre.spatialk.pmtiles/ArchiveTile.coord|{}coord[0]
@@ -283,6 +281,13 @@ final class org.maplibre.spatialk.pmtiles/ArchiveTile { // org.maplibre.spatialk
     final val wasDecompressed // org.maplibre.spatialk.pmtiles/ArchiveTile.wasDecompressed|{}wasDecompressed[0]
         final fun <get-wasDecompressed>(): kotlin/Boolean // org.maplibre.spatialk.pmtiles/ArchiveTile.wasDecompressed.<get-wasDecompressed>|<get-wasDecompressed>(){}[0]
 
+    final fun component1(): kotlin/Long // org.maplibre.spatialk.pmtiles/ArchiveTile.component1|component1(){}[0]
+    final fun component2(): org.maplibre.spatialk.pmtiles/TileCoord // org.maplibre.spatialk.pmtiles/ArchiveTile.component2|component2(){}[0]
+    final fun component3(): kotlinx.io.bytestring/ByteString // org.maplibre.spatialk.pmtiles/ArchiveTile.component3|component3(){}[0]
+    final fun component4(): org.maplibre.spatialk.pmtiles/TileTypeCode // org.maplibre.spatialk.pmtiles/ArchiveTile.component4|component4(){}[0]
+    final fun component5(): org.maplibre.spatialk.pmtiles/CompressionCode // org.maplibre.spatialk.pmtiles/ArchiveTile.component5|component5(){}[0]
+    final fun component6(): kotlin/Boolean // org.maplibre.spatialk.pmtiles/ArchiveTile.component6|component6(){}[0]
+    final fun component7(): org.maplibre.spatialk.pmtiles/TileRange // org.maplibre.spatialk.pmtiles/ArchiveTile.component7|component7(){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/ArchiveTile.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/ArchiveTile.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/ArchiveTile.toString|toString(){}[0]

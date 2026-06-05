@@ -390,7 +390,7 @@ internal constructor(
  * @property wasDecompressed True when the payload bytes were decompressed by the reader.
  * @property range Located source range for this tile.
  */
-public class ArchiveTile
+public data class ArchiveTile
 internal constructor(
     public val tileId: Long,
     public val coord: TileCoord,
@@ -399,43 +399,7 @@ internal constructor(
     public val compression: CompressionCode,
     public val wasDecompressed: Boolean,
     public val range: TileRange,
-) {
-    /** Tile payload byte count. */
-    public val byteCount: ULong
-        get() = payload.size.toULong()
-
-    override fun toString(): String =
-        "ArchiveTile(" +
-            "tileId=$tileId, " +
-            "coord=$coord, " +
-            "byteCount=$byteCount, " +
-            "tileType=$tileType, " +
-            "compression=$compression, " +
-            "wasDecompressed=$wasDecompressed, " +
-            "range=$range" +
-            ")"
-
-    override fun equals(other: Any?): Boolean =
-        other is ArchiveTile &&
-            tileId == other.tileId &&
-            coord == other.coord &&
-            payload == other.payload &&
-            tileType == other.tileType &&
-            compression == other.compression &&
-            wasDecompressed == other.wasDecompressed &&
-            range == other.range
-
-    override fun hashCode(): Int {
-        var result = tileId.hashCode()
-        result = 31 * result + coord.hashCode()
-        result = 31 * result + payload.hashCode()
-        result = 31 * result + tileType.hashCode()
-        result = 31 * result + compression.hashCode()
-        result = 31 * result + wasDecompressed.hashCode()
-        result = 31 * result + range.hashCode()
-        return result
-    }
-}
+)
 
 /**
  * Result for one coordinate in a batch tile read.

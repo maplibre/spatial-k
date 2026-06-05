@@ -130,8 +130,14 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveSection {
 }
 
 public final class org/maplibre/spatialk/pmtiles/ArchiveTile {
+	public final fun component1 ()J
+	public final fun component2 ()Lorg/maplibre/spatialk/pmtiles/TileCoord;
+	public final fun component3 ()Lkotlinx/io/bytestring/ByteString;
+	public final fun component4-u2j9DLg ()I
+	public final fun component5-KaDf8nc ()I
+	public final fun component6 ()Z
+	public final fun component7 ()Lorg/maplibre/spatialk/pmtiles/TileRange;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getByteCount-s-VKNKU ()J
 	public final fun getCompression-KaDf8nc ()I
 	public final fun getCoord ()Lorg/maplibre/spatialk/pmtiles/TileCoord;
 	public final fun getPayload ()Lkotlinx/io/bytestring/ByteString;
