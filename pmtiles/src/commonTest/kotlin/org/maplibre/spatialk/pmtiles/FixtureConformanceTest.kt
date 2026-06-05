@@ -137,8 +137,7 @@ class FixtureConformanceTest {
         assertEquals(false, archive.containsTile(1, 1, 0))
     }
 
-    private fun readFixture(path: String): ByteString =
-        ByteString(readResourceBytes("fixtures/$path"))
+    private fun readFixture(path: String): ByteString = ByteString(readResourceBytes(path))
 }
 
 private data class ValidFixture(
