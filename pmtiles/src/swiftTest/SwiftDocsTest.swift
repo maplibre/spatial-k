@@ -53,8 +53,8 @@ final class SwiftDocsTest: XCTestCase {
         let coord = try TileCoord(z: 0, x: 0, y: 0)
         _ = header
         _ = metadata
-        _ = TileTypeCodes.shared.mvt
-        _ = CompressionCodes.shared.gzip
+        _ = TileTypeCode.mvt
+        _ = CompressionCode.gzip
         XCTAssertNotNil(tile)
         XCTAssertNotNil(payload)
         let tileById = try await archive.readStoredTile(tileId: 0)
@@ -79,7 +79,7 @@ final class SwiftDocsTest: XCTestCase {
         // --8<-- [end:decompressedTiles]
 
         XCTAssertNotNil(tile)
-        _ = CompressionCodes.shared.none
+        _ = CompressionCode.none
         let tileById = try await archive.readDecompressedTile(tileId: 0)
         XCTAssertNotNil(tileById)
     }
@@ -137,7 +137,7 @@ final class SwiftDocsTest: XCTestCase {
 
         let options =
             ArchiveOpenOptions.build { options in
-                options.decompressor(CompressionCodes.shared.brotli, BrotliDecompressor())
+                options.decompressor(.brotli, BrotliDecompressor())
             }
 
         let archive = try await PmTiles.open(source: source, options: options)
@@ -190,7 +190,7 @@ final class SwiftDocsTest: XCTestCase {
 
         let options =
             ArchiveOpenOptions.build { options in
-                options.decompressor(CompressionCodes.shared.gzip, ThrowingDecompressor())
+                options.decompressor(.gzip, ThrowingDecompressor())
             }
         do {
             _ = try await PmTiles.open(source: source, options: options)
@@ -218,7 +218,7 @@ final class SwiftDocsTest: XCTestCase {
 
         let options =
             ArchiveOpenOptions.build { options in
-                options.decompressor(CompressionCodes.shared.gzip, LimitExceededDecompressor())
+                options.decompressor(.gzip, LimitExceededDecompressor())
             }
 
         do {
@@ -253,7 +253,7 @@ final class SwiftDocsTest: XCTestCase {
         let decompressor = RecordingDecompressor()
         let options =
             ArchiveOpenOptions.build { options in
-                options.decompressor(CompressionCodes.shared.gzip, decompressor)
+                options.decompressor(.gzip, decompressor)
             }
 
         do {

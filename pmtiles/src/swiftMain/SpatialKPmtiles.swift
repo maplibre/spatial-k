@@ -23,6 +23,36 @@ public protocol DataDecompressor {
     func decompress(data: Data, limits: DecompressionLimits) async throws -> Data
 }
 
+public struct CompressionCode: Hashable, RawRepresentable, Sendable {
+    public let rawValue: UInt32
+
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+
+    public static let unknown = CompressionCode(rawValue: 0)
+    public static let none = CompressionCode(rawValue: 1)
+    public static let gzip = CompressionCode(rawValue: 2)
+    public static let brotli = CompressionCode(rawValue: 3)
+    public static let zstd = CompressionCode(rawValue: 4)
+}
+
+public struct TileTypeCode: Hashable, RawRepresentable, Sendable {
+    public let rawValue: UInt32
+
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+
+    public static let unknown = TileTypeCode(rawValue: 0)
+    public static let mvt = TileTypeCode(rawValue: 1)
+    public static let png = TileTypeCode(rawValue: 2)
+    public static let jpeg = TileTypeCode(rawValue: 3)
+    public static let webp = TileTypeCode(rawValue: 4)
+    public static let avif = TileTypeCode(rawValue: 5)
+    public static let mlt = TileTypeCode(rawValue: 6)
+}
+
 public extension PmTiles {
     static func open(
         source: ByteRangeDataSource,
@@ -85,17 +115,43 @@ public extension TileReadCoalescing {
 
 public extension ArchiveOpenOptions.Builder {
     func decompressor(
-        _ compression: UInt32,
+        _ compression: CompressionCode,
         _ decompressor: DataDecompressor
     ) {
         _ = __decompressorCompression(
-            compression,
+            compression.rawValue,
             decompressor: SwiftDataDecompressorAdapter(decompressor: decompressor)
         )
     }
 }
 
+public extension ArchiveHeader {
+    var internalCompression: CompressionCode {
+        CompressionCode(rawValue: __internalCompression)
+    }
+
+    var tileCompression: CompressionCode {
+        CompressionCode(rawValue: __tileCompression)
+    }
+
+    var tileType: TileTypeCode {
+        TileTypeCode(rawValue: __tileType)
+    }
+}
+
 public extension PmTilesArchive {
+    var tileType: TileTypeCode {
+        TileTypeCode(rawValue: __tileType)
+    }
+
+    var internalCompression: CompressionCode {
+        CompressionCode(rawValue: __internalCompression)
+    }
+
+    var tileCompression: CompressionCode {
+        CompressionCode(rawValue: __tileCompression)
+    }
+
     func readStoredTiles(
         coords: [TileCoord],
         coalescing: TileReadCoalescing = TileReadCoalescing()
@@ -114,6 +170,24 @@ public extension PmTilesArchive {
 public extension ArchiveTile {
     var payload: Data {
         __payload.toNSData() as Data
+    }
+
+    var tileType: TileTypeCode {
+        TileTypeCode(rawValue: __tileType)
+    }
+
+    var compression: CompressionCode {
+        CompressionCode(rawValue: __compression)
+    }
+}
+
+public extension TileRange {
+    var tileType: TileTypeCode {
+        TileTypeCode(rawValue: __tileType)
+    }
+
+    var compression: CompressionCode {
+        CompressionCode(rawValue: __compression)
     }
 }
 

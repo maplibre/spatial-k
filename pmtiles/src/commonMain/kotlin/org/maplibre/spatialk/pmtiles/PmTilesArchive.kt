@@ -125,13 +125,14 @@ internal constructor(
         )
 
     /** Tile payload type from the header. */
-    public val tileType: TileTypeCode = header.tileType
+    @ShouldRefineInSwift public val tileType: TileTypeCode = header.tileType
 
     /** CompressionCode used for directories and metadata. */
+    @ShouldRefineInSwift
     public val internalCompression: CompressionCode = header.internalCompression
 
     /** CompressionCode used for tile payloads. */
-    public val tileCompression: CompressionCode = header.tileCompression
+    @ShouldRefineInSwift public val tileCompression: CompressionCode = header.tileCompression
 
     /** Returns the raw metadata JSON string. */
     @Throws(PmTilesException::class, CancellationException::class)
