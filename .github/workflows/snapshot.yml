@@ -61,10 +61,12 @@ jobs:
                   fetch-tags: true
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - run: |
-                  ./gradlew :mkdocsBuild -Psemver.stage=snapshot -Psemver.scope=minor
+                  SPATIAL_K_GRADLE_ARGS="-Psemver.stage=snapshot -Psemver.scope=minor"
+                  SPATIAL_K_VERSION="$(./gradlew -q properties $SPATIAL_K_GRADLE_ARGS | sed -n 's/^version: //p' | head -n 1)"
+                  SPATIAL_K_VERSION="$SPATIAL_K_VERSION" SPATIAL_K_GRADLE_ARGS="$SPATIAL_K_GRADLE_ARGS" mise run -C docs build
             - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
               with:
-                  path: build/mkdocs
+                  path: docs/dist
 
     dryrun-tag:
         needs: [check-last-run, publish-maven-snapshot, dryrun-pages]

@@ -1,0 +1,30 @@
+[env]
+SPATIAL_K_VERSION = "{{ env.SPATIAL_K_VERSION | default(value='VERSION') }}"
+
+[tasks.api]
+dir = ".."
+run = [
+  "rm -rf docs/public/api/dokka",
+  "./gradlew :dokkaGenerateHtml $SPATIAL_K_GRADLE_ARGS",
+]
+
+[tasks.dev]
+depends = ["api"]
+run = "pnpm exec astro dev"
+
+[tasks.start]
+depends = ["dev"]
+
+[tasks.build]
+depends = ["api"]
+run = "pnpm exec astro build"
+
+[tasks.preview]
+depends = ["api"]
+run = "pnpm exec astro preview"
+
+[tasks.astro]
+run = "pnpm exec astro"
+
+[tasks.clean]
+run = "rm -rf .astro dist public/api"

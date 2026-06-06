@@ -1,36 +1,23 @@
 import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType
-import ru.vyarus.gradle.plugin.mkdocs.task.MkdocsTask
 
 plugins {
     id("org.jetbrains.kotlinx.kover")
     id("org.jetbrains.dokka")
     id("semver")
-    id("ru.vyarus.mkdocs-build")
 }
 
 dokka {
     moduleName = "Spatial K"
-    dokkaPublications { html { outputDirectory = rootDir.absoluteFile.resolve("docs/api") } }
+    dokkaPublications {
+        html { outputDirectory = rootDir.absoluteFile.resolve("docs/public/api/dokka") }
+    }
     pluginsConfiguration {
         html {
-            customStyleSheets.from(file("docs/styles/dokka-extra.css"))
-            customAssets.from(file("docs/images/logo-icon.svg"))
+            customStyleSheets.from(file("docs/src/styles/dokka-extra.css"))
+            customAssets.from(file("docs/src/assets/logo-icon-dark.svg"))
             footerMessage = "Copyright &copy; 2025 MapLibre Contributors"
         }
     }
-}
-
-mkdocs {
-    sourcesDir = "."
-    strict = true
-    publish {
-        docPath = null // single version site
-    }
-}
-
-tasks.withType<MkdocsTask>().configureEach {
-    dependsOn("dokkaGenerateHtml")
-    extras.assign(provider { mapOf("project_version" to project.version.toString()) })
 }
 
 kover {

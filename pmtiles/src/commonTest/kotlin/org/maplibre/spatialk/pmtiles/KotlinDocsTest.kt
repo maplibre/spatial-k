@@ -6,6 +6,7 @@ import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.internal.buildSingleTileArchive
+import org.maplibre.spatialk.testutil.readResourceBytes
 
 // These snippets are primarily intended to be included in documentation. Though they exist as
 // part of the test suite, they are not intended to be comprehensive tests.
@@ -59,11 +60,15 @@ class KotlinDocsTest {
 
     @Test
     fun batchTiles() = runTest {
-        val source = loadPmTilesBytes().asByteRangeSource()
+        val source = readFixture("go-pmtiles-unclustered.pmtiles").asByteRangeSource()
 
         // --8<-- [start:batchTiles]
         PmTiles.open(source).use { archive ->
-            val coords = listOf(TileCoord(z = 0, x = 0, y = 0))
+            val coords =
+                listOf(
+                    TileCoord(z = 1, x = 0, y = 0),
+                    TileCoord(z = 1, x = 0, y = 1),
+                )
             val results = archive.readStoredTiles(coords)
         }
         // --8<-- [end:batchTiles]
@@ -95,7 +100,7 @@ class KotlinDocsTest {
 
     @Test
     fun lenientWarnings() = runTest {
-        val source = loadPmTilesBytes().asByteRangeSource()
+        val source = readFixture("pmtiles-js-test-fixture-mlt.pmtiles").asByteRangeSource()
 
         // --8<-- [start:lenientWarnings]
         val options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient }
@@ -108,6 +113,8 @@ class KotlinDocsTest {
 }
 
 private fun loadPmTilesBytes(): ByteString = buildSingleTileArchive(tileBytes = ByteString(1, 2, 3))
+
+private fun readFixture(path: String): ByteString = ByteString(readResourceBytes(path))
 
 private fun decodeBrotli(bytes: ByteString): ByteString = bytes
 

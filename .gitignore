@@ -6,5 +6,9 @@
 **/build
 
 /site
-/docs/api
+/node_modules
+/docs/.astro
+/docs/dist
+/docs/node_modules
+/docs/public/api
 .claude/*.local.json

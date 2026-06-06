@@ -1,4 +1,8 @@
-# GeoJSON
+---
+title: "GeoJSON"
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 The `geojson` module contains an implementation of
 [RFC 7946: The GeoJSON Format](https://tools.ietf.org/html/rfc7946).
@@ -7,8 +11,8 @@ See below for constructing GeoJSON objects using the DSL.
 
 ## Installation
 
-=== "Multiplatform"
-
+<Tabs syncKey="language">
+  <TabItem label="Multiplatform">
     ```kotlin
     commonMain {
         dependencies {
@@ -16,14 +20,16 @@ See below for constructing GeoJSON objects using the DSL.
         }
     }
     ```
+  </TabItem>
 
-=== "JVM"
-
+  <TabItem label="JVM">
     ```kotlin
     dependencies {
         implementation("org.maplibre.spatialk:geojson-jvm:{{ gradle.project_version }}")
     }
     ```
+  </TabItem>
+</Tabs>
 
 ## GeoJSON Objects
 
@@ -36,14 +42,16 @@ geometry.
 Geometry objects are a sealed hierarchy of classes that inherit from the `Geometry` class. This
 allows for exhaustive type checks in Kotlin using a `when` block.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:geometryExhaustiveTypeChecks"
     ```
+  </TabItem>
+</Tabs>
 
 All seven types of GeoJSON geometries are implemented and summarized below. Full documentation can
-be found in the [API pages](../api/geojson/index.html).
+be found in the [API pages](/spatial-k/api/dokka/geojson/index.html).
 
 #### Position
 
@@ -51,111 +59,121 @@ be found in the [API pages](../api/geojson/index.html).
 accessible as properties. Coordinates follow the order specified in RFC 7946:
 `[longitude, latitude, altitude?]`. The class supports destructuring in Kotlin.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:positionKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:positionJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:positionJson"
     ```
+  </TabItem>
+</Tabs>
 
 #### Point
 
 A Point is a single Position.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:pointKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:pointJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:pointJson"
     ```
+  </TabItem>
+</Tabs>
 
 #### MultiPoint
 
 A `MultiPoint` is an array of Positions.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:multiPointKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:multiPointJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:multiPointJson"
     ```
+  </TabItem>
+</Tabs>
 
 #### LineString
 
 A `LineString` is a sequence of two or more Positions.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:lineStringKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:lineStringJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:lineStringJson"
     ```
+  </TabItem>
+</Tabs>
 
 #### MultiLineString
 
 A `MultiLineString` is an array of LineStrings.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:multiLineStringKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:multiLineStringJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:multiLineStringJson"
     ```
+  </TabItem>
+</Tabs>
 
 #### Polygon
 
@@ -163,67 +181,73 @@ A `Polygon` is an array of rings. Each ring is a sequence of points with the las
 first point to indicate a closed area. The first ring defines the outer shape of the polygon, while
 all the following rings define "holes" inside the polygon.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:polygonKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:polygonJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:polygonJson"
     ```
+  </TabItem>
+</Tabs>
 
 #### MultiPolygon
 
 A `MultiPolygon` is an array of Polygons.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:multiPolygonKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:multiPolygonJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:multiPolygonJson"
     ```
+  </TabItem>
+</Tabs>
 
 #### GeometryCollection
 
 A `GeometryCollection` contains multiple, heterogeneous geometries.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:geometryCollectionKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:geometryCollectionJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:geometryCollectionJson"
     ```
+  </TabItem>
+</Tabs>
 
 ### Feature
 
@@ -233,48 +257,52 @@ commonly used identifier (`id`).
 Properties can be any object that serializes into a JSON object. For dynamic or unknown property
 schemas, use `JsonObject`. For known schemas, use a `@Serializable` data class. Helper methods for
 accessing properties are available when properties are of type `JsonObject` (see the
-[API documentation](../api/geojson/index.html) for details).
+[API documentation](/spatial-k/api/dokka/geojson/index.html) for details).
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:featureKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:featureJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:featureJson"
     ```
+  </TabItem>
+</Tabs>
 
 ### FeatureCollection
 
 A `FeatureCollection` is a collection of multiple features. It implements the `Collection` interface
 and can be used in any place that a collection can be used.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:featureCollectionKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:featureCollectionJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:featureCollectionJson"
     ```
+  </TabItem>
+</Tabs>
 
 ### BoundingBox
 
@@ -283,23 +311,25 @@ The `BoundingBox` class is used to represent the bounding boxes that can be set 
 component accessible by its propery (`southwest` and `northeast`). Bounding boxes also support
 destructuring.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:boundingBoxKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:boundingBoxJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:boundingBoxJson"
     ```
+  </TabItem>
+</Tabs>
 
 ## Serialization
 
@@ -307,47 +337,53 @@ destructuring.
 
 Any `GeoJsonObject` can be serialized to a JSON string using the `toJson()` method.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:serializationToJson"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:serializationToJsonJava"
     ```
+  </TabItem>
+</Tabs>
 
 ### From JSON
 
 The `fromJson` and `fromJsonOrNull` companion (or static) functions are available on each
 `GeoJsonObject` class to decode each type of object from a JSON string.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:serializationFromJson1"
 
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:serializationFromJson2"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:serializationFromJsonJava1"
 
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:serializationFromJsonJava2"
     ```
+  </TabItem>
+</Tabs>
 
 Like with encoding, Spatial-K objects can also be decoded using `kotlinx.serialization` using the
 `GeoJson` serializer.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:kotlinxSerialization"
     ```
+  </TabItem>
+</Tabs>
 
 ## GeoJSON Builders
 
@@ -364,69 +400,75 @@ A GeoJSON object's `bbox` value can be assigned in any of the DSLs.
 
 The `MultiPoint` builder uses `add()` to add positions or `Point` geometries.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiPointKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslMultiPointJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiPointJson"
     ```
+  </TabItem>
+</Tabs>
 
 #### LineString
 
 A `LineString` contains two or more positions, in order. The builder uses `add()` to add positions.
 The order in which positions are added is the order that the line will follow.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslLineStringKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslLineStringJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslLineStringJson"
     ```
+  </TabItem>
+</Tabs>
 
 #### MultiLineString
 
 The `MultiLineString` builder uses `addLineString()` to define line strings inline, or `add()` to
 add existing `LineString` objects.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiLineStringKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslMultiLineStringJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiLineStringJson"
     ```
+  </TabItem>
+</Tabs>
 
 #### Polygon
 
@@ -435,46 +477,50 @@ The `Polygon` builder uses `addRing()` (Kotlin DSL) or `add()` with `LineString`
 positions. The last position must be the same as the first position. All subsequent rings represent
 interior rings (i.e., holes) in the polygon.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslPolygonKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslPolygonJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslPolygonJson"
     ```
+  </TabItem>
+</Tabs>
 
 #### MultiPolygon
 
 The `MultiPolygon` builder uses `addPolygon()` to define polygons inline, or `add()` to add existing
 `Polygon` objects.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiPolygonKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslMultiPolygonJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslMultiPolygonJson"
     ```
+  </TabItem>
+</Tabs>
 
 #### GeometryCollection
 
@@ -482,23 +528,25 @@ The `GeometryCollection` builder provides `addPoint()`, `addLineString()`, `addP
 `addMultiPoint()`, `addMultiLineString()`, `addMultiPolygon()`, and `addGeometryCollection()` to
 define geometries inline (Kotlin only), or `add()` to add existing geometry objects.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslGeometryCollectionKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslGeometryCollectionJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslGeometryCollectionJson"
     ```
+  </TabItem>
+</Tabs>
 
 ### Feature
 
@@ -506,43 +554,47 @@ The `Feature` builder constructs a `Feature` object with a geometry, bounding bo
 properties. Properties can be any serializable object, such as a `JsonObject` built with
 `buildJsonObject` from kotlinx.serialization.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslFeatureKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslFeatureJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslFeatureJson"
     ```
+  </TabItem>
+</Tabs>
 
 ### FeatureCollection
 
 The `FeatureCollection` builder uses `addFeature()` to define features inline (Kotlin only), or
 `add()` to add existing `Feature` objects.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslFeatureCollectionKt"
     ```
+  </TabItem>
 
-=== "Java"
-
+  <TabItem label="Java">
     ```java
     --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:dslFeatureCollectionJava"
     ```
+  </TabItem>
 
-=== "JSON"
-
+  <TabItem label="JSON">
     ```json
     --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:dslFeatureCollectionJson"
     ```
+  </TabItem>
+</Tabs>

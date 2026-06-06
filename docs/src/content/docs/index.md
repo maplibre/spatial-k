@@ -1,26 +1,19 @@
+---
+title: "Overview"
+---
+
 <div style="text-align: center; width: 100%; height: 200px; background-color: transparent">
-    <div style="width: 100%; height: 100%; background-color: #4CAE4F; mask-image: url('./images/logo-icon.svg');
+    <div style="width: 100%; height: 100%; background-color: #4CAE4F; mask-image: url('/spatial-k/logo-icon.svg');
                 mask-size: contain; mask-repeat: no-repeat; mask-position: center"></div>
 </div>
-
-# Spatial K
 
 Spatial K is a set of libraries for working with geospatial data in Kotlin, including an
 implementation of GeoJSON and a port of Turf.js written in pure Kotlin. It supports Kotlin
 Multiplatform and Java projects and features a Kotlin DSL for building GeoJSON objects.
 
-See the [API Reference](api/index.html) for detailed documentation.
+See the [API Reference](/spatial-k/api/dokka/) for detailed documentation.
 
-## Modules
-
-- [`geojson`](./geojson/index.md) - GeoJSON implementation and DSL
-- [`turf`](./turf/index.md) - Turf.js port
-- [`units`](./units/index.md) - Units of measure
-- [`gpx`](./gpx/index.md) - GPX implementation
-- [`pmtiles`](./pmtiles/index.md) - PMTiles v3 archive reader
-- [`polyline-encoding`](./polyline-encoding/index.md) - Google Encoded Polyline Algorithm support
-
-### Snapshots
+## Snapshots
 
 ![Sonatype Snapshots](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Forg%2Fmaplibre%2Fspatialk%2Fgeojson%2Fmaven-metadata.xml&label=Snapshot)
 

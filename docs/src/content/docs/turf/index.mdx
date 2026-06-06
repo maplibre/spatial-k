@@ -1,0 +1,213 @@
+---
+title: "Turf"
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+[Turf.js](https://turfjs.org) is a spatial analysis library for JavaScript applications. The `turf`
+module is a Kotlin port with support for Kotlin Multiplatform and Java projects.
+
+This module uses the classes from the [`geojson`](/spatial-k/geojson/) module as GeoJSON inputs to
+turf functions.
+
+Documentation for ported functions can be found in the [API docs](/spatial-k/api/dokka/turf/index.html), while
+details on each function are available on the [Turf.js](https://turfjs.org) site.
+
+## Installation
+
+<Tabs syncKey="language">
+  <TabItem label="Multiplatform">
+    ```kotlin
+    commonMain {
+        dependencies {
+            implementation("org.maplibre.spatialk:turf:{{ gradle.project_version }}")
+        }
+    }
+    ```
+  </TabItem>
+
+  <TabItem label="JVM">
+    ```kotlin
+    dependencies {
+        implementation("org.maplibre.spatialk:turf-jvm:{{ gradle.project_version }}")
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## Example
+
+Turf functions are available as top-level functions in Kotlin and as static methods in Java.
+
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
+    ```kotlin
+    --8<-- "turf/src/commonTest/kotlin/org/maplibre/spatialk/turf/KotlinDocsTest.kt:example"
+    ```
+  </TabItem>
+
+  <TabItem label="Java">
+    ```java
+    --8<-- "turf/src/jvmTest/java/org/maplibre/spatialk/turf/JavaDocsTest.java:example"
+    ```
+  </TabItem>
+</Tabs>
+
+## Ported Functions
+
+### Measurement
+
+* [x] [`along`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/locate-along.html)
+* [x] [`area`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/area.html)
+* [x] [`bbox`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/compute-bbox.html)
+* [x] [`bboxPolygon`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/to-polygon.html)
+* [x] [`bearing`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/bearing-to.html)
+* [x] [`center`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/center.html)
+* [ ] `centerOfMass`
+* [ ] `centroid`
+* [x] [`destination`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/offset.html)
+* [x] [`distance`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/distance.html)
+* [x] [`envelope`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/envelope.html)
+* [x] [`greatCircle`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/great-circle.html)
+* [x] [`length`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/length.html)
+* [x] [`midpoint`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/midpoint.html)
+* [ ] `pointOnFeature`
+* [ ] `polygonTangents`
+* [x] [`pointToLineDistance`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/distance.html)
+* [x] [`rhumbBearing`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/rhumb-bearing-to.html)
+* [ ] `rhumbDestination`
+* [x] [`rhumbDistance`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/rhumb-distance.html)
+* [x] [`square`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.measurement/square.html)
+
+### Coordinate Mutation
+
+* [ ] `cleanCoords`
+* [ ] `flip`
+* [ ] `rewind`
+* [x] [`round`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.coordinatemutation/round.html)
+* [ ] `truncate`
+
+### Transformation
+
+* [ ] `bboxClip`
+* [x] [`bezierSpline`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.transformation/bezier-spline.html)
+* [ ] `buffer`
+* [x] [`circle`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.transformation/circle.html)
+* [ ] `clone`
+* [ ] `concave`
+* [ ] `convex`
+* [ ] `difference`
+* [ ] `dissolve`
+* [ ] `intersect`
+* [ ] `lineOffset`
+* [x] [`simplify`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.transformation/simplify.html)
+* [ ] `tessellate`
+* [ ] `transformRotate`
+* [ ] `transformTranslate`
+* [ ] `transformScale`
+* [ ] `union`
+* [ ] `voronoi`
+
+### Feature Conversion
+
+* [x] [`combine`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.featureconversion/combine.html)
+* [x] [`explode`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.featureconversion/explode.html)
+* [ ] `flatten`
+* [x] [`lineToPolygon`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.featureconversion/to-polygon.html)
+* [ ] `polygonize`
+* [x] [`polygonToLine`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.featureconversion/to-multi-line-string.html)
+
+### Miscellaneous
+
+* [ ] `kinks`
+* [ ] `lineArc`
+* [ ] `lineChunk`
+* [ ] [`lineIntersect`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.misc/intersect.html) Partially
+  implemented.
+* [ ] `lineOverlap`
+* [ ] `lineSegment`
+* [x] [`lineSlice`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.misc/slice.html)
+* [ ] `lineSliceAlong`
+* [ ] `lineSplit`
+* [ ] `mask`
+* [x] [`nearestPointOnLine`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.misc/nearest-point-to.html)
+* [ ] `sector`
+* [ ] `shortestPath`
+* [ ] `unkinkPolygon`
+
+### Helper
+
+Use the [GeoJson DSL](/spatial-k/geojson/#geojson-builders) instead.
+
+### Random
+
+* [ ] `randomPosition`
+* [ ] `randomPoint`
+* [ ] `randomLineString`
+* [ ] `randomPolygon`
+
+### Data
+
+* [ ] `sample`
+
+### Interpolation
+
+* [ ] `interpolate`
+* [ ] `isobands`
+* [ ] `isolines`
+* [ ] `planepoint`
+* [ ] `tin`
+
+### Joins
+
+* [x] [`pointsWithinPolygon`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.misc/filter-inside.html)
+* [ ] `tag`
+
+### Grids
+
+* [ ] `hexGrid`
+* [ ] `pointGrid`
+* [x] [`squareGrid`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.grids/square-grid.html)
+* [ ] `triangleGrid`
+
+### Classification
+
+* [x] [`nearestPoint`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.misc/nearest-point-to.html)
+
+### Aggregation
+
+* [ ] `collect`
+* [ ] `clustersDbscan`
+* [ ] `clustersKmeans`
+
+### Meta
+
+Many GeoJson objects implement `Collection`, enabling standard Kotlin collection operations to
+replace Turf meta functions.
+
+### Assertions
+
+* [ ] `collectionOf`
+* [ ] `containsNumber`
+* [ ] `geojsonType`
+* [ ] `featureOf`
+
+### Booleans
+
+* [ ] `booleanClockwise`
+* [ ] `booleanContains`
+* [ ] `booleanCrosses`
+* [ ] `booleanDisjoint`
+* [ ] `booleanEqual`
+* [ ] `booleanOverlap`
+* [ ] `booleanParallel`
+* [x] [`booleanPointInPolygon`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.booleans/contains.html)
+* [ ] `booleanPointOnLine`
+* [ ] `booleanWithin`
+
+### Unit Conversion
+
+For converting between units of length, area, and angle, see the [Units](/spatial-k/units/) module.
+
+* [ ] `toMercator`
+* [ ] `toWgs84`

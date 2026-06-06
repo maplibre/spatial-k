@@ -1,14 +1,18 @@
-# PMTiles
+---
+title: "PMTiles"
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 The `pmtiles` module reads [PMTiles v3](https://docs.protomaps.com/pmtiles/) archives from a
 caller-provided byte range source.
 
-Details can be found in the [API reference](../api/pmtiles/index.html).
+Details can be found in the [API reference](/spatial-k/api/dokka/pmtiles/index.html).
 
 ## Installation
 
-=== "Multiplatform"
-
+<Tabs syncKey="language">
+  <TabItem label="Multiplatform">
     ```kotlin
     commonMain {
         dependencies {
@@ -16,14 +20,16 @@ Details can be found in the [API reference](../api/pmtiles/index.html).
         }
     }
     ```
+  </TabItem>
 
-=== "JVM"
-
+  <TabItem label="JVM">
     ```kotlin
     dependencies {
         implementation("org.maplibre.spatialk:pmtiles-jvm:{{ gradle.project_version }}")
     }
     ```
+  </TabItem>
+</Tabs>
 
 ## Specification coverage
 
@@ -41,94 +47,106 @@ custom decompressors.
 `PmTilesArchive` reads through `ByteRangeSource`, so callers can back archives with files, network
 requests, memory, or any other source that can return exact byte ranges.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:byteRangeSource"
     ```
+  </TabItem>
 
-=== "Swift"
-
+  <TabItem label="Swift">
     ```swift
     --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:byteRangeDataSource"
     ```
+  </TabItem>
+</Tabs>
 
 ## Opening archives
 
 Open an archive with `PmTiles.open`, then read header fields, metadata, tile ranges, or tile payload
 bytes.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:openArchive"
     ```
+  </TabItem>
 
-=== "Swift"
-
+  <TabItem label="Swift">
     ```swift
     --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:openArchive"
     ```
+  </TabItem>
+</Tabs>
 
 Use `readStoredTile` to read tile payload bytes as stored in the archive, or `readDecompressedTile`
 to decompress supported tile payloads.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:decompressedTiles"
     ```
+  </TabItem>
 
-=== "Swift"
-
+  <TabItem label="Swift">
     ```swift
     --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:decompressedTiles"
     ```
+  </TabItem>
+</Tabs>
 
 Use `readStoredTiles` to read a batch of tile payloads with coalesced source ranges.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:batchTiles"
     ```
+  </TabItem>
 
-=== "Swift"
-
+  <TabItem label="Swift">
     ```swift
     --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:batchTiles"
     ```
+  </TabItem>
+</Tabs>
 
 ## Decompressors
 
 Spatial-K includes platform defaults for uncompressed data and gzip where available. Register other
 compression codecs, such as brotli or zstd, through `ArchiveOpenOptions`.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:customDecompressor"
     ```
+  </TabItem>
 
-=== "Swift"
-
+  <TabItem label="Swift">
     ```swift
     --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:customDecompressor"
     ```
+  </TabItem>
+</Tabs>
 
 ## Validation
 
 Archives open in strict mode by default. `ValidationMode.Lenient` preserves recoverable issues as
 warnings, which can be inspected after opening or after metadata and tile lookups.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:lenientWarnings"
     ```
+  </TabItem>
 
-=== "Swift"
-
+  <TabItem label="Swift">
     ```swift
     --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:lenientWarnings"
     ```
+  </TabItem>
+</Tabs>
