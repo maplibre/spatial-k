@@ -55,7 +55,7 @@ jobs:
               with:
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
-            - run: mise run docs:build
+            - run: mise run docs:build --version dev
             - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
               with:
                   path: docs/dist
