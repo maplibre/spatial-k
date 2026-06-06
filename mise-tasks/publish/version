@@ -1,21 +1,14 @@
 #!/usr/bin/env bash
 #MISE description="Calculate the Spatial K publish version"
+#USAGE flag "--ref-type <type>" help="Git ref type" {
+#USAGE   choices "branch" "tag"
+#USAGE }
+#USAGE flag "--ref-name <name>" help="Git ref name"
 
 set -euo pipefail
 
-ref_type="${GITHUB_REF_TYPE:-}"
-ref_name="${GITHUB_REF_NAME:-}"
-
-if [ -z "$ref_type" ] || [ -z "$ref_name" ]; then
-  if ref_name="$(git symbolic-ref --quiet --short HEAD)"; then
-    ref_type="branch"
-  else
-    ref_name="$(git describe --exact-match --tags HEAD 2>/dev/null || true)"
-    if [ -n "$ref_name" ]; then
-      ref_type="tag"
-    fi
-  fi
-fi
+ref_type="${usage_ref_type:?--ref-type is required}"
+ref_name="${usage_ref_name:?--ref-name is required}"
 
 latest_release_version() {
   if git remote get-url origin >/dev/null 2>&1; then

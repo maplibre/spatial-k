@@ -3,11 +3,17 @@
 #USAGE flag "--mode <mode>" help="Run mode" default="dryrun" {
 #USAGE   choices "dryrun" "live"
 #USAGE }
+#USAGE flag "--ref-type <type>" help="Git ref type" {
+#USAGE   choices "branch" "tag"
+#USAGE }
+#USAGE flag "--ref-name <name>" help="Git ref name"
 
 set -euo pipefail
 
 mode="${usage_mode:-dryrun}"
-version="$(mise run --quiet publish:version)"
+ref_type="${usage_ref_type:?--ref-type is required}"
+ref_name="${usage_ref_name:?--ref-name is required}"
+version="$(mise run --quiet publish:version --ref-type "$ref_type" --ref-name "$ref_name")"
 
 echo "Spatial K version: $version"
 
