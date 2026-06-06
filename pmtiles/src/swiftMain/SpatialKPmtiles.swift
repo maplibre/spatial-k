@@ -30,11 +30,11 @@ public struct CompressionCode: Hashable, RawRepresentable, Sendable {
         self.rawValue = rawValue
     }
 
-    public static let unknown = CompressionCode(rawValue: 0)
-    public static let none = CompressionCode(rawValue: 1)
-    public static let gzip = CompressionCode(rawValue: 2)
-    public static let brotli = CompressionCode(rawValue: 3)
-    public static let zstd = CompressionCode(rawValue: 4)
+    public static let unknown = CompressionCode(rawValue: CompressionCodes.shared.__unknown)
+    public static let none = CompressionCode(rawValue: CompressionCodes.shared.__none)
+    public static let gzip = CompressionCode(rawValue: CompressionCodes.shared.__gzip)
+    public static let brotli = CompressionCode(rawValue: CompressionCodes.shared.__brotli)
+    public static let zstd = CompressionCode(rawValue: CompressionCodes.shared.__zstd)
 }
 
 public struct TileTypeCode: Hashable, RawRepresentable, Sendable {
@@ -44,13 +44,13 @@ public struct TileTypeCode: Hashable, RawRepresentable, Sendable {
         self.rawValue = rawValue
     }
 
-    public static let unknown = TileTypeCode(rawValue: 0)
-    public static let mvt = TileTypeCode(rawValue: 1)
-    public static let png = TileTypeCode(rawValue: 2)
-    public static let jpeg = TileTypeCode(rawValue: 3)
-    public static let webp = TileTypeCode(rawValue: 4)
-    public static let avif = TileTypeCode(rawValue: 5)
-    public static let mlt = TileTypeCode(rawValue: 6)
+    public static let unknown = TileTypeCode(rawValue: TileTypeCodes.shared.__unknown)
+    public static let mvt = TileTypeCode(rawValue: TileTypeCodes.shared.__mvt)
+    public static let png = TileTypeCode(rawValue: TileTypeCodes.shared.__png)
+    public static let jpeg = TileTypeCode(rawValue: TileTypeCodes.shared.__jpeg)
+    public static let webp = TileTypeCode(rawValue: TileTypeCodes.shared.__webp)
+    public static let avif = TileTypeCode(rawValue: TileTypeCodes.shared.__avif)
+    public static let mlt = TileTypeCode(rawValue: TileTypeCodes.shared.__mlt)
 }
 
 public extension PmTiles {
