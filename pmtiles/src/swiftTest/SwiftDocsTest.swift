@@ -46,6 +46,7 @@ final class SwiftDocsTest: XCTestCase {
         let header = archive.header
         let metadata = try await archive.metadata()
         let tile = try await archive.readStoredTile(z: 0, x: 0, y: 0)
+        let payloadData = tile?.payload.toNSData()
         let tileRange = try await archive.findTileRange(z: 0, x: 0, y: 0)
         // --8<-- [end:openArchive]
 
@@ -55,6 +56,7 @@ final class SwiftDocsTest: XCTestCase {
         _ = TileTypeCodes.shared.mvt
         _ = CompressionCodes.shared.gzip
         XCTAssertNotNil(tile)
+        XCTAssertNotNil(payloadData)
         let tileById = try await archive.readStoredTile(tileId: 0)
         let tileRangeByCoord = try await archive.findTileRange(coord: coord)
         let tileRangeById = try await archive.findTileRange(tileId: 0)
