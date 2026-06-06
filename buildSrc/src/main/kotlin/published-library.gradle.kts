@@ -6,11 +6,12 @@ plugins {
     id("org.jetbrains.dokka")
     id("com.vanniktech.maven.publish")
     id("org.jetbrains.kotlinx.kover")
-    id("semver")
     id("dev.detekt")
 }
 
 group = "org.maplibre.spatialk"
+
+version = providers.gradleProperty("spatialKVersion").getOrElse("0.0.0-SNAPSHOT")
 
 kotlin {
     explicitApi()

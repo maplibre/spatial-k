@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#MISE description="Publish Spatial K artifacts"
+#USAGE flag "--mode <mode>" help="Run mode" default="dryrun" {
+#USAGE   choices "dryrun" "live"
+#USAGE }
+
+set -euo pipefail
+
+mode="${usage_mode:-dryrun}"
+version="$(mise run --quiet publish:version)"
+
+echo "Spatial K version: $version"
+
+if [ -n "${GITHUB_OUTPUT:-}" ]; then
+  echo "spatial_k_version=$version" >> "$GITHUB_OUTPUT"
+fi
+
+if [ "$mode" = "dryrun" ]; then
+  echo "./gradlew publishAndReleaseToMavenCentral -PspatialKVersion=$version"
+  exit 0
+fi
+
+./gradlew publishAndReleaseToMavenCentral -PspatialKVersion="$version"

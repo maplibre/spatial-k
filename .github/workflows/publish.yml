@@ -1,0 +1,65 @@
+name: Publish
+
+on:
+    push:
+        branches:
+            - main
+        tags:
+            - "v*"
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: publish-${{ github.ref }}
+    cancel-in-progress: false
+
+jobs:
+    publish-maven:
+        runs-on: ubuntu-latest
+        environment:
+            name: maven-central
+            url: https://central.sonatype.com/namespace/org.maplibre.spatialk
+        outputs:
+            spatial_k_version: ${{ steps.publish.outputs.spatial_k_version }}
+        steps:
+            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+            - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+            - id: publish
+              run: mise run publish --mode live
+              env:
+                  ORG_GRADLE_PROJECT_mavenCentralUsername:
+                      ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+                  ORG_GRADLE_PROJECT_mavenCentralPassword:
+                      ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+                  ORG_GRADLE_PROJECT_signingInMemoryKey:
+                      ${{ secrets.GPG_PRIVATE_KEY }}
+                  ORG_GRADLE_PROJECT_signingInMemoryKeyPassword:
+                      ${{ secrets.GPG_PASSPHRASE }}
+
+    publish-pages:
+        runs-on: ubuntu-latest
+        needs: [publish-maven]
+        permissions:
+            contents: read
+            pages: write
+            id-token: write
+        environment:
+            name: github-pages
+            url: ${{ steps.deploy-pages.outputs.page_url }}
+        steps:
+            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+              with:
+                  persist-credentials: false
+            - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+            - name: Build docs
+              run: |
+                  SPATIAL_K_VERSION="${{ needs.publish-maven.outputs.spatial_k_version }}" \
+                      SPATIAL_K_GRADLE_ARGS="-PspatialKVersion=${{ needs.publish-maven.outputs.spatial_k_version }}" \
+                      mise run -C docs build
+            - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+              with:
+                  path: docs/dist
+            - uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
+              id: deploy-pages

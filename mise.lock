@@ -124,6 +124,38 @@ url = "https://github.com/jdx/hk/releases/download/v1.46.0/hk-aarch64-apple-darw
 checksum = "sha256:5af7e769acb7f70d8630ed53ae1fb2cc4b205117f29df5d83619fa0ff72a3bf1"
 url = "https://github.com/jdx/hk/releases/download/v1.46.0/hk-x86_64-pc-windows-msvc.zip"
 
+[[tools."aqua:pnpm/pnpm"]]
+version = "10.33.2"
+backend = "aqua:pnpm/pnpm"
+
+[tools."aqua:pnpm/pnpm"."platforms.linux-arm64"]
+checksum = "sha256:0828e5ee23be89d22bd53cc36e93c181ce9d5c47d75f9fe9bf4bdc7a65c66322"
+url = "https://github.com/pnpm/pnpm/releases/download/v10.33.2/pnpm-linux-arm64"
+
+[tools."aqua:pnpm/pnpm"."platforms.linux-arm64-musl"]
+checksum = "sha256:0828e5ee23be89d22bd53cc36e93c181ce9d5c47d75f9fe9bf4bdc7a65c66322"
+url = "https://github.com/pnpm/pnpm/releases/download/v10.33.2/pnpm-linux-arm64"
+
+[tools."aqua:pnpm/pnpm"."platforms.linux-x64"]
+checksum = "sha256:39d7b6600239712bc9581ea219b17ffef46ba60998779cb717be2e068be029ef"
+url = "https://github.com/pnpm/pnpm/releases/download/v10.33.2/pnpm-linux-x64"
+
+[tools."aqua:pnpm/pnpm"."platforms.linux-x64-musl"]
+checksum = "sha256:39d7b6600239712bc9581ea219b17ffef46ba60998779cb717be2e068be029ef"
+url = "https://github.com/pnpm/pnpm/releases/download/v10.33.2/pnpm-linux-x64"
+
+[tools."aqua:pnpm/pnpm"."platforms.macos-arm64"]
+checksum = "sha256:a99a4d5d0e6bd3728949c24ff74a2f2f2d07f73bc48fd308e4eea75d8e72acdc"
+url = "https://github.com/pnpm/pnpm/releases/download/v10.33.2/pnpm-macos-arm64"
+
+[tools."aqua:pnpm/pnpm"."platforms.macos-x64"]
+checksum = "sha256:3b66abb865f4e7a82393861f0f3784d67a704a31a4021739874d4b7910793dca"
+url = "https://github.com/pnpm/pnpm/releases/download/v10.33.2/pnpm-macos-x64"
+
+[tools."aqua:pnpm/pnpm"."platforms.windows-x64"]
+checksum = "sha256:3d1af71e9da7081efd58f95942e1f7e2107bf8fcdae03eb2331c0b6cea59510b"
+url = "https://github.com/pnpm/pnpm/releases/download/v10.33.2/pnpm-win-x64.exe"
+
 [[tools."github:google/google-java-format"]]
 version = "1.35.0"
 backend = "github:google/google-java-format"
@@ -194,3 +226,35 @@ url = "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0
 [tools.java."platforms.windows-x64"]
 checksum = "sha256:d3625e7cadf23787ea540229544b6e2ab494b3b54da1801879e583e1dfee0a64"
 url = "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.11%2B10/OpenJDK21U-jdk_x64_windows_hotspot_21.0.11_10.zip"
+
+[[tools.node]]
+version = "24.16.0"
+backend = "core:node"
+
+[tools.node."platforms.linux-arm64"]
+checksum = "sha256:589f5b6dd4fcfee4dfda73013903c966abaa8abd93dbc9d436544e472b4f0e74"
+url = "https://nodejs.org/dist/v24.16.0/node-v24.16.0-linux-arm64.tar.gz"
+
+[tools.node."platforms.linux-arm64-musl"]
+checksum = "sha256:85dde27aa73503b03dadfa0410a800067b4e3f702fb7fcaa3beaf284dfcc69e9"
+url = "https://unofficial-builds.nodejs.org/download/release/v24.16.0/node-v24.16.0-linux-arm64-musl.tar.gz"
+
+[tools.node."platforms.linux-x64"]
+checksum = "sha256:2faf6a387e9b62b888e21c54f01249fb27537ffecf1842f29f4c919d0a59a0ff"
+url = "https://nodejs.org/dist/v24.16.0/node-v24.16.0-linux-x64.tar.gz"
+
+[tools.node."platforms.linux-x64-musl"]
+checksum = "sha256:50df5d8d474892d4f7b906167df36f77f5b93908f63dc532dc568219cab65841"
+url = "https://unofficial-builds.nodejs.org/download/release/v24.16.0/node-v24.16.0-linux-x64-musl.tar.gz"
+
+[tools.node."platforms.macos-arm64"]
+checksum = "sha256:39189dab4eeb15706c424af0ac08a3044c9e48f7db12a7d77f6b7aafc7dd5df6"
+url = "https://nodejs.org/dist/v24.16.0/node-v24.16.0-darwin-arm64.tar.gz"
+
+[tools.node."platforms.macos-x64"]
+checksum = "sha256:298b4c7b3cb80765c8703e42b90324a4ece3b6634947b89e769c3c980ab55185"
+url = "https://nodejs.org/dist/v24.16.0/node-v24.16.0-darwin-x64.tar.gz"
+
+[tools.node."platforms.windows-x64"]
+checksum = "sha256:edaca9bd58ec8e92037dac4e877d52f6b8f430b81c18b57e264b4e2fb111cd56"
+url = "https://nodejs.org/dist/v24.16.0/node-v24.16.0-win-x64.zip"
