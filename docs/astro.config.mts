@@ -20,12 +20,9 @@ const generatedApiIndexMiddleware: Plugin = {
   name: "spatial-k-generated-api-index-middleware",
   configureServer(server) {
     server.middlewares.use((request, response, next) => {
-      const pathname = request.url
-        ? new URL(request.url, "http://localhost").pathname
-        : undefined;
+      const pathname = request.url ? new URL(request.url, "http://localhost").pathname : undefined;
 
-      const publicPath =
-        pathname?.startsWith(base) ? pathname.slice(base.length) : pathname;
+      const publicPath = pathname?.startsWith(base) ? pathname.slice(base.length) : pathname;
 
       if (
         publicPath?.startsWith("/api/") &&

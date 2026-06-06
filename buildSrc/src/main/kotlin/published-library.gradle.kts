@@ -50,7 +50,7 @@ dokka {
         }
     }
     pluginsConfiguration {
-        html { customStyleSheets.from(rootProject.file("docs/styles/dokka-extra.css")) }
+        html { customStyleSheets.from(rootProject.file("docs/src/styles/dokka-extra.css")) }
     }
 }
 
