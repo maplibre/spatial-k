@@ -26,8 +26,6 @@ jobs:
         steps:
             - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
               with:
-                  fetch-depth: 0
-                  fetch-tags: true
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - run: ./gradlew version # TODO: remove this once we're confident in our config
@@ -43,8 +41,6 @@ jobs:
         steps:
             - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
               with:
-                  fetch-depth: 0
-                  fetch-tags: true
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - name: Run benchmark
@@ -57,11 +53,9 @@ jobs:
         steps:
             - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
               with:
-                  fetch-depth: 0
-                  fetch-tags: true
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
-            - run: mise run -C docs build
+            - run: mise run docs:build --version dev
             - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
               with:
                   path: docs/dist
@@ -71,8 +65,6 @@ jobs:
         steps:
             - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
               with:
-                  fetch-depth: 0
-                  fetch-tags: true
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - run: mise run check
@@ -82,8 +74,6 @@ jobs:
         steps:
             - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
               with:
-                  fetch-depth: 0
-                  fetch-tags: true
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - name: Verify gradle wrapper

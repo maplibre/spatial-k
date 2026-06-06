@@ -3,8 +3,11 @@ import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType
 plugins {
     id("org.jetbrains.kotlinx.kover")
     id("org.jetbrains.dokka")
-    id("semver")
 }
+
+version = providers.gradleProperty("spatialKVersion").getOrElse("0.0.0-SNAPSHOT")
+
+tasks.register("version") { doLast { println(project.version) } }
 
 dokka {
     moduleName = "Spatial K"

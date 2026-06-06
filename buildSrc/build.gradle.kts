@@ -12,7 +12,6 @@ dependencies {
     implementation(libs.gradle.publish)
     implementation(libs.gradle.benchmark)
     implementation(libs.gradle.kover)
-    implementation(libs.gradle.semver)
     implementation(libs.gradle.detekt)
 }
 

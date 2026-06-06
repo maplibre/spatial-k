@@ -1,0 +1,96 @@
+name: Publish
+
+on:
+    push:
+        branches:
+            - main
+        tags:
+            - "v*"
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: publish-${{ github.ref }}
+    cancel-in-progress: false
+
+jobs:
+    publish-maven:
+        runs-on: ubuntu-latest
+        environment:
+            name: maven-central
+            url: https://central.sonatype.com/namespace/org.maplibre.spatialk
+        env:
+            REF_TYPE: ${{ github.ref_type }}
+            REF_NAME: ${{ github.ref_name }}
+        outputs:
+            spatial_k_version: ${{ steps.version.outputs.spatial_k_version }}
+        steps:
+            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+              with:
+                  persist-credentials: false
+            - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+            - id: version
+              run: |
+                  latest_release=""
+                  if [ "$REF_TYPE:$REF_NAME" = "branch:main" ]; then
+                      latest_release="$(
+                          git ls-remote --tags --refs origin "v*" |
+                              awk '{print $2}' |
+                              sed "s#^refs/tags/##" |
+                              sed -nE "s/^v([0-9]+)\.([0-9]+)\.([0-9]+)$/v\1.\2.\3/p" |
+                              sort -V |
+                              tail -n 1
+                      )"
+                  fi
+                  version="$(
+                      mise run --quiet publish:version \
+                          --ref-type "$REF_TYPE" \
+                          --ref-name "$REF_NAME" \
+                          --latest-release "$latest_release"
+                  )"
+                  echo "spatial_k_version=$version" >> "$GITHUB_OUTPUT"
+                  echo "latest_release=$latest_release" >> "$GITHUB_OUTPUT"
+            - name: Publish
+              run: >
+                  mise run publish --mode live
+                  --ref-type "$REF_TYPE"
+                  --ref-name "$REF_NAME"
+                  --latest-release "$LATEST_RELEASE"
+              env:
+                  LATEST_RELEASE: ${{ steps.version.outputs.latest_release }}
+                  ORG_GRADLE_PROJECT_mavenCentralUsername:
+                      ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+                  ORG_GRADLE_PROJECT_mavenCentralPassword:
+                      ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+                  ORG_GRADLE_PROJECT_signingInMemoryKey:
+                      ${{ secrets.GPG_PRIVATE_KEY }}
+                  ORG_GRADLE_PROJECT_signingInMemoryKeyPassword:
+                      ${{ secrets.GPG_PASSPHRASE }}
+
+    publish-pages:
+        runs-on: ubuntu-latest
+        needs: [publish-maven]
+        if: github.ref_type == 'tag'
+        permissions:
+            contents: read
+            pages: write
+            id-token: write
+        environment:
+            name: github-pages
+            url: ${{ steps.deploy-pages.outputs.page_url }}
+        steps:
+            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+              with:
+                  persist-credentials: false
+            - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+            - name: Build docs
+              run: >
+                  mise run docs:build --version
+                  "${{ needs.publish-maven.outputs.spatial_k_version }}"
+            - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+              with:
+                  path: docs/dist
+            - uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
+              id: deploy-pages

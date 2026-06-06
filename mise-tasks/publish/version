@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+#MISE description="Calculate the Spatial K publish version"
+#USAGE flag "--ref-type <type>" help="Git ref type" {
+#USAGE   choices "branch" "tag"
+#USAGE }
+#USAGE flag "--ref-name <name>" help="Git ref name"
+#USAGE flag "--latest-release <version>" help="Latest final release version"
+
+set -euo pipefail
+
+ref_type="${usage_ref_type:?--ref-type is required}"
+ref_name="${usage_ref_name:?--ref-name is required}"
+latest_release="${usage_latest_release:-}"
+
+case "$ref_type:$ref_name" in
+  tag:v*)
+    if [[ ! "$ref_name" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z][0-9A-Za-z.-]*)?$ ]]; then
+      echo "Unsupported release tag: $ref_name" >&2
+      exit 1
+    fi
+    echo "${ref_name#v}"
+    ;;
+  branch:main)
+    if [[ ! "$latest_release" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+      echo "Main snapshot publishing requires --latest-release vX.Y.Z" >&2
+      exit 1
+    fi
+    latest="${latest_release#v}"
+    IFS=. read -r major minor patch <<< "$latest"
+    echo "${major}.$((minor + 1)).0-SNAPSHOT"
+    ;;
+  *)
+    echo "Publishing is only supported from main or vX.Y.Z tags; got ${ref_type:-unknown}:${ref_name:-unknown}" >&2
+    exit 1
+    ;;
+esac
