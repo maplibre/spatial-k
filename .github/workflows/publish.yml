@@ -21,24 +21,29 @@ jobs:
         environment:
             name: maven-central
             url: https://central.sonatype.com/namespace/org.maplibre.spatialk
+        env:
+            REF_TYPE: ${{ github.ref_type }}
+            REF_NAME: ${{ github.ref_name }}
         outputs:
             spatial_k_version: ${{ steps.version.outputs.spatial_k_version }}
         steps:
             - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+              with:
+                  persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - id: version
               run: |
                   version="$(
                       mise run --quiet publish:version \
-                          --ref-type "${{ github.ref_type }}" \
-                          --ref-name "${{ github.ref_name }}"
+                          --ref-type "$REF_TYPE" \
+                          --ref-name "$REF_NAME"
                   )"
                   echo "spatial_k_version=$version" >> "$GITHUB_OUTPUT"
             - name: Publish
               run: >
                   mise run publish --mode live
-                  --ref-type "${{ github.ref_type }}"
-                  --ref-name "${{ github.ref_name }}"
+                  --ref-type "$REF_TYPE"
+                  --ref-name "$REF_NAME"
               env:
                   ORG_GRADLE_PROJECT_mavenCentralUsername:
                       ${{ secrets.MAVEN_CENTRAL_USERNAME }}
