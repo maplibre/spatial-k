@@ -62,7 +62,7 @@ targets, etc.
 ### Documentation
 
 The documentation website uses [Starlight](https://starlight.astro.build/) and is located in the
-`docs` directory. Run `mise run docs` to run a local server to view the docs. The server will
+`docs` directory. Run `mise run docs:dev` to run a local server to view the docs. The server will
 automatically reload when you make changes to the docs.
 
 ### Dump ABIs

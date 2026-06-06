@@ -66,10 +66,9 @@ jobs:
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - name: Build docs
-              run: |
-                  SPATIAL_K_VERSION="${{ needs.publish-maven.outputs.spatial_k_version }}" \
-                      SPATIAL_K_GRADLE_ARGS="-PspatialKVersion=${{ needs.publish-maven.outputs.spatial_k_version }}" \
-                      mise run -C docs build
+              run: >
+                  mise run docs:build --version
+                  "${{ needs.publish-maven.outputs.spatial_k_version }}"
             - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
               with:
                   path: docs/dist

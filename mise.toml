@@ -56,17 +56,35 @@ swift test --package-path pmtiles/src
 description = "Run all tests"
 depends = ["test:jvm", "test:jsnode", "test:wasmjsnode", "test:native", "test:swift"]
 
-[tasks.docs]
+[tasks."docs:dokka"]
+description = "Generate api reference"
+usage = '''
+flag "--version <version>" help="Spatial K version"
+'''
+run = '''
+./gradlew :dokkaGenerateHtml -PspatialKVersion="${usage_version:?}"
+'''
+
+[tasks."docs:dev"]
 description = "Serve documentation locally"
-run = "mise run -C docs dev"
+run = '''
+mise run docs:dokka --version dev
+pnpm --filter docs exec astro dev
+'''
 
 [tasks."docs:build"]
 description = "Build documentation"
-run = "mise run -C docs build"
+usage = '''
+flag "--version <version>" help="Spatial K version"
+'''
+run = '''
+mise run docs:dokka --version "${usage_version:?}"
+SPATIAL_K_VERSION="${usage_version:?}" pnpm --filter docs exec astro build
+'''
 
 [tasks."docs:clean"]
 description = "Clean documentation outputs"
-run = "mise run -C docs clean"
+run = "rm -rf docs/.astro docs/dist docs/public/api"
 
 [tasks.check]
 description = "Run all linting and formatting checks"
