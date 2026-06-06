@@ -1,6 +1,36 @@
 // swift-tools-version: 6.0
 
+import Foundation
 import PackageDescription
+
+var targets: [Target] = [
+    .binaryTarget(
+        name: "SpatialKPmtilesKotlin",
+        path: "Artifacts/SpatialKPmtilesKotlin.xcframework"
+    ),
+    .target(
+        name: "SpatialKPmtiles",
+        dependencies: [
+            "SpatialKPmtilesKotlin"
+        ],
+        path: "swiftMain"
+    ),
+]
+
+if FileManager.default.fileExists(atPath: "swiftTest") {
+    targets.append(
+        .testTarget(
+            name: "SpatialKPmtilesDocsTests",
+            dependencies: [
+                "SpatialKPmtiles"
+            ],
+            path: "swiftTest",
+            resources: [
+                .process("Resources")
+            ]
+        )
+    )
+}
 
 let package = Package(
     name: "SpatialKPmtiles",
@@ -16,27 +46,5 @@ let package = Package(
             ]
         )
     ],
-    targets: [
-        .binaryTarget(
-            name: "SpatialKPmtilesKotlin",
-            path: "Artifacts/SpatialKPmtilesKotlin.xcframework"
-        ),
-        .target(
-            name: "SpatialKPmtiles",
-            dependencies: [
-                "SpatialKPmtilesKotlin"
-            ],
-            path: "swiftMain"
-        ),
-        .testTarget(
-            name: "SpatialKPmtilesDocsTests",
-            dependencies: [
-                "SpatialKPmtiles"
-            ],
-            path: "swiftTest",
-            resources: [
-                .process("Resources")
-            ]
-        ),
-    ]
+    targets: targets
 )
