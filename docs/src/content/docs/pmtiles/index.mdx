@@ -4,6 +4,8 @@ title: "PMTiles"
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
+export const version = import.meta.env.SPATIAL_K_VERSION ?? 'VERSION';
+
 The `pmtiles` module reads [PMTiles v3](https://docs.protomaps.com/pmtiles/) archives from a
 caller-provided byte range source.
 
@@ -32,8 +34,9 @@ Details can be found in the [API reference](/spatial-k/api/dokka/pmtiles/index.h
 
   <TabItem label="Swift">
     Download `SpatialKPmtiles.swiftpm.zip` from the matching
-    [GitHub release](https://github.com/maplibre/spatial-k/releases), extract it, then add the
-    extracted `SpatialKPmtiles` directory as a local Swift package in Xcode or SwiftPM.
+    <a href={`https://github.com/maplibre/spatial-k/releases/tag/v${version}`}>GitHub release</a>,
+    extract it, then add the extracted `SpatialKPmtiles` directory as a local Swift package in Xcode
+    or SwiftPM.
 
     ```swift
     import SpatialKPmtiles
