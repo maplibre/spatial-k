@@ -46,6 +46,9 @@ const generatedApiIndexMiddleware: Plugin = {
 export default defineConfig({
   site: "https://maplibre.github.io",
   base,
+  redirects: {
+    "/api/": `${base}/api/dokka/`,
+  },
   vite: {
     plugins: [generatedApiIndexMiddleware],
   },
