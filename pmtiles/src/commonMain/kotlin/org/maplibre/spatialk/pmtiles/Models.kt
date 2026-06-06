@@ -8,6 +8,7 @@ import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.jvm.JvmInline
 import kotlin.native.HiddenFromObjC
 import kotlin.native.ObjCName
+import kotlin.native.ShouldRefineInSwift
 import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
 
@@ -24,8 +25,7 @@ internal constructor(
 )
 
 /** Caller-provided byte range source used by the PMTiles reader. */
-@OptIn(ExperimentalObjCRefinement::class)
-@HiddenFromObjC
+@ObjCName(swiftName = "KotlinByteRangeSource")
 public interface ByteRangeSource {
     /** Returns the stable archive size in bytes. */
     @Throws(PmTilesException::class, CancellationException::class) public suspend fun size(): ULong
@@ -367,7 +367,7 @@ public data class ArchiveTile
 internal constructor(
     public val tileId: Long,
     public val coord: TileCoord,
-    public val payload: ByteString,
+    @ShouldRefineInSwift public val payload: ByteString,
     public val tileType: TileTypeCode,
     public val compression: CompressionCode,
     public val wasDecompressed: Boolean,

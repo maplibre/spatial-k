@@ -48,7 +48,7 @@ if [ "$(uname)" != "Darwin" ]; then
   exit 0
 fi
 
-./gradlew :pmtiles:assembleSpatialKPmtilesDebugXCFramework
+./gradlew :pmtiles:assembleSpatialKPmtilesKotlinDebugXCFramework
 swift test --package-path pmtiles/src
 '''
 

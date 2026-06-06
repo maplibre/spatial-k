@@ -9,8 +9,15 @@ let package = Package(
     ],
     targets: [
         .binaryTarget(
+            name: "SpatialKPmtilesKotlin",
+            path: "../build/XCFrameworks/debug/SpatialKPmtilesKotlin.xcframework"
+        ),
+        .target(
             name: "SpatialKPmtiles",
-            path: "../build/XCFrameworks/debug/SpatialKPmtiles.xcframework"
+            dependencies: [
+                "SpatialKPmtilesKotlin"
+            ],
+            path: "swiftMain"
         ),
         .testTarget(
             name: "SpatialKPmtilesDocsTests",

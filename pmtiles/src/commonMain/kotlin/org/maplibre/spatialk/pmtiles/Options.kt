@@ -4,6 +4,7 @@ package org.maplibre.spatialk.pmtiles
 
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
+import kotlin.native.ShouldRefineInSwift
 
 /** Archive validation mode. */
 public enum class ValidationMode {
@@ -80,10 +81,9 @@ private constructor(
     }
 
     /** Returns a mutable builder initialized from these limits. */
-    @HiddenFromObjC public fun toBuilder(): Builder = Builder(this)
+    @ShouldRefineInSwift public fun toBuilder(): Builder = Builder(this)
 
     /** Mutable Kotlin builder for [ArchiveLimits]. */
-    @HiddenFromObjC
     public class Builder public constructor() {
         private val defaults: ArchiveLimits = ArchiveLimits()
 
@@ -167,10 +167,9 @@ private constructor(
     public constructor() : this(maxCoalescedBytes = (512 * 1024).toULong(), maxGapBytes = 0uL)
 
     /** Returns a mutable builder initialized from these coalescing options. */
-    @HiddenFromObjC public fun toBuilder(): Builder = Builder(this)
+    @ShouldRefineInSwift public fun toBuilder(): Builder = Builder(this)
 
     /** Mutable Kotlin builder for [TileReadCoalescing]. */
-    @HiddenFromObjC
     public class Builder public constructor() {
         private val defaults: TileReadCoalescing = TileReadCoalescing()
 
@@ -224,10 +223,9 @@ private constructor(
         )
 
     /** Returns a mutable builder initialized from these options. */
-    @HiddenFromObjC public fun toBuilder(): Builder = Builder(this)
+    @ShouldRefineInSwift public fun toBuilder(): Builder = Builder(this)
 
     /** Mutable Kotlin builder for [ArchiveOpenOptions]. */
-    @HiddenFromObjC
     public class Builder public constructor() {
         private val defaults: ArchiveOpenOptions = ArchiveOpenOptions()
 
@@ -246,6 +244,7 @@ private constructor(
         }
 
         /** Registers [decompressor] for [compression]. */
+        @ShouldRefineInSwift
         public fun decompressor(
             compression: CompressionCode,
             decompressor: Decompressor,
