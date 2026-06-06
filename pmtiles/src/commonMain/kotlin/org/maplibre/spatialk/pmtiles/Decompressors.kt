@@ -1,8 +1,8 @@
 package org.maplibre.spatialk.pmtiles
 
 import kotlin.coroutines.cancellation.CancellationException
-import kotlin.experimental.ExperimentalObjCRefinement
-import kotlin.native.HiddenFromObjC
+import kotlin.experimental.ExperimentalObjCName
+import kotlin.native.ObjCName
 import kotlinx.io.bytestring.ByteString
 
 /**
@@ -18,8 +18,8 @@ internal constructor(
 )
 
 /** Decompresses bytes for one PMTiles compression format. */
-@OptIn(ExperimentalObjCRefinement::class)
-@HiddenFromObjC
+@OptIn(ExperimentalObjCName::class)
+@ObjCName(swiftName = "KotlinDecompressor")
 public fun interface Decompressor {
     /**
      * Returns decompressed [bytes].

@@ -4,6 +4,7 @@ package org.maplibre.spatialk.pmtiles
 
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.native.HiddenFromObjC
+import kotlin.native.ShouldRefineInSwift
 import kotlinx.io.bytestring.ByteString
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
@@ -30,7 +31,7 @@ import org.maplibre.spatialk.pmtiles.internal.toByteRange
 /** Factory methods for PMTiles archives. */
 public object PmTiles {
     /** Opens a PMTiles archive from [source] with [options]. */
-    @HiddenFromObjC
+    @ShouldRefineInSwift
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun open(
         source: ByteRangeSource,
@@ -91,12 +92,6 @@ public object PmTiles {
             initialWarnings = warnings,
         )
     }
-
-    /** Opens a PMTiles archive from [source] with strict validation. */
-    @HiddenFromObjC
-    @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun open(source: ByteRangeSource): PmTilesArchive =
-        open(source = source, options = ArchiveOpenOptions())
 }
 
 /**
@@ -130,13 +125,14 @@ internal constructor(
         )
 
     /** Tile payload type from the header. */
-    public val tileType: TileTypeCode = header.tileType
+    @ShouldRefineInSwift public val tileType: TileTypeCode = header.tileType
 
     /** CompressionCode used for directories and metadata. */
+    @ShouldRefineInSwift
     public val internalCompression: CompressionCode = header.internalCompression
 
     /** CompressionCode used for tile payloads. */
-    public val tileCompression: CompressionCode = header.tileCompression
+    @ShouldRefineInSwift public val tileCompression: CompressionCode = header.tileCompression
 
     /** Returns the raw metadata JSON string. */
     @Throws(PmTilesException::class, CancellationException::class)
@@ -216,6 +212,7 @@ internal constructor(
      * Tile payload source reads may be coalesced according to [coalescing].
      */
     @Throws(PmTilesException::class, CancellationException::class)
+    @ShouldRefineInSwift
     public suspend fun readStoredTiles(
         coords: List<TileCoord>,
         coalescing: TileReadCoalescing = TileReadCoalescing(),
@@ -226,17 +223,13 @@ internal constructor(
             decompress = false,
         )
 
-    /** Returns stored tiles for [coords] using default read coalescing. */
-    @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun readStoredTiles(coords: List<TileCoord>): List<TileReadResult> =
-        readStoredTiles(coords = coords, coalescing = TileReadCoalescing())
-
     /**
      * Returns decompressed tile read results for [coords], preserving input order.
      *
      * Tile payload source reads may be coalesced according to [coalescing].
      */
     @Throws(PmTilesException::class, CancellationException::class)
+    @ShouldRefineInSwift
     public suspend fun readDecompressedTiles(
         coords: List<TileCoord>,
         coalescing: TileReadCoalescing = TileReadCoalescing(),
@@ -246,11 +239,6 @@ internal constructor(
             coalescing = coalescing,
             decompress = true,
         )
-
-    /** Returns decompressed tiles for [coords] using default read coalescing. */
-    @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun readDecompressedTiles(coords: List<TileCoord>): List<TileReadResult> =
-        readDecompressedTiles(coords = coords, coalescing = TileReadCoalescing())
 
     /** Returns the archive byte range for the tile at [z], [x], and [y]. */
     @Throws(PmTilesException::class, CancellationException::class)

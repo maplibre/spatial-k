@@ -10,14 +10,14 @@ final class SwiftDocsTest: XCTestCase {
         let pmTilesData = try fixtureData("pmtiles-js-test-fixture-1")
 
         // --8<-- [start:byteRangeDataSource]
-        final class DataByteRangeSource: NSObject, ByteRangeDataSource {
+        final class DataByteRangeSource: ByteRangeDataSource {
             private let data: Data
 
             init(data: Data) {
                 self.data = data
             }
 
-            func size() -> UInt64 {
+            func size() async throws -> UInt64 {
                 UInt64(data.count)
             }
 
@@ -31,7 +31,7 @@ final class SwiftDocsTest: XCTestCase {
 
         let source = DataByteRangeSource(data: pmTilesData)
         let archive =
-            try await PmTiles.shared.open(source: source)
+            try await PmTiles.open(source: source)
         archive.close()
     }
 
@@ -40,23 +40,23 @@ final class SwiftDocsTest: XCTestCase {
 
         // --8<-- [start:openArchive]
         let archive =
-            try await PmTiles.shared.open(source: source)
+            try await PmTiles.open(source: source)
         defer { archive.close() }
 
         let header = archive.header
         let metadata = try await archive.metadata()
         let tile = try await archive.readStoredTile(z: 0, x: 0, y: 0)
-        let payloadData = tile?.payload.toNSData()
+        let payload = tile?.payload
         let tileRange = try await archive.findTileRange(z: 0, x: 0, y: 0)
         // --8<-- [end:openArchive]
 
         let coord = try TileCoord(z: 0, x: 0, y: 0)
         _ = header
         _ = metadata
-        _ = TileTypeCodes.shared.mvt
-        _ = CompressionCodes.shared.gzip
+        _ = TileTypeCode.mvt
+        _ = CompressionCode.gzip
         XCTAssertNotNil(tile)
-        XCTAssertNotNil(payloadData)
+        XCTAssertNotNil(payload)
         let tileById = try await archive.readStoredTile(tileId: 0)
         let tileRangeByCoord = try await archive.findTileRange(coord: coord)
         let tileRangeById = try await archive.findTileRange(tileId: 0)
@@ -72,14 +72,14 @@ final class SwiftDocsTest: XCTestCase {
 
         // --8<-- [start:decompressedTiles]
         let archive =
-            try await PmTiles.shared.open(source: source)
+            try await PmTiles.open(source: source)
         defer { archive.close() }
 
         let tile = try await archive.readDecompressedTile(z: 0, x: 0, y: 0)
         // --8<-- [end:decompressedTiles]
 
         XCTAssertNotNil(tile)
-        _ = CompressionCodes.shared.none
+        _ = CompressionCode.none
         let tileById = try await archive.readDecompressedTile(tileId: 0)
         XCTAssertNotNil(tileById)
     }
@@ -89,7 +89,7 @@ final class SwiftDocsTest: XCTestCase {
 
         // --8<-- [start:batchTiles]
         let archive =
-            try await PmTiles.shared.open(source: source)
+            try await PmTiles.open(source: source)
         defer { archive.close() }
 
         let coords = [
@@ -103,13 +103,15 @@ final class SwiftDocsTest: XCTestCase {
         // --8<-- [end:batchTiles]
 
         XCTAssertFalse(results.isEmpty)
-        _ = TileReadCoalescing()
-            .with(maxCoalescedBytes: 0)
-            .with(maxGapBytes: 0)
+        _ = TileReadCoalescing.build { coalescing in
+            coalescing.maxCoalescedBytes = 0
+            coalescing.maxGapBytes = 0
+        }
         let coalescing =
-            TileReadCoalescing()
-                .with(maxGapBytes: 64)
-                .with(maxCoalescedBytes: 2048)
+            TileReadCoalescing.build { coalescing in
+                coalescing.maxGapBytes = 64
+                coalescing.maxCoalescedBytes = 2048
+            }
         _ = coalescing
     }
 
@@ -117,7 +119,7 @@ final class SwiftDocsTest: XCTestCase {
         let source = TestByteRangeDataSource(data: try fixtureData("pmtiles-js-test-fixture-1"))
 
         // --8<-- [start:customDecompressor]
-        final class BrotliDecompressor: NSObject, DataDecompressor {
+        final class BrotliDecompressor: DataDecompressor {
             func decompress(
                 data: Data,
                 limits: DecompressionLimits
@@ -134,28 +136,39 @@ final class SwiftDocsTest: XCTestCase {
         }
 
         let options =
-            ArchiveOpenOptions().withDecompressor(
-                compression: CompressionCodes.shared.brotli,
-                decompressor: BrotliDecompressor()
-            )
+            ArchiveOpenOptions.build { options in
+                options.decompressor(.brotli, BrotliDecompressor())
+            }
 
-        let archive = try await PmTiles.shared.open(source: source, options: options)
+        let archive = try await PmTiles.open(source: source, options: options)
         defer { archive.close() }
 
         let tile = try await archive.readDecompressedTile(z: 0, x: 0, y: 0)
         // --8<-- [end:customDecompressor]
 
         XCTAssertNotNil(tile)
-        let lenientOptions = options.with(validationMode: ValidationMode.lenient)
-        let limitedOptions = options.with(limits: ArchiveLimits())
-        let combinedOptions = options.with(validationMode: ValidationMode.lenient, limits: ArchiveLimits())
+        let lenientOptions = options.configured { options in
+            options.validationMode = ValidationMode.lenient
+        }
+        let limitedOptions = options.configured { options in
+            options.limits = ArchiveLimits()
+        }
+        let combinedOptions = options.configured { options in
+            options.validationMode = ValidationMode.lenient
+            options.limits = ArchiveLimits()
+        }
         let metadataLimitedOptions =
-            options.with(limits: ArchiveLimits().with(maxMetadataBytes: 1024))
+            options.configured { options in
+                options.limits = ArchiveLimits.build { limits in
+                    limits.maxMetadataBytes = 1024
+                }
+            }
         let directoryLimitedOptions =
-            options.with(
-                limits: ArchiveLimits()
-                    .with(maxDirectoryDecompressedBytes: 2048)
-            )
+            options.configured { options in
+                options.limits = ArchiveLimits.build { limits in
+                    limits.maxDirectoryDecompressedBytes = 2048
+                }
+            }
         _ = lenientOptions
         _ = limitedOptions
         _ = combinedOptions
@@ -166,7 +179,7 @@ final class SwiftDocsTest: XCTestCase {
     func testCustomDecompressorThrowsSwiftErrorAtOpen() async throws {
         let source = TestByteRangeDataSource(data: try fixtureData("pmtiles-js-test-fixture-1"))
 
-        final class ThrowingDecompressor: NSObject, DataDecompressor {
+        final class ThrowingDecompressor: DataDecompressor {
             func decompress(
                 data: Data,
                 limits: DecompressionLimits
@@ -176,12 +189,11 @@ final class SwiftDocsTest: XCTestCase {
         }
 
         let options =
-            ArchiveOpenOptions().withDecompressor(
-                compression: CompressionCodes.shared.gzip,
-                decompressor: ThrowingDecompressor()
-            )
+            ArchiveOpenOptions.build { options in
+                options.decompressor(.gzip, ThrowingDecompressor())
+            }
         do {
-            _ = try await PmTiles.shared.open(source: source, options: options)
+            _ = try await PmTiles.open(source: source, options: options)
             XCTFail("Expected custom decompressor to throw.")
         } catch {
             let pmTilesError = try XCTUnwrap((error as NSError).kotlinException as? PmTilesException)
@@ -192,7 +204,7 @@ final class SwiftDocsTest: XCTestCase {
     func testCustomDecompressorThrowsPmTilesErrorAtOpen() async throws {
         let source = TestByteRangeDataSource(data: try fixtureData("pmtiles-js-test-fixture-1"))
 
-        final class LimitExceededDecompressor: NSObject, DataDecompressor {
+        final class LimitExceededDecompressor: DataDecompressor {
             func decompress(
                 data: Data,
                 limits: DecompressionLimits
@@ -205,13 +217,12 @@ final class SwiftDocsTest: XCTestCase {
         }
 
         let options =
-            ArchiveOpenOptions().withDecompressor(
-                compression: CompressionCodes.shared.gzip,
-                decompressor: LimitExceededDecompressor()
-            )
+            ArchiveOpenOptions.build { options in
+                options.decompressor(.gzip, LimitExceededDecompressor())
+            }
 
         do {
-            _ = try await PmTiles.shared.open(source: source, options: options)
+            _ = try await PmTiles.open(source: source, options: options)
             XCTFail("Expected custom decompressor to throw.")
         } catch {
             let pmTilesError = try XCTUnwrap((error as NSError).kotlinException as? PmTilesException)
@@ -222,7 +233,7 @@ final class SwiftDocsTest: XCTestCase {
     func testCustomDecompressorReceivesUInt64Limits() async throws {
         let source = TestByteRangeDataSource(data: try fixtureData("pmtiles-js-test-fixture-1"))
 
-        final class RecordingDecompressor: NSObject, DataDecompressor {
+        final class RecordingDecompressor: DataDecompressor {
             private(set) var maxCompressedBytes: UInt64?
             private(set) var maxDecompressedBytes: UInt64?
 
@@ -241,13 +252,12 @@ final class SwiftDocsTest: XCTestCase {
 
         let decompressor = RecordingDecompressor()
         let options =
-            ArchiveOpenOptions().withDecompressor(
-                compression: CompressionCodes.shared.gzip,
-                decompressor: decompressor
-            )
+            ArchiveOpenOptions.build { options in
+                options.decompressor(.gzip, decompressor)
+            }
 
         do {
-            _ = try await PmTiles.shared.open(source: source, options: options)
+            _ = try await PmTiles.open(source: source, options: options)
             XCTFail("Expected custom decompressor to throw.")
         } catch {
             let pmTilesError = try XCTUnwrap((error as NSError).kotlinException as? PmTilesException)
@@ -263,9 +273,11 @@ final class SwiftDocsTest: XCTestCase {
 
         // --8<-- [start:lenientWarnings]
         let archive =
-            try await PmTiles.shared.open(
+            try await PmTiles.open(
                 source: source,
-                options: ArchiveOpenOptions().with(validationMode: ValidationMode.lenient)
+                options: ArchiveOpenOptions.build { options in
+                    options.validationMode = ValidationMode.lenient
+                }
             )
         defer { archive.close() }
 
@@ -273,7 +285,9 @@ final class SwiftDocsTest: XCTestCase {
         // --8<-- [end:lenientWarnings]
 
         XCTAssertFalse(warnings.isEmpty)
-        _ = ArchiveOpenOptions().with(validationMode: ValidationMode.lenient)
+        _ = ArchiveOpenOptions.build { options in
+            options.validationMode = ValidationMode.lenient
+        }
     }
 
     func testThrowsSwiftError() async throws {
@@ -281,7 +295,7 @@ final class SwiftDocsTest: XCTestCase {
 
         do {
             _ =
-                try await PmTiles.shared.open(source: source)
+                try await PmTiles.open(source: source)
             XCTFail("Expected invalid archive to throw.")
         } catch {
             let pmTilesError = try XCTUnwrap((error as NSError).kotlinException as? PmTilesException)
@@ -300,7 +314,7 @@ final class SwiftDocsTest: XCTestCase {
     }
 }
 
-private final class TestByteRangeDataSource: NSObject, ByteRangeDataSource {
+private final class TestByteRangeDataSource: ByteRangeDataSource {
     private let data: Data
     private(set) var readCount = 0
 
@@ -308,7 +322,7 @@ private final class TestByteRangeDataSource: NSObject, ByteRangeDataSource {
         self.data = data
     }
 
-    func size() -> UInt64 {
+    func size() async throws -> UInt64 {
         UInt64(data.count)
     }
 

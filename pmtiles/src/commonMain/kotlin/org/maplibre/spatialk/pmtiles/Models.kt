@@ -8,6 +8,7 @@ import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.jvm.JvmInline
 import kotlin.native.HiddenFromObjC
 import kotlin.native.ObjCName
+import kotlin.native.ShouldRefineInSwift
 import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
 
@@ -24,8 +25,7 @@ internal constructor(
 )
 
 /** Caller-provided byte range source used by the PMTiles reader. */
-@OptIn(ExperimentalObjCRefinement::class)
-@HiddenFromObjC
+@ObjCName(swiftName = "KotlinByteRangeSource")
 public interface ByteRangeSource {
     /** Returns the stable archive size in bytes. */
     @Throws(PmTilesException::class, CancellationException::class) public suspend fun size(): ULong
@@ -62,9 +62,9 @@ internal constructor(
     public val tileData: ArchiveSection,
     public val counts: HeaderCounts,
     public val isClustered: Boolean,
-    public val internalCompression: CompressionCode,
-    public val tileCompression: CompressionCode,
-    public val tileType: TileTypeCode,
+    @ShouldRefineInSwift public val internalCompression: CompressionCode,
+    @ShouldRefineInSwift public val tileCompression: CompressionCode,
+    @ShouldRefineInSwift public val tileType: TileTypeCode,
     public val minZoom: Int,
     public val maxZoom: Int,
     public val bounds: LonLatBounds,
@@ -143,19 +143,29 @@ internal constructor(
 /** PMTiles compression-code constants. */
 public object CompressionCodes {
     /** Unknown compression code. */
-    @ObjCName(swiftName = "unknown") public val Unknown: CompressionCode = CompressionCode(0u)
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "unknown")
+    public val Unknown: CompressionCode = CompressionCode(0u)
 
     /** No compression. */
-    @ObjCName(swiftName = "none") public val None: CompressionCode = CompressionCode(1u)
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "none")
+    public val None: CompressionCode = CompressionCode(1u)
 
     /** gzip compression. */
-    @ObjCName(swiftName = "gzip") public val Gzip: CompressionCode = CompressionCode(2u)
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "gzip")
+    public val Gzip: CompressionCode = CompressionCode(2u)
 
     /** brotli compression. */
-    @ObjCName(swiftName = "brotli") public val Brotli: CompressionCode = CompressionCode(3u)
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "brotli")
+    public val Brotli: CompressionCode = CompressionCode(3u)
 
     /** zstd compression. */
-    @ObjCName(swiftName = "zstd") public val Zstd: CompressionCode = CompressionCode(4u)
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "zstd")
+    public val Zstd: CompressionCode = CompressionCode(4u)
 }
 
 /**
@@ -171,25 +181,39 @@ public object CompressionCodes {
 /** PMTiles tile-type-code constants. */
 public object TileTypeCodes {
     /** Unknown tile type. */
-    @ObjCName(swiftName = "unknown") public val Unknown: TileTypeCode = TileTypeCode(0u)
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "unknown")
+    public val Unknown: TileTypeCode = TileTypeCode(0u)
 
     /** Mapbox Vector Tile payload. */
-    @ObjCName(swiftName = "mvt") public val Mvt: TileTypeCode = TileTypeCode(1u)
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "mvt")
+    public val Mvt: TileTypeCode = TileTypeCode(1u)
 
     /** PNG raster payload. */
-    @ObjCName(swiftName = "png") public val Png: TileTypeCode = TileTypeCode(2u)
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "png")
+    public val Png: TileTypeCode = TileTypeCode(2u)
 
     /** JPEG raster payload. */
-    @ObjCName(swiftName = "jpeg") public val Jpeg: TileTypeCode = TileTypeCode(3u)
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "jpeg")
+    public val Jpeg: TileTypeCode = TileTypeCode(3u)
 
     /** WebP raster payload. */
-    @ObjCName(swiftName = "webp") public val Webp: TileTypeCode = TileTypeCode(4u)
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "webp")
+    public val Webp: TileTypeCode = TileTypeCode(4u)
 
     /** AVIF raster payload. */
-    @ObjCName(swiftName = "avif") public val Avif: TileTypeCode = TileTypeCode(5u)
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "avif")
+    public val Avif: TileTypeCode = TileTypeCode(5u)
 
     /** MapLibre Tile payload. */
-    @ObjCName(swiftName = "mlt") public val Mlt: TileTypeCode = TileTypeCode(6u)
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "mlt")
+    public val Mlt: TileTypeCode = TileTypeCode(6u)
 }
 
 /**
@@ -347,8 +371,8 @@ internal constructor(
     public val tileId: Long,
     public val coord: TileCoord,
     public val archiveRange: ByteRange,
-    public val tileType: TileTypeCode,
-    public val compression: CompressionCode,
+    @ShouldRefineInSwift public val tileType: TileTypeCode,
+    @ShouldRefineInSwift public val compression: CompressionCode,
     public val directoryDepth: Int,
 )
 
@@ -367,9 +391,9 @@ public data class ArchiveTile
 internal constructor(
     public val tileId: Long,
     public val coord: TileCoord,
-    public val payload: ByteString,
-    public val tileType: TileTypeCode,
-    public val compression: CompressionCode,
+    @ShouldRefineInSwift public val payload: ByteString,
+    @ShouldRefineInSwift public val tileType: TileTypeCode,
+    @ShouldRefineInSwift public val compression: CompressionCode,
     public val wasDecompressed: Boolean,
     public val range: TileRange,
 )

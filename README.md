@@ -85,9 +85,9 @@ val gpxString = Gpx.encodeToString(document)
 
 ```kotlin
 // Inside a suspend function or coroutine scope:
-PmTilesArchive.open(source).use { archive ->
+PmTiles.open(source).use { archive ->
     val header = archive.header
-    val tile = archive.getDecompressedTile(z = 0, x = 0, y = 0)
+    val tile = archive.readDecompressedTile(z = 0, x = 0, y = 0)
 }
 ```
 

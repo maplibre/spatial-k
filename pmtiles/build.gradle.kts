@@ -7,7 +7,7 @@ plugins {
 }
 
 kotlin {
-    val frameworkName = "SpatialKPmtiles"
+    val frameworkName = "SpatialKPmtilesKotlin"
     val xcFramework = XCFramework(frameworkName)
     val frameworkTargets = setOf("iosArm64", "iosSimulatorArm64", "macosArm64")
 
