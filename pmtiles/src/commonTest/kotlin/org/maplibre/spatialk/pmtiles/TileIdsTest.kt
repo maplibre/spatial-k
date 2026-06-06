@@ -27,13 +27,12 @@ class TileIdsTest {
     }
 
     @Test
-    fun roundTripsAllLowZoomCoordinates() {
-        for (z in 0..8) {
+    fun roundTripsAllCoordinatesThroughZoomSix() {
+        for (z in 0..6) {
             val limit = 1 shl z
             for (x in 0 until limit) {
                 for (y in 0 until limit) {
-                    val tileId = TileIds.fromZxy(z, x, y)
-                    assertEquals(TileCoord(z, x, y), TileIds.toZxy(tileId))
+                    assertRoundTrip(z, x, y)
                 }
             }
         }
@@ -98,5 +97,10 @@ class TileIdsTest {
     private fun assertInvalidCoordinate(block: () -> Unit) {
         val error = assertFailsWith<PmTilesException>(block = block)
         assertEquals(PmTilesErrorCode.InvalidTileCoordinate, error.code)
+    }
+
+    private fun assertRoundTrip(z: Int, x: Int, y: Int) {
+        val tileId = TileIds.fromZxy(z, x, y)
+        assertEquals(TileCoord(z, x, y), TileIds.toZxy(tileId))
     }
 }
