@@ -27,16 +27,12 @@ kotlin {
     iosArm64()
 
     // native tier 2
-    macosX64()
-    iosX64()
     linuxX64()
     linuxArm64()
     watchosSimulatorArm64()
-    watchosX64()
     watchosArm32()
     watchosArm64()
     tvosSimulatorArm64()
-    tvosX64()
     tvosArm64()
 
     // native tier 3
@@ -46,4 +42,5 @@ kotlin {
     androidNativeX86()
     androidNativeX64()
     watchosDeviceArm64()
+    iosX64()
 }

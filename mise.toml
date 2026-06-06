@@ -38,7 +38,7 @@ run = "./gradlew wasmJsNodeTest"
 
 [tasks."test:native"]
 description = "Run native tests for the current platform"
-run = "./gradlew $( uname | grep -q Darwin && (uname -m | grep -q arm64 && echo macosArm64Test || echo macosX64Test) || echo linuxX64Test )"
+run = "./gradlew {{ os() }}{{ arch() | replace(from='x64', to='X64') | replace(from='arm64', to='Arm64') }}Test"
 
 [tasks."test:swift"]
 description = "Run Swift tests for Kotlin/Native ObjC-exported Apple APIs"
