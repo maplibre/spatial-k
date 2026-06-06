@@ -1,24 +1,24 @@
 // swift-tools-version: 6.0
 
+import Foundation
 import PackageDescription
 
-let package = Package(
-    name: "SpatialKPmtilesSwiftTests",
-    platforms: [
-        .macOS(.v14)
-    ],
-    targets: [
-        .binaryTarget(
-            name: "SpatialKPmtilesKotlin",
-            path: "../build/XCFrameworks/debug/SpatialKPmtilesKotlin.xcframework"
-        ),
-        .target(
-            name: "SpatialKPmtiles",
-            dependencies: [
-                "SpatialKPmtilesKotlin"
-            ],
-            path: "swiftMain"
-        ),
+var targets: [Target] = [
+    .binaryTarget(
+        name: "SpatialKPmtilesKotlin",
+        path: "Artifacts/SpatialKPmtilesKotlin.xcframework"
+    ),
+    .target(
+        name: "SpatialKPmtiles",
+        dependencies: [
+            "SpatialKPmtilesKotlin"
+        ],
+        path: "swiftMain"
+    ),
+]
+
+if FileManager.default.fileExists(atPath: "swiftTest") {
+    targets.append(
         .testTarget(
             name: "SpatialKPmtilesDocsTests",
             dependencies: [
@@ -28,6 +28,23 @@ let package = Package(
             resources: [
                 .process("Resources")
             ]
-        ),
-    ]
+        )
+    )
+}
+
+let package = Package(
+    name: "SpatialKPmtiles",
+    platforms: [
+        .iOS(.v17),
+        .macOS(.v14),
+    ],
+    products: [
+        .library(
+            name: "SpatialKPmtiles",
+            targets: [
+                "SpatialKPmtiles"
+            ]
+        )
+    ],
+    targets: targets
 )

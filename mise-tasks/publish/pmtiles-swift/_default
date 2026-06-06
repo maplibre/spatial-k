@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+#MISE description="Build and package the PMTiles Swift XCFramework for SwiftPM"
+#USAGE flag "--version <version>" help="Spatial K version"
+#USAGE flag "--output-dir <dir>" help="Directory for packaged artifacts"
+
+set -euo pipefail
+
+./gradlew :pmtiles:assembleSpatialKPmtilesKotlinReleaseXCFramework \
+  -PspatialKVersion="${usage_version:?}"
+
+mkdir -p "${usage_output_dir:?}"
+rm -rf "$usage_output_dir/SpatialKPmtiles"
+rm -f "$usage_output_dir/SpatialKPmtiles.swiftpm.zip" \
+  "$usage_output_dir/SpatialKPmtiles.swiftpm.zip.checksum"
+
+rsync -a --copy-links \
+  --include Package.swift \
+  --include "swiftMain/***" \
+  --exclude "*" \
+  pmtiles/src/ \
+  "$usage_output_dir/SpatialKPmtiles/"
+
+mkdir -p "$usage_output_dir/SpatialKPmtiles/Artifacts"
+cp -R \
+  pmtiles/build/XCFrameworks/release/SpatialKPmtilesKotlin.xcframework \
+  "$usage_output_dir/SpatialKPmtiles/Artifacts/SpatialKPmtilesKotlin.xcframework"
+
+(
+  cd "$usage_output_dir"
+  zip -r -X --symlinks SpatialKPmtiles.swiftpm.zip SpatialKPmtiles >/dev/null
+)
+
+swift package compute-checksum "$usage_output_dir/SpatialKPmtiles.swiftpm.zip" \
+  > "$usage_output_dir/SpatialKPmtiles.swiftpm.zip.checksum"

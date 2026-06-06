@@ -14,12 +14,12 @@ jobs:
             matrix:
                 include:
                     # Run full build and most tests on ubuntu
-                    - runner: ubuntu-latest
+                    - runner: ubuntu-24.04
                       task: build
                     # Run windows and macos native tests on those platforms
-                    - runner: windows-latest
+                    - runner: windows-2025
                       task: mingwX64Test
-                    - runner: macos-latest
+                    - runner: macos-26
                       task: macosArm64Test
 
         runs-on: ${{ matrix.runner }}
@@ -29,15 +29,17 @@ jobs:
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - run: ./gradlew version # TODO: remove this once we're confident in our config
-            - run: ./gradlew ${{ matrix.task }}
+            - run: ./gradlew "${{ matrix.task }}"
+            - if: ${{ matrix.task == 'macosArm64Test' }}
+              run: mise run test:swift
             - if: ${{ matrix.task == 'build' }} # Kover only supports JVM
               name: Generate coverage summary
               run: |
-                  echo '## Coverage' >> $GITHUB_STEP_SUMMARY
-                  ./gradlew -q :koverLog | tee $GITHUB_STEP_SUMMARY
+                  echo '## Coverage' >> "$GITHUB_STEP_SUMMARY"
+                  ./gradlew -q :koverLog | tee -a "$GITHUB_STEP_SUMMARY"
 
     benchmark:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         steps:
             - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
               with:
@@ -45,11 +47,11 @@ jobs:
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - name: Run benchmark
               run: |
-                  echo '## Benchmark' >> $GITHUB_STEP_SUMMARY
-                  ./gradlew -q benchmark -PbenchmarkWarmups=1 -PbenchmarkIterations=1 | tee $GITHUB_STEP_SUMMARY
+                  echo '## Benchmark' >> "$GITHUB_STEP_SUMMARY"
+                  ./gradlew -q benchmark -PbenchmarkWarmups=1 -PbenchmarkIterations=1 | tee -a "$GITHUB_STEP_SUMMARY"
 
     build-docs:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         steps:
             - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
               with:
@@ -61,7 +63,7 @@ jobs:
                   path: docs/dist
 
     check-format:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         steps:
             - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
               with:
@@ -70,7 +72,7 @@ jobs:
             - run: mise run check
 
     check-integrity:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         steps:
             - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
               with:
@@ -90,6 +92,6 @@ jobs:
     # stub to use as a "required" check on github
     all-good:
         needs: [build, check-format, build-docs, benchmark, check-integrity]
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         steps:
             - run: echo 'All checks passed!'

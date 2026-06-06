@@ -16,16 +16,14 @@ concurrency:
     cancel-in-progress: false
 
 jobs:
-    publish-maven:
-        runs-on: ubuntu-latest
-        environment:
-            name: maven-central
-            url: https://central.sonatype.com/namespace/org.maplibre.spatialk
+    resolve-version:
+        runs-on: ubuntu-24.04
         env:
             REF_TYPE: ${{ github.ref_type }}
             REF_NAME: ${{ github.ref_name }}
         outputs:
             spatial_k_version: ${{ steps.version.outputs.spatial_k_version }}
+            latest_release: ${{ steps.version.outputs.latest_release }}
         steps:
             - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
               with:
@@ -52,6 +50,21 @@ jobs:
                   )"
                   echo "spatial_k_version=$version" >> "$GITHUB_OUTPUT"
                   echo "latest_release=$latest_release" >> "$GITHUB_OUTPUT"
+
+    publish-maven:
+        runs-on: ubuntu-24.04
+        needs: [resolve-version]
+        environment:
+            name: maven-central
+            url: https://central.sonatype.com/namespace/org.maplibre.spatialk
+        env:
+            REF_TYPE: ${{ github.ref_type }}
+            REF_NAME: ${{ github.ref_name }}
+        steps:
+            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+              with:
+                  persist-credentials: false
+            - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - name: Publish
               run: >
                   mise run publish --mode live
@@ -59,7 +72,7 @@ jobs:
                   --ref-name "$REF_NAME"
                   --latest-release "$LATEST_RELEASE"
               env:
-                  LATEST_RELEASE: ${{ steps.version.outputs.latest_release }}
+                  LATEST_RELEASE: ${{ needs.resolve-version.outputs.latest_release }}
                   ORG_GRADLE_PROJECT_mavenCentralUsername:
                       ${{ secrets.MAVEN_CENTRAL_USERNAME }}
                   ORG_GRADLE_PROJECT_mavenCentralPassword:
@@ -70,8 +83,8 @@ jobs:
                       ${{ secrets.GPG_PASSPHRASE }}
 
     publish-pages:
-        runs-on: ubuntu-latest
-        needs: [publish-maven]
+        runs-on: ubuntu-24.04
+        needs: [resolve-version, publish-maven]
         if: github.ref_type == 'tag'
         permissions:
             contents: read
@@ -88,9 +101,61 @@ jobs:
             - name: Build docs
               run: >
                   mise run docs:build --version
-                  "${{ needs.publish-maven.outputs.spatial_k_version }}"
+                  "${{ needs.resolve-version.outputs.spatial_k_version }}"
             - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
               with:
                   path: docs/dist
             - uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
               id: deploy-pages
+
+    publish-pmtiles-swift:
+        runs-on: macos-26
+        needs: [resolve-version]
+        permissions:
+            contents: read
+        env:
+            SPATIAL_K_VERSION: ${{ needs.resolve-version.outputs.spatial_k_version }}
+            ARTIFACT_DIR_NAME: spatial-k-pmtiles-swift
+        steps:
+            - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+              with:
+                  persist-credentials: false
+            - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+            - name: Build SwiftPM binary artifact
+              run: >
+                  mise run publish:pmtiles-swift
+                  --version "$SPATIAL_K_VERSION"
+                  --output-dir "$RUNNER_TEMP/$ARTIFACT_DIR_NAME"
+            - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+              with:
+                  name: spatial-k-pmtiles-swift-${{ env.SPATIAL_K_VERSION }}
+                  path: |
+                      ${{ runner.temp }}/${{ env.ARTIFACT_DIR_NAME }}/SpatialKPmtiles.swiftpm.zip
+                      ${{ runner.temp }}/${{ env.ARTIFACT_DIR_NAME }}/SpatialKPmtiles.swiftpm.zip.checksum
+                  if-no-files-found: error
+
+    publish-pmtiles-swift-release:
+        runs-on: ubuntu-24.04
+        needs: [resolve-version, publish-maven, publish-pmtiles-swift]
+        if: github.ref_type == 'tag'
+        permissions:
+            contents: write
+        env:
+            SPATIAL_K_VERSION: ${{ needs.resolve-version.outputs.spatial_k_version }}
+            ARTIFACT_DIR_NAME: spatial-k-pmtiles-swift
+        steps:
+            - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+              with:
+                  name: spatial-k-pmtiles-swift-${{ env.SPATIAL_K_VERSION }}
+                  path: ${{ runner.temp }}/${{ env.ARTIFACT_DIR_NAME }}
+            - name: Upload to GitHub Release
+              run: |
+                  gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 ||
+                      gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes
+
+                  gh release upload "$GITHUB_REF_NAME" \
+                      "$RUNNER_TEMP/$ARTIFACT_DIR_NAME/SpatialKPmtiles.swiftpm.zip" \
+                      "$RUNNER_TEMP/$ARTIFACT_DIR_NAME/SpatialKPmtiles.swiftpm.zip.checksum" \
+                      --clobber
+              env:
+                  GH_TOKEN: ${{ github.token }}
