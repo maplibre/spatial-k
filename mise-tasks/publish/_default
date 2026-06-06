@@ -17,10 +17,6 @@ version="$(mise run --quiet publish:version --ref-type "$ref_type" --ref-name "$
 
 echo "Spatial K version: $version"
 
-if [ -n "${GITHUB_OUTPUT:-}" ]; then
-  echo "spatial_k_version=$version" >> "$GITHUB_OUTPUT"
-fi
-
 if [ "$mode" = "dryrun" ]; then
   echo "./gradlew publishAndReleaseToMavenCentral -PspatialKVersion=$version"
   exit 0
