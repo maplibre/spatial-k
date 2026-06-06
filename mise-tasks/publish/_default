@@ -7,13 +7,20 @@
 #USAGE   choices "branch" "tag"
 #USAGE }
 #USAGE flag "--ref-name <name>" help="Git ref name"
+#USAGE flag "--latest-release <version>" help="Latest final release version"
 
 set -euo pipefail
 
 mode="${usage_mode:-dryrun}"
 ref_type="${usage_ref_type:?--ref-type is required}"
 ref_name="${usage_ref_name:?--ref-name is required}"
-version="$(mise run --quiet publish:version --ref-type "$ref_type" --ref-name "$ref_name")"
+latest_release="${usage_latest_release:-}"
+version="$(
+  mise run --quiet publish:version \
+    --ref-type "$ref_type" \
+    --ref-name "$ref_name" \
+    --latest-release "$latest_release"
+)"
 
 echo "Spatial K version: $version"
 

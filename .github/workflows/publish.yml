@@ -33,18 +33,33 @@ jobs:
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - id: version
               run: |
+                  latest_release=""
+                  if [ "$REF_TYPE:$REF_NAME" = "branch:main" ]; then
+                      latest_release="$(
+                          git ls-remote --tags --refs origin "v*" |
+                              awk '{print $2}' |
+                              sed "s#^refs/tags/##" |
+                              sed -nE "s/^v([0-9]+)\.([0-9]+)\.([0-9]+)$/v\1.\2.\3/p" |
+                              sort -V |
+                              tail -n 1
+                      )"
+                  fi
                   version="$(
                       mise run --quiet publish:version \
                           --ref-type "$REF_TYPE" \
-                          --ref-name "$REF_NAME"
+                          --ref-name "$REF_NAME" \
+                          --latest-release "$latest_release"
                   )"
                   echo "spatial_k_version=$version" >> "$GITHUB_OUTPUT"
+                  echo "latest_release=$latest_release" >> "$GITHUB_OUTPUT"
             - name: Publish
               run: >
                   mise run publish --mode live
                   --ref-type "$REF_TYPE"
                   --ref-name "$REF_NAME"
+                  --latest-release "$LATEST_RELEASE"
               env:
+                  LATEST_RELEASE: ${{ steps.version.outputs.latest_release }}
                   ORG_GRADLE_PROJECT_mavenCentralUsername:
                       ${{ secrets.MAVEN_CENTRAL_USERNAME }}
                   ORG_GRADLE_PROJECT_mavenCentralPassword:

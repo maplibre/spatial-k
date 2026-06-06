@@ -4,24 +4,13 @@
 #USAGE   choices "branch" "tag"
 #USAGE }
 #USAGE flag "--ref-name <name>" help="Git ref name"
+#USAGE flag "--latest-release <version>" help="Latest final release version"
 
 set -euo pipefail
 
 ref_type="${usage_ref_type:?--ref-type is required}"
 ref_name="${usage_ref_name:?--ref-name is required}"
-
-latest_release_version() {
-  if git remote get-url origin >/dev/null 2>&1; then
-    git ls-remote --tags --refs origin "v*" |
-      awk '{print $2}' |
-      sed "s#^refs/tags/##"
-  else
-    git tag --list "v*"
-  fi |
-    sed -nE "s/^v([0-9]+)\.([0-9]+)\.([0-9]+)$/\1.\2.\3/p" |
-    sort -V |
-    tail -n 1
-}
+latest_release="${usage_latest_release:-}"
 
 case "$ref_type:$ref_name" in
   tag:v*)
@@ -32,11 +21,11 @@ case "$ref_type:$ref_name" in
     echo "${ref_name#v}"
     ;;
   branch:main)
-    latest="$(latest_release_version)"
-    if [ -z "$latest" ]; then
-      echo "No vX.Y.Z release tag is reachable from HEAD" >&2
+    if [[ ! "$latest_release" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+      echo "Main snapshot publishing requires --latest-release vX.Y.Z" >&2
       exit 1
     fi
+    latest="${latest_release#v}"
     IFS=. read -r major minor patch <<< "$latest"
     echo "${major}.$((minor + 1)).0-SNAPSHOT"
     ;;
