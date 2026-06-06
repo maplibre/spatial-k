@@ -103,7 +103,9 @@ final class SwiftDocsTest: XCTestCase {
         // --8<-- [end:batchTiles]
 
         XCTAssertFalse(results.isEmpty)
-        _ = TileReadCoalescing(maxCoalescedBytes: 0, maxGapBytes: 0)
+        _ = TileReadCoalescing()
+            .with(maxCoalescedBytes: 0)
+            .with(maxGapBytes: 0)
         let coalescing =
             TileReadCoalescing()
                 .with(maxGapBytes: 64)

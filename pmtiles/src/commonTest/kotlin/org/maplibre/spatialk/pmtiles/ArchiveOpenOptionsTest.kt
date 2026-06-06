@@ -6,15 +6,16 @@ import kotlin.test.assertTrue
 
 class ArchiveOpenOptionsTest {
     @Test
-    fun tileReadCoalescingCopyUpdatesSelectedFields() {
-        val coalescing = TileReadCoalescing().copy(maxGapBytes = 64uL, maxCoalescedBytes = 2048uL)
+    fun tileReadCoalescingBuilderUpdatesSelectedFields() {
+        val coalescing = TileReadCoalescing.build {
+            maxGapBytes = 64uL
+            maxCoalescedBytes = 2048uL
+        }
 
         assertEquals(2048uL, coalescing.maxCoalescedBytes)
         assertEquals(64uL, coalescing.maxGapBytes)
-        assertEquals(
-            coalescing,
-            TileReadCoalescing(maxCoalescedBytes = 2048uL, maxGapBytes = 64uL),
-        )
+        assertEquals(2048uL, coalescing.toBuilder().build().maxCoalescedBytes)
+        assertEquals(64uL, coalescing.toBuilder().build().maxGapBytes)
     }
 
     @Test

@@ -84,9 +84,13 @@ use `mise exec -- <command>`.
 - Foreign export tests don't need full coverage; they're primarily about proving the api is usable
   in that language.
 
-### Objective-C and Swift export
+### API design
 
-- Prefer Kotlin APIs that are idiomatic and also export predictably.
+- Design for ObjC export (used in Swift) without damaging the Kotlin API ergonomics.
 - Avoid Kotlin idioms that create unusable foreign APIs, but do not make Kotlin awkward just to
   perfect a foreign-language call site.
 - Hide Kotlin-only helpers from foreign APIs with `@HiddenFromObjC`/similar annotations.
+- Option bags that may grow over time use a builder DSL rather than public constructor with
+  defaults.
+- Enum-like values which may grow over time without breaking spec changes should be defined as
+  inline `value class`, not `enum class`.

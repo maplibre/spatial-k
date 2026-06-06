@@ -18,17 +18,19 @@ public enum class ValidationMode {
  * Operational limits for PMTiles archive reads.
  *
  * @property maxInitialReadBytes Maximum bytes read during archive open. Must be at least 16 KiB
- *   because PMTiles v3 root directories must be fully contained in the first 16 KiB.
- * @property maxMetadataBytes Maximum metadata payload bytes.
- * @property maxDirectoryCompressedBytes Maximum compressed directory bytes.
- * @property maxDirectoryDecompressedBytes Maximum decompressed directory bytes.
+ *   because PMTiles v3 root directories must be fully contained in the first 16 KiB. Defaults to 16
+ *   KiB.
+ * @property maxMetadataBytes Maximum metadata payload bytes. Defaults to 16 MiB.
+ * @property maxDirectoryCompressedBytes Maximum compressed directory bytes. Defaults to 16 MiB.
+ * @property maxDirectoryDecompressedBytes Maximum decompressed directory bytes. Defaults to 16 MiB.
  * @property maxDirectoryEntries Maximum entries in one decoded directory, derived from
- *   [maxDirectoryDecompressedBytes].
- * @property maxTileCompressedBytes Maximum compressed tile payload bytes.
- * @property maxTileDecompressedBytes Maximum decompressed tile payload bytes.
- * @property maxDirectoryDepth Maximum leaf-directory traversal depth.
- * @property maxLeafDirectoryCacheEntries Maximum leaf directories cached per archive.
- * @property maxVarintBytes Maximum bytes in a decoded varint.
+ *   [maxDirectoryDecompressedBytes]. Defaults to 986895 entries.
+ * @property maxTileCompressedBytes Maximum compressed tile payload bytes. Defaults to 64 MiB.
+ * @property maxTileDecompressedBytes Maximum decompressed tile payload bytes. Defaults to 64 MiB.
+ * @property maxDirectoryDepth Maximum leaf-directory traversal depth. Defaults to 3.
+ * @property maxLeafDirectoryCacheEntries Maximum leaf directories cached per archive. Defaults
+ *   to 128.
+ * @property maxVarintBytes Maximum bytes in a decoded varint. Defaults to 10.
  */
 public class ArchiveLimits
 private constructor(
@@ -42,6 +44,7 @@ private constructor(
     public val maxLeafDirectoryCacheEntries: Int,
     public val maxVarintBytes: Int,
 ) {
+    /** Creates limits with the documented default values. */
     public constructor() :
         this(
             maxInitialReadBytes = (16 * 1024).toULong(),
@@ -82,32 +85,34 @@ private constructor(
     /** Mutable Kotlin builder for [ArchiveLimits]. */
     @HiddenFromObjC
     public class Builder public constructor() {
+        private val defaults: ArchiveLimits = ArchiveLimits()
+
         /** Maximum bytes read during archive open. */
-        public var maxInitialReadBytes: ULong = (16 * 1024).toULong()
+        public var maxInitialReadBytes: ULong = defaults.maxInitialReadBytes
 
         /** Maximum metadata payload bytes. */
-        public var maxMetadataBytes: ULong = (16 * 1024 * 1024).toULong()
+        public var maxMetadataBytes: ULong = defaults.maxMetadataBytes
 
         /** Maximum compressed directory bytes. */
-        public var maxDirectoryCompressedBytes: ULong = (16 * 1024 * 1024).toULong()
+        public var maxDirectoryCompressedBytes: ULong = defaults.maxDirectoryCompressedBytes
 
         /** Maximum decompressed directory bytes. */
-        public var maxDirectoryDecompressedBytes: ULong = (16 * 1024 * 1024).toULong()
+        public var maxDirectoryDecompressedBytes: ULong = defaults.maxDirectoryDecompressedBytes
 
         /** Maximum compressed tile payload bytes. */
-        public var maxTileCompressedBytes: ULong = (64 * 1024 * 1024).toULong()
+        public var maxTileCompressedBytes: ULong = defaults.maxTileCompressedBytes
 
         /** Maximum decompressed tile payload bytes. */
-        public var maxTileDecompressedBytes: ULong = (64 * 1024 * 1024).toULong()
+        public var maxTileDecompressedBytes: ULong = defaults.maxTileDecompressedBytes
 
         /** Maximum leaf-directory traversal depth. */
-        public var maxDirectoryDepth: Int = 3
+        public var maxDirectoryDepth: Int = defaults.maxDirectoryDepth
 
         /** Maximum leaf directories cached per archive. */
-        public var maxLeafDirectoryCacheEntries: Int = 128
+        public var maxLeafDirectoryCacheEntries: Int = defaults.maxLeafDirectoryCacheEntries
 
         /** Maximum bytes in a decoded varint. */
-        public var maxVarintBytes: Int = 10
+        public var maxVarintBytes: Int = defaults.maxVarintBytes
 
         internal constructor(limits: ArchiveLimits) : this() {
             maxInitialReadBytes = limits.maxInitialReadBytes
@@ -149,21 +154,60 @@ private constructor(
  * Controls source-range coalescing for batch tile reads.
  *
  * @property maxCoalescedBytes Maximum bytes when combining multiple tile payload reads. Individual
- *   tile payload reads may be larger. Set to zero to disable coalescing.
- * @property maxGapBytes Maximum unread bytes to include between adjacent tile payloads.
+ *   tile payload reads may be larger. Set to zero to disable coalescing. Defaults to 512 KiB.
+ * @property maxGapBytes Maximum unread bytes to include between adjacent tile payloads. Defaults to
+ *   zero.
  */
-public data class TileReadCoalescing(
-    public val maxCoalescedBytes: ULong = (512 * 1024).toULong(),
-    public val maxGapBytes: ULong = 0uL,
+public class TileReadCoalescing
+private constructor(
+    public val maxCoalescedBytes: ULong,
+    public val maxGapBytes: ULong,
 ) {
+    /** Creates coalescing options with the documented default values. */
     public constructor() : this(maxCoalescedBytes = (512 * 1024).toULong(), maxGapBytes = 0uL)
+
+    /** Returns a mutable builder initialized from these coalescing options. */
+    @HiddenFromObjC public fun toBuilder(): Builder = Builder(this)
+
+    /** Mutable Kotlin builder for [TileReadCoalescing]. */
+    @HiddenFromObjC
+    public class Builder public constructor() {
+        private val defaults: TileReadCoalescing = TileReadCoalescing()
+
+        /** Maximum bytes when combining multiple tile payload reads. */
+        public var maxCoalescedBytes: ULong = defaults.maxCoalescedBytes
+
+        /** Maximum unread bytes to include between adjacent tile payloads. */
+        public var maxGapBytes: ULong = defaults.maxGapBytes
+
+        internal constructor(coalescing: TileReadCoalescing) : this() {
+            maxCoalescedBytes = coalescing.maxCoalescedBytes
+            maxGapBytes = coalescing.maxGapBytes
+        }
+
+        /** Builds immutable coalescing options from this builder. */
+        public fun build(): TileReadCoalescing =
+            TileReadCoalescing(
+                maxCoalescedBytes = maxCoalescedBytes,
+                maxGapBytes = maxGapBytes,
+            )
+    }
+
+    /** Factory for Kotlin DSL construction. */
+    public companion object {
+        /** Builds [TileReadCoalescing] with a Kotlin DSL. */
+        @HiddenFromObjC
+        public fun build(configure: Builder.() -> Unit): TileReadCoalescing =
+            Builder().apply(configure).build()
+    }
 }
 
 /**
  * Options used when opening a PMTiles archive.
  *
- * @property validationMode Validation behavior for archive parsing and traversal.
- * @property limits Operational read limits.
+ * @property validationMode Validation behavior for archive parsing and traversal. Defaults to
+ *   [ValidationMode.Strict].
+ * @property limits Operational read limits. Defaults to [ArchiveLimits].
  */
 public class ArchiveOpenOptions
 private constructor(
@@ -171,6 +215,7 @@ private constructor(
     public val limits: ArchiveLimits,
     internal val decompressors: Map<CompressionCode, Decompressor>,
 ) {
+    /** Creates options with the documented default values. */
     public constructor() :
         this(
             validationMode = ValidationMode.Strict,
@@ -184,12 +229,15 @@ private constructor(
     /** Mutable Kotlin builder for [ArchiveOpenOptions]. */
     @HiddenFromObjC
     public class Builder public constructor() {
+        private val defaults: ArchiveOpenOptions = ArchiveOpenOptions()
+
         /** Validation behavior for archive parsing and traversal. */
-        public var validationMode: ValidationMode = ValidationMode.Strict
+        public var validationMode: ValidationMode = defaults.validationMode
 
         /** Operational read limits. */
-        public var limits: ArchiveLimits = ArchiveLimits()
-        private val decompressors: MutableMap<CompressionCode, Decompressor> = mutableMapOf()
+        public var limits: ArchiveLimits = defaults.limits
+        private val decompressors: MutableMap<CompressionCode, Decompressor> =
+            defaults.decompressors.toMutableMap()
 
         internal constructor(options: ArchiveOpenOptions) : this() {
             validationMode = options.validationMode

@@ -160,13 +160,23 @@ public fun ArchiveLimits.withMaxVarintBytes(
 @ObjCName(swiftName = "with")
 public fun TileReadCoalescing.withMaxCoalescedBytes(
     @ObjCName(swiftName = "maxCoalescedBytes") maxCoalescedBytes: ULong
-): TileReadCoalescing = copy(maxCoalescedBytes = maxCoalescedBytes)
+): TileReadCoalescing =
+    toBuilder()
+        .apply {
+            this.maxCoalescedBytes = maxCoalescedBytes
+        }
+        .build()
 
 /** Returns a copy of this coalescing configuration with [maxGapBytes]. */
 @ObjCName(swiftName = "with")
 public fun TileReadCoalescing.withMaxGapBytes(
     @ObjCName(swiftName = "maxGapBytes") maxGapBytes: ULong
-): TileReadCoalescing = copy(maxGapBytes = maxGapBytes)
+): TileReadCoalescing =
+    toBuilder()
+        .apply {
+            this.maxGapBytes = maxGapBytes
+        }
+        .build()
 
 /** Returns a copy of these options with [decompressor] registered for [compression]. */
 public fun ArchiveOpenOptions.withDecompressor(

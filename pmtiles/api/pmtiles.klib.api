@@ -461,19 +461,30 @@ final class org.maplibre.spatialk.pmtiles/TileRange { // org.maplibre.spatialk.p
 
 final class org.maplibre.spatialk.pmtiles/TileReadCoalescing { // org.maplibre.spatialk.pmtiles/TileReadCoalescing|null[0]
     constructor <init>() // org.maplibre.spatialk.pmtiles/TileReadCoalescing.<init>|<init>(){}[0]
-    constructor <init>(kotlin/ULong = ..., kotlin/ULong = ...) // org.maplibre.spatialk.pmtiles/TileReadCoalescing.<init>|<init>(kotlin.ULong;kotlin.ULong){}[0]
 
     final val maxCoalescedBytes // org.maplibre.spatialk.pmtiles/TileReadCoalescing.maxCoalescedBytes|{}maxCoalescedBytes[0]
         final fun <get-maxCoalescedBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/TileReadCoalescing.maxCoalescedBytes.<get-maxCoalescedBytes>|<get-maxCoalescedBytes>(){}[0]
     final val maxGapBytes // org.maplibre.spatialk.pmtiles/TileReadCoalescing.maxGapBytes|{}maxGapBytes[0]
         final fun <get-maxGapBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/TileReadCoalescing.maxGapBytes.<get-maxGapBytes>|<get-maxGapBytes>(){}[0]
 
-    final fun component1(): kotlin/ULong // org.maplibre.spatialk.pmtiles/TileReadCoalescing.component1|component1(){}[0]
-    final fun component2(): kotlin/ULong // org.maplibre.spatialk.pmtiles/TileReadCoalescing.component2|component2(){}[0]
-    final fun copy(kotlin/ULong = ..., kotlin/ULong = ...): org.maplibre.spatialk.pmtiles/TileReadCoalescing // org.maplibre.spatialk.pmtiles/TileReadCoalescing.copy|copy(kotlin.ULong;kotlin.ULong){}[0]
-    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/TileReadCoalescing.equals|equals(kotlin.Any?){}[0]
-    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/TileReadCoalescing.hashCode|hashCode(){}[0]
-    final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/TileReadCoalescing.toString|toString(){}[0]
+    final fun toBuilder(): org.maplibre.spatialk.pmtiles/TileReadCoalescing.Builder // org.maplibre.spatialk.pmtiles/TileReadCoalescing.toBuilder|toBuilder(){}[0]
+
+    final class Builder { // org.maplibre.spatialk.pmtiles/TileReadCoalescing.Builder|null[0]
+        constructor <init>() // org.maplibre.spatialk.pmtiles/TileReadCoalescing.Builder.<init>|<init>(){}[0]
+
+        final var maxCoalescedBytes // org.maplibre.spatialk.pmtiles/TileReadCoalescing.Builder.maxCoalescedBytes|{}maxCoalescedBytes[0]
+            final fun <get-maxCoalescedBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/TileReadCoalescing.Builder.maxCoalescedBytes.<get-maxCoalescedBytes>|<get-maxCoalescedBytes>(){}[0]
+            final fun <set-maxCoalescedBytes>(kotlin/ULong) // org.maplibre.spatialk.pmtiles/TileReadCoalescing.Builder.maxCoalescedBytes.<set-maxCoalescedBytes>|<set-maxCoalescedBytes>(kotlin.ULong){}[0]
+        final var maxGapBytes // org.maplibre.spatialk.pmtiles/TileReadCoalescing.Builder.maxGapBytes|{}maxGapBytes[0]
+            final fun <get-maxGapBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/TileReadCoalescing.Builder.maxGapBytes.<get-maxGapBytes>|<get-maxGapBytes>(){}[0]
+            final fun <set-maxGapBytes>(kotlin/ULong) // org.maplibre.spatialk.pmtiles/TileReadCoalescing.Builder.maxGapBytes.<set-maxGapBytes>|<set-maxGapBytes>(kotlin.ULong){}[0]
+
+        final fun build(): org.maplibre.spatialk.pmtiles/TileReadCoalescing // org.maplibre.spatialk.pmtiles/TileReadCoalescing.Builder.build|build(){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.pmtiles/TileReadCoalescing.Companion|null[0]
+        final fun build(kotlin/Function1<org.maplibre.spatialk.pmtiles/TileReadCoalescing.Builder, kotlin/Unit>): org.maplibre.spatialk.pmtiles/TileReadCoalescing // org.maplibre.spatialk.pmtiles/TileReadCoalescing.Companion.build|build(kotlin.Function1<org.maplibre.spatialk.pmtiles.TileReadCoalescing.Builder,kotlin.Unit>){}[0]
+    }
 }
 
 final class org.maplibre.spatialk.pmtiles/TileReadResult { // org.maplibre.spatialk.pmtiles/TileReadResult|null[0]

@@ -138,7 +138,11 @@ class TileBytesTest {
         source.reads.clear()
         archive.readStoredTiles(
             coords,
-            coalescing = TileReadCoalescing(maxCoalescedBytes = 16uL, maxGapBytes = 3uL),
+            coalescing =
+                TileReadCoalescing.build {
+                    maxCoalescedBytes = 16uL
+                    maxGapBytes = 3uL
+                },
         )
 
         assertEquals(listOf(ByteRange(tileDataOffset, tileData.size.toULong())), source.reads)
@@ -174,7 +178,7 @@ class TileBytesTest {
 
         archive.readStoredTiles(
             listOf(TileIds.toZxy(0), TileIds.toZxy(1)),
-            coalescing = TileReadCoalescing(maxCoalescedBytes = 4uL),
+            coalescing = TileReadCoalescing.build { maxCoalescedBytes = 4uL },
         )
 
         assertEquals(

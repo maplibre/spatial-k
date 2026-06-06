@@ -330,7 +330,7 @@ internal constructor(
         return readLocatedTiles(
             locatedTiles = listOf(LocatedTile(index = 0, range = range)),
             outputSize = 1,
-            coalescing = TileReadCoalescing(maxCoalescedBytes = 0uL),
+            coalescing = TileReadCoalescing.build { maxCoalescedBytes = 0uL },
             decompress = decompress,
         )[0]
     }
