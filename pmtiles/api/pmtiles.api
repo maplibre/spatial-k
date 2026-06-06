@@ -255,7 +255,6 @@ public final class org/maplibre/spatialk/pmtiles/LonLatBounds {
 
 public final class org/maplibre/spatialk/pmtiles/PmTiles {
 	public static final field INSTANCE Lorg/maplibre/spatialk/pmtiles/PmTiles;
-	public final fun open (Lorg/maplibre/spatialk/pmtiles/ByteRangeSource;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun open (Lorg/maplibre/spatialk/pmtiles/ByteRangeSource;Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun open$default (Lorg/maplibre/spatialk/pmtiles/PmTiles;Lorg/maplibre/spatialk/pmtiles/ByteRangeSource;Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
@@ -278,13 +277,11 @@ public final class org/maplibre/spatialk/pmtiles/PmTilesArchive : java/lang/Auto
 	public final fun readDecompressedTile (IIILkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun readDecompressedTile (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun readDecompressedTile (Lorg/maplibre/spatialk/pmtiles/TileCoord;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun readDecompressedTiles (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun readDecompressedTiles (Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun readDecompressedTiles$default (Lorg/maplibre/spatialk/pmtiles/PmTilesArchive;Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun readStoredTile (IIILkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun readStoredTile (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun readStoredTile (Lorg/maplibre/spatialk/pmtiles/TileCoord;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun readStoredTiles (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun readStoredTiles (Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun readStoredTiles$default (Lorg/maplibre/spatialk/pmtiles/PmTilesArchive;Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
