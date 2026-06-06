@@ -112,7 +112,7 @@ jobs:
         runs-on: macos-latest
         needs: [resolve-version]
         permissions:
-            contents: write
+            contents: read
         env:
             SPATIAL_K_VERSION: ${{ needs.resolve-version.outputs.spatial_k_version }}
             ARTIFACT_DIR_NAME: spatial-k-pmtiles-swift
@@ -133,8 +133,22 @@ jobs:
                       ${{ runner.temp }}/${{ env.ARTIFACT_DIR_NAME }}/SpatialKPmtiles.swiftpm.zip
                       ${{ runner.temp }}/${{ env.ARTIFACT_DIR_NAME }}/SpatialKPmtiles.swiftpm.zip.checksum
                   if-no-files-found: error
+
+    publish-pmtiles-swift-release:
+        runs-on: ubuntu-latest
+        needs: [resolve-version, publish-maven, publish-pmtiles-swift]
+        if: github.ref_type == 'tag'
+        permissions:
+            contents: write
+        env:
+            SPATIAL_K_VERSION: ${{ needs.resolve-version.outputs.spatial_k_version }}
+            ARTIFACT_DIR_NAME: spatial-k-pmtiles-swift
+        steps:
+            - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+              with:
+                  name: spatial-k-pmtiles-swift-${{ env.SPATIAL_K_VERSION }}
+                  path: ${{ runner.temp }}/${{ env.ARTIFACT_DIR_NAME }}
             - name: Upload to GitHub Release
-              if: github.ref_type == 'tag'
               run: |
                   gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 ||
                       gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes
