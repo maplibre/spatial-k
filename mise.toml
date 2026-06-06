@@ -49,6 +49,10 @@ if [ "$(uname)" != "Darwin" ]; then
 fi
 
 ./gradlew :pmtiles:assembleSpatialKPmtilesKotlinDebugXCFramework
+rm -rf pmtiles/src/Artifacts/SpatialKPmtilesKotlin.xcframework
+mkdir -p pmtiles/src/Artifacts
+ln -s ../../build/XCFrameworks/debug/SpatialKPmtilesKotlin.xcframework \
+  pmtiles/src/Artifacts/SpatialKPmtilesKotlin.xcframework
 swift test --package-path pmtiles/src
 '''
 

@@ -29,12 +29,14 @@ jobs:
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - run: ./gradlew version # TODO: remove this once we're confident in our config
-            - run: ./gradlew ${{ matrix.task }}
+            - run: ./gradlew "${{ matrix.task }}"
+            - if: ${{ matrix.runner == 'macos-latest' }}
+              run: mise run test:swift
             - if: ${{ matrix.task == 'build' }} # Kover only supports JVM
               name: Generate coverage summary
               run: |
-                  echo '## Coverage' >> $GITHUB_STEP_SUMMARY
-                  ./gradlew -q :koverLog | tee $GITHUB_STEP_SUMMARY
+                  echo '## Coverage' >> "$GITHUB_STEP_SUMMARY"
+                  ./gradlew -q :koverLog | tee "$GITHUB_STEP_SUMMARY"
 
     benchmark:
         runs-on: ubuntu-latest
@@ -45,8 +47,8 @@ jobs:
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
             - name: Run benchmark
               run: |
-                  echo '## Benchmark' >> $GITHUB_STEP_SUMMARY
-                  ./gradlew -q benchmark -PbenchmarkWarmups=1 -PbenchmarkIterations=1 | tee $GITHUB_STEP_SUMMARY
+                  echo '## Benchmark' >> "$GITHUB_STEP_SUMMARY"
+                  ./gradlew -q benchmark -PbenchmarkWarmups=1 -PbenchmarkIterations=1 | tee "$GITHUB_STEP_SUMMARY"
 
     build-docs:
         runs-on: ubuntu-latest

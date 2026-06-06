@@ -3,14 +3,23 @@
 import PackageDescription
 
 let package = Package(
-    name: "SpatialKPmtilesSwiftTests",
+    name: "SpatialKPmtiles",
     platforms: [
-        .macOS(.v14)
+        .iOS(.v17),
+        .macOS(.v14),
+    ],
+    products: [
+        .library(
+            name: "SpatialKPmtiles",
+            targets: [
+                "SpatialKPmtiles"
+            ]
+        )
     ],
     targets: [
         .binaryTarget(
             name: "SpatialKPmtilesKotlin",
-            path: "../build/XCFrameworks/debug/SpatialKPmtilesKotlin.xcframework"
+            path: "Artifacts/SpatialKPmtilesKotlin.xcframework"
         ),
         .target(
             name: "SpatialKPmtiles",

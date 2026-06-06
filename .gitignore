@@ -4,6 +4,7 @@
 **/.build
 /local.properties
 **/build
+/pmtiles/src/Artifacts
 
 /site
 /node_modules
