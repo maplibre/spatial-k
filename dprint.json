@@ -15,7 +15,11 @@
                 "command": "mise run _ktfmt --kotlinlang-style - --stdin-name={{file_path}}",
                 "exts": ["kt", "kts"]
             },
-            { "command": "google-java-format - --assume-filename {{file_path}}", "exts": ["java"] }
+            { "command": "google-java-format - --assume-filename {{file_path}}", "exts": ["java"] },
+            {
+                "command": "pnpm --filter docs exec mdxlint --rc-path .mdxlintrc.json --file-path {{file_path}}",
+                "exts": ["mdx"]
+            }
         ]
     },
     "plugins": [

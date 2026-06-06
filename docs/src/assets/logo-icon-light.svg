@@ -2,10 +2,10 @@
      viewBox="0 0 512 490">
     <style>
         path{
-            stroke: white;
+            stroke: #151a13;
         }
         circle{
-            fill: white;
+            fill: #151a13;
         }
     </style>
     <path stroke="currentColor" stroke-linejoin="round" stroke-width="15" d="m181.847 57.282 75.108-5.092 2.546 1.273m77.017-10.82L349.884 14l82.746 1.273-9.547 22.278"/>

@@ -6,6 +6,8 @@ lockfile = true
 [hooks]
 postinstall = [
   "hk install --mise",
+  "pnpm install --frozen-lockfile --loglevel warn",
+  "pnpm --filter docs exec astro sync",
 ]
 
 [tools]
@@ -15,6 +17,8 @@ postinstall = [
 "aqua:apple/pkl" = "0.31.1"
 "aqua:facebook/ktfmt" = "0.63"
 "github:google/google-java-format" = "1.35.0"
+"core:node" = "24.16.0"
+"aqua:pnpm/pnpm" = "10.33.2"
 
 [tasks.build]
 description = "Build and check all targets"
@@ -54,7 +58,15 @@ depends = ["test:jvm", "test:jsnode", "test:wasmjsnode", "test:native", "test:sw
 
 [tasks.docs]
 description = "Serve documentation locally"
-run = "./gradlew :mkdocsServe"
+run = "mise run -C docs dev"
+
+[tasks."docs:build"]
+description = "Build documentation"
+run = "mise run -C docs build"
+
+[tasks."docs:clean"]
+description = "Clean documentation outputs"
+run = "mise run -C docs clean"
 
 [tasks.check]
 description = "Run all linting and formatting checks"

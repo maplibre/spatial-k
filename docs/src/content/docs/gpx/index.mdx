@@ -1,19 +1,25 @@
-# GPX
+---
+title: "GPX"
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 The `gpx` module contains data types for the GPS Exchange Format (GPX) version 1.1.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "gpx/src/commonTest/kotlin/org/maplibre/spatialk/gpx/KotlinDocsTest.kt:example"
     ```
+  </TabItem>
+</Tabs>
 
-Details can be found in the [API reference](../api/gpx/index.html).
+Details can be found in the [API reference](/spatial-k/api/dokka/gpx/index.html).
 
 ## Installation
 
-=== "Multiplatform"
-
+<Tabs syncKey="language">
+  <TabItem label="Multiplatform">
     ```kotlin
     commonMain {
         dependencies {
@@ -21,14 +27,18 @@ Details can be found in the [API reference](../api/gpx/index.html).
         }
     }
     ```
+  </TabItem>
+</Tabs>
 
 ## GeoJson conversion
 
 This module provides extension functions to convert GPX data into GeoJson. The original Gpx type is
 attached as feature properties.
 
-=== "Kotlin"
-
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
     ```kotlin
     --8<-- "gpx/src/commonTest/kotlin/org/maplibre/spatialk/gpx/KotlinDocsTest.kt:toGeoJson"
     ```
+  </TabItem>
+</Tabs>

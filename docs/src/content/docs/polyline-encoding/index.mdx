@@ -1,4 +1,8 @@
-# Polyline Encoding
+---
+title: "Polyline"
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 The `polyline-encoding` module encodes and decodes polylines using
 [Google's Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
@@ -7,12 +11,12 @@ The `polyline-encoding` module encodes and decodes polylines using
 --8<-- "polyline-encoding/src/commonTest/kotlin/org/maplibre/spatialk/polyline/KotlinDocsTest.kt:example"
 ```
 
-Details can be found in the [API reference](../api/polyline-encoding/index.html).
+Details can be found in the [API reference](/spatial-k/api/dokka/polyline-encoding/index.html).
 
 ## Installation
 
-=== "Multiplatform"
-
+<Tabs syncKey="language">
+  <TabItem label="Multiplatform">
     ```kotlin
     commonMain {
         dependencies {
@@ -20,14 +24,16 @@ Details can be found in the [API reference](../api/polyline-encoding/index.html)
         }
     }
     ```
+  </TabItem>
 
-=== "JVM"
-
+  <TabItem label="JVM">
     ```kotlin
     dependencies {
         implementation("org.maplibre.spatialk:polyline-encoding-jvm:{{ gradle.project_version }}")
     }
     ```
+  </TabItem>
+</Tabs>
 
 ## Encoding
 
