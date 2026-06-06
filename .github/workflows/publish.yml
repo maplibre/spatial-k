@@ -41,6 +41,7 @@ jobs:
     publish-pages:
         runs-on: ubuntu-latest
         needs: [publish-maven]
+        if: github.ref_type == 'tag'
         permissions:
             contents: read
             pages: write
