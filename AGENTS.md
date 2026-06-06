@@ -77,8 +77,20 @@ use `mise exec -- <command>`.
 
 ## Project invariants
 
-**After changing any public API**, run `mise run fix` to regenerate the `.api` files — the build
-fails without this.
+### Testing
 
-**Floating-point comparisons in tests**: use helpers from `testutil` instead of `assertEquals` to
-handle platform-specific precision differences.
+- For floating-point comparisons in tests, use helpers from `testutil` instead of `assertEquals` to
+  handle platform-specific precision differences.
+- Foreign export tests don't need full coverage; they're primarily about proving the api is usable
+  in that language.
+
+### API design
+
+- Design for ObjC export (used in Swift) without damaging the Kotlin API ergonomics.
+- Avoid Kotlin idioms that create unusable foreign APIs, but do not make Kotlin awkward just to
+  perfect a foreign-language call site.
+- Hide Kotlin-only helpers from foreign APIs with `@HiddenFromObjC`/similar annotations.
+- Option bags that may grow over time use a builder DSL rather than public constructor with
+  defaults.
+- Enum-like values which may grow over time without breaking spec changes should be defined as
+  inline `value class`, not `enum class`.

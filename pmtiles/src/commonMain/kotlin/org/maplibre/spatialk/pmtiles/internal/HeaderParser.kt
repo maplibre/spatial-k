@@ -1,16 +1,18 @@
 package org.maplibre.spatialk.pmtiles.internal
 
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.ArchiveHeader
 import org.maplibre.spatialk.pmtiles.ArchiveSection
 import org.maplibre.spatialk.pmtiles.ArchiveWarning
 import org.maplibre.spatialk.pmtiles.ArchiveWarningCode
-import org.maplibre.spatialk.pmtiles.Clustered
-import org.maplibre.spatialk.pmtiles.Compression
+import org.maplibre.spatialk.pmtiles.CompressionCode
+import org.maplibre.spatialk.pmtiles.CompressionCodes
 import org.maplibre.spatialk.pmtiles.HeaderCounts
 import org.maplibre.spatialk.pmtiles.LonLatBounds
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 import org.maplibre.spatialk.pmtiles.TileCenter
-import org.maplibre.spatialk.pmtiles.TileType
+import org.maplibre.spatialk.pmtiles.TileTypeCode
+import org.maplibre.spatialk.pmtiles.TileTypeCodes
 import org.maplibre.spatialk.pmtiles.ValidationMode
 
 internal const val HEADER_BYTES = 127
@@ -21,11 +23,11 @@ internal data class ParsedHeader(
     val warnings: List<ArchiveWarning>,
 )
 
-internal fun parseHeader(bytes: ByteArray, archiveSize: ULong): ArchiveHeader =
+internal fun parseHeader(bytes: ByteString, archiveSize: ULong): ArchiveHeader =
     parseHeaderForOpen(bytes, archiveSize, ValidationMode.Strict).header
 
 internal fun parseHeaderForOpen(
-    bytes: ByteArray,
+    bytes: ByteString,
     archiveSize: ULong,
     validationMode: ValidationMode,
 ): ParsedHeader {
@@ -54,9 +56,9 @@ internal fun parseHeaderForOpen(
     val rawTileEntries = reader.readULong64Le()
     val rawTileContents = reader.readULong64Le()
     val clustered = reader.readClustered()
-    val internalCompression = Compression(reader.readUInt8())
-    val tileCompression = Compression(reader.readUInt8())
-    val tileType = TileType(reader.readUInt8())
+    val internalCompression = CompressionCode(reader.readUInt8())
+    val tileCompression = CompressionCode(reader.readUInt8())
+    val tileType = TileTypeCode(reader.readUInt8())
     val minZoom = reader.readUInt8().toInt()
     val maxZoom = reader.readUInt8().toInt()
     val minPosition = reader.readPosition()
@@ -73,14 +75,11 @@ internal fun parseHeaderForOpen(
             tileData = tileData,
             counts =
                 HeaderCounts(
-                    addressedTiles = rawAddressedTiles.knownCount(),
-                    tileEntries = rawTileEntries.knownCount(),
-                    tileContents = rawTileContents.knownCount(),
-                    rawAddressedTiles = rawAddressedTiles,
-                    rawTileEntries = rawTileEntries,
-                    rawTileContents = rawTileContents,
+                    addressedTiles = rawAddressedTiles,
+                    tileEntries = rawTileEntries,
+                    tileContents = rawTileContents,
                 ),
-            clustered = clustered,
+            isClustered = clustered,
             internalCompression = internalCompression,
             tileCompression = tileCompression,
             tileType = tileType,
@@ -110,7 +109,8 @@ internal fun parseHeaderForOpen(
 }
 
 private fun validateMagic(reader: BinaryReader) {
-    MAGIC_BYTES.forEach { expected ->
+    repeat(MAGIC_BYTES.size) { index ->
+        val expected = MAGIC_BYTES[index]
         val actual = reader.readUInt8().toInt().toByte()
         if (actual != expected) {
             throw pmTilesException(
@@ -124,10 +124,10 @@ private fun validateMagic(reader: BinaryReader) {
 private fun BinaryReader.readSection(): ArchiveSection =
     ArchiveSection(offset = readULong64Le(), length = readULong64Le())
 
-private fun BinaryReader.readClustered(): Clustered =
+private fun BinaryReader.readClustered(): Boolean =
     when (val code = readUInt8().toInt()) {
-        0 -> Clustered.No
-        1 -> Clustered.Yes
+        0 -> false
+        1 -> true
         else ->
             throw pmTilesException(
                 PmTilesErrorCode.InvalidHeader,
@@ -163,9 +163,9 @@ private fun collectUnknownCountWarnings(
     warnings: MutableList<ArchiveWarning>,
 ) {
     listOf(
-            "addressedTiles" to header.counts.rawAddressedTiles,
-            "tileEntries" to header.counts.rawTileEntries,
-            "tileContents" to header.counts.rawTileContents,
+            "addressedTiles" to header.counts.addressedTiles,
+            "tileEntries" to header.counts.tileEntries,
+            "tileContents" to header.counts.tileContents,
         )
         .filter { (_, rawValue) -> rawValue == 0uL }
         .forEach { (field, _) ->
@@ -314,8 +314,6 @@ private fun validateRootLocation(rootDirectory: ArchiveSection) {
     }
 }
 
-private fun ULong.knownCount(): ULong? = if (this == 0uL) null else this
-
 private fun Double.isLongitude(): Boolean = this in -180.0..180.0
 
 private fun Double.isLatitude(): Boolean = this in -90.0..90.0
@@ -333,20 +331,29 @@ private data class NamedSection(
 private const val SUPPORTED_VERSION = 3
 private const val MAX_HEADER_ZOOM = 31
 private const val POSITION_SCALE = 10_000_000.0
-private val MAGIC_BYTES = byteArrayOf(0x50, 0x4d, 0x54, 0x69, 0x6c, 0x65, 0x73)
+private val MAGIC_BYTES =
+    ByteString(
+        0x50.toByte(),
+        0x4d.toByte(),
+        0x54.toByte(),
+        0x69.toByte(),
+        0x6c.toByte(),
+        0x65.toByte(),
+        0x73.toByte(),
+    )
 private val KNOWN_CONCRETE_COMPRESSION_CODES =
     setOf(
-        Compression.None.code,
-        Compression.Gzip.code,
-        Compression.Brotli.code,
-        Compression.Zstd.code,
+        CompressionCodes.None.code,
+        CompressionCodes.Gzip.code,
+        CompressionCodes.Brotli.code,
+        CompressionCodes.Zstd.code,
     )
 private val KNOWN_CONCRETE_TILE_TYPE_CODES =
     setOf(
-        TileType.Mvt.code,
-        TileType.Png.code,
-        TileType.Jpeg.code,
-        TileType.Webp.code,
-        TileType.Avif.code,
-        TileType.Mlt.code,
+        TileTypeCodes.Mvt.code,
+        TileTypeCodes.Png.code,
+        TileTypeCodes.Jpeg.code,
+        TileTypeCodes.Webp.code,
+        TileTypeCodes.Avif.code,
+        TileTypeCodes.Mlt.code,
     )

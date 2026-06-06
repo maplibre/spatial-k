@@ -1,5 +1,6 @@
 package org.maplibre.spatialk.pmtiles.internal
 
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.ArchiveHeader
 import org.maplibre.spatialk.pmtiles.ArchiveLimits
 import org.maplibre.spatialk.pmtiles.ArchiveSection
@@ -49,7 +50,7 @@ internal fun DirectoryEntry.coversTile(targetTileId: Long): Boolean {
 }
 
 internal fun decodeDirectory(
-    bytes: ByteArray,
+    bytes: ByteString,
     header: ArchiveHeader,
     limits: ArchiveLimits,
     allowEmpty: Boolean = false,
@@ -87,7 +88,7 @@ private fun BinaryReader.readEntryCount(limits: ArchiveLimits, allowEmpty: Boole
             "Directory entry count is zero.",
         )
     }
-    if (limits.maxDirectoryEntries < 0 || count > limits.maxDirectoryEntries.toULong()) {
+    if (count > limits.maxDirectoryEntries.toULong()) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
             "Directory entry count $count exceeds limit ${limits.maxDirectoryEntries}.",

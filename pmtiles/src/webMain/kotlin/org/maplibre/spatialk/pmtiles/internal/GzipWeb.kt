@@ -9,6 +9,7 @@ import js.typedarrays.toByteArray
 import js.typedarrays.toUint8Array
 import kotlin.js.ExperimentalWasmJsInterop
 import kotlin.js.js
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.DecompressionLimits
 import org.maplibre.spatialk.pmtiles.PmTilesException
 import web.compression.CompressionFormat
@@ -20,11 +21,11 @@ import web.streams.ReadableStream
 import web.streams.ReadableWritablePair
 import web.streams.read
 
-internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLimits): ByteArray {
+internal suspend fun decodeGzip(bytes: ByteString, limits: DecompressionLimits): ByteString {
     val decoded =
         try {
             val compressedStream =
-                Response(BodyInit(bytes.toUint8Array())).body
+                Response(BodyInit(bytes.toByteArray().toUint8Array())).body
                     ?: error("Response created from bytes should have a body.")
 
             compressedStream
@@ -49,7 +50,7 @@ private fun DecompressionStream.asReadableWritablePair():
 
 private suspend fun ReadableStream<Uint8Array<ArrayBuffer>>.readBoundedBytes(
     limits: DecompressionLimits
-): ByteArray {
+): ByteString {
     val reader = getReader()
     val sink = BoundedByteArraySink(limits)
     try {
@@ -63,5 +64,5 @@ private suspend fun ReadableStream<Uint8Array<ArrayBuffer>>.readBoundedBytes(
     } finally {
         reader.releaseLock()
     }
-    return sink.toByteArray()
+    return sink.toByteString()
 }

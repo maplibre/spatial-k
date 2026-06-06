@@ -13,7 +13,7 @@ class LimitsTest {
     @Test
     fun computesCheckedEndOffsets() {
         assertEquals(15uL, ArchiveSection(10uL, 5uL).endOffset(PmTilesErrorCode.InvalidHeader))
-        assertEquals(15uL, ByteRange(10uL, 5).endOffset(PmTilesErrorCode.RangeOutOfBounds))
+        assertEquals(15uL, ByteRange(10uL, 5uL).endOffset(PmTilesErrorCode.RangeOutOfBounds))
     }
 
     @Test
@@ -27,20 +27,10 @@ class LimitsTest {
     }
 
     @Test
-    fun rejectsNegativeRangeLength() {
-        val error =
-            assertFailsWith<PmTilesException> {
-                validateReadRange(ByteRange(0uL, -1), archiveSize = 1uL, maxBytes = 1)
-            }
-
-        assertEquals(PmTilesErrorCode.RangeOutOfBounds, error.code)
-    }
-
-    @Test
     fun rejectsReadRangeBeyondArchiveSize() {
         val error =
             assertFailsWith<PmTilesException> {
-                validateReadRange(ByteRange(8uL, 3), archiveSize = 10uL, maxBytes = 3)
+                validateReadRange(ByteRange(8uL, 3uL), archiveSize = 10uL, maxBytes = 3uL)
             }
 
         assertEquals(PmTilesErrorCode.RangeOutOfBounds, error.code)
@@ -50,7 +40,7 @@ class LimitsTest {
     fun rejectsReadRangeBeyondAllocationLimit() {
         val error =
             assertFailsWith<PmTilesException> {
-                validateReadRange(ByteRange(0uL, 4), archiveSize = 10uL, maxBytes = 3)
+                validateReadRange(ByteRange(0uL, 4uL), archiveSize = 10uL, maxBytes = 3uL)
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
@@ -59,36 +49,32 @@ class LimitsTest {
     @Test
     fun rejectsInvalidArchiveLimitConfiguration() {
         assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits(maxInitialReadBytes = 16 * 1024 - 1)
+            ArchiveLimits.build { maxInitialReadBytes = (16 * 1024 - 1).toULong() }
         }
         assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits(maxMetadataBytes = -1)
+            ArchiveLimits.build { maxDirectoryDecompressedBytes = 0uL }
         }
         assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits.Default.copy(maxDirectoryDecompressedBytes = 1024)
-        }
-        assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits(maxDirectoryDecompressedBytes = 1024, maxDirectoryEntries = 256)
-        }
-        assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits(maxDirectoryEntries = -1)
-        }
-        assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits(maxDirectoryEntries = Int.MAX_VALUE)
-        }
-        assertFailsWith<IllegalArgumentException> {
-            ArchiveLimits(maxVarintBytes = 0)
+            ArchiveLimits.build { maxVarintBytes = 0 }
         }
     }
 
     @Test
-    fun acceptsDirectoryEntryLimitThatFitsDecompressedDirectoryBudget() {
-        val limits =
-            ArchiveLimits(
-                maxDirectoryDecompressedBytes = 1024,
-                maxDirectoryEntries = 255,
-            )
+    fun recomputesDefaultDirectoryEntryLimitForSmallerDirectoryBudget() {
+        val limits = ArchiveLimits.build { maxDirectoryDecompressedBytes = 1024uL }
 
-        assertEquals(255, limits.maxDirectoryEntries)
+        assertEquals(1024 / 17, limits.maxDirectoryEntries)
+    }
+
+    @Test
+    fun copiedLimitsRecomputeDerivedDirectoryEntryLimitForLargerDirectoryBudget() {
+        val maxDirectoryDecompressedBytes = (32 * 1024 * 1024).toULong()
+        val limits =
+            ArchiveLimits()
+                .toBuilder()
+                .apply { this.maxDirectoryDecompressedBytes = maxDirectoryDecompressedBytes }
+                .build()
+
+        assertEquals((32 * 1024 * 1024) / 17, limits.maxDirectoryEntries)
     }
 }

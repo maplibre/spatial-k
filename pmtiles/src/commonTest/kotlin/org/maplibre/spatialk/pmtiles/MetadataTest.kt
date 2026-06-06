@@ -5,6 +5,8 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlinx.coroutines.test.runTest
+import kotlinx.io.bytestring.ByteString
+import kotlinx.io.bytestring.encodeToByteString
 import org.maplibre.spatialk.pmtiles.internal.HEADER_BYTES
 import org.maplibre.spatialk.pmtiles.internal.MINIMAL_ROOT_DIRECTORY_BYTES
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
@@ -17,8 +19,8 @@ class MetadataTest {
         val json =
             """{"name":"Tiles","description":"Desc","attribution":"Attr","type":"baselayer","version":"1","encoding":"mvt","vector_layers":[{"id":"roads"}],"custom":{"x":1}}"""
         val source =
-            TestByteRangeSource(buildMetadataArchive(json.encodeToByteArray(), TileType.Mvt))
-        val archive = PmTilesArchive.open(source)
+            TestByteRangeSource(buildMetadataArchive(json.encodeToByteString(), TileTypeCodes.Mvt))
+        val archive = PmTiles.open(source)
 
         val raw = archive.rawMetadataJson()
         val rawAgain = archive.rawMetadataJson()
@@ -30,7 +32,7 @@ class MetadataTest {
         assertEquals("Tiles", metadata.name)
         assertEquals("Desc", metadata.description)
         assertEquals("Attr", metadata.attribution)
-        assertEquals(TilesetKind.BaseLayer, metadata.type)
+        assertEquals("baselayer", metadata.type)
         assertEquals("1", metadata.version)
         assertEquals("mvt", metadata.encoding)
         assertEquals("""[{"id":"roads"}]""", metadata.vectorLayersJson)
@@ -40,7 +42,7 @@ class MetadataTest {
 
     @Test
     fun returnsEmptyTypedMetadataForEmptyMetadataSection() = runTest {
-        val archive = PmTilesArchive.open(TestByteRangeSource(buildMetadataArchive(ByteArray(0))))
+        val archive = PmTiles.open(TestByteRangeSource(buildMetadataArchive(ByteString())))
 
         val metadata = archive.metadata()
 
@@ -54,8 +56,8 @@ class MetadataTest {
         val error =
             assertFailsWith<PmTilesException> {
                 val archive =
-                    PmTilesArchive.open(
-                        TestByteRangeSource(buildMetadataArchive(byteArrayOf(0xc3.toByte(), 0x28)))
+                    PmTiles.open(
+                        TestByteRangeSource(buildMetadataArchive(ByteString(0xc3.toByte(), 0x28)))
                     )
                 archive.rawMetadataJson()
             }
@@ -72,33 +74,33 @@ class MetadataTest {
     @Test
     fun lenientModePreservesRawJsonForNonObjectMetadata() = runTest {
         val archive =
-            PmTilesArchive.open(
-                TestByteRangeSource(buildMetadataArchive("[]".encodeToByteArray())),
-                options = ArchiveOpenOptions.Lenient,
+            PmTiles.open(
+                TestByteRangeSource(buildMetadataArchive("[]".encodeToByteString())),
+                options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
 
         val metadata = archive.metadata()
 
         assertEquals("[]", archive.rawMetadataJson())
         assertNull(metadata.name)
-        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warnings().single().code)
+        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warnings.single().code)
     }
 
     @Test
     fun lenientModeDropsWrongTypedFieldsAndKeepsValidFields() = runTest {
         val archive =
-            PmTilesArchive.open(
+            PmTiles.open(
                 TestByteRangeSource(
-                    buildMetadataArchive("""{"name":1,"description":"ok"}""".encodeToByteArray())
+                    buildMetadataArchive("""{"name":1,"description":"ok"}""".encodeToByteString())
                 ),
-                options = ArchiveOpenOptions.Lenient,
+                options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
 
         val metadata = archive.metadata()
 
         assertNull(metadata.name)
         assertEquals("ok", metadata.description)
-        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warnings().single().code)
+        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warnings.single().code)
     }
 
     @Test
@@ -106,40 +108,40 @@ class MetadataTest {
         assertMetadataFails(
             PmTilesErrorCode.InvalidMetadata,
             """{"name":"Tiles"}""",
-            tileType = TileType.Mvt,
+            tileType = TileTypeCodes.Mvt,
         )
     }
 
     @Test
     fun lenientMvtMetadataWarnsWhenVectorLayersIsMissing() = runTest {
         val archive =
-            PmTilesArchive.open(
+            PmTiles.open(
                 TestByteRangeSource(
                     buildMetadataArchive(
-                        """{"name":"Tiles"}""".encodeToByteArray(),
-                        tileType = TileType.Mvt,
+                        """{"name":"Tiles"}""".encodeToByteString(),
+                        tileType = TileTypeCodes.Mvt,
                     )
                 ),
-                options = ArchiveOpenOptions.Lenient,
+                options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
 
         val metadata = archive.metadata()
 
         assertEquals("Tiles", metadata.name)
-        assertEquals(ArchiveWarningCode.MissingVectorLayers, archive.warnings().single().code)
+        assertEquals(ArchiveWarningCode.MissingVectorLayers, archive.warnings.single().code)
     }
 
     private suspend fun assertMetadataFails(
         code: PmTilesErrorCode,
         json: String,
-        tileType: TileType = TileType.Png,
+        tileType: TileTypeCode = TileTypeCodes.Png,
     ) {
         val error =
             assertFailsWith<PmTilesException> {
                 val archive =
-                    PmTilesArchive.open(
+                    PmTiles.open(
                         TestByteRangeSource(
-                            buildMetadataArchive(json.encodeToByteArray(), tileType)
+                            buildMetadataArchive(json.encodeToByteString(), tileType)
                         )
                     )
                 archive.metadata()
@@ -149,9 +151,9 @@ class MetadataTest {
     }
 
     private fun buildMetadataArchive(
-        metadataBytes: ByteArray,
-        tileType: TileType = TileType.Png,
-    ): ByteArray {
+        metadataBytes: ByteString,
+        tileType: TileTypeCode = TileTypeCodes.Png,
+    ): ByteString {
         val metadataOffset = HEADER_BYTES.toULong() + MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong()
         val fields =
             TestHeaderFields(
@@ -168,7 +170,7 @@ class MetadataTest {
             fields = fields,
             rootBytes = MINIMAL_ROOT_DIRECTORY_BYTES,
             metadataBytes = metadataBytes,
-            tileBytes = byteArrayOf(0),
+            tileBytes = ByteString(0),
         )
     }
 }

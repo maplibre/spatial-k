@@ -5,6 +5,9 @@ package org.maplibre.spatialk.pmtiles.internal
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlinx.io.bytestring.ByteString
+import kotlinx.io.bytestring.ByteStringBuilder
+import kotlinx.io.bytestring.buildByteString
 import org.maplibre.spatialk.pmtiles.ArchiveSection
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 import org.maplibre.spatialk.pmtiles.PmTilesException
@@ -81,7 +84,11 @@ class DirectoryDecodingTest {
                         DirectoryEntry(tileId = 0, offset = 0uL, length = 1, runLength = 1)
                     ),
                     header(),
-                    limits = defaultLimits.copy(maxDirectoryEntries = 0),
+                    limits =
+                        defaultLimits
+                            .toBuilder()
+                            .apply { maxDirectoryDecompressedBytes = 16uL }
+                            .build(),
                 )
             }
         assertEquals(PmTilesErrorCode.LimitExceeded, tooManyEntries.code)
@@ -93,7 +100,8 @@ class DirectoryDecodingTest {
                         DirectoryEntry(tileId = 0, offset = 0uL, length = 2, runLength = 1)
                     ),
                     header(tileDataLength = 2uL),
-                    limits = defaultLimits.copy(maxTileCompressedBytes = 1),
+                    limits =
+                        defaultLimits.toBuilder().apply { maxTileCompressedBytes = 1uL }.build(),
                 )
             }
         assertEquals(PmTilesErrorCode.LimitExceeded, tooLargeTile.code)
@@ -115,7 +123,13 @@ class DirectoryDecodingTest {
     fun rejectsMalformedVarintsAndOverflowedTileIds() {
         val malformedVarint =
             assertFailsWith<PmTilesException> {
-                decodeDirectory(ByteArray(11) { 0x80.toByte() }, header(), defaultLimits)
+                decodeDirectory(
+                    buildByteString(11) {
+                        repeat(11) { append(0x80.toByte()) }
+                    },
+                    header(),
+                    defaultLimits,
+                )
             }
         assertEquals(PmTilesErrorCode.InvalidVarint, malformedVarint.code)
 
@@ -130,7 +144,7 @@ class DirectoryDecodingTest {
         assertEquals(PmTilesErrorCode.InvalidDirectory, overflowedTileId.code)
     }
 
-    private fun assertDirectoryFails(code: PmTilesErrorCode, bytes: ByteArray) {
+    private fun assertDirectoryFails(code: PmTilesErrorCode, bytes: ByteString) {
         val error =
             assertFailsWith<PmTilesException> {
                 decodeDirectory(bytes, header(), defaultLimits)
@@ -144,32 +158,32 @@ class DirectoryDecodingTest {
         leafDirectoriesLength: ULong = 0uL,
     ) =
         parseHeader(
-                buildHeader(
-                    TestHeaderFields(
-                        leafDirectoriesOffset = 200uL,
-                        leafDirectoriesLength = leafDirectoriesLength,
-                        tileDataOffset = 300uL,
-                        tileDataLength = tileDataLength,
+                ByteString(
+                    buildHeader(
+                        TestHeaderFields(
+                            leafDirectoriesOffset = 200uL,
+                            leafDirectoriesLength = leafDirectoriesLength,
+                            tileDataOffset = 300uL,
+                            tileDataLength = tileDataLength,
+                        )
                     )
                 ),
                 archiveSize = 300uL + tileDataLength,
             )
             .copy(leafDirectories = ArchiveSection(200uL, leafDirectoriesLength))
 
-    private fun bytes(vararg values: ULong): ByteArray {
-        val bytes = mutableListOf<Byte>()
-        values.forEach { value -> bytes.writeVarint(value) }
-        return bytes.toByteArray()
+    private fun bytes(vararg values: ULong): ByteString = buildByteString {
+        values.forEach { value -> writeVarint(value) }
     }
 
-    private fun MutableList<Byte>.writeVarint(value: ULong) {
+    private fun ByteStringBuilder.writeVarint(value: ULong) {
         var remaining = value
         while (remaining >= 0x80uL) {
-            add(((remaining and 0x7fuL) or 0x80uL).toByte())
+            append(((remaining and 0x7fuL) or 0x80uL).toByte())
             remaining = remaining shr 7
         }
-        add(remaining.toByte())
+        append(remaining.toByte())
     }
 
-    private val defaultLimits = org.maplibre.spatialk.pmtiles.ArchiveLimits.Default
+    private val defaultLimits = org.maplibre.spatialk.pmtiles.ArchiveLimits()
 }

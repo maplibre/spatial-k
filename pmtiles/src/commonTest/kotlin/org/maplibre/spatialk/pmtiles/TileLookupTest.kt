@@ -5,6 +5,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlinx.coroutines.test.runTest
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.internal.DirectoryEntry
 import org.maplibre.spatialk.pmtiles.internal.HEADER_BYTES
 import org.maplibre.spatialk.pmtiles.internal.TestByteRangeSource
@@ -17,9 +18,10 @@ class TileLookupTest {
     @Test
     fun locatesDirectRootTileAndMissingTile() = runTest {
         val source = TestByteRangeSource(buildArchive())
-        val archive = PmTilesArchive.open(source)
+        val archive = PmTiles.open(source)
 
-        val range = archive.getTileRange(0, 0, 0)
+        val range = archive.findTileRange(0, 0, 0)
+        val rangeByTileId = archive.findTileRange(tileId = 0)
         val missingCoord = TileIds.toZxy(1)
 
         assertEquals(
@@ -29,16 +31,18 @@ class TileLookupTest {
                 archiveRange =
                     ByteRange(
                         offset = HEADER_BYTES.toULong() + 5uL,
-                        length = 1,
+                        length = 1uL,
                     ),
-                tileType = TileType.Unknown,
-                compression = Compression.None,
+                tileType = TileTypeCodes.Unknown,
+                compression = CompressionCodes.None,
                 directoryDepth = 0,
             ),
             range,
         )
+        assertEquals(range, rangeByTileId)
         assertEquals(true, archive.containsTile(0, 0, 0))
-        assertNull(archive.getTileRange(missingCoord.z, missingCoord.x, missingCoord.y))
+        assertNull(archive.findTileRange(missingCoord.z, missingCoord.x, missingCoord.y))
+        assertNull(archive.findTileRange(tileId = 1))
         assertEquals(1, source.reads.size)
     }
 
@@ -52,15 +56,14 @@ class TileLookupTest {
                 tileDataOffset = HEADER_BYTES.toULong() + rootBytes.size.toULong(),
                 tileDataLength = 7uL,
             )
-        val archive =
-            PmTilesArchive.open(TestByteRangeSource(buildArchive(fields, rootBytes = rootBytes)))
+        val archive = PmTiles.open(TestByteRangeSource(buildArchive(fields, rootBytes = rootBytes)))
         val coord = TileIds.toZxy(2)
 
-        val range = archive.getTileRange(coord.z, coord.x, coord.y)
+        val range = archive.findTileRange(coord.z, coord.x, coord.y)
 
         assertEquals(2, range?.tileId)
         assertEquals(coord, range?.coord)
-        assertEquals(ByteRange(fields.tileDataOffset + 5uL, 2), range?.archiveRange)
+        assertEquals(ByteRange(fields.tileDataOffset + 5uL, 2uL), range?.archiveRange)
         assertEquals(0, range?.directoryDepth)
     }
 
@@ -88,19 +91,19 @@ class TileLookupTest {
                     leafBytes = leafBytes,
                 )
             )
-        val archive = PmTilesArchive.open(source)
+        val archive = PmTiles.open(source)
         val coord = TileIds.toZxy(2)
 
-        val range = archive.getTileRange(coord.z, coord.x, coord.y)
+        val range = archive.findTileRange(coord.z, coord.x, coord.y)
         val contains = archive.containsTile(coord.z, coord.x, coord.y)
 
-        assertEquals(ByteRange(303uL, 4), range?.archiveRange)
+        assertEquals(ByteRange(303uL, 4uL), range?.archiveRange)
         assertEquals(1, range?.directoryDepth)
         assertEquals(true, contains)
         assertEquals(
             listOf(
-                ByteRange(0uL, 400),
-                ByteRange(200uL, leafBytes.size),
+                ByteRange(0uL, 400uL),
+                ByteRange(200uL, leafBytes.size.toULong()),
             ),
             source.reads,
         )
@@ -129,9 +132,11 @@ class TileLookupTest {
                     runLength = 0,
                 )
             )
-        val leafSection = ByteArray(nestedLeafOffset.toInt() + tileLeafBytes.size)
-        firstLeafBytes.copyInto(leafSection)
-        tileLeafBytes.copyInto(leafSection, destinationOffset = nestedLeafOffset.toInt())
+        val leafSection =
+            ByteArray(nestedLeafOffset.toInt() + tileLeafBytes.size).also {
+                firstLeafBytes.copyInto(it)
+                tileLeafBytes.copyInto(it, destinationOffset = nestedLeafOffset.toInt())
+            }
         val fields =
             TestHeaderFields(
                 rootLength = rootBytes.size.toULong(),
@@ -142,29 +147,29 @@ class TileLookupTest {
                 addressedTiles = 1uL,
                 tileEntries = 1uL,
                 tileContents = 1uL,
-                tileType = TileType.Png.code,
+                tileType = TileTypeCodes.Png.code,
             )
         val archive =
-            PmTilesArchive.open(
+            PmTiles.open(
                 TestByteRangeSource(
                     buildArchiveWithLeafBytes(
                         fields = fields,
                         rootBytes = rootBytes,
-                        leafBytes = leafSection,
+                        leafBytes = ByteString(leafSection),
                     )
                 ),
-                options = ArchiveOpenOptions.Lenient,
+                options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
         val coord = TileIds.toZxy(2)
 
-        val range = archive.getTileRange(coord.z, coord.x, coord.y)
-        val repeatedRange = archive.getTileRange(coord.z, coord.x, coord.y)
+        val range = archive.findTileRange(coord.z, coord.x, coord.y)
+        val repeatedRange = archive.findTileRange(coord.z, coord.x, coord.y)
 
-        assertEquals(ByteRange(401uL, 2), range?.archiveRange)
-        assertEquals(ByteRange(401uL, 2), repeatedRange?.archiveRange)
+        assertEquals(ByteRange(401uL, 2uL), range?.archiveRange)
+        assertEquals(ByteRange(401uL, 2uL), repeatedRange?.archiveRange)
         assertEquals(2, range?.directoryDepth)
-        assertEquals(1, archive.warnings().size)
-        assertEquals(ArchiveWarningCode.NestedLeafDirectory, archive.warnings().single().code)
+        assertEquals(1, archive.warnings.size)
+        assertEquals(ArchiveWarningCode.NestedLeafDirectory, archive.warnings.single().code)
     }
 
     @Test
@@ -190,9 +195,11 @@ class TileLookupTest {
                     runLength = 0,
                 )
             )
-        val leafSection = ByteArray(nestedLeafOffset.toInt() + tileLeafBytes.size)
-        firstLeafBytes.copyInto(leafSection)
-        tileLeafBytes.copyInto(leafSection, destinationOffset = nestedLeafOffset.toInt())
+        val leafSection =
+            ByteArray(nestedLeafOffset.toInt() + tileLeafBytes.size).also {
+                firstLeafBytes.copyInto(it)
+                tileLeafBytes.copyInto(it, destinationOffset = nestedLeafOffset.toInt())
+            }
         val fields =
             TestHeaderFields(
                 rootLength = rootBytes.size.toULong(),
@@ -205,17 +212,17 @@ class TileLookupTest {
         val error =
             assertFailsWith<PmTilesException> {
                 val archive =
-                    PmTilesArchive.open(
+                    PmTiles.open(
                         TestByteRangeSource(
                             buildArchiveWithLeafBytes(
                                 fields = fields,
                                 rootBytes = rootBytes,
-                                leafBytes = leafSection,
+                                leafBytes = ByteString(leafSection),
                             )
                         )
                     )
                 val coord = TileIds.toZxy(2)
-                archive.getTileRange(coord.z, coord.x, coord.y)
+                archive.findTileRange(coord.z, coord.x, coord.y)
             }
 
         assertEquals(PmTilesErrorCode.InvalidDirectory, error.code)
@@ -240,7 +247,7 @@ class TileLookupTest {
         val error =
             assertFailsWith<PmTilesException> {
                 val archive =
-                    PmTilesArchive.open(
+                    PmTiles.open(
                         TestByteRangeSource(
                             buildArchiveWithLeafBytes(
                                 fields = fields,
@@ -249,12 +256,12 @@ class TileLookupTest {
                             )
                         ),
                         options =
-                            ArchiveOpenOptions(
-                                limits = ArchiveLimits.Default.copy(maxDirectoryDepth = 0)
-                            ),
+                            ArchiveOpenOptions.build {
+                                limits = ArchiveLimits.build { maxDirectoryDepth = 0 }
+                            },
                     )
                 val coord = TileIds.toZxy(2)
-                archive.getTileRange(coord.z, coord.x, coord.y)
+                archive.findTileRange(coord.z, coord.x, coord.y)
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
@@ -284,7 +291,7 @@ class TileLookupTest {
         val error =
             assertFailsWith<PmTilesException> {
                 val archive =
-                    PmTilesArchive.open(
+                    PmTiles.open(
                         TestByteRangeSource(
                             buildArchiveWithLeafBytes(
                                 fields = fields,
@@ -292,9 +299,10 @@ class TileLookupTest {
                                 leafBytes = recursiveLeafBytes,
                             )
                         ),
-                        options = ArchiveOpenOptions.Lenient,
+                        options =
+                            ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
                     )
-                archive.getTileRange(0, 0, 0)
+                archive.findTileRange(0, 0, 0)
             }
 
         assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
@@ -302,8 +310,8 @@ class TileLookupTest {
 
     private fun buildArchiveWithLeafBytes(
         fields: TestHeaderFields,
-        rootBytes: ByteArray,
-        leafBytes: ByteArray,
-    ): ByteArray =
+        rootBytes: ByteString,
+        leafBytes: ByteString,
+    ): ByteString =
         buildArchiveWithSections(fields = fields, rootBytes = rootBytes, leafBytes = leafBytes)
 }

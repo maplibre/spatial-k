@@ -10,6 +10,7 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.ArchiveMetadata
 import org.maplibre.spatialk.pmtiles.ArchiveWarning
 import org.maplibre.spatialk.pmtiles.ArchiveWarningCode
@@ -23,7 +24,7 @@ internal class ArchiveReadState(initialWarnings: List<ArchiveWarning>) {
     private val closed = AtomicBoolean(false)
     private val archiveWarnings = AtomicReference(WarningState.from(initialWarnings))
     private val leafDirectoryCache = LinkedHashMap<ByteRange, List<DirectoryEntry>>()
-    private val inFlightSourceReads = mutableMapOf<SourceReadKey, CompletableDeferred<ByteArray>>()
+    private val inFlightSourceReads = mutableMapOf<SourceReadKey, CompletableDeferred<ByteString>>()
     private var rawMetadataJsonCache: String? = null
     private var metadataCache: ArchiveMetadata? = null
 
@@ -61,7 +62,7 @@ internal class ArchiveReadState(initialWarnings: List<ArchiveWarning>) {
             return@withOpenStateLock it
         }
 
-        metadataCache ?: metadata.also { metadataCache = it }
+        metadata.also { metadataCache = it }
     }
 
     suspend fun cachedLeafDirectory(range: ByteRange): List<DirectoryEntry>? = withOpenStateLock {
@@ -92,15 +93,15 @@ internal class ArchiveReadState(initialWarnings: List<ArchiveWarning>) {
         source: ByteRangeSource,
         archiveSize: ULong,
         range: ByteRange,
-        maxBytes: Int,
-    ): ByteArray {
+        maxBytes: ULong,
+    ): ByteString {
         val key = SourceReadKey(range = range, maxBytes = maxBytes)
         var ownsRead = false
         val inFlight = withOpenStateLock {
             inFlightSourceReads[key]?.let {
                 return@withOpenStateLock it
             }
-            CompletableDeferred<ByteArray>().also {
+            CompletableDeferred<ByteString>().also {
                 inFlightSourceReads[key] = it
                 ownsRead = true
             }
@@ -136,8 +137,8 @@ internal class ArchiveReadState(initialWarnings: List<ArchiveWarning>) {
 
     private suspend fun completeSourceRead(
         key: SourceReadKey,
-        inFlight: CompletableDeferred<ByteArray>,
-        bytes: ByteArray,
+        inFlight: CompletableDeferred<ByteString>,
+        bytes: ByteString,
     ) {
         withStateLock {
             inFlightSourceReads.remove(key)
@@ -153,7 +154,7 @@ internal class ArchiveReadState(initialWarnings: List<ArchiveWarning>) {
 
     private suspend fun failSourceRead(
         key: SourceReadKey,
-        inFlight: CompletableDeferred<ByteArray>,
+        inFlight: CompletableDeferred<ByteString>,
         error: Throwable,
     ): Throwable =
         withContext(NonCancellable) {
@@ -206,7 +207,7 @@ internal class ArchiveReadState(initialWarnings: List<ArchiveWarning>) {
 
 private data class SourceReadKey(
     val range: ByteRange,
-    val maxBytes: Int,
+    val maxBytes: ULong,
 )
 
 private val ArchiveWarning.dedupeKey: WarningDedupeKey

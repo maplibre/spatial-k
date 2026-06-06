@@ -6,8 +6,8 @@ import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
 internal data class DecodeLimits(
-    val maxCompressedBytes: Int,
-    val maxDecompressedBytes: Int,
+    val maxCompressedBytes: ULong,
+    val maxDecompressedBytes: ULong,
     val purpose: DecodePurpose,
 )
 
@@ -35,34 +35,30 @@ internal fun checkedAdd(left: ULong, right: ULong, errorCode: PmTilesErrorCode):
 internal fun ArchiveSection.endOffset(errorCode: PmTilesErrorCode): ULong =
     checkedAdd(offset, length, errorCode)
 
-internal fun ByteRange.endOffset(errorCode: PmTilesErrorCode): ULong {
-    if (length < 0) {
-        throw pmTilesException(errorCode, "Byte range length $length is negative.")
-    }
-    return checkedAdd(offset, length.toULong(), errorCode)
-}
+internal fun ByteRange.endOffset(errorCode: PmTilesErrorCode): ULong =
+    checkedAdd(offset, length, errorCode)
 
-internal fun ArchiveSection.toByteRange(maxBytes: Int, purpose: String): ByteRange =
-    ByteRange(offset = offset, length = allocationLength(length, maxBytes, purpose))
+internal fun ArchiveSection.toByteRange(maxBytes: ULong, purpose: String): ByteRange =
+    ByteRange(offset = offset, length = allocationLength(length, maxBytes, purpose).toULong())
 
-internal fun allocationLength(length: ULong, maxBytes: Int, purpose: String): Int {
-    if (maxBytes < 0) {
-        throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
-            "Configured byte limit for $purpose is negative.",
-        )
-    }
-    if (length > maxBytes.toULong()) {
+internal fun allocationLength(length: ULong, maxBytes: ULong, purpose: String): Int {
+    if (length > maxBytes) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
             "$purpose length $length exceeds limit $maxBytes.",
         )
     }
+    if (length > Int.MAX_VALUE.toULong()) {
+        throw pmTilesException(
+            PmTilesErrorCode.LimitExceeded,
+            "$purpose length $length exceeds the supported allocation limit ${Int.MAX_VALUE}.",
+        )
+    }
     return length.toInt()
 }
 
-internal fun validateReadRange(range: ByteRange, archiveSize: ULong, maxBytes: Int) {
-    allocationLength(range.length.toNonNegativeULong(), maxBytes, "Read range")
+internal fun validateReadRange(range: ByteRange, archiveSize: ULong, maxBytes: ULong) {
+    allocationLength(range.length, maxBytes, "Read range")
     val end = range.endOffset(PmTilesErrorCode.RangeOutOfBounds)
     if (end > archiveSize) {
         throw pmTilesException(
@@ -70,14 +66,4 @@ internal fun validateReadRange(range: ByteRange, archiveSize: ULong, maxBytes: I
             "Read range $range exceeds archive size $archiveSize.",
         )
     }
-}
-
-private fun Int.toNonNegativeULong(): ULong {
-    if (this < 0) {
-        throw pmTilesException(
-            PmTilesErrorCode.RangeOutOfBounds,
-            "Read range length $this is negative.",
-        )
-    }
-    return toULong()
 }

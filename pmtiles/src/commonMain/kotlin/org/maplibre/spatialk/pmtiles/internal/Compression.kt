@@ -1,10 +1,8 @@
 package org.maplibre.spatialk.pmtiles.internal
 
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.DecompressionLimits
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
-
-// It's a suspend fun only because CompressionStreams on web requires it
-internal expect suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLimits): ByteArray
 
 internal class BoundedByteArraySink(private val limits: DecompressionLimits) {
     private var bytes = ByteArray(0)
@@ -23,7 +21,7 @@ internal class BoundedByteArraySink(private val limits: DecompressionLimits) {
         size = nextSize
     }
 
-    fun toByteArray(): ByteArray = bytes.copyOf(size)
+    fun toByteString(): ByteString = ByteString(bytes, startIndex = 0, endIndex = size)
 
     private fun ensureCapacity(required: Int) {
         if (required <= bytes.size) return
@@ -33,7 +31,7 @@ internal class BoundedByteArraySink(private val limits: DecompressionLimits) {
             val doubled = nextCapacity.toLong() * 2
             nextCapacity = if (doubled <= Int.MAX_VALUE) doubled.toInt() else required
         }
-        bytes = bytes.copyOf(nextCapacity.coerceAtMost(limits.maxDecompressedBytes))
+        bytes = bytes.copyOf(nextCapacity.coerceAtMost(limits.maxDecompressedBytesAsInt()))
     }
 }
 
@@ -42,7 +40,8 @@ internal fun checkedDecompressedSize(
     nextChunk: Int,
     limits: DecompressionLimits,
 ): Int {
-    if (nextChunk < 0 || current > limits.maxDecompressedBytes - nextChunk) {
+    val maxDecompressedBytes = limits.maxDecompressedBytesAsInt()
+    if (nextChunk < 0 || current > maxDecompressedBytes - nextChunk) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
             "Decompressed length exceeds limit ${limits.maxDecompressedBytes}.",
@@ -64,3 +63,13 @@ internal val DecodePurpose.displayName: String
         }
 
 private const val INITIAL_OUTPUT_CAPACITY = 8 * 1024
+
+private fun DecompressionLimits.maxDecompressedBytesAsInt(): Int {
+    if (maxDecompressedBytes > Int.MAX_VALUE.toULong()) {
+        throw pmTilesException(
+            PmTilesErrorCode.LimitExceeded,
+            "Decompressed byte limit $maxDecompressedBytes exceeds the supported Int range.",
+        )
+    }
+    return maxDecompressedBytes.toInt()
+}

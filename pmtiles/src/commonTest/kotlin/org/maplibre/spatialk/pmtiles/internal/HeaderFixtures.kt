@@ -1,11 +1,14 @@
 package org.maplibre.spatialk.pmtiles.internal
 
+import kotlinx.io.bytestring.ByteString
+import kotlinx.io.bytestring.ByteStringBuilder
+import kotlinx.io.bytestring.buildByteString
 import org.maplibre.spatialk.pmtiles.ByteRange
 import org.maplibre.spatialk.pmtiles.ByteRangeSource
-import org.maplibre.spatialk.pmtiles.Compression
-import org.maplibre.spatialk.pmtiles.TileType
+import org.maplibre.spatialk.pmtiles.CompressionCodes
+import org.maplibre.spatialk.pmtiles.TileTypeCodes
 
-internal val MINIMAL_ROOT_DIRECTORY_BYTES: ByteArray =
+internal val MINIMAL_ROOT_DIRECTORY_BYTES: ByteString =
     encodeDirectory(DirectoryEntry(tileId = 0, offset = 0uL, length = 1, runLength = 1))
 
 internal data class TestHeaderFields(
@@ -22,9 +25,9 @@ internal data class TestHeaderFields(
     val tileEntries: ULong = 0uL,
     val tileContents: ULong = 0uL,
     val clustered: UInt = 0u,
-    val internalCompression: UInt = Compression.None.code,
-    val tileCompression: UInt = Compression.None.code,
-    val tileType: UInt = TileType.Unknown.code,
+    val internalCompression: UInt = CompressionCodes.None.code,
+    val tileCompression: UInt = CompressionCodes.None.code,
+    val tileType: UInt = TileTypeCodes.Unknown.code,
     val minZoom: UInt = 0u,
     val maxZoom: UInt = 0u,
     val minLongitude: Double = 0.0,
@@ -38,7 +41,7 @@ internal data class TestHeaderFields(
 
 internal fun buildHeader(fields: TestHeaderFields = TestHeaderFields()): ByteArray =
     ByteArray(HEADER_BYTES).also { bytes ->
-        byteArrayOf(0x50, 0x4d, 0x54, 0x69, 0x6c, 0x65, 0x73).copyInto(bytes)
+        PMTILES_MAGIC.copyInto(bytes)
         bytes[7] = 3
         bytes.writeU64(8, fields.rootOffset)
         bytes.writeU64(16, fields.rootLength)
@@ -66,7 +69,13 @@ internal fun buildHeader(fields: TestHeaderFields = TestHeaderFields()): ByteArr
 internal fun buildArchive(
     fields: TestHeaderFields = TestHeaderFields(),
     archiveSize: Int = fields.minimumArchiveSize(),
-    rootBytes: ByteArray = MINIMAL_ROOT_DIRECTORY_BYTES,
+    rootBytes: ByteString = MINIMAL_ROOT_DIRECTORY_BYTES,
+): ByteString = ByteString(buildArchiveBytes(fields, archiveSize, rootBytes))
+
+private fun buildArchiveBytes(
+    fields: TestHeaderFields,
+    archiveSize: Int,
+    rootBytes: ByteString,
 ): ByteArray {
     val bytes = ByteArray(archiveSize)
     buildHeader(fields).copyInto(bytes)
@@ -81,37 +90,39 @@ internal fun buildArchive(
 
 internal fun buildArchiveWithSections(
     fields: TestHeaderFields,
-    rootBytes: ByteArray,
-    metadataBytes: ByteArray = ByteArray(0),
-    leafBytes: ByteArray = ByteArray(0),
-    tileBytes: ByteArray = ByteArray(0),
+    rootBytes: ByteString,
+    metadataBytes: ByteString = ByteString(),
+    leafBytes: ByteString = ByteString(),
+    tileBytes: ByteString = ByteString(),
     minimumArchiveSize: ULong = 400uL,
-): ByteArray {
+): ByteString {
     var archiveSize = minimumArchiveSize
     archiveSize = maxOf(archiveSize, fields.rootOffset + fields.rootLength)
     archiveSize = maxOf(archiveSize, fields.metadataOffset + fields.metadataLength)
     archiveSize = maxOf(archiveSize, fields.leafDirectoriesOffset + fields.leafDirectoriesLength)
     archiveSize = maxOf(archiveSize, fields.tileDataOffset + fields.tileDataLength)
 
-    return buildArchive(fields, archiveSize = archiveSize.toInt(), rootBytes = rootBytes).also {
-        bytes ->
-        if (metadataBytes.isNotEmpty()) {
-            metadataBytes.copyInto(bytes, destinationOffset = fields.metadataOffset.toInt())
+    val bytes = buildArchiveBytes(fields, archiveSize = archiveSize.toInt(), rootBytes = rootBytes)
+    return ByteString(
+        bytes.also {
+            if (metadataBytes.size > 0) {
+                metadataBytes.copyInto(it, destinationOffset = fields.metadataOffset.toInt())
+            }
+            if (leafBytes.size > 0) {
+                leafBytes.copyInto(it, destinationOffset = fields.leafDirectoriesOffset.toInt())
+            }
+            if (tileBytes.size > 0) {
+                tileBytes.copyInto(it, destinationOffset = fields.tileDataOffset.toInt())
+            }
         }
-        if (leafBytes.isNotEmpty()) {
-            leafBytes.copyInto(bytes, destinationOffset = fields.leafDirectoriesOffset.toInt())
-        }
-        if (tileBytes.isNotEmpty()) {
-            tileBytes.copyInto(bytes, destinationOffset = fields.tileDataOffset.toInt())
-        }
-    }
+    )
 }
 
 internal fun buildSingleTileArchive(
-    tileBytes: ByteArray,
-    tileCompression: UInt = Compression.None.code,
-    tileType: UInt = TileType.Unknown.code,
-): ByteArray {
+    tileBytes: ByteString,
+    tileCompression: UInt = CompressionCodes.None.code,
+    tileType: UInt = TileTypeCodes.Unknown.code,
+): ByteString {
     val rootBytes =
         encodeDirectory(
             DirectoryEntry(tileId = 0, offset = 0uL, length = tileBytes.size, runLength = 1)
@@ -127,35 +138,34 @@ internal fun buildSingleTileArchive(
     return buildArchiveWithSections(fields, rootBytes = rootBytes, tileBytes = tileBytes)
 }
 
-internal fun encodeDirectory(vararg entries: DirectoryEntry): ByteArray {
+internal fun encodeDirectory(vararg entries: DirectoryEntry): ByteString {
     require(entries.isNotEmpty()) { "Directory entries are required." }
-    val bytes = mutableListOf<Byte>()
-    bytes.writeVarint(entries.size.toULong())
+    return buildByteString {
+        writeVarint(entries.size.toULong())
 
-    var lastTileId = 0uL
-    entries.forEach { entry ->
-        val tileId = entry.tileId.toULong()
-        bytes.writeVarint(tileId - lastTileId)
-        lastTileId = tileId
-    }
-    entries.forEach { entry -> bytes.writeVarint(entry.runLength.toULong()) }
-    entries.forEach { entry -> bytes.writeVarint(entry.length.toULong()) }
-
-    var nextOffset = 0uL
-    entries.forEachIndexed { index, entry ->
-        if (index > 0 && entry.offset == nextOffset) {
-            bytes.writeVarint(0uL)
-        } else {
-            bytes.writeVarint(entry.offset + 1uL)
+        var lastTileId = 0uL
+        entries.forEach { entry ->
+            val tileId = entry.tileId.toULong()
+            writeVarint(tileId - lastTileId)
+            lastTileId = tileId
         }
-        nextOffset = entry.offset + entry.length.toULong()
-    }
+        entries.forEach { entry -> writeVarint(entry.runLength.toULong()) }
+        entries.forEach { entry -> writeVarint(entry.length.toULong()) }
 
-    return bytes.toByteArray()
+        var nextOffset = 0uL
+        entries.forEachIndexed { index, entry ->
+            if (index > 0 && entry.offset == nextOffset) {
+                writeVarint(0uL)
+            } else {
+                writeVarint(entry.offset + 1uL)
+            }
+            nextOffset = entry.offset + entry.length.toULong()
+        }
+    }
 }
 
 internal class TestByteRangeSource(
-    private val bytes: ByteArray,
+    private val bytes: ByteString,
     private val sizeError: Throwable? = null,
     private val readError: Throwable? = null,
     private val shortRead: Boolean = false,
@@ -167,14 +177,13 @@ internal class TestByteRangeSource(
         return bytes.size.toULong()
     }
 
-    override suspend fun read(range: ByteRange): ByteArray {
+    override suspend fun read(range: ByteRange): ByteString {
         readError?.let { throw it }
         reads += range
-        if (range.length == 0) return ByteArray(0)
+        if (range.length == 0uL) return ByteString()
         val start = range.offset.toInt()
-        val end = start + range.length
-        val result = bytes.copyOfRange(start, end)
-        return if (shortRead) result.copyOf(result.size - 1) else result
+        val end = start + range.length.toInt()
+        return bytes.substring(start, if (shortRead) end - 1 else end)
     }
 }
 
@@ -212,11 +221,22 @@ private fun ByteArray.writeI32(offset: Int, value: Int) {
     }
 }
 
-private fun MutableList<Byte>.writeVarint(value: ULong) {
+private val PMTILES_MAGIC =
+    ByteString(
+        0x50.toByte(),
+        0x4d.toByte(),
+        0x54.toByte(),
+        0x69.toByte(),
+        0x6c.toByte(),
+        0x65.toByte(),
+        0x73.toByte(),
+    )
+
+private fun ByteStringBuilder.writeVarint(value: ULong) {
     var remaining = value
     while (remaining >= 0x80uL) {
-        add(((remaining and 0x7fuL) or 0x80uL).toByte())
+        append(((remaining and 0x7fuL) or 0x80uL).toByte())
         remaining = remaining shr 7
     }
-    add(remaining.toByte())
+    append(remaining.toByte())
 }

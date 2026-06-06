@@ -1,25 +1,26 @@
 package org.maplibre.spatialk.pmtiles.internal
 
 import kotlin.coroutines.cancellation.CancellationException
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.ArchiveOpenOptions
-import org.maplibre.spatialk.pmtiles.Compression
+import org.maplibre.spatialk.pmtiles.CompressionCode
 import org.maplibre.spatialk.pmtiles.DecompressionLimits
 import org.maplibre.spatialk.pmtiles.Decompressor
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
-internal expect fun platformDefaultDecompressors(): Map<Compression, Decompressor>
+internal expect fun platformDefaultDecompressors(): Map<CompressionCode, Decompressor>
 
 internal val noneDecompressor: Decompressor = Decompressor { bytes, _ -> bytes }
 
-internal fun ArchiveOpenOptions.effectiveDecompressors(): Map<Compression, Decompressor> =
+internal fun ArchiveOpenOptions.effectiveDecompressors(): Map<CompressionCode, Decompressor> =
     platformDefaultDecompressors() + decompressors
 
-internal suspend fun Map<Compression, Decompressor>.decompress(
-    compression: Compression,
-    bytes: ByteArray,
+internal suspend fun Map<CompressionCode, Decompressor>.decompress(
+    compression: CompressionCode,
+    bytes: ByteString,
     limits: DecodeLimits,
-): ByteArray =
+): ByteString =
     decompress(
         compression = compression,
         bytes = bytes,
@@ -31,16 +32,16 @@ internal suspend fun Map<Compression, Decompressor>.decompress(
         purpose = limits.purpose,
     )
 
-internal suspend fun Map<Compression, Decompressor>.decompress(
-    compression: Compression,
-    bytes: ByteArray,
+internal suspend fun Map<CompressionCode, Decompressor>.decompress(
+    compression: CompressionCode,
+    bytes: ByteString,
     limits: DecompressionLimits,
     purpose: DecodePurpose? = null,
-): ByteArray {
+): ByteString {
     validateDecodeLimits(limits, purpose)
     validateCompressedSize(bytes.size, limits, purpose)
 
-    val decompressor = this[compression] ?: unsupportedCompression(compression, purpose)
+    val decompressor = this[compression] ?: unsupportedCompressionCode(compression, purpose)
     val decoded =
         try {
             decompressor.decompress(bytes, limits)
@@ -61,16 +62,16 @@ internal suspend fun Map<Compression, Decompressor>.decompress(
 }
 
 private fun validateDecodeLimits(limits: DecompressionLimits, purpose: DecodePurpose?) {
-    if (limits.maxCompressedBytes < 0) {
+    if (limits.maxCompressedBytes > Int.MAX_VALUE.toULong()) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
-            "${purposePrefix(purpose)}compressed byte limit is negative.",
+            "${purposePrefix(purpose)}compressed byte limit ${limits.maxCompressedBytes} exceeds the supported Int range.",
         )
     }
-    if (limits.maxDecompressedBytes < 0) {
+    if (limits.maxDecompressedBytes > Int.MAX_VALUE.toULong()) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
-            "${purposePrefix(purpose)}decompressed byte limit is negative.",
+            "${purposePrefix(purpose)}decompressed byte limit ${limits.maxDecompressedBytes} exceeds the supported Int range.",
         )
     }
 }
@@ -80,7 +81,7 @@ private fun validateCompressedSize(
     limits: DecompressionLimits,
     purpose: DecodePurpose?,
 ) {
-    if (size > limits.maxCompressedBytes) {
+    if (size.toULong() > limits.maxCompressedBytes) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
             "${purposePrefix(purpose)}compressed length $size exceeds limit ${limits.maxCompressedBytes}.",
@@ -93,7 +94,7 @@ internal fun validateDecompressedSize(
     limits: DecompressionLimits,
     purpose: DecodePurpose? = null,
 ) {
-    if (size > limits.maxDecompressedBytes) {
+    if (size.toULong() > limits.maxDecompressedBytes) {
         throw pmTilesException(
             PmTilesErrorCode.LimitExceeded,
             "${purposePrefix(purpose)}decompressed length $size exceeds limit ${limits.maxDecompressedBytes}.",
@@ -101,7 +102,10 @@ internal fun validateDecompressedSize(
     }
 }
 
-private fun unsupportedCompression(compression: Compression, purpose: DecodePurpose?): Nothing =
+private fun unsupportedCompressionCode(
+    compression: CompressionCode,
+    purpose: DecodePurpose?,
+): Nothing =
     throw pmTilesException(
         PmTilesErrorCode.UnsupportedCompression,
         "${purposePrefix(purpose)}compression code ${compression.code} is not supported.",

@@ -11,6 +11,7 @@ import kotlinx.cinterop.ptr
 import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.sizeOf
 import kotlinx.cinterop.usePinned
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.DecompressionLimits
 import platform.zlib.ZLIB_VERSION
 import platform.zlib.Z_NO_FLUSH
@@ -23,9 +24,9 @@ import platform.zlib.inflateEnd
 import platform.zlib.inflateInit2_
 import platform.zlib.z_stream
 
-internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLimits): ByteArray =
+internal suspend fun decodeGzip(bytes: ByteString, limits: DecompressionLimits): ByteString =
     memScoped {
-        if (bytes.isEmpty()) {
+        if (bytes.size == 0) {
             decompressionFailed("gzip input is empty.")
         }
 
@@ -36,10 +37,11 @@ internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLi
 
         val sink = BoundedByteArraySink(limits)
         val buffer = ByteArray(GZIP_BUFFER_SIZE)
+        val inputBytes = bytes.toByteArray()
 
-        bytes.usePinned { input ->
+        inputBytes.usePinned { input ->
             stream.next_in = input.addressOf(0).reinterpret()
-            stream.avail_in = bytes.size.convert()
+            stream.avail_in = inputBytes.size.convert()
 
             val initStatus =
                 inflateInit2_(
@@ -74,7 +76,7 @@ internal actual suspend fun decodeGzip(bytes: ByteArray, limits: DecompressionLi
                         }
                     }
                 }
-                sink.toByteArray()
+                sink.toByteString()
             } finally {
                 val endStatus = inflateEnd(stream.ptr)
                 stream.next_in = null

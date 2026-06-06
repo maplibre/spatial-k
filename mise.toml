@@ -36,9 +36,21 @@ run = "./gradlew wasmJsNodeTest"
 description = "Run native tests for the current platform"
 run = "./gradlew $( uname | grep -q Darwin && (uname -m | grep -q arm64 && echo macosArm64Test || echo macosX64Test) || echo linuxX64Test )"
 
+[tasks."test:swift"]
+description = "Run Swift tests for Kotlin/Native ObjC-exported Apple APIs"
+run = '''
+if [ "$(uname)" != "Darwin" ]; then
+  echo "Skipping Swift tests: Apple Kotlin/Native frameworks require macOS."
+  exit 0
+fi
+
+./gradlew :pmtiles:assembleSpatialKPmtilesDebugXCFramework
+swift test --package-path pmtiles/src
+'''
+
 [tasks.test]
 description = "Run all tests"
-depends = ["test:jvm", "test:jsnode", "test:wasmjsnode", "test:native"]
+depends = ["test:jvm", "test:jsnode", "test:wasmjsnode", "test:native", "test:swift"]
 
 [tasks.docs]
 description = "Serve documentation locally"

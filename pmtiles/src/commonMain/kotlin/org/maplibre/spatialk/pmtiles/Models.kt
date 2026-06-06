@@ -1,6 +1,14 @@
+@file:OptIn(ExperimentalObjCName::class, ExperimentalObjCRefinement::class)
+
 package org.maplibre.spatialk.pmtiles
 
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.experimental.ExperimentalObjCName
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.jvm.JvmInline
+import kotlin.native.HiddenFromObjC
+import kotlin.native.ObjCName
+import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
 
 /**
@@ -9,19 +17,22 @@ import org.maplibre.spatialk.pmtiles.internal.pmTilesException
  * @property offset Absolute byte offset from the start of the archive.
  * @property length Number of bytes to read.
  */
-public data class ByteRange(
+public data class ByteRange
+internal constructor(
     public val offset: ULong,
-    public val length: Int,
+    public val length: ULong,
 )
 
 /** Caller-provided byte range source used by the PMTiles reader. */
+@OptIn(ExperimentalObjCRefinement::class)
+@HiddenFromObjC
 public interface ByteRangeSource {
     /** Returns the stable archive size in bytes. */
     @Throws(PmTilesException::class, CancellationException::class) public suspend fun size(): ULong
 
     /** Reads exactly the requested number of bytes from [range]. */
     @Throws(PmTilesException::class, CancellationException::class)
-    public suspend fun read(range: ByteRange): ByteArray
+    public suspend fun read(range: ByteRange): ByteString
 }
 
 /**
@@ -33,26 +44,27 @@ public interface ByteRangeSource {
  * @property leafDirectories Leaf directory section.
  * @property tileData Tile payload section.
  * @property counts Header tile counts.
- * @property clustered Header clustered flag.
- * @property internalCompression Compression used for directories and metadata.
- * @property tileCompression Compression used for tile payloads.
+ * @property isClustered True when the archive declares clustered tile ordering.
+ * @property internalCompression CompressionCode used for directories and metadata.
+ * @property tileCompression CompressionCode used for tile payloads.
  * @property tileType Tile payload type.
  * @property minZoom Minimum zoom advertised by the archive.
  * @property maxZoom Maximum zoom advertised by the archive.
  * @property bounds Geographic bounds advertised by the archive.
  * @property center Center coordinate advertised by the archive.
  */
-public data class ArchiveHeader(
+public data class ArchiveHeader
+internal constructor(
     public val specVersion: Int,
     public val rootDirectory: ArchiveSection,
     public val metadata: ArchiveSection,
     public val leafDirectories: ArchiveSection,
     public val tileData: ArchiveSection,
     public val counts: HeaderCounts,
-    public val clustered: Clustered,
-    public val internalCompression: Compression,
-    public val tileCompression: Compression,
-    public val tileType: TileType,
+    public val isClustered: Boolean,
+    public val internalCompression: CompressionCode,
+    public val tileCompression: CompressionCode,
+    public val tileType: TileTypeCode,
     public val minZoom: Int,
     public val maxZoom: Int,
     public val bounds: LonLatBounds,
@@ -65,7 +77,8 @@ public data class ArchiveHeader(
  * @property offset Absolute byte offset from the start of the archive.
  * @property length Section length in bytes.
  */
-public data class ArchiveSection(
+public data class ArchiveSection
+internal constructor(
     public val offset: ULong,
     public val length: ULong,
 )
@@ -73,37 +86,19 @@ public data class ArchiveSection(
 /**
  * PMTiles header counts.
  *
- * @property addressedTiles Semantic addressed tile count, or null when unknown.
- * @property tileEntries Semantic tile-entry count, or null when unknown.
- * @property tileContents Semantic tile-content count, or null when unknown.
- * @property rawAddressedTiles Raw addressed tile count value from the header.
- * @property rawTileEntries Raw tile-entry count value from the header.
- * @property rawTileContents Raw tile-content count value from the header.
+ * @property addressedTiles Addressed tile count from the header. PMTiles uses zero as the "unknown
+ *   count" sentinel.
+ * @property tileEntries Tile-entry count from the header. PMTiles uses zero as the "unknown count"
+ *   sentinel.
+ * @property tileContents Tile-content count from the header. PMTiles uses zero as the "unknown
+ *   count" sentinel.
  */
-public data class HeaderCounts(
-    public val addressedTiles: ULong?,
-    public val tileEntries: ULong?,
-    public val tileContents: ULong?,
-    public val rawAddressedTiles: ULong,
-    public val rawTileEntries: ULong,
-    public val rawTileContents: ULong,
+public data class HeaderCounts
+internal constructor(
+    public val addressedTiles: ULong,
+    public val tileEntries: ULong,
+    public val tileContents: ULong,
 )
-
-/**
- * PMTiles clustered flag.
- *
- * @property value True when the archive declares clustered tile ordering.
- */
-public data class Clustered(public val value: Boolean) {
-    /** Clustered flag constants. */
-    public companion object {
-        /** Archive does not declare clustered tile ordering. */
-        public val No: Clustered = Clustered(false)
-
-        /** Archive declares clustered tile ordering. */
-        public val Yes: Clustered = Clustered(true)
-    }
-}
 
 /**
  * Geographic longitude/latitude bounds.
@@ -113,7 +108,8 @@ public data class Clustered(public val value: Boolean) {
  * @property east Eastern longitude.
  * @property north Northern latitude.
  */
-public data class LonLatBounds(
+public data class LonLatBounds
+internal constructor(
     public val west: Double,
     public val south: Double,
     public val east: Double,
@@ -127,7 +123,8 @@ public data class LonLatBounds(
  * @property latitude Center latitude.
  * @property zoom Center zoom.
  */
-public data class TileCenter(
+public data class TileCenter
+internal constructor(
     public val longitude: Double,
     public val latitude: Double,
     public val zoom: Int,
@@ -136,57 +133,63 @@ public data class TileCenter(
 /**
  * PMTiles compression code.
  *
+ * PMTiles can contain future compression codes, so this type stores the raw code while providing
+ * constants for currently defined codes.
+ *
  * @property code Raw PMTiles compression code.
  */
-public data class Compression(public val code: UInt) {
-    /** Known PMTiles compression constants. */
-    public companion object {
-        /** Unknown compression code. */
-        public val Unknown: Compression = Compression(0u)
+@JvmInline public value class CompressionCode(public val code: UInt)
 
-        /** No compression. */
-        public val None: Compression = Compression(1u)
+/** PMTiles compression-code constants. */
+public object CompressionCodes {
+    /** Unknown compression code. */
+    @ObjCName(swiftName = "unknown") public val Unknown: CompressionCode = CompressionCode(0u)
 
-        /** gzip compression. */
-        public val Gzip: Compression = Compression(2u)
+    /** No compression. */
+    @ObjCName(swiftName = "none") public val None: CompressionCode = CompressionCode(1u)
 
-        /** brotli compression. */
-        public val Brotli: Compression = Compression(3u)
+    /** gzip compression. */
+    @ObjCName(swiftName = "gzip") public val Gzip: CompressionCode = CompressionCode(2u)
 
-        /** zstd compression. */
-        public val Zstd: Compression = Compression(4u)
-    }
+    /** brotli compression. */
+    @ObjCName(swiftName = "brotli") public val Brotli: CompressionCode = CompressionCode(3u)
+
+    /** zstd compression. */
+    @ObjCName(swiftName = "zstd") public val Zstd: CompressionCode = CompressionCode(4u)
 }
 
 /**
  * PMTiles tile type code.
  *
+ * PMTiles can contain future tile type codes, so this type stores the raw code while providing
+ * constants for currently defined codes.
+ *
  * @property code Raw PMTiles tile type code.
  */
-public data class TileType(public val code: UInt) {
-    /** Known PMTiles tile type constants. */
-    public companion object {
-        /** Unknown tile type. */
-        public val Unknown: TileType = TileType(0u)
+@JvmInline public value class TileTypeCode(public val code: UInt)
 
-        /** Mapbox Vector Tile payload. */
-        public val Mvt: TileType = TileType(1u)
+/** PMTiles tile-type-code constants. */
+public object TileTypeCodes {
+    /** Unknown tile type. */
+    @ObjCName(swiftName = "unknown") public val Unknown: TileTypeCode = TileTypeCode(0u)
 
-        /** PNG raster payload. */
-        public val Png: TileType = TileType(2u)
+    /** Mapbox Vector Tile payload. */
+    @ObjCName(swiftName = "mvt") public val Mvt: TileTypeCode = TileTypeCode(1u)
 
-        /** JPEG raster payload. */
-        public val Jpeg: TileType = TileType(3u)
+    /** PNG raster payload. */
+    @ObjCName(swiftName = "png") public val Png: TileTypeCode = TileTypeCode(2u)
 
-        /** WebP raster payload. */
-        public val Webp: TileType = TileType(4u)
+    /** JPEG raster payload. */
+    @ObjCName(swiftName = "jpeg") public val Jpeg: TileTypeCode = TileTypeCode(3u)
 
-        /** AVIF raster payload. */
-        public val Avif: TileType = TileType(5u)
+    /** WebP raster payload. */
+    @ObjCName(swiftName = "webp") public val Webp: TileTypeCode = TileTypeCode(4u)
 
-        /** MapLibre Tile payload. */
-        public val Mlt: TileType = TileType(6u)
-    }
+    /** AVIF raster payload. */
+    @ObjCName(swiftName = "avif") public val Avif: TileTypeCode = TileTypeCode(5u)
+
+    /** MapLibre Tile payload. */
+    @ObjCName(swiftName = "mlt") public val Mlt: TileTypeCode = TileTypeCode(6u)
 }
 
 /**
@@ -196,13 +199,24 @@ public data class TileType(public val code: UInt) {
  * @property x Tile column.
  * @property y Tile row.
  */
-public data class TileCoord(
+public data class TileCoord
+@Throws(PmTilesException::class)
+constructor(
     public val z: Int,
     public val x: Int,
     public val y: Int,
-)
+) {
+    init {
+        TileIds.validateZxy(z, x, y)
+    }
+
+    /** Converts this Web tile coordinate to a PMTiles TileID. */
+    @Throws(PmTilesException::class) public fun toTileId(): Long = TileIds.fromZxy(z, x, y)
+}
 
 /** PMTiles TileID conversion utilities. */
+@OptIn(ExperimentalObjCRefinement::class)
+@HiddenFromObjC
 public object TileIds {
     /** Converts a Web tile coordinate to a PMTiles TileID. */
     @Throws(PmTilesException::class)
@@ -280,43 +294,43 @@ public object TileIds {
 
         return index
     }
+}
 
-    private fun hilbertCoordinate(z: Int, position: Long): Pair<Int, Int> {
-        var remaining = position
-        var x = 0L
-        var y = 0L
-        var scale = 1L
+private fun hilbertCoordinate(z: Int, position: Long): Pair<Int, Int> {
+    var remaining = position
+    var x = 0L
+    var y = 0L
+    var scale = 1L
 
-        while (scale < (1L shl z)) {
-            val rx = ((remaining / 2) and 1).toInt()
-            val ry = ((remaining xor rx.toLong()) and 1).toInt()
+    while (scale < (1L shl z)) {
+        val rx = ((remaining / 2) and 1).toInt()
+        val ry = ((remaining xor rx.toLong()) and 1).toInt()
 
-            if (ry == 0) {
-                if (rx == 1) {
-                    x = scale - 1 - x
-                    y = scale - 1 - y
-                }
-
-                val nextX = y
-                y = x
-                x = nextX
+        if (ry == 0) {
+            if (rx == 1) {
+                x = scale - 1 - x
+                y = scale - 1 - y
             }
 
-            x += scale * rx
-            y += scale * ry
-            remaining /= 4
-            scale *= 2
+            val nextX = y
+            y = x
+            x = nextX
         }
 
-        return x.toInt() to y.toInt()
+        x += scale * rx
+        y += scale * ry
+        remaining /= 4
+        scale *= 2
     }
 
-    private fun invalidTileCoordinate(message: String): PmTilesException =
-        pmTilesException(PmTilesErrorCode.InvalidTileCoordinate, message)
-
-    private const val MAX_ZOOM = 31
-    private val MAX_SUPPORTED_TILE_ID: Long = zoomStart(MAX_ZOOM) + (1L shl (2 * MAX_ZOOM)) - 1
+    return x.toInt() to y.toInt()
 }
+
+private fun invalidTileCoordinate(message: String): PmTilesException =
+    pmTilesException(PmTilesErrorCode.InvalidTileCoordinate, message)
+
+private const val MAX_ZOOM = 31
+private val MAX_SUPPORTED_TILE_ID: Long = TileIds.zoomStart(MAX_ZOOM) + (1L shl (2 * MAX_ZOOM)) - 1
 
 /**
  * Located tile byte range.
@@ -328,12 +342,13 @@ public object TileIds {
  * @property compression Tile payload compression.
  * @property directoryDepth Directory traversal depth used to find the tile.
  */
-public data class TileRange(
+public data class TileRange
+internal constructor(
     public val tileId: Long,
     public val coord: TileCoord,
     public val archiveRange: ByteRange,
-    public val tileType: TileType,
-    public val compression: Compression,
+    public val tileType: TileTypeCode,
+    public val compression: CompressionCode,
     public val directoryDepth: Int,
 )
 
@@ -342,59 +357,60 @@ public data class TileRange(
  *
  * @property tileId PMTiles TileID for the tile.
  * @property coord Web tile coordinate for the tile.
- * @property bytes Tile payload bytes. The array is owned by this tile object but remains mutable;
- *   callers that modify it should make their own copy.
+ * @property payload Immutable tile payload bytes.
  * @property tileType Tile payload type.
- * @property compression Compression represented by [bytes].
- * @property wasDecompressed True when [bytes] were decompressed by the reader.
+ * @property compression CompressionCode represented by the payload bytes.
+ * @property wasDecompressed True when the payload bytes were decompressed by the reader.
  * @property range Located source range for this tile.
  */
-public class ArchiveTile(
+public data class ArchiveTile
+internal constructor(
     public val tileId: Long,
     public val coord: TileCoord,
-    public val bytes: ByteArray,
-    public val tileType: TileType,
-    public val compression: Compression,
+    public val payload: ByteString,
+    public val tileType: TileTypeCode,
+    public val compression: CompressionCode,
     public val wasDecompressed: Boolean,
     public val range: TileRange,
 )
 
 /**
+ * Result for one coordinate in a batch tile read.
+ *
+ * @property coord Requested tile coordinate.
+ * @property tile Tile payload, or null when the archive does not contain [coord].
+ */
+public data class TileReadResult
+internal constructor(
+    public val coord: TileCoord,
+    public val tile: ArchiveTile?,
+) {
+    /** True when [tile] is present. */
+    public val isFound: Boolean
+        get() = tile != null
+}
+
+/**
  * Typed PMTiles metadata fields.
  *
  * @property name Tileset name.
- * @property description Tileset description.
+ * @property description PMTiles metadata `description`.
  * @property attribution Tileset attribution.
  * @property type Tileset kind.
  * @property version Tileset version.
  * @property encoding PMTiles-defined encoding string.
  * @property vectorLayersJson Raw JSON for the `vector_layers` value.
  */
-public data class ArchiveMetadata(
+public data class ArchiveMetadata
+internal constructor(
     public val name: String?,
-    public val description: String?,
+    @property:ObjCName(swiftName = "archiveDescription") public val description: String?,
     public val attribution: String?,
-    public val type: TilesetKind?,
+    public val type: String?,
     public val version: String?,
     public val encoding: String?,
     public val vectorLayersJson: String?,
 )
-
-/**
- * PMTiles metadata tileset kind.
- *
- * @property value Raw metadata `type` string.
- */
-public data class TilesetKind(public val value: String) {
-    /** Known tileset kind constants. */
-    public companion object {
-        /** Overlay tileset. */
-        public val Overlay: TilesetKind = TilesetKind("overlay")
-
-        /** Base layer tileset. */
-        public val BaseLayer: TilesetKind = TilesetKind("baselayer")
-    }
-}
 
 /**
  * Warning recorded by a lenient archive operation.
@@ -403,7 +419,8 @@ public data class TilesetKind(public val value: String) {
  * @property message Human-readable warning message.
  * @property context Optional warning context.
  */
-public data class ArchiveWarning(
+public data class ArchiveWarning
+internal constructor(
     public val code: ArchiveWarningCode,
     public val message: String,
     public val context: String? = null,

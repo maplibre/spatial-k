@@ -1,73 +1,20 @@
 package org.maplibre.spatialk.pmtiles.internal
 
-internal val helloBytes: ByteArray = "hello pmtiles".encodeToByteArray()
+import kotlinx.io.bytestring.ByteString
+import kotlinx.io.bytestring.append
+import kotlinx.io.bytestring.buildByteString
+import kotlinx.io.bytestring.encodeToByteString
+import kotlinx.io.bytestring.hexToByteString
 
-internal val helloGzipBytes: ByteArray =
-    intArrayOf(
-            0x1f,
-            0x8b,
-            0x08,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x03,
-            0xcb,
-            0x48,
-            0xcd,
-            0xc9,
-            0xc9,
-            0x57,
-            0x28,
-            0xc8,
-            0x2d,
-            0xc9,
-            0xcc,
-            0x49,
-            0x2d,
-            0x06,
-            0x00,
-            0x82,
-            0x27,
-            0xf9,
-            0x82,
-            0x0d,
-            0x00,
-            0x00,
-            0x00,
-        )
-        .map { it.toByte() }
-        .toByteArray()
+internal val helloBytes: ByteString = "hello pmtiles".encodeToByteString()
 
-internal val emptyGzipBytes: ByteArray =
-    intArrayOf(
-            0x1f,
-            0x8b,
-            0x08,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x03,
-            0x03,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-        )
-        .map { it.toByte() }
-        .toByteArray()
+internal val helloGzipBytes: ByteString =
+    "1f8b0800000000000003cb48cdc9c95728c82dc9cc492d06008227f9820d000000".hexToByteString()
 
-internal fun truncatedGzipBombBytes(decompressedBytes: Int): ByteArray {
+internal val emptyGzipBytes: ByteString =
+    "1f8b080000000000000303000000000000000000".hexToByteString()
+
+internal fun truncatedGzipBombBytes(decompressedBytes: Int): ByteString {
     require(decompressedBytes > 1)
 
     val bits = DeflateBitWriter()
@@ -84,17 +31,24 @@ internal fun truncatedGzipBombBytes(decompressedBytes: Int): ByteArray {
     }
     bits.writeFixedHuffmanSymbol(END_OF_BLOCK)
 
-    return gzipHeader + bits.toByteArray() + gzipTrailerForZeroBytes(decompressedBytes)
+    return buildByteString {
+        append(gzipHeader)
+        append(bits.toByteString())
+        append(gzipTrailerForZeroBytes(decompressedBytes))
+    }
 }
 
-private fun gzipTrailerForZeroBytes(decompressedBytes: Int): ByteArray {
+private fun gzipTrailerForZeroBytes(decompressedBytes: Int): ByteString {
     val checksum = crc32OfZeros(decompressedBytes)
     val size = decompressedBytes.toUInt()
-    return littleEndian(checksum) + littleEndian(size)
+    return buildByteString {
+        append(littleEndian(checksum))
+        append(littleEndian(size))
+    }
 }
 
-private fun littleEndian(value: UInt): ByteArray =
-    byteArrayOf(
+private fun littleEndian(value: UInt): ByteString =
+    ByteString(
         (value and 0xffu).toByte(),
         ((value shr 8) and 0xffu).toByte(),
         ((value shr 16) and 0xffu).toByte(),
@@ -116,8 +70,8 @@ internal fun testDecodeLimits(
     maxDecompressedBytes: Int = 1024,
 ): DecodeLimits =
     DecodeLimits(
-        maxCompressedBytes = maxCompressedBytes,
-        maxDecompressedBytes = maxDecompressedBytes,
+        maxCompressedBytes = maxCompressedBytes.toULong(),
+        maxDecompressedBytes = maxDecompressedBytes.toULong(),
         purpose = DecodePurpose.Metadata,
     )
 
@@ -156,9 +110,11 @@ private class DeflateBitWriter {
         writeBits(value = 0, count = 5)
     }
 
-    fun toByteArray(): ByteArray {
+    fun toByteString(): ByteString {
         if (bitCount > 0) flushByte()
-        return bytes.toByteArray()
+        return buildByteString(bytes.size) {
+            bytes.forEach(::append)
+        }
     }
 
     private fun flushByte() {
@@ -182,19 +138,7 @@ private fun Int.reverseBits(count: Int): Int {
     return reversed
 }
 
-private val gzipHeader =
-    byteArrayOf(
-        0x1f,
-        0x8b.toByte(),
-        0x08,
-        0x00,
-        0x00,
-        0x00,
-        0x00,
-        0x00,
-        0x00,
-        0x03,
-    )
+private val gzipHeader = "1f8b0800000000000003".hexToByteString()
 
 private val LENGTH_CODES =
     listOf(
