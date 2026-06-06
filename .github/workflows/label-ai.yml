@@ -10,7 +10,7 @@ permissions:
 
 jobs:
     label:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         steps:
             - uses: sargunv/ai-pr-detector@64b95ea7b4b037eec2a4c7afb62e117fc006d77e # v0.1.0
               with:

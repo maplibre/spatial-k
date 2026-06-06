@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
     resolve-version:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         env:
             REF_TYPE: ${{ github.ref_type }}
             REF_NAME: ${{ github.ref_name }}
@@ -52,7 +52,7 @@ jobs:
                   echo "latest_release=$latest_release" >> "$GITHUB_OUTPUT"
 
     publish-maven:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         needs: [resolve-version]
         environment:
             name: maven-central
@@ -83,7 +83,7 @@ jobs:
                       ${{ secrets.GPG_PASSPHRASE }}
 
     publish-pages:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         needs: [resolve-version, publish-maven]
         if: github.ref_type == 'tag'
         permissions:
@@ -109,7 +109,7 @@ jobs:
               id: deploy-pages
 
     publish-pmtiles-swift:
-        runs-on: macos-latest
+        runs-on: macos-26
         needs: [resolve-version]
         permissions:
             contents: read
@@ -135,7 +135,7 @@ jobs:
                   if-no-files-found: error
 
     publish-pmtiles-swift-release:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         needs: [resolve-version, publish-maven, publish-pmtiles-swift]
         if: github.ref_type == 'tag'
         permissions:
