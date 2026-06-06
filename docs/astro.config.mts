@@ -15,6 +15,7 @@ import remarkSpatialKSnippets from "./plugins/remark-spatial-k-snippets.mjs";
 const base = "/spatial-k";
 const docsDir = dirname(fileURLToPath(import.meta.url));
 
+// Redirect generated API directory URLs to index.html in Vite dev, matching static hosting.
 const generatedApiIndexMiddleware: Plugin = {
   name: "spatial-k-generated-api-index-middleware",
   configureServer(server) {
@@ -26,8 +27,6 @@ const generatedApiIndexMiddleware: Plugin = {
       const publicPath =
         pathname?.startsWith(base) ? pathname.slice(base.length) : pathname;
 
-      // Vite dev does not serve generated public index files for directory URLs,
-      // while static hosts do. Match mln-ffi-style clean reference links locally.
       if (
         publicPath?.startsWith("/api/") &&
         publicPath.endsWith("/") &&

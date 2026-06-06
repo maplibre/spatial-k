@@ -1,3 +1,6 @@
+[env]
+SPATIAL_K_VERSION = "{{ env.SPATIAL_K_VERSION | default(value='VERSION') }}"
+
 [tasks.api]
 dir = ".."
 run = [
@@ -7,27 +10,18 @@ run = [
 
 [tasks.dev]
 depends = ["api"]
-run = '''
-version="${SPATIAL_K_VERSION:-$(cd .. && ./gradlew -q properties $SPATIAL_K_GRADLE_ARGS | sed -n 's/^version: //p' | head -n 1)}"
-SPATIAL_K_VERSION="$version" pnpm exec astro dev
-'''
+run = "pnpm exec astro dev"
 
 [tasks.start]
 depends = ["dev"]
 
 [tasks.build]
 depends = ["api"]
-run = '''
-version="${SPATIAL_K_VERSION:-$(cd .. && ./gradlew -q properties $SPATIAL_K_GRADLE_ARGS | sed -n 's/^version: //p' | head -n 1)}"
-SPATIAL_K_VERSION="$version" pnpm exec astro build
-'''
+run = "pnpm exec astro build"
 
 [tasks.preview]
 depends = ["api"]
-run = '''
-version="${SPATIAL_K_VERSION:-$(cd .. && ./gradlew -q properties $SPATIAL_K_GRADLE_ARGS | sed -n 's/^version: //p' | head -n 1)}"
-SPATIAL_K_VERSION="$version" pnpm exec astro preview
-'''
+run = "pnpm exec astro preview"
 
 [tasks.astro]
 run = "pnpm exec astro"
