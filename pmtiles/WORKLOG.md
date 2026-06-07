@@ -65,3 +65,11 @@
   the configured writer limits.
 - Added a `CompressionFailed` error code for unexpected compressor implementation failures; explicit
   `PmTilesException` and cancellation still pass through unchanged.
+
+## 2026-06-06 - Metadata Serialization
+
+- Added a production metadata encoder that validates raw JSON before final archive assembly.
+- Kept v1 on raw metadata JSON, but enforced that it is a JSON object and that MVT metadata contains
+  `vector_layers` as an array.
+- Routed metadata compression through the writer compressor registry and `ArchiveWriteLimits` so the
+  final writer will not need a separate metadata code path.
