@@ -142,10 +142,26 @@ private fun BinaryReader.readPosition(): HeaderPosition =
     )
 
 internal fun validateHeader(header: ArchiveHeader, archiveSize: ULong) {
+    validateOneByteCodes(header)
     validateZooms(header)
     validateCoordinates(header)
     validateSections(header, archiveSize)
     validateRootLocation(header.rootDirectory)
+}
+
+private fun validateOneByteCodes(header: ArchiveHeader) {
+    validateOneByteCode("internal compression", header.internalCompression.code)
+    validateOneByteCode("tile compression", header.tileCompression.code)
+    validateOneByteCode("tile type", header.tileType.code)
+}
+
+private fun validateOneByteCode(field: String, code: UInt) {
+    if (code > MAX_HEADER_BYTE_VALUE) {
+        throw pmTilesException(
+            PmTilesErrorCodes.InvalidHeader,
+            "Header $field code $code exceeds the one-byte field limit.",
+        )
+    }
 }
 
 private fun collectLenientHeaderWarnings(
@@ -330,6 +346,7 @@ private data class NamedSection(
 )
 
 private const val MAX_HEADER_ZOOM = 31
+private const val MAX_HEADER_BYTE_VALUE = 0xffu
 private const val POSITION_SCALE = 10_000_000.0
 private val KNOWN_CONCRETE_COMPRESSION_CODES =
     setOf(

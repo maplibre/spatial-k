@@ -74,6 +74,32 @@ class DirectoryPartitioningTest {
     }
 
     @Test
+    fun partitionsBeforeRejectingOversizedUnpartitionedDirectory() = runTest {
+        val entries = tileEntries(4097)
+        val firstLeafBytes = encodeDirectory(entries.take(4096))
+        val directRootSize = encodeDirectory(entries).size.toULong()
+        assertTrue(directRootSize > firstLeafBytes.size.toULong())
+
+        val built =
+            buildDirectories(
+                entries,
+                ArchiveWriteOptions.build {
+                    limits = ArchiveWriteLimits.build {
+                        maxDirectoryBytes = firstLeafBytes.size.toULong()
+                    }
+                },
+            )
+
+        assertEquals(2, built.rootEntries.size)
+        assertEquals(2, built.compressedLeaves.size)
+        assertEquals(firstLeafBytes, built.compressedLeaves.first())
+        assertEquals(
+            built.compressedLeaves.sumOf { it.size.toULong() },
+            built.leafDirectoriesLength,
+        )
+    }
+
+    @Test
     fun failsWhenRootStillExceedsConfiguredTargetAfterLeafPartitioning() = runTest {
         val entries = tileEntries(10)
         val error =

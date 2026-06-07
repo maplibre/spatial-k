@@ -79,15 +79,27 @@ class HeaderWriterTest {
 
     @Test
     fun rejectsCodesThatDoNotFitOneByteFields() {
-        assertFailsWith<IllegalArgumentException> {
-            encodeHeader(testHeader(tileCompression = CompressionCode(256u)), TEST_ARCHIVE_SIZE)
-        }
+        listOf(
+                testHeader(internalCompression = CompressionCode(256u)),
+                testHeader(tileCompression = CompressionCode(256u)),
+                testHeader(tileType = TileTypeCode(256u)),
+            )
+            .forEach { header ->
+                val error =
+                    assertFailsWith<PmTilesException> {
+                        encodeHeader(header, TEST_ARCHIVE_SIZE)
+                    }
+
+                assertEquals(PmTilesErrorCodes.InvalidHeader, error.code)
+            }
     }
 }
 
 private fun testHeader(
     rootDirectory: ArchiveSection = ArchiveSection(offset = 127uL, length = 10uL),
+    internalCompression: CompressionCode = CompressionCodes.None,
     tileCompression: CompressionCode = CompressionCode(99u),
+    tileType: TileTypeCode = TileTypeCode(98u),
 ): ArchiveHeader =
     ArchiveHeader(
         specVersion = 3,
@@ -97,9 +109,9 @@ private fun testHeader(
         tileData = ArchiveSection(offset = 500uL, length = 30uL),
         counts = HeaderCounts(addressedTiles = 1uL, tileEntries = 2uL, tileContents = 3uL),
         isClustered = true,
-        internalCompression = CompressionCodes.None,
+        internalCompression = internalCompression,
         tileCompression = tileCompression,
-        tileType = TileTypeCode(98u),
+        tileType = tileType,
         minZoom = 4,
         maxZoom = 8,
         bounds = LonLatBounds(west = -10.0, south = -20.0, east = 30.0, north = 40.0),

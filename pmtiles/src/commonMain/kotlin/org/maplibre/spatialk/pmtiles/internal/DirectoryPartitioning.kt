@@ -4,6 +4,7 @@ import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.ArchiveWriteOptions
 import org.maplibre.spatialk.pmtiles.CompressionLimits
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
+import org.maplibre.spatialk.pmtiles.PmTilesException
 
 internal data class BuiltDirectories(
     val rootEntries: List<DirectoryEntry>,
@@ -16,8 +17,8 @@ internal suspend fun buildDirectories(
     tileEntries: List<DirectoryEntry>,
     options: ArchiveWriteOptions,
 ): BuiltDirectories {
-    val directRoot = encodeAndCompressDirectory(tileEntries, options, EncodePurpose.RootDirectory)
-    if (directRoot.size.toULong() <= options.limits.maxRootDirectoryBytes) {
+    val directRoot = tryBuildDirectRoot(tileEntries, options)
+    if (directRoot != null) {
         return BuiltDirectories(
             rootEntries = tileEntries,
             compressedRoot = directRoot,
@@ -27,6 +28,32 @@ internal suspend fun buildDirectories(
     }
 
     return buildRootToLeafDirectories(tileEntries, options)
+}
+
+private suspend fun tryBuildDirectRoot(
+    tileEntries: List<DirectoryEntry>,
+    options: ArchiveWriteOptions,
+): ByteString? {
+    val rawBytes = encodeDirectory(tileEntries)
+    if (rawBytes.size.toULong() > options.limits.maxDirectoryBytes) return null
+
+    val compressedRoot =
+        try {
+            compressDirectoryBytes(
+                rawBytes = rawBytes,
+                options = options,
+                purpose = EncodePurpose.RootDirectory,
+                maxBytes =
+                    maxOf(options.limits.maxDirectoryBytes, options.limits.maxRootDirectoryBytes),
+            )
+        } catch (error: PmTilesException) {
+            if (error.code == PmTilesErrorCodes.LimitExceeded) return null
+            throw error
+        }
+
+    if (compressedRoot.size.toULong() > options.limits.maxDirectoryBytes) return null
+    if (compressedRoot.size.toULong() > options.limits.maxRootDirectoryBytes) return null
+    return compressedRoot
 }
 
 private suspend fun buildRootToLeafDirectories(
@@ -93,18 +120,31 @@ private suspend fun encodeAndCompressDirectory(
     purpose: EncodePurpose,
 ): ByteString {
     val rawBytes = encodeDirectory(entries)
-    return options
+    return compressDirectoryBytes(
+        rawBytes = rawBytes,
+        options = options,
+        purpose = purpose,
+        maxBytes = options.limits.maxDirectoryBytes,
+    )
+}
+
+private suspend fun compressDirectoryBytes(
+    rawBytes: ByteString,
+    options: ArchiveWriteOptions,
+    purpose: EncodePurpose,
+    maxBytes: ULong,
+): ByteString =
+    options
         .effectiveCompressors()
         .compress(
             compression = options.internalCompression,
             bytes = rawBytes,
             limits =
                 CompressionLimits(
-                    maxUncompressedBytes = options.limits.maxDirectoryBytes,
-                    maxCompressedBytes = options.limits.maxDirectoryBytes,
+                    maxUncompressedBytes = maxBytes,
+                    maxCompressedBytes = maxBytes,
                 ),
             purpose = purpose,
         )
-}
 
 private const val DEFAULT_LEAF_ENTRY_COUNT = 4096
