@@ -23,6 +23,22 @@ public protocol DataDecompressor {
     func decompress(data: Data, limits: DecompressionLimits) async throws -> Data
 }
 
+public protocol ByteDataSink {
+    /// Appends bytes to the output in write order.
+    func write(data: Data) async throws
+
+    /// Flushes pending output.
+    func flush() async throws
+
+    /// Closes the output.
+    func close() async throws
+}
+
+public protocol DataCompressor {
+    /// Returns compressed data for one PMTiles compression format.
+    func compress(data: Data, limits: CompressionLimits) async throws -> Data
+}
+
 public struct CompressionCode: Hashable, RawRepresentable, Sendable {
     public let rawValue: UInt32
 
@@ -63,6 +79,34 @@ public extension PmTiles {
             options: options
         )
     }
+
+    static func write(
+        sink: ByteDataSink,
+        tiles: [ArchiveWriteTile],
+        config: ArchiveWriteConfig = ArchiveWriteConfig(),
+        options: ArchiveWriteOptions = ArchiveWriteOptions()
+    ) async throws {
+        try await shared.__write(
+            SwiftByteSinkAdapter(sink: sink),
+            tiles: tiles,
+            config: config,
+            options: options
+        )
+    }
+
+    static func writeToData(
+        tiles: [ArchiveWriteTile],
+        config: ArchiveWriteConfig = ArchiveWriteConfig(),
+        options: ArchiveWriteOptions = ArchiveWriteOptions()
+    ) async throws -> Data {
+        let bytes =
+            try await shared.__write(
+                toByteStringTiles: tiles,
+                config: config,
+                options: options
+            )
+        return bytes.toNSData() as Data
+    }
 }
 
 public extension ArchiveOpenOptions {
@@ -97,6 +141,92 @@ public extension ArchiveLimits {
     }
 }
 
+public extension ArchiveWriteConfig {
+    static func build(
+        _ configure: (ArchiveWriteConfig.Builder) -> Void
+    ) -> ArchiveWriteConfig {
+        ArchiveWriteConfig().configured(configure)
+    }
+
+    func configured(
+        _ configure: (ArchiveWriteConfig.Builder) -> Void
+    ) -> ArchiveWriteConfig {
+        let builder = __toBuilder()
+        configure(builder)
+        return builder.build()
+    }
+
+    var tileType: TileTypeCode {
+        TileTypeCode(rawValue: __tileType)
+    }
+}
+
+public extension ArchiveWriteConfig.Builder {
+    func setTileType(_ tileType: TileTypeCode) {
+        self.tileType = tileType.rawValue
+    }
+}
+
+public extension ArchiveWriteLimits {
+    static func build(
+        _ configure: (ArchiveWriteLimits.Builder) -> Void
+    ) -> ArchiveWriteLimits {
+        ArchiveWriteLimits().configured(configure)
+    }
+
+    func configured(
+        _ configure: (ArchiveWriteLimits.Builder) -> Void
+    ) -> ArchiveWriteLimits {
+        let builder = __toBuilder()
+        configure(builder)
+        return builder.build()
+    }
+}
+
+public extension ArchiveWriteOptions {
+    static func build(
+        _ configure: (ArchiveWriteOptions.Builder) -> Void
+    ) -> ArchiveWriteOptions {
+        ArchiveWriteOptions().configured(configure)
+    }
+
+    func configured(
+        _ configure: (ArchiveWriteOptions.Builder) -> Void
+    ) -> ArchiveWriteOptions {
+        let builder = __toBuilder()
+        configure(builder)
+        return builder.build()
+    }
+
+    var internalCompression: CompressionCode {
+        CompressionCode(rawValue: __internalCompression)
+    }
+
+    var tileCompression: CompressionCode {
+        CompressionCode(rawValue: __tileCompression)
+    }
+}
+
+public extension ArchiveWriteOptions.Builder {
+    func setInternalCompression(_ compression: CompressionCode) {
+        internalCompression = compression.rawValue
+    }
+
+    func setTileCompression(_ compression: CompressionCode) {
+        tileCompression = compression.rawValue
+    }
+
+    func compressor(
+        _ compression: CompressionCode,
+        _ compressor: DataCompressor
+    ) {
+        _ = __compressorCompression(
+            compression.rawValue,
+            compressor: SwiftDataCompressorAdapter(compressor: compressor)
+        )
+    }
+}
+
 public extension TileReadCoalescing {
     static func build(
         _ configure: (TileReadCoalescing.Builder) -> Void
@@ -110,6 +240,26 @@ public extension TileReadCoalescing {
         let builder = __toBuilder()
         configure(builder)
         return builder.build()
+    }
+}
+
+public extension ArchiveWriteTile {
+    static func stored(coord: TileCoord, data: Data) -> ArchiveWriteTile {
+        companion.stored(
+            coord: coord,
+            payload: ByteStringAppleKt.toByteString(data)
+        )
+    }
+
+    static func uncompressed(coord: TileCoord, data: Data) -> ArchiveWriteTile {
+        companion.uncompressed(
+            coord: coord,
+            payload: ByteStringAppleKt.toByteString(data)
+        )
+    }
+
+    var payload: Data {
+        __payload.toNSData() as Data
     }
 }
 
@@ -212,6 +362,26 @@ private final class SwiftByteRangeSourceAdapter: NSObject, KotlinByteRangeSource
     }
 }
 
+private final class SwiftByteSinkAdapter: NSObject, KotlinByteSink {
+    private let sink: ByteDataSink
+
+    init(sink: ByteDataSink) {
+        self.sink = sink
+    }
+
+    func write(bytes: ByteString) async throws {
+        try await sink.write(data: bytes.toNSData() as Data)
+    }
+
+    func flush() async throws {
+        try await sink.flush()
+    }
+
+    func close() async throws {
+        try await sink.close()
+    }
+}
+
 private final class SwiftDataDecompressorAdapter: NSObject, KotlinDecompressor {
     private let decompressor: DataDecompressor
 
@@ -229,5 +399,25 @@ private final class SwiftDataDecompressorAdapter: NSObject, KotlinDecompressor {
                 limits: limits
             )
         return ByteStringAppleKt.toByteString(decompressed)
+    }
+}
+
+private final class SwiftDataCompressorAdapter: NSObject, KotlinCompressor {
+    private let compressor: DataCompressor
+
+    init(compressor: DataCompressor) {
+        self.compressor = compressor
+    }
+
+    func compress(
+        bytes: ByteString,
+        limits: CompressionLimits
+    ) async throws -> ByteString {
+        let compressed =
+            try await compressor.compress(
+                data: bytes.toNSData() as Data,
+                limits: limits
+            )
+        return ByteStringAppleKt.toByteString(compressed)
     }
 }

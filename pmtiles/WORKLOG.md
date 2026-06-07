@@ -120,3 +120,17 @@
 - The first test draft tried to call `rawMetadataJson()` inside a non-suspending builder lambda;
   moved suspending fixture reads ahead of option/config builders. This is also a useful constraint
   for future docs snippets.
+
+## 2026-06-06 - Writer Docs And Swift Usability
+
+- Updated Kotlin docs snippets with `ByteSink`, `PmTiles.writeToByteString`, and custom compressor
+  examples.
+- Added Swift writer shims for `ByteDataSink`, `DataCompressor`, `ArchiveWriteOptions`,
+  `ArchiveWriteConfig`, writer entry points, and `ArchiveWriteTile` Data factories.
+- Swift export gave the writer methods async names different from the ObjC selector names:
+  `__write(_:tiles:config:options:)` and `__write(toByteStringTiles:config:options:)`; adjusted the
+  shim after the first Swift compile failed on the completion-handler forms.
+- Swift docs tests remain API-usability snippets, not behavior coverage; they prove sink output,
+  in-memory archive writing, and compressor registration compile and run.
+- Updated module and public docs from reader-only wording to reader/writer wording, keeping explicit
+  caveats that filesystem/HTTP adapters and tile payload parsing/construction remain out of scope.

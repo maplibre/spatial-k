@@ -7,7 +7,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 export const version = import.meta.env.SPATIAL_K_VERSION ?? 'VERSION';
 
 The `pmtiles` module reads [PMTiles v3](https://docs.protomaps.com/pmtiles/) archives from a
-caller-provided byte range source.
+caller-provided byte range source and writes PMTiles v3 archives to an append-only byte sink.
 
 Details can be found in the [API reference](/spatial-k/api/dokka/pmtiles/index.html).
 
@@ -46,14 +46,19 @@ Details can be found in the [API reference](/spatial-k/api/dokka/pmtiles/index.h
 
 ## Specification coverage
 
-This module implements PMTiles v3 reading. Writing may be implemented in the future.
+This module implements PMTiles v3 reading and writing.
 
-It does not provide filesystem or HTTP sources, or decode tile payload formats such as MVT, raster
-images, or MLT.
+It does not provide filesystem or HTTP sources/sinks, or parse, construct, or render tile payload
+formats such as MVT, raster images, or MLT.
 
 Uncompressed data is supported on all platforms. Gzip is built in on JVM, native, and web targets
 where the runtime provides `DecompressionStream`; brotli, zstd, and other compression codes require
 custom decompressors.
+
+Writer defaults emit canonical clustered PMTiles v3 archives with exact counts. Built-in writing
+supports uncompressed internal sections and stored tile payload bytes. Register compressors when
+writing compressed internal sections or when asking the writer to compress uncompressed tile
+payloads.
 
 ## Byte range sources
 
@@ -70,6 +75,25 @@ requests, memory, or any other source that can return exact byte ranges.
   <TabItem label="Swift">
     ```swift
     --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:byteRangeDataSource"
+    ```
+  </TabItem>
+</Tabs>
+
+## Byte sinks
+
+`PmTiles.write` writes to `ByteSink`, an append-only suspending output. Use this for files, network
+uploads, multipart object storage, or any other destination that accepts bytes in order.
+
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
+    ```kotlin
+    --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:byteSink"
+    ```
+  </TabItem>
+
+  <TabItem label="Swift">
+    ```swift
+    --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:byteDataSink"
     ```
   </TabItem>
 </Tabs>
@@ -126,6 +150,26 @@ Use `readStoredTiles` to read a batch of tile payloads with coalesced source ran
   </TabItem>
 </Tabs>
 
+## Writing archives
+
+Writer tile inputs are explicit: use stored tile input when payload bytes are already in the
+archive's tile-compression format, or uncompressed tile input when a registered compressor should
+encode them before storage.
+
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
+    ```kotlin
+    --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:writeArchive"
+    ```
+  </TabItem>
+
+  <TabItem label="Swift">
+    ```swift
+    --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:writeArchive"
+    ```
+  </TabItem>
+</Tabs>
+
 ## Decompressors
 
 Spatial-K includes platform defaults for uncompressed data and gzip where available. Register other
@@ -141,6 +185,25 @@ compression codecs, such as brotli or zstd, through `ArchiveOpenOptions`.
   <TabItem label="Swift">
     ```swift
     --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:customDecompressor"
+    ```
+  </TabItem>
+</Tabs>
+
+## Compressors
+
+Register writer-side compressors through `ArchiveWriteOptions`. The same compressor registry is
+used for internal sections and for tile payloads supplied as uncompressed input.
+
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
+    ```kotlin
+    --8<-- "pmtiles/src/commonTest/kotlin/org/maplibre/spatialk/pmtiles/KotlinDocsTest.kt:customCompressor"
+    ```
+  </TabItem>
+
+  <TabItem label="Swift">
+    ```swift
+    --8<-- "pmtiles/src/swiftTest/SwiftDocsTest.swift:customCompressor"
     ```
   </TabItem>
 </Tabs>
