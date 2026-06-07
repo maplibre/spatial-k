@@ -55,11 +55,6 @@ Uncompressed data is supported on all platforms. Gzip decompression and compress
 JVM, native, and web targets where the runtime provides `DecompressionStream` and
 `CompressionStream`; brotli, zstd, and other compression codes require custom codecs.
 
-Writer defaults emit canonical clustered PMTiles v3 archives with exact counts. Built-in writing
-supports uncompressed internal sections, stored tile payload bytes, and gzip compression where
-available. Register compressors when writing compressed internal sections or when asking the writer
-to compress uncompressed tile payloads with compression codes that do not have platform defaults.
-
 ## Byte range sources
 
 `PmTilesArchive` reads through `ByteRangeSource`, so callers can back archives with files, network
