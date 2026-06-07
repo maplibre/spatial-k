@@ -4,7 +4,6 @@ import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.ArchiveWriteOptions
 import org.maplibre.spatialk.pmtiles.CompressionCode
-import org.maplibre.spatialk.pmtiles.CompressionCodes
 import org.maplibre.spatialk.pmtiles.CompressionLimits
 import org.maplibre.spatialk.pmtiles.Compressor
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
@@ -12,8 +11,7 @@ import org.maplibre.spatialk.pmtiles.PmTilesException
 
 internal val noneCompressor: Compressor = Compressor { bytes, _ -> bytes }
 
-internal fun platformDefaultCompressors(): Map<CompressionCode, Compressor> =
-    mapOf(CompressionCodes.None to noneCompressor)
+internal expect fun platformDefaultCompressors(): Map<CompressionCode, Compressor>
 
 internal fun ArchiveWriteOptions.effectiveCompressors(): Map<CompressionCode, Compressor> =
     platformDefaultCompressors() + compressors
@@ -104,6 +102,3 @@ private fun unsupportedCompressionCode(
         PmTilesErrorCode.UnsupportedCompression,
         "${purpose.displayName} compression code ${compression.code} is not supported.",
     )
-
-private fun compressionFailed(message: String, cause: Throwable? = null): Nothing =
-    throw pmTilesException(PmTilesErrorCode.CompressionFailed, message, cause)
