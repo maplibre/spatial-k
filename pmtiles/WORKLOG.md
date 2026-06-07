@@ -73,3 +73,15 @@
   `vector_layers` as an array.
 - Routed metadata compression through the writer compressor registry and `ArchiveWriteLimits` so the
   final writer will not need a separate metadata code path.
+
+## 2026-06-06 - Tile Entry Assembly
+
+- Added internal tile assembly for sorting by TileID, rejecting duplicates, computing stored payload
+  offsets, and returning exact PMTiles counts.
+- Implemented FNV-1a 128-bit hashing with independent test vectors generated from the published
+  constants and algorithm.
+- Deduplicates on logical input bytes before compression, which avoids recompressing duplicate
+  uncompressed tile inputs and matches the policy recorded in `RESEARCH.md`.
+- Added run-length coalescing only for consecutive TileIDs that resolve to the same stored payload
+  offset and length; non-consecutive duplicates remain separate entries pointing to the first
+  payload offset.
