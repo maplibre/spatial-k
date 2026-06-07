@@ -51,14 +51,14 @@ This module implements PMTiles v3 reading and writing.
 It does not provide filesystem or HTTP sources/sinks, or parse, construct, or render tile payload
 formats such as MVT, raster images, or MLT.
 
-Uncompressed data is supported on all platforms. Gzip is built in on JVM, native, and web targets
-where the runtime provides `DecompressionStream`; brotli, zstd, and other compression codes require
-custom decompressors.
+Uncompressed data is supported on all platforms. Gzip decompression and compression are built in on
+JVM, native, and web targets where the runtime provides `DecompressionStream` and
+`CompressionStream`; brotli, zstd, and other compression codes require custom codecs.
 
 Writer defaults emit canonical clustered PMTiles v3 archives with exact counts. Built-in writing
-supports uncompressed internal sections and stored tile payload bytes. Register compressors when
-writing compressed internal sections or when asking the writer to compress uncompressed tile
-payloads.
+supports uncompressed internal sections, stored tile payload bytes, and gzip compression where
+available. Register compressors when writing compressed internal sections or when asking the writer
+to compress uncompressed tile payloads with compression codes that do not have platform defaults.
 
 ## Byte range sources
 
