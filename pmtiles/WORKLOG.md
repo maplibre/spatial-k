@@ -139,3 +139,76 @@
   in-memory archive writing, and compressor registration compile and run.
 - Updated module and public docs from reader-only wording to reader/writer wording, keeping explicit
   caveats that filesystem/HTTP adapters and tile payload parsing/construction remain out of scope.
+
+## 2026-06-06 - Final Audit
+
+### SPEC.md Audit
+
+- Public writer additions are implemented: `ByteSink`, `Compressor`, writer options/limits, writer
+  config, explicit stored/uncompressed tile inputs, `PmTiles.write`, and
+  `PmTiles.writeToByteString`.
+- Non-goals were respected: no filesystem/HTTP sink implementation, no `kotlinx-io` dependency, no
+  tile payload parser/builder, no MBTiles conversion, no built-in brotli/zstd compressors.
+- Writer output is canonical: header, root directory, metadata, leaf directories, tile data.
+- Writer output is always clustered and computes exact header counts.
+- Deduplication defaults to enabled, uses FNV-1a 128-bit over logical input bytes, and does not keep
+  prior payloads solely to verify hash collisions, matching the documented go/python policy.
+- Run-length entries are emitted for consecutive TileIDs that resolve to the same stored
+  offset/length; non-consecutive duplicates point back to the first stored payload.
+- Directory construction is root-to-leaf only. No nested leaves are emitted.
+- Swift shims and Swift docs tests were updated without adding an `OutputStream`/`NSOutputStream`
+  adapter. The Swift surface remains the async `ByteDataSink` protocol because output-stream
+  adaptation is caller/platform convenience, not the core writer abstraction.
+- Fixture policy is followed: no new checked-in PMTiles writer fixtures were added; writer tests
+  generate archives in memory using existing upstream fixtures as source material.
+
+### PMTiles V3 Spec Audit
+
+- Header serialization emits the 127-byte v3 header with `PMTiles` magic, little-endian uint64
+  sections/counts, byte code fields, zoom fields, and scaled int32 positions.
+- Root directory bytes are validated to fit inside the first 16 KiB by the writer root limit and
+  shared header validation.
+- Section offsets are absolute and section lengths are computed from final serialized bytes.
+- Directory offsets are section-relative: tile entries point into tile data; root leaf entries point
+  into the leaf directory section.
+- Directory encoding covers entry count, TileID deltas, run lengths, lengths, and PMTiles offset
+  shorthand; encoder tests include independent expected bytes.
+- Leaf directories are individually encoded/compressed and referenced from root entries with
+  `runLength = 0`.
+- Metadata is validated as a JSON object and MVT metadata requires `vector_layers` as an array.
+- Compression and tile type codes use existing extensible value classes. Unsupported compressors
+  fail before final sink writes.
+- Intentionally un-emitted spec variants are the v1 choices already documented in `RESEARCH.md`:
+  non-canonical section order, unclustered output, unknown counts, and nested leaf directories.
+  Remaining unsupported surfaces are built-in non-none compressors unless caller supplied, and tile
+  payload parsing/construction.
+
+### Code Quality And Architecture Review
+
+- Writer code reuses existing `TileCoord`/`TileIds`, compression/tile type code models, option-bag
+  style, error model, and header validation.
+- Binary serialization is centralized in `BinaryWriter`; header and directory production encoders
+  are separate from final archive assembly.
+- Public API files contain public concepts; internal files are separated by responsibility:
+  compression, metadata encoding, tile assembly/dedup, directory partitioning, and archive writing.
+- Swift shims are thin adapters around Kotlin APIs and do not reimplement PMTiles writer logic.
+- Cancellation is preserved in compressor and sink paths; unexpected implementation failures are
+  wrapped as PMTiles errors.
+- Integer narrowing and archive-size-sensitive operations go through explicit limits/allocation
+  checks or checked arithmetic.
+- Generated archives are validated by reopening with the existing strict reader in unit, fixture,
+  docs, and Swift tests.
+- No unrelated reader refactor was introduced.
+
+### Final Verification
+
+- Passed targeted writer tests as each chunk landed.
+- Passed `mise exec -- ./gradlew :pmtiles:jvmTest`.
+- Passed `mise run test:jsnode`.
+- Passed `mise run test:wasmjsnode`.
+- Passed `mise run test:native`.
+- Passed `mise run test:swift`.
+- Passed `mise exec -- ./gradlew :pmtiles:build`.
+- `mise run build` was attempted; PMTiles completed successfully inside that run, but the root build
+  failed later in `:units:jsBrowserTest` because Chrome was not installed at
+  `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome` and `CHROME_BIN` was unset.
