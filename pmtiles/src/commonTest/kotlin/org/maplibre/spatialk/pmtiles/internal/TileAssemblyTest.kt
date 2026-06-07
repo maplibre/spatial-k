@@ -29,6 +29,10 @@ class TileAssemblyTest {
             Fnv128Hash(high = 0x7fdba274300a175duL, low = 0x7a20922b340d0857uL),
             fnv1a128("hello pmtiles".encodeToByteString()),
         )
+        assertEquals(
+            Fnv128Hash(high = 0x62eed7b5e2757277uL, low = 0xb806e775e777e33buL),
+            fnv1a128(ByteString(0x80.toByte(), 0xff.toByte(), 0x00, 0x01)),
+        )
     }
 
     @Test

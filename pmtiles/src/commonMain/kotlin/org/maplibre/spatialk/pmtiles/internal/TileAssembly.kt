@@ -84,7 +84,8 @@ internal suspend fun assembleTileData(
 
 internal fun fnv1a128(bytes: ByteString): Fnv128Hash {
     var hash = FNV_128_OFFSET
-    bytes.toByteArray().forEach { byte ->
+    for (index in 0 until bytes.size) {
+        val byte = bytes[index]
         hash = hash.copy(low = hash.low xor byte.toUByte().toULong())
         hash = hash.timesPrime()
     }
