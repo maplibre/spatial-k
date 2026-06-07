@@ -19,7 +19,7 @@ internal constructor(
 
 /** Compresses bytes for one PMTiles compression format. */
 @OptIn(ExperimentalObjCName::class)
-@ObjCName(swiftName = "KotlinCompressor")
+@ObjCName(swiftName = "__KotlinCompressor")
 public fun interface Compressor {
     /**
      * Returns compressed [bytes].

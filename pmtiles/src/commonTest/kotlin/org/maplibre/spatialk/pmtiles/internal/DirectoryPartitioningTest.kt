@@ -10,7 +10,7 @@ import org.maplibre.spatialk.pmtiles.ArchiveWriteLimits
 import org.maplibre.spatialk.pmtiles.ArchiveWriteOptions
 import org.maplibre.spatialk.pmtiles.CompressionCodes
 import org.maplibre.spatialk.pmtiles.Compressor
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
 class DirectoryPartitioningTest {
@@ -86,7 +86,7 @@ class DirectoryPartitioningTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -114,7 +114,7 @@ class DirectoryPartitioningTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.UnsupportedCompression, error.code)
+        assertEquals(PmTilesErrorCodes.UnsupportedCompression, error.code)
     }
 
     private fun tileEntries(count: Int): List<DirectoryEntry> =

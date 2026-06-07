@@ -10,6 +10,7 @@ import kotlinx.io.bytestring.ByteStringBuilder
 import kotlinx.io.bytestring.buildByteString
 import org.maplibre.spatialk.pmtiles.ArchiveSection
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
 class DirectoryDecodingTest {
@@ -69,10 +70,10 @@ class DirectoryDecodingTest {
 
     @Test
     fun rejectsMalformedDirectories() {
-        assertDirectoryFails(PmTilesErrorCode.InvalidDirectory, bytes(0uL))
-        assertDirectoryFails(PmTilesErrorCode.InvalidDirectory, bytes(1uL, 0uL, 1uL, 0uL, 1uL))
-        assertDirectoryFails(PmTilesErrorCode.InvalidDirectory, bytes(1uL, 0uL, 1uL, 1uL, 0uL))
-        assertDirectoryFails(PmTilesErrorCode.InvalidDirectory, bytes(2uL, 5uL, 0uL))
+        assertDirectoryFails(PmTilesErrorCodes.InvalidDirectory, bytes(0uL))
+        assertDirectoryFails(PmTilesErrorCodes.InvalidDirectory, bytes(1uL, 0uL, 1uL, 0uL, 1uL))
+        assertDirectoryFails(PmTilesErrorCodes.InvalidDirectory, bytes(1uL, 0uL, 1uL, 1uL, 0uL))
+        assertDirectoryFails(PmTilesErrorCodes.InvalidDirectory, bytes(2uL, 5uL, 0uL))
     }
 
     @Test
@@ -91,7 +92,7 @@ class DirectoryDecodingTest {
                             .build(),
                 )
             }
-        assertEquals(PmTilesErrorCode.LimitExceeded, tooManyEntries.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, tooManyEntries.code)
 
         val tooLargeTile =
             assertFailsWith<PmTilesException> {
@@ -104,7 +105,7 @@ class DirectoryDecodingTest {
                         defaultLimits.toBuilder().apply { maxTileCompressedBytes = 1uL }.build(),
                 )
             }
-        assertEquals(PmTilesErrorCode.LimitExceeded, tooLargeTile.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, tooLargeTile.code)
 
         val outOfSection =
             assertFailsWith<PmTilesException> {
@@ -116,7 +117,7 @@ class DirectoryDecodingTest {
                     limits = defaultLimits,
                 )
             }
-        assertEquals(PmTilesErrorCode.InvalidDirectory, outOfSection.code)
+        assertEquals(PmTilesErrorCodes.InvalidDirectory, outOfSection.code)
     }
 
     @Test
@@ -131,7 +132,7 @@ class DirectoryDecodingTest {
                     defaultLimits,
                 )
             }
-        assertEquals(PmTilesErrorCode.InvalidVarint, malformedVarint.code)
+        assertEquals(PmTilesErrorCodes.InvalidVarint, malformedVarint.code)
 
         val overflowedTileId =
             assertFailsWith<PmTilesException> {
@@ -141,7 +142,7 @@ class DirectoryDecodingTest {
                     defaultLimits,
                 )
             }
-        assertEquals(PmTilesErrorCode.InvalidDirectory, overflowedTileId.code)
+        assertEquals(PmTilesErrorCodes.InvalidDirectory, overflowedTileId.code)
     }
 
     private fun assertDirectoryFails(code: PmTilesErrorCode, bytes: ByteString) {

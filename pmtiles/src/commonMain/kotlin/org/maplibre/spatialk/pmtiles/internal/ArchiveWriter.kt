@@ -10,7 +10,7 @@ import org.maplibre.spatialk.pmtiles.ArchiveWriteOptions
 import org.maplibre.spatialk.pmtiles.ArchiveWriteTile
 import org.maplibre.spatialk.pmtiles.ByteSink
 import org.maplibre.spatialk.pmtiles.LonLatBounds
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 import org.maplibre.spatialk.pmtiles.TileCenter
 
@@ -28,6 +28,10 @@ internal suspend fun prepareArchive(
     config: ArchiveWriteConfig,
     options: ArchiveWriteOptions,
 ): PreparedArchive {
+    if (tiles.isEmpty()) {
+        throw pmTilesException(PmTilesErrorCodes.InvalidTileInput, "At least one tile is required.")
+    }
+
     val tileData = assembleTileData(tiles, options)
     val directories = buildDirectories(tileData.entries, options)
     val metadata = encodeMetadata(config, options)
@@ -35,17 +39,17 @@ internal suspend fun prepareArchive(
     var offset = HEADER_BYTES.toULong()
     val rootSection =
         ArchiveSection(offset = offset, length = directories.compressedRoot.size.toULong())
-    offset = checkedAdd(offset, rootSection.length, PmTilesErrorCode.InvalidSectionLayout)
+    offset = checkedAdd(offset, rootSection.length, PmTilesErrorCodes.InvalidSectionLayout)
     val metadataSection =
         ArchiveSection(offset = offset, length = metadata.compressedBytes.size.toULong())
-    offset = checkedAdd(offset, metadataSection.length, PmTilesErrorCode.InvalidSectionLayout)
+    offset = checkedAdd(offset, metadataSection.length, PmTilesErrorCodes.InvalidSectionLayout)
     val leafDirectoriesSection =
         ArchiveSection(offset = offset, length = directories.leafDirectoriesLength)
     offset =
-        checkedAdd(offset, leafDirectoriesSection.length, PmTilesErrorCode.InvalidSectionLayout)
+        checkedAdd(offset, leafDirectoriesSection.length, PmTilesErrorCodes.InvalidSectionLayout)
     val tileDataSection = ArchiveSection(offset = offset, length = tileData.length)
     val archiveSize =
-        checkedAdd(offset, tileDataSection.length, PmTilesErrorCode.InvalidSectionLayout)
+        checkedAdd(offset, tileDataSection.length, PmTilesErrorCodes.InvalidSectionLayout)
     validateArchiveSize(archiveSize, options)
 
     val archiveHeader =
@@ -88,13 +92,24 @@ internal suspend fun prepareArchive(
 }
 
 internal suspend fun writePreparedArchive(archive: PreparedArchive, sink: ByteSink) {
-    sink.writeOrWrap(archive.header)
-    sink.writeOrWrap(archive.rootDirectory)
-    sink.writeOrWrap(archive.metadata)
-    archive.leafDirectories.forEach { bytes -> sink.writeOrWrap(bytes) }
-    archive.tilePayloads.forEach { bytes -> sink.writeOrWrap(bytes) }
-    sink.flushOrWrap()
-    sink.closeOrWrap()
+    var writeFailure: Throwable? = null
+    try {
+        sink.writeOrWrap(archive.header)
+        sink.writeOrWrap(archive.rootDirectory)
+        sink.writeOrWrap(archive.metadata)
+        archive.leafDirectories.forEach { bytes -> sink.writeOrWrap(bytes) }
+        archive.tilePayloads.forEach { bytes -> sink.writeOrWrap(bytes) }
+        sink.flushOrWrap()
+    } catch (error: Throwable) {
+        writeFailure = error
+        throw error
+    } finally {
+        try {
+            sink.closeOrWrap()
+        } catch (closeError: Throwable) {
+            if (writeFailure == null) throw closeError
+        }
+    }
 }
 
 internal fun PreparedArchive.toByteString(maxArchiveBytes: ULong): ByteString {
@@ -111,7 +126,7 @@ internal fun PreparedArchive.toByteString(maxArchiveBytes: ULong): ByteString {
 private fun validateArchiveSize(archiveSize: ULong, options: ArchiveWriteOptions) {
     if (archiveSize > options.limits.maxArchiveBytes) {
         throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
+            PmTilesErrorCodes.LimitExceeded,
             "Archive length $archiveSize exceeds limit ${options.limits.maxArchiveBytes}.",
         )
     }
@@ -154,4 +169,4 @@ private suspend fun ByteSink.closeOrWrap() {
 }
 
 private fun sinkUnavailable(message: String, cause: Throwable): PmTilesException =
-    pmTilesException(PmTilesErrorCode.SinkUnavailable, message, cause)
+    pmTilesException(PmTilesErrorCodes.SinkUnavailable, message, cause)

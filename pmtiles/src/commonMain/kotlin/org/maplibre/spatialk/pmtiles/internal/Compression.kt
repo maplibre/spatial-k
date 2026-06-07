@@ -3,7 +3,7 @@ package org.maplibre.spatialk.pmtiles.internal
 import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.CompressionLimits
 import org.maplibre.spatialk.pmtiles.DecompressionLimits
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 
 internal class BoundedByteArraySink(private val limits: DecompressionLimits) {
     private var bytes = ByteArray(0)
@@ -75,7 +75,7 @@ internal fun checkedCompressedSize(
     val maxCompressedBytes = limits.maxCompressedBytesAsInt()
     if (nextChunk < 0 || current > maxCompressedBytes - nextChunk) {
         throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
+            PmTilesErrorCodes.LimitExceeded,
             "Compressed length exceeds limit ${limits.maxCompressedBytes}.",
         )
     }
@@ -90,7 +90,7 @@ internal fun checkedDecompressedSize(
     val maxDecompressedBytes = limits.maxDecompressedBytesAsInt()
     if (nextChunk < 0 || current > maxDecompressedBytes - nextChunk) {
         throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
+            PmTilesErrorCodes.LimitExceeded,
             "Decompressed length exceeds limit ${limits.maxDecompressedBytes}.",
         )
     }
@@ -98,10 +98,10 @@ internal fun checkedDecompressedSize(
 }
 
 internal fun decompressionFailed(message: String, cause: Throwable? = null): Nothing =
-    throw pmTilesException(PmTilesErrorCode.DecompressionFailed, message, cause)
+    throw pmTilesException(PmTilesErrorCodes.DecompressionFailed, message, cause)
 
 internal fun compressionFailed(message: String, cause: Throwable? = null): Nothing =
-    throw pmTilesException(PmTilesErrorCode.CompressionFailed, message, cause)
+    throw pmTilesException(PmTilesErrorCodes.CompressionFailed, message, cause)
 
 internal val DecodePurpose.displayName: String
     get() =
@@ -117,7 +117,7 @@ private const val INITIAL_OUTPUT_CAPACITY = 8 * 1024
 private fun DecompressionLimits.maxDecompressedBytesAsInt(): Int {
     if (maxDecompressedBytes > Int.MAX_VALUE.toULong()) {
         throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
+            PmTilesErrorCodes.LimitExceeded,
             "Decompressed byte limit $maxDecompressedBytes exceeds the supported Int range.",
         )
     }
@@ -127,7 +127,7 @@ private fun DecompressionLimits.maxDecompressedBytesAsInt(): Int {
 private fun CompressionLimits.maxCompressedBytesAsInt(): Int {
     if (maxCompressedBytes > Int.MAX_VALUE.toULong()) {
         throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
+            PmTilesErrorCodes.LimitExceeded,
             "Compressed byte limit $maxCompressedBytes exceeds the supported Int range.",
         )
     }

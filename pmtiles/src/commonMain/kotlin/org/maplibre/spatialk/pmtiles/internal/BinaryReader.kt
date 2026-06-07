@@ -2,10 +2,11 @@ package org.maplibre.spatialk.pmtiles.internal
 
 import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 
 internal class BinaryReader(
     private val bytes: ByteString,
-    private val errorCode: PmTilesErrorCode = PmTilesErrorCode.InvalidHeader,
+    private val errorCode: PmTilesErrorCode = PmTilesErrorCodes.InvalidHeader,
 ) {
     var position: Int = 0
         private set
@@ -56,7 +57,7 @@ internal class BinaryReader(
     fun readVarint(maxBytes: Int): ULong {
         if (maxBytes <= 0) {
             throw pmTilesException(
-                PmTilesErrorCode.LimitExceeded,
+                PmTilesErrorCodes.LimitExceeded,
                 "Varint byte limit must be positive.",
             )
         }
@@ -67,7 +68,7 @@ internal class BinaryReader(
         repeat(byteLimit) { index ->
             if (remaining == 0) {
                 throw pmTilesException(
-                    PmTilesErrorCode.InvalidVarint,
+                    PmTilesErrorCodes.InvalidVarint,
                     "Varint ended before a terminating byte.",
                 )
             }
@@ -76,7 +77,7 @@ internal class BinaryReader(
             val payload = byte and VARINT_PAYLOAD_MASK
             if (index == MAX_UINT64_VARINT_BYTES - 1 && payload > MAX_UINT64_TOP_PAYLOAD) {
                 throw pmTilesException(
-                    PmTilesErrorCode.InvalidVarint,
+                    PmTilesErrorCodes.InvalidVarint,
                     "Varint overflows an unsigned 64-bit value.",
                 )
             }
@@ -89,7 +90,7 @@ internal class BinaryReader(
         }
 
         throw pmTilesException(
-            PmTilesErrorCode.InvalidVarint,
+            PmTilesErrorCodes.InvalidVarint,
             if (maxBytes > MAX_UINT64_VARINT_BYTES) {
                 "Varint exceeded the unsigned 64-bit byte limit."
             } else {

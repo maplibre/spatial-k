@@ -11,7 +11,7 @@ import org.maplibre.spatialk.pmtiles.ArchiveWriteLimits
 import org.maplibre.spatialk.pmtiles.ArchiveWriteOptions
 import org.maplibre.spatialk.pmtiles.CompressionCodes
 import org.maplibre.spatialk.pmtiles.Compressor
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 import org.maplibre.spatialk.pmtiles.TileTypeCodes
 
@@ -39,7 +39,7 @@ class MetadataWriterTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.InvalidMetadata, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidMetadata, error.code)
     }
 
     @Test
@@ -52,7 +52,7 @@ class MetadataWriterTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.InvalidMetadata, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidMetadata, error.code)
     }
 
     @Test
@@ -70,7 +70,7 @@ class MetadataWriterTest {
                     )
                 }
 
-            assertEquals(PmTilesErrorCode.InvalidMetadata, error.code)
+            assertEquals(PmTilesErrorCodes.InvalidMetadata, error.code)
         }
     }
 
@@ -103,7 +103,7 @@ class MetadataWriterTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -136,6 +136,6 @@ class MetadataWriterTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.UnsupportedCompression, error.code)
+        assertEquals(PmTilesErrorCodes.UnsupportedCompression, error.code)
     }
 }

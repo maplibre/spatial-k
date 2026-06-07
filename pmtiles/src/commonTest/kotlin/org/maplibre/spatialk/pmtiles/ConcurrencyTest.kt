@@ -89,13 +89,13 @@ class ConcurrencyTest {
             assertFailsWith<PmTilesException> {
                 readError?.let { throw it }
             }
-        assertEquals(PmTilesErrorCode.Closed, inFlightError.code)
+        assertEquals(PmTilesErrorCodes.Closed, inFlightError.code)
 
         val afterCloseError =
             assertSuspendFailsWith<PmTilesException> {
                 archive.readStoredTile(0, 0, 0)
             }
-        assertEquals(PmTilesErrorCode.Closed, afterCloseError.code)
+        assertEquals(PmTilesErrorCodes.Closed, afterCloseError.code)
     }
 
     @Test

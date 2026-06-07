@@ -1,5 +1,6 @@
 package org.maplibre.spatialk.pmtiles.internal
 
+import kotlin.math.roundToInt
 import kotlinx.io.bytestring.ByteString
 import kotlinx.io.bytestring.ByteStringBuilder
 
@@ -50,7 +51,7 @@ internal class BinaryWriter {
 internal fun buildBinary(block: BinaryWriter.() -> Unit): ByteString =
     BinaryWriter().apply(block).toByteString()
 
-private fun Double.toScaledPosition(): Int = (this * POSITION_SCALE).toInt()
+private fun Double.toScaledPosition(): Int = (this * POSITION_SCALE).roundToInt()
 
 private const val POSITION_SCALE = 10_000_000.0
 private const val VARINT_PAYLOAD_BITS = 7

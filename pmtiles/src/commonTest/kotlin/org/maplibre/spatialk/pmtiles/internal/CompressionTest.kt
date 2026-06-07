@@ -11,7 +11,7 @@ import org.maplibre.spatialk.pmtiles.CompressionLimits
 import org.maplibre.spatialk.pmtiles.Compressor
 import org.maplibre.spatialk.pmtiles.DecompressionLimits
 import org.maplibre.spatialk.pmtiles.Decompressor
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
 class CompressionTest {
@@ -40,7 +40,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -55,7 +55,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -96,7 +96,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.DecompressionFailed, error.code)
+        assertEquals(PmTilesErrorCodes.DecompressionFailed, error.code)
     }
 
     @Test
@@ -111,7 +111,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.DecompressionFailed, error.code)
+        assertEquals(PmTilesErrorCodes.DecompressionFailed, error.code)
     }
 
     @Test
@@ -126,7 +126,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -141,7 +141,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -163,7 +163,7 @@ class CompressionTest {
                             )
                     }
 
-                assertEquals(PmTilesErrorCode.UnsupportedCompression, error.code)
+                assertEquals(PmTilesErrorCodes.UnsupportedCompression, error.code)
             }
     }
 
@@ -183,7 +183,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -236,7 +236,7 @@ class CompressionTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -287,7 +287,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -303,7 +303,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -320,7 +320,7 @@ class CompressionTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -343,7 +343,7 @@ class CompressionTest {
                             )
                     }
 
-                assertEquals(PmTilesErrorCode.UnsupportedCompression, error.code)
+                assertEquals(PmTilesErrorCodes.UnsupportedCompression, error.code)
             }
     }
 
@@ -379,7 +379,7 @@ class CompressionTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.CompressionFailed, error.code)
+        assertEquals(PmTilesErrorCodes.CompressionFailed, error.code)
     }
 }
 

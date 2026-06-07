@@ -78,7 +78,7 @@ public object PmTiles {
             if (rootDirectory.isEmpty()) {
                 parsedHeader.warnings +
                     ArchiveWarning(
-                        code = ArchiveWarningCode.EmptyRootDirectory,
+                        code = ArchiveWarningCodes.EmptyRootDirectory,
                         message =
                             "Root directory has zero entries and was accepted in lenient mode.",
                     )
@@ -495,13 +495,13 @@ internal constructor(
         if (header.tileType != TileTypeCodes.Mvt || hasVectorLayers) return
         if (options.validationMode == ValidationMode.Strict) {
             throw pmTilesException(
-                PmTilesErrorCode.InvalidMetadata,
+                PmTilesErrorCodes.InvalidMetadata,
                 "MVT metadata must contain `vector_layers`.",
             )
         }
         state.appendWarning(
             ArchiveWarning(
-                code = ArchiveWarningCode.MissingVectorLayers,
+                code = ArchiveWarningCodes.MissingVectorLayers,
                 message = "MVT metadata does not contain `vector_layers`.",
             )
         )
@@ -509,11 +509,11 @@ internal constructor(
 
     private fun recoverMetadata(message: String, cause: Throwable? = null) {
         if (options.validationMode == ValidationMode.Strict) {
-            throw pmTilesException(PmTilesErrorCode.InvalidMetadata, message, cause)
+            throw pmTilesException(PmTilesErrorCodes.InvalidMetadata, message, cause)
         }
         state.appendWarning(
             ArchiveWarning(
-                code = ArchiveWarningCode.InvalidMetadataRecovered,
+                code = ArchiveWarningCodes.InvalidMetadataRecovered,
                 message = message,
             )
         )
@@ -525,7 +525,7 @@ private fun ByteString.decodeMetadataUtf8(): String =
         toByteArray().decodeToString(throwOnInvalidSequence = true)
     } catch (error: Throwable) {
         throw pmTilesException(
-            PmTilesErrorCode.InvalidMetadata,
+            PmTilesErrorCodes.InvalidMetadata,
             "Metadata is not valid UTF-8.",
             error,
         )
@@ -611,7 +611,7 @@ private fun canCoalesce(
 }
 
 private fun ByteRange.endOffset(): ULong =
-    checkedAdd(offset, length, PmTilesErrorCode.RangeOutOfBounds)
+    checkedAdd(offset, length, PmTilesErrorCodes.RangeOutOfBounds)
 
 private fun ByteString.sliceTile(readRange: ByteRange, tileRange: TileRange): ByteString {
     val offset = (tileRange.archiveRange.offset - readRange.offset).toInt()

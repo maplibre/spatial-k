@@ -169,7 +169,7 @@ class TileLookupTest {
         assertEquals(ByteRange(401uL, 2uL), repeatedRange?.archiveRange)
         assertEquals(2, range?.directoryDepth)
         assertEquals(1, archive.warnings.size)
-        assertEquals(ArchiveWarningCode.NestedLeafDirectory, archive.warnings.single().code)
+        assertEquals(ArchiveWarningCodes.NestedLeafDirectory, archive.warnings.single().code)
     }
 
     @Test
@@ -225,7 +225,7 @@ class TileLookupTest {
                 archive.findTileRange(coord.z, coord.x, coord.y)
             }
 
-        assertEquals(PmTilesErrorCode.InvalidDirectory, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidDirectory, error.code)
     }
 
     @Test
@@ -264,7 +264,7 @@ class TileLookupTest {
                 archive.findTileRange(coord.z, coord.x, coord.y)
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -305,7 +305,7 @@ class TileLookupTest {
                 archive.findTileRange(0, 0, 0)
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     private fun buildArchiveWithLeafBytes(

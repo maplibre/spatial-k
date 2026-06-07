@@ -10,7 +10,7 @@ import org.maplibre.spatialk.pmtiles.ArchiveWriteOptions
 import org.maplibre.spatialk.pmtiles.ArchiveWriteTile
 import org.maplibre.spatialk.pmtiles.CompressionCodes
 import org.maplibre.spatialk.pmtiles.Compressor
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 import org.maplibre.spatialk.pmtiles.TileCoord
 
@@ -73,7 +73,7 @@ class TileAssemblyTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.InvalidTileInput, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidTileInput, error.code)
     }
 
     @Test
@@ -101,7 +101,7 @@ class TileAssemblyTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.UnsupportedCompression, error.code)
+        assertEquals(PmTilesErrorCodes.UnsupportedCompression, error.code)
     }
 
     @Test
@@ -172,7 +172,7 @@ class TileAssemblyTest {
     }
 
     @Test
-    fun deduplicatedUncompressedTilesReuseFirstStoredPayloadWithoutRecompressing() = runTest {
+    fun deduplicatedUncompressedTilesReuseFirstStoredPayloadWhenFinalBytesMatch() = runTest {
         var compressionCalls = 0
         val assembled =
             assembleTileData(
@@ -192,8 +192,32 @@ class TileAssemblyTest {
                 },
             )
 
-        assertEquals(1, compressionCalls)
+        assertEquals(2, compressionCalls)
         assertEquals(listOf(ByteString(1, 2)), assembled.payloads)
         assertEquals(2, assembled.entries.single().runLength)
+    }
+
+    @Test
+    fun deduplicatesMixedPayloadModesOnlyAfterStoredBytesAreComputed() = runTest {
+        val assembled =
+            assembleTileData(
+                listOf(
+                    ArchiveWriteTile.stored(TileCoord(0, 0, 0), ByteString(7)),
+                    ArchiveWriteTile.uncompressed(TileCoord(1, 0, 0), ByteString(7)),
+                ),
+                ArchiveWriteOptions.build {
+                    tileCompression = CompressionCodes.Brotli
+                    compressor(CompressionCodes.Brotli, Compressor { _, _ -> ByteString(9, 8) })
+                },
+            )
+
+        assertEquals(listOf(ByteString(7), ByteString(9, 8)), assembled.payloads)
+        assertEquals(
+            listOf(
+                DirectoryEntry(tileId = 0, offset = 0uL, length = 1, runLength = 1),
+                DirectoryEntry(tileId = 1, offset = 1uL, length = 2, runLength = 1),
+            ),
+            assembled.entries,
+        )
     }
 }

@@ -105,10 +105,10 @@ class OpenArchiveTest {
     @Test
     fun rejectsInvalidMagicVersionAndShortHeaders() = runTest {
         val invalidMagic = buildArchive().mutableCopy().also { it[0] = 0 }.let(::ByteString)
-        assertOpenFails(PmTilesErrorCode.InvalidMagic, invalidMagic)
+        assertOpenFails(PmTilesErrorCodes.InvalidMagic, invalidMagic)
 
         val invalidVersion = buildArchive().mutableCopy().also { it[7] = 2 }.let(::ByteString)
-        assertOpenFails(PmTilesErrorCode.UnsupportedVersion, invalidVersion)
+        assertOpenFails(PmTilesErrorCodes.UnsupportedVersion, invalidVersion)
 
         val error =
             assertFailsWith<PmTilesException> {
@@ -117,7 +117,7 @@ class OpenArchiveTest {
                     HEADER_BYTES.toULong(),
                 )
             }
-        assertEquals(PmTilesErrorCode.InvalidHeader, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidHeader, error.code)
     }
 
     @Test
@@ -131,7 +131,7 @@ class OpenArchiveTest {
             assertFailsWith<PmTilesException> {
                 parseHeader(ByteString(buildHeader(overflowFields)), ULong.MAX_VALUE)
             }
-        assertEquals(PmTilesErrorCode.InvalidSectionLayout, overflow.code)
+        assertEquals(PmTilesErrorCodes.InvalidSectionLayout, overflow.code)
 
         val outOfBounds =
             TestHeaderFields(
@@ -139,7 +139,7 @@ class OpenArchiveTest {
                 metadataLength = 1uL,
             )
         assertOpenFails(
-            PmTilesErrorCode.InvalidSectionLayout,
+            PmTilesErrorCodes.InvalidSectionLayout,
             buildArchive(outOfBounds, archiveSize = HEADER_BYTES + 1),
         )
     }
@@ -171,7 +171,7 @@ class OpenArchiveTest {
         val fields = TestHeaderFields(rootOffset = FIRST_READ_BYTES.toULong())
 
         assertOpenFails(
-            PmTilesErrorCode.InvalidRootDirectoryLocation,
+            PmTilesErrorCodes.InvalidRootDirectoryLocation,
             buildArchive(
                 fields,
                 archiveSize = FIRST_READ_BYTES + MINIMAL_ROOT_DIRECTORY_BYTES.size,
@@ -183,7 +183,7 @@ class OpenArchiveTest {
     fun rejectsUnsupportedInternalCompressionAtOpen() = runTest {
         val fields = TestHeaderFields(internalCompression = CompressionCodes.Brotli.code)
 
-        assertOpenFails(PmTilesErrorCode.UnsupportedCompression, buildArchive(fields))
+        assertOpenFails(PmTilesErrorCodes.UnsupportedCompression, buildArchive(fields))
     }
 
     @Test
@@ -225,9 +225,9 @@ class OpenArchiveTest {
                 options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
 
-        assertEquals(PmTilesErrorCode.InvalidDirectory, strictError.code)
+        assertEquals(PmTilesErrorCodes.InvalidDirectory, strictError.code)
         assertTrue(
-            archive.warnings.any { it.code == ArchiveWarningCode.EmptyRootDirectory },
+            archive.warnings.any { it.code == ArchiveWarningCodes.EmptyRootDirectory },
             "Expected EmptyRootDirectory warning.",
         )
         assertNull(archive.findTileRange(0, 0, 0))
@@ -235,18 +235,18 @@ class OpenArchiveTest {
 
     @Test
     fun wrapsAndPreservesSourceErrors() = runTest {
-        val sourceError = PmTilesException(PmTilesErrorCode.SourceUnavailable, "unavailable")
+        val sourceError = PmTilesException(PmTilesErrorCodes.SourceUnavailable, "unavailable")
         val sizePreserved =
             assertFailsWith<PmTilesException> {
                 PmTiles.open(TestByteRangeSource(buildArchive(), sizeError = sourceError))
             }
-        assertEquals(PmTilesErrorCode.SourceUnavailable, sizePreserved.code)
+        assertEquals(PmTilesErrorCodes.SourceUnavailable, sizePreserved.code)
 
         val readPreserved =
             assertFailsWith<PmTilesException> {
                 PmTiles.open(TestByteRangeSource(buildArchive(), readError = sourceError))
             }
-        assertEquals(PmTilesErrorCode.SourceUnavailable, readPreserved.code)
+        assertEquals(PmTilesErrorCodes.SourceUnavailable, readPreserved.code)
 
         val sizeWrapped =
             assertFailsWith<PmTilesException> {
@@ -254,7 +254,7 @@ class OpenArchiveTest {
                     TestByteRangeSource(buildArchive(), sizeError = IllegalStateException())
                 )
             }
-        assertEquals(PmTilesErrorCode.SourceUnavailable, sizeWrapped.code)
+        assertEquals(PmTilesErrorCodes.SourceUnavailable, sizeWrapped.code)
 
         val readWrapped =
             assertFailsWith<PmTilesException> {
@@ -262,7 +262,7 @@ class OpenArchiveTest {
                     TestByteRangeSource(buildArchive(), readError = IllegalStateException())
                 )
             }
-        assertEquals(PmTilesErrorCode.SourceUnavailable, readWrapped.code)
+        assertEquals(PmTilesErrorCodes.SourceUnavailable, readWrapped.code)
     }
 
     @Test
@@ -271,7 +271,7 @@ class OpenArchiveTest {
             assertFailsWith<PmTilesException> {
                 PmTiles.open(TestByteRangeSource(buildArchive(), shortRead = true))
             }
-        assertEquals(PmTilesErrorCode.SourceUnavailable, shortRead.code)
+        assertEquals(PmTilesErrorCodes.SourceUnavailable, shortRead.code)
 
         val outOfBounds =
             assertFailsWith<PmTilesException> {
@@ -282,7 +282,7 @@ class OpenArchiveTest {
                         maxBytes = 2uL,
                     )
             }
-        assertEquals(PmTilesErrorCode.RangeOutOfBounds, outOfBounds.code)
+        assertEquals(PmTilesErrorCodes.RangeOutOfBounds, outOfBounds.code)
     }
 
     @Test

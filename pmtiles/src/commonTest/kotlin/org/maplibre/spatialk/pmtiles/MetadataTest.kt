@@ -62,13 +62,13 @@ class MetadataTest {
                 archive.rawMetadataJson()
             }
 
-        assertEquals(PmTilesErrorCode.InvalidMetadata, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidMetadata, error.code)
     }
 
     @Test
     fun strictModeRejectsNonObjectAndWrongTypedFields() = runTest {
-        assertMetadataFails(PmTilesErrorCode.InvalidMetadata, "[]")
-        assertMetadataFails(PmTilesErrorCode.InvalidMetadata, """{"name":1}""")
+        assertMetadataFails(PmTilesErrorCodes.InvalidMetadata, "[]")
+        assertMetadataFails(PmTilesErrorCodes.InvalidMetadata, """{"name":1}""")
     }
 
     @Test
@@ -83,7 +83,7 @@ class MetadataTest {
 
         assertEquals("[]", archive.rawMetadataJson())
         assertNull(metadata.name)
-        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warnings.single().code)
+        assertEquals(ArchiveWarningCodes.InvalidMetadataRecovered, archive.warnings.single().code)
     }
 
     @Test
@@ -100,13 +100,13 @@ class MetadataTest {
 
         assertNull(metadata.name)
         assertEquals("ok", metadata.description)
-        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, archive.warnings.single().code)
+        assertEquals(ArchiveWarningCodes.InvalidMetadataRecovered, archive.warnings.single().code)
     }
 
     @Test
     fun mvtMetadataRequiresVectorLayers() = runTest {
         assertMetadataFails(
-            PmTilesErrorCode.InvalidMetadata,
+            PmTilesErrorCodes.InvalidMetadata,
             """{"name":"Tiles"}""",
             tileType = TileTypeCodes.Mvt,
         )
@@ -128,7 +128,7 @@ class MetadataTest {
         val metadata = archive.metadata()
 
         assertEquals("Tiles", metadata.name)
-        assertEquals(ArchiveWarningCode.MissingVectorLayers, archive.warnings.single().code)
+        assertEquals(ArchiveWarningCodes.MissingVectorLayers, archive.warnings.single().code)
     }
 
     private suspend fun assertMetadataFails(

@@ -7,8 +7,8 @@ import org.maplibre.spatialk.pmtiles.CompressionCode
 import org.maplibre.spatialk.pmtiles.CompressionLimits
 import org.maplibre.spatialk.pmtiles.Compressor
 import org.maplibre.spatialk.pmtiles.HeaderCounts
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
-import org.maplibre.spatialk.pmtiles.TilePayloadMode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
+import org.maplibre.spatialk.pmtiles.TilePayloadModes
 
 internal data class AssembledTileData(
     val entries: List<DirectoryEntry>,
@@ -48,11 +48,13 @@ internal suspend fun assembleTileData(
 
         val storedPayload =
             if (options.deduplicateTilePayloads) {
-                val hash = fnv1a128(tile.payload)
+                val storedBytes = tile.storedPayloadBytes(compressors, options)
+                val hash = fnv1a128(storedBytes)
                 deduplicatedPayloads[hash]
-                    ?: tile
-                        .storeNewPayload(compressors, options, storedPayloads, tileDataLength)
-                        .also { payload -> deduplicatedPayloads[hash] = payload }
+                    ?: storedBytes.storeNewPayload(options, storedPayloads, tileDataLength).also {
+                        payload ->
+                        deduplicatedPayloads[hash] = payload
+                    }
             } else {
                 tile.storeNewPayload(compressors, options, storedPayloads, tileDataLength)
             }
@@ -62,7 +64,7 @@ internal suspend fun assembleTileData(
                 checkedAdd(
                     tileDataLength,
                     storedPayload.length.toULong(),
-                    PmTilesErrorCode.InvalidTileInput,
+                    PmTilesErrorCodes.InvalidTileInput,
                 )
         }
         entries.addOrExtend(tileId, storedPayload)
@@ -102,25 +104,38 @@ private suspend fun ArchiveWriteTile.storeNewPayload(
     options: ArchiveWriteOptions,
     storedPayloads: MutableList<ByteString>,
     offset: ULong,
-): StoredPayload {
-    val storedBytes =
-        when (payloadMode) {
-            TilePayloadMode.Stored -> {
-                validateStoredTilePayload(payload, options)
-                payload
-            }
-            TilePayloadMode.Uncompressed ->
-                compressors.compress(
-                    compression = options.tileCompression,
-                    bytes = payload,
-                    limits =
-                        CompressionLimits(
-                            maxUncompressedBytes = options.limits.maxTileBytes,
-                            maxCompressedBytes = options.limits.maxTileBytes,
-                        ),
-                    purpose = EncodePurpose.Tile,
-                )
+): StoredPayload =
+    storedPayloadBytes(compressors, options).storeNewPayload(options, storedPayloads, offset)
+
+private suspend fun ArchiveWriteTile.storedPayloadBytes(
+    compressors: Map<CompressionCode, Compressor>,
+    options: ArchiveWriteOptions,
+): ByteString =
+    when (payloadMode) {
+        TilePayloadModes.Stored -> {
+            validateStoredTilePayload(payload, options)
+            payload
         }
+        TilePayloadModes.Uncompressed ->
+            compressors.compress(
+                compression = options.tileCompression,
+                bytes = payload,
+                limits =
+                    CompressionLimits(
+                        maxUncompressedBytes = options.limits.maxTileBytes,
+                        maxCompressedBytes = options.limits.maxTileBytes,
+                    ),
+                purpose = EncodePurpose.Tile,
+            )
+        else -> invalidTileInput("Unsupported tile payload mode code ${payloadMode.code}.")
+    }
+
+private fun ByteString.storeNewPayload(
+    options: ArchiveWriteOptions,
+    storedPayloads: MutableList<ByteString>,
+    offset: ULong,
+): StoredPayload {
+    val storedBytes = this
     validateStoredTilePayload(storedBytes, options)
     storedPayloads += storedBytes
     return StoredPayload(offset = offset, length = storedBytes.size)
@@ -191,7 +206,7 @@ private operator fun Fnv128Hash.plus(other: Fnv128Hash): Fnv128Hash {
 }
 
 private fun invalidTileInput(message: String): Nothing =
-    throw pmTilesException(PmTilesErrorCode.InvalidTileInput, message)
+    throw pmTilesException(PmTilesErrorCodes.InvalidTileInput, message)
 
 private val FNV_128_OFFSET = Fnv128Hash(high = 0x6c62272e07bb0142uL, low = 0x62b821756295c58duL)
 private const val FNV_128_PRIME_LOW: UInt = 0x3bu

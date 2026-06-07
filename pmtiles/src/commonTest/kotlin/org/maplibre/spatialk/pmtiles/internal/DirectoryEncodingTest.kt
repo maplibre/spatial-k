@@ -9,7 +9,7 @@ import org.maplibre.spatialk.pmtiles.ArchiveSection
 import org.maplibre.spatialk.pmtiles.CompressionCodes
 import org.maplibre.spatialk.pmtiles.HeaderCounts
 import org.maplibre.spatialk.pmtiles.LonLatBounds
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 import org.maplibre.spatialk.pmtiles.TileCenter
 import org.maplibre.spatialk.pmtiles.TileTypeCodes
@@ -96,7 +96,7 @@ class DirectoryEncodingTest {
             .forEach { entries ->
                 val error = assertFailsWith<PmTilesException> { encodeDirectory(entries) }
 
-                assertEquals(PmTilesErrorCode.InvalidDirectory, error.code)
+                assertEquals(PmTilesErrorCodes.InvalidDirectory, error.code)
             }
     }
 

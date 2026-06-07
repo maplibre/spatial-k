@@ -1,20 +1,34 @@
-@file:OptIn(ExperimentalObjCRefinement::class)
+@file:OptIn(ExperimentalObjCName::class, ExperimentalObjCRefinement::class)
 
 package org.maplibre.spatialk.pmtiles
 
+import kotlin.experimental.ExperimentalObjCName
 import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.jvm.JvmInline
 import kotlin.native.HiddenFromObjC
+import kotlin.native.ObjCName
 import kotlin.native.ShouldRefineInSwift
 import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
 
-/** How [ArchiveWriteTile.payload] bytes should be interpreted by the writer. */
-public enum class TilePayloadMode {
+/**
+ * How [ArchiveWriteTile.payload] bytes should be interpreted by the writer.
+ *
+ * @property code Raw tile payload mode code.
+ */
+@JvmInline public value class TilePayloadMode(public val code: UInt)
+
+/** Tile payload mode constants. */
+public object TilePayloadModes {
     /** Payload bytes are already in the archive's stored tile-compression format. */
-    Stored,
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "stored")
+    public val Stored: TilePayloadMode = TilePayloadMode(0u)
 
     /** Payload bytes are uncompressed and should be compressed by the writer. */
-    Uncompressed,
+    @ShouldRefineInSwift
+    @ObjCName(swiftName = "uncompressed")
+    public val Uncompressed: TilePayloadMode = TilePayloadMode(1u)
 }
 
 /**
@@ -28,20 +42,24 @@ public data class ArchiveWriteTile
 public constructor(
     public val coord: TileCoord,
     @ShouldRefineInSwift public val payload: ByteString,
-    public val payloadMode: TilePayloadMode,
+    @ShouldRefineInSwift public val payloadMode: TilePayloadMode,
 ) {
     /** Factory helpers for explicit tile payload modes. */
     public companion object {
         /** Creates tile input whose payload bytes are already in stored archive form. */
         public fun stored(coord: TileCoord, payload: ByteString): ArchiveWriteTile =
-            ArchiveWriteTile(coord = coord, payload = payload, payloadMode = TilePayloadMode.Stored)
+            ArchiveWriteTile(
+                coord = coord,
+                payload = payload,
+                payloadMode = TilePayloadModes.Stored,
+            )
 
         /** Creates tile input whose payload bytes should be compressed by the writer. */
         public fun uncompressed(coord: TileCoord, payload: ByteString): ArchiveWriteTile =
             ArchiveWriteTile(
                 coord = coord,
                 payload = payload,
-                payloadMode = TilePayloadMode.Uncompressed,
+                payloadMode = TilePayloadModes.Uncompressed,
             )
     }
 }
@@ -181,6 +199,6 @@ private fun Double.isLongitude(): Boolean = isFinite() && this in -180.0..180.0
 private fun Double.isLatitude(): Boolean = isFinite() && this in -90.0..90.0
 
 private fun invalidHeaderConfig(message: String): PmTilesException =
-    pmTilesException(PmTilesErrorCode.InvalidHeader, message)
+    pmTilesException(PmTilesErrorCodes.InvalidHeader, message)
 
 private const val MAX_HEADER_ZOOM = 31

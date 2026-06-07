@@ -3,12 +3,12 @@ package org.maplibre.spatialk.pmtiles.internal
 import org.maplibre.spatialk.pmtiles.ArchiveHeader
 import org.maplibre.spatialk.pmtiles.ArchiveOpenOptions
 import org.maplibre.spatialk.pmtiles.ArchiveWarning
-import org.maplibre.spatialk.pmtiles.ArchiveWarningCode
+import org.maplibre.spatialk.pmtiles.ArchiveWarningCodes
 import org.maplibre.spatialk.pmtiles.ByteRange
 import org.maplibre.spatialk.pmtiles.ByteRangeSource
 import org.maplibre.spatialk.pmtiles.CompressionCode
 import org.maplibre.spatialk.pmtiles.Decompressor
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.TileCoord
 import org.maplibre.spatialk.pmtiles.TileRange
 import org.maplibre.spatialk.pmtiles.ValidationMode
@@ -58,20 +58,20 @@ internal class DirectoryResolver(
     ): List<DirectoryEntry> {
         if (depth > options.limits.maxDirectoryDepth) {
             throw pmTilesException(
-                PmTilesErrorCode.LimitExceeded,
+                PmTilesErrorCodes.LimitExceeded,
                 "Directory depth $depth exceeds limit ${options.limits.maxDirectoryDepth}.",
             )
         }
         if (depth > 1) {
             if (options.validationMode == ValidationMode.Strict) {
                 throw pmTilesException(
-                    PmTilesErrorCode.InvalidDirectory,
+                    PmTilesErrorCodes.InvalidDirectory,
                     "Nested leaf directories are not allowed in strict mode.",
                 )
             }
             state.appendWarning(
                 ArchiveWarning(
-                    code = ArchiveWarningCode.NestedLeafDirectory,
+                    code = ArchiveWarningCodes.NestedLeafDirectory,
                     message = "Lookup traversed a nested leaf directory.",
                     context = "depth=$depth tileId=${entry.tileId}",
                 )
@@ -81,7 +81,7 @@ internal class DirectoryResolver(
         val range = entry.toLeafRange()
         if (!visitedLeafRanges.add(range)) {
             throw pmTilesException(
-                PmTilesErrorCode.LimitExceeded,
+                PmTilesErrorCodes.LimitExceeded,
                 "Lookup revisited leaf directory range $range.",
             )
         }
@@ -129,7 +129,7 @@ internal class DirectoryResolver(
                         checkedAdd(
                             header.tileData.offset,
                             offset,
-                            PmTilesErrorCode.InvalidDirectory,
+                            PmTilesErrorCodes.InvalidDirectory,
                         ),
                     length = length.toULong(),
                 ),
@@ -144,7 +144,7 @@ internal class DirectoryResolver(
                 checkedAdd(
                     header.leafDirectories.offset,
                     offset,
-                    PmTilesErrorCode.InvalidDirectory,
+                    PmTilesErrorCodes.InvalidDirectory,
                 ),
             length = length.toULong(),
         )

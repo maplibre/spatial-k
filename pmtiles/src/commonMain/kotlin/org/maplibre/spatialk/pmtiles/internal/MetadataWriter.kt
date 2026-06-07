@@ -9,7 +9,7 @@ import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.pmtiles.ArchiveWriteConfig
 import org.maplibre.spatialk.pmtiles.ArchiveWriteOptions
 import org.maplibre.spatialk.pmtiles.CompressionLimits
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.TileTypeCodes
 
 internal data class EncodedMetadata(
@@ -60,4 +60,4 @@ private fun validateMetadataForTileType(jsonObject: JsonObject, config: ArchiveW
 }
 
 private fun invalidMetadata(message: String, cause: Throwable? = null) =
-    pmTilesException(PmTilesErrorCode.InvalidMetadata, message, cause)
+    pmTilesException(PmTilesErrorCodes.InvalidMetadata, message, cause)

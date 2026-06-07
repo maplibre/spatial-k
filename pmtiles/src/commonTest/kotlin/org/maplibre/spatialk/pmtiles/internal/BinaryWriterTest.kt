@@ -39,6 +39,13 @@ class BinaryWriterTest {
     }
 
     @Test
+    fun roundsScaledPositionsToNearestInteger() {
+        val bytes = buildBinary { writePosition(longitude = 0.00000016, latitude = -0.00000016) }
+
+        assertEquals("02000000feffffff".hexToByteString(), bytes)
+    }
+
+    @Test
     fun tracksSize() {
         val writer = BinaryWriter()
 

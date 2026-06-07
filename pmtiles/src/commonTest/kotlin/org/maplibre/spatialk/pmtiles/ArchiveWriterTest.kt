@@ -60,15 +60,27 @@ class ArchiveWriterTest {
 
     @Test
     fun writeWrapsUnexpectedSinkFailures() = runTest {
+        val sink = FailingByteSink()
         val error =
             assertFailsWith<PmTilesException> {
                 PmTiles.write(
-                    sink = FailingByteSink(),
+                    sink = sink,
                     tiles = listOf(ArchiveWriteTile.stored(TileCoord(0, 0, 0), ByteString(1))),
                 )
             }
 
-        assertEquals(PmTilesErrorCode.SinkUnavailable, error.code)
+        assertEquals(PmTilesErrorCodes.SinkUnavailable, error.code)
+        assertEquals(true, sink.closed)
+    }
+
+    @Test
+    fun writeRejectsEmptyTileInputWithPmTilesException() = runTest {
+        val error =
+            assertFailsWith<PmTilesException> {
+                PmTiles.writeToByteString(tiles = emptyList())
+            }
+
+        assertEquals(PmTilesErrorCodes.InvalidTileInput, error.code)
     }
 
     @Test
@@ -85,7 +97,7 @@ class ArchiveWriterTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.UnsupportedCompression, error.code)
+        assertEquals(PmTilesErrorCodes.UnsupportedCompression, error.code)
         assertEquals(ByteString(), sink.bytes)
         assertEquals(false, sink.flushed)
         assertEquals(false, sink.closed)
@@ -117,11 +129,15 @@ private class CollectingByteSink : ByteSink {
 }
 
 private class FailingByteSink : ByteSink {
+    var closed = false
+
     override suspend fun write(bytes: ByteString) {
         error("write failed")
     }
 
     override suspend fun flush() = Unit
 
-    override suspend fun close() = Unit
+    override suspend fun close() {
+        closed = true
+    }
 }

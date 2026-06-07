@@ -8,7 +8,7 @@ internal fun encodeHeader(header: ArchiveHeader, archiveSize: ULong): ByteString
     validateHeader(header, archiveSize)
     return buildBinary {
             writeMagic()
-            writeUInt8(SUPPORTED_VERSION.toUInt())
+            writeUInt8(PmTilesProtocol.SUPPORTED_VERSION.toUInt())
             writeSection(header.rootDirectory)
             writeSection(header.metadata)
             writeSection(header.leafDirectories)
@@ -33,22 +33,12 @@ internal fun encodeHeader(header: ArchiveHeader, archiveSize: ULong): ByteString
 }
 
 private fun BinaryWriter.writeMagic() {
-    PMTILES_MAGIC_BYTES.forEach { byte -> writeUInt8(byte.toUByte().toUInt()) }
+    repeat(PmTilesProtocol.MAGIC_BYTES.size) { index ->
+        writeUInt8(PmTilesProtocol.MAGIC_BYTES[index].toUByte().toUInt())
+    }
 }
 
 private fun BinaryWriter.writeSection(section: ArchiveSection) {
     writeULong64Le(section.offset)
     writeULong64Le(section.length)
 }
-
-private const val SUPPORTED_VERSION = 3
-private val PMTILES_MAGIC_BYTES =
-    byteArrayOf(
-        0x50.toByte(),
-        0x4d.toByte(),
-        0x54.toByte(),
-        0x69.toByte(),
-        0x6c.toByte(),
-        0x65.toByte(),
-        0x73.toByte(),
-    )

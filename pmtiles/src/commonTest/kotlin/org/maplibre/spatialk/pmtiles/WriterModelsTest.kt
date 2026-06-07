@@ -16,8 +16,8 @@ class WriterModelsTest {
 
         assertEquals(coord, stored.coord)
         assertEquals(payload, stored.payload)
-        assertEquals(TilePayloadMode.Stored, stored.payloadMode)
-        assertEquals(TilePayloadMode.Uncompressed, uncompressed.payloadMode)
+        assertEquals(TilePayloadModes.Stored, stored.payloadMode)
+        assertEquals(TilePayloadModes.Uncompressed, uncompressed.payloadMode)
     }
 
     @Test
@@ -63,7 +63,7 @@ class WriterModelsTest {
 
     @Test
     fun archiveWriteConfigDefaultsAreValid() {
-        val config = ArchiveWriteConfig()
+        val config = ArchiveWriteConfig.build {}
 
         assertEquals(TileTypeCodes.Unknown, config.tileType)
         assertEquals(ArchiveWriteBounds(), config.bounds)

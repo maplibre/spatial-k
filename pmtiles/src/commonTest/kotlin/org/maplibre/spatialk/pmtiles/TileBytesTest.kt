@@ -306,7 +306,7 @@ class TileBytesTest {
                 archive.readDecompressedTile(0, 0, 0)
             }
 
-        assertEquals(PmTilesErrorCode.UnsupportedCompression, error.code)
+        assertEquals(PmTilesErrorCodes.UnsupportedCompression, error.code)
     }
 
     @Test
@@ -354,7 +354,7 @@ class TileBytesTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -379,6 +379,6 @@ class TileBytesTest {
                 archive.readDecompressedTile(0, 0, 0)
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 }

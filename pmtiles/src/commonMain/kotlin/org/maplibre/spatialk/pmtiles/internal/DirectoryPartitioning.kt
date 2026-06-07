@@ -3,7 +3,7 @@ package org.maplibre.spatialk.pmtiles.internal
 import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.ArchiveWriteOptions
 import org.maplibre.spatialk.pmtiles.CompressionLimits
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 
 internal data class BuiltDirectories(
     val rootEntries: List<DirectoryEntry>,
@@ -44,7 +44,7 @@ private suspend fun buildRootToLeafDirectories(
     }
 
     throw pmTilesException(
-        PmTilesErrorCode.LimitExceeded,
+        PmTilesErrorCodes.LimitExceeded,
         "Compressed root directory exceeds limit ${options.limits.maxRootDirectoryBytes} after leaf partitioning.",
     )
 }
@@ -73,7 +73,7 @@ private suspend fun buildLeafAttempt(
             checkedAdd(
                 leafOffset,
                 compressedLeaf.size.toULong(),
-                PmTilesErrorCode.InvalidDirectory,
+                PmTilesErrorCodes.InvalidDirectory,
             )
     }
 

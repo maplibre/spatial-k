@@ -1,7 +1,7 @@
 package org.maplibre.spatialk.pmtiles.internal
 
 import kotlinx.io.bytestring.ByteString
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 
 internal fun encodeDirectory(entries: List<DirectoryEntry>): ByteString {
     validateDirectoryEntries(entries)
@@ -60,16 +60,16 @@ private fun BinaryWriter.writeOffsets(entries: List<DirectoryEntry>) {
         if (index > 0 && entry.offset == nextOffset) {
             writeVarint(0uL)
         } else {
-            writeVarint(checkedAdd(entry.offset, 1uL, PmTilesErrorCode.InvalidDirectory))
+            writeVarint(checkedAdd(entry.offset, 1uL, PmTilesErrorCodes.InvalidDirectory))
         }
         nextOffset =
             checkedAdd(
                 entry.offset,
                 entry.length.toULong(),
-                PmTilesErrorCode.InvalidDirectory,
+                PmTilesErrorCodes.InvalidDirectory,
             )
     }
 }
 
 private fun invalidDirectory(message: String): Nothing =
-    throw pmTilesException(PmTilesErrorCode.InvalidDirectory, message)
+    throw pmTilesException(PmTilesErrorCodes.InvalidDirectory, message)

@@ -4,7 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlinx.io.bytestring.hexToByteString
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
 class BinaryReaderTest {
@@ -25,7 +25,7 @@ class BinaryReaderTest {
                 BinaryReader("010203".hexToByteString()).readUInt32Le()
             }
 
-        assertEquals(PmTilesErrorCode.InvalidHeader, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidHeader, error.code)
     }
 
     @Test
@@ -47,7 +47,7 @@ class BinaryReaderTest {
                 BinaryReader("80".hexToByteString()).readVarint(maxBytes = 10)
             }
 
-        assertEquals(PmTilesErrorCode.InvalidVarint, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidVarint, error.code)
     }
 
     @Test
@@ -57,7 +57,7 @@ class BinaryReaderTest {
                 BinaryReader("8001".hexToByteString()).readVarint(maxBytes = 1)
             }
 
-        assertEquals(PmTilesErrorCode.InvalidVarint, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidVarint, error.code)
     }
 
     @Test
@@ -67,7 +67,7 @@ class BinaryReaderTest {
                 BinaryReader("ffffffffffffffffff02".hexToByteString()).readVarint(maxBytes = 10)
             }
 
-        assertEquals(PmTilesErrorCode.InvalidVarint, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidVarint, error.code)
     }
 
     @Test
@@ -77,6 +77,6 @@ class BinaryReaderTest {
                 BinaryReader("8080808080808080808000".hexToByteString()).readVarint(maxBytes = 11)
             }
 
-        assertEquals(PmTilesErrorCode.InvalidVarint, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidVarint, error.code)
     }
 }

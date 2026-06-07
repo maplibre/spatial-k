@@ -6,7 +6,7 @@ import org.maplibre.spatialk.pmtiles.ArchiveWriteOptions
 import org.maplibre.spatialk.pmtiles.CompressionCode
 import org.maplibre.spatialk.pmtiles.CompressionLimits
 import org.maplibre.spatialk.pmtiles.Compressor
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
 internal val noneCompressor: Compressor = Compressor { bytes, _ -> bytes }
@@ -60,13 +60,13 @@ private val EncodePurpose.displayName: String
 private fun validateCompressionLimits(limits: CompressionLimits, purpose: EncodePurpose) {
     if (limits.maxUncompressedBytes > Int.MAX_VALUE.toULong()) {
         throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
+            PmTilesErrorCodes.LimitExceeded,
             "${purpose.displayName} uncompressed byte limit ${limits.maxUncompressedBytes} exceeds the supported Int range.",
         )
     }
     if (limits.maxCompressedBytes > Int.MAX_VALUE.toULong()) {
         throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
+            PmTilesErrorCodes.LimitExceeded,
             "${purpose.displayName} compressed byte limit ${limits.maxCompressedBytes} exceeds the supported Int range.",
         )
     }
@@ -79,7 +79,7 @@ private fun validateUncompressedSize(
 ) {
     if (size.toULong() > limits.maxUncompressedBytes) {
         throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
+            PmTilesErrorCodes.LimitExceeded,
             "${purpose.displayName} uncompressed length $size exceeds limit ${limits.maxUncompressedBytes}.",
         )
     }
@@ -88,7 +88,7 @@ private fun validateUncompressedSize(
 private fun validateCompressedSize(size: Int, limits: CompressionLimits, purpose: EncodePurpose) {
     if (size.toULong() > limits.maxCompressedBytes) {
         throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
+            PmTilesErrorCodes.LimitExceeded,
             "${purpose.displayName} compressed length $size exceeds limit ${limits.maxCompressedBytes}.",
         )
     }
@@ -99,6 +99,6 @@ private fun unsupportedCompressionCode(
     purpose: EncodePurpose,
 ): Nothing =
     throw pmTilesException(
-        PmTilesErrorCode.UnsupportedCompression,
+        PmTilesErrorCodes.UnsupportedCompression,
         "${purpose.displayName} compression code ${compression.code} is not supported.",
     )

@@ -69,6 +69,104 @@ public struct TileTypeCode: Hashable, RawRepresentable, Sendable {
     public static let mlt = TileTypeCode(rawValue: TileTypeCodes.shared.__mlt)
 }
 
+public struct PmTilesErrorCode: Hashable, RawRepresentable, Sendable {
+    public let rawValue: UInt32
+
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+
+    public static let invalidMagic =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidMagic)
+    public static let unsupportedVersion =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__unsupportedVersion)
+    public static let invalidHeader =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidHeader)
+    public static let invalidSectionLayout =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidSectionLayout)
+    public static let invalidRootDirectoryLocation =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidRootDirectoryLocation)
+    public static let invalidDirectory =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidDirectory)
+    public static let invalidVarint =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidVarint)
+    public static let invalidTileCoordinate =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidTileCoordinate)
+    public static let unsupportedCompression =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__unsupportedCompression)
+    public static let decompressionFailed =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__decompressionFailed)
+    public static let compressionFailed =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__compressionFailed)
+    public static let invalidMetadata =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidMetadata)
+    public static let rangeOutOfBounds =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__rangeOutOfBounds)
+    public static let sourceUnavailable =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__sourceUnavailable)
+    public static let sinkUnavailable =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__sinkUnavailable)
+    public static let invalidTileInput =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidTileInput)
+    public static let limitExceeded =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__limitExceeded)
+    public static let closed =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__closed)
+}
+
+public struct ArchiveWarningCode: Hashable, RawRepresentable, Sendable {
+    public let rawValue: UInt32
+
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+
+    public static let unknownTileType =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__unknownTileType)
+    public static let unknownCompressionCode =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__unknownCompressionCode)
+    public static let unknownCount =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__unknownCount)
+    public static let nonCanonicalSectionOrder =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__nonCanonicalSectionOrder)
+    public static let missingVectorLayers =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__missingVectorLayers)
+    public static let invalidMetadataRecovered =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__invalidMetadataRecovered)
+    public static let nestedLeafDirectory =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__nestedLeafDirectory)
+    public static let emptyRootDirectory =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__emptyRootDirectory)
+}
+
+public struct TilePayloadMode: Hashable, RawRepresentable, Sendable {
+    public let rawValue: UInt32
+
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+
+    public static let stored = TilePayloadMode(rawValue: TilePayloadModes.shared.__stored)
+    public static let uncompressed =
+        TilePayloadMode(rawValue: TilePayloadModes.shared.__uncompressed)
+}
+
+public extension PmTilesException {
+    convenience init(code: PmTilesErrorCode, message: String) {
+        self.init(code: code.rawValue, message: message)
+    }
+
+    var code: PmTilesErrorCode {
+        PmTilesErrorCode(rawValue: __code)
+    }
+}
+
+public extension ArchiveWarning {
+    var code: ArchiveWarningCode {
+        ArchiveWarningCode(rawValue: __code)
+    }
+}
+
 public extension PmTiles {
     static func open(
         source: ByteRangeDataSource,
@@ -261,6 +359,10 @@ public extension ArchiveWriteTile {
     var payload: Data {
         __payload.toNSData() as Data
     }
+
+    var payloadMode: TilePayloadMode {
+        TilePayloadMode(rawValue: __payloadMode)
+    }
 }
 
 public extension ArchiveOpenOptions.Builder {
@@ -341,7 +443,7 @@ public extension TileRange {
     }
 }
 
-private final class SwiftByteRangeSourceAdapter: NSObject, KotlinByteRangeSource {
+private final class SwiftByteRangeSourceAdapter: NSObject, __KotlinByteRangeSource {
     private let source: ByteRangeDataSource
 
     init(source: ByteRangeDataSource) {
@@ -362,7 +464,7 @@ private final class SwiftByteRangeSourceAdapter: NSObject, KotlinByteRangeSource
     }
 }
 
-private final class SwiftByteSinkAdapter: NSObject, KotlinByteSink {
+private final class SwiftByteSinkAdapter: NSObject, __KotlinByteSink {
     private let sink: ByteDataSink
 
     init(sink: ByteDataSink) {
@@ -382,7 +484,7 @@ private final class SwiftByteSinkAdapter: NSObject, KotlinByteSink {
     }
 }
 
-private final class SwiftDataDecompressorAdapter: NSObject, KotlinDecompressor {
+private final class SwiftDataDecompressorAdapter: NSObject, __KotlinDecompressor {
     private let decompressor: DataDecompressor
 
     init(decompressor: DataDecompressor) {
@@ -402,7 +504,7 @@ private final class SwiftDataDecompressorAdapter: NSObject, KotlinDecompressor {
     }
 }
 
-private final class SwiftDataCompressorAdapter: NSObject, KotlinCompressor {
+private final class SwiftDataCompressorAdapter: NSObject, __KotlinCompressor {
     private let compressor: DataCompressor
 
     init(compressor: DataCompressor) {

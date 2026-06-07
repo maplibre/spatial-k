@@ -10,7 +10,7 @@ import org.maplibre.spatialk.pmtiles.CompressionCode
 import org.maplibre.spatialk.pmtiles.CompressionCodes
 import org.maplibre.spatialk.pmtiles.HeaderCounts
 import org.maplibre.spatialk.pmtiles.LonLatBounds
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 import org.maplibre.spatialk.pmtiles.TileCenter
 import org.maplibre.spatialk.pmtiles.TileTypeCode
@@ -74,7 +74,7 @@ class HeaderWriterTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.InvalidRootDirectoryLocation, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidRootDirectoryLocation, error.code)
     }
 
     @Test

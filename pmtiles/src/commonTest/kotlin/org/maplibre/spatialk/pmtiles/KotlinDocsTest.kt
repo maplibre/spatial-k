@@ -73,6 +73,7 @@ class KotlinDocsTest {
         )
         assertEquals(true, sink.isFlushed)
         assertEquals(true, sink.isClosed)
+        assertEquals(true, sink.bytes.size > 0)
     }
 
     @Test
@@ -149,7 +150,7 @@ class KotlinDocsTest {
                 val decoded = decodeBrotli(bytes)
                 if (decoded.size.toULong() > limits.maxDecompressedBytes) {
                     throw PmTilesException(
-                        PmTilesErrorCode.LimitExceeded,
+                        PmTilesErrorCodes.LimitExceeded,
                         "Decoded output exceeds ${limits.maxDecompressedBytes} bytes.",
                     )
                 }
@@ -172,7 +173,7 @@ class KotlinDocsTest {
                 val encoded = encodeBrotli(bytes)
                 if (encoded.size.toULong() > limits.maxCompressedBytes) {
                     throw PmTilesException(
-                        PmTilesErrorCode.LimitExceeded,
+                        PmTilesErrorCodes.LimitExceeded,
                         "Encoded output exceeds ${limits.maxCompressedBytes} bytes.",
                     )
                 }

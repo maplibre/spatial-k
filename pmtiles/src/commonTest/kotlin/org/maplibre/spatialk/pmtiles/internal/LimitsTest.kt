@@ -6,24 +6,24 @@ import kotlin.test.assertFailsWith
 import org.maplibre.spatialk.pmtiles.ArchiveLimits
 import org.maplibre.spatialk.pmtiles.ArchiveSection
 import org.maplibre.spatialk.pmtiles.ByteRange
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
 class LimitsTest {
     @Test
     fun computesCheckedEndOffsets() {
-        assertEquals(15uL, ArchiveSection(10uL, 5uL).endOffset(PmTilesErrorCode.InvalidHeader))
-        assertEquals(15uL, ByteRange(10uL, 5uL).endOffset(PmTilesErrorCode.RangeOutOfBounds))
+        assertEquals(15uL, ArchiveSection(10uL, 5uL).endOffset(PmTilesErrorCodes.InvalidHeader))
+        assertEquals(15uL, ByteRange(10uL, 5uL).endOffset(PmTilesErrorCodes.RangeOutOfBounds))
     }
 
     @Test
     fun rejectsUnsignedAdditionOverflow() {
         val error =
             assertFailsWith<PmTilesException> {
-                checkedAdd(ULong.MAX_VALUE, 1uL, PmTilesErrorCode.InvalidSectionLayout)
+                checkedAdd(ULong.MAX_VALUE, 1uL, PmTilesErrorCodes.InvalidSectionLayout)
             }
 
-        assertEquals(PmTilesErrorCode.InvalidSectionLayout, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidSectionLayout, error.code)
     }
 
     @Test
@@ -33,7 +33,7 @@ class LimitsTest {
                 validateReadRange(ByteRange(8uL, 3uL), archiveSize = 10uL, maxBytes = 3uL)
             }
 
-        assertEquals(PmTilesErrorCode.RangeOutOfBounds, error.code)
+        assertEquals(PmTilesErrorCodes.RangeOutOfBounds, error.code)
     }
 
     @Test
@@ -43,7 +43,7 @@ class LimitsTest {
                 validateReadRange(ByteRange(0uL, 4uL), archiveSize = 10uL, maxBytes = 3uL)
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test

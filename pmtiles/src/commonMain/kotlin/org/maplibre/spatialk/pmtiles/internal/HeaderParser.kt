@@ -4,12 +4,12 @@ import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.ArchiveHeader
 import org.maplibre.spatialk.pmtiles.ArchiveSection
 import org.maplibre.spatialk.pmtiles.ArchiveWarning
-import org.maplibre.spatialk.pmtiles.ArchiveWarningCode
+import org.maplibre.spatialk.pmtiles.ArchiveWarningCodes
 import org.maplibre.spatialk.pmtiles.CompressionCode
 import org.maplibre.spatialk.pmtiles.CompressionCodes
 import org.maplibre.spatialk.pmtiles.HeaderCounts
 import org.maplibre.spatialk.pmtiles.LonLatBounds
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.TileCenter
 import org.maplibre.spatialk.pmtiles.TileTypeCode
 import org.maplibre.spatialk.pmtiles.TileTypeCodes
@@ -33,17 +33,17 @@ internal fun parseHeaderForOpen(
 ): ParsedHeader {
     if (bytes.size < HEADER_BYTES) {
         throw pmTilesException(
-            PmTilesErrorCode.InvalidHeader,
+            PmTilesErrorCodes.InvalidHeader,
             "PMTiles header requires $HEADER_BYTES bytes.",
         )
     }
 
-    val reader = BinaryReader(bytes, PmTilesErrorCode.InvalidHeader)
+    val reader = BinaryReader(bytes, PmTilesErrorCodes.InvalidHeader)
     validateMagic(reader)
     val specVersion = reader.readUInt8().toInt()
-    if (specVersion != SUPPORTED_VERSION) {
+    if (specVersion != PmTilesProtocol.SUPPORTED_VERSION) {
         throw pmTilesException(
-            PmTilesErrorCode.UnsupportedVersion,
+            PmTilesErrorCodes.UnsupportedVersion,
             "PMTiles version $specVersion is not supported.",
         )
     }
@@ -109,12 +109,12 @@ internal fun parseHeaderForOpen(
 }
 
 private fun validateMagic(reader: BinaryReader) {
-    repeat(MAGIC_BYTES.size) { index ->
-        val expected = MAGIC_BYTES[index]
+    repeat(PmTilesProtocol.MAGIC_BYTES.size) { index ->
+        val expected = PmTilesProtocol.MAGIC_BYTES[index]
         val actual = reader.readUInt8().toInt().toByte()
         if (actual != expected) {
             throw pmTilesException(
-                PmTilesErrorCode.InvalidMagic,
+                PmTilesErrorCodes.InvalidMagic,
                 "Archive does not start with PMTiles magic bytes.",
             )
         }
@@ -130,7 +130,7 @@ private fun BinaryReader.readClustered(): Boolean =
         1 -> true
         else ->
             throw pmTilesException(
-                PmTilesErrorCode.InvalidHeader,
+                PmTilesErrorCodes.InvalidHeader,
                 "Clustered flag $code is invalid.",
             )
     }
@@ -171,7 +171,7 @@ private fun collectUnknownCountWarnings(
         .forEach { (field, _) ->
             warnings +=
                 ArchiveWarning(
-                    code = ArchiveWarningCode.UnknownCount,
+                    code = ArchiveWarningCodes.UnknownCount,
                     message = "Header count `$field` is unknown.",
                     context = field,
                 )
@@ -195,7 +195,7 @@ private fun collectSectionOrderWarning(
     }
     warnings +=
         ArchiveWarning(
-            code = ArchiveWarningCode.NonCanonicalSectionOrder,
+            code = ArchiveWarningCodes.NonCanonicalSectionOrder,
             message = "Header sections are valid but not in canonical order.",
         )
 }
@@ -207,7 +207,7 @@ private fun collectUnknownCompressionWarnings(
     if (header.tileCompression.code in KNOWN_CONCRETE_COMPRESSION_CODES) return
     warnings +=
         ArchiveWarning(
-            code = ArchiveWarningCode.UnknownCompressionCode,
+            code = ArchiveWarningCodes.UnknownCompressionCode,
             message = "Tile compression code ${header.tileCompression.code} is unknown.",
             context = "tileCompression=${header.tileCompression.code}",
         )
@@ -220,7 +220,7 @@ private fun collectUnknownTileTypeWarning(
     if (header.tileType.code in KNOWN_CONCRETE_TILE_TYPE_CODES) return
     warnings +=
         ArchiveWarning(
-            code = ArchiveWarningCode.UnknownTileType,
+            code = ArchiveWarningCodes.UnknownTileType,
             message = "Tile type code ${header.tileType.code} is unknown.",
             context = "tileType=${header.tileType.code}",
         )
@@ -234,7 +234,7 @@ private fun validateZooms(header: ArchiveHeader) {
             header.maxZoom < header.minZoom
     ) {
         throw pmTilesException(
-            PmTilesErrorCode.InvalidHeader,
+            PmTilesErrorCodes.InvalidHeader,
             "Header zoom fields are outside the supported range.",
         )
     }
@@ -253,7 +253,7 @@ private fun validateCoordinates(header: ArchiveHeader) {
             bounds.north < bounds.south
     ) {
         throw pmTilesException(
-            PmTilesErrorCode.InvalidHeader,
+            PmTilesErrorCodes.InvalidHeader,
             "Header coordinate fields are outside sane longitude/latitude ranges.",
         )
     }
@@ -261,7 +261,7 @@ private fun validateCoordinates(header: ArchiveHeader) {
 
 private fun validateSections(header: ArchiveHeader, archiveSize: ULong) {
     if (header.rootDirectory.length == 0uL) {
-        throw pmTilesException(PmTilesErrorCode.InvalidHeader, "Root directory length is zero.")
+        throw pmTilesException(PmTilesErrorCodes.InvalidHeader, "Root directory length is zero.")
     }
 
     val sections =
@@ -274,16 +274,16 @@ private fun validateSections(header: ArchiveHeader, archiveSize: ULong) {
             .filter { it.section.length > 0uL }
 
     sections.forEach { named ->
-        val end = named.section.endOffset(PmTilesErrorCode.InvalidSectionLayout)
+        val end = named.section.endOffset(PmTilesErrorCodes.InvalidSectionLayout)
         if (named.section.offset < HEADER_BYTES.toULong()) {
             throw pmTilesException(
-                PmTilesErrorCode.InvalidSectionLayout,
+                PmTilesErrorCodes.InvalidSectionLayout,
                 "${named.name} overlaps the fixed header.",
             )
         }
         if (end > archiveSize) {
             throw pmTilesException(
-                PmTilesErrorCode.InvalidSectionLayout,
+                PmTilesErrorCodes.InvalidSectionLayout,
                 "${named.name} exceeds archive size $archiveSize.",
             )
         }
@@ -294,10 +294,11 @@ private fun validateSections(header: ArchiveHeader, archiveSize: ULong) {
         .zipWithNext()
         .forEach { (left, right) ->
             if (
-                right.section.offset < left.section.endOffset(PmTilesErrorCode.InvalidSectionLayout)
+                right.section.offset <
+                    left.section.endOffset(PmTilesErrorCodes.InvalidSectionLayout)
             ) {
                 throw pmTilesException(
-                    PmTilesErrorCode.InvalidSectionLayout,
+                    PmTilesErrorCodes.InvalidSectionLayout,
                     "${left.name} overlaps ${right.name}.",
                 )
             }
@@ -305,10 +306,10 @@ private fun validateSections(header: ArchiveHeader, archiveSize: ULong) {
 }
 
 private fun validateRootLocation(rootDirectory: ArchiveSection) {
-    val rootEnd = rootDirectory.endOffset(PmTilesErrorCode.InvalidSectionLayout)
+    val rootEnd = rootDirectory.endOffset(PmTilesErrorCodes.InvalidSectionLayout)
     if (rootEnd > FIRST_READ_BYTES.toULong()) {
         throw pmTilesException(
-            PmTilesErrorCode.InvalidRootDirectoryLocation,
+            PmTilesErrorCodes.InvalidRootDirectoryLocation,
             "Root directory is not fully contained in the first $FIRST_READ_BYTES bytes.",
         )
     }
@@ -328,19 +329,8 @@ private data class NamedSection(
     val section: ArchiveSection,
 )
 
-private const val SUPPORTED_VERSION = 3
 private const val MAX_HEADER_ZOOM = 31
 private const val POSITION_SCALE = 10_000_000.0
-private val MAGIC_BYTES =
-    ByteString(
-        0x50.toByte(),
-        0x4d.toByte(),
-        0x54.toByte(),
-        0x69.toByte(),
-        0x6c.toByte(),
-        0x65.toByte(),
-        0x73.toByte(),
-    )
 private val KNOWN_CONCRETE_COMPRESSION_CODES =
     setOf(
         CompressionCodes.None.code,
