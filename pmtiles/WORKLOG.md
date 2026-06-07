@@ -12,3 +12,14 @@
   corrupt header fields such as compression and tile type codes.
 - Kept tests independent by asserting exact expected bytes for fixed-width values, varints, and
   position encoding.
+
+## 2026-06-06 - Header Serialization
+
+- Added `HeaderWriter.kt` as production internal code and kept `HeaderFixtures.kt` unchanged for
+  now.
+- Shared the reader's header validation by making `validateHeader` internal, avoiding duplicate
+  section/root/coordinate validation.
+- Header serializer tests assert independent byte slices for magic/version, offsets, counts, flags,
+  codes, zooms, and position fields, then also parse the header as a round-trip check.
+- The first root-location negative test accidentally failed section-layout validation first because
+  the archive size was too small; adjusted it to isolate root-first-16-KiB validation.

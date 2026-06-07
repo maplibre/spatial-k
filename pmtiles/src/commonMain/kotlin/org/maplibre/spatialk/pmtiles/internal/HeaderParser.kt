@@ -141,7 +141,7 @@ private fun BinaryReader.readPosition(): HeaderPosition =
         latitude = readInt32Le() / POSITION_SCALE,
     )
 
-private fun validateHeader(header: ArchiveHeader, archiveSize: ULong) {
+internal fun validateHeader(header: ArchiveHeader, archiveSize: ULong) {
     validateZooms(header)
     validateCoordinates(header)
     validateSections(header, archiveSize)
