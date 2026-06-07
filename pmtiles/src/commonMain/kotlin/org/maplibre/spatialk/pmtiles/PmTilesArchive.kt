@@ -24,9 +24,12 @@ import org.maplibre.spatialk.pmtiles.internal.decompress
 import org.maplibre.spatialk.pmtiles.internal.effectiveDecompressors
 import org.maplibre.spatialk.pmtiles.internal.parseHeaderForOpen
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
+import org.maplibre.spatialk.pmtiles.internal.prepareArchive
 import org.maplibre.spatialk.pmtiles.internal.readSourceRange
 import org.maplibre.spatialk.pmtiles.internal.sourceSize
 import org.maplibre.spatialk.pmtiles.internal.toByteRange
+import org.maplibre.spatialk.pmtiles.internal.toByteString
+import org.maplibre.spatialk.pmtiles.internal.writePreparedArchive
 
 /** Factory methods for PMTiles archives. */
 public object PmTiles {
@@ -91,6 +94,31 @@ public object PmTiles {
             rootDirectory = rootDirectory,
             initialWarnings = warnings,
         )
+    }
+
+    /** Writes a complete PMTiles archive to [sink] with [config] and [options]. */
+    @ShouldRefineInSwift
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun write(
+        sink: ByteSink,
+        tiles: List<ArchiveWriteTile>,
+        config: ArchiveWriteConfig = ArchiveWriteConfig(),
+        options: ArchiveWriteOptions = ArchiveWriteOptions(),
+    ) {
+        val archive = prepareArchive(tiles = tiles, config = config, options = options)
+        writePreparedArchive(archive, sink)
+    }
+
+    /** Builds a complete PMTiles archive in memory. */
+    @ShouldRefineInSwift
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun writeToByteString(
+        tiles: List<ArchiveWriteTile>,
+        config: ArchiveWriteConfig = ArchiveWriteConfig(),
+        options: ArchiveWriteOptions = ArchiveWriteOptions(),
+    ): ByteString {
+        val archive = prepareArchive(tiles = tiles, config = config, options = options)
+        return archive.toByteString(options.limits.maxArchiveBytes)
     }
 }
 

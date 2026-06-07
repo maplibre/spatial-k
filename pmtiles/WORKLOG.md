@@ -96,3 +96,13 @@
 - The first implementation uses one or more leaf chunks and increases chunk size until the
   compressed root fits; this satisfies the writer v1 root-to-leaf requirement without cloning the Go
   implementation's exact tuning.
+
+## 2026-06-06 - Final Archive Assembly And Public Entry Points
+
+- Added final archive preparation that stages header, root directory, metadata, leaf directories,
+  and tile payloads before writing byte 0 to the caller sink.
+- Added `PmTiles.write` for append-only sink output and `PmTiles.writeToByteString` for in-memory
+  convenience/tests, both using the same prepared archive path.
+- The sink path writes canonical section order sequentially, then flushes and closes the sink after
+  successful writes; unsupported compression still fails before any sink bytes are written.
+- Added reader round-trip coverage for a minimal PNG archive and sink failure wrapping.

@@ -760,6 +760,8 @@ final object org.maplibre.spatialk.pmtiles/CompressionCodes { // org.maplibre.sp
 
 final object org.maplibre.spatialk.pmtiles/PmTiles { // org.maplibre.spatialk.pmtiles/PmTiles|null[0]
     final suspend fun open(org.maplibre.spatialk.pmtiles/ByteRangeSource, org.maplibre.spatialk.pmtiles/ArchiveOpenOptions = ...): org.maplibre.spatialk.pmtiles/PmTilesArchive // org.maplibre.spatialk.pmtiles/PmTiles.open|open(org.maplibre.spatialk.pmtiles.ByteRangeSource;org.maplibre.spatialk.pmtiles.ArchiveOpenOptions){}[0]
+    final suspend fun write(org.maplibre.spatialk.pmtiles/ByteSink, kotlin.collections/List<org.maplibre.spatialk.pmtiles/ArchiveWriteTile>, org.maplibre.spatialk.pmtiles/ArchiveWriteConfig = ..., org.maplibre.spatialk.pmtiles/ArchiveWriteOptions = ...) // org.maplibre.spatialk.pmtiles/PmTiles.write|write(org.maplibre.spatialk.pmtiles.ByteSink;kotlin.collections.List<org.maplibre.spatialk.pmtiles.ArchiveWriteTile>;org.maplibre.spatialk.pmtiles.ArchiveWriteConfig;org.maplibre.spatialk.pmtiles.ArchiveWriteOptions){}[0]
+    final suspend fun writeToByteString(kotlin.collections/List<org.maplibre.spatialk.pmtiles/ArchiveWriteTile>, org.maplibre.spatialk.pmtiles/ArchiveWriteConfig = ..., org.maplibre.spatialk.pmtiles/ArchiveWriteOptions = ...): kotlinx.io.bytestring/ByteString // org.maplibre.spatialk.pmtiles/PmTiles.writeToByteString|writeToByteString(kotlin.collections.List<org.maplibre.spatialk.pmtiles.ArchiveWriteTile>;org.maplibre.spatialk.pmtiles.ArchiveWriteConfig;org.maplibre.spatialk.pmtiles.ArchiveWriteOptions){}[0]
 }
 
 final object org.maplibre.spatialk.pmtiles/TileIds { // org.maplibre.spatialk.pmtiles/TileIds|null[0]

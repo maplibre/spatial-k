@@ -420,6 +420,10 @@ public final class org/maplibre/spatialk/pmtiles/PmTiles {
 	public static final field INSTANCE Lorg/maplibre/spatialk/pmtiles/PmTiles;
 	public final fun open (Lorg/maplibre/spatialk/pmtiles/ByteRangeSource;Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun open$default (Lorg/maplibre/spatialk/pmtiles/PmTiles;Lorg/maplibre/spatialk/pmtiles/ByteRangeSource;Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun write (Lorg/maplibre/spatialk/pmtiles/ByteSink;Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/ArchiveWriteConfig;Lorg/maplibre/spatialk/pmtiles/ArchiveWriteOptions;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun write$default (Lorg/maplibre/spatialk/pmtiles/PmTiles;Lorg/maplibre/spatialk/pmtiles/ByteSink;Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/ArchiveWriteConfig;Lorg/maplibre/spatialk/pmtiles/ArchiveWriteOptions;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun writeToByteString (Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/ArchiveWriteConfig;Lorg/maplibre/spatialk/pmtiles/ArchiveWriteOptions;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun writeToByteString$default (Lorg/maplibre/spatialk/pmtiles/PmTiles;Ljava/util/List;Lorg/maplibre/spatialk/pmtiles/ArchiveWriteConfig;Lorg/maplibre/spatialk/pmtiles/ArchiveWriteOptions;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 
 public final class org/maplibre/spatialk/pmtiles/PmTilesArchive : java/lang/AutoCloseable {
