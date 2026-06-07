@@ -55,3 +55,13 @@
   that tile compression must not be inferred from the archive compression code.
 - Added writer-facing error codes for sink failures and malformed tile input in preparation for
   archive assembly.
+
+## 2026-06-06 - Write-Side Compression Pipeline
+
+- Added internal compressor registry execution parallel to the reader's decompressor execution path.
+- Kept `CompressionCodes.None` as the only default compressor while preserving caller override
+  behavior by compression code.
+- Added limit checks before and after compression so custom compressors cannot return bytes beyond
+  the configured writer limits.
+- Added a `CompressionFailed` error code for unexpected compressor implementation failures; explicit
+  `PmTilesException` and cancellation still pass through unchanged.

@@ -51,6 +51,9 @@ public enum class PmTilesErrorCode {
     /** Compressed data could not be decompressed. */
     @ObjCName(swiftName = "decompressionFailed") DecompressionFailed,
 
+    /** Data could not be compressed for archive writing. */
+    @ObjCName(swiftName = "compressionFailed") CompressionFailed,
+
     /** Metadata JSON is malformed or violates strict metadata rules. */
     @ObjCName(swiftName = "invalidMetadata") InvalidMetadata,
 

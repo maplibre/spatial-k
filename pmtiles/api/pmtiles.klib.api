@@ -25,6 +25,7 @@ final enum class org.maplibre.spatialk.pmtiles/ArchiveWarningCode : kotlin/Enum<
 
 final enum class org.maplibre.spatialk.pmtiles/PmTilesErrorCode : kotlin/Enum<org.maplibre.spatialk.pmtiles/PmTilesErrorCode> { // org.maplibre.spatialk.pmtiles/PmTilesErrorCode|null[0]
     enum entry Closed // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.Closed|null[0]
+    enum entry CompressionFailed // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.CompressionFailed|null[0]
     enum entry DecompressionFailed // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.DecompressionFailed|null[0]
     enum entry InvalidDirectory // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidDirectory|null[0]
     enum entry InvalidHeader // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidHeader|null[0]

@@ -451,6 +451,7 @@ public final class org/maplibre/spatialk/pmtiles/PmTilesArchive : java/lang/Auto
 
 public final class org/maplibre/spatialk/pmtiles/PmTilesErrorCode : java/lang/Enum {
 	public static final field Closed Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
+	public static final field CompressionFailed Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
 	public static final field DecompressionFailed Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
 	public static final field InvalidDirectory Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
 	public static final field InvalidHeader Lorg/maplibre/spatialk/pmtiles/PmTilesErrorCode;
