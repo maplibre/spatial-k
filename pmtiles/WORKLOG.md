@@ -106,3 +106,17 @@
 - The sink path writes canonical section order sequentially, then flushes and closes the sink after
   successful writes; unsupported compression still fails before any sink bytes are written.
 - Added reader round-trip coverage for a minimal PNG archive and sink failure wrapping.
+
+## 2026-06-06 - Fixture-Derived Writer Round Trips
+
+- Added writer tests that reuse existing upstream PMTiles fixtures at test runtime instead of
+  checking in generated writer fixtures.
+- Covered stored gzip MVT preservation by reading `pmtiles-js-test-fixture-1.pmtiles`, writing a new
+  archive with the stored tile bytes, and comparing both stored and decompressed payloads through
+  the public reader.
+- Covered root-to-leaf writer output by reading all tiles through zoom 3 from the Stamen raster
+  fixture, forcing a small root target, and verifying that the rewritten archive resolves a sampled
+  tile through a leaf directory.
+- The first test draft tried to call `rawMetadataJson()` inside a non-suspending builder lambda;
+  moved suspending fixture reads ahead of option/config builders. This is also a useful constraint
+  for future docs snippets.
