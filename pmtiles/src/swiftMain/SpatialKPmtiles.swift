@@ -36,6 +36,9 @@ public protocol ByteDataSink {
 
 public protocol DataCompressor {
     /// Returns compressed data for one PMTiles compression format.
+    ///
+    /// Implementations may be called from multiple Swift tasks at the same time and should be safe
+    /// for concurrent use.
     func compress(data: Data, limits: CompressionLimits) async throws -> Data
 }
 
