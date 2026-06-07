@@ -85,3 +85,14 @@
 - Added run-length coalescing only for consecutive TileIDs that resolve to the same stored payload
   offset and length; non-consecutive duplicates remain separate entries pointing to the first
   payload offset.
+
+## 2026-06-06 - Directory Partitioning
+
+- Added root/leaf directory construction on top of the production directory encoder and writer
+  compressor registry.
+- Direct roots are used when the compressed root fits the configured canonical first-read target.
+- When direct roots do not fit, root entries point to compressed leaf directories with offsets
+  relative to the leaf directory section; no nested leaf directory entries are produced.
+- The first implementation uses one or more leaf chunks and increases chunk size until the
+  compressed root fits; this satisfies the writer v1 root-to-leaf requirement without cloning the Go
+  implementation's exact tuning.
