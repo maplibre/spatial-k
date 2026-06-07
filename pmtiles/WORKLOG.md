@@ -23,3 +23,14 @@
   codes, zooms, and position fields, then also parse the header as a round-trip check.
 - The first root-location negative test accidentally failed section-layout validation first because
   the archive size was too small; adjusted it to isolate root-first-16-KiB validation.
+
+## 2026-06-06 - Directory Encoding
+
+- Added production raw directory encoding in `DirectoryEncoding.kt`; compression remains a later
+  codec-pipeline concern.
+- Kept existing decoder tests on their current fixture helper, then added encoder tests with
+  independent expected byte strings plus a decoder round-trip assertion.
+- Added encoder-side validation for empty inputs, negative TileIDs, non-increasing TileIDs,
+  non-positive lengths, negative run lengths, and offset overflow.
+- Confirmed the production `encodeDirectory(List<DirectoryEntry>)` overload does not disturb the
+  existing test-only vararg helper used by decoder tests.
