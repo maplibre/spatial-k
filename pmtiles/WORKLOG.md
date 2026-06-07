@@ -111,9 +111,14 @@
 
 - Added writer tests that reuse existing upstream PMTiles fixtures at test runtime instead of
   checking in generated writer fixtures.
+- Added coverage for `go-pmtiles-unclustered.pmtiles` as source material: the writer rewrites its
+  PNG tiles into a clustered archive and preserves payloads, counts, bounds, and center.
 - Covered stored gzip MVT preservation by reading `pmtiles-js-test-fixture-1.pmtiles`, writing a new
   archive with the stored tile bytes, and comparing both stored and decompressed payloads through
   the public reader.
+- Added coverage for real MVT metadata from `protomaps-vector-odbl-firenze.pmtiles`, verifying that
+  a writer-produced MVT archive preserves raw metadata and satisfies the reader's `vector_layers`
+  validation.
 - Covered root-to-leaf writer output by reading all tiles through zoom 3 from the Stamen raster
   fixture, forcing a small root target, and verifying that the rewritten archive resolves a sampled
   tile through a leaf directory.
