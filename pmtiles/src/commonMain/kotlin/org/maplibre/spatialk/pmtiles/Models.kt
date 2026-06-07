@@ -35,6 +35,20 @@ public interface ByteRangeSource {
     public suspend fun read(range: ByteRange): ByteString
 }
 
+/** Caller-provided append-only byte sink used by the PMTiles writer. */
+@ObjCName(swiftName = "KotlinByteSink")
+public interface ByteSink {
+    /** Appends [bytes] to the output in write order. */
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun write(bytes: ByteString)
+
+    /** Flushes pending output. */
+    @Throws(PmTilesException::class, CancellationException::class) public suspend fun flush()
+
+    /** Closes the output. */
+    @Throws(PmTilesException::class, CancellationException::class) public suspend fun close()
+}
+
 /**
  * Parsed PMTiles v3 header.
  *

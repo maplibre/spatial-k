@@ -44,3 +44,14 @@
 - Put the canonical root-directory byte limit in write limits with the `16 * 1024 - 127` default.
 - Left actual compression execution for the later compression-pipeline phase; this chunk establishes
   the public option and registration surface only.
+
+## 2026-06-06 - Public Writer Input Models
+
+- Added `ByteSink` as the append-only suspending output counterpart to `ByteRangeSource`; no
+  random-access or `kotlinx-io` dependency was introduced.
+- Added writer-specific bounds, center, config, and tile input models instead of exposing parsed
+  reader result models as writer inputs.
+- Made tile payload mode explicit with stored and uncompressed paths, matching the research decision
+  that tile compression must not be inferred from the archive compression code.
+- Added writer-facing error codes for sink failures and malformed tile input in preparation for
+  archive assembly.

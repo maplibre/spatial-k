@@ -6,7 +6,7 @@ import kotlin.experimental.ExperimentalObjCName
 import kotlin.native.ObjCName
 
 /**
- * Error thrown by the PMTiles reader.
+ * Error thrown by PMTiles archive operations.
  *
  * @property code Stable machine-readable error code.
  */
@@ -19,7 +19,7 @@ public class PmTilesException(
     public constructor(code: PmTilesErrorCode, message: String) : this(code, message, null)
 }
 
-/** Stable error codes emitted by the PMTiles reader. */
+/** Stable error codes emitted by PMTiles archive operations. */
 public enum class PmTilesErrorCode {
     /** The archive does not start with the PMTiles magic bytes. */
     @ObjCName(swiftName = "invalidMagic") InvalidMagic,
@@ -59,6 +59,12 @@ public enum class PmTilesErrorCode {
 
     /** The caller-provided source could not satisfy a read. */
     @ObjCName(swiftName = "sourceUnavailable") SourceUnavailable,
+
+    /** The caller-provided sink could not satisfy a write. */
+    @ObjCName(swiftName = "sinkUnavailable") SinkUnavailable,
+
+    /** Tile input provided to the writer is malformed or inconsistent. */
+    @ObjCName(swiftName = "invalidTileInput") InvalidTileInput,
 
     /** A configured operational limit was exceeded. */
     @ObjCName(swiftName = "limitExceeded") LimitExceeded,
