@@ -24,9 +24,12 @@ import org.maplibre.spatialk.pmtiles.internal.decompress
 import org.maplibre.spatialk.pmtiles.internal.effectiveDecompressors
 import org.maplibre.spatialk.pmtiles.internal.parseHeaderForOpen
 import org.maplibre.spatialk.pmtiles.internal.pmTilesException
+import org.maplibre.spatialk.pmtiles.internal.prepareArchive
 import org.maplibre.spatialk.pmtiles.internal.readSourceRange
 import org.maplibre.spatialk.pmtiles.internal.sourceSize
 import org.maplibre.spatialk.pmtiles.internal.toByteRange
+import org.maplibre.spatialk.pmtiles.internal.toByteString
+import org.maplibre.spatialk.pmtiles.internal.writePreparedArchive
 
 /** Factory methods for PMTiles archives. */
 public object PmTiles {
@@ -75,7 +78,7 @@ public object PmTiles {
             if (rootDirectory.isEmpty()) {
                 parsedHeader.warnings +
                     ArchiveWarning(
-                        code = ArchiveWarningCode.EmptyRootDirectory,
+                        code = ArchiveWarningCodes.EmptyRootDirectory,
                         message =
                             "Root directory has zero entries and was accepted in lenient mode.",
                     )
@@ -91,6 +94,31 @@ public object PmTiles {
             rootDirectory = rootDirectory,
             initialWarnings = warnings,
         )
+    }
+
+    /** Writes a complete PMTiles archive to [sink] with [config] and [options]. */
+    @ShouldRefineInSwift
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun write(
+        sink: ByteSink,
+        tiles: List<ArchiveWriteTile>,
+        config: ArchiveWriteConfig = ArchiveWriteConfig(),
+        options: ArchiveWriteOptions = ArchiveWriteOptions(),
+    ) {
+        val archive = prepareArchive(tiles = tiles, config = config, options = options)
+        writePreparedArchive(archive, sink)
+    }
+
+    /** Builds a complete PMTiles archive in memory. */
+    @ShouldRefineInSwift
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun writeToByteString(
+        tiles: List<ArchiveWriteTile>,
+        config: ArchiveWriteConfig = ArchiveWriteConfig(),
+        options: ArchiveWriteOptions = ArchiveWriteOptions(),
+    ): ByteString {
+        val archive = prepareArchive(tiles = tiles, config = config, options = options)
+        return archive.toByteString(options.limits.maxArchiveBytes)
     }
 }
 
@@ -467,13 +495,13 @@ internal constructor(
         if (header.tileType != TileTypeCodes.Mvt || hasVectorLayers) return
         if (options.validationMode == ValidationMode.Strict) {
             throw pmTilesException(
-                PmTilesErrorCode.InvalidMetadata,
+                PmTilesErrorCodes.InvalidMetadata,
                 "MVT metadata must contain `vector_layers`.",
             )
         }
         state.appendWarning(
             ArchiveWarning(
-                code = ArchiveWarningCode.MissingVectorLayers,
+                code = ArchiveWarningCodes.MissingVectorLayers,
                 message = "MVT metadata does not contain `vector_layers`.",
             )
         )
@@ -481,11 +509,11 @@ internal constructor(
 
     private fun recoverMetadata(message: String, cause: Throwable? = null) {
         if (options.validationMode == ValidationMode.Strict) {
-            throw pmTilesException(PmTilesErrorCode.InvalidMetadata, message, cause)
+            throw pmTilesException(PmTilesErrorCodes.InvalidMetadata, message, cause)
         }
         state.appendWarning(
             ArchiveWarning(
-                code = ArchiveWarningCode.InvalidMetadataRecovered,
+                code = ArchiveWarningCodes.InvalidMetadataRecovered,
                 message = message,
             )
         )
@@ -497,7 +525,7 @@ private fun ByteString.decodeMetadataUtf8(): String =
         toByteArray().decodeToString(throwOnInvalidSequence = true)
     } catch (error: Throwable) {
         throw pmTilesException(
-            PmTilesErrorCode.InvalidMetadata,
+            PmTilesErrorCodes.InvalidMetadata,
             "Metadata is not valid UTF-8.",
             error,
         )
@@ -583,7 +611,7 @@ private fun canCoalesce(
 }
 
 private fun ByteRange.endOffset(): ULong =
-    checkedAdd(offset, length, PmTilesErrorCode.RangeOutOfBounds)
+    checkedAdd(offset, length, PmTilesErrorCodes.RangeOutOfBounds)
 
 private fun ByteString.sliceTile(readRange: ByteRange, tileRange: TileRange): ByteString {
     val offset = (tileRange.archiveRange.offset - readRange.offset).toInt()

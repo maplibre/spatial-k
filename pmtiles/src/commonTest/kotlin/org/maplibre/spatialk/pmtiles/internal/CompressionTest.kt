@@ -7,9 +7,11 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.io.bytestring.ByteString
 import org.maplibre.spatialk.pmtiles.CompressionCode
 import org.maplibre.spatialk.pmtiles.CompressionCodes
+import org.maplibre.spatialk.pmtiles.CompressionLimits
+import org.maplibre.spatialk.pmtiles.Compressor
 import org.maplibre.spatialk.pmtiles.DecompressionLimits
 import org.maplibre.spatialk.pmtiles.Decompressor
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
 class CompressionTest {
@@ -38,7 +40,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -53,7 +55,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -94,7 +96,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.DecompressionFailed, error.code)
+        assertEquals(PmTilesErrorCodes.DecompressionFailed, error.code)
     }
 
     @Test
@@ -109,7 +111,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.DecompressionFailed, error.code)
+        assertEquals(PmTilesErrorCodes.DecompressionFailed, error.code)
     }
 
     @Test
@@ -124,7 +126,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -139,7 +141,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -161,7 +163,7 @@ class CompressionTest {
                             )
                     }
 
-                assertEquals(PmTilesErrorCode.UnsupportedCompression, error.code)
+                assertEquals(PmTilesErrorCodes.UnsupportedCompression, error.code)
             }
     }
 
@@ -181,7 +183,7 @@ class CompressionTest {
                     )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
     }
 
     @Test
@@ -234,6 +236,158 @@ class CompressionTest {
                 )
             }
 
-        assertEquals(PmTilesErrorCode.LimitExceeded, error.code)
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
+    }
+
+    @Test
+    fun encodesNone() = runTest {
+        val encoded =
+            platformDefaultCompressors()
+                .compress(
+                    CompressionCodes.None,
+                    helloBytes,
+                    testCompressionLimits(),
+                    EncodePurpose.Metadata,
+                )
+
+        assertEquals(helloBytes, encoded)
+    }
+
+    @Test
+    fun encodesGzip() = runTest {
+        val encoded =
+            platformDefaultCompressors()
+                .compress(
+                    CompressionCodes.Gzip,
+                    helloBytes,
+                    testCompressionLimits(),
+                    EncodePurpose.Metadata,
+                )
+        val decoded =
+            platformDefaultDecompressors()
+                .decompress(
+                    CompressionCodes.Gzip,
+                    encoded,
+                    testDecodeLimits(),
+                )
+
+        assertEquals(helloBytes, decoded)
+    }
+
+    @Test
+    fun noneCompressionEnforcesInputLimit() = runTest {
+        val error =
+            assertFailsWith<PmTilesException> {
+                platformDefaultCompressors()
+                    .compress(
+                        CompressionCodes.None,
+                        helloBytes,
+                        testCompressionLimits(maxUncompressedBytes = helloBytes.size - 1),
+                        EncodePurpose.Metadata,
+                    )
+            }
+
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
+    }
+
+    @Test
+    fun gzipCompressionEnforcesOutputLimit() = runTest {
+        val error =
+            assertFailsWith<PmTilesException> {
+                platformDefaultCompressors()
+                    .compress(
+                        CompressionCodes.Gzip,
+                        helloBytes,
+                        testCompressionLimits(maxCompressedBytes = 1),
+                        EncodePurpose.Metadata,
+                    )
+            }
+
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
+    }
+
+    @Test
+    fun compressionRegistryEnforcesOutputLimit() = runTest {
+        val compressors = mapOf(CompressionCodes.Brotli to Compressor { _, _ -> ByteString(1, 2) })
+
+        val error =
+            assertFailsWith<PmTilesException> {
+                compressors.compress(
+                    CompressionCodes.Brotli,
+                    ByteString(1),
+                    testCompressionLimits(maxCompressedBytes = 1),
+                    EncodePurpose.Tile,
+                )
+            }
+
+        assertEquals(PmTilesErrorCodes.LimitExceeded, error.code)
+    }
+
+    @Test
+    fun rejectsUnsupportedCompressionWhenEncodeIsRequired() = runTest {
+        listOf(
+                CompressionCodes.Unknown,
+                CompressionCodes.Brotli,
+                CompressionCodes.Zstd,
+                CompressionCode(99u),
+            )
+            .forEach { compression ->
+                val error =
+                    assertFailsWith<PmTilesException> {
+                        platformDefaultCompressors()
+                            .compress(
+                                compression,
+                                helloBytes,
+                                testCompressionLimits(),
+                                EncodePurpose.RootDirectory,
+                            )
+                    }
+
+                assertEquals(PmTilesErrorCodes.UnsupportedCompression, error.code)
+            }
+    }
+
+    @Test
+    fun customCompressorsOverrideDefaultEntriesByCompressionCode() = runTest {
+        val encodedBytes = ByteString(4, 5, 6)
+        val compressors =
+            platformDefaultCompressors() +
+                mapOf(CompressionCodes.None to Compressor { _, _ -> encodedBytes })
+
+        val encoded =
+            compressors.compress(
+                CompressionCodes.None,
+                ByteString(1, 2, 3),
+                testCompressionLimits(maxUncompressedBytes = 3, maxCompressedBytes = 3),
+                EncodePurpose.Tile,
+            )
+
+        assertEquals(encodedBytes, encoded)
+    }
+
+    @Test
+    fun wrapsUnexpectedCompressorFailures() = runTest {
+        val compressors = mapOf(CompressionCodes.Brotli to Compressor { _, _ -> error("boom") })
+
+        val error =
+            assertFailsWith<PmTilesException> {
+                compressors.compress(
+                    CompressionCodes.Brotli,
+                    ByteString(1),
+                    testCompressionLimits(),
+                    EncodePurpose.Tile,
+                )
+            }
+
+        assertEquals(PmTilesErrorCodes.CompressionFailed, error.code)
     }
 }
+
+private fun testCompressionLimits(
+    maxUncompressedBytes: Int = 1024,
+    maxCompressedBytes: Int = 1024,
+): CompressionLimits =
+    CompressionLimits(
+        maxUncompressedBytes = maxUncompressedBytes.toULong(),
+        maxCompressedBytes = maxCompressedBytes.toULong(),
+    )

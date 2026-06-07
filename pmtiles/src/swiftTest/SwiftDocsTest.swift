@@ -35,6 +35,41 @@ final class SwiftDocsTest: XCTestCase {
         archive.close()
     }
 
+    func testByteDataSink() async throws {
+        // --8<-- [start:byteDataSink]
+        final class InMemoryByteSink: ByteDataSink {
+            private(set) var data = Data()
+            private(set) var isFlushed = false
+            private(set) var isClosed = false
+
+            func write(data: Data) async throws {
+                self.data.append(data)
+            }
+
+            func flush() async throws {
+                isFlushed = true
+            }
+
+            func close() async throws {
+                isClosed = true
+            }
+        }
+        // --8<-- [end:byteDataSink]
+
+        let sink = InMemoryByteSink()
+        let tile =
+            ArchiveWriteTile.stored(
+                coord: try TileCoord(z: 0, x: 0, y: 0),
+                data: Data([1, 2, 3])
+            )
+
+        try await PmTiles.write(sink: sink, tiles: [tile])
+
+        XCTAssertFalse(sink.data.isEmpty)
+        XCTAssertTrue(sink.isFlushed)
+        XCTAssertTrue(sink.isClosed)
+    }
+
     func testOpenArchive() async throws {
         let source = TestByteRangeDataSource(data: try fixtureData("protomaps-vector-odbl-firenze"))
 
@@ -115,6 +150,34 @@ final class SwiftDocsTest: XCTestCase {
         _ = coalescing
     }
 
+    func testWriteArchive() async throws {
+        // --8<-- [start:writeArchive]
+        let tile =
+            ArchiveWriteTile.stored(
+                coord: try TileCoord(z: 0, x: 0, y: 0),
+                data: Data([0x89, 0x50, 0x4E, 0x47])
+            )
+        let config =
+            ArchiveWriteConfig.build { config in
+                config.setTileType(.png)
+                config.metadataJson = #"{"name":"demo"}"#
+            }
+
+        let archiveData =
+            try await PmTiles.writeToData(
+                tiles: [tile],
+                config: config
+            )
+        // --8<-- [end:writeArchive]
+
+        let archive =
+            try await PmTiles.open(source: TestByteRangeDataSource(data: archiveData))
+        defer { archive.close() }
+        let storedTile = try await archive.readStoredTile(z: 0, x: 0, y: 0)
+        XCTAssertTrue(archive.tileType == .png)
+        XCTAssertNotNil(storedTile)
+    }
+
     func testCustomDecompressor() async throws {
         let source = TestByteRangeDataSource(data: try fixtureData("pmtiles-js-test-fixture-1"))
 
@@ -174,6 +237,51 @@ final class SwiftDocsTest: XCTestCase {
         _ = combinedOptions
         _ = metadataLimitedOptions
         _ = directoryLimitedOptions
+    }
+
+    func testCustomCompressor() async throws {
+        // --8<-- [start:customCompressor]
+        final class PassthroughCompressor: DataCompressor {
+            func compress(
+                data: Data,
+                limits: CompressionLimits
+            ) async throws -> Data {
+                if UInt64(data.count) > limits.maxCompressedBytes {
+                    throw PmTilesException(
+                        code: PmTilesErrorCode.limitExceeded,
+                        message: "Encoded output exceeds \(limits.maxCompressedBytes) bytes."
+                    ).asError()
+                }
+                return data
+            }
+        }
+
+        let options =
+            ArchiveWriteOptions.build { options in
+                options.setInternalCompression(.brotli)
+                options.compressor(.brotli, PassthroughCompressor())
+            }
+
+        let archiveData =
+            try await PmTiles.writeToData(
+                tiles: [
+                    ArchiveWriteTile.stored(
+                        coord: try TileCoord(z: 0, x: 0, y: 0),
+                        data: Data([1, 2, 3])
+                    )
+                ],
+                options: options
+            )
+        // --8<-- [end:customCompressor]
+
+        XCTAssertFalse(archiveData.isEmpty)
+        _ = options.configured { options in
+            options.setTileCompression(.gzip)
+            options.deduplicateTilePayloads = false
+        }
+        _ = ArchiveWriteLimits.build { limits in
+            limits.maxRootDirectoryBytes = 256
+        }
     }
 
     func testCustomDecompressorThrowsSwiftErrorAtOpen() async throws {

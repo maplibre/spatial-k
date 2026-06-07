@@ -3,8 +3,10 @@
 package org.maplibre.spatialk.pmtiles
 
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.coroutines.test.runTest
 import kotlinx.io.bytestring.ByteString
+import kotlinx.io.bytestring.buildByteString
 import org.maplibre.spatialk.pmtiles.internal.buildSingleTileArchive
 import org.maplibre.spatialk.testutil.readResourceBytes
 
@@ -31,6 +33,47 @@ class KotlinDocsTest {
 
         val source = pmTilesBytes.asByteRangeSource()
         PmTiles.open(source).close()
+    }
+
+    @Test
+    fun byteSink() = runTest {
+        // --8<-- [start:byteSink]
+        class InMemoryByteSink : ByteSink {
+            private val chunks = mutableListOf<ByteString>()
+            var isFlushed = false
+                private set
+
+            var isClosed = false
+                private set
+
+            val bytes: ByteString
+                get() =
+                    buildByteString(chunks.sumOf { it.size }) {
+                        chunks.forEach { append(it.toByteArray()) }
+                    }
+
+            override suspend fun write(bytes: ByteString) {
+                chunks += bytes
+            }
+
+            override suspend fun flush() {
+                isFlushed = true
+            }
+
+            override suspend fun close() {
+                isClosed = true
+            }
+        }
+        // --8<-- [end:byteSink]
+
+        val sink = InMemoryByteSink()
+        PmTiles.write(
+            sink = sink,
+            tiles = listOf(ArchiveWriteTile.stored(TileCoord(0, 0, 0), ByteString(1, 2, 3))),
+        )
+        assertEquals(true, sink.isFlushed)
+        assertEquals(true, sink.isClosed)
+        assertEquals(true, sink.bytes.size > 0)
     }
 
     @Test
@@ -75,6 +118,29 @@ class KotlinDocsTest {
     }
 
     @Test
+    fun writeArchive() = runTest {
+        // --8<-- [start:writeArchive]
+        val tile =
+            ArchiveWriteTile.stored(
+                coord = TileCoord(z = 0, x = 0, y = 0),
+                payload = ByteString(0x89.toByte(), 0x50, 0x4e, 0x47),
+            )
+        val config = ArchiveWriteConfig.build {
+            tileType = TileTypeCodes.Png
+            metadataJson = """{"name":"demo"}"""
+        }
+
+        val archiveBytes =
+            PmTiles.writeToByteString(
+                tiles = listOf(tile),
+                config = config,
+            )
+        // --8<-- [end:writeArchive]
+
+        PmTiles.open(archiveBytes.asByteRangeSource()).close()
+    }
+
+    @Test
     fun customDecompressor() = runTest {
         val source = loadPmTilesBytes().asByteRangeSource()
 
@@ -84,7 +150,7 @@ class KotlinDocsTest {
                 val decoded = decodeBrotli(bytes)
                 if (decoded.size.toULong() > limits.maxDecompressedBytes) {
                     throw PmTilesException(
-                        PmTilesErrorCode.LimitExceeded,
+                        PmTilesErrorCodes.LimitExceeded,
                         "Decoded output exceeds ${limits.maxDecompressedBytes} bytes.",
                     )
                 }
@@ -96,6 +162,39 @@ class KotlinDocsTest {
             val tile = archive.readDecompressedTile(z = 0, x = 0, y = 0)
         }
         // --8<-- [end:customDecompressor]
+    }
+
+    @Test
+    fun customCompressor() = runTest {
+        // --8<-- [start:customCompressor]
+        val options = ArchiveWriteOptions.build {
+            internalCompression = CompressionCodes.Brotli
+            compressor(CompressionCodes.Brotli) { bytes, limits ->
+                val encoded = encodeBrotli(bytes)
+                if (encoded.size.toULong() > limits.maxCompressedBytes) {
+                    throw PmTilesException(
+                        PmTilesErrorCodes.LimitExceeded,
+                        "Encoded output exceeds ${limits.maxCompressedBytes} bytes.",
+                    )
+                }
+                encoded
+            }
+        }
+
+        val archiveBytes =
+            PmTiles.writeToByteString(
+                tiles =
+                    listOf(
+                        ArchiveWriteTile.stored(
+                            coord = TileCoord(z = 0, x = 0, y = 0),
+                            payload = ByteString(1, 2, 3),
+                        )
+                    ),
+                options = options,
+            )
+        // --8<-- [end:customCompressor]
+
+        assertEquals(true, archiveBytes.size > 0)
     }
 
     @Test
@@ -117,6 +216,8 @@ private fun loadPmTilesBytes(): ByteString = buildSingleTileArchive(tileBytes = 
 private fun readFixture(path: String): ByteString = ByteString(readResourceBytes(path))
 
 private fun decodeBrotli(bytes: ByteString): ByteString = bytes
+
+private fun encodeBrotli(bytes: ByteString): ByteString = bytes
 
 private fun ByteString.asByteRangeSource(): ByteRangeSource =
     object : ByteRangeSource {

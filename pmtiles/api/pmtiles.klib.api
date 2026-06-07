@@ -6,47 +6,6 @@
 // - Show declarations: true
 
 // Library unique name: <org.maplibre.spatialk:pmtiles>
-final enum class org.maplibre.spatialk.pmtiles/ArchiveWarningCode : kotlin/Enum<org.maplibre.spatialk.pmtiles/ArchiveWarningCode> { // org.maplibre.spatialk.pmtiles/ArchiveWarningCode|null[0]
-    enum entry EmptyRootDirectory // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.EmptyRootDirectory|null[0]
-    enum entry InvalidMetadataRecovered // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.InvalidMetadataRecovered|null[0]
-    enum entry MissingVectorLayers // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.MissingVectorLayers|null[0]
-    enum entry NestedLeafDirectory // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.NestedLeafDirectory|null[0]
-    enum entry NonCanonicalSectionOrder // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.NonCanonicalSectionOrder|null[0]
-    enum entry UnknownCompressionCode // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.UnknownCompressionCode|null[0]
-    enum entry UnknownCount // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.UnknownCount|null[0]
-    enum entry UnknownTileType // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.UnknownTileType|null[0]
-
-    final val entries // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.entries|#static{}entries[0]
-        final fun <get-entries>(): kotlin.enums/EnumEntries<org.maplibre.spatialk.pmtiles/ArchiveWarningCode> // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.entries.<get-entries>|<get-entries>#static(){}[0]
-
-    final fun valueOf(kotlin/String): org.maplibre.spatialk.pmtiles/ArchiveWarningCode // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.valueOf|valueOf#static(kotlin.String){}[0]
-    final fun values(): kotlin/Array<org.maplibre.spatialk.pmtiles/ArchiveWarningCode> // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.values|values#static(){}[0]
-}
-
-final enum class org.maplibre.spatialk.pmtiles/PmTilesErrorCode : kotlin/Enum<org.maplibre.spatialk.pmtiles/PmTilesErrorCode> { // org.maplibre.spatialk.pmtiles/PmTilesErrorCode|null[0]
-    enum entry Closed // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.Closed|null[0]
-    enum entry DecompressionFailed // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.DecompressionFailed|null[0]
-    enum entry InvalidDirectory // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidDirectory|null[0]
-    enum entry InvalidHeader // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidHeader|null[0]
-    enum entry InvalidMagic // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidMagic|null[0]
-    enum entry InvalidMetadata // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidMetadata|null[0]
-    enum entry InvalidRootDirectoryLocation // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidRootDirectoryLocation|null[0]
-    enum entry InvalidSectionLayout // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidSectionLayout|null[0]
-    enum entry InvalidTileCoordinate // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidTileCoordinate|null[0]
-    enum entry InvalidVarint // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.InvalidVarint|null[0]
-    enum entry LimitExceeded // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.LimitExceeded|null[0]
-    enum entry RangeOutOfBounds // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.RangeOutOfBounds|null[0]
-    enum entry SourceUnavailable // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.SourceUnavailable|null[0]
-    enum entry UnsupportedCompression // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.UnsupportedCompression|null[0]
-    enum entry UnsupportedVersion // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.UnsupportedVersion|null[0]
-
-    final val entries // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.entries|#static{}entries[0]
-        final fun <get-entries>(): kotlin.enums/EnumEntries<org.maplibre.spatialk.pmtiles/PmTilesErrorCode> // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.entries.<get-entries>|<get-entries>#static(){}[0]
-
-    final fun valueOf(kotlin/String): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.valueOf|valueOf#static(kotlin.String){}[0]
-    final fun values(): kotlin/Array<org.maplibre.spatialk.pmtiles/PmTilesErrorCode> // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.values|values#static(){}[0]
-}
-
 final enum class org.maplibre.spatialk.pmtiles/ValidationMode : kotlin/Enum<org.maplibre.spatialk.pmtiles/ValidationMode> { // org.maplibre.spatialk.pmtiles/ValidationMode|null[0]
     enum entry Lenient // org.maplibre.spatialk.pmtiles/ValidationMode.Lenient|null[0]
     enum entry Strict // org.maplibre.spatialk.pmtiles/ValidationMode.Strict|null[0]
@@ -58,6 +17,10 @@ final enum class org.maplibre.spatialk.pmtiles/ValidationMode : kotlin/Enum<org.
     final fun values(): kotlin/Array<org.maplibre.spatialk.pmtiles/ValidationMode> // org.maplibre.spatialk.pmtiles/ValidationMode.values|values#static(){}[0]
 }
 
+abstract fun interface org.maplibre.spatialk.pmtiles/Compressor { // org.maplibre.spatialk.pmtiles/Compressor|null[0]
+    abstract suspend fun compress(kotlinx.io.bytestring/ByteString, org.maplibre.spatialk.pmtiles/CompressionLimits): kotlinx.io.bytestring/ByteString // org.maplibre.spatialk.pmtiles/Compressor.compress|compress(kotlinx.io.bytestring.ByteString;org.maplibre.spatialk.pmtiles.CompressionLimits){}[0]
+}
+
 abstract fun interface org.maplibre.spatialk.pmtiles/Decompressor { // org.maplibre.spatialk.pmtiles/Decompressor|null[0]
     abstract suspend fun decompress(kotlinx.io.bytestring/ByteString, org.maplibre.spatialk.pmtiles/DecompressionLimits): kotlinx.io.bytestring/ByteString // org.maplibre.spatialk.pmtiles/Decompressor.decompress|decompress(kotlinx.io.bytestring.ByteString;org.maplibre.spatialk.pmtiles.DecompressionLimits){}[0]
 }
@@ -65,6 +28,12 @@ abstract fun interface org.maplibre.spatialk.pmtiles/Decompressor { // org.mapli
 abstract interface org.maplibre.spatialk.pmtiles/ByteRangeSource { // org.maplibre.spatialk.pmtiles/ByteRangeSource|null[0]
     abstract suspend fun read(org.maplibre.spatialk.pmtiles/ByteRange): kotlinx.io.bytestring/ByteString // org.maplibre.spatialk.pmtiles/ByteRangeSource.read|read(org.maplibre.spatialk.pmtiles.ByteRange){}[0]
     abstract suspend fun size(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ByteRangeSource.size|size(){}[0]
+}
+
+abstract interface org.maplibre.spatialk.pmtiles/ByteSink { // org.maplibre.spatialk.pmtiles/ByteSink|null[0]
+    abstract suspend fun close() // org.maplibre.spatialk.pmtiles/ByteSink.close|close(){}[0]
+    abstract suspend fun flush() // org.maplibre.spatialk.pmtiles/ByteSink.flush|flush(){}[0]
+    abstract suspend fun write(kotlinx.io.bytestring/ByteString) // org.maplibre.spatialk.pmtiles/ByteSink.write|write(kotlinx.io.bytestring.ByteString){}[0]
 }
 
 final class org.maplibre.spatialk.pmtiles/ArchiveHeader { // org.maplibre.spatialk.pmtiles/ArchiveHeader|null[0]
@@ -295,6 +264,193 @@ final class org.maplibre.spatialk.pmtiles/ArchiveWarning { // org.maplibre.spati
     final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/ArchiveWarning.toString|toString(){}[0]
 }
 
+final class org.maplibre.spatialk.pmtiles/ArchiveWriteBounds { // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds|null[0]
+    constructor <init>() // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.<init>|<init>(){}[0]
+    constructor <init>(kotlin/Double, kotlin/Double, kotlin/Double, kotlin/Double) // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double){}[0]
+
+    final val east // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.east|{}east[0]
+        final fun <get-east>(): kotlin/Double // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.east.<get-east>|<get-east>(){}[0]
+    final val north // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.north|{}north[0]
+        final fun <get-north>(): kotlin/Double // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.north.<get-north>|<get-north>(){}[0]
+    final val south // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.south|{}south[0]
+        final fun <get-south>(): kotlin/Double // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.south.<get-south>|<get-south>(){}[0]
+    final val west // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.west|{}west[0]
+        final fun <get-west>(): kotlin/Double // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.west.<get-west>|<get-west>(){}[0]
+
+    final fun component1(): kotlin/Double // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.component1|component1(){}[0]
+    final fun component2(): kotlin/Double // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.component2|component2(){}[0]
+    final fun component3(): kotlin/Double // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.component3|component3(){}[0]
+    final fun component4(): kotlin/Double // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.component4|component4(){}[0]
+    final fun copy(kotlin/Double = ..., kotlin/Double = ..., kotlin/Double = ..., kotlin/Double = ...): org.maplibre.spatialk.pmtiles/ArchiveWriteBounds // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.copy|copy(kotlin.Double;kotlin.Double;kotlin.Double;kotlin.Double){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/ArchiveWriteBounds.toString|toString(){}[0]
+}
+
+final class org.maplibre.spatialk.pmtiles/ArchiveWriteCenter { // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter|null[0]
+    constructor <init>() // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.<init>|<init>(){}[0]
+    constructor <init>(kotlin/Double, kotlin/Double, kotlin/Int) // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.<init>|<init>(kotlin.Double;kotlin.Double;kotlin.Int){}[0]
+
+    final val latitude // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.latitude|{}latitude[0]
+        final fun <get-latitude>(): kotlin/Double // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.latitude.<get-latitude>|<get-latitude>(){}[0]
+    final val longitude // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.longitude|{}longitude[0]
+        final fun <get-longitude>(): kotlin/Double // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.longitude.<get-longitude>|<get-longitude>(){}[0]
+    final val zoom // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.zoom|{}zoom[0]
+        final fun <get-zoom>(): kotlin/Int // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.zoom.<get-zoom>|<get-zoom>(){}[0]
+
+    final fun component1(): kotlin/Double // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.component1|component1(){}[0]
+    final fun component2(): kotlin/Double // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.component2|component2(){}[0]
+    final fun component3(): kotlin/Int // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.component3|component3(){}[0]
+    final fun copy(kotlin/Double = ..., kotlin/Double = ..., kotlin/Int = ...): org.maplibre.spatialk.pmtiles/ArchiveWriteCenter // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.copy|copy(kotlin.Double;kotlin.Double;kotlin.Int){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/ArchiveWriteCenter.toString|toString(){}[0]
+}
+
+final class org.maplibre.spatialk.pmtiles/ArchiveWriteConfig { // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig|null[0]
+    constructor <init>() // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.<init>|<init>(){}[0]
+
+    final val bounds // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.bounds|{}bounds[0]
+        final fun <get-bounds>(): org.maplibre.spatialk.pmtiles/ArchiveWriteBounds // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.bounds.<get-bounds>|<get-bounds>(){}[0]
+    final val center // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.center|{}center[0]
+        final fun <get-center>(): org.maplibre.spatialk.pmtiles/ArchiveWriteCenter // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.center.<get-center>|<get-center>(){}[0]
+    final val metadataJson // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.metadataJson|{}metadataJson[0]
+        final fun <get-metadataJson>(): kotlin/String // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.metadataJson.<get-metadataJson>|<get-metadataJson>(){}[0]
+    final val tileType // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.tileType|{}tileType[0]
+        final fun <get-tileType>(): org.maplibre.spatialk.pmtiles/TileTypeCode // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.tileType.<get-tileType>|<get-tileType>(){}[0]
+
+    final fun toBuilder(): org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.toBuilder|toBuilder(){}[0]
+
+    final class Builder { // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder|null[0]
+        constructor <init>() // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.<init>|<init>(){}[0]
+
+        final var bounds // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.bounds|{}bounds[0]
+            final fun <get-bounds>(): org.maplibre.spatialk.pmtiles/ArchiveWriteBounds // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.bounds.<get-bounds>|<get-bounds>(){}[0]
+            final fun <set-bounds>(org.maplibre.spatialk.pmtiles/ArchiveWriteBounds) // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.bounds.<set-bounds>|<set-bounds>(org.maplibre.spatialk.pmtiles.ArchiveWriteBounds){}[0]
+        final var center // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.center|{}center[0]
+            final fun <get-center>(): org.maplibre.spatialk.pmtiles/ArchiveWriteCenter // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.center.<get-center>|<get-center>(){}[0]
+            final fun <set-center>(org.maplibre.spatialk.pmtiles/ArchiveWriteCenter) // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.center.<set-center>|<set-center>(org.maplibre.spatialk.pmtiles.ArchiveWriteCenter){}[0]
+        final var metadataJson // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.metadataJson|{}metadataJson[0]
+            final fun <get-metadataJson>(): kotlin/String // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.metadataJson.<get-metadataJson>|<get-metadataJson>(){}[0]
+            final fun <set-metadataJson>(kotlin/String) // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.metadataJson.<set-metadataJson>|<set-metadataJson>(kotlin.String){}[0]
+        final var tileType // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.tileType|{}tileType[0]
+            final fun <get-tileType>(): org.maplibre.spatialk.pmtiles/TileTypeCode // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.tileType.<get-tileType>|<get-tileType>(){}[0]
+            final fun <set-tileType>(org.maplibre.spatialk.pmtiles/TileTypeCode) // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.tileType.<set-tileType>|<set-tileType>(org.maplibre.spatialk.pmtiles.TileTypeCode){}[0]
+
+        final fun build(): org.maplibre.spatialk.pmtiles/ArchiveWriteConfig // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder.build|build(){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Companion|null[0]
+        final fun build(kotlin/Function1<org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Builder, kotlin/Unit>): org.maplibre.spatialk.pmtiles/ArchiveWriteConfig // org.maplibre.spatialk.pmtiles/ArchiveWriteConfig.Companion.build|build(kotlin.Function1<org.maplibre.spatialk.pmtiles.ArchiveWriteConfig.Builder,kotlin.Unit>){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.pmtiles/ArchiveWriteLimits { // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits|null[0]
+    constructor <init>() // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.<init>|<init>(){}[0]
+
+    final val maxArchiveBytes // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.maxArchiveBytes|{}maxArchiveBytes[0]
+        final fun <get-maxArchiveBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.maxArchiveBytes.<get-maxArchiveBytes>|<get-maxArchiveBytes>(){}[0]
+    final val maxDirectoryBytes // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.maxDirectoryBytes|{}maxDirectoryBytes[0]
+        final fun <get-maxDirectoryBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.maxDirectoryBytes.<get-maxDirectoryBytes>|<get-maxDirectoryBytes>(){}[0]
+    final val maxMetadataBytes // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.maxMetadataBytes|{}maxMetadataBytes[0]
+        final fun <get-maxMetadataBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.maxMetadataBytes.<get-maxMetadataBytes>|<get-maxMetadataBytes>(){}[0]
+    final val maxRootDirectoryBytes // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.maxRootDirectoryBytes|{}maxRootDirectoryBytes[0]
+        final fun <get-maxRootDirectoryBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.maxRootDirectoryBytes.<get-maxRootDirectoryBytes>|<get-maxRootDirectoryBytes>(){}[0]
+    final val maxTileBytes // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.maxTileBytes|{}maxTileBytes[0]
+        final fun <get-maxTileBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.maxTileBytes.<get-maxTileBytes>|<get-maxTileBytes>(){}[0]
+
+    final fun toBuilder(): org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.toBuilder|toBuilder(){}[0]
+
+    final class Builder { // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder|null[0]
+        constructor <init>() // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.<init>|<init>(){}[0]
+
+        final var maxArchiveBytes // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxArchiveBytes|{}maxArchiveBytes[0]
+            final fun <get-maxArchiveBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxArchiveBytes.<get-maxArchiveBytes>|<get-maxArchiveBytes>(){}[0]
+            final fun <set-maxArchiveBytes>(kotlin/ULong) // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxArchiveBytes.<set-maxArchiveBytes>|<set-maxArchiveBytes>(kotlin.ULong){}[0]
+        final var maxDirectoryBytes // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxDirectoryBytes|{}maxDirectoryBytes[0]
+            final fun <get-maxDirectoryBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxDirectoryBytes.<get-maxDirectoryBytes>|<get-maxDirectoryBytes>(){}[0]
+            final fun <set-maxDirectoryBytes>(kotlin/ULong) // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxDirectoryBytes.<set-maxDirectoryBytes>|<set-maxDirectoryBytes>(kotlin.ULong){}[0]
+        final var maxMetadataBytes // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxMetadataBytes|{}maxMetadataBytes[0]
+            final fun <get-maxMetadataBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxMetadataBytes.<get-maxMetadataBytes>|<get-maxMetadataBytes>(){}[0]
+            final fun <set-maxMetadataBytes>(kotlin/ULong) // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxMetadataBytes.<set-maxMetadataBytes>|<set-maxMetadataBytes>(kotlin.ULong){}[0]
+        final var maxRootDirectoryBytes // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxRootDirectoryBytes|{}maxRootDirectoryBytes[0]
+            final fun <get-maxRootDirectoryBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxRootDirectoryBytes.<get-maxRootDirectoryBytes>|<get-maxRootDirectoryBytes>(){}[0]
+            final fun <set-maxRootDirectoryBytes>(kotlin/ULong) // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxRootDirectoryBytes.<set-maxRootDirectoryBytes>|<set-maxRootDirectoryBytes>(kotlin.ULong){}[0]
+        final var maxTileBytes // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxTileBytes|{}maxTileBytes[0]
+            final fun <get-maxTileBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxTileBytes.<get-maxTileBytes>|<get-maxTileBytes>(){}[0]
+            final fun <set-maxTileBytes>(kotlin/ULong) // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.maxTileBytes.<set-maxTileBytes>|<set-maxTileBytes>(kotlin.ULong){}[0]
+
+        final fun build(): org.maplibre.spatialk.pmtiles/ArchiveWriteLimits // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder.build|build(){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Companion|null[0]
+        final fun build(kotlin/Function1<org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Builder, kotlin/Unit>): org.maplibre.spatialk.pmtiles/ArchiveWriteLimits // org.maplibre.spatialk.pmtiles/ArchiveWriteLimits.Companion.build|build(kotlin.Function1<org.maplibre.spatialk.pmtiles.ArchiveWriteLimits.Builder,kotlin.Unit>){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.pmtiles/ArchiveWriteOptions { // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions|null[0]
+    constructor <init>() // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.<init>|<init>(){}[0]
+
+    final val deduplicateTilePayloads // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.deduplicateTilePayloads|{}deduplicateTilePayloads[0]
+        final fun <get-deduplicateTilePayloads>(): kotlin/Boolean // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.deduplicateTilePayloads.<get-deduplicateTilePayloads>|<get-deduplicateTilePayloads>(){}[0]
+    final val internalCompression // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.internalCompression|{}internalCompression[0]
+        final fun <get-internalCompression>(): org.maplibre.spatialk.pmtiles/CompressionCode // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.internalCompression.<get-internalCompression>|<get-internalCompression>(){}[0]
+    final val limits // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.limits|{}limits[0]
+        final fun <get-limits>(): org.maplibre.spatialk.pmtiles/ArchiveWriteLimits // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.limits.<get-limits>|<get-limits>(){}[0]
+    final val tileCompression // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.tileCompression|{}tileCompression[0]
+        final fun <get-tileCompression>(): org.maplibre.spatialk.pmtiles/CompressionCode // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.tileCompression.<get-tileCompression>|<get-tileCompression>(){}[0]
+
+    final fun toBuilder(): org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.toBuilder|toBuilder(){}[0]
+
+    final class Builder { // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder|null[0]
+        constructor <init>() // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.<init>|<init>(){}[0]
+
+        final var deduplicateTilePayloads // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.deduplicateTilePayloads|{}deduplicateTilePayloads[0]
+            final fun <get-deduplicateTilePayloads>(): kotlin/Boolean // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.deduplicateTilePayloads.<get-deduplicateTilePayloads>|<get-deduplicateTilePayloads>(){}[0]
+            final fun <set-deduplicateTilePayloads>(kotlin/Boolean) // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.deduplicateTilePayloads.<set-deduplicateTilePayloads>|<set-deduplicateTilePayloads>(kotlin.Boolean){}[0]
+        final var internalCompression // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.internalCompression|{}internalCompression[0]
+            final fun <get-internalCompression>(): org.maplibre.spatialk.pmtiles/CompressionCode // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.internalCompression.<get-internalCompression>|<get-internalCompression>(){}[0]
+            final fun <set-internalCompression>(org.maplibre.spatialk.pmtiles/CompressionCode) // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.internalCompression.<set-internalCompression>|<set-internalCompression>(org.maplibre.spatialk.pmtiles.CompressionCode){}[0]
+        final var limits // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.limits|{}limits[0]
+            final fun <get-limits>(): org.maplibre.spatialk.pmtiles/ArchiveWriteLimits // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.limits.<get-limits>|<get-limits>(){}[0]
+            final fun <set-limits>(org.maplibre.spatialk.pmtiles/ArchiveWriteLimits) // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.limits.<set-limits>|<set-limits>(org.maplibre.spatialk.pmtiles.ArchiveWriteLimits){}[0]
+        final var tileCompression // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.tileCompression|{}tileCompression[0]
+            final fun <get-tileCompression>(): org.maplibre.spatialk.pmtiles/CompressionCode // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.tileCompression.<get-tileCompression>|<get-tileCompression>(){}[0]
+            final fun <set-tileCompression>(org.maplibre.spatialk.pmtiles/CompressionCode) // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.tileCompression.<set-tileCompression>|<set-tileCompression>(org.maplibre.spatialk.pmtiles.CompressionCode){}[0]
+
+        final fun build(): org.maplibre.spatialk.pmtiles/ArchiveWriteOptions // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.build|build(){}[0]
+        final fun compressor(org.maplibre.spatialk.pmtiles/CompressionCode, org.maplibre.spatialk.pmtiles/Compressor): org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder.compressor|compressor(org.maplibre.spatialk.pmtiles.CompressionCode;org.maplibre.spatialk.pmtiles.Compressor){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Companion|null[0]
+        final fun build(kotlin/Function1<org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Builder, kotlin/Unit>): org.maplibre.spatialk.pmtiles/ArchiveWriteOptions // org.maplibre.spatialk.pmtiles/ArchiveWriteOptions.Companion.build|build(kotlin.Function1<org.maplibre.spatialk.pmtiles.ArchiveWriteOptions.Builder,kotlin.Unit>){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.pmtiles/ArchiveWriteTile { // org.maplibre.spatialk.pmtiles/ArchiveWriteTile|null[0]
+    constructor <init>(org.maplibre.spatialk.pmtiles/TileCoord, kotlinx.io.bytestring/ByteString, org.maplibre.spatialk.pmtiles/TilePayloadMode) // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.<init>|<init>(org.maplibre.spatialk.pmtiles.TileCoord;kotlinx.io.bytestring.ByteString;org.maplibre.spatialk.pmtiles.TilePayloadMode){}[0]
+
+    final val coord // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.coord|{}coord[0]
+        final fun <get-coord>(): org.maplibre.spatialk.pmtiles/TileCoord // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.coord.<get-coord>|<get-coord>(){}[0]
+    final val payload // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.payload|{}payload[0]
+        final fun <get-payload>(): kotlinx.io.bytestring/ByteString // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.payload.<get-payload>|<get-payload>(){}[0]
+    final val payloadMode // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.payloadMode|{}payloadMode[0]
+        final fun <get-payloadMode>(): org.maplibre.spatialk.pmtiles/TilePayloadMode // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.payloadMode.<get-payloadMode>|<get-payloadMode>(){}[0]
+
+    final fun component1(): org.maplibre.spatialk.pmtiles/TileCoord // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.component1|component1(){}[0]
+    final fun component2(): kotlinx.io.bytestring/ByteString // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.component2|component2(){}[0]
+    final fun component3(): org.maplibre.spatialk.pmtiles/TilePayloadMode // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.component3|component3(){}[0]
+    final fun copy(org.maplibre.spatialk.pmtiles/TileCoord = ..., kotlinx.io.bytestring/ByteString = ..., org.maplibre.spatialk.pmtiles/TilePayloadMode = ...): org.maplibre.spatialk.pmtiles/ArchiveWriteTile // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.copy|copy(org.maplibre.spatialk.pmtiles.TileCoord;kotlinx.io.bytestring.ByteString;org.maplibre.spatialk.pmtiles.TilePayloadMode){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.toString|toString(){}[0]
+
+    final object Companion { // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.Companion|null[0]
+        final fun stored(org.maplibre.spatialk.pmtiles/TileCoord, kotlinx.io.bytestring/ByteString): org.maplibre.spatialk.pmtiles/ArchiveWriteTile // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.Companion.stored|stored(org.maplibre.spatialk.pmtiles.TileCoord;kotlinx.io.bytestring.ByteString){}[0]
+        final fun uncompressed(org.maplibre.spatialk.pmtiles/TileCoord, kotlinx.io.bytestring/ByteString): org.maplibre.spatialk.pmtiles/ArchiveWriteTile // org.maplibre.spatialk.pmtiles/ArchiveWriteTile.Companion.uncompressed|uncompressed(org.maplibre.spatialk.pmtiles.TileCoord;kotlinx.io.bytestring.ByteString){}[0]
+    }
+}
+
 final class org.maplibre.spatialk.pmtiles/ByteRange { // org.maplibre.spatialk.pmtiles/ByteRange|null[0]
     final val length // org.maplibre.spatialk.pmtiles/ByteRange.length|{}length[0]
         final fun <get-length>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/ByteRange.length.<get-length>|<get-length>(){}[0]
@@ -306,6 +462,19 @@ final class org.maplibre.spatialk.pmtiles/ByteRange { // org.maplibre.spatialk.p
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/ByteRange.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/ByteRange.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/ByteRange.toString|toString(){}[0]
+}
+
+final class org.maplibre.spatialk.pmtiles/CompressionLimits { // org.maplibre.spatialk.pmtiles/CompressionLimits|null[0]
+    final val maxCompressedBytes // org.maplibre.spatialk.pmtiles/CompressionLimits.maxCompressedBytes|{}maxCompressedBytes[0]
+        final fun <get-maxCompressedBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/CompressionLimits.maxCompressedBytes.<get-maxCompressedBytes>|<get-maxCompressedBytes>(){}[0]
+    final val maxUncompressedBytes // org.maplibre.spatialk.pmtiles/CompressionLimits.maxUncompressedBytes|{}maxUncompressedBytes[0]
+        final fun <get-maxUncompressedBytes>(): kotlin/ULong // org.maplibre.spatialk.pmtiles/CompressionLimits.maxUncompressedBytes.<get-maxUncompressedBytes>|<get-maxUncompressedBytes>(){}[0]
+
+    final fun component1(): kotlin/ULong // org.maplibre.spatialk.pmtiles/CompressionLimits.component1|component1(){}[0]
+    final fun component2(): kotlin/ULong // org.maplibre.spatialk.pmtiles/CompressionLimits.component2|component2(){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/CompressionLimits.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/CompressionLimits.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/CompressionLimits.toString|toString(){}[0]
 }
 
 final class org.maplibre.spatialk.pmtiles/DecompressionLimits { // org.maplibre.spatialk.pmtiles/DecompressionLimits|null[0]
@@ -499,6 +668,17 @@ final class org.maplibre.spatialk.pmtiles/TileReadResult { // org.maplibre.spati
     final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/TileReadResult.toString|toString(){}[0]
 }
 
+final value class org.maplibre.spatialk.pmtiles/ArchiveWarningCode { // org.maplibre.spatialk.pmtiles/ArchiveWarningCode|null[0]
+    constructor <init>(kotlin/UInt) // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.<init>|<init>(kotlin.UInt){}[0]
+
+    final val code // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.code|{}code[0]
+        final fun <get-code>(): kotlin/UInt // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.code.<get-code>|<get-code>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/ArchiveWarningCode.toString|toString(){}[0]
+}
+
 final value class org.maplibre.spatialk.pmtiles/CompressionCode { // org.maplibre.spatialk.pmtiles/CompressionCode|null[0]
     constructor <init>(kotlin/UInt) // org.maplibre.spatialk.pmtiles/CompressionCode.<init>|<init>(kotlin.UInt){}[0]
 
@@ -510,6 +690,28 @@ final value class org.maplibre.spatialk.pmtiles/CompressionCode { // org.maplibr
     final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/CompressionCode.toString|toString(){}[0]
 }
 
+final value class org.maplibre.spatialk.pmtiles/PmTilesErrorCode { // org.maplibre.spatialk.pmtiles/PmTilesErrorCode|null[0]
+    constructor <init>(kotlin/UInt) // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.<init>|<init>(kotlin.UInt){}[0]
+
+    final val code // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.code|{}code[0]
+        final fun <get-code>(): kotlin/UInt // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.code.<get-code>|<get-code>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/PmTilesErrorCode.toString|toString(){}[0]
+}
+
+final value class org.maplibre.spatialk.pmtiles/TilePayloadMode { // org.maplibre.spatialk.pmtiles/TilePayloadMode|null[0]
+    constructor <init>(kotlin/UInt) // org.maplibre.spatialk.pmtiles/TilePayloadMode.<init>|<init>(kotlin.UInt){}[0]
+
+    final val code // org.maplibre.spatialk.pmtiles/TilePayloadMode.code|{}code[0]
+        final fun <get-code>(): kotlin/UInt // org.maplibre.spatialk.pmtiles/TilePayloadMode.code.<get-code>|<get-code>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/TilePayloadMode.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/TilePayloadMode.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/TilePayloadMode.toString|toString(){}[0]
+}
+
 final value class org.maplibre.spatialk.pmtiles/TileTypeCode { // org.maplibre.spatialk.pmtiles/TileTypeCode|null[0]
     constructor <init>(kotlin/UInt) // org.maplibre.spatialk.pmtiles/TileTypeCode.<init>|<init>(kotlin.UInt){}[0]
 
@@ -519,6 +721,25 @@ final value class org.maplibre.spatialk.pmtiles/TileTypeCode { // org.maplibre.s
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.pmtiles/TileTypeCode.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.pmtiles/TileTypeCode.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // org.maplibre.spatialk.pmtiles/TileTypeCode.toString|toString(){}[0]
+}
+
+final object org.maplibre.spatialk.pmtiles/ArchiveWarningCodes { // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes|null[0]
+    final val EmptyRootDirectory // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.EmptyRootDirectory|{}EmptyRootDirectory[0]
+        final fun <get-EmptyRootDirectory>(): org.maplibre.spatialk.pmtiles/ArchiveWarningCode // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.EmptyRootDirectory.<get-EmptyRootDirectory>|<get-EmptyRootDirectory>(){}[0]
+    final val InvalidMetadataRecovered // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.InvalidMetadataRecovered|{}InvalidMetadataRecovered[0]
+        final fun <get-InvalidMetadataRecovered>(): org.maplibre.spatialk.pmtiles/ArchiveWarningCode // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.InvalidMetadataRecovered.<get-InvalidMetadataRecovered>|<get-InvalidMetadataRecovered>(){}[0]
+    final val MissingVectorLayers // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.MissingVectorLayers|{}MissingVectorLayers[0]
+        final fun <get-MissingVectorLayers>(): org.maplibre.spatialk.pmtiles/ArchiveWarningCode // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.MissingVectorLayers.<get-MissingVectorLayers>|<get-MissingVectorLayers>(){}[0]
+    final val NestedLeafDirectory // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.NestedLeafDirectory|{}NestedLeafDirectory[0]
+        final fun <get-NestedLeafDirectory>(): org.maplibre.spatialk.pmtiles/ArchiveWarningCode // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.NestedLeafDirectory.<get-NestedLeafDirectory>|<get-NestedLeafDirectory>(){}[0]
+    final val NonCanonicalSectionOrder // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.NonCanonicalSectionOrder|{}NonCanonicalSectionOrder[0]
+        final fun <get-NonCanonicalSectionOrder>(): org.maplibre.spatialk.pmtiles/ArchiveWarningCode // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.NonCanonicalSectionOrder.<get-NonCanonicalSectionOrder>|<get-NonCanonicalSectionOrder>(){}[0]
+    final val UnknownCompressionCode // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.UnknownCompressionCode|{}UnknownCompressionCode[0]
+        final fun <get-UnknownCompressionCode>(): org.maplibre.spatialk.pmtiles/ArchiveWarningCode // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.UnknownCompressionCode.<get-UnknownCompressionCode>|<get-UnknownCompressionCode>(){}[0]
+    final val UnknownCount // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.UnknownCount|{}UnknownCount[0]
+        final fun <get-UnknownCount>(): org.maplibre.spatialk.pmtiles/ArchiveWarningCode // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.UnknownCount.<get-UnknownCount>|<get-UnknownCount>(){}[0]
+    final val UnknownTileType // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.UnknownTileType|{}UnknownTileType[0]
+        final fun <get-UnknownTileType>(): org.maplibre.spatialk.pmtiles/ArchiveWarningCode // org.maplibre.spatialk.pmtiles/ArchiveWarningCodes.UnknownTileType.<get-UnknownTileType>|<get-UnknownTileType>(){}[0]
 }
 
 final object org.maplibre.spatialk.pmtiles/CompressionCodes { // org.maplibre.spatialk.pmtiles/CompressionCodes|null[0]
@@ -536,12 +757,60 @@ final object org.maplibre.spatialk.pmtiles/CompressionCodes { // org.maplibre.sp
 
 final object org.maplibre.spatialk.pmtiles/PmTiles { // org.maplibre.spatialk.pmtiles/PmTiles|null[0]
     final suspend fun open(org.maplibre.spatialk.pmtiles/ByteRangeSource, org.maplibre.spatialk.pmtiles/ArchiveOpenOptions = ...): org.maplibre.spatialk.pmtiles/PmTilesArchive // org.maplibre.spatialk.pmtiles/PmTiles.open|open(org.maplibre.spatialk.pmtiles.ByteRangeSource;org.maplibre.spatialk.pmtiles.ArchiveOpenOptions){}[0]
+    final suspend fun write(org.maplibre.spatialk.pmtiles/ByteSink, kotlin.collections/List<org.maplibre.spatialk.pmtiles/ArchiveWriteTile>, org.maplibre.spatialk.pmtiles/ArchiveWriteConfig = ..., org.maplibre.spatialk.pmtiles/ArchiveWriteOptions = ...) // org.maplibre.spatialk.pmtiles/PmTiles.write|write(org.maplibre.spatialk.pmtiles.ByteSink;kotlin.collections.List<org.maplibre.spatialk.pmtiles.ArchiveWriteTile>;org.maplibre.spatialk.pmtiles.ArchiveWriteConfig;org.maplibre.spatialk.pmtiles.ArchiveWriteOptions){}[0]
+    final suspend fun writeToByteString(kotlin.collections/List<org.maplibre.spatialk.pmtiles/ArchiveWriteTile>, org.maplibre.spatialk.pmtiles/ArchiveWriteConfig = ..., org.maplibre.spatialk.pmtiles/ArchiveWriteOptions = ...): kotlinx.io.bytestring/ByteString // org.maplibre.spatialk.pmtiles/PmTiles.writeToByteString|writeToByteString(kotlin.collections.List<org.maplibre.spatialk.pmtiles.ArchiveWriteTile>;org.maplibre.spatialk.pmtiles.ArchiveWriteConfig;org.maplibre.spatialk.pmtiles.ArchiveWriteOptions){}[0]
+}
+
+final object org.maplibre.spatialk.pmtiles/PmTilesErrorCodes { // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes|null[0]
+    final val Closed // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.Closed|{}Closed[0]
+        final fun <get-Closed>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.Closed.<get-Closed>|<get-Closed>(){}[0]
+    final val CompressionFailed // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.CompressionFailed|{}CompressionFailed[0]
+        final fun <get-CompressionFailed>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.CompressionFailed.<get-CompressionFailed>|<get-CompressionFailed>(){}[0]
+    final val DecompressionFailed // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.DecompressionFailed|{}DecompressionFailed[0]
+        final fun <get-DecompressionFailed>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.DecompressionFailed.<get-DecompressionFailed>|<get-DecompressionFailed>(){}[0]
+    final val InvalidDirectory // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidDirectory|{}InvalidDirectory[0]
+        final fun <get-InvalidDirectory>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidDirectory.<get-InvalidDirectory>|<get-InvalidDirectory>(){}[0]
+    final val InvalidHeader // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidHeader|{}InvalidHeader[0]
+        final fun <get-InvalidHeader>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidHeader.<get-InvalidHeader>|<get-InvalidHeader>(){}[0]
+    final val InvalidMagic // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidMagic|{}InvalidMagic[0]
+        final fun <get-InvalidMagic>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidMagic.<get-InvalidMagic>|<get-InvalidMagic>(){}[0]
+    final val InvalidMetadata // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidMetadata|{}InvalidMetadata[0]
+        final fun <get-InvalidMetadata>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidMetadata.<get-InvalidMetadata>|<get-InvalidMetadata>(){}[0]
+    final val InvalidRootDirectoryLocation // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidRootDirectoryLocation|{}InvalidRootDirectoryLocation[0]
+        final fun <get-InvalidRootDirectoryLocation>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidRootDirectoryLocation.<get-InvalidRootDirectoryLocation>|<get-InvalidRootDirectoryLocation>(){}[0]
+    final val InvalidSectionLayout // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidSectionLayout|{}InvalidSectionLayout[0]
+        final fun <get-InvalidSectionLayout>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidSectionLayout.<get-InvalidSectionLayout>|<get-InvalidSectionLayout>(){}[0]
+    final val InvalidTileCoordinate // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidTileCoordinate|{}InvalidTileCoordinate[0]
+        final fun <get-InvalidTileCoordinate>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidTileCoordinate.<get-InvalidTileCoordinate>|<get-InvalidTileCoordinate>(){}[0]
+    final val InvalidTileInput // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidTileInput|{}InvalidTileInput[0]
+        final fun <get-InvalidTileInput>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidTileInput.<get-InvalidTileInput>|<get-InvalidTileInput>(){}[0]
+    final val InvalidVarint // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidVarint|{}InvalidVarint[0]
+        final fun <get-InvalidVarint>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.InvalidVarint.<get-InvalidVarint>|<get-InvalidVarint>(){}[0]
+    final val LimitExceeded // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.LimitExceeded|{}LimitExceeded[0]
+        final fun <get-LimitExceeded>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.LimitExceeded.<get-LimitExceeded>|<get-LimitExceeded>(){}[0]
+    final val RangeOutOfBounds // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.RangeOutOfBounds|{}RangeOutOfBounds[0]
+        final fun <get-RangeOutOfBounds>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.RangeOutOfBounds.<get-RangeOutOfBounds>|<get-RangeOutOfBounds>(){}[0]
+    final val SinkUnavailable // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.SinkUnavailable|{}SinkUnavailable[0]
+        final fun <get-SinkUnavailable>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.SinkUnavailable.<get-SinkUnavailable>|<get-SinkUnavailable>(){}[0]
+    final val SourceUnavailable // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.SourceUnavailable|{}SourceUnavailable[0]
+        final fun <get-SourceUnavailable>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.SourceUnavailable.<get-SourceUnavailable>|<get-SourceUnavailable>(){}[0]
+    final val UnsupportedCompression // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.UnsupportedCompression|{}UnsupportedCompression[0]
+        final fun <get-UnsupportedCompression>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.UnsupportedCompression.<get-UnsupportedCompression>|<get-UnsupportedCompression>(){}[0]
+    final val UnsupportedVersion // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.UnsupportedVersion|{}UnsupportedVersion[0]
+        final fun <get-UnsupportedVersion>(): org.maplibre.spatialk.pmtiles/PmTilesErrorCode // org.maplibre.spatialk.pmtiles/PmTilesErrorCodes.UnsupportedVersion.<get-UnsupportedVersion>|<get-UnsupportedVersion>(){}[0]
 }
 
 final object org.maplibre.spatialk.pmtiles/TileIds { // org.maplibre.spatialk.pmtiles/TileIds|null[0]
     final fun fromZxy(kotlin/Int, kotlin/Int, kotlin/Int): kotlin/Long // org.maplibre.spatialk.pmtiles/TileIds.fromZxy|fromZxy(kotlin.Int;kotlin.Int;kotlin.Int){}[0]
     final fun toZxy(kotlin/Long): org.maplibre.spatialk.pmtiles/TileCoord // org.maplibre.spatialk.pmtiles/TileIds.toZxy|toZxy(kotlin.Long){}[0]
     final fun zoomStart(kotlin/Int): kotlin/Long // org.maplibre.spatialk.pmtiles/TileIds.zoomStart|zoomStart(kotlin.Int){}[0]
+}
+
+final object org.maplibre.spatialk.pmtiles/TilePayloadModes { // org.maplibre.spatialk.pmtiles/TilePayloadModes|null[0]
+    final val Stored // org.maplibre.spatialk.pmtiles/TilePayloadModes.Stored|{}Stored[0]
+        final fun <get-Stored>(): org.maplibre.spatialk.pmtiles/TilePayloadMode // org.maplibre.spatialk.pmtiles/TilePayloadModes.Stored.<get-Stored>|<get-Stored>(){}[0]
+    final val Uncompressed // org.maplibre.spatialk.pmtiles/TilePayloadModes.Uncompressed|{}Uncompressed[0]
+        final fun <get-Uncompressed>(): org.maplibre.spatialk.pmtiles/TilePayloadMode // org.maplibre.spatialk.pmtiles/TilePayloadModes.Uncompressed.<get-Uncompressed>|<get-Uncompressed>(){}[0]
 }
 
 final object org.maplibre.spatialk.pmtiles/TileTypeCodes { // org.maplibre.spatialk.pmtiles/TileTypeCodes|null[0]

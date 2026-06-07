@@ -39,13 +39,13 @@ class WarningSurfaceTest {
         val snapshot = archive.warnings
 
         assertEquals(1, archive.warnings.size)
-        assertEquals(ArchiveWarningCode.UnknownTileType, snapshot.single().code)
+        assertEquals(ArchiveWarningCodes.UnknownTileType, snapshot.single().code)
 
         archive.metadata()
 
         assertEquals(1, snapshot.size)
         val warnings = archive.warnings
         assertEquals(2, warnings.size)
-        assertEquals(ArchiveWarningCode.InvalidMetadataRecovered, warnings[1].code)
+        assertEquals(ArchiveWarningCodes.InvalidMetadataRecovered, warnings[1].code)
     }
 }

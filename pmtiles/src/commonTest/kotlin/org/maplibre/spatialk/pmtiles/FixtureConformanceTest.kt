@@ -110,13 +110,13 @@ class FixtureConformanceTest {
                 options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
 
-        assertEquals(PmTilesErrorCode.InvalidDirectory, strictError.code)
+        assertEquals(PmTilesErrorCodes.InvalidDirectory, strictError.code)
         assertEquals(TileTypeCodes.Mlt, archive.tileType)
         assertEquals(CompressionCodes.Gzip, archive.internalCompression)
         assertEquals(CompressionCodes.Gzip, archive.tileCompression)
         assertEquals(true, archive.header.isClustered)
         assertTrue(
-            archive.warnings.any { it.code == ArchiveWarningCode.EmptyRootDirectory },
+            archive.warnings.any { it.code == ArchiveWarningCodes.EmptyRootDirectory },
             "Expected EmptyRootDirectory warning.",
         )
     }
@@ -238,14 +238,14 @@ private val invalidFixtures =
     listOf(
         InvalidFixture(
             "pmtiles-js-empty.pmtiles",
-            PmTilesErrorCode.InvalidHeader,
+            PmTilesErrorCodes.InvalidHeader,
         ),
         InvalidFixture(
             "pmtiles-js-invalid.pmtiles",
-            PmTilesErrorCode.InvalidMagic,
+            PmTilesErrorCodes.InvalidMagic,
         ),
         InvalidFixture(
             "pmtiles-js-invalid-v4.pmtiles",
-            PmTilesErrorCode.UnsupportedVersion,
+            PmTilesErrorCodes.UnsupportedVersion,
         ),
     )

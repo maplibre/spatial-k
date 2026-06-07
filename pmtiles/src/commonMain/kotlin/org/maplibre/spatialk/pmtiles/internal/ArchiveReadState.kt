@@ -16,7 +16,7 @@ import org.maplibre.spatialk.pmtiles.ArchiveWarning
 import org.maplibre.spatialk.pmtiles.ArchiveWarningCode
 import org.maplibre.spatialk.pmtiles.ByteRange
 import org.maplibre.spatialk.pmtiles.ByteRangeSource
-import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
 internal class ArchiveReadState(initialWarnings: List<ArchiveWarning>) {
@@ -202,7 +202,7 @@ internal class ArchiveReadState(initialWarnings: List<ArchiveWarning>) {
     }
 
     private fun closedException(): PmTilesException =
-        pmTilesException(PmTilesErrorCode.Closed, "PMTiles archive is closed.")
+        pmTilesException(PmTilesErrorCodes.Closed, "PMTiles archive is closed.")
 }
 
 private data class SourceReadKey(

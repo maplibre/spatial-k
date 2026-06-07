@@ -23,6 +23,25 @@ public protocol DataDecompressor {
     func decompress(data: Data, limits: DecompressionLimits) async throws -> Data
 }
 
+public protocol ByteDataSink {
+    /// Appends bytes to the output in write order.
+    func write(data: Data) async throws
+
+    /// Flushes pending output.
+    func flush() async throws
+
+    /// Closes the output.
+    func close() async throws
+}
+
+public protocol DataCompressor {
+    /// Returns compressed data for one PMTiles compression format.
+    ///
+    /// Implementations may be called from multiple Swift tasks at the same time and should be safe
+    /// for concurrent use.
+    func compress(data: Data, limits: CompressionLimits) async throws -> Data
+}
+
 public struct CompressionCode: Hashable, RawRepresentable, Sendable {
     public let rawValue: UInt32
 
@@ -53,6 +72,104 @@ public struct TileTypeCode: Hashable, RawRepresentable, Sendable {
     public static let mlt = TileTypeCode(rawValue: TileTypeCodes.shared.__mlt)
 }
 
+public struct PmTilesErrorCode: Hashable, RawRepresentable, Sendable {
+    public let rawValue: UInt32
+
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+
+    public static let invalidMagic =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidMagic)
+    public static let unsupportedVersion =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__unsupportedVersion)
+    public static let invalidHeader =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidHeader)
+    public static let invalidSectionLayout =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidSectionLayout)
+    public static let invalidRootDirectoryLocation =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidRootDirectoryLocation)
+    public static let invalidDirectory =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidDirectory)
+    public static let invalidVarint =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidVarint)
+    public static let invalidTileCoordinate =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidTileCoordinate)
+    public static let unsupportedCompression =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__unsupportedCompression)
+    public static let decompressionFailed =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__decompressionFailed)
+    public static let compressionFailed =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__compressionFailed)
+    public static let invalidMetadata =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidMetadata)
+    public static let rangeOutOfBounds =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__rangeOutOfBounds)
+    public static let sourceUnavailable =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__sourceUnavailable)
+    public static let sinkUnavailable =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__sinkUnavailable)
+    public static let invalidTileInput =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__invalidTileInput)
+    public static let limitExceeded =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__limitExceeded)
+    public static let closed =
+        PmTilesErrorCode(rawValue: PmTilesErrorCodes.shared.__closed)
+}
+
+public struct ArchiveWarningCode: Hashable, RawRepresentable, Sendable {
+    public let rawValue: UInt32
+
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+
+    public static let unknownTileType =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__unknownTileType)
+    public static let unknownCompressionCode =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__unknownCompressionCode)
+    public static let unknownCount =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__unknownCount)
+    public static let nonCanonicalSectionOrder =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__nonCanonicalSectionOrder)
+    public static let missingVectorLayers =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__missingVectorLayers)
+    public static let invalidMetadataRecovered =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__invalidMetadataRecovered)
+    public static let nestedLeafDirectory =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__nestedLeafDirectory)
+    public static let emptyRootDirectory =
+        ArchiveWarningCode(rawValue: ArchiveWarningCodes.shared.__emptyRootDirectory)
+}
+
+public struct TilePayloadMode: Hashable, RawRepresentable, Sendable {
+    public let rawValue: UInt32
+
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+
+    public static let stored = TilePayloadMode(rawValue: TilePayloadModes.shared.__stored)
+    public static let uncompressed =
+        TilePayloadMode(rawValue: TilePayloadModes.shared.__uncompressed)
+}
+
+public extension PmTilesException {
+    convenience init(code: PmTilesErrorCode, message: String) {
+        self.init(code: code.rawValue, message: message)
+    }
+
+    var code: PmTilesErrorCode {
+        PmTilesErrorCode(rawValue: __code)
+    }
+}
+
+public extension ArchiveWarning {
+    var code: ArchiveWarningCode {
+        ArchiveWarningCode(rawValue: __code)
+    }
+}
+
 public extension PmTiles {
     static func open(
         source: ByteRangeDataSource,
@@ -62,6 +179,34 @@ public extension PmTiles {
             SwiftByteRangeSourceAdapter(source: source),
             options: options
         )
+    }
+
+    static func write(
+        sink: ByteDataSink,
+        tiles: [ArchiveWriteTile],
+        config: ArchiveWriteConfig = ArchiveWriteConfig(),
+        options: ArchiveWriteOptions = ArchiveWriteOptions()
+    ) async throws {
+        try await shared.__write(
+            SwiftByteSinkAdapter(sink: sink),
+            tiles: tiles,
+            config: config,
+            options: options
+        )
+    }
+
+    static func writeToData(
+        tiles: [ArchiveWriteTile],
+        config: ArchiveWriteConfig = ArchiveWriteConfig(),
+        options: ArchiveWriteOptions = ArchiveWriteOptions()
+    ) async throws -> Data {
+        let bytes =
+            try await shared.__write(
+                toByteStringTiles: tiles,
+                config: config,
+                options: options
+            )
+        return bytes.toNSData() as Data
     }
 }
 
@@ -97,6 +242,92 @@ public extension ArchiveLimits {
     }
 }
 
+public extension ArchiveWriteConfig {
+    static func build(
+        _ configure: (ArchiveWriteConfig.Builder) -> Void
+    ) -> ArchiveWriteConfig {
+        ArchiveWriteConfig().configured(configure)
+    }
+
+    func configured(
+        _ configure: (ArchiveWriteConfig.Builder) -> Void
+    ) -> ArchiveWriteConfig {
+        let builder = __toBuilder()
+        configure(builder)
+        return builder.build()
+    }
+
+    var tileType: TileTypeCode {
+        TileTypeCode(rawValue: __tileType)
+    }
+}
+
+public extension ArchiveWriteConfig.Builder {
+    func setTileType(_ tileType: TileTypeCode) {
+        self.tileType = tileType.rawValue
+    }
+}
+
+public extension ArchiveWriteLimits {
+    static func build(
+        _ configure: (ArchiveWriteLimits.Builder) -> Void
+    ) -> ArchiveWriteLimits {
+        ArchiveWriteLimits().configured(configure)
+    }
+
+    func configured(
+        _ configure: (ArchiveWriteLimits.Builder) -> Void
+    ) -> ArchiveWriteLimits {
+        let builder = __toBuilder()
+        configure(builder)
+        return builder.build()
+    }
+}
+
+public extension ArchiveWriteOptions {
+    static func build(
+        _ configure: (ArchiveWriteOptions.Builder) -> Void
+    ) -> ArchiveWriteOptions {
+        ArchiveWriteOptions().configured(configure)
+    }
+
+    func configured(
+        _ configure: (ArchiveWriteOptions.Builder) -> Void
+    ) -> ArchiveWriteOptions {
+        let builder = __toBuilder()
+        configure(builder)
+        return builder.build()
+    }
+
+    var internalCompression: CompressionCode {
+        CompressionCode(rawValue: __internalCompression)
+    }
+
+    var tileCompression: CompressionCode {
+        CompressionCode(rawValue: __tileCompression)
+    }
+}
+
+public extension ArchiveWriteOptions.Builder {
+    func setInternalCompression(_ compression: CompressionCode) {
+        internalCompression = compression.rawValue
+    }
+
+    func setTileCompression(_ compression: CompressionCode) {
+        tileCompression = compression.rawValue
+    }
+
+    func compressor(
+        _ compression: CompressionCode,
+        _ compressor: DataCompressor
+    ) {
+        _ = __compressorCompression(
+            compression.rawValue,
+            compressor: SwiftDataCompressorAdapter(compressor: compressor)
+        )
+    }
+}
+
 public extension TileReadCoalescing {
     static func build(
         _ configure: (TileReadCoalescing.Builder) -> Void
@@ -110,6 +341,30 @@ public extension TileReadCoalescing {
         let builder = __toBuilder()
         configure(builder)
         return builder.build()
+    }
+}
+
+public extension ArchiveWriteTile {
+    static func stored(coord: TileCoord, data: Data) -> ArchiveWriteTile {
+        companion.stored(
+            coord: coord,
+            payload: ByteStringAppleKt.toByteString(data)
+        )
+    }
+
+    static func uncompressed(coord: TileCoord, data: Data) -> ArchiveWriteTile {
+        companion.uncompressed(
+            coord: coord,
+            payload: ByteStringAppleKt.toByteString(data)
+        )
+    }
+
+    var payload: Data {
+        __payload.toNSData() as Data
+    }
+
+    var payloadMode: TilePayloadMode {
+        TilePayloadMode(rawValue: __payloadMode)
     }
 }
 
@@ -191,7 +446,7 @@ public extension TileRange {
     }
 }
 
-private final class SwiftByteRangeSourceAdapter: NSObject, KotlinByteRangeSource {
+private final class SwiftByteRangeSourceAdapter: NSObject, __KotlinByteRangeSource {
     private let source: ByteRangeDataSource
 
     init(source: ByteRangeDataSource) {
@@ -212,7 +467,27 @@ private final class SwiftByteRangeSourceAdapter: NSObject, KotlinByteRangeSource
     }
 }
 
-private final class SwiftDataDecompressorAdapter: NSObject, KotlinDecompressor {
+private final class SwiftByteSinkAdapter: NSObject, __KotlinByteSink {
+    private let sink: ByteDataSink
+
+    init(sink: ByteDataSink) {
+        self.sink = sink
+    }
+
+    func write(bytes: ByteString) async throws {
+        try await sink.write(data: bytes.toNSData() as Data)
+    }
+
+    func flush() async throws {
+        try await sink.flush()
+    }
+
+    func close() async throws {
+        try await sink.close()
+    }
+}
+
+private final class SwiftDataDecompressorAdapter: NSObject, __KotlinDecompressor {
     private let decompressor: DataDecompressor
 
     init(decompressor: DataDecompressor) {
@@ -229,5 +504,25 @@ private final class SwiftDataDecompressorAdapter: NSObject, KotlinDecompressor {
                 limits: limits
             )
         return ByteStringAppleKt.toByteString(decompressed)
+    }
+}
+
+private final class SwiftDataCompressorAdapter: NSObject, __KotlinCompressor {
+    private let compressor: DataCompressor
+
+    init(compressor: DataCompressor) {
+        self.compressor = compressor
+    }
+
+    func compress(
+        bytes: ByteString,
+        limits: CompressionLimits
+    ) async throws -> ByteString {
+        let compressed =
+            try await compressor.compress(
+                data: bytes.toNSData() as Data,
+                limits: limits
+            )
+        return ByteStringAppleKt.toByteString(compressed)
     }
 }

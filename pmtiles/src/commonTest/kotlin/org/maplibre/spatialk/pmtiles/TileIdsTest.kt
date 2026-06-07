@@ -96,7 +96,7 @@ class TileIdsTest {
 
     private fun assertInvalidCoordinate(block: () -> Unit) {
         val error = assertFailsWith<PmTilesException>(block = block)
-        assertEquals(PmTilesErrorCode.InvalidTileCoordinate, error.code)
+        assertEquals(PmTilesErrorCodes.InvalidTileCoordinate, error.code)
     }
 
     private fun assertRoundTrip(z: Int, x: Int, y: Int) {

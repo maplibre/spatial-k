@@ -3,6 +3,7 @@ package org.maplibre.spatialk.pmtiles.internal
 import org.maplibre.spatialk.pmtiles.ArchiveSection
 import org.maplibre.spatialk.pmtiles.ByteRange
 import org.maplibre.spatialk.pmtiles.PmTilesErrorCode
+import org.maplibre.spatialk.pmtiles.PmTilesErrorCodes
 import org.maplibre.spatialk.pmtiles.PmTilesException
 
 internal data class DecodeLimits(
@@ -44,13 +45,13 @@ internal fun ArchiveSection.toByteRange(maxBytes: ULong, purpose: String): ByteR
 internal fun allocationLength(length: ULong, maxBytes: ULong, purpose: String): Int {
     if (length > maxBytes) {
         throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
+            PmTilesErrorCodes.LimitExceeded,
             "$purpose length $length exceeds limit $maxBytes.",
         )
     }
     if (length > Int.MAX_VALUE.toULong()) {
         throw pmTilesException(
-            PmTilesErrorCode.LimitExceeded,
+            PmTilesErrorCodes.LimitExceeded,
             "$purpose length $length exceeds the supported allocation limit ${Int.MAX_VALUE}.",
         )
     }
@@ -59,10 +60,10 @@ internal fun allocationLength(length: ULong, maxBytes: ULong, purpose: String): 
 
 internal fun validateReadRange(range: ByteRange, archiveSize: ULong, maxBytes: ULong) {
     allocationLength(range.length, maxBytes, "Read range")
-    val end = range.endOffset(PmTilesErrorCode.RangeOutOfBounds)
+    val end = range.endOffset(PmTilesErrorCodes.RangeOutOfBounds)
     if (end > archiveSize) {
         throw pmTilesException(
-            PmTilesErrorCode.RangeOutOfBounds,
+            PmTilesErrorCodes.RangeOutOfBounds,
             "Read range $range exceeds archive size $archiveSize.",
         )
     }

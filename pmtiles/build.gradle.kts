@@ -48,6 +48,6 @@ kotlin {
 mavenPublishing {
     pom {
         name = "Spatial K PMTiles"
-        description = "A Kotlin Multiplatform reader for PMTiles archives."
+        description = "A Kotlin Multiplatform reader and writer for PMTiles archives."
     }
 }

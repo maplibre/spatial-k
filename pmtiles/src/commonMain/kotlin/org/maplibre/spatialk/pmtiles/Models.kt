@@ -25,7 +25,7 @@ internal constructor(
 )
 
 /** Caller-provided byte range source used by the PMTiles reader. */
-@ObjCName(swiftName = "KotlinByteRangeSource")
+@ObjCName(swiftName = "__KotlinByteRangeSource")
 public interface ByteRangeSource {
     /** Returns the stable archive size in bytes. */
     @Throws(PmTilesException::class, CancellationException::class) public suspend fun size(): ULong
@@ -33,6 +33,20 @@ public interface ByteRangeSource {
     /** Reads exactly the requested number of bytes from [range]. */
     @Throws(PmTilesException::class, CancellationException::class)
     public suspend fun read(range: ByteRange): ByteString
+}
+
+/** Caller-provided append-only byte sink used by the PMTiles writer. */
+@ObjCName(swiftName = "__KotlinByteSink")
+public interface ByteSink {
+    /** Appends [bytes] to the output in write order. */
+    @Throws(PmTilesException::class, CancellationException::class)
+    public suspend fun write(bytes: ByteString)
+
+    /** Flushes pending output. */
+    @Throws(PmTilesException::class, CancellationException::class) public suspend fun flush()
+
+    /** Closes the output. */
+    @Throws(PmTilesException::class, CancellationException::class) public suspend fun close()
 }
 
 /**
@@ -351,7 +365,7 @@ private fun hilbertCoordinate(z: Int, position: Long): Pair<Int, Int> {
 }
 
 private fun invalidTileCoordinate(message: String): PmTilesException =
-    pmTilesException(PmTilesErrorCode.InvalidTileCoordinate, message)
+    pmTilesException(PmTilesErrorCodes.InvalidTileCoordinate, message)
 
 private const val MAX_ZOOM = 31
 private val MAX_SUPPORTED_TILE_ID: Long = TileIds.zoomStart(MAX_ZOOM) + (1L shl (2 * MAX_ZOOM)) - 1
@@ -445,7 +459,7 @@ internal constructor(
  */
 public data class ArchiveWarning
 internal constructor(
-    public val code: ArchiveWarningCode,
+    @ShouldRefineInSwift public val code: ArchiveWarningCode,
     public val message: String,
     public val context: String? = null,
 )
