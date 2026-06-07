@@ -34,3 +34,13 @@
   non-positive lengths, negative run lengths, and offset overflow.
 - Confirmed the production `encodeDirectory(List<DirectoryEntry>)` overload does not disturb the
   existing test-only vararg helper used by decoder tests.
+
+## 2026-06-06 - Writer Options And Compressor API
+
+- Added `Compressor` and `CompressionLimits` parallel to the reader's `Decompressor` surface.
+- Added `ArchiveWriteLimits` and `ArchiveWriteOptions` instead of overloading read options.
+- Kept the compressor registry model aligned with the reader path: one registry keyed by
+  `CompressionCode`, defaulting only to `CompressionCodes.None`.
+- Put the canonical root-directory byte limit in write limits with the `16 * 1024 - 127` default.
+- Left actual compression execution for the later compression-pipeline phase; this chunk establishes
+  the public option and registration surface only.

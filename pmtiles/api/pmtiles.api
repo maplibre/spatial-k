@@ -175,6 +175,66 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveWarningCode : java/lang/
 	public static fun values ()[Lorg/maplibre/spatialk/pmtiles/ArchiveWarningCode;
 }
 
+public final class org/maplibre/spatialk/pmtiles/ArchiveWriteLimits {
+	public static final field Companion Lorg/maplibre/spatialk/pmtiles/ArchiveWriteLimits$Companion;
+	public fun <init> ()V
+	public synthetic fun <init> (JJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getMaxArchiveBytes-s-VKNKU ()J
+	public final fun getMaxDirectoryBytes-s-VKNKU ()J
+	public final fun getMaxMetadataBytes-s-VKNKU ()J
+	public final fun getMaxRootDirectoryBytes-s-VKNKU ()J
+	public final fun getMaxTileBytes-s-VKNKU ()J
+	public final fun toBuilder ()Lorg/maplibre/spatialk/pmtiles/ArchiveWriteLimits$Builder;
+}
+
+public final class org/maplibre/spatialk/pmtiles/ArchiveWriteLimits$Builder {
+	public fun <init> ()V
+	public final fun build ()Lorg/maplibre/spatialk/pmtiles/ArchiveWriteLimits;
+	public final fun getMaxArchiveBytes-s-VKNKU ()J
+	public final fun getMaxDirectoryBytes-s-VKNKU ()J
+	public final fun getMaxMetadataBytes-s-VKNKU ()J
+	public final fun getMaxRootDirectoryBytes-s-VKNKU ()J
+	public final fun getMaxTileBytes-s-VKNKU ()J
+	public final fun setMaxArchiveBytes-VKZWuLQ (J)V
+	public final fun setMaxDirectoryBytes-VKZWuLQ (J)V
+	public final fun setMaxMetadataBytes-VKZWuLQ (J)V
+	public final fun setMaxRootDirectoryBytes-VKZWuLQ (J)V
+	public final fun setMaxTileBytes-VKZWuLQ (J)V
+}
+
+public final class org/maplibre/spatialk/pmtiles/ArchiveWriteLimits$Companion {
+	public final fun build (Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/pmtiles/ArchiveWriteLimits;
+}
+
+public final class org/maplibre/spatialk/pmtiles/ArchiveWriteOptions {
+	public static final field Companion Lorg/maplibre/spatialk/pmtiles/ArchiveWriteOptions$Companion;
+	public fun <init> ()V
+	public synthetic fun <init> (IILorg/maplibre/spatialk/pmtiles/ArchiveWriteLimits;ZLjava/util/Map;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getDeduplicateTilePayloads ()Z
+	public final fun getInternalCompression-KaDf8nc ()I
+	public final fun getLimits ()Lorg/maplibre/spatialk/pmtiles/ArchiveWriteLimits;
+	public final fun getTileCompression-KaDf8nc ()I
+	public final fun toBuilder ()Lorg/maplibre/spatialk/pmtiles/ArchiveWriteOptions$Builder;
+}
+
+public final class org/maplibre/spatialk/pmtiles/ArchiveWriteOptions$Builder {
+	public fun <init> ()V
+	public final fun build ()Lorg/maplibre/spatialk/pmtiles/ArchiveWriteOptions;
+	public final fun compressor-ufaZu8k (ILorg/maplibre/spatialk/pmtiles/Compressor;)Lorg/maplibre/spatialk/pmtiles/ArchiveWriteOptions$Builder;
+	public final fun getDeduplicateTilePayloads ()Z
+	public final fun getInternalCompression-KaDf8nc ()I
+	public final fun getLimits ()Lorg/maplibre/spatialk/pmtiles/ArchiveWriteLimits;
+	public final fun getTileCompression-KaDf8nc ()I
+	public final fun setDeduplicateTilePayloads (Z)V
+	public final fun setInternalCompression-HP1yuqM (I)V
+	public final fun setLimits (Lorg/maplibre/spatialk/pmtiles/ArchiveWriteLimits;)V
+	public final fun setTileCompression-HP1yuqM (I)V
+}
+
+public final class org/maplibre/spatialk/pmtiles/ArchiveWriteOptions$Companion {
+	public final fun build (Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/pmtiles/ArchiveWriteOptions;
+}
+
 public final class org/maplibre/spatialk/pmtiles/ByteRange {
 	public final fun component1-s-VKNKU ()J
 	public final fun component2-s-VKNKU ()J
@@ -211,6 +271,20 @@ public final class org/maplibre/spatialk/pmtiles/CompressionCodes {
 	public final fun getNone-KaDf8nc ()I
 	public final fun getUnknown-KaDf8nc ()I
 	public final fun getZstd-KaDf8nc ()I
+}
+
+public final class org/maplibre/spatialk/pmtiles/CompressionLimits {
+	public final fun component1-s-VKNKU ()J
+	public final fun component2-s-VKNKU ()J
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaxCompressedBytes-s-VKNKU ()J
+	public final fun getMaxUncompressedBytes-s-VKNKU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class org/maplibre/spatialk/pmtiles/Compressor {
+	public abstract fun compress (Lkotlinx/io/bytestring/ByteString;Lorg/maplibre/spatialk/pmtiles/CompressionLimits;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class org/maplibre/spatialk/pmtiles/DecompressionLimits {

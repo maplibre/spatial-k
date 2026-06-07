@@ -151,6 +151,97 @@ private constructor(
 }
 
 /**
+ * Operational limits for PMTiles archive writes.
+ *
+ * @property maxRootDirectoryBytes Maximum compressed root directory bytes in the canonical first 16
+ *   KiB archive layout. Defaults to 16,257 bytes.
+ * @property maxMetadataBytes Maximum metadata bytes before and after internal compression. Defaults
+ *   to 16 MiB.
+ * @property maxDirectoryBytes Maximum directory bytes before and after internal compression.
+ *   Defaults to 16 MiB.
+ * @property maxTileBytes Maximum tile payload bytes before and after tile compression. Defaults to
+ *   64 MiB.
+ * @property maxArchiveBytes Maximum final archive bytes. Defaults to [ULong.MAX_VALUE].
+ */
+public class ArchiveWriteLimits
+private constructor(
+    public val maxRootDirectoryBytes: ULong,
+    public val maxMetadataBytes: ULong,
+    public val maxDirectoryBytes: ULong,
+    public val maxTileBytes: ULong,
+    public val maxArchiveBytes: ULong,
+) {
+    /** Creates limits with the documented default values. */
+    public constructor() :
+        this(
+            maxRootDirectoryBytes = MAX_CANONICAL_ROOT_DIRECTORY_BYTES.toULong(),
+            maxMetadataBytes = (16 * 1024 * 1024).toULong(),
+            maxDirectoryBytes = (16 * 1024 * 1024).toULong(),
+            maxTileBytes = (64 * 1024 * 1024).toULong(),
+            maxArchiveBytes = ULong.MAX_VALUE,
+        )
+
+    init {
+        require(maxRootDirectoryBytes in 1uL..MAX_CANONICAL_ROOT_DIRECTORY_BYTES.toULong()) {
+            "maxRootDirectoryBytes must be between 1 and $MAX_CANONICAL_ROOT_DIRECTORY_BYTES."
+        }
+        require(maxMetadataBytes > 0uL) { "maxMetadataBytes must be positive." }
+        require(maxDirectoryBytes > 0uL) { "maxDirectoryBytes must be positive." }
+        require(maxTileBytes > 0uL) { "maxTileBytes must be positive." }
+        require(maxArchiveBytes > 0uL) { "maxArchiveBytes must be positive." }
+    }
+
+    /** Returns a mutable builder initialized from these limits. */
+    @ShouldRefineInSwift public fun toBuilder(): Builder = Builder(this)
+
+    /** Mutable Kotlin builder for [ArchiveWriteLimits]. */
+    public class Builder public constructor() {
+        private val defaults: ArchiveWriteLimits = ArchiveWriteLimits()
+
+        /** Maximum compressed root directory bytes. */
+        public var maxRootDirectoryBytes: ULong = defaults.maxRootDirectoryBytes
+
+        /** Maximum metadata bytes before and after internal compression. */
+        public var maxMetadataBytes: ULong = defaults.maxMetadataBytes
+
+        /** Maximum directory bytes before and after internal compression. */
+        public var maxDirectoryBytes: ULong = defaults.maxDirectoryBytes
+
+        /** Maximum tile payload bytes before and after tile compression. */
+        public var maxTileBytes: ULong = defaults.maxTileBytes
+
+        /** Maximum final archive bytes. */
+        public var maxArchiveBytes: ULong = defaults.maxArchiveBytes
+
+        internal constructor(limits: ArchiveWriteLimits) : this() {
+            maxRootDirectoryBytes = limits.maxRootDirectoryBytes
+            maxMetadataBytes = limits.maxMetadataBytes
+            maxDirectoryBytes = limits.maxDirectoryBytes
+            maxTileBytes = limits.maxTileBytes
+            maxArchiveBytes = limits.maxArchiveBytes
+        }
+
+        /** Builds immutable limits from this builder. */
+        public fun build(): ArchiveWriteLimits =
+            ArchiveWriteLimits(
+                maxRootDirectoryBytes = maxRootDirectoryBytes,
+                maxMetadataBytes = maxMetadataBytes,
+                maxDirectoryBytes = maxDirectoryBytes,
+                maxTileBytes = maxTileBytes,
+                maxArchiveBytes = maxArchiveBytes,
+            )
+    }
+
+    /** Factory for Kotlin DSL construction. */
+    public companion object {
+        /** Builds [ArchiveWriteLimits] with a Kotlin DSL. */
+        @HiddenFromObjC
+        public fun build(configure: Builder.() -> Unit): ArchiveWriteLimits =
+            Builder().apply(configure).build()
+    }
+}
+
+/**
  * Controls source-range coalescing for batch tile reads.
  *
  * @property maxCoalescedBytes Maximum bytes when combining multiple tile payload reads. Individual
@@ -270,4 +361,93 @@ private constructor(
     }
 }
 
+/**
+ * Options used when writing a PMTiles archive.
+ *
+ * @property internalCompression Compression used for metadata and directories. Defaults to
+ *   [CompressionCodes.None].
+ * @property tileCompression Compression represented by stored tile payload bytes. Defaults to
+ *   [CompressionCodes.None].
+ * @property limits Operational write limits. Defaults to [ArchiveWriteLimits].
+ * @property deduplicateTilePayloads Whether identical tile payloads should be stored once. Defaults
+ *   to true.
+ */
+public class ArchiveWriteOptions
+private constructor(
+    @ShouldRefineInSwift public val internalCompression: CompressionCode,
+    @ShouldRefineInSwift public val tileCompression: CompressionCode,
+    public val limits: ArchiveWriteLimits,
+    public val deduplicateTilePayloads: Boolean,
+    internal val compressors: Map<CompressionCode, Compressor>,
+) {
+    /** Creates options with the documented default values. */
+    public constructor() :
+        this(
+            internalCompression = CompressionCodes.None,
+            tileCompression = CompressionCodes.None,
+            limits = ArchiveWriteLimits(),
+            deduplicateTilePayloads = true,
+            compressors = emptyMap(),
+        )
+
+    /** Returns a mutable builder initialized from these options. */
+    @ShouldRefineInSwift public fun toBuilder(): Builder = Builder(this)
+
+    /** Mutable Kotlin builder for [ArchiveWriteOptions]. */
+    public class Builder public constructor() {
+        private val defaults: ArchiveWriteOptions = ArchiveWriteOptions()
+
+        /** Compression used for metadata and directories. */
+        public var internalCompression: CompressionCode = defaults.internalCompression
+
+        /** Compression represented by stored tile payload bytes. */
+        public var tileCompression: CompressionCode = defaults.tileCompression
+
+        /** Operational write limits. */
+        public var limits: ArchiveWriteLimits = defaults.limits
+
+        /** Whether identical tile payloads should be stored once. */
+        public var deduplicateTilePayloads: Boolean = defaults.deduplicateTilePayloads
+
+        private val compressors: MutableMap<CompressionCode, Compressor> =
+            defaults.compressors.toMutableMap()
+
+        internal constructor(options: ArchiveWriteOptions) : this() {
+            internalCompression = options.internalCompression
+            tileCompression = options.tileCompression
+            limits = options.limits
+            deduplicateTilePayloads = options.deduplicateTilePayloads
+            compressors += options.compressors
+        }
+
+        /** Registers [compressor] for [compression]. */
+        @ShouldRefineInSwift
+        public fun compressor(
+            compression: CompressionCode,
+            compressor: Compressor,
+        ): Builder = apply {
+            compressors[compression] = compressor
+        }
+
+        /** Builds immutable options from this builder. */
+        public fun build(): ArchiveWriteOptions =
+            ArchiveWriteOptions(
+                internalCompression = internalCompression,
+                tileCompression = tileCompression,
+                limits = limits,
+                deduplicateTilePayloads = deduplicateTilePayloads,
+                compressors = compressors.toMap(),
+            )
+    }
+
+    /** Factory for Kotlin DSL construction. */
+    public companion object {
+        /** Builds [ArchiveWriteOptions] with a Kotlin DSL. */
+        @HiddenFromObjC
+        public fun build(configure: Builder.() -> Unit): ArchiveWriteOptions =
+            Builder().apply(configure).build()
+    }
+}
+
 private const val MIN_INITIAL_READ_BYTES = 16 * 1024
+private const val MAX_CANONICAL_ROOT_DIRECTORY_BYTES = 16 * 1024 - 127
