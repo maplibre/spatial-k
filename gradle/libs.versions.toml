@@ -1,6 +1,6 @@
 [versions]
 jetbrains-annotations = "26.1.0"
-kotlin = "2.3.21"
+kotlin = "2.4.0"
 kotlinx-benchmark = "0.4.16"
 kotlinx-coroutines = "1.11.0"
 kotlinx-kover = "0.9.8"
