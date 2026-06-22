@@ -10,7 +10,7 @@ kotlinx-datetime = "0.8.0"
 kotlin-wrappers = "2026.5.6"
 vanniktech-publish = "0.36.0"
 dokka = "2.2.0"
-detekt = "2.0.0-alpha.3"
+detekt = "2.0.0-alpha.5"
 xmlutil = "0.91.3"
 
 [libraries]
