@@ -35,7 +35,6 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveHeader {
 public final class org/maplibre/spatialk/pmtiles/ArchiveLimits {
 	public static final field Companion Lorg/maplibre/spatialk/pmtiles/ArchiveLimits$Companion;
 	public fun <init> ()V
-	public synthetic fun <init> (JJJJJJIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getMaxDirectoryCompressedBytes-s-VKNKU ()J
 	public final fun getMaxDirectoryDecompressedBytes-s-VKNKU ()J
 	public final fun getMaxDirectoryDepth ()I
@@ -99,7 +98,6 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveMetadata {
 public final class org/maplibre/spatialk/pmtiles/ArchiveOpenOptions {
 	public static final field Companion Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions$Companion;
 	public fun <init> ()V
-	public synthetic fun <init> (Lorg/maplibre/spatialk/pmtiles/ValidationMode;Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;Ljava/util/Map;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getLimits ()Lorg/maplibre/spatialk/pmtiles/ArchiveLimits;
 	public final fun getValidationMode ()Lorg/maplibre/spatialk/pmtiles/ValidationMode;
 	public final fun toBuilder ()Lorg/maplibre/spatialk/pmtiles/ArchiveOpenOptions$Builder;
@@ -225,7 +223,6 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveWriteCenter {
 public final class org/maplibre/spatialk/pmtiles/ArchiveWriteConfig {
 	public static final field Companion Lorg/maplibre/spatialk/pmtiles/ArchiveWriteConfig$Companion;
 	public fun <init> ()V
-	public synthetic fun <init> (ILorg/maplibre/spatialk/pmtiles/ArchiveWriteBounds;Lorg/maplibre/spatialk/pmtiles/ArchiveWriteCenter;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getBounds ()Lorg/maplibre/spatialk/pmtiles/ArchiveWriteBounds;
 	public final fun getCenter ()Lorg/maplibre/spatialk/pmtiles/ArchiveWriteCenter;
 	public final fun getMetadataJson ()Ljava/lang/String;
@@ -253,7 +250,6 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveWriteConfig$Companion {
 public final class org/maplibre/spatialk/pmtiles/ArchiveWriteLimits {
 	public static final field Companion Lorg/maplibre/spatialk/pmtiles/ArchiveWriteLimits$Companion;
 	public fun <init> ()V
-	public synthetic fun <init> (JJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getMaxArchiveBytes-s-VKNKU ()J
 	public final fun getMaxDirectoryBytes-s-VKNKU ()J
 	public final fun getMaxMetadataBytes-s-VKNKU ()J
@@ -284,7 +280,6 @@ public final class org/maplibre/spatialk/pmtiles/ArchiveWriteLimits$Companion {
 public final class org/maplibre/spatialk/pmtiles/ArchiveWriteOptions {
 	public static final field Companion Lorg/maplibre/spatialk/pmtiles/ArchiveWriteOptions$Companion;
 	public fun <init> ()V
-	public synthetic fun <init> (IILorg/maplibre/spatialk/pmtiles/ArchiveWriteLimits;ZLjava/util/Map;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getDeduplicateTilePayloads ()Z
 	public final fun getInternalCompression-KaDf8nc ()I
 	public final fun getLimits ()Lorg/maplibre/spatialk/pmtiles/ArchiveWriteLimits;
@@ -585,7 +580,6 @@ public final class org/maplibre/spatialk/pmtiles/TileRange {
 public final class org/maplibre/spatialk/pmtiles/TileReadCoalescing {
 	public static final field Companion Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing$Companion;
 	public fun <init> ()V
-	public synthetic fun <init> (JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getMaxCoalescedBytes-s-VKNKU ()J
 	public final fun getMaxGapBytes-s-VKNKU ()J
 	public final fun toBuilder ()Lorg/maplibre/spatialk/pmtiles/TileReadCoalescing$Builder;
