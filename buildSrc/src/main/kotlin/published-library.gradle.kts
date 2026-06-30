@@ -22,10 +22,7 @@ kotlin {
                 "-Xconsistent-data-class-copy-visibility"
             )
     }
-    abiValidation {
-        @OptIn(ExperimentalAbiValidation::class)
-        enabled = true
-    }
+    @OptIn(ExperimentalAbiValidation::class) abiValidation()
 }
 
 detekt {

@@ -1,7 +1,8 @@
 package org.maplibre.spatialk.gpx
 
 import nl.adaptivity.xmlutil.ExperimentalXmlUtilApi
-import nl.adaptivity.xmlutil.serialization.DefaultXmlSerializationPolicy
+import nl.adaptivity.xmlutil.XmlDeclMode
+import nl.adaptivity.xmlutil.core.XmlVersion
 import nl.adaptivity.xmlutil.serialization.XML
 import org.intellij.lang.annotations.Language
 
@@ -9,9 +10,11 @@ import org.intellij.lang.annotations.Language
 public data object Gpx {
     /** The [XML] format configuration for parsing and serializing GPX data. */
     @OptIn(ExperimentalXmlUtilApi::class)
-    public val gpxFormat: XML = XML {
+    public val gpxFormat: XML = XML.v1 {
+        xmlVersion = XmlVersion.XML10
+        xmlDeclMode = XmlDeclMode.Charset
         indentString = "    "
-        policy = DefaultXmlSerializationPolicy.Builder().apply { ignoreUnknownChildren() }.build()
+        policy { ignoreUnknownChildren() }
     }
 
     /**

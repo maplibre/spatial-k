@@ -1,6 +1,6 @@
 [versions]
 jetbrains-annotations = "26.1.0"
-kotlin = "2.3.21"
+kotlin = "2.4.0"
 kotlinx-benchmark = "0.4.16"
 kotlinx-coroutines = "1.11.0"
 kotlinx-kover = "0.9.8"
@@ -11,7 +11,7 @@ kotlin-wrappers = "2026.5.6"
 vanniktech-publish = "0.37.0"
 dokka = "2.2.0"
 detekt = "2.0.0-alpha.5"
-xmlutil = "0.91.3"
+xmlutil = "1.0.0"
 
 [libraries]
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
