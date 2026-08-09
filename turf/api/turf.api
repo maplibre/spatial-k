@@ -140,6 +140,11 @@ public final class org/maplibre/spatialk/turf/measurement/Measurement {
 	public static synthetic fun rhumbDistance$default (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/units/LengthUnit;ILjava/lang/Object;)D
 	public static final synthetic fun rhumbDistanceAsLength (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/Point;)D
 	public static final synthetic fun rhumbDistanceAsLength (Lorg/maplibre/spatialk/geojson/Position;Lorg/maplibre/spatialk/geojson/Position;)D
+	public static final fun rhumbOffset (Lorg/maplibre/spatialk/geojson/Position;DD)Lorg/maplibre/spatialk/geojson/Position;
+	public static final fun rhumbOffset (Lorg/maplibre/spatialk/geojson/Position;DLorg/maplibre/spatialk/units/LengthUnit;D)Lorg/maplibre/spatialk/geojson/Position;
+	public static final fun rhumbOffset (Lorg/maplibre/spatialk/geojson/Position;DLorg/maplibre/spatialk/units/LengthUnit;DLorg/maplibre/spatialk/units/RotationUnit;)Lorg/maplibre/spatialk/geojson/Position;
+	public static synthetic fun rhumbOffset$default (Lorg/maplibre/spatialk/geojson/Position;DLorg/maplibre/spatialk/units/LengthUnit;DLorg/maplibre/spatialk/units/RotationUnit;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Position;
+	public static final synthetic fun rhumbOffset-5rEEf_g (Lorg/maplibre/spatialk/geojson/Position;DD)Lorg/maplibre/spatialk/geojson/Position;
 	public static final fun square (Lorg/maplibre/spatialk/geojson/BoundingBox;)Lorg/maplibre/spatialk/geojson/BoundingBox;
 	public static final fun toPolygon (Lorg/maplibre/spatialk/geojson/BoundingBox;)Lorg/maplibre/spatialk/geojson/Polygon;
 }
