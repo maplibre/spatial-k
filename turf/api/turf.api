@@ -235,6 +235,8 @@ public final class org/maplibre/spatialk/turf/transformation/Transformation {
 	public static final synthetic fun circle-RJZUCfk (Lorg/maplibre/spatialk/geojson/Position;DI)Lorg/maplibre/spatialk/geojson/Polygon;
 	public static synthetic fun circle-RJZUCfk$default (Lorg/maplibre/spatialk/geojson/Point;DIILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Polygon;
 	public static synthetic fun circle-RJZUCfk$default (Lorg/maplibre/spatialk/geojson/Position;DIILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Polygon;
+	public static final fun convex (Lorg/maplibre/spatialk/geojson/Geometry;I)Lorg/maplibre/spatialk/geojson/Polygon;
+	public static synthetic fun convex$default (Lorg/maplibre/spatialk/geojson/Geometry;IILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Polygon;
 	public static final fun simplify (Lorg/maplibre/spatialk/geojson/LineString;Ljava/lang/Double;Z)Lorg/maplibre/spatialk/geojson/LineString;
 	public static synthetic fun simplify$default (Lorg/maplibre/spatialk/geojson/LineString;Ljava/lang/Double;ZILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/LineString;
 }
