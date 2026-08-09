@@ -28,6 +28,8 @@ jobs:
               with:
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+              with:
+                  version: 2026.6.0
             - run: ./gradlew version # TODO: remove this once we're confident in our config
             - run: ./gradlew "${{ matrix.task }}"
             - if: ${{ matrix.task == 'macosArm64Test' }}
@@ -45,6 +47,8 @@ jobs:
               with:
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+              with:
+                  version: 2026.6.0
             - name: Run benchmark
               run: |
                   echo '## Benchmark' >> "$GITHUB_STEP_SUMMARY"
@@ -57,6 +61,8 @@ jobs:
               with:
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+              with:
+                  version: 2026.6.0
             - run: mise run docs:build --version dev
             - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
               with:
@@ -69,6 +75,8 @@ jobs:
               with:
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+              with:
+                  version: 2026.6.0
             - run: mise run check
 
     check-integrity:
@@ -78,6 +86,8 @@ jobs:
               with:
                   persist-credentials: false
             - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+              with:
+                  version: 2026.6.0
             - name: Verify gradle wrapper
               run: |
                   GRADLE_VERSION=$(grep distributionUrl gradle/wrapper/gradle-wrapper.properties \
