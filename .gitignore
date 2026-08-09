@@ -5,6 +5,7 @@
 /local.properties
 **/build
 /pmtiles/src/Artifacts
+/.worktrees
 
 /site
 /node_modules
