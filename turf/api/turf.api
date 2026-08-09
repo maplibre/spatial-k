@@ -227,6 +227,62 @@ public final class org/maplibre/spatialk/turf/other/RTree : java/util/Collection
 	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
 }
 
+public abstract class org/maplibre/spatialk/turf/transformation/ScaleOrigin {
+}
+
+public final class org/maplibre/spatialk/turf/transformation/ScaleOrigin$Center : org/maplibre/spatialk/turf/transformation/ScaleOrigin {
+	public static final field INSTANCE Lorg/maplibre/spatialk/turf/transformation/ScaleOrigin$Center;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/turf/transformation/ScaleOrigin$Centroid : org/maplibre/spatialk/turf/transformation/ScaleOrigin {
+	public static final field INSTANCE Lorg/maplibre/spatialk/turf/transformation/ScaleOrigin$Centroid;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/turf/transformation/ScaleOrigin$Coordinates : org/maplibre/spatialk/turf/transformation/ScaleOrigin {
+	public fun <init> (Lorg/maplibre/spatialk/geojson/Position;)V
+	public final fun component1 ()Lorg/maplibre/spatialk/geojson/Position;
+	public final fun copy (Lorg/maplibre/spatialk/geojson/Position;)Lorg/maplibre/spatialk/turf/transformation/ScaleOrigin$Coordinates;
+	public static synthetic fun copy$default (Lorg/maplibre/spatialk/turf/transformation/ScaleOrigin$Coordinates;Lorg/maplibre/spatialk/geojson/Position;ILjava/lang/Object;)Lorg/maplibre/spatialk/turf/transformation/ScaleOrigin$Coordinates;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPosition ()Lorg/maplibre/spatialk/geojson/Position;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/turf/transformation/ScaleOrigin$NorthEast : org/maplibre/spatialk/turf/transformation/ScaleOrigin {
+	public static final field INSTANCE Lorg/maplibre/spatialk/turf/transformation/ScaleOrigin$NorthEast;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/turf/transformation/ScaleOrigin$NorthWest : org/maplibre/spatialk/turf/transformation/ScaleOrigin {
+	public static final field INSTANCE Lorg/maplibre/spatialk/turf/transformation/ScaleOrigin$NorthWest;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/turf/transformation/ScaleOrigin$SouthEast : org/maplibre/spatialk/turf/transformation/ScaleOrigin {
+	public static final field INSTANCE Lorg/maplibre/spatialk/turf/transformation/ScaleOrigin$SouthEast;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/turf/transformation/ScaleOrigin$SouthWest : org/maplibre/spatialk/turf/transformation/ScaleOrigin {
+	public static final field INSTANCE Lorg/maplibre/spatialk/turf/transformation/ScaleOrigin$SouthWest;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class org/maplibre/spatialk/turf/transformation/Transformation {
 	public static final fun bezierSpline (Lorg/maplibre/spatialk/geojson/LineString;ID)Lorg/maplibre/spatialk/geojson/LineString;
 	public static synthetic fun bezierSpline$default (Lorg/maplibre/spatialk/geojson/LineString;IDILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/LineString;
@@ -244,6 +300,8 @@ public final class org/maplibre/spatialk/turf/transformation/Transformation {
 	public static synthetic fun circle-RJZUCfk$default (Lorg/maplibre/spatialk/geojson/Position;DIILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Polygon;
 	public static final fun convex (Lorg/maplibre/spatialk/geojson/Geometry;I)Lorg/maplibre/spatialk/geojson/Polygon;
 	public static synthetic fun convex$default (Lorg/maplibre/spatialk/geojson/Geometry;IILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Polygon;
+	public static final fun scale (Lorg/maplibre/spatialk/geojson/Geometry;DLorg/maplibre/spatialk/turf/transformation/ScaleOrigin;)Lorg/maplibre/spatialk/geojson/Geometry;
+	public static synthetic fun scale$default (Lorg/maplibre/spatialk/geojson/Geometry;DLorg/maplibre/spatialk/turf/transformation/ScaleOrigin;ILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/Geometry;
 	public static final fun simplify (Lorg/maplibre/spatialk/geojson/LineString;Ljava/lang/Double;Z)Lorg/maplibre/spatialk/geojson/LineString;
 	public static synthetic fun simplify$default (Lorg/maplibre/spatialk/geojson/LineString;Ljava/lang/Double;ZILjava/lang/Object;)Lorg/maplibre/spatialk/geojson/LineString;
 }
