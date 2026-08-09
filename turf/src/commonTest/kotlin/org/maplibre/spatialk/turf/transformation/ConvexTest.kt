@@ -90,6 +90,24 @@ class ConvexTest {
         assertEquals(polygon, polygon.convex())
     }
 
+    // The concave path (concavity < Int.MAX_VALUE) cannot close a 4-distinct-point input without a
+    // self-crossing edge; ConcaveHull must terminate (returning empty) instead of recursing forever
+    // with the same neighbor count.
+    @Test
+    fun testConvexWithSquareAndConcavityReturnsNull() {
+        val polygon =
+            Polygon(
+                listOf(
+                    org.maplibre.spatialk.geojson.Position(0.0, 0.0),
+                    org.maplibre.spatialk.geojson.Position(1.0, 0.0),
+                    org.maplibre.spatialk.geojson.Position(1.0, 1.0),
+                    org.maplibre.spatialk.geojson.Position(0.0, 1.0),
+                    org.maplibre.spatialk.geojson.Position(0.0, 0.0),
+                )
+            )
+        assertNull(polygon.convex(concavity = 3))
+    }
+
     // Three distinct points form a valid triangular concave hull; the previous strict `> 3` check
     // filtered it out and returned null.
     @Test
@@ -106,6 +124,26 @@ class ConvexTest {
                 )
             )
         val hull = triangle.convex(concavity = 3)
+        assertNotNull(hull)
+        assertEquals(3, hull.flattenCoordinates().distinct().size)
+    }
+
+    // Documented concavity values 1 and 2 are coerced up to 3 neighbors internally; the retry
+    // path must expand from the effective count so the walk can still recover with more neighbors.
+    @Test
+    fun testConvexTriangleWithConcavityOneReturnsHull() {
+        val triangle =
+            Polygon(
+                listOf(
+                    listOf(
+                        org.maplibre.spatialk.geojson.Position(0.0, 0.0),
+                        org.maplibre.spatialk.geojson.Position(1.0, 0.0),
+                        org.maplibre.spatialk.geojson.Position(0.5, 1.0),
+                        org.maplibre.spatialk.geojson.Position(0.0, 0.0),
+                    )
+                )
+            )
+        val hull = triangle.convex(concavity = 1)
         assertNotNull(hull)
         assertEquals(3, hull.flattenCoordinates().distinct().size)
     }

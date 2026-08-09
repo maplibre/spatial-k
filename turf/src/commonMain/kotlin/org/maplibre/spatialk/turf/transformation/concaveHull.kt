@@ -160,6 +160,7 @@ internal object ConcaveHull {
 
         // optional remove duplicates
         val pointArraySet = pointArrayList.distinct().toMutableList()
+        val distinctSize = pointArraySet.size
 
         // k has to be greater than 3 to execute the algorithm
         var kk = k.coerceAtLeast(3)
@@ -218,7 +219,14 @@ internal object ConcaveHull {
 
             // if there is no candidate increase k - try again
             if (its) {
-                return calculateConcaveHull(pointArrayList, k + 1)
+                // Base the retry on the effective neighbor count kk (k coerced to >= 3), not the
+                // raw argument, so documented values like 1 or 2 can still expand.
+                val nextKk = (kk + 1).coerceAtLeast(3).coerceAtMost(distinctSize - 1)
+                if (nextKk <= kk) {
+                    // retry can't use more neighbors, so it would fail identically
+                    return emptyList()
+                }
+                return calculateConcaveHull(pointArrayList, kk + 1)
             }
 
             // add candidate to concave hull and remove from dataset
@@ -241,7 +249,13 @@ internal object ConcaveHull {
 
         // if not all points inside -  try again
         return if (!insideCheck) {
-            calculateConcaveHull(pointArrayList, k + 1)
+            val nextKk = (kk + 1).coerceAtLeast(3).coerceAtMost(distinctSize - 1)
+            if (nextKk <= kk) {
+                // retry can't use more neighbors, so it would fail identically
+                emptyList()
+            } else {
+                calculateConcaveHull(pointArrayList, kk + 1)
+            }
         } else {
             return concaveHull
         }
