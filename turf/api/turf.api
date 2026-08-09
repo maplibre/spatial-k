@@ -1,4 +1,6 @@
 public final class org/maplibre/spatialk/turf/booleans/Booleans {
+	public static final fun clockwise (Ljava/util/List;)Z
+	public static final fun clockwise (Lorg/maplibre/spatialk/geojson/LineString;)Z
 	public static final fun contains (Lorg/maplibre/spatialk/geojson/PolygonGeometry;Lorg/maplibre/spatialk/geojson/Position;)Z
 	public static final fun contains (Lorg/maplibre/spatialk/geojson/PolygonGeometry;Lorg/maplibre/spatialk/geojson/Position;Z)Z
 	public static final fun pointOnLine (Lorg/maplibre/spatialk/geojson/Point;Lorg/maplibre/spatialk/geojson/LineString;ZLjava/lang/Double;)Z
