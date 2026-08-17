@@ -11,7 +11,7 @@ kotlin-wrappers = "2026.8.0"
 vanniktech-publish = "0.37.0"
 dokka = "2.2.0"
 detekt = "2.0.0-alpha.6"
-xmlutil = "1.0.1"
+xmlutil = "1.0.2"
 
 [libraries]
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
