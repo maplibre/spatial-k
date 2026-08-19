@@ -5,6 +5,7 @@ package org.maplibre.spatialk.geojson
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.maplibre.spatialk.geojson.utils.assertJsonEquals
+import org.maplibre.spatialk.testutil.assertDoubleEquals
 
 class ExtraAxesTest {
     @Test
@@ -12,10 +13,10 @@ class ExtraAxesTest {
         val position = Position(-75.0, 45.0, 100.0, 1.5)
 
         assertEquals(4, position.size)
-        assertEquals(-75.0, position.longitude)
-        assertEquals(45.0, position.latitude)
-        assertEquals(100.0, position.altitude)
-        assertEquals(1.5, position[3])
+        assertDoubleEquals(-75.0, position.longitude)
+        assertDoubleEquals(45.0, position.latitude)
+        assertDoubleEquals(100.0, position.altitude)
+        assertDoubleEquals(1.5, position[3])
     }
 
     @Test
