@@ -32,9 +32,11 @@ class ExtraAxesTest {
         val northeast = Position(4.0, 5.0, 6.0, 8.0)
         val boundingBox = BoundingBox(southwest, northeast)
 
+        assertEquals(8, boundingBox.size)
+        assertEquals(4, boundingBox.southwest.size)
+        assertEquals(4, boundingBox.northeast.size)
         assertEquals(southwest, boundingBox.southwest)
         assertEquals(northeast, boundingBox.northeast)
-        assertEquals(8, boundingBox.size)
     }
 
     @Test
@@ -44,6 +46,8 @@ class ExtraAxesTest {
 
         assertJsonEquals("[1.0, 2.0, 3.0, 7.0, 4.0, 5.0, 6.0, 8.0]", boundingBox.toJson())
         assertEquals(boundingBox, decoded)
+        assertEquals(4, decoded.southwest.size)
+        assertEquals(4, decoded.northeast.size)
         assertEquals(Position(1.0, 2.0, 3.0, 7.0), decoded.southwest)
         assertEquals(Position(4.0, 5.0, 6.0, 8.0), decoded.northeast)
     }
