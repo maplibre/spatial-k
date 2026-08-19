@@ -125,10 +125,10 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
     ) : this(doubleArrayOf(west, south, minAltitude, east, north, maxAltitude, *additionalElements))
 
     public val southwest: Position
-        get() = Position(coordinates.sliceArray(0..<(coordinates.size / 2)))
+        get() = Position(west, south, minAltitude)
 
     public val northeast: Position
-        get() = Position(coordinates.sliceArray((coordinates.size / 2)..<coordinates.size))
+        get() = Position(east, north, maxAltitude)
 
     /** The western longitude boundary. */
     public val west: Double
