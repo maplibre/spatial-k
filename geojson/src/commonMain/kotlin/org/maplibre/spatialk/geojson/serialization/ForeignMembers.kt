@@ -22,13 +22,13 @@ internal val StreamingGeoJsonMapDescriptor: SerialDescriptor =
 
 internal val GeometryCoordinateSchemaKeys: Set<String> = setOf("type", "bbox", "coordinates")
 internal val GeometryCoordinateForbiddenKeys: Set<String> =
-    setOf("geometry", "properties", "features")
+    setOf("geometry", "properties", "features", "geometries")
 internal val GeometryCoordinateReservedKeys: Set<String> =
     GeometryCoordinateSchemaKeys + GeometryCoordinateForbiddenKeys
 
 internal val GeometryCollectionSchemaKeys: Set<String> = setOf("type", "bbox", "geometries")
 internal val GeometryCollectionForbiddenKeys: Set<String> =
-    setOf("geometry", "properties", "features")
+    setOf("geometry", "properties", "features", "coordinates")
 internal val GeometryCollectionReservedKeys: Set<String> =
     GeometryCollectionSchemaKeys + GeometryCollectionForbiddenKeys
 

@@ -307,6 +307,28 @@ class ForeignMembersTest {
                 """
             )
         }
+        assertFailsWith<SerializationException> {
+            Point.fromJson(
+                """
+                {
+                    "type": "Point",
+                    "coordinates": [1.1, 2.2],
+                    "geometries": []
+                }
+                """
+            )
+        }
+        assertFailsWith<SerializationException> {
+            GeometryCollection.fromJson<Point>(
+                """
+                {
+                    "type": "GeometryCollection",
+                    "geometries": [],
+                    "coordinates": [1.1, 2.2]
+                }
+                """
+            )
+        }
     }
 
     @Test
@@ -359,6 +381,15 @@ class ForeignMembersTest {
             FeatureCollection<Nothing?, Nothing?>(
                 emptyList(),
                 foreignMembers = buildJsonObject { put("features", "nope") },
+            )
+        }
+        assertFailsWith<IllegalArgumentException> {
+            Point(1.0, 2.0, foreignMembers = buildJsonObject { put("geometries", "nope") })
+        }
+        assertFailsWith<IllegalArgumentException> {
+            GeometryCollection<Point>(
+                emptyList(),
+                foreignMembers = buildJsonObject { put("coordinates", "nope") },
             )
         }
         Point(1.0, 2.0, foreignMembers = buildJsonObject { put("id", "ok") })

@@ -79,4 +79,15 @@ class ForeignMembersTest {
         assertEquals(JsonPrimitive("zone-123"), multi.foreignMembers["zone_id"])
         assertPositionEquals(Position(-75.0, 45.0), multi.coordinates.single())
     }
+
+    @Test
+    fun collectionConversionsPreserveForeignMembers() {
+        val title = buildJsonObject { put("title", "zones") }
+        val collection = FeatureCollection(listOf(feature), foreignMembers = title)
+        val geometries = collection.toGeometryCollection()
+        assertEquals(JsonPrimitive("zones"), geometries.foreignMembers["title"])
+
+        val features = geometries.toFeatureCollection { properties = null }
+        assertEquals(JsonPrimitive("zones"), features.foreignMembers["title"])
+    }
 }

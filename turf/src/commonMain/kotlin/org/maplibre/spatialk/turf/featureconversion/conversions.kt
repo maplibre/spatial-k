@@ -112,7 +112,7 @@ public fun GeometryCollection<LineStringGeometry>.toMultiPolygon(
  * @return A [GeometryCollection] containing all non-null geometries from the feature collection.
  */
 public fun <T : Geometry> FeatureCollection<T?, *>.toGeometryCollection(): GeometryCollection<T> =
-    GeometryCollection(features.mapNotNull { it.geometry })
+    GeometryCollection(features.mapNotNull { it.geometry }, foreignMembers = foreignMembers)
 
 /**
  * Converts a [GeometryCollection] to a [FeatureCollection] by wrapping each geometry in a feature.
@@ -123,7 +123,11 @@ public fun <T : Geometry> FeatureCollection<T?, *>.toGeometryCollection(): Geome
 @JvmOverloads
 public fun <T : Geometry, P : @Serializable Any> GeometryCollection<T>.toFeatureCollection(
     block: FeatureBuilder<T, P?>.() -> Unit = {}
-): FeatureCollection<T, P?> = FeatureCollection(geometries.map { buildFeature(it) { block() } })
+): FeatureCollection<T, P?> =
+    FeatureCollection(
+        geometries.map { buildFeature(it) { block() } },
+        foreignMembers = foreignMembers,
+    )
 
 // Single -> Multi
 
