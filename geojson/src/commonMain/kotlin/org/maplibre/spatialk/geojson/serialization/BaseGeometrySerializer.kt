@@ -14,7 +14,6 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonEncoder
 import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
@@ -56,28 +55,18 @@ internal abstract class BaseGeometrySerializer<G : Geometry, C>(
     @OptIn(ExperimentalSerializationApi::class)
     override fun deserialize(decoder: Decoder): G {
         if (decoder is JsonDecoder) {
-            var type: String? = null
-            var bbox: BoundingBox? = null
             var coordinates: C? = null
-            val extras = linkedMapOf<String, JsonElement>()
-            decoder.forEachStreamingMember { key, valueIndex ->
-                when (key) {
-                    "type" -> type = decodeStreamingValue(valueIndex, typeSerializer)
-                    "bbox" -> bbox = decodeStreamingValue(valueIndex, bboxSerializer)
-                    "coordinates" ->
-                        coordinates = decodeStreamingValue(valueIndex, coordinatesSerializer)
-                    else -> extras[key] = decodeStreamingValue(valueIndex, JsonElement.serializer())
+            val members =
+                decoder.readStreamingGeoJson(typeSerializer, bboxSerializer) { key ->
+                    if (key != "coordinates") return@readStreamingGeoJson false
+                    coordinates = decode(coordinatesSerializer)
+                    true
                 }
-            }
-            val decodedType = type ?: throw MissingFieldException("type", serialName)
-            if (decodedType != serialName)
-                throw SerializationException("Expected type $serialName but found $decodedType")
-            val decodedCoordinates =
-                coordinates ?: throw MissingFieldException("coordinates", serialName)
+            members.requireType(serialName)
             return construct(
-                decodedCoordinates,
-                bbox,
-                foreignMembersFromExtras(extras, GeometryCoordinateForbiddenKeys),
+                coordinates ?: throw MissingFieldException("coordinates", serialName),
+                members.bbox,
+                members.foreignMembers(GeometryCoordinateForbiddenKeys),
             )
         }
 
@@ -102,11 +91,8 @@ internal abstract class BaseGeometrySerializer<G : Geometry, C>(
                 }
             }
 
-            if (type == null) throw MissingFieldException("type", serialName)
+            requireGeoJsonType(type, serialName)
             if (coordinates == null) throw MissingFieldException("coordinates", serialName)
-
-            if (type != serialName)
-                throw SerializationException("Expected type $serialName but found $type")
 
             construct(coordinates, bbox, EmptyForeignMembers)
         }

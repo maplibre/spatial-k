@@ -16,7 +16,6 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonEncoder
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.EmptyForeignMembers
@@ -84,26 +83,28 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
     @OptIn(ExperimentalSerializationApi::class)
     override fun deserialize(decoder: Decoder): Feature<T, P> {
         if (decoder is JsonDecoder) {
-            var type: String? = null
             var geometry: Any? = uninitialized
             var properties: Any? = uninitialized
             var id: FeatureId? = null
-            var bbox: BoundingBox? = null
-            val extras = linkedMapOf<String, JsonElement>()
-            decoder.forEachStreamingMember { key, valueIndex ->
-                when (key) {
-                    "type" -> type = decodeStreamingValue(valueIndex, typeSerializer)
-                    "geometry" -> geometry = decodeStreamingValue(valueIndex, geometrySerializer)
-                    "properties" ->
-                        properties = decodeStreamingValue(valueIndex, propertiesSerializer)
-                    "id" -> id = decodeStreamingValue(valueIndex, idSerializer)
-                    "bbox" -> bbox = decodeStreamingValue(valueIndex, bboxSerializer)
-                    else -> extras[key] = decodeStreamingValue(valueIndex, JsonElement.serializer())
+            val members =
+                decoder.readStreamingGeoJson(typeSerializer, bboxSerializer) { key ->
+                    when (key) {
+                        "geometry" -> {
+                            geometry = decode(geometrySerializer)
+                            true
+                        }
+                        "properties" -> {
+                            properties = decode(propertiesSerializer)
+                            true
+                        }
+                        "id" -> {
+                            id = decode(idSerializer)
+                            true
+                        }
+                        else -> false
+                    }
                 }
-            }
-            val decodedType = type ?: throw MissingFieldException("type", serialName)
-            if (decodedType != serialName)
-                throw SerializationException("Expected type $serialName but found $decodedType")
+            members.requireType(serialName)
             if (geometry === uninitialized) throw MissingFieldException("geometry", serialName)
             if (properties === uninitialized && GeoJson.STRICT)
                 throw MissingFieldException("properties", serialName)
@@ -112,8 +113,8 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
                 geometry as T,
                 if (properties === uninitialized) null as P else properties as P,
                 id,
-                bbox,
-                foreignMembersFromExtras(extras, FeatureForbiddenKeys),
+                members.bbox,
+                members.foreignMembers(FeatureForbiddenKeys),
             )
         }
 
@@ -142,13 +143,10 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
                 }
             }
 
-            if (type == null) throw MissingFieldException("type", serialName)
+            requireGeoJsonType(type, serialName)
             if (geometry == uninitialized) throw MissingFieldException("geometry", serialName)
             if (properties == uninitialized && GeoJson.STRICT)
                 throw MissingFieldException("properties", serialName)
-
-            if (type != serialName)
-                throw SerializationException("Expected type $serialName but found $type")
 
             @Suppress("UNCHECKED_CAST")
             Feature(

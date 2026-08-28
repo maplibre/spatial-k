@@ -28,12 +28,12 @@ import org.maplibre.spatialk.geojson.utils.assertJsonEquals
 
 class ForeignMembersTest {
 
-    @Serializable private data class GofsZoneMembers(val zone_id: String)
+    @Serializable private data class ZoneMembers(val zone_id: String)
 
     @Serializable private data class NameProp(val name: String)
 
     @Language("json")
-    private val gofsFeatureJson =
+    private val featureWithZoneJson =
         """
         {
             "type": "Feature",
@@ -44,7 +44,7 @@ class ForeignMembersTest {
         """
 
     @Language("json")
-    private val gofsFeatureCollectionJson =
+    private val featureCollectionWithZoneJson =
         """
         {
             "type": "FeatureCollection",
@@ -60,24 +60,24 @@ class ForeignMembersTest {
         """
 
     @Test
-    fun gofsFeatureZoneId() {
-        val feature = Feature.fromJson<Point, NameProp>(gofsFeatureJson)
+    fun featureZoneId() {
+        val feature = Feature.fromJson<Point, NameProp>(featureWithZoneJson)
         assertEquals("Station", feature.properties.name)
         assertEquals(JsonPrimitive("zone-123"), feature.foreignMembers["zone_id"])
         assertEquals(JsonPrimitive("zone-123"), feature.getForeignMember("zone_id"))
-        assertEquals(GofsZoneMembers("zone-123"), feature.decodeForeignMembers<GofsZoneMembers>())
+        assertEquals(ZoneMembers("zone-123"), feature.decodeForeignMembers<ZoneMembers>())
 
-        val collection = FeatureCollection.fromJson<Point, NameProp>(gofsFeatureCollectionJson)
+        val collection = FeatureCollection.fromJson<Point, NameProp>(featureCollectionWithZoneJson)
         assertEquals(
-            GofsZoneMembers("zone-123"),
-            collection.features.single().decodeForeignMembers<GofsZoneMembers>(),
+            ZoneMembers("zone-123"),
+            collection.features.single().decodeForeignMembers<ZoneMembers>(),
         )
     }
 
     @Test
     fun roundTripPreservesZoneId() {
-        val decoded = Feature.fromJson<Point, NameProp>(gofsFeatureJson)
-        assertJsonEquals(gofsFeatureJson, decoded.toJson())
+        val decoded = Feature.fromJson<Point, NameProp>(featureWithZoneJson)
+        assertJsonEquals(featureWithZoneJson, decoded.toJson())
     }
 
     @Test
@@ -86,7 +86,7 @@ class ForeignMembersTest {
             Feature(
                 geometry = Point(-75.0, 45.0),
                 properties = NameProp("Station"),
-                foreignMembers = GofsZoneMembers("zone-123").toForeignMembers(),
+                foreignMembers = ZoneMembers("zone-123").toForeignMembers(),
             )
         val json = GeoJson.jsonFormat.parseToJsonElement(feature.toJson()).jsonObject
         assertEquals(JsonPrimitive("zone-123"), json["zone_id"])
@@ -100,7 +100,7 @@ class ForeignMembersTest {
                 properties = buildJsonObject { put("name", "Station") },
                 foreignMembers = buildJsonObject { put("zone_id", "zone-123") },
             )
-        assertJsonEquals(gofsFeatureJson, fromBuilder.toJson())
+        assertJsonEquals(featureWithZoneJson, fromBuilder.toJson())
     }
 
     @Test
@@ -139,7 +139,6 @@ class ForeignMembersTest {
         assertIs<Point>(feature.geometry)
         val centerline = assertIs<JsonObject>(feature.foreignMembers["centerline"])
         assertEquals("LineString", centerline["type"]?.jsonPrimitive?.content)
-        assertIs<JsonObject>(feature.foreignMembers["centerline"])
         assertJsonEquals(json, feature.toJson())
     }
 
@@ -237,8 +236,8 @@ class ForeignMembersTest {
         val collection = FeatureCollection.fromJson<Point, NameProp>(json)
         assertEquals(JsonPrimitive("All zones"), collection.foreignMembers["title"])
         assertEquals(
-            GofsZoneMembers("zone-123"),
-            collection.features.single().decodeForeignMembers<GofsZoneMembers>(),
+            ZoneMembers("zone-123"),
+            collection.features.single().decodeForeignMembers<ZoneMembers>(),
         )
         assertEquals("Station", collection.features.single().properties.name)
         assertJsonEquals(json, collection.toJson())
@@ -431,7 +430,7 @@ class ForeignMembersTest {
 
     @Test
     fun polymorphicDecodersKeepExtras() {
-        val asObject = GeoJsonObject.fromJson(gofsFeatureJson)
+        val asObject = GeoJsonObject.fromJson(featureWithZoneJson)
         val feature = assertIs<Feature<*, *>>(asObject)
         assertEquals(JsonPrimitive("zone-123"), feature.foreignMembers["zone_id"])
 
@@ -453,10 +452,10 @@ class ForeignMembersTest {
     fun dslSetsForeignMembers() {
         val feature =
             buildFeature(Point(-75.0, 45.0), NameProp("Station")) {
-                foreignMembers = GofsZoneMembers("zone-123").toForeignMembers()
+                foreignMembers = ZoneMembers("zone-123").toForeignMembers()
             }
-        assertEquals(GofsZoneMembers("zone-123"), feature.decodeForeignMembers<GofsZoneMembers>())
-        assertJsonEquals(gofsFeatureJson, feature.toJson())
+        assertEquals(ZoneMembers("zone-123"), feature.decodeForeignMembers<ZoneMembers>())
+        assertJsonEquals(featureWithZoneJson, feature.toJson())
 
         val line = buildLineString {
             add(0.0, 0.0)

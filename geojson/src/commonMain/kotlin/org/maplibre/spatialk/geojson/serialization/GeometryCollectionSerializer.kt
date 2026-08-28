@@ -15,7 +15,6 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonEncoder
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.EmptyForeignMembers
@@ -57,28 +56,18 @@ internal class GeometryCollectionSerializer<T : Geometry>(geometrySerializer: KS
     @OptIn(ExperimentalSerializationApi::class)
     override fun deserialize(decoder: Decoder): GeometryCollection<T> {
         if (decoder is JsonDecoder) {
-            var type: String? = null
-            var bbox: BoundingBox? = null
             var geometries: List<T>? = null
-            val extras = linkedMapOf<String, JsonElement>()
-            decoder.forEachStreamingMember { key, valueIndex ->
-                when (key) {
-                    "type" -> type = decodeStreamingValue(valueIndex, typeSerializer)
-                    "bbox" -> bbox = decodeStreamingValue(valueIndex, bboxSerializer)
-                    "geometries" ->
-                        geometries = decodeStreamingValue(valueIndex, geometriesSerializer)
-                    else -> extras[key] = decodeStreamingValue(valueIndex, JsonElement.serializer())
+            val members =
+                decoder.readStreamingGeoJson(typeSerializer, bboxSerializer) { key ->
+                    if (key != "geometries") return@readStreamingGeoJson false
+                    geometries = decode(geometriesSerializer)
+                    true
                 }
-            }
-            val decodedType = type ?: throw MissingFieldException("type", serialName)
-            if (decodedType != serialName)
-                throw SerializationException("Expected type $serialName but found $decodedType")
-            val decodedGeometries =
-                geometries ?: throw MissingFieldException("geometries", serialName)
+            members.requireType(serialName)
             return GeometryCollection(
-                decodedGeometries,
-                bbox,
-                foreignMembersFromExtras(extras, GeometryCollectionForbiddenKeys),
+                geometries ?: throw MissingFieldException("geometries", serialName),
+                members.bbox,
+                members.foreignMembers(GeometryCollectionForbiddenKeys),
             )
         }
 
@@ -101,11 +90,8 @@ internal class GeometryCollectionSerializer<T : Geometry>(geometrySerializer: KS
                 }
             }
 
-            if (type == null) throw MissingFieldException("type", serialName)
+            requireGeoJsonType(type, serialName)
             if (geometries == null) throw MissingFieldException("geometries", serialName)
-
-            if (type != serialName)
-                throw SerializationException("Expected type $serialName but found $type")
 
             GeometryCollection(geometries, bbox, EmptyForeignMembers)
         }

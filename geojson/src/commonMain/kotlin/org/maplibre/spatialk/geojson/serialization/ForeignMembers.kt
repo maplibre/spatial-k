@@ -2,6 +2,7 @@ package org.maplibre.spatialk.geojson.serialization
 
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.builtins.MapSerializer
@@ -15,38 +16,61 @@ import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonEncoder
 import kotlinx.serialization.json.JsonObject
+import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.EmptyForeignMembers
 
 internal val StreamingGeoJsonMapDescriptor: SerialDescriptor =
     MapSerializer(String.serializer(), JsonElement.serializer()).descriptor
 
-internal val GeometryCoordinateSchemaKeys: Set<String> = setOf("type", "bbox", "coordinates")
 internal val GeometryCoordinateForbiddenKeys: Set<String> =
     setOf("geometry", "properties", "features", "geometries")
 internal val GeometryCoordinateReservedKeys: Set<String> =
-    GeometryCoordinateSchemaKeys + GeometryCoordinateForbiddenKeys
+    setOf("type", "bbox", "coordinates") + GeometryCoordinateForbiddenKeys
 
-internal val GeometryCollectionSchemaKeys: Set<String> = setOf("type", "bbox", "geometries")
 internal val GeometryCollectionForbiddenKeys: Set<String> =
     setOf("geometry", "properties", "features", "coordinates")
 internal val GeometryCollectionReservedKeys: Set<String> =
-    GeometryCollectionSchemaKeys + GeometryCollectionForbiddenKeys
+    setOf("type", "bbox", "geometries") + GeometryCollectionForbiddenKeys
 
-internal val FeatureSchemaKeys: Set<String> = setOf("type", "bbox", "geometry", "properties", "id")
 internal val FeatureForbiddenKeys: Set<String> = setOf("coordinates", "geometries", "features")
-internal val FeatureReservedKeys: Set<String> = FeatureSchemaKeys + FeatureForbiddenKeys
+internal val FeatureReservedKeys: Set<String> =
+    setOf("type", "bbox", "geometry", "properties", "id") + FeatureForbiddenKeys
 
-internal val FeatureCollectionSchemaKeys: Set<String> = setOf("type", "bbox", "features")
 internal val FeatureCollectionForbiddenKeys: Set<String> =
     setOf("coordinates", "geometries", "geometry", "properties")
 internal val FeatureCollectionReservedKeys: Set<String> =
-    FeatureCollectionSchemaKeys + FeatureCollectionForbiddenKeys
+    setOf("type", "bbox", "features") + FeatureCollectionForbiddenKeys
 
 internal fun validateForeignMembers(foreignMembers: JsonObject, reserved: Set<String>) {
-    val conflict = foreignMembers.keys.firstOrNull { it in reserved }
+    val conflict = reservedConflict(foreignMembers.keys, reserved)
     require(conflict == null) {
         "Foreign member \"$conflict\" conflicts with a reserved GeoJSON member name"
     }
+}
+
+internal fun foreignMembersFromExtras(
+    extras: Map<String, JsonElement>,
+    forbidden: Set<String>,
+): JsonObject {
+    val conflict = reservedConflict(extras.keys, forbidden)
+    if (conflict != null) {
+        throw SerializationException(
+            "Foreign member \"$conflict\" conflicts with a reserved GeoJSON member name"
+        )
+    }
+    return if (extras.isEmpty()) EmptyForeignMembers else JsonObject(extras)
+}
+
+private fun reservedConflict(keys: Set<String>, reserved: Set<String>): String? = keys.firstOrNull {
+    it in reserved
+}
+
+@OptIn(ExperimentalSerializationApi::class)
+internal fun requireGeoJsonType(type: String?, serialName: String): String {
+    val decoded = type ?: throw MissingFieldException("type", serialName)
+    if (decoded != serialName)
+        throw SerializationException("Expected type $serialName but found $decoded")
+    return decoded
 }
 
 internal class StreamingGeoJsonWriter(private val encoder: CompositeEncoder) {
@@ -73,38 +97,54 @@ internal inline fun JsonEncoder.encodeStreamingGeoJsonObject(
     }
 }
 
-internal fun foreignMembersFromExtras(
-    extras: Map<String, JsonElement>,
-    forbidden: Set<String>,
-): JsonObject {
-    val conflict = extras.keys.firstOrNull { it in forbidden }
-    if (conflict != null) {
-        throw SerializationException(
-            "Foreign member \"$conflict\" conflicts with a reserved GeoJSON member name"
-        )
-    }
-    return if (extras.isEmpty()) EmptyForeignMembers else JsonObject(extras)
+internal class StreamingGeoJsonValue(
+    private val decoder: CompositeDecoder,
+    private val index: Int,
+) {
+    fun <T> decode(serializer: DeserializationStrategy<T>): T =
+        decoder.decodeSerializableElement(StreamingGeoJsonMapDescriptor, index, serializer)
 }
 
-internal fun <T> CompositeDecoder.decodeStreamingValue(
-    valueIndex: Int,
-    deserializer: DeserializationStrategy<T>,
-): T = decodeSerializableElement(StreamingGeoJsonMapDescriptor, valueIndex, deserializer)
+internal class StreamingGeoJsonMembers {
+    var type: String? = null
+    var bbox: BoundingBox? = null
+    val extras: MutableMap<String, JsonElement> = linkedMapOf()
+
+    fun requireType(serialName: String): String = requireGeoJsonType(type, serialName)
+
+    fun foreignMembers(forbidden: Set<String>): JsonObject =
+        foreignMembersFromExtras(extras, forbidden)
+}
 
 /**
  * Walks a JSON object as a map so large members such as `features` can be decoded without first
- * materializing the whole document as a [JsonObject] tree.
+ * materializing the whole document as a [JsonObject] tree. [handle] returns true when [key] was a
+ * known member.
  */
 @OptIn(ExperimentalSerializationApi::class)
-internal inline fun JsonDecoder.forEachStreamingMember(
-    crossinline consume: CompositeDecoder.(key: String, valueIndex: Int) -> Unit
-) {
+internal fun JsonDecoder.readStreamingGeoJson(
+    typeSerializer: DeserializationStrategy<String>,
+    bboxSerializer: DeserializationStrategy<BoundingBox?>,
+    handle: StreamingGeoJsonValue.(key: String) -> Boolean,
+): StreamingGeoJsonMembers {
+    val members = StreamingGeoJsonMembers()
     decodeStructure(StreamingGeoJsonMapDescriptor) {
+        fun consume(key: String, valueIndex: Int) {
+            val value = StreamingGeoJsonValue(this, valueIndex)
+            when (key) {
+                "type" -> members.type = value.decode(typeSerializer)
+                "bbox" -> members.bbox = value.decode(bboxSerializer)
+                else ->
+                    if (!value.handle(key)) {
+                        members.extras[key] = value.decode(JsonElement.serializer())
+                    }
+            }
+        }
+
         if (decodeSequentially()) {
             val size = decodeCollectionSize(StreamingGeoJsonMapDescriptor)
             for (index in 0 until size * 2 step 2) {
-                val key = decodeStringElement(StreamingGeoJsonMapDescriptor, index)
-                consume(key, index + 1)
+                consume(decodeStringElement(StreamingGeoJsonMapDescriptor, index), index + 1)
             }
         } else {
             while (true) {
@@ -119,4 +159,5 @@ internal inline fun JsonDecoder.forEachStreamingMember(
             }
         }
     }
+    return members
 }

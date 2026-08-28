@@ -16,7 +16,6 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonEncoder
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.EmptyForeignMembers
@@ -62,26 +61,18 @@ internal class FeatureCollectionSerializer<T : Geometry?, P : @Serializable Any?
     @OptIn(ExperimentalSerializationApi::class)
     override fun deserialize(decoder: Decoder): FeatureCollection<T, P> {
         if (decoder is JsonDecoder) {
-            var type: String? = null
-            var bbox: BoundingBox? = null
             var features: List<Feature<T, P>>? = null
-            val extras = linkedMapOf<String, JsonElement>()
-            decoder.forEachStreamingMember { key, valueIndex ->
-                when (key) {
-                    "type" -> type = decodeStreamingValue(valueIndex, typeSerializer)
-                    "bbox" -> bbox = decodeStreamingValue(valueIndex, bboxSerializer)
-                    "features" -> features = decodeStreamingValue(valueIndex, featuresSerializer)
-                    else -> extras[key] = decodeStreamingValue(valueIndex, JsonElement.serializer())
+            val members =
+                decoder.readStreamingGeoJson(typeSerializer, bboxSerializer) { key ->
+                    if (key != "features") return@readStreamingGeoJson false
+                    features = decode(featuresSerializer)
+                    true
                 }
-            }
-            val decodedType = type ?: throw MissingFieldException("type", serialName)
-            if (decodedType != serialName)
-                throw SerializationException("Expected type $serialName but found $decodedType")
-            val decodedFeatures = features ?: throw MissingFieldException("features", serialName)
+            members.requireType(serialName)
             return FeatureCollection(
-                decodedFeatures,
-                bbox,
-                foreignMembersFromExtras(extras, FeatureCollectionForbiddenKeys),
+                features ?: throw MissingFieldException("features", serialName),
+                members.bbox,
+                members.foreignMembers(FeatureCollectionForbiddenKeys),
             )
         }
 
@@ -90,7 +81,6 @@ internal class FeatureCollectionSerializer<T : Geometry?, P : @Serializable Any?
             var bbox: BoundingBox? = null
             var features: List<Feature<T, P>>? = null
 
-            @OptIn(ExperimentalSerializationApi::class)
             if (decodeSequentially()) {
                 type = decodeSerializableElement(descriptor, 0, typeSerializer)
                 bbox = decodeSerializableElement(descriptor, 1, bboxSerializer)
@@ -105,9 +95,8 @@ internal class FeatureCollectionSerializer<T : Geometry?, P : @Serializable Any?
                 }
             }
 
-            if (type != serialName)
-                throw SerializationException("Expected type $serialName but found $type")
-            if (features == null) throw SerializationException("Expected features to be present")
+            requireGeoJsonType(type, serialName)
+            if (features == null) throw MissingFieldException("features", serialName)
 
             FeatureCollection(features, bbox, EmptyForeignMembers)
         }
