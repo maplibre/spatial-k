@@ -2,6 +2,7 @@ package org.maplibre.spatialk.geojson.serialization
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -15,9 +16,9 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.json.JsonDecoder
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonEncoder
 import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.put
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.EmptyForeignMembers
@@ -66,29 +67,29 @@ internal class FeatureCollectionSerializer<T : Geometry?, P : @Serializable Any?
         }
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     override fun deserialize(decoder: Decoder): FeatureCollection<T, P> {
         if (decoder is JsonDecoder) {
-            val obj = decodeGeoJsonObject(decoder)
-            val type =
-                decoder.json.decodeFromJsonElement(
-                    typeSerializer,
-                    obj.requireMember("type", serialName),
-                )
-            if (type != serialName)
-                throw SerializationException("Expected type $serialName but found $type")
-            val features =
-                decoder.json.decodeFromJsonElement(
-                    featuresSerializer,
-                    obj.requireMember("features", serialName),
-                )
-            val bbox = obj["bbox"]?.let { decoder.json.decodeFromJsonElement(bboxSerializer, it) }
+            var type: String? = null
+            var bbox: BoundingBox? = null
+            var features: List<Feature<T, P>>? = null
+            val extras = linkedMapOf<String, JsonElement>()
+            decoder.forEachStreamingMember { key, valueIndex ->
+                when (key) {
+                    "type" -> type = decodeStreamingValue(valueIndex, typeSerializer)
+                    "bbox" -> bbox = decodeStreamingValue(valueIndex, bboxSerializer)
+                    "features" -> features = decodeStreamingValue(valueIndex, featuresSerializer)
+                    else -> extras[key] = decodeStreamingValue(valueIndex, JsonElement.serializer())
+                }
+            }
+            val decodedType = type ?: throw MissingFieldException("type", serialName)
+            if (decodedType != serialName)
+                throw SerializationException("Expected type $serialName but found $decodedType")
+            val decodedFeatures = features ?: throw MissingFieldException("features", serialName)
             return FeatureCollection(
-                features,
+                decodedFeatures,
                 bbox,
-                obj.extractForeignMembers(
-                    FeatureCollectionSchemaKeys,
-                    FeatureCollectionForbiddenKeys,
-                ),
+                foreignMembersFromExtras(extras, FeatureCollectionForbiddenKeys),
             )
         }
 

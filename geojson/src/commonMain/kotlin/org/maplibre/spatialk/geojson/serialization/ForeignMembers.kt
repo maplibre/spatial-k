@@ -1,13 +1,22 @@
 package org.maplibre.spatialk.geojson.serialization
 
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonEncoder
 import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.EmptyForeignMembers
+
+internal val StreamingGeoJsonMapDescriptor: SerialDescriptor =
+    MapSerializer(String.serializer(), JsonElement.serializer()).descriptor
 
 internal val GeometryCoordinateSchemaKeys: Set<String> = setOf("type", "bbox", "coordinates")
 internal val GeometryCoordinateForbiddenKeys: Set<String> =
@@ -66,6 +75,54 @@ internal fun decodeGeoJsonObject(decoder: JsonDecoder): JsonObject {
     val element = decoder.decodeJsonElement()
     return element as? JsonObject
         ?: throw SerializationException("Expected a JSON object but found $element")
+}
+
+internal fun foreignMembersFromExtras(
+    extras: Map<String, JsonElement>,
+    forbidden: Set<String>,
+): JsonObject {
+    val conflict = extras.keys.firstOrNull { it in forbidden }
+    if (conflict != null) {
+        throw SerializationException(
+            "Foreign member \"$conflict\" conflicts with a reserved GeoJSON member name"
+        )
+    }
+    return if (extras.isEmpty()) EmptyForeignMembers else JsonObject(extras)
+}
+
+internal fun <T> CompositeDecoder.decodeStreamingValue(
+    valueIndex: Int,
+    deserializer: DeserializationStrategy<T>,
+): T = decodeSerializableElement(StreamingGeoJsonMapDescriptor, valueIndex, deserializer)
+
+/**
+ * Walks a JSON object as a map so large members such as `features` can be decoded without first
+ * materializing the whole document as a [JsonObject] tree.
+ */
+@OptIn(ExperimentalSerializationApi::class)
+internal inline fun JsonDecoder.forEachStreamingMember(
+    crossinline consume: CompositeDecoder.(key: String, valueIndex: Int) -> Unit
+) {
+    decodeStructure(StreamingGeoJsonMapDescriptor) {
+        if (decodeSequentially()) {
+            val size = decodeCollectionSize(StreamingGeoJsonMapDescriptor)
+            for (index in 0 until size * 2 step 2) {
+                val key = decodeStringElement(StreamingGeoJsonMapDescriptor, index)
+                consume(key, index + 1)
+            }
+        } else {
+            while (true) {
+                val keyIndex = decodeElementIndex(StreamingGeoJsonMapDescriptor)
+                if (keyIndex == CompositeDecoder.DECODE_DONE) break
+                val key = decodeStringElement(StreamingGeoJsonMapDescriptor, keyIndex)
+                val valueIndex = decodeElementIndex(StreamingGeoJsonMapDescriptor)
+                if (valueIndex == CompositeDecoder.DECODE_DONE) {
+                    throw SerializationException("Expected a value for \"$key\"")
+                }
+                consume(key, valueIndex)
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalSerializationApi::class)

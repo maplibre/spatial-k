@@ -199,6 +199,53 @@ class ForeignMembersTest {
     }
 
     @Test
+    fun featureCollectionExtrasAfterFeatures() {
+        @Language("json")
+        val json =
+            """
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    {
+                        "type": "Feature",
+                        "geometry": { "type": "Point", "coordinates": [-75.0, 45.0] },
+                        "properties": { "name": "Station" },
+                        "zone_id": "zone-123"
+                    }
+                ],
+                "title": "All zones"
+            }
+            """
+        val collection = FeatureCollection.fromJson<Point, NameProp>(json)
+        assertEquals(JsonPrimitive("All zones"), collection.foreignMembers["title"])
+        assertEquals(
+            GofsZoneMembers("zone-123"),
+            collection.features.single().decodeForeignMembers<GofsZoneMembers>(),
+        )
+        assertEquals("Station", collection.features.single().properties.name)
+        assertJsonEquals(json, collection.toJson())
+    }
+
+    @Test
+    fun geometryCollectionExtras() {
+        @Language("json")
+        val json =
+            """
+            {
+                "type": "GeometryCollection",
+                "geometries": [
+                    { "type": "Point", "coordinates": [1.0, 2.0] }
+                ],
+                "title": "points"
+            }
+            """
+        val collection = GeometryCollection.fromJson<Point>(json)
+        assertEquals(JsonPrimitive("points"), collection.foreignMembers["title"])
+        assertEquals(1, collection.geometries.size)
+        assertJsonEquals(json, collection.toJson())
+    }
+
+    @Test
     fun emptyBagOmittedFromJson() {
         val json = Point(12.3, 45.6).toJson()
         assertFalse(json.contains("foreignMembers"))
@@ -227,6 +274,17 @@ class ForeignMembersTest {
                     "type": "Point",
                     "coordinates": [1.1, 2.2],
                     "properties": { "name": "nope" }
+                }
+                """
+            )
+        }
+        assertFailsWith<SerializationException> {
+            FeatureCollection.fromJson<Nothing?, Nothing?>(
+                """
+                {
+                    "type": "FeatureCollection",
+                    "features": [],
+                    "geometry": { "type": "Point", "coordinates": [1.1, 2.2] }
                 }
                 """
             )
