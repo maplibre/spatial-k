@@ -81,14 +81,14 @@ internal class FeatureCollectionSerializer<T : Geometry?, P : @Serializable Any?
                     featuresSerializer,
                     obj.requireMember("features", serialName),
                 )
-            val bbox =
-                obj["bbox"]?.let {
-                    decoder.json.decodeFromJsonElement(BoundingBox.serializer(), it)
-                }
+            val bbox = obj["bbox"]?.let { decoder.json.decodeFromJsonElement(bboxSerializer, it) }
             return FeatureCollection(
                 features,
                 bbox,
-                obj.without(FeatureCollectionReservedKeys),
+                obj.extractForeignMembers(
+                    FeatureCollectionSchemaKeys,
+                    FeatureCollectionForbiddenKeys,
+                ),
             )
         }
 

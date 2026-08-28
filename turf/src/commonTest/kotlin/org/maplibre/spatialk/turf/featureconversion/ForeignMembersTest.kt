@@ -8,6 +8,8 @@ import kotlinx.serialization.json.put
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Point
+import org.maplibre.spatialk.geojson.Position
+import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.turf.measurement.withComputedBbox
 
 class ForeignMembersTest {
@@ -27,7 +29,7 @@ class ForeignMembersTest {
     @Test
     fun mapGeometryPreservesForeignMembers() {
         val mapped = feature.mapGeometry { Point(0.0, 0.0) }
-        assertEquals(Point(0.0, 0.0), mapped.geometry)
+        assertPositionEquals(Position(0.0, 0.0), mapped.geometry.coordinates)
         assertEquals(JsonPrimitive("zone-123"), mapped.foreignMembers["zone_id"])
     }
 

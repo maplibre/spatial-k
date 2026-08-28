@@ -9,17 +9,27 @@ import kotlinx.serialization.json.JsonEncoder
 import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.EmptyForeignMembers
 
+internal val GeometryCoordinateSchemaKeys: Set<String> = setOf("type", "bbox", "coordinates")
+internal val GeometryCoordinateForbiddenKeys: Set<String> =
+    setOf("geometry", "properties", "features")
 internal val GeometryCoordinateReservedKeys: Set<String> =
-    setOf("type", "bbox", "coordinates", "geometry", "properties", "features")
+    GeometryCoordinateSchemaKeys + GeometryCoordinateForbiddenKeys
 
+internal val GeometryCollectionSchemaKeys: Set<String> = setOf("type", "bbox", "geometries")
+internal val GeometryCollectionForbiddenKeys: Set<String> =
+    setOf("geometry", "properties", "features")
 internal val GeometryCollectionReservedKeys: Set<String> =
-    setOf("type", "bbox", "geometries", "geometry", "properties", "features")
+    GeometryCollectionSchemaKeys + GeometryCollectionForbiddenKeys
 
-internal val FeatureReservedKeys: Set<String> =
-    setOf("type", "bbox", "geometry", "properties", "id", "coordinates", "geometries", "features")
+internal val FeatureSchemaKeys: Set<String> = setOf("type", "bbox", "geometry", "properties", "id")
+internal val FeatureForbiddenKeys: Set<String> = setOf("coordinates", "geometries", "features")
+internal val FeatureReservedKeys: Set<String> = FeatureSchemaKeys + FeatureForbiddenKeys
 
+internal val FeatureCollectionSchemaKeys: Set<String> = setOf("type", "bbox", "features")
+internal val FeatureCollectionForbiddenKeys: Set<String> =
+    setOf("coordinates", "geometries", "geometry", "properties")
 internal val FeatureCollectionReservedKeys: Set<String> =
-    setOf("type", "bbox", "features", "coordinates", "geometries", "geometry", "properties")
+    FeatureCollectionSchemaKeys + FeatureCollectionForbiddenKeys
 
 internal fun validateForeignMembers(foreignMembers: JsonObject, reserved: Set<String>) {
     val conflict = foreignMembers.keys.firstOrNull { it in reserved }
@@ -28,9 +38,18 @@ internal fun validateForeignMembers(foreignMembers: JsonObject, reserved: Set<St
     }
 }
 
-internal fun JsonObject.without(reserved: Set<String>): JsonObject {
-    val remaining = filterKeys { it !in reserved }
-    return if (remaining.isEmpty()) EmptyForeignMembers else JsonObject(remaining)
+internal fun JsonObject.extractForeignMembers(
+    schema: Set<String>,
+    forbidden: Set<String>,
+): JsonObject {
+    val extras = filterKeys { it !in schema }
+    val conflict = extras.keys.firstOrNull { it in forbidden }
+    if (conflict != null) {
+        throw SerializationException(
+            "Foreign member \"$conflict\" conflicts with a reserved GeoJSON member name"
+        )
+    }
+    return if (extras.isEmpty()) EmptyForeignMembers else JsonObject(extras)
 }
 
 internal fun encodeGeoJsonObject(

@@ -78,14 +78,14 @@ internal class GeometryCollectionSerializer<T : Geometry>(geometrySerializer: KS
                     geometriesSerializer,
                     obj.requireMember("geometries", serialName),
                 )
-            val bbox =
-                obj["bbox"]?.let {
-                    decoder.json.decodeFromJsonElement(BoundingBox.serializer(), it)
-                }
+            val bbox = obj["bbox"]?.let { decoder.json.decodeFromJsonElement(bboxSerializer, it) }
             return GeometryCollection(
                 geometries,
                 bbox,
-                obj.without(GeometryCollectionReservedKeys),
+                obj.extractForeignMembers(
+                    GeometryCollectionSchemaKeys,
+                    GeometryCollectionForbiddenKeys,
+                ),
             )
         }
 

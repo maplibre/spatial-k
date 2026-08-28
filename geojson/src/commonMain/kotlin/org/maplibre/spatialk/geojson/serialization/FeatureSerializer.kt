@@ -117,13 +117,16 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
                     decoder.json.decodeFromJsonElement(propertiesSerializer, propertiesElement)
                 }
 
-            val id = obj["id"]?.let { decoder.json.decodeFromJsonElement(FeatureIdSerializer, it) }
-            val bbox =
-                obj["bbox"]?.let {
-                    decoder.json.decodeFromJsonElement(BoundingBox.serializer(), it)
-                }
+            val id = obj["id"]?.let { decoder.json.decodeFromJsonElement(idSerializer, it) }
+            val bbox = obj["bbox"]?.let { decoder.json.decodeFromJsonElement(bboxSerializer, it) }
 
-            return Feature(geometry, properties, id, bbox, obj.without(FeatureReservedKeys))
+            return Feature(
+                geometry,
+                properties,
+                id,
+                bbox,
+                obj.extractForeignMembers(FeatureSchemaKeys, FeatureForbiddenKeys),
+            )
         }
 
         return decoder.decodeStructure(descriptor) {

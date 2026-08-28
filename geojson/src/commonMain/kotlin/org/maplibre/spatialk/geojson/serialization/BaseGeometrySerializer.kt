@@ -77,11 +77,15 @@ internal abstract class BaseGeometrySerializer<G : Geometry, C>(
                     coordinatesSerializer,
                     obj.requireMember("coordinates", serialName),
                 )
-            val bbox =
-                obj["bbox"]?.let {
-                    decoder.json.decodeFromJsonElement(BoundingBox.serializer(), it)
-                }
-            return construct(coordinates, bbox, obj.without(GeometryCoordinateReservedKeys))
+            val bbox = obj["bbox"]?.let { decoder.json.decodeFromJsonElement(bboxSerializer, it) }
+            return construct(
+                coordinates,
+                bbox,
+                obj.extractForeignMembers(
+                    GeometryCoordinateSchemaKeys,
+                    GeometryCoordinateForbiddenKeys,
+                ),
+            )
         }
 
         return decoder.decodeStructure(descriptor) {

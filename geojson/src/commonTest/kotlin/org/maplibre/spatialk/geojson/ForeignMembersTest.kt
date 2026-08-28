@@ -8,6 +8,7 @@ import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
@@ -203,6 +204,67 @@ class ForeignMembersTest {
         assertFalse(json.contains("foreignMembers"))
         assertEquals("""{"type":"Point","coordinates":[12.3,45.6]}""", json)
         assertEquals(EmptyForeignMembers, Point(12.3, 45.6).foreignMembers)
+    }
+
+    @Test
+    fun forbiddenReservedKeysRejectedOnDecode() {
+        assertFailsWith<SerializationException> {
+            Feature.fromJson<Point, Nothing?>(
+                """
+                {
+                    "type": "Feature",
+                    "geometry": { "type": "Point", "coordinates": [1.1, 2.2] },
+                    "properties": null,
+                    "coordinates": [1.1, 2.2]
+                }
+                """
+            )
+        }
+        assertFailsWith<SerializationException> {
+            Point.fromJson(
+                """
+                {
+                    "type": "Point",
+                    "coordinates": [1.1, 2.2],
+                    "properties": { "name": "nope" }
+                }
+                """
+            )
+        }
+    }
+
+    @Test
+    fun explicitNullIdAndBboxDecode() {
+        val feature =
+            Feature.fromJson<Point, Nothing?>(
+                """
+                {
+                    "type": "Feature",
+                    "geometry": { "type": "Point", "coordinates": [1.1, 2.2] },
+                    "properties": null,
+                    "id": null,
+                    "bbox": null,
+                    "title": "Example Feature"
+                }
+                """
+            )
+        assertNull(feature.id)
+        assertNull(feature.bbox)
+        assertEquals(JsonPrimitive("Example Feature"), feature.foreignMembers["title"])
+
+        val point =
+            Point.fromJson(
+                """
+                {
+                    "type": "Point",
+                    "coordinates": [1.1, 2.2],
+                    "bbox": null,
+                    "title": "origin"
+                }
+                """
+            )
+        assertNull(point.bbox)
+        assertEquals(JsonPrimitive("origin"), point.foreignMembers["title"])
     }
 
     @Test
