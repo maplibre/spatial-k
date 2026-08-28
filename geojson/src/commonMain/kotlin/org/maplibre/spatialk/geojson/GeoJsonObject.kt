@@ -12,9 +12,8 @@ import org.maplibre.spatialk.geojson.serialization.GeoJsonObjectSerializer
  * A [GeoJsonObject] represents a [Geometry], [Feature], or [FeatureCollection].
  *
  * @property bbox An optional [BoundingBox] used to represent the limits of the object's [Geometry].
- * @property foreignMembers Members not defined by RFC 7946. Empty when none are present. GeoJSON
- *   semantics do not apply to these values ([RFC 7946
- *   §6.1](https://tools.ietf.org/html/rfc7946#section-6.1)).
+ * @property foreignMembers Additional members as defined in
+ *   [RFC 7946 §6.1](https://tools.ietf.org/html/rfc7946#section-6.1). Empty when none are present.
  */
 @Serializable(with = GeoJsonObjectSerializer::class)
 public sealed interface GeoJsonObject {
@@ -26,8 +25,6 @@ public sealed interface GeoJsonObject {
     public companion object {
         /**
          * Returns the foreign member with the given [key], or null if it is not present.
-         *
-         * This reads [GeoJsonObject.foreignMembers], not [Feature.properties].
          *
          * @param key The foreign member name.
          * @return The value, or null if [key] is not present.

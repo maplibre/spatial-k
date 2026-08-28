@@ -20,7 +20,8 @@ import org.maplibre.spatialk.geojson.Geometry
  * @property properties Additional properties about this [Feature].
  * @property id An optional identifier for this [Feature].
  * @property bbox An optional [BoundingBox] for this [Feature].
- * @property foreignMembers Members not defined by RFC 7946. These are not [properties].
+ * @property foreignMembers Additional members as defined in
+ *   [RFC 7946 §6.1](https://tools.ietf.org/html/rfc7946#section-6.1).
  * @see Feature
  * @see buildFeature
  */

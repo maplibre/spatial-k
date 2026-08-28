@@ -19,7 +19,7 @@ import org.maplibre.spatialk.geojson.dsl.*
 class KotlinDocsTest {
 
     // --8<-- [start:foreignMembersType]
-    @Serializable data class GofsZoneMembers(val zone_id: String)
+    @Serializable data class TitleMembers(val title: String)
 
     // --8<-- [end:foreignMembersType]
 
@@ -774,14 +774,14 @@ class KotlinDocsTest {
                         geometry = Point(-75.0, 45.0),
                         properties = buildJsonObject { put("name", "Station") },
                     ) {
-                        foreignMembers = GofsZoneMembers(zone_id = "zone-123").toForeignMembers()
+                        foreignMembers = TitleMembers(title = "Example Feature").toForeignMembers()
                     }
 
-                val zoneMembers = feature.decodeForeignMembers<GofsZoneMembers>()
-                val zoneId = zoneMembers.zone_id // "zone-123"
+                val titleMembers = feature.decodeForeignMembers<TitleMembers>()
+                val title = titleMembers.title // "Example Feature"
                 // --8<-- [end:foreignMembersKt]
 
-                assertEquals("zone-123", zoneId)
+                assertEquals("Example Feature", title)
                 feature.toJson()
             },
             json =
@@ -796,7 +796,7 @@ class KotlinDocsTest {
                     "properties": {
                         "name": "Station"
                     },
-                    "zone_id": "zone-123"
+                    "title": "Example Feature"
                 }
                 // --8<-- [end:foreignMembersJson]
             """,

@@ -15,14 +15,7 @@ import kotlinx.serialization.json.encodeToJsonElement
 internal val EmptyForeignMembers: JsonObject = JsonObject(emptyMap())
 
 /**
- * Decodes [foreignMembers] into a typed object.
- *
- * This is **not** [Feature.properties]. Foreign members are leftover JSON keys on the GeoJSON
- * object itself (RFC 7946 §6.1). GeoJSON semantics do not apply to these values: a foreign member
- * that looks like a geometry (RFC example: `centerline`) is not a [Geometry].
- *
- * GOFS example: `decodeForeignMembers<GofsZoneMembers>()` where `@Serializable data class
- * GofsZoneMembers(val zone_id: String)`.
+ * Decodes [foreignMembers] as [T].
  *
  * @return The decoded foreign members.
  * @throws SerializationException if [foreignMembers] cannot be decoded as [T].
@@ -32,13 +25,7 @@ public inline fun <reified T : Any> GeoJsonObject.decodeForeignMembers(): T =
     GeoJson.jsonFormat.decodeFromJsonElement(foreignMembers)
 
 /**
- * Encodes this object as a [JsonObject] suitable for [GeoJsonObject.foreignMembers].
- *
- * This is **not** [Feature.properties]. The receiver must serialize to a JSON object, not a
- * primitive or array. Foreign values are not GeoJSON-typed (RFC 7946 §6.1).
- *
- * GOFS example: `GofsZoneMembers(zone_id = "zone-123").toForeignMembers()` where `@Serializable
- * data class GofsZoneMembers(val zone_id: String)`.
+ * Encodes this object as a [JsonObject] for [GeoJsonObject.foreignMembers].
  *
  * @return This object encoded as a [JsonObject].
  * @throws SerializationException if this value does not encode to a JSON object.

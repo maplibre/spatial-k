@@ -360,14 +360,14 @@ public class JavaDocsTest {
     JsonElementBuildersKt.put(properties, "name", "Station");
 
     JsonObjectBuilder extras = new JsonObjectBuilder();
-    JsonElementBuildersKt.put(extras, "zone_id", "zone-123");
+    JsonElementBuildersKt.put(extras, "title", "Example Feature");
 
     Feature<Point, JsonObject> feature =
         new Feature<>(new Point(-75.0, 45.0), properties.build(), null, null, extras.build());
 
-    JsonElement zoneId = GeoJsonObject.getForeignMember(feature, "zone_id");
-    String zoneIdValue = ((JsonPrimitive) zoneId).getContent(); // "zone-123"
+    JsonElement title = GeoJsonObject.getForeignMember(feature, "title");
+    String titleValue = ((JsonPrimitive) title).getContent(); // "Example Feature"
     // --8<-- [end:foreignMembersJava]
-    assertEquals("zone-123", zoneIdValue);
+    assertEquals("Example Feature", titleValue);
   }
 }

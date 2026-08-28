@@ -30,7 +30,8 @@ import org.maplibre.spatialk.geojson.serialization.validateForeignMembers
  * @property properties Additional properties about this [Feature]. It should be serializable into a
  *   [JsonObject].
  * @property id An optionally included string or number that commonly identifies this [Feature].
- * @property foreignMembers Members not defined by RFC 7946. These are not [properties].
+ * @property foreignMembers Additional members as defined in
+ *   [RFC 7946 §6.1](https://tools.ietf.org/html/rfc7946#section-6.1).
  * @see FeatureCollection
  */
 @Serializable(with = FeatureSerializer::class)

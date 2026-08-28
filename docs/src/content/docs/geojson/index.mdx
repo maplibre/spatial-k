@@ -307,12 +307,8 @@ and can be used in any place that a collection can be used.
 ### Foreign members
 
 GeoJSON objects may include
-[foreign members](https://tools.ietf.org/html/rfc7946#section-6.1) — extra keys that are not part of
-the RFC 7946 schema. These are stored on every `GeoJsonObject` as `foreignMembers: JsonObject`. They
-are **not** `Feature.properties`, and they are not interpreted as GeoJSON types (the RFC example
-`centerline` looks like a LineString but is not one).
-
-A common case is GOFS `zone_id`, a string sibling of `properties` on a Feature:
+[foreign members](https://tools.ietf.org/html/rfc7946#section-6.1)—extra keys on a GeoJSON object
+beyond those defined by the specification.
 
 <Tabs syncKey="language">
   <TabItem label="Kotlin">
@@ -335,10 +331,6 @@ A common case is GOFS `zone_id`, a string sibling of `properties` on a Feature:
     ```
   </TabItem>
 </Tabs>
-
-On encode, foreign members are flattened as sibling JSON keys. A `"foreignMembers"` key is never
-emitted. Use `decodeForeignMembers<T>()` to decode the bag into a `@Serializable` type,
-`toForeignMembers()` to build a bag from one, or set `foreignMembers` on any GeoJSON DSL builder.
 
 ### BoundingBox
 
