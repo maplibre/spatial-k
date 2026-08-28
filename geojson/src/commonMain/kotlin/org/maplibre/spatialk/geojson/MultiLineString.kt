@@ -4,8 +4,11 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
+import org.maplibre.spatialk.geojson.serialization.GeometryCoordinateReservedKeys
 import org.maplibre.spatialk.geojson.serialization.MultiLineStringSerializer
+import org.maplibre.spatialk.geojson.serialization.validateForeignMembers
 
 /**
  * A [MultiLineString] geometry represents multiple curves in coordinate space.
@@ -24,6 +27,8 @@ constructor(
     public val coordinates: List<List<Position>>,
     /** The bounding box of this geometry. */
     override val bbox: BoundingBox? = null,
+    /** Members not defined by RFC 7946. */
+    override val foreignMembers: JsonObject = EmptyForeignMembers,
 ) : MultiGeometry, LineStringGeometry, Collection<LineString> {
 
     /**
@@ -31,19 +36,22 @@ constructor(
      *
      * @param coordinates The lists of [Position] objects that make up the [LineString] objects.
      * @param bbox The [BoundingBox] of this geometry.
+     * @param foreignMembers Members not defined by RFC 7946.
      * @throws IllegalArgumentException if any of the [Position] lists is not a valid [LineString]
      */
     @JvmOverloads
     public constructor(
         vararg coordinates: List<Position>,
         bbox: BoundingBox? = null,
-    ) : this(coordinates.toList(), bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(coordinates.toList(), bbox, foreignMembers)
 
     /**
      * Create a [MultiLineString] by a number of [LineString] objects.
      *
      * @param lineStrings The [LineString] objects that make up this multi-line string.
      * @param bbox The [BoundingBox] of this geometry.
+     * @param foreignMembers Members not defined by RFC 7946.
      * @throws IllegalArgumentException if any of the [LineString] objects contains fewer than 2
      *   [Position] objects.
      */
@@ -51,7 +59,8 @@ constructor(
     public constructor(
         vararg lineStrings: LineString,
         bbox: BoundingBox? = null,
-    ) : this(lineStrings.map { it.coordinates }, bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(lineStrings.map { it.coordinates }, bbox, foreignMembers)
 
     /**
      * Create a [MultiLineString] by an array (= [LineString] objects) of arrays (= [Position]
@@ -59,6 +68,7 @@ constructor(
      *
      * @param coordinates The array of arrays of double arrays representing [LineString] objects.
      * @param bbox The [BoundingBox] of this geometry.
+     * @param foreignMembers Members not defined by RFC 7946.
      * @throws IllegalArgumentException if any of the [Position] lists is not a valid [LineString]
      *   or any of the arrays of doubles does not represent a valid [Position].
      */
@@ -66,7 +76,8 @@ constructor(
     public constructor(
         coordinates: Array<Array<DoubleArray>>,
         bbox: BoundingBox? = null,
-    ) : this(coordinates.map { it.map(::Position) }, bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(coordinates.map { it.map(::Position) }, bbox, foreignMembers)
 
     init {
         coordinates.forEachIndexed { index, line ->
@@ -74,6 +85,7 @@ constructor(
                 "LineString at index $index contains fewer than 2 positions."
             }
         }
+        validateForeignMembers(foreignMembers, GeometryCoordinateReservedKeys)
     }
 
     override val size: Int

@@ -120,8 +120,8 @@ public inline fun <G : Geometry> buildGeometryCollection(
  *   data class.
  * @param geometry The geometry associated with the feature.
  * @param properties The properties associated with the feature.
- * @param builderAction The builder configuration block where [id][FeatureBuilder.id] and
- *   [bbox][FeatureBuilder.bbox] can be set.
+ * @param builderAction The builder configuration block where [id][FeatureBuilder.id],
+ *   [bbox][FeatureBuilder.bbox], and [foreignMembers][FeatureBuilder.foreignMembers] can be set.
  * @return The constructed [Feature].
  * @see FeatureBuilder
  */
@@ -146,8 +146,8 @@ public inline fun <G : Geometry?, P : @Serializable Any?> buildFeature(
  *   data class.
  * @param geometry The geometry associated with the feature.
  * @param builderAction The builder configuration block where
- *   [properties][FeatureBuilder.properties], [id][FeatureBuilder.id], and
- *   [bbox][FeatureBuilder.bbox] can be set.
+ *   [properties][FeatureBuilder.properties], [id][FeatureBuilder.id], [bbox][FeatureBuilder.bbox],
+ *   and [foreignMembers][FeatureBuilder.foreignMembers] can be set.
  * @return The constructed [Feature].
  * @see FeatureBuilder
  */
@@ -169,8 +169,8 @@ public inline fun <G : Geometry?, P : @Serializable Any> buildFeature(
  *   dynamic or unknown property schemas, use [JsonObject]. For known schemas, use a [Serializable]
  *   data class.
  * @param builderAction The builder configuration block where [geometry][FeatureBuilder.geometry],
- *   [properties][FeatureBuilder.properties], [id][FeatureBuilder.id], and
- *   [bbox][FeatureBuilder.bbox] can be set.
+ *   [properties][FeatureBuilder.properties], [id][FeatureBuilder.id], [bbox][FeatureBuilder.bbox],
+ *   and [foreignMembers][FeatureBuilder.foreignMembers] can be set.
  * @return The constructed [Feature].
  * @see FeatureBuilder
  */
@@ -341,7 +341,8 @@ public inline fun <T : Geometry> GeometryCollectionBuilder<in GeometryCollection
  *
  * @param geometry The geometry associated with the feature.
  * @param properties The properties associated with the feature.
- * @param builderAction The builder configuration block for the feature.
+ * @param builderAction The builder configuration block where [id][FeatureBuilder.id],
+ *   [bbox][FeatureBuilder.bbox], and [foreignMembers][FeatureBuilder.foreignMembers] can be set.
  */
 public inline fun <G : Geometry?, P : @Serializable Any?> FeatureCollectionBuilder<in G, in P>
     .addFeature(geometry: G, properties: P, builderAction: FeatureBuilder<G, P>.() -> Unit = {}) {
@@ -355,7 +356,9 @@ public inline fun <G : Geometry?, P : @Serializable Any?> FeatureCollectionBuild
  * Properties default to null but can be set in the builder block.
  *
  * @param geometry The geometry associated with the feature.
- * @param builderAction The builder configuration block for the feature.
+ * @param builderAction The builder configuration block where
+ *   [properties][FeatureBuilder.properties], [id][FeatureBuilder.id], [bbox][FeatureBuilder.bbox],
+ *   and [foreignMembers][FeatureBuilder.foreignMembers] can be set.
  */
 public inline fun <G : Geometry?, P : @Serializable Any> FeatureCollectionBuilder<in G, in P?>
     .addFeature(geometry: G, builderAction: FeatureBuilder<G, P?>.() -> Unit = {}) {
@@ -368,7 +371,9 @@ public inline fun <G : Geometry?, P : @Serializable Any> FeatureCollectionBuilde
  *
  * Both geometry and properties default to null but can be set in the builder block.
  *
- * @param builderAction The builder configuration block for the feature.
+ * @param builderAction The builder configuration block where [geometry][FeatureBuilder.geometry],
+ *   [properties][FeatureBuilder.properties], [id][FeatureBuilder.id], [bbox][FeatureBuilder.bbox],
+ *   and [foreignMembers][FeatureBuilder.foreignMembers] can be set.
  */
 public inline fun <G : Geometry, P : @Serializable Any> FeatureCollectionBuilder<in G?, in P?>
     .addFeature(builderAction: FeatureBuilder<G?, P?>.() -> Unit = {}) {

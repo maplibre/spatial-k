@@ -14,8 +14,13 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
+import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonEncoder
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.decodeFromJsonElement
+import kotlinx.serialization.json.put
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
 import org.maplibre.spatialk.geojson.Geometry
@@ -38,6 +43,21 @@ internal class FeatureCollectionSerializer<T : Geometry?, P : @Serializable Any?
         }
 
     override fun serialize(encoder: Encoder, value: FeatureCollection<T, P>) {
+        if (encoder is JsonEncoder && value.foreignMembers.isNotEmpty()) {
+            val specObject = buildJsonObject {
+                put("type", serialName)
+                value.bbox?.let {
+                    put("bbox", encoder.json.encodeToJsonElement(BoundingBox.serializer(), it))
+                }
+                put(
+                    "features",
+                    encoder.json.encodeToJsonElement(featuresSerializer, value.features),
+                )
+            }
+            encodeGeoJsonObject(encoder, specObject, value.foreignMembers)
+            return
+        }
+
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
             if (value.bbox != null || encoder !is JsonEncoder)
@@ -47,6 +67,31 @@ internal class FeatureCollectionSerializer<T : Geometry?, P : @Serializable Any?
     }
 
     override fun deserialize(decoder: Decoder): FeatureCollection<T, P> {
+        if (decoder is JsonDecoder) {
+            val obj = decodeGeoJsonObject(decoder)
+            val type =
+                decoder.json.decodeFromJsonElement(
+                    typeSerializer,
+                    obj.requireMember("type", serialName),
+                )
+            if (type != serialName)
+                throw SerializationException("Expected type $serialName but found $type")
+            val features =
+                decoder.json.decodeFromJsonElement(
+                    featuresSerializer,
+                    obj.requireMember("features", serialName),
+                )
+            val bbox =
+                obj["bbox"]?.let {
+                    decoder.json.decodeFromJsonElement(BoundingBox.serializer(), it)
+                }
+            return FeatureCollection(
+                features,
+                bbox,
+                obj.without(FeatureCollectionReservedKeys),
+            )
+        }
+
         return decoder.decodeStructure(descriptor) {
             var type: String? = null
             var bbox: BoundingBox? = null
@@ -71,7 +116,7 @@ internal class FeatureCollectionSerializer<T : Geometry?, P : @Serializable Any?
                 throw SerializationException("Expected type $serialName but found $type")
             if (features == null) throw SerializationException("Expected features to be present")
 
-            FeatureCollection(features, bbox)
+            FeatureCollection(features, bbox, EmptyForeignMembers)
         }
     }
 }

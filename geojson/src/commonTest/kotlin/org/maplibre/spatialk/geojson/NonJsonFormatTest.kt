@@ -17,6 +17,7 @@ import org.maplibre.spatialk.geojson.dsl.buildLineString
 class NonJsonFormatTest {
     // NOTE: polymorphic types are not yet supported with non-json formats
     // That's Geometry (and related interfaces), GeoJsonObject
+    // Foreign members are JSON-only; CBOR/Protobuf keep the empty bag and drop extras.
 
     private val testLineString = buildLineString {
         add(Position(1.0, 2.0))

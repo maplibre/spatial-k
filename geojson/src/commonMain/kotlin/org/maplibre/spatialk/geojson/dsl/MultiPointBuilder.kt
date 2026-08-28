@@ -1,6 +1,8 @@
 package org.maplibre.spatialk.geojson.dsl
 
+import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.MultiPoint
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
@@ -9,6 +11,7 @@ import org.maplibre.spatialk.geojson.Position
  * Builder for constructing [MultiPoint] objects using a DSL.
  *
  * @property bbox An optional [BoundingBox] for this [MultiPoint].
+ * @property foreignMembers Members not defined by RFC 7946.
  * @see MultiPoint
  * @see buildMultiPoint
  * @see addPoint
@@ -16,6 +19,7 @@ import org.maplibre.spatialk.geojson.Position
 @GeoJsonDsl
 public class MultiPointBuilder {
     public var bbox: BoundingBox? = null
+    public var foreignMembers: JsonObject = EmptyForeignMembers
     private val points: MutableList<Position> = mutableListOf()
 
     /**
@@ -52,5 +56,5 @@ public class MultiPointBuilder {
      *
      * @return The constructed [MultiPoint].
      */
-    public fun build(): MultiPoint = MultiPoint(points, bbox)
+    public fun build(): MultiPoint = MultiPoint(points, bbox, foreignMembers)
 }

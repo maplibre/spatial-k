@@ -304,6 +304,42 @@ and can be used in any place that a collection can be used.
   </TabItem>
 </Tabs>
 
+### Foreign members
+
+GeoJSON objects may include
+[foreign members](https://tools.ietf.org/html/rfc7946#section-6.1) — extra keys that are not part of
+the RFC 7946 schema. These are stored on every `GeoJsonObject` as `foreignMembers: JsonObject`. They
+are **not** `Feature.properties`, and they are not interpreted as GeoJSON types (the RFC example
+`centerline` looks like a LineString but is not one).
+
+A common case is GOFS `zone_id`, a string sibling of `properties` on a Feature:
+
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
+    ```kotlin
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:foreignMembersType"
+
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:foreignMembersKt"
+    ```
+  </TabItem>
+
+  <TabItem label="Java">
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:foreignMembersJava"
+    ```
+  </TabItem>
+
+  <TabItem label="JSON">
+    ```json
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:foreignMembersJson"
+    ```
+  </TabItem>
+</Tabs>
+
+On encode, foreign members are flattened as sibling JSON keys. A `"foreignMembers"` key is never
+emitted. Use `decodeForeignMembers<T>()` to decode the bag into a `@Serializable` type,
+`toForeignMembers()` to build a bag from one, or set `foreignMembers` on any GeoJSON DSL builder.
+
 ### BoundingBox
 
 The `BoundingBox` class is used to represent the bounding boxes that can be set for any

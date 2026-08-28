@@ -1,7 +1,9 @@
 package org.maplibre.spatialk.geojson.dsl
 
 import kotlin.collections.plus
+import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
@@ -10,6 +12,7 @@ import org.maplibre.spatialk.geojson.Position
  * Builder for constructing [Polygon] objects using a DSL.
  *
  * @property bbox An optional [BoundingBox] for this [Polygon].
+ * @property foreignMembers Members not defined by RFC 7946.
  * @see Polygon
  * @see buildPolygon
  * @see addRing
@@ -17,6 +20,7 @@ import org.maplibre.spatialk.geojson.Position
 @GeoJsonDsl
 public class PolygonBuilder() {
     public var bbox: BoundingBox? = null
+    public var foreignMembers: JsonObject = EmptyForeignMembers
     private val coordinates: MutableList<List<Position>> = mutableListOf()
 
     /**
@@ -46,5 +50,5 @@ public class PolygonBuilder() {
      * @throws IllegalArgumentException if no rings have been added or any ring contains fewer than
      *   4 [Position] objects.
      */
-    public fun build(): Polygon = Polygon(coordinates, bbox)
+    public fun build(): Polygon = Polygon(coordinates, bbox, foreignMembers)
 }

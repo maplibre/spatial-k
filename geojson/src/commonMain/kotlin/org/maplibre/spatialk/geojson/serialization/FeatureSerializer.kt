@@ -15,8 +15,13 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
+import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonEncoder
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.decodeFromJsonElement
+import kotlinx.serialization.json.put
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureId
 import org.maplibre.spatialk.geojson.GeoJson
@@ -51,6 +56,28 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
         }
 
     override fun serialize(encoder: Encoder, value: Feature<T, P>) {
+        if (encoder is JsonEncoder && value.foreignMembers.isNotEmpty()) {
+            val specObject = buildJsonObject {
+                put("type", serialName)
+                put(
+                    "geometry",
+                    encoder.json.encodeToJsonElement(geometrySerializer, value.geometry),
+                )
+                put(
+                    "properties",
+                    encoder.json.encodeToJsonElement(propertiesSerializer, value.properties),
+                )
+                value.id?.let {
+                    put("id", encoder.json.encodeToJsonElement(FeatureIdSerializer, it))
+                }
+                value.bbox?.let {
+                    put("bbox", encoder.json.encodeToJsonElement(BoundingBox.serializer(), it))
+                }
+            }
+            encodeGeoJsonObject(encoder, specObject, value.foreignMembers)
+            return
+        }
+
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
             encodeSerializableElement(descriptor, 1, geometrySerializer, value.geometry)
@@ -64,6 +91,41 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
 
     @OptIn(ExperimentalSerializationApi::class)
     override fun deserialize(decoder: Decoder): Feature<T, P> {
+        if (decoder is JsonDecoder) {
+            val obj = decodeGeoJsonObject(decoder)
+            val type =
+                decoder.json.decodeFromJsonElement(
+                    typeSerializer,
+                    obj.requireMember("type", serialName),
+                )
+            if (type != serialName)
+                throw SerializationException("Expected type $serialName but found $type")
+
+            val geometry =
+                decoder.json.decodeFromJsonElement(
+                    geometrySerializer,
+                    obj.requireMember("geometry", serialName),
+                )
+
+            val propertiesElement = obj["properties"]
+            @Suppress("UNCHECKED_CAST")
+            val properties =
+                if (propertiesElement == null) {
+                    if (GeoJson.STRICT) throw MissingFieldException("properties", serialName)
+                    null as P
+                } else {
+                    decoder.json.decodeFromJsonElement(propertiesSerializer, propertiesElement)
+                }
+
+            val id = obj["id"]?.let { decoder.json.decodeFromJsonElement(FeatureIdSerializer, it) }
+            val bbox =
+                obj["bbox"]?.let {
+                    decoder.json.decodeFromJsonElement(BoundingBox.serializer(), it)
+                }
+
+            return Feature(geometry, properties, id, bbox, obj.without(FeatureReservedKeys))
+        }
+
         return decoder.decodeStructure(descriptor) {
             var type: String? = null
             var bbox: BoundingBox? = null
@@ -103,6 +165,7 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
                 if (properties == uninitialized) null as P else properties as P,
                 id,
                 bbox,
+                EmptyForeignMembers,
             )
         }
     }

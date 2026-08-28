@@ -1,6 +1,8 @@
 package org.maplibre.spatialk.geojson.dsl
 
+import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
@@ -9,12 +11,14 @@ import org.maplibre.spatialk.geojson.Position
  * Builder for constructing [LineString] objects using a DSL.
  *
  * @property bbox An optional [BoundingBox] for this [LineString].
+ * @property foreignMembers Members not defined by RFC 7946.
  * @see LineString
  * @see buildLineString
  */
 @GeoJsonDsl
 public class LineStringBuilder {
     public var bbox: BoundingBox? = null
+    public var foreignMembers: JsonObject = EmptyForeignMembers
     private val points: MutableList<Position> = mutableListOf()
 
     /**
@@ -51,5 +55,5 @@ public class LineStringBuilder {
      *
      * @return The constructed [LineString].
      */
-    public fun build(): LineString = LineString(points, bbox)
+    public fun build(): LineString = LineString(points, bbox, foreignMembers)
 }

@@ -6,6 +6,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.*
 import kotlinx.serialization.serializer
@@ -16,6 +17,11 @@ import org.maplibre.spatialk.geojson.dsl.*
 // part of the test suite, they are not intended to be comprehensive tests.
 
 class KotlinDocsTest {
+
+    // --8<-- [start:foreignMembersType]
+    @Serializable data class GofsZoneMembers(val zone_id: String)
+
+    // --8<-- [end:foreignMembersType]
 
     @Test
     fun geometryExhaustiveTypeChecks() {
@@ -754,6 +760,45 @@ class KotlinDocsTest {
                   ]
                 }
                 // --8<-- [end:dslFeatureCollectionJson]
+            """,
+        )
+    }
+
+    @Test
+    fun foreignMembersExample() {
+        kotlinAndJsonExample(
+            kotlin = {
+                // --8<-- [start:foreignMembersKt]
+                val feature =
+                    buildFeature(
+                        geometry = Point(-75.0, 45.0),
+                        properties = buildJsonObject { put("name", "Station") },
+                    ) {
+                        foreignMembers = GofsZoneMembers(zone_id = "zone-123").toForeignMembers()
+                    }
+
+                val zoneMembers = feature.decodeForeignMembers<GofsZoneMembers>()
+                val zoneId = zoneMembers.zone_id // "zone-123"
+                // --8<-- [end:foreignMembersKt]
+
+                assertEquals("zone-123", zoneId)
+                feature.toJson()
+            },
+            json =
+                """
+                // --8<-- [start:foreignMembersJson]
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-75.0, 45.0]
+                    },
+                    "properties": {
+                        "name": "Station"
+                    },
+                    "zone_id": "zone-123"
+                }
+                // --8<-- [end:foreignMembersJson]
             """,
         )
     }

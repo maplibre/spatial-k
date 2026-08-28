@@ -4,8 +4,11 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
+import org.maplibre.spatialk.geojson.serialization.GeometryCoordinateReservedKeys
 import org.maplibre.spatialk.geojson.serialization.LineStringSerializer
+import org.maplibre.spatialk.geojson.serialization.validateForeignMembers
 
 /**
  * A [LineString] geometry represents a curve in coordinate space with two or more [Position]
@@ -25,6 +28,8 @@ constructor(
     public val coordinates: List<Position>,
     /** The [BoundingBox] of this [LineString]. */
     override val bbox: BoundingBox? = null,
+    /** Members not defined by RFC 7946. */
+    override val foreignMembers: JsonObject = EmptyForeignMembers,
 ) : SingleGeometry, LineStringGeometry {
 
     /**
@@ -32,32 +37,37 @@ constructor(
      *
      * @param coordinates The [Position] objects that make up this [LineString].
      * @param bbox The [BoundingBox] of this [LineString].
+     * @param foreignMembers Members not defined by RFC 7946.
      * @throws IllegalArgumentException if fewer than two coordinates have been specified
      */
     @JvmOverloads
     public constructor(
         vararg coordinates: Position,
         bbox: BoundingBox? = null,
-    ) : this(coordinates.toList(), bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(coordinates.toList(), bbox, foreignMembers)
 
     /**
      * Create a [LineString] by the [Position] objects of a number of [Point] objects.
      *
      * @param points The [Point] objects whose [Position] objects make up this [LineString].
      * @param bbox The [BoundingBox] of this [LineString].
+     * @param foreignMembers Members not defined by RFC 7946.
      * @throws IllegalArgumentException if fewer than two [Point] objects have been specified
      */
     @JvmOverloads
     public constructor(
         vararg points: Point,
         bbox: BoundingBox? = null,
-    ) : this(points.map { it.coordinates }, bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(points.map { it.coordinates }, bbox, foreignMembers)
 
     /**
      * Create a [LineString] by an array of [DoubleArray] objects that each represent a [Position].
      *
      * @param coordinates The array of double arrays representing [Position] objects.
      * @param bbox The [BoundingBox] of this [LineString].
+     * @param foreignMembers Members not defined by RFC 7946.
      * @throws IllegalArgumentException if the coordinates contain fewer than two [Position]
      *   objects, or if any array of doubles does not represent a valid [Position]
      */
@@ -65,10 +75,12 @@ constructor(
     public constructor(
         coordinates: Array<DoubleArray>,
         bbox: BoundingBox? = null,
-    ) : this(coordinates.map(::Position), bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(coordinates.map(::Position), bbox, foreignMembers)
 
     init {
         require(coordinates.size >= 2) { "LineString must contain at least two positions" }
+        validateForeignMembers(foreignMembers, GeometryCoordinateReservedKeys)
     }
 
     /** Factory methods for creating and serializing [LineString] objects. */

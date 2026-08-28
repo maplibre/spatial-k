@@ -6,8 +6,11 @@ import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
+import org.maplibre.spatialk.geojson.serialization.GeometryCollectionReservedKeys
 import org.maplibre.spatialk.geojson.serialization.GeometryCollectionSerializer
+import org.maplibre.spatialk.geojson.serialization.validateForeignMembers
 
 /**
  * A [GeometryCollection] contains multiple, heterogeneous [Geometry] objects.
@@ -23,6 +26,8 @@ constructor(
     public val geometries: List<G>,
     /** The [BoundingBox] of this [GeometryCollection]. */
     override val bbox: BoundingBox? = null,
+    /** Members not defined by RFC 7946. */
+    override val foreignMembers: JsonObject = EmptyForeignMembers,
 ) : Geometry, Collection<G> by geometries {
 
     /**
@@ -30,12 +35,18 @@ constructor(
      *
      * @param geometries The [Geometry] objects that make up this [GeometryCollection].
      * @param bbox The [BoundingBox] of this [GeometryCollection].
+     * @param foreignMembers Members not defined by RFC 7946.
      */
     @JvmOverloads
     public constructor(
         vararg geometries: G,
         bbox: BoundingBox? = null,
-    ) : this(geometries.toList(), bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(geometries.toList(), bbox, foreignMembers)
+
+    init {
+        validateForeignMembers(foreignMembers, GeometryCollectionReservedKeys)
+    }
 
     /** Factory methods for creating and serializing [GeometryCollection] objects. */
     public companion object {
