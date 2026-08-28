@@ -2,13 +2,15 @@ package org.maplibre.spatialk.geojson.serialization
 
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonEncoder
@@ -47,34 +49,28 @@ internal fun validateForeignMembers(foreignMembers: JsonObject, reserved: Set<St
     }
 }
 
-internal fun JsonObject.extractForeignMembers(
-    schema: Set<String>,
-    forbidden: Set<String>,
-): JsonObject {
-    val extras = filterKeys { it !in schema }
-    val conflict = extras.keys.firstOrNull { it in forbidden }
-    if (conflict != null) {
-        throw SerializationException(
-            "Foreign member \"$conflict\" conflicts with a reserved GeoJSON member name"
-        )
+internal class StreamingGeoJsonWriter(private val encoder: CompositeEncoder) {
+    private var index = 0
+
+    fun <T> put(key: String, serializer: SerializationStrategy<T>, value: T) {
+        encoder.encodeStringElement(StreamingGeoJsonMapDescriptor, index++, key)
+        encoder.encodeSerializableElement(StreamingGeoJsonMapDescriptor, index++, serializer, value)
     }
-    return if (extras.isEmpty()) EmptyForeignMembers else JsonObject(extras)
 }
 
-internal fun encodeGeoJsonObject(
-    encoder: JsonEncoder,
-    specObject: JsonObject,
-    foreignMembers: JsonObject,
+/**
+ * Writes known members then [extras] as a JSON object without first building a [JsonObject] tree.
+ */
+internal inline fun JsonEncoder.encodeStreamingGeoJsonObject(
+    extras: JsonObject,
+    crossinline writeKnown: StreamingGeoJsonWriter.() -> Unit,
 ) {
-    val element =
-        if (foreignMembers.isEmpty()) specObject else JsonObject(specObject + foreignMembers)
-    encoder.encodeJsonElement(element)
-}
-
-internal fun decodeGeoJsonObject(decoder: JsonDecoder): JsonObject {
-    val element = decoder.decodeJsonElement()
-    return element as? JsonObject
-        ?: throw SerializationException("Expected a JSON object but found $element")
+    encodeStructure(StreamingGeoJsonMapDescriptor) {
+        StreamingGeoJsonWriter(this).run {
+            writeKnown()
+            extras.forEach { (key, value) -> put(key, JsonElement.serializer(), value) }
+        }
+    }
 }
 
 internal fun foreignMembersFromExtras(
@@ -124,7 +120,3 @@ internal inline fun JsonDecoder.forEachStreamingMember(
         }
     }
 }
-
-@OptIn(ExperimentalSerializationApi::class)
-internal fun JsonObject.requireMember(key: String, serialName: String): JsonElement =
-    this[key] ?: throw MissingFieldException(key, serialName)

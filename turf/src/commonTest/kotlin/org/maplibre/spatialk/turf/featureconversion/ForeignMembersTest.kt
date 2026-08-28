@@ -71,4 +71,12 @@ class ForeignMembersTest {
             collection.features.single().foreignMembers["zone_id"],
         )
     }
+
+    @Test
+    fun singleToMultiPreservesForeignMembers() {
+        val point = Point(-75.0, 45.0, foreignMembers = zoneMembers)
+        val multi = point.toMultiPoint()
+        assertEquals(JsonPrimitive("zone-123"), multi.foreignMembers["zone_id"])
+        assertPositionEquals(Position(-75.0, 45.0), multi.coordinates.single())
+    }
 }

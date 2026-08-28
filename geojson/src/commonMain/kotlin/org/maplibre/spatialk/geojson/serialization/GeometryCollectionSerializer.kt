@@ -17,8 +17,6 @@ import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonEncoder
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.Geometry
@@ -40,17 +38,11 @@ internal class GeometryCollectionSerializer<T : Geometry>(geometrySerializer: KS
 
     override fun serialize(encoder: Encoder, value: GeometryCollection<T>) {
         if (encoder is JsonEncoder && value.foreignMembers.isNotEmpty()) {
-            val specObject = buildJsonObject {
-                put("type", serialName)
-                value.bbox?.let {
-                    put("bbox", encoder.json.encodeToJsonElement(BoundingBox.serializer(), it))
-                }
-                put(
-                    "geometries",
-                    encoder.json.encodeToJsonElement(geometriesSerializer, value.geometries),
-                )
+            encoder.encodeStreamingGeoJsonObject(value.foreignMembers) {
+                put("type", typeSerializer, serialName)
+                value.bbox?.let { put("bbox", BoundingBox.serializer(), it) }
+                put("geometries", geometriesSerializer, value.geometries)
             }
-            encodeGeoJsonObject(encoder, specObject, value.foreignMembers)
             return
         }
 

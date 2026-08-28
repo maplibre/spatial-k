@@ -7,8 +7,11 @@ import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
@@ -196,6 +199,21 @@ class ForeignMembersTest {
         val collection = FeatureCollection.fromJson<Nothing?, Nothing?>(json)
         assertEquals(JsonPrimitive("All zones"), collection.foreignMembers["title"])
         assertJsonEquals(json, collection.toJson())
+    }
+
+    @Test
+    fun explicitNullsOmitsNullFeatureMembers() {
+        val json = Json { explicitNulls = false }
+        val feature =
+            Feature(
+                geometry = null,
+                properties = null,
+                foreignMembers = buildJsonObject { put("title", "Example Feature") },
+            )
+        val encoded = json.encodeToString<Feature<Nothing?, Nothing?>>(feature)
+        assertFalse(encoded.contains("\"geometry\""))
+        assertFalse(encoded.contains("\"properties\""))
+        assertTrue(encoded.contains("\"title\""))
     }
 
     @Test

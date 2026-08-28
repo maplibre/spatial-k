@@ -31,7 +31,8 @@ import org.maplibre.spatialk.turf.measurement.toPolygon
  *
  * @return A [MultiLineString] containing all rings of the polygon.
  */
-public fun Polygon.toMultiLineString(): MultiLineString = MultiLineString(coordinates, bbox = bbox)
+public fun Polygon.toMultiLineString(): MultiLineString =
+    MultiLineString(coordinates, bbox = bbox, foreignMembers = foreignMembers)
 
 /**
  * Converts a [MultiPolygon] to a [GeometryCollection] of [MultiLineString]s by extracting each
@@ -40,7 +41,11 @@ public fun Polygon.toMultiLineString(): MultiLineString = MultiLineString(coordi
  * @return A [GeometryCollection] containing [MultiLineString]s, one for each polygon.
  */
 public fun MultiPolygon.toMultiLineStrings(): GeometryCollection<MultiLineString> =
-    GeometryCollection(this.map { it.toMultiLineString() }, bbox = bbox)
+    GeometryCollection(
+        this.map { it.toMultiLineString() },
+        bbox = bbox,
+        foreignMembers = foreignMembers,
+    )
 
 // Turf lineToPolygon
 
@@ -73,7 +78,7 @@ public fun LineStringGeometry.toPolygon(
                 rings = listOf(largestRing) + rings.filterNot { it === largestRing }
             }
 
-            Polygon(rings, bbox = bbox)
+            Polygon(rings, bbox = bbox, foreignMembers = foreignMembers)
         }
     }
 
@@ -92,7 +97,11 @@ public fun GeometryCollection<LineStringGeometry>.toMultiPolygon(
     autoClose: Boolean = true,
     autoOrder: Boolean = true,
 ): MultiPolygon =
-    MultiPolygon(geometries.map { it.toPolygon(autoClose, autoOrder).coordinates }, bbox = bbox)
+    MultiPolygon(
+        geometries.map { it.toPolygon(autoClose, autoOrder).coordinates },
+        bbox = bbox,
+        foreignMembers = foreignMembers,
+    )
 
 // GeometryCollection <> FeatureCollection
 
@@ -123,7 +132,8 @@ public fun <T : Geometry, P : @Serializable Any> GeometryCollection<T>.toFeature
  *
  * @return A [MultiPoint] wrapping the point.
  */
-public fun Point.toMultiPoint(): MultiPoint = MultiPoint(coordinates, bbox = bbox)
+public fun Point.toMultiPoint(): MultiPoint =
+    MultiPoint(coordinates, bbox = bbox, foreignMembers = foreignMembers)
 
 /**
  * Converts a [LineString] to a [MultiLineString] containing the single line string.
@@ -131,11 +141,12 @@ public fun Point.toMultiPoint(): MultiPoint = MultiPoint(coordinates, bbox = bbo
  * @return A [MultiLineString] wrapping the line string.
  */
 public fun LineString.toMultiLineString(): MultiLineString =
-    MultiLineString(coordinates, bbox = bbox)
+    MultiLineString(coordinates, bbox = bbox, foreignMembers = foreignMembers)
 
 /**
  * Converts a [Polygon] to a [MultiPolygon] containing the single polygon.
  *
  * @return A [MultiPolygon] wrapping the polygon.
  */
-public fun Polygon.toMultiPolygon(): MultiPolygon = MultiPolygon(coordinates, bbox = bbox)
+public fun Polygon.toMultiPolygon(): MultiPolygon =
+    MultiPolygon(coordinates, bbox = bbox, foreignMembers = foreignMembers)
