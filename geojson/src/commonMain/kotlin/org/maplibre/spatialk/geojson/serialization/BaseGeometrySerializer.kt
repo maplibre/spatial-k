@@ -35,7 +35,7 @@ internal abstract class BaseGeometrySerializer<G : Geometry, C>(
         }
 
     override fun serialize(encoder: Encoder, value: G) {
-        if (encoder is JsonEncoder && value.foreignMembers.isNotEmpty()) {
+        if (encoder is JsonEncoder) {
             encoder.encodeStreamingGeoJsonObject(value.foreignMembers) {
                 put("type", typeSerializer, serialName)
                 value.bbox?.let { put("bbox", BoundingBox.serializer(), it) }
@@ -46,8 +46,7 @@ internal abstract class BaseGeometrySerializer<G : Geometry, C>(
 
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
-            if (value.bbox != null || encoder !is JsonEncoder)
-                encodeSerializableElement(descriptor, 1, bboxSerializer, value.bbox)
+            encodeSerializableElement(descriptor, 1, bboxSerializer, value.bbox)
             encodeSerializableElement(descriptor, 2, coordinatesSerializer, getCoordinates(value))
         }
     }
@@ -66,7 +65,7 @@ internal abstract class BaseGeometrySerializer<G : Geometry, C>(
             return construct(
                 coordinates ?: throw MissingFieldException("coordinates", serialName),
                 members.bbox,
-                members.foreignMembers(GeometryCoordinateForbiddenKeys),
+                members.foreignMembers(GeometryCoordinateReservedKeys),
             )
         }
 

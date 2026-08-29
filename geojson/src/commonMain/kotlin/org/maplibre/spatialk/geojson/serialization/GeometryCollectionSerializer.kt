@@ -36,7 +36,7 @@ internal class GeometryCollectionSerializer<T : Geometry>(geometrySerializer: KS
         }
 
     override fun serialize(encoder: Encoder, value: GeometryCollection<T>) {
-        if (encoder is JsonEncoder && value.foreignMembers.isNotEmpty()) {
+        if (encoder is JsonEncoder) {
             encoder.encodeStreamingGeoJsonObject(value.foreignMembers) {
                 put("type", typeSerializer, serialName)
                 value.bbox?.let { put("bbox", BoundingBox.serializer(), it) }
@@ -47,8 +47,7 @@ internal class GeometryCollectionSerializer<T : Geometry>(geometrySerializer: KS
 
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
-            if (value.bbox != null || encoder !is JsonEncoder)
-                encodeSerializableElement(descriptor, 1, bboxSerializer, value.bbox)
+            encodeSerializableElement(descriptor, 1, bboxSerializer, value.bbox)
             encodeSerializableElement(descriptor, 2, geometriesSerializer, value.geometries)
         }
     }
@@ -67,7 +66,7 @@ internal class GeometryCollectionSerializer<T : Geometry>(geometrySerializer: KS
             return GeometryCollection(
                 geometries ?: throw MissingFieldException("geometries", serialName),
                 members.bbox,
-                members.foreignMembers(GeometryCollectionForbiddenKeys),
+                members.foreignMembers(GeometryCollectionReservedKeys),
             )
         }
 

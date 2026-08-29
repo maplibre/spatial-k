@@ -10,6 +10,8 @@ import kotlinx.serialization.cbor.Cbor
 import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import kotlinx.serialization.protobuf.ProtoBuf
 import org.maplibre.spatialk.geojson.dsl.buildLineString
 
@@ -45,6 +47,15 @@ class NonJsonFormatTest {
         val encoded = format.encodeToByteArray(value)
         val decoded = format.decodeFromByteArray<T>(encoded)
         assertEquals(value, decoded)
+    }
+
+    @Test
+    fun testCborDropsForeignMembers() {
+        val extras = buildJsonObject { put("title", "origin") }
+        val point = Point(1.0, 2.0, foreignMembers = extras)
+        val decoded = Cbor.decodeFromByteArray<Point>(Cbor.encodeToByteArray(point))
+        assertEquals(EmptyForeignMembers, decoded.foreignMembers)
+        assertEquals(point.coordinates, decoded.coordinates)
     }
 
     @Test fun testCborGeometry() = assertRoundTrip(Cbor, testLineString)

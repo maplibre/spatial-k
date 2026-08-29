@@ -2,11 +2,14 @@ package org.maplibre.spatialk.turf.featureconversion
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.GeometryCollection
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.assertPositionEquals
@@ -83,11 +86,23 @@ class ForeignMembersTest {
     @Test
     fun collectionConversionsPreserveForeignMembers() {
         val title = buildJsonObject { put("title", "zones") }
-        val collection = FeatureCollection(listOf(feature), foreignMembers = title)
+        val bbox = BoundingBox(-75.0, 45.0, -75.0, 45.0)
+        val collection = FeatureCollection(listOf(feature), bbox = bbox, foreignMembers = title)
         val geometries = collection.toGeometryCollection()
         assertEquals(JsonPrimitive("zones"), geometries.foreignMembers["title"])
+        assertEquals(bbox, geometries.bbox)
 
         val features = geometries.toFeatureCollection { properties = null }
         assertEquals(JsonPrimitive("zones"), features.foreignMembers["title"])
+        assertEquals(bbox, features.bbox)
+    }
+
+    @Test
+    fun explodeAndCombineDropForeignMembers() {
+        val point = Point(-75.0, 45.0, foreignMembers = zoneMembers)
+        assertTrue(point.explode().foreignMembers.isEmpty())
+
+        val collection = GeometryCollection(point, foreignMembers = zoneMembers)
+        assertTrue(collection.combine().foreignMembers.isEmpty())
     }
 }

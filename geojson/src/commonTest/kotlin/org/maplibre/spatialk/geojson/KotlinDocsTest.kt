@@ -774,7 +774,7 @@ class KotlinDocsTest {
                         geometry = Point(-75.0, 45.0),
                         properties = buildJsonObject { put("name", "Station") },
                     ) {
-                        foreignMembers = TitleMembers(title = "Example Feature").toForeignMembers()
+                        foreignMembers = foreignMembersOf(TitleMembers(title = "Example Feature"))
                     }
 
                 val titleMembers = feature.decodeForeignMembers<TitleMembers>()

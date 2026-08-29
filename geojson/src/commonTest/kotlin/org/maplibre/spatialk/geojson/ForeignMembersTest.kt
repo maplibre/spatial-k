@@ -10,6 +10,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -86,7 +87,7 @@ class ForeignMembersTest {
             Feature(
                 geometry = Point(-75.0, 45.0),
                 properties = NameProp("Station"),
-                foreignMembers = ZoneMembers("zone-123").toForeignMembers(),
+                foreignMembers = foreignMembersOf(ZoneMembers("zone-123")),
             )
         val json = GeoJson.jsonFormat.parseToJsonElement(feature.toJson()).jsonObject
         assertEquals(JsonPrimitive("zone-123"), json["zone_id"])
@@ -201,18 +202,44 @@ class ForeignMembersTest {
     }
 
     @Test
-    fun explicitNullsOmitsNullFeatureMembers() {
+    fun explicitNullsStillWritesRequiredFeatureMembers() {
         val json = Json { explicitNulls = false }
-        val feature =
+        val empty = Feature(geometry = null, properties = null)
+        val withTitle =
             Feature(
                 geometry = null,
                 properties = null,
                 foreignMembers = buildJsonObject { put("title", "Example Feature") },
             )
-        val encoded = json.encodeToString<Feature<Nothing?, Nothing?>>(feature)
-        assertFalse(encoded.contains("\"geometry\""))
-        assertFalse(encoded.contains("\"properties\""))
-        assertTrue(encoded.contains("\"title\""))
+        val emptyEncoded = json.encodeToString<Feature<Nothing?, Nothing?>>(empty)
+        val titledEncoded = json.encodeToString<Feature<Nothing?, Nothing?>>(withTitle)
+        assertTrue(emptyEncoded.contains("\"geometry\""))
+        assertTrue(emptyEncoded.contains("\"properties\""))
+        assertTrue(titledEncoded.contains("\"geometry\""))
+        assertTrue(titledEncoded.contains("\"properties\""))
+        assertTrue(titledEncoded.contains("\"title\""))
+
+        val decoded = json.decodeFromString<Feature<Nothing?, Nothing?>>(titledEncoded)
+        assertNull(decoded.geometry)
+        assertNull(decoded.properties)
+        assertEquals(JsonPrimitive("Example Feature"), decoded.foreignMembers["title"])
+    }
+
+    @Test
+    fun foreignMemberBeforeTypeDecodes() {
+        @Language("json")
+        val json =
+            """
+            {
+                "title": "origin",
+                "type": "Point",
+                "coordinates": [1.0, 2.0]
+            }
+            """
+        val point = Point.fromJson(json)
+        assertEquals(JsonPrimitive("origin"), point.foreignMembers["title"])
+        assertEquals(1.0, point.longitude)
+        assertEquals(2.0, point.latitude)
     }
 
     @Test
@@ -452,7 +479,7 @@ class ForeignMembersTest {
     fun dslSetsForeignMembers() {
         val feature =
             buildFeature(Point(-75.0, 45.0), NameProp("Station")) {
-                foreignMembers = ZoneMembers("zone-123").toForeignMembers()
+                foreignMembers = foreignMembersOf(ZoneMembers("zone-123"))
             }
         assertEquals(ZoneMembers("zone-123"), feature.decodeForeignMembers<ZoneMembers>())
         assertJsonEquals(featureWithZoneJson, feature.toJson())

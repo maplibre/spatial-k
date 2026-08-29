@@ -14,6 +14,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJsonObjectSerializer
  * @property bbox An optional [BoundingBox] used to represent the limits of the object's [Geometry].
  * @property foreignMembers Additional members as defined in
  *   [RFC 7946 §6.1](https://tools.ietf.org/html/rfc7946#section-6.1). Empty when none are present.
+ *   JSON encode flattens these as sibling keys. CBOR and Protobuf drop them.
  */
 @Serializable(with = GeoJsonObjectSerializer::class)
 public sealed interface GeoJsonObject {

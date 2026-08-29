@@ -53,16 +53,11 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
         }
 
     override fun serialize(encoder: Encoder, value: Feature<T, P>) {
-        if (encoder is JsonEncoder && value.foreignMembers.isNotEmpty()) {
-            val writeNulls = encoder.json.configuration.explicitNulls
+        if (encoder is JsonEncoder) {
             encoder.encodeStreamingGeoJsonObject(value.foreignMembers) {
                 put("type", typeSerializer, serialName)
-                if (value.geometry != null || writeNulls) {
-                    put("geometry", geometrySerializer, value.geometry)
-                }
-                if (value.properties != null || writeNulls) {
-                    put("properties", propertiesSerializer, value.properties)
-                }
+                put("geometry", geometrySerializer, value.geometry)
+                put("properties", propertiesSerializer, value.properties)
                 value.id?.let { put("id", FeatureIdSerializer, it) }
                 value.bbox?.let { put("bbox", BoundingBox.serializer(), it) }
             }
@@ -73,10 +68,8 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
             encodeSerializableElement(descriptor, 1, geometrySerializer, value.geometry)
             encodeSerializableElement(descriptor, 2, propertiesSerializer, value.properties)
-            if (value.id != null || encoder !is JsonEncoder)
-                encodeSerializableElement(descriptor, 3, idSerializer, value.id)
-            if (value.bbox != null || encoder !is JsonEncoder)
-                encodeSerializableElement(descriptor, 4, bboxSerializer, value.bbox)
+            encodeSerializableElement(descriptor, 3, idSerializer, value.id)
+            encodeSerializableElement(descriptor, 4, bboxSerializer, value.bbox)
         }
     }
 
@@ -114,7 +107,7 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
                 if (properties === uninitialized) null as P else properties as P,
                 id,
                 members.bbox,
-                members.foreignMembers(FeatureForbiddenKeys),
+                members.foreignMembers(FeatureReservedKeys),
             )
         }
 

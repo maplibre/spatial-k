@@ -308,7 +308,8 @@ and can be used in any place that a collection can be used.
 
 GeoJSON objects may include
 [foreign members](https://tools.ietf.org/html/rfc7946#section-6.1)—extra keys on a GeoJSON object
-beyond those defined by the specification.
+beyond those defined by the specification. JSON encode flattens them as sibling keys. CBOR and
+Protobuf drop them.
 
 <Tabs syncKey="language">
   <TabItem label="Kotlin">

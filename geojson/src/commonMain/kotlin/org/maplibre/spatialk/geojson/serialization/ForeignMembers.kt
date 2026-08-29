@@ -22,24 +22,26 @@ import org.maplibre.spatialk.geojson.EmptyForeignMembers
 internal val StreamingGeoJsonMapDescriptor: SerialDescriptor =
     MapSerializer(String.serializer(), JsonElement.serializer()).descriptor
 
-internal val GeometryCoordinateForbiddenKeys: Set<String> =
-    setOf("geometry", "properties", "features", "geometries")
 internal val GeometryCoordinateReservedKeys: Set<String> =
-    setOf("type", "bbox", "coordinates") + GeometryCoordinateForbiddenKeys
+    setOf("type", "bbox", "coordinates", "geometry", "properties", "features", "geometries")
 
-internal val GeometryCollectionForbiddenKeys: Set<String> =
-    setOf("geometry", "properties", "features", "coordinates")
 internal val GeometryCollectionReservedKeys: Set<String> =
-    setOf("type", "bbox", "geometries") + GeometryCollectionForbiddenKeys
+    setOf("type", "bbox", "geometries", "geometry", "properties", "features", "coordinates")
 
-internal val FeatureForbiddenKeys: Set<String> = setOf("coordinates", "geometries", "features")
 internal val FeatureReservedKeys: Set<String> =
-    setOf("type", "bbox", "geometry", "properties", "id") + FeatureForbiddenKeys
+    setOf(
+        "type",
+        "bbox",
+        "geometry",
+        "properties",
+        "id",
+        "coordinates",
+        "geometries",
+        "features",
+    )
 
-internal val FeatureCollectionForbiddenKeys: Set<String> =
-    setOf("coordinates", "geometries", "geometry", "properties")
 internal val FeatureCollectionReservedKeys: Set<String> =
-    setOf("type", "bbox", "features") + FeatureCollectionForbiddenKeys
+    setOf("type", "bbox", "features", "coordinates", "geometries", "geometry", "properties")
 
 internal fun validateForeignMembers(foreignMembers: JsonObject, reserved: Set<String>) {
     val conflict = reservedConflict(foreignMembers.keys, reserved)
@@ -50,15 +52,15 @@ internal fun validateForeignMembers(foreignMembers: JsonObject, reserved: Set<St
 
 internal fun foreignMembersFromExtras(
     extras: Map<String, JsonElement>,
-    forbidden: Set<String>,
+    reserved: Set<String>,
 ): JsonObject {
-    val conflict = reservedConflict(extras.keys, forbidden)
+    val conflict = reservedConflict(extras.keys, reserved)
     if (conflict != null) {
         throw SerializationException(
             "Foreign member \"$conflict\" conflicts with a reserved GeoJSON member name"
         )
     }
-    return if (extras.isEmpty()) EmptyForeignMembers else JsonObject(extras)
+    return if (extras.isEmpty()) EmptyForeignMembers else JsonObject(extras.toMap())
 }
 
 private fun reservedConflict(keys: Set<String>, reserved: Set<String>): String? = keys.firstOrNull {
@@ -66,11 +68,10 @@ private fun reservedConflict(keys: Set<String>, reserved: Set<String>): String? 
 }
 
 @OptIn(ExperimentalSerializationApi::class)
-internal fun requireGeoJsonType(type: String?, serialName: String): String {
+internal fun requireGeoJsonType(type: String?, serialName: String) {
     val decoded = type ?: throw MissingFieldException("type", serialName)
     if (decoded != serialName)
         throw SerializationException("Expected type $serialName but found $decoded")
-    return decoded
 }
 
 internal class StreamingGeoJsonWriter(private val encoder: CompositeEncoder) {
@@ -110,10 +111,12 @@ internal class StreamingGeoJsonMembers {
     var bbox: BoundingBox? = null
     val extras: MutableMap<String, JsonElement> = linkedMapOf()
 
-    fun requireType(serialName: String): String = requireGeoJsonType(type, serialName)
+    fun requireType(serialName: String) {
+        requireGeoJsonType(type, serialName)
+    }
 
-    fun foreignMembers(forbidden: Set<String>): JsonObject =
-        foreignMembersFromExtras(extras, forbidden)
+    fun foreignMembers(reserved: Set<String>): JsonObject =
+        foreignMembersFromExtras(extras, reserved)
 }
 
 /**
