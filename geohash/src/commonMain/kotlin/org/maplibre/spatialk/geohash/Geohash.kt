@@ -13,8 +13,8 @@ import org.maplibre.spatialk.geojson.Position
  * A rectangular cell on the WGS84 longitude and latitude plane, addressed by a
  * [Geohash](https://en.wikipedia.org/wiki/Geohash) string.
  *
- * A `Geohash` is a cell rather than a string codec. Its [text], [center], and [boundingBox] are
- * projections of one packed value. Altitude is ignored.
+ * A `Geohash` is a cell rather than a string codec. Its [text], [center], [boundingBox], [parent],
+ * and [neighbors] are projections of one packed value. Altitude is ignored.
  *
  * Every instance is valid. Construction validates untrusted coordinates or text once, then cell
  * operations trust the instance.
@@ -26,13 +26,15 @@ public class Geohash private constructor(private val packed: Long) : Comparable<
 
     /** This cell's lowercase base32ghs address. */
     public val text: String
-        get() =
-            buildString(length) {
-                repeat(length) { index ->
+        get() {
+            val characterCount = length
+            return buildString(characterCount) {
+                repeat(characterCount) { index ->
                     val shift = 64 - BitsPerCharacter * (index + 1)
                     append(BASE32_GHS[((packed ushr shift) and CharacterMask).toInt()])
                 }
             }
+        }
 
     /**
      * The geometric center of this cell.
@@ -70,6 +72,77 @@ public class Geohash private constructor(private val packed: Long) : Comparable<
                 north = south + latitudeStep,
             )
         }
+
+    /** The enclosing cell one character shorter, or `null` when [length] is `1`. */
+    public val parent: Geohash?
+        get() = if (length == 1) null else truncatedTo(length - 1)
+
+    /**
+     * The adjacent cells at this [length], with named compass directions.
+     *
+     * Longitude wraps at the antimeridian. North-facing or south-facing entries are `null` when
+     * this cell touches the corresponding pole.
+     */
+    public val neighbors: GeohashNeighbors
+        get() =
+            GeohashNeighbors(
+                north = offsetBy(east = 0, north = 1),
+                northEast = offsetBy(east = 1, north = 1),
+                east = offsetBy(east = 1, north = 0)!!,
+                southEast = offsetBy(east = 1, north = -1),
+                south = offsetBy(east = 0, north = -1),
+                southWest = offsetBy(east = -1, north = -1),
+                west = offsetBy(east = -1, north = 0)!!,
+                northWest = offsetBy(east = -1, north = 1),
+            )
+
+    /**
+     * Returns the cell reached by moving [east] cells east and [north] cells north.
+     *
+     * Longitude wraps at the antimeridian. Latitude does not wrap, so a move past either pole
+     * returns `null`.
+     */
+    public fun offsetBy(east: Int, north: Int): Geohash? {
+        val longitudeBits = longitudeBits(length)
+        val latitudeBits = latitudeBits(length)
+        val longitudeCells = 1L shl longitudeBits
+        val latitudeCells = 1L shl latitudeBits
+        val currentX = deinterleaveX(packed, longitudeBits, latitudeBits)
+        val currentY = deinterleaveY(packed, longitudeBits, latitudeBits)
+        val unwrappedX = (currentX.toLong() + east.toLong()) % longitudeCells
+        val x = if (unwrappedX < 0) unwrappedX + longitudeCells else unwrappedX
+        val y = currentY.toLong() + north.toLong()
+        if (y !in 0..<latitudeCells) return null
+
+        val morton = interleave(x.toInt(), longitudeBits, y.toInt(), latitudeBits)
+        return Geohash(morton or length.toLong())
+    }
+
+    /**
+     * Returns the enclosing cell whose address has [length] characters.
+     *
+     * Returns this cell when [length] equals this cell's length.
+     *
+     * @throws IllegalArgumentException if [length] is outside `1..this.length`.
+     */
+    public fun truncatedTo(length: Int): Geohash {
+        require(length in 1..this.length) {
+            "Target length must be in 1..${this.length}, but was $length"
+        }
+        val payloadMask = -1L shl (64 - BitsPerCharacter * length)
+        return Geohash((packed and payloadMask) or length.toLong())
+    }
+
+    /**
+     * Returns true when [position] falls inside this cell.
+     *
+     * Altitude is ignored. Invalid coordinates throw as they do in [of].
+     */
+    public operator fun contains(position: Position): Boolean = of(position, length) == this
+
+    /** Returns true when [other] is this cell or one of its descendants. */
+    public operator fun contains(other: Geohash): Boolean =
+        other.length >= length && other.truncatedTo(length) == this
 
     /**
      * Orders cells in the same order as their [text] forms.
@@ -187,4 +260,37 @@ public class Geohash private constructor(private val packed: Long) : Comparable<
 
         private fun latitudeBits(length: Int): Int = BitsPerCharacter * length / 2
     }
+}
+
+/**
+ * The eight cells adjacent to a [Geohash], one property per compass direction.
+ *
+ * Longitude wraps, so [east] and [west] always exist. Properties that cross a pole are `null`.
+ */
+public class GeohashNeighbors
+internal constructor(
+    /** The adjacent cell to the north, or `null` at the north pole. */
+    public val north: Geohash?,
+    /** The adjacent cell to the northeast, or `null` at the north pole. */
+    public val northEast: Geohash?,
+    /** The adjacent cell to the east. */
+    public val east: Geohash,
+    /** The adjacent cell to the southeast, or `null` at the south pole. */
+    public val southEast: Geohash?,
+    /** The adjacent cell to the south, or `null` at the south pole. */
+    public val south: Geohash?,
+    /** The adjacent cell to the southwest, or `null` at the south pole. */
+    public val southWest: Geohash?,
+    /** The adjacent cell to the west. */
+    public val west: Geohash,
+    /** The adjacent cell to the northwest, or `null` at the north pole. */
+    public val northWest: Geohash?,
+) {
+    /**
+     * Returns existing neighbors in N, NE, E, SE, S, SW, W, NW order.
+     *
+     * Directions that cross a pole are omitted.
+     */
+    public fun toList(): List<Geohash> =
+        listOfNotNull(north, northEast, east, southEast, south, southWest, west, northWest)
 }
