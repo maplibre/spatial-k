@@ -1,0 +1,79 @@
+---
+title: "Geohash"
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+The `geohash` module represents
+[Geohash](https://en.wikipedia.org/wiki/Geohash) cells and
+[OpenStreetMap shortlinks](https://wiki.openstreetmap.org/wiki/Shortlink).
+
+Details can be found in the [API reference](/spatial-k/api/dokka/geohash/index.html).
+
+## Installation
+
+<Tabs syncKey="language">
+  <TabItem label="Multiplatform">
+    ```kotlin
+    commonMain {
+        dependencies {
+            implementation("org.maplibre.spatialk:geohash:{{ gradle.project_version }}")
+        }
+    }
+    ```
+  </TabItem>
+
+  <TabItem label="JVM">
+    ```kotlin
+    dependencies {
+        implementation("org.maplibre.spatialk:geohash-jvm:{{ gradle.project_version }}")
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## Encode a position
+
+`Geohash.of` returns the cell of a requested length that contains a WGS84 position.
+It ignores altitude.
+
+```kotlin
+--8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:encode"
+```
+
+## Parse and inspect a cell
+
+`Geohash.parse` accepts uppercase or lowercase base32ghs text and emits lowercase `text`.
+Each cell provides its center, bounding box, and parent.
+
+```kotlin
+--8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:parse"
+```
+
+## Move between cells
+
+`neighbors` names the eight compass directions.
+Longitude wraps at the antimeridian, while directions past a pole are `null`.
+Use `offsetBy` for moves longer than one cell.
+
+```kotlin
+--8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:neighbors"
+```
+
+## Test containment
+
+A cell contains its own positions and descendant cells.
+
+```kotlin
+--8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:containment"
+```
+
+## Use OpenStreetMap shortlinks
+
+`OsmShortlink.parse` accepts a bare code, a `/go/` path, or an `osm.org` or
+`openstreetmap.org` URL. It accepts the historical `@` and `=` characters and emits the current
+`~` and `-` characters.
+
+```kotlin
+--8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:osmShortlink"
+```

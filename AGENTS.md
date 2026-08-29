@@ -6,6 +6,7 @@ module is a distinct library.
 ## Project map
 
 - `geojson` — GeoJSON types and DSL
+- `geohash` — Geohash cells and OpenStreetMap shortlinks
 - `turf` — geospatial analysis (port of Turf.js)
 - `units` — units of measure
 - `gpx` — GPX format support
@@ -18,6 +19,9 @@ module is a distinct library.
 ## Reference resources
 
 - GeoJSON: [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946).
+- Geohash: [Geohash format](https://en.wikipedia.org/wiki/Geohash) and OpenStreetMap
+  [shortlink documentation](https://wiki.openstreetmap.org/wiki/Shortlink) and
+  [Rails implementation](https://github.com/openstreetmap/openstreetmap-website/blob/master/lib/short_link.rb).
 - Turf: [Turf.js docs](https://turfjs.org/docs/) and
   [source repository](https://github.com/Turfjs/turf).
 - Units: [BIPM SI Brochure](https://www.bipm.org/en/publications/si-brochure) and
