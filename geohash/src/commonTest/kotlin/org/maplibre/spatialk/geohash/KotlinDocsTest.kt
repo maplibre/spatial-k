@@ -3,6 +3,9 @@
 package org.maplibre.spatialk.geohash
 
 import kotlin.test.Test
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.maplibre.spatialk.geojson.Position
 
 class KotlinDocsTest {
@@ -26,6 +29,7 @@ class KotlinDocsTest {
         val center = cell.center
         val boundingBox = cell.boundingBox
         val parent = cell.parent
+        val children = cell.children
         // --8<-- [end:parse]
     }
 
@@ -61,5 +65,14 @@ class KotlinDocsTest {
                 zoom = 9,
             )
         // --8<-- [end:osmShortlink]
+    }
+
+    @Test
+    fun serialize() {
+        // --8<-- [start:serialize]
+        val cell = Geohash.parse("ezs42")
+        val json = Json.encodeToString(cell)
+        val parsed = Json.decodeFromString<Geohash>(json)
+        // --8<-- [end:serialize]
     }
 }

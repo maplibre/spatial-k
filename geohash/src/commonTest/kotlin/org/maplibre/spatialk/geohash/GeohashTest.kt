@@ -134,6 +134,22 @@ class GeohashTest {
     }
 
     @Test
+    fun `returns children in base32ghs order`() {
+        val cell = Geohash.parse("ezs42")
+        val children = cell.children
+        val alphabet = "0123456789bcdefghjkmnpqrstuvwxyz"
+
+        assertEquals(32, children.size)
+        assertEquals(alphabet.map { "ezs42$it" }, children.map(Geohash::text))
+        children.forEach { child ->
+            assertEquals(cell, child.parent)
+            assertTrue(child in cell)
+            assertEquals(cell, child.truncatedTo(cell.length))
+        }
+        assertEquals(emptyList(), Geohash.parse("zzzzzzzzzzzz").children)
+    }
+
+    @Test
     fun `returns libgeohash neighbors in compass order`() {
         val neighbors = Geohash.parse("ezs42").neighbors
 

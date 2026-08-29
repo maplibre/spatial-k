@@ -2,9 +2,15 @@ plugins { id("published-library") }
 
 kotlin {
     sourceSets {
-        commonMain.dependencies { api(project(":geojson")) }
+        commonMain.dependencies {
+            api(project(":geojson"))
+            implementation(libs.kotlinx.serialization.core)
+        }
 
-        commonTest.dependencies { implementation(project(":testutil")) }
+        commonTest.dependencies {
+            implementation(project(":testutil"))
+            implementation(libs.kotlinx.serialization.json)
+        }
 
         jvmTest.dependencies { implementation(kotlin("test")) }
     }

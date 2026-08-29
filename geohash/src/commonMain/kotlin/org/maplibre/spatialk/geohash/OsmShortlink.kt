@@ -1,11 +1,13 @@
 package org.maplibre.spatialk.geohash
 
 import kotlin.jvm.JvmStatic
+import kotlinx.serialization.Serializable
 import org.maplibre.spatialk.geohash.internal.OSM_BASE64
 import org.maplibre.spatialk.geohash.internal.deinterleaveX
 import org.maplibre.spatialk.geohash.internal.deinterleaveY
 import org.maplibre.spatialk.geohash.internal.interleave
 import org.maplibre.spatialk.geohash.internal.osmBase64Value
+import org.maplibre.spatialk.geohash.serialization.OsmShortlinkSerializer
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Position
 
@@ -15,6 +17,7 @@ import org.maplibre.spatialk.geojson.Position
  * This sibling encoding is not a [Geohash]. It uses a modified base64 alphabet, carries a [zoom],
  * and has no cell hierarchy or neighbor operations.
  */
+@Serializable(with = OsmShortlinkSerializer::class)
 public class OsmShortlink
 private constructor(
     private val morton: Long,

@@ -18,6 +18,7 @@ public class JavaDocsTest {
     GeohashNeighbors neighbors = parsed.getNeighbors();
     Geohash east = neighbors.getEast();
     Geohash offset = parsed.offsetBy(1, 0);
+    java.util.List<Geohash> children = parsed.getChildren();
   }
 
   @Test

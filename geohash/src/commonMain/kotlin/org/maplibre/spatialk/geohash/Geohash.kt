@@ -1,11 +1,13 @@
 package org.maplibre.spatialk.geohash
 
 import kotlin.jvm.JvmStatic
+import kotlinx.serialization.Serializable
 import org.maplibre.spatialk.geohash.internal.BASE32_GHS
 import org.maplibre.spatialk.geohash.internal.base32GhsValue
 import org.maplibre.spatialk.geohash.internal.deinterleaveX
 import org.maplibre.spatialk.geohash.internal.deinterleaveY
 import org.maplibre.spatialk.geohash.internal.interleave
+import org.maplibre.spatialk.geohash.serialization.GeohashSerializer
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Position
 
@@ -15,6 +17,7 @@ import org.maplibre.spatialk.geojson.Position
  *
  * A `Geohash` is a cell rather than a string codec. Altitude is ignored.
  */
+@Serializable(with = GeohashSerializer::class)
 public class Geohash private constructor(private val packed: Long) : Comparable<Geohash> {
     /** Number of base32ghs characters in this cell's address. */
     public val length: Int
@@ -72,6 +75,22 @@ public class Geohash private constructor(private val packed: Long) : Comparable<
     /** The enclosing cell one character shorter, or `null` when [length] is `1`. */
     public val parent: Geohash?
         get() = if (length == 1) null else truncatedTo(length - 1)
+
+    /**
+     * The 32 finer cells, in base32ghs character order.
+     *
+     * Empty when [length] is [MaxLength].
+     */
+    public val children: List<Geohash>
+        get() {
+            if (length == MaxLength) return emptyList()
+            val childLength = length + 1
+            val shift = 64 - BitsPerCharacter * childLength
+            val payload = packed and LengthMask.inv()
+            return List(1 shl BitsPerCharacter) { index ->
+                Geohash(payload or (index.toLong() shl shift) or childLength.toLong())
+            }
+        }
 
     /**
      * The adjacent cells at this [length], with named compass directions.

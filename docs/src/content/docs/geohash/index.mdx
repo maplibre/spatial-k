@@ -44,7 +44,7 @@ It ignores altitude.
 ## Parse and inspect a cell
 
 `Geohash.parse` accepts uppercase or lowercase base32ghs text and emits lowercase `text`.
-Each cell provides its center, bounding box, and parent.
+Each cell provides its center, bounding box, parent, and children.
 
 ```kotlin
 --8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:parse"
@@ -66,6 +66,14 @@ A cell contains its own positions and descendant cells.
 
 ```kotlin
 --8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:containment"
+```
+
+## Serialize as text
+
+`Geohash` and `OsmShortlink` serialize as their canonical strings.
+
+```kotlin
+--8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:serialize"
 ```
 
 ## Use OpenStreetMap shortlinks

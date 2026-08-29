@@ -11,6 +11,8 @@ final class org.maplibre.spatialk.geohash/Geohash : kotlin/Comparable<org.maplib
         final fun <get-boundingBox>(): org.maplibre.spatialk.geojson/BoundingBox // org.maplibre.spatialk.geohash/Geohash.boundingBox.<get-boundingBox>|<get-boundingBox>(){}[0]
     final val center // org.maplibre.spatialk.geohash/Geohash.center|{}center[0]
         final fun <get-center>(): org.maplibre.spatialk.geojson/Position // org.maplibre.spatialk.geohash/Geohash.center.<get-center>|<get-center>(){}[0]
+    final val children // org.maplibre.spatialk.geohash/Geohash.children|{}children[0]
+        final fun <get-children>(): kotlin.collections/List<org.maplibre.spatialk.geohash/Geohash> // org.maplibre.spatialk.geohash/Geohash.children.<get-children>|<get-children>(){}[0]
     final val length // org.maplibre.spatialk.geohash/Geohash.length|{}length[0]
         final fun <get-length>(): kotlin/Int // org.maplibre.spatialk.geohash/Geohash.length.<get-length>|<get-length>(){}[0]
     final val neighbors // org.maplibre.spatialk.geohash/Geohash.neighbors|{}neighbors[0]
@@ -36,6 +38,7 @@ final class org.maplibre.spatialk.geohash/Geohash : kotlin/Comparable<org.maplib
         final fun of(org.maplibre.spatialk.geojson/Position, kotlin/Int): org.maplibre.spatialk.geohash/Geohash // org.maplibre.spatialk.geohash/Geohash.Companion.of|of(org.maplibre.spatialk.geojson.Position;kotlin.Int){}[0]
         final fun parse(kotlin/String): org.maplibre.spatialk.geohash/Geohash // org.maplibre.spatialk.geohash/Geohash.Companion.parse|parse(kotlin.String){}[0]
         final fun parseOrNull(kotlin/String): org.maplibre.spatialk.geohash/Geohash? // org.maplibre.spatialk.geohash/Geohash.Companion.parseOrNull|parseOrNull(kotlin.String){}[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geohash/Geohash> // org.maplibre.spatialk.geohash/Geohash.Companion.serializer|serializer(){}[0]
     }
 }
 
@@ -81,5 +84,6 @@ final class org.maplibre.spatialk.geohash/OsmShortlink { // org.maplibre.spatial
         final fun of(org.maplibre.spatialk.geojson/Position, kotlin/Int): org.maplibre.spatialk.geohash/OsmShortlink // org.maplibre.spatialk.geohash/OsmShortlink.Companion.of|of(org.maplibre.spatialk.geojson.Position;kotlin.Int){}[0]
         final fun parse(kotlin/String): org.maplibre.spatialk.geohash/OsmShortlink // org.maplibre.spatialk.geohash/OsmShortlink.Companion.parse|parse(kotlin.String){}[0]
         final fun parseOrNull(kotlin/String): org.maplibre.spatialk.geohash/OsmShortlink? // org.maplibre.spatialk.geohash/OsmShortlink.Companion.parseOrNull|parseOrNull(kotlin.String){}[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<org.maplibre.spatialk.geohash/OsmShortlink> // org.maplibre.spatialk.geohash/OsmShortlink.Companion.serializer|serializer(){}[0]
     }
 }
