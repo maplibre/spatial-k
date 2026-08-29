@@ -3,6 +3,8 @@ package org.maplibre.spatialk.geojson
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoJsonObjectSerializer
 
@@ -10,13 +12,28 @@ import org.maplibre.spatialk.geojson.serialization.GeoJsonObjectSerializer
  * A [GeoJsonObject] represents a [Geometry], [Feature], or [FeatureCollection].
  *
  * @property bbox An optional [BoundingBox] used to represent the limits of the object's [Geometry].
+ * @property foreignMembers Additional members as defined in
+ *   [RFC 7946 §6.1](https://tools.ietf.org/html/rfc7946#section-6.1). Empty when none are present.
+ *   JSON encode flattens these as sibling keys. CBOR and Protobuf drop them.
  */
 @Serializable(with = GeoJsonObjectSerializer::class)
 public sealed interface GeoJsonObject {
     public val bbox: BoundingBox?
 
+    public val foreignMembers: JsonObject
+
     /** Factory methods for creating and serializing [GeoJsonObject] objects. */
     public companion object {
+        /**
+         * Returns the foreign member with the given [key], or null if it is not present.
+         *
+         * @param key The foreign member name.
+         * @return The value, or null if [key] is not present.
+         * @receiver The object to read from.
+         */
+        @JvmStatic
+        public fun GeoJsonObject.getForeignMember(key: String): JsonElement? = foreignMembers[key]
+
         /**
          * Decodes a JSON string into a [GeoJsonObject].
          *

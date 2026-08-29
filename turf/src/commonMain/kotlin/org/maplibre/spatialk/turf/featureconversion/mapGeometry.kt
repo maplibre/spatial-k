@@ -27,6 +27,7 @@ public fun <G1 : Geometry?, G2 : Geometry?, P> Feature<G1, P>.mapGeometry(
         properties = properties,
         id = id,
         bbox = this.bbox?.let { newGeometry?.computeBbox() ?: it },
+        foreignMembers = foreignMembers,
     )
 }
 
@@ -38,5 +39,6 @@ public fun <G1 : Geometry?, G2 : Geometry?, P> FeatureCollection<G1, P>.mapGeome
     return FeatureCollection(
         features = newFeatures,
         bbox = bbox?.let { computeBbox(newFeatures.flatMap { it.flattenCoordinates() }) },
+        foreignMembers = foreignMembers,
     )
 }

@@ -14,8 +14,10 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
+import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonEncoder
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.GeometryCollection
 
@@ -34,16 +36,40 @@ internal class GeometryCollectionSerializer<T : Geometry>(geometrySerializer: KS
         }
 
     override fun serialize(encoder: Encoder, value: GeometryCollection<T>) {
+        if (encoder is JsonEncoder) {
+            encoder.encodeStreamingGeoJsonObject(value.foreignMembers) {
+                put("type", typeSerializer, serialName)
+                value.bbox?.let { put("bbox", BoundingBox.serializer(), it) }
+                put("geometries", geometriesSerializer, value.geometries)
+            }
+            return
+        }
+
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
-            if (value.bbox != null || encoder !is JsonEncoder)
-                encodeSerializableElement(descriptor, 1, bboxSerializer, value.bbox)
+            encodeSerializableElement(descriptor, 1, bboxSerializer, value.bbox)
             encodeSerializableElement(descriptor, 2, geometriesSerializer, value.geometries)
         }
     }
 
     @OptIn(ExperimentalSerializationApi::class)
     override fun deserialize(decoder: Decoder): GeometryCollection<T> {
+        if (decoder is JsonDecoder) {
+            var geometries: List<T>? = null
+            val members =
+                decoder.readStreamingGeoJson(typeSerializer, bboxSerializer) { key ->
+                    if (key != "geometries") return@readStreamingGeoJson false
+                    geometries = decode(geometriesSerializer)
+                    true
+                }
+            members.requireType(serialName)
+            return GeometryCollection(
+                geometries ?: throw MissingFieldException("geometries", serialName),
+                members.bbox,
+                members.foreignMembers(GeometryCollectionReservedKeys),
+            )
+        }
+
         return decoder.decodeStructure(descriptor) {
             var type: String? = null
             var bbox: BoundingBox? = null
@@ -63,13 +89,10 @@ internal class GeometryCollectionSerializer<T : Geometry>(geometrySerializer: KS
                 }
             }
 
-            if (type == null) throw MissingFieldException("type", serialName)
+            requireGeoJsonType(type, serialName)
             if (geometries == null) throw MissingFieldException("geometries", serialName)
 
-            if (type != serialName)
-                throw SerializationException("Expected type $serialName but found $type")
-
-            GeometryCollection(geometries, bbox)
+            GeometryCollection(geometries, bbox, EmptyForeignMembers)
         }
     }
 }

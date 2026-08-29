@@ -4,9 +4,12 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoUriParser
+import org.maplibre.spatialk.geojson.serialization.GeometryCoordinateReservedKeys
 import org.maplibre.spatialk.geojson.serialization.PointSerializer
+import org.maplibre.spatialk.geojson.serialization.validateForeignMembers
 
 /**
  * A [Point] geometry represents a single [Position] in coordinate space.
@@ -24,7 +27,13 @@ constructor(
     public val coordinates: Position,
     /** The [BoundingBox] of this [Point]. */
     override val bbox: BoundingBox? = null,
+    /** Members not defined by RFC 7946. */
+    override val foreignMembers: JsonObject = EmptyForeignMembers,
 ) : SingleGeometry, PointGeometry {
+
+    init {
+        validateForeignMembers(foreignMembers, GeometryCoordinateReservedKeys)
+    }
 
     /** The longitude value of this [Point] in degrees. */
     public val longitude: Double
@@ -45,6 +54,7 @@ constructor(
      * @param latitude The latitude of the [Point].
      * @param altitude The altitude of the [Point], or null if not specified.
      * @param bbox The [BoundingBox] of this [Point].
+     * @param foreignMembers Members not defined by RFC 7946.
      */
     @JvmOverloads
     public constructor(
@@ -52,7 +62,8 @@ constructor(
         latitude: Double,
         altitude: Double? = null,
         bbox: BoundingBox? = null,
-    ) : this(Position(longitude, latitude, altitude), bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(Position(longitude, latitude, altitude), bbox, foreignMembers)
 
     /**
      * Converts this [Point] to a `geo` URI of the format `geo:lat,lon` or `geo:lat,lon,alt` as

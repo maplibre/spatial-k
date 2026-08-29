@@ -21,8 +21,10 @@ public data object GeoJson {
     /**
      * The default Json configuration for [GeoJsonObject] objects.
      *
-     * This configuration ignores unknown keys and includes polymorphic serializers for all
-     * [GeoJsonObject] types.
+     * Unknown keys on a GeoJSON object are captured as [GeoJsonObject.foreignMembers]. Reserved
+     * names that belong to another GeoJSON type are rejected. Unknown keys on typed property
+     * objects are ignored. The module includes polymorphic serializers for all [GeoJsonObject]
+     * types.
      */
     public val jsonFormat: Json = Json {
         ignoreUnknownKeys = true

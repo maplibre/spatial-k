@@ -110,6 +110,9 @@ Turf functions are available as top-level functions in Kotlin and as static meth
 
 ### Feature Conversion
 
+Geometry-preserving conversions keep `bbox` and `foreignMembers`. `combine` and `explode` rebuild
+new geometries from coordinates and drop both.
+
 * [x] [`combine`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.featureconversion/combine.html)
 * [x] [`explode`](/spatial-k/api/dokka/turf/org.maplibre.spatialk.turf.featureconversion/explode.html)
 * [ ] `flatten`

@@ -4,8 +4,11 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
+import org.maplibre.spatialk.geojson.serialization.GeometryCoordinateReservedKeys
 import org.maplibre.spatialk.geojson.serialization.MultiPointSerializer
+import org.maplibre.spatialk.geojson.serialization.validateForeignMembers
 
 /**
  * A [MultiPoint] geometry represents multiple points in coordinate space.
@@ -23,6 +26,8 @@ constructor(
     public val coordinates: List<Position>,
     /** The bounding box of this geometry. */
     override val bbox: BoundingBox? = null,
+    /** Members not defined by RFC 7946. */
+    override val foreignMembers: JsonObject = EmptyForeignMembers,
 ) : MultiGeometry, PointGeometry, Collection<Point> {
 
     /**
@@ -30,30 +35,35 @@ constructor(
      *
      * @param coordinates The [Position] objects that make up this multi-point.
      * @param bbox The [BoundingBox] of this geometry.
+     * @param foreignMembers Members not defined by RFC 7946.
      */
     @JvmOverloads
     public constructor(
         vararg coordinates: Position,
         bbox: BoundingBox? = null,
-    ) : this(coordinates.toList(), bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(coordinates.toList(), bbox, foreignMembers)
 
     /**
      * Create a [MultiPoint] by a number of [Point] objects.
      *
      * @param points The [Point] objects that make up this multi-point.
      * @param bbox The [BoundingBox] of this geometry.
+     * @param foreignMembers Members not defined by RFC 7946.
      */
     @JvmOverloads
     public constructor(
         vararg points: Point,
         bbox: BoundingBox? = null,
-    ) : this(points.map { it.coordinates }, bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(points.map { it.coordinates }, bbox, foreignMembers)
 
     /**
      * Create a [MultiPoint] by an array of [DoubleArray] objects that each represent a [Position].
      *
      * @param coordinates The array of double arrays representing [Position] objects.
      * @param bbox The [BoundingBox] of this geometry.
+     * @param foreignMembers Members not defined by RFC 7946.
      * @throws IllegalArgumentException if any array of doubles does not represent a valid
      *   [Position]
      */
@@ -61,7 +71,12 @@ constructor(
     public constructor(
         coordinates: Array<DoubleArray>,
         bbox: BoundingBox? = null,
-    ) : this(coordinates.map(::Position), bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(coordinates.map(::Position), bbox, foreignMembers)
+
+    init {
+        validateForeignMembers(foreignMembers, GeometryCoordinateReservedKeys)
+    }
 
     override val size: Int
         get() = coordinates.size

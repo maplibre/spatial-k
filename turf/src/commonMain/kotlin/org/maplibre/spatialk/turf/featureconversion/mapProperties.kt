@@ -18,7 +18,13 @@ import org.maplibre.spatialk.geojson.Geometry
 public fun <G : Geometry?, P1, P2> Feature<G, P1>.mapProperties(
     transform: (P1) -> P2
 ): Feature<G, P2> =
-    Feature(geometry = geometry, properties = transform(properties), id = id, bbox = bbox)
+    Feature(
+        geometry = geometry,
+        properties = transform(properties),
+        id = id,
+        bbox = bbox,
+        foreignMembers = foreignMembers,
+    )
 
 /**
  * Transforms the properties of all features in a [FeatureCollection] using the provided transform
@@ -30,4 +36,8 @@ public fun <G : Geometry?, P1, P2> Feature<G, P1>.mapProperties(
 public fun <G : Geometry?, P1, P2> FeatureCollection<G, P1>.mapProperties(
     transform: (P1) -> P2
 ): FeatureCollection<G, P2> =
-    FeatureCollection(features = features.map { it.mapProperties(transform) }, bbox = bbox)
+    FeatureCollection(
+        features = features.map { it.mapProperties(transform) },
+        bbox = bbox,
+        foreignMembers = foreignMembers,
+    )

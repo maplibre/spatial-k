@@ -10,6 +10,9 @@ import org.maplibre.spatialk.geojson.*
 /**
  * Combines a [GeometryCollection] of [Point], [LineString], or [Polygon] features into
  * [MultiPoint], [MultiLineString], or [MultiPolygon] features.
+ *
+ * Rebuilds new multi-geometries from coordinates. The result does not keep [bbox] or
+ * [GeometryCollection.foreignMembers].
  */
 public fun GeometryCollection<SingleGeometry>.combine(): GeometryCollection<MultiGeometry> {
     val points = mutableListOf<Point>()

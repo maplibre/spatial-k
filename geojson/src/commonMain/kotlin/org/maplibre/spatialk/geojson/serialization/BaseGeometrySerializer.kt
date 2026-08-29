@@ -13,8 +13,11 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
+import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonEncoder
+import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.Geometry
 
 internal abstract class BaseGeometrySerializer<G : Geometry, C>(
@@ -32,16 +35,40 @@ internal abstract class BaseGeometrySerializer<G : Geometry, C>(
         }
 
     override fun serialize(encoder: Encoder, value: G) {
+        if (encoder is JsonEncoder) {
+            encoder.encodeStreamingGeoJsonObject(value.foreignMembers) {
+                put("type", typeSerializer, serialName)
+                value.bbox?.let { put("bbox", BoundingBox.serializer(), it) }
+                put("coordinates", coordinatesSerializer, getCoordinates(value))
+            }
+            return
+        }
+
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
-            if (value.bbox != null || encoder !is JsonEncoder)
-                encodeSerializableElement(descriptor, 1, bboxSerializer, value.bbox)
+            encodeSerializableElement(descriptor, 1, bboxSerializer, value.bbox)
             encodeSerializableElement(descriptor, 2, coordinatesSerializer, getCoordinates(value))
         }
     }
 
     @OptIn(ExperimentalSerializationApi::class)
     override fun deserialize(decoder: Decoder): G {
+        if (decoder is JsonDecoder) {
+            var coordinates: C? = null
+            val members =
+                decoder.readStreamingGeoJson(typeSerializer, bboxSerializer) { key ->
+                    if (key != "coordinates") return@readStreamingGeoJson false
+                    coordinates = decode(coordinatesSerializer)
+                    true
+                }
+            members.requireType(serialName)
+            return construct(
+                coordinates ?: throw MissingFieldException("coordinates", serialName),
+                members.bbox,
+                members.foreignMembers(GeometryCoordinateReservedKeys),
+            )
+        }
+
         return decoder.decodeStructure(descriptor) {
             var type: String? = null
             var bbox: BoundingBox? = null
@@ -63,17 +90,18 @@ internal abstract class BaseGeometrySerializer<G : Geometry, C>(
                 }
             }
 
-            if (type == null) throw MissingFieldException("type", serialName)
+            requireGeoJsonType(type, serialName)
             if (coordinates == null) throw MissingFieldException("coordinates", serialName)
 
-            if (type != serialName)
-                throw SerializationException("Expected type $serialName but found $type")
-
-            construct(coordinates, bbox)
+            construct(coordinates, bbox, EmptyForeignMembers)
         }
     }
 
     protected abstract fun getCoordinates(value: G): C
 
-    protected abstract fun construct(coordinates: C, bbox: BoundingBox?): G
+    protected abstract fun construct(
+        coordinates: C,
+        bbox: BoundingBox?,
+        foreignMembers: JsonObject,
+    ): G
 }

@@ -1,12 +1,15 @@
 package org.maplibre.spatialk.geojson;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 
 import kotlinx.serialization.SerializationException;
+import kotlinx.serialization.json.JsonElement;
 import kotlinx.serialization.json.JsonElementBuildersKt;
 import kotlinx.serialization.json.JsonObject;
 import kotlinx.serialization.json.JsonObjectBuilder;
+import kotlinx.serialization.json.JsonPrimitive;
 import org.junit.Test;
 import org.maplibre.spatialk.geojson.dsl.FeatureBuilder;
 import org.maplibre.spatialk.geojson.dsl.FeatureCollectionBuilder;
@@ -348,5 +351,23 @@ public class JavaDocsTest {
     builder.add(feature);
     FeatureCollection<Point, JsonObject> featureCollection = builder.build();
     // --8<-- [end:dslFeatureCollectionJava]
+  }
+
+  @Test
+  public void foreignMembersExample() {
+    // --8<-- [start:foreignMembersJava]
+    JsonObjectBuilder properties = new JsonObjectBuilder();
+    JsonElementBuildersKt.put(properties, "name", "Station");
+
+    JsonObjectBuilder extras = new JsonObjectBuilder();
+    JsonElementBuildersKt.put(extras, "title", "Example Feature");
+
+    Feature<Point, JsonObject> feature =
+        new Feature<>(new Point(-75.0, 45.0), properties.build(), null, null, extras.build());
+
+    JsonElement title = GeoJsonObject.getForeignMember(feature, "title");
+    String titleValue = ((JsonPrimitive) title).getContent(); // "Example Feature"
+    // --8<-- [end:foreignMembersJava]
+    assertEquals("Example Feature", titleValue);
   }
 }

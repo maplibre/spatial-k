@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureId
 import org.maplibre.spatialk.geojson.Geometry
@@ -19,6 +20,8 @@ import org.maplibre.spatialk.geojson.Geometry
  * @property properties Additional properties about this [Feature].
  * @property id An optional identifier for this [Feature].
  * @property bbox An optional [BoundingBox] for this [Feature].
+ * @property foreignMembers Additional members as defined in
+ *   [RFC 7946 §6.1](https://tools.ietf.org/html/rfc7946#section-6.1).
  * @see Feature
  * @see buildFeature
  */
@@ -29,6 +32,7 @@ public class FeatureBuilder<G : Geometry?, P : @Serializable Any?>(
 ) {
     public var id: FeatureId? = null
     public var bbox: BoundingBox? = null
+    public var foreignMembers: JsonObject = EmptyForeignMembers
 
     /**
      * Sets the Feature identifier using a string value.
@@ -63,6 +67,6 @@ public class FeatureBuilder<G : Geometry?, P : @Serializable Any?>(
      * @return The constructed [Feature].
      */
     public fun build(): Feature<G, P> {
-        return Feature(geometry, properties, id, bbox)
+        return Feature(geometry, properties, id, bbox, foreignMembers)
     }
 }

@@ -15,8 +15,10 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
+import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonEncoder
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.FeatureId
 import org.maplibre.spatialk.geojson.GeoJson
@@ -51,19 +53,64 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
         }
 
     override fun serialize(encoder: Encoder, value: Feature<T, P>) {
+        if (encoder is JsonEncoder) {
+            encoder.encodeStreamingGeoJsonObject(value.foreignMembers) {
+                put("type", typeSerializer, serialName)
+                put("geometry", geometrySerializer, value.geometry)
+                put("properties", propertiesSerializer, value.properties)
+                value.id?.let { put("id", FeatureIdSerializer, it) }
+                value.bbox?.let { put("bbox", BoundingBox.serializer(), it) }
+            }
+            return
+        }
+
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, typeSerializer, serialName)
             encodeSerializableElement(descriptor, 1, geometrySerializer, value.geometry)
             encodeSerializableElement(descriptor, 2, propertiesSerializer, value.properties)
-            if (value.id != null || encoder !is JsonEncoder)
-                encodeSerializableElement(descriptor, 3, idSerializer, value.id)
-            if (value.bbox != null || encoder !is JsonEncoder)
-                encodeSerializableElement(descriptor, 4, bboxSerializer, value.bbox)
+            encodeSerializableElement(descriptor, 3, idSerializer, value.id)
+            encodeSerializableElement(descriptor, 4, bboxSerializer, value.bbox)
         }
     }
 
     @OptIn(ExperimentalSerializationApi::class)
     override fun deserialize(decoder: Decoder): Feature<T, P> {
+        if (decoder is JsonDecoder) {
+            var geometry: Any? = uninitialized
+            var properties: Any? = uninitialized
+            var id: FeatureId? = null
+            val members =
+                decoder.readStreamingGeoJson(typeSerializer, bboxSerializer) { key ->
+                    when (key) {
+                        "geometry" -> {
+                            geometry = decode(geometrySerializer)
+                            true
+                        }
+                        "properties" -> {
+                            properties = decode(propertiesSerializer)
+                            true
+                        }
+                        "id" -> {
+                            id = decode(idSerializer)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            members.requireType(serialName)
+            if (geometry === uninitialized) throw MissingFieldException("geometry", serialName)
+            if (properties === uninitialized && GeoJson.STRICT)
+                throw MissingFieldException("properties", serialName)
+            @Suppress("UNCHECKED_CAST")
+            return Feature(
+                geometry as T,
+                if (properties === uninitialized) null as P else properties as P,
+                id,
+                members.bbox,
+                members.foreignMembers(FeatureReservedKeys),
+            )
+        }
+
         return decoder.decodeStructure(descriptor) {
             var type: String? = null
             var bbox: BoundingBox? = null
@@ -89,13 +136,10 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
                 }
             }
 
-            if (type == null) throw MissingFieldException("type", serialName)
+            requireGeoJsonType(type, serialName)
             if (geometry == uninitialized) throw MissingFieldException("geometry", serialName)
             if (properties == uninitialized && GeoJson.STRICT)
                 throw MissingFieldException("properties", serialName)
-
-            if (type != serialName)
-                throw SerializationException("Expected type $serialName but found $type")
 
             @Suppress("UNCHECKED_CAST")
             Feature(
@@ -103,6 +147,7 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
                 if (properties == uninitialized) null as P else properties as P,
                 id,
                 bbox,
+                EmptyForeignMembers,
             )
         }
     }

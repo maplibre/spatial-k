@@ -1,6 +1,7 @@
 package org.maplibre.spatialk.geojson.serialization
 
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Position
@@ -12,6 +13,9 @@ internal object LineStringSerializer :
     ) {
     override fun getCoordinates(value: LineString) = value.coordinates
 
-    override fun construct(coordinates: List<Position>, bbox: BoundingBox?) =
-        LineString(coordinates, bbox)
+    override fun construct(
+        coordinates: List<Position>,
+        bbox: BoundingBox?,
+        foreignMembers: JsonObject,
+    ) = LineString(coordinates, bbox, foreignMembers)
 }

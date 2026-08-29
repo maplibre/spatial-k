@@ -1,6 +1,8 @@
 package org.maplibre.spatialk.geojson.dsl
 
+import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
+import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.Geometry
 import org.maplibre.spatialk.geojson.GeometryCollection
 
@@ -8,6 +10,7 @@ import org.maplibre.spatialk.geojson.GeometryCollection
  * Builder for constructing [GeometryCollection] objects using a DSL.
  *
  * @property bbox An optional [BoundingBox] for this [GeometryCollection].
+ * @property foreignMembers Members not defined by RFC 7946.
  * @see GeometryCollection
  * @see buildGeometryCollection
  * @see addPoint
@@ -21,6 +24,7 @@ import org.maplibre.spatialk.geojson.GeometryCollection
 @GeoJsonDsl
 public class GeometryCollectionBuilder<G : Geometry> {
     public var bbox: BoundingBox? = null
+    public var foreignMembers: JsonObject = EmptyForeignMembers
     private val geometries: MutableList<G> = mutableListOf()
 
     /**
@@ -37,5 +41,5 @@ public class GeometryCollectionBuilder<G : Geometry> {
      *
      * @return The constructed [GeometryCollection].
      */
-    public fun build(): GeometryCollection<G> = GeometryCollection(geometries, bbox)
+    public fun build(): GeometryCollection<G> = GeometryCollection(geometries, bbox, foreignMembers)
 }

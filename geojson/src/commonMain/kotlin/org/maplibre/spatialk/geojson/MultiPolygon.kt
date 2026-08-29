@@ -4,8 +4,11 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
+import org.maplibre.spatialk.geojson.serialization.GeometryCoordinateReservedKeys
 import org.maplibre.spatialk.geojson.serialization.MultiPolygonSerializer
+import org.maplibre.spatialk.geojson.serialization.validateForeignMembers
 
 /**
  * A [MultiPolygon] geometry represents multiple surfaces in coordinate space.
@@ -24,6 +27,8 @@ constructor(
     public val coordinates: List<List<List<Position>>>,
     /** The bounding box of this geometry. */
     override val bbox: BoundingBox? = null,
+    /** Members not defined by RFC 7946. */
+    override val foreignMembers: JsonObject = EmptyForeignMembers,
 ) : MultiGeometry, PolygonGeometry, Collection<Polygon> {
 
     /**
@@ -32,19 +37,22 @@ constructor(
      *
      * @param coordinates The lists of polygon rings that make up the [Polygon] objects.
      * @param bbox The [BoundingBox] of this geometry.
+     * @param foreignMembers Members not defined by RFC 7946.
      * @throws IllegalArgumentException if any list does not represent a valid [Polygon]
      */
     @JvmOverloads
     public constructor(
         vararg coordinates: List<List<Position>>,
         bbox: BoundingBox? = null,
-    ) : this(coordinates.toList(), bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(coordinates.toList(), bbox, foreignMembers)
 
     /**
      * Create a [MultiPolygon] by a number of [Polygon] objects.
      *
      * @param polygons The [Polygon] objects that make up this multi-polygon.
      * @param bbox The [BoundingBox] of this geometry.
+     * @param foreignMembers Members not defined by RFC 7946.
      * @throws IllegalArgumentException if any of the [Polygon] objects does not represent a valid
      *   polygon (e.g., empty or rings not closed or fewer than 4 positions per ring).
      */
@@ -52,7 +60,8 @@ constructor(
     public constructor(
         vararg polygons: Polygon,
         bbox: BoundingBox? = null,
-    ) : this(polygons.map { it.coordinates }, bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(polygons.map { it.coordinates }, bbox, foreignMembers)
 
     /**
      * Create a [MultiPolygon] by an array (= [Polygon] objects) of arrays (= polygon rings) of
@@ -61,13 +70,15 @@ constructor(
      * @param coordinates The array of arrays of arrays of double arrays representing [Polygon]
      *   objects.
      * @param bbox The [BoundingBox] of this geometry.
+     * @param foreignMembers Members not defined by RFC 7946.
      * @throws IllegalArgumentException if the array does not represent a valid [MultiPolygon]
      */
     @JvmOverloads
     public constructor(
         coordinates: Array<Array<Array<DoubleArray>>>,
         bbox: BoundingBox? = null,
-    ) : this(coordinates.map { ring -> ring.map { it.map(::Position) } }, bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(coordinates.map { ring -> ring.map { it.map(::Position) } }, bbox, foreignMembers)
 
     init {
         coordinates.forEachIndexed { polygonIndex, polygon ->
@@ -84,6 +95,7 @@ constructor(
                 }
             }
         }
+        validateForeignMembers(foreignMembers, GeometryCoordinateReservedKeys)
     }
 
     override val size: Int

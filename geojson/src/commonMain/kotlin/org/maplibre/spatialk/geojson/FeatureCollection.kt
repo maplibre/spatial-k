@@ -10,7 +10,9 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
+import org.maplibre.spatialk.geojson.serialization.FeatureCollectionReservedKeys
 import org.maplibre.spatialk.geojson.serialization.FeatureCollectionSerializer
+import org.maplibre.spatialk.geojson.serialization.validateForeignMembers
 
 /**
  * A [FeatureCollection] object is a collection of [Feature] objects. This class implements the
@@ -21,6 +23,7 @@ import org.maplibre.spatialk.geojson.serialization.FeatureCollectionSerializer
  * specification.
  *
  * @property features The collection of [Feature] objects stored in this [FeatureCollection]
+ * @property foreignMembers Members not defined by RFC 7946.
  */
 @Serializable(with = FeatureCollectionSerializer::class)
 public data class FeatureCollection<out G : Geometry?, out P : @Serializable Any?>
@@ -28,18 +31,25 @@ public data class FeatureCollection<out G : Geometry?, out P : @Serializable Any
 constructor(
     public val features: List<Feature<G, P>> = emptyList(),
     override val bbox: BoundingBox? = null,
+    override val foreignMembers: JsonObject = EmptyForeignMembers,
 ) : Collection<Feature<G, P>> by features, GeoJsonObject {
     /**
      * Constructs a [FeatureCollection] from a vararg of [Feature] objects.
      *
      * @param features The [Feature] objects to include in this [FeatureCollection].
      * @param bbox The [BoundingBox] for this [FeatureCollection].
+     * @param foreignMembers Members not defined by RFC 7946.
      */
     @JvmOverloads
     public constructor(
         vararg features: Feature<G, P>,
         bbox: BoundingBox? = null,
-    ) : this(features.toMutableList(), bbox)
+        foreignMembers: JsonObject = EmptyForeignMembers,
+    ) : this(features.toMutableList(), bbox, foreignMembers)
+
+    init {
+        validateForeignMembers(foreignMembers, FeatureCollectionReservedKeys)
+    }
 
     /**
      * Get the feature at the specified index.

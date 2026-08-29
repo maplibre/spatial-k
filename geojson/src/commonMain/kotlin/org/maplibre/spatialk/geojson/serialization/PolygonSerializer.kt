@@ -1,6 +1,7 @@
 package org.maplibre.spatialk.geojson.serialization
 
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.Polygon
 import org.maplibre.spatialk.geojson.Position
@@ -12,6 +13,9 @@ internal object PolygonSerializer :
     ) {
     override fun getCoordinates(value: Polygon) = value.coordinates
 
-    override fun construct(coordinates: List<List<Position>>, bbox: BoundingBox?) =
-        Polygon(coordinates, bbox)
+    override fun construct(
+        coordinates: List<List<Position>>,
+        bbox: BoundingBox?,
+        foreignMembers: JsonObject,
+    ) = Polygon(coordinates, bbox, foreignMembers)
 }

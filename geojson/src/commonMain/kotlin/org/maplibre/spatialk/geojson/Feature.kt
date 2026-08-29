@@ -12,7 +12,9 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
 import org.intellij.lang.annotations.Language
+import org.maplibre.spatialk.geojson.serialization.FeatureReservedKeys
 import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
+import org.maplibre.spatialk.geojson.serialization.validateForeignMembers
 
 /**
  * A [Feature] object represents a spatially bounded thing.
@@ -28,6 +30,8 @@ import org.maplibre.spatialk.geojson.serialization.FeatureSerializer
  * @property properties Additional properties about this [Feature]. It should be serializable into a
  *   [JsonObject].
  * @property id An optionally included string or number that commonly identifies this [Feature].
+ * @property foreignMembers Additional members as defined in
+ *   [RFC 7946 §6.1](https://tools.ietf.org/html/rfc7946#section-6.1).
  * @see FeatureCollection
  */
 @Serializable(with = FeatureSerializer::class)
@@ -38,12 +42,14 @@ constructor(
     public val properties: P,
     public val id: FeatureId? = null,
     override val bbox: BoundingBox? = null,
+    override val foreignMembers: JsonObject = EmptyForeignMembers,
 ) : GeoJsonObject {
 
     init {
         require(id == null || id.isString || id.content.matches(numberRegex)) {
             "Feature.id must be a string or a base-10 number; got $id"
         }
+        validateForeignMembers(foreignMembers, FeatureReservedKeys)
     }
 
     /** Factory methods for creating and serializing [Feature] objects. */

@@ -304,6 +304,35 @@ and can be used in any place that a collection can be used.
   </TabItem>
 </Tabs>
 
+### Foreign members
+
+GeoJSON objects may include
+[foreign members](https://tools.ietf.org/html/rfc7946#section-6.1)—extra keys on a GeoJSON object
+beyond those defined by the specification. JSON encode flattens them as sibling keys. CBOR and
+Protobuf drop them.
+
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
+    ```kotlin
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:foreignMembersType"
+
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:foreignMembersKt"
+    ```
+  </TabItem>
+
+  <TabItem label="Java">
+    ```java
+    --8<-- "geojson/src/jvmTest/java/org/maplibre/spatialk/geojson/JavaDocsTest.java:foreignMembersJava"
+    ```
+  </TabItem>
+
+  <TabItem label="JSON">
+    ```json
+    --8<-- "geojson/src/commonTest/kotlin/org/maplibre/spatialk/geojson/KotlinDocsTest.kt:foreignMembersJson"
+    ```
+  </TabItem>
+</Tabs>
+
 ### BoundingBox
 
 The `BoundingBox` class is used to represent the bounding boxes that can be set for any
