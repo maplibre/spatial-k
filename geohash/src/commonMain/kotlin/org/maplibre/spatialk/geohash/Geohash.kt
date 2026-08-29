@@ -13,11 +13,7 @@ import org.maplibre.spatialk.geojson.Position
  * A rectangular cell on the WGS84 longitude and latitude plane, addressed by a
  * [Geohash](https://en.wikipedia.org/wiki/Geohash) string.
  *
- * A `Geohash` is a cell rather than a string codec. Its [text], [center], [boundingBox], [parent],
- * and [neighbors] are projections of one packed value. Altitude is ignored.
- *
- * Every instance is valid. Construction validates untrusted coordinates or text once, then cell
- * operations trust the instance.
+ * A `Geohash` is a cell rather than a string codec. Altitude is ignored.
  */
 public class Geohash private constructor(private val packed: Long) : Comparable<Geohash> {
     /** Number of base32ghs characters in this cell's address. */
@@ -151,10 +147,8 @@ public class Geohash private constructor(private val packed: Long) : Comparable<
      */
     override fun compareTo(other: Geohash): Int = packed.toULong().compareTo(other.packed.toULong())
 
-    /** Returns true when [other] identifies the same cell. */
     override fun equals(other: Any?): Boolean = other is Geohash && packed == other.packed
 
-    /** Returns a hash code consistent with [equals]. */
     override fun hashCode(): Int = packed.hashCode()
 
     /** Returns [text]. */

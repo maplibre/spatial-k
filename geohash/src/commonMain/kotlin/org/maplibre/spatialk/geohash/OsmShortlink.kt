@@ -66,7 +66,6 @@ private constructor(
     override fun equals(other: Any?): Boolean =
         other is OsmShortlink && morton == other.morton && zoom == other.zoom
 
-    /** Returns a hash code consistent with [equals]. */
     override fun hashCode(): Int = 31 * morton.hashCode() + zoom
 
     /** Returns [text]. */
