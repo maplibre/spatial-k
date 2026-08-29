@@ -53,6 +53,7 @@ class OsmShortlinkTest {
             expected,
             OsmShortlink.parse("HTTPS://WWW.OPENSTREETMAP.ORG/go/0EEQjE--"),
         )
+        assertEquals(expected, OsmShortlink.parse("https://osm.org:443/go/0EEQjE--"))
     }
 
     @Test
@@ -84,6 +85,18 @@ class OsmShortlinkTest {
     }
 
     @Test
+    fun `wraps OpenStreetMap edges the way Rails does`() {
+        assertEquals(
+            OsmShortlink.of(Position(longitude = -180.0, latitude = 0.0), zoom = 9),
+            OsmShortlink.of(Position(longitude = 180.0, latitude = 0.0), zoom = 9),
+        )
+        assertEquals(
+            OsmShortlink.of(Position(longitude = 0.0, latitude = -90.0), zoom = 9),
+            OsmShortlink.of(Position(longitude = 0.0, latitude = 90.0), zoom = 9),
+        )
+    }
+
+    @Test
     fun `rejects invalid zoom coordinates codes and URLs`() {
         val origin = Position(longitude = 0.0, latitude = 0.0)
         assertFailsWith<IllegalArgumentException> { OsmShortlink.of(origin, zoom = -1) }
@@ -107,6 +120,8 @@ class OsmShortlinkTest {
                 "AAAAAAAAAAA",
                 "https://example.com/go/0EEQjE--",
                 "https://osm.org/map/0EEQjE--",
+                "https://osm.org:evil/go/0EEQjE--",
+                "https://osm.org:/go/0EEQjE--",
             )
             .forEach { text ->
                 assertFailsWith<IllegalArgumentException>(text) { OsmShortlink.parse(text) }

@@ -121,6 +121,7 @@ public class Geohash private constructor(private val packed: Long) : Comparable<
      *
      * @throws IllegalArgumentException if [length] is outside `1..this.length`.
      */
+    @Throws(IllegalArgumentException::class)
     public fun truncatedTo(length: Int): Geohash {
         require(length in 1..this.length) {
             "Target length must be in 1..${this.length}, but was $length"
@@ -134,6 +135,7 @@ public class Geohash private constructor(private val packed: Long) : Comparable<
      *
      * Altitude is ignored. Invalid coordinates throw as they do in [of].
      */
+    @Throws(IllegalArgumentException::class)
     public operator fun contains(position: Position): Boolean = of(position, length) == this
 
     /** Returns true when [other] is this cell or one of its descendants. */

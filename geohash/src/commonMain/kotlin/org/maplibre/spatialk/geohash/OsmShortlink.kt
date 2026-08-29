@@ -78,6 +78,8 @@ private constructor(
 
         private const val BitsPerCharacter: Int = 6
         private const val BitsPerAxisPerCharacter: Int = 3
+        private const val FullAxisBits: Int = 32
+        private const val FullAxisCells: Long = 1L shl FullAxisBits
         private const val CharacterMask: Long = 0x3F
         private const val MinimumLongitude: Double = -180.0
         private const val MaximumLongitude: Double = 180.0
@@ -114,15 +116,8 @@ private constructor(
             }
 
             val axisBits = dataCharacterCount(zoom) * BitsPerAxisPerCharacter
-            val axisCells = 1 shl axisBits
-            val x =
-                (((position.longitude - MinimumLongitude) / LongitudeSpan) * axisCells)
-                    .toInt()
-                    .coerceAtMost(axisCells - 1)
-            val y =
-                (((position.latitude - MinimumLatitude) / LatitudeSpan) * axisCells)
-                    .toInt()
-                    .coerceAtMost(axisCells - 1)
+            val x = axisIndex(position.longitude, MinimumLongitude, LongitudeSpan, axisBits)
+            val y = axisIndex(position.latitude, MinimumLatitude, LatitudeSpan, axisBits)
             return OsmShortlink(interleave(x, axisBits, y, axisBits), zoom)
         }
 
@@ -189,6 +184,23 @@ private constructor(
 
         private fun paddingCount(zoom: Int): Int = (zoom + 8) % BitsPerAxisPerCharacter
 
+        private fun axisIndex(value: Double, minimum: Double, span: Double, axisBits: Int): Int {
+            val raw = (((value - minimum) / span) * FullAxisCells).toLong()
+            val wrapped = if (raw !in 0..<FullAxisCells) 0L else raw
+            return (wrapped ushr (FullAxisBits - axisBits)).toInt()
+        }
+
+        private fun hostFromAuthority(authority: String): String {
+            val colon = authority.indexOf(':')
+            if (colon < 0) return authority.lowercase()
+
+            val port = authority.substring(colon + 1)
+            require(port.isNotEmpty() && port.all { it.isDigit() }) {
+                "OpenStreetMap shortlink URL has an invalid authority"
+            }
+            return authority.substring(0, colon).lowercase()
+        }
+
         private fun extractCode(text: String): String {
             if (text.startsWith("/go/")) return codeFromPath(text)
 
@@ -208,7 +220,7 @@ private constructor(
             require(authority.isNotEmpty() && '@' !in authority) {
                 "OpenStreetMap shortlink URL has an invalid authority"
             }
-            val host = authority.substringBefore(':').lowercase()
+            val host = hostFromAuthority(authority)
             require(
                 host == "osm.org" ||
                     host == "www.osm.org" ||
