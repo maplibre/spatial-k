@@ -24,4 +24,5 @@ include(
     ":benchmark",
     ":polyline-encoding",
     ":pmtiles",
+    ":geohash",
 )
