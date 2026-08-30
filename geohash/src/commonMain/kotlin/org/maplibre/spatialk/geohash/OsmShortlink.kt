@@ -198,7 +198,7 @@ private constructor(
             if (colon < 0) return authority.lowercase()
 
             val port = authority.substring(colon + 1)
-            require(port.isNotEmpty() && port.all { it.isDigit() }) {
+            require(port.isNotEmpty() && port.all { it in '0'..'9' }) {
                 "OpenStreetMap shortlink URL has an invalid authority"
             }
             return authority.substring(0, colon).lowercase()

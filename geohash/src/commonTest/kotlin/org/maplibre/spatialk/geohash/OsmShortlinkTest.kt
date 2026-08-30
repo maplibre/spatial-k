@@ -132,6 +132,7 @@ class OsmShortlinkTest {
                 "https://osm.org/map/0EEQjE--",
                 "https://osm.org:evil/go/0EEQjE--",
                 "https://osm.org:/go/0EEQjE--",
+                "https://osm.org:\uFF11\uFF12/go/0EEQjE--",
             )
             .forEach { text ->
                 assertFailsWith<IllegalArgumentException>(text) { OsmShortlink.parse(text) }
