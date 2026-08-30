@@ -1,0 +1,40 @@
+[
+    {
+        "source": "osm-wiki",
+        "input": "0EEQjE--",
+        "text": "0EEQjE--",
+        "zoom": 9,
+        "longitude": 0.0556182861328125,
+        "latitude": 51.51111602783203,
+        "west": 0.054931640625,
+        "south": 51.510772705078125,
+        "east": 0.056304931640625,
+        "north": 51.51145935058594
+    },
+    {
+        "source": "osm-wiki",
+        "input": "https://osm.org/go/0EEQjE--",
+        "text": "0EEQjE--",
+        "zoom": 9,
+        "longitude": 0.0556182861328125,
+        "latitude": 51.51111602783203,
+        "west": 0.054931640625,
+        "south": 51.510772705078125,
+        "east": 0.056304931640625,
+        "north": 51.51145935058594
+    },
+    {
+        "source": "osm-wiki",
+        "input": "https://osm.org/go/0EEQjEEb",
+        "text": "0EEQjEEb",
+        "zoom": 16,
+        "longitude": 0.05500674247741699,
+        "latitude": 51.511003375053406,
+        "west": 0.05499601364135742,
+        "south": 51.510998010635376,
+        "east": 0.05501747131347656,
+        "north": 51.511008739471436
+    },
+    { "source": "osm-wiki-history", "input": "0EEQjE==", "text": "0EEQjE--" },
+    { "source": "generated", "input": "QQFq@mz--", "text": "QQFq~mz--" }
+]

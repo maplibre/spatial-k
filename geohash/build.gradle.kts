@@ -1,4 +1,7 @@
-plugins { id("published-library") }
+plugins {
+    id("published-library")
+    id("test-resources")
+}
 
 kotlin {
     sourceSets {

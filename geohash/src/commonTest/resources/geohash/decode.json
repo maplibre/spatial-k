@@ -1,0 +1,33 @@
+[
+    { "source": "ngeohash", "text": "ww8p1r4t8", "longitude": 112.5584, "latitude": 37.8324 },
+    {
+        "source": "libgeohash",
+        "text": "ezs42",
+        "longitude": -5.60302734375,
+        "latitude": 42.60498046875,
+        "west": -5.625,
+        "south": 42.5830078125,
+        "east": -5.5810546875,
+        "north": 42.626953125
+    },
+    {
+        "source": "libgeohash",
+        "text": "ezs42gx",
+        "longitude": -5.5817413330078125,
+        "latitude": 42.602920532226562,
+        "west": -5.582427978515625,
+        "south": 42.60223388671875,
+        "east": -5.5810546875,
+        "north": 42.603607177734375
+    },
+    {
+        "source": "libgeohash",
+        "text": "9xj5smj4w40",
+        "longitude": -105.27485780417919,
+        "latitude": 40.018140748143196,
+        "west": -105.27485847473145,
+        "south": 40.018140077590942,
+        "east": -105.27485713362694,
+        "north": 40.01814141869545
+    }
+]

@@ -13,37 +13,40 @@ import org.maplibre.spatialk.testutil.assertPositionEquals
 
 class GeohashTest {
     @Test
-    fun `encodes Wikipedia vectors`() {
-        assertEquals(
-            "u4pruydqqvj",
-            Geohash.of(
-                    Position(longitude = 10.40744, latitude = 57.64911),
-                    length = 11,
-                )
-                .text,
-        )
-        assertEquals(
-            "ezs42",
-            Geohash.of(
-                    Position(longitude = -5.60302734375, latitude = 42.60498046875),
-                    length = 5,
-                )
-                .text,
-        )
+    fun `encodes imported vectors`() {
+        GeohashFixtures.geohashEncode.forEach { case ->
+            val label = "${case.source} ${case.text}"
+            assertEquals(
+                case.text,
+                Geohash.of(
+                        Position(longitude = case.longitude, latitude = case.latitude),
+                        length = case.length,
+                    )
+                    .text,
+                label,
+            )
+        }
     }
 
     @Test
-    fun `decodes the Wikipedia center and bounding box`() {
-        val cell = Geohash.parse("ezs42")
-
-        assertPositionEquals(
-            Position(longitude = -5.60302734375, latitude = 42.60498046875),
-            cell.center,
-        )
-        assertDoubleEquals(-5.625, cell.boundingBox.west)
-        assertDoubleEquals(42.5830078125, cell.boundingBox.south)
-        assertDoubleEquals(-5.5810546875, cell.boundingBox.east)
-        assertDoubleEquals(42.626953125, cell.boundingBox.north)
+    fun `decodes imported vectors`() {
+        GeohashFixtures.geohashDecode.forEach { case ->
+            val label = "${case.source} ${case.text}"
+            val cell = Geohash.parse(case.text)
+            assertPositionEquals(
+                Position(longitude = case.longitude, latitude = case.latitude),
+                cell.center,
+                message = label,
+            )
+            if (
+                case.west != null && case.south != null && case.east != null && case.north != null
+            ) {
+                assertDoubleEquals(case.west, cell.boundingBox.west, message = label)
+                assertDoubleEquals(case.south, cell.boundingBox.south, message = label)
+                assertDoubleEquals(case.east, cell.boundingBox.east, message = label)
+                assertDoubleEquals(case.north, cell.boundingBox.north, message = label)
+            }
+        }
     }
 
     @Test
@@ -150,21 +153,45 @@ class GeohashTest {
     }
 
     @Test
-    fun `returns libgeohash neighbors in compass order`() {
-        val neighbors = Geohash.parse("ezs42").neighbors
+    fun `returns imported neighbors in compass order`() {
+        GeohashFixtures.geohashNeighbors.forEach { case ->
+            val label = "${case.source} ${case.text}"
+            val neighbors = Geohash.parse(case.text).neighbors
+            assertEquals(case.north, neighbors.north?.text, label)
+            assertEquals(case.northEast, neighbors.northEast?.text, label)
+            assertEquals(case.east, neighbors.east.text, label)
+            assertEquals(case.southEast, neighbors.southEast?.text, label)
+            assertEquals(case.south, neighbors.south?.text, label)
+            assertEquals(case.southWest, neighbors.southWest?.text, label)
+            assertEquals(case.west, neighbors.west.text, label)
+            assertEquals(case.northWest, neighbors.northWest?.text, label)
+            assertEquals(
+                listOf(
+                    case.north,
+                    case.northEast,
+                    case.east,
+                    case.southEast,
+                    case.south,
+                    case.southWest,
+                    case.west,
+                    case.northWest,
+                ),
+                neighbors.toList().map(Geohash::text),
+                label,
+            )
+        }
+    }
 
-        assertEquals("ezs48", neighbors.north?.text)
-        assertEquals("ezs49", neighbors.northEast?.text)
-        assertEquals("ezs43", neighbors.east.text)
-        assertEquals("ezs41", neighbors.southEast?.text)
-        assertEquals("ezs40", neighbors.south?.text)
-        assertEquals("ezefp", neighbors.southWest?.text)
-        assertEquals("ezefr", neighbors.west.text)
-        assertEquals("ezefx", neighbors.northWest?.text)
-        assertEquals(
-            listOf("ezs48", "ezs49", "ezs43", "ezs41", "ezs40", "ezefp", "ezefr", "ezefx"),
-            neighbors.toList().map(Geohash::text),
-        )
+    @Test
+    fun `walks imported neighbor steps`() {
+        GeohashFixtures.geohashNeighborSteps.forEach { case ->
+            val label = "${case.source} ${case.text} east=${case.east} north=${case.north}"
+            assertEquals(
+                case.expected,
+                Geohash.parse(case.text).offsetBy(east = case.east, north = case.north)?.text,
+                label,
+            )
+        }
     }
 
     @Test

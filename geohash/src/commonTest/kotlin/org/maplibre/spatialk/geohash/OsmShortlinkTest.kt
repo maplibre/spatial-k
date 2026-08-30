@@ -10,32 +10,48 @@ import org.maplibre.spatialk.testutil.assertPositionEquals
 
 class OsmShortlinkTest {
     @Test
-    fun `parses the London shortlink`() {
-        val shortlink = OsmShortlink.parse("https://osm.org/go/0EEQjE--")
-
-        assertEquals("0EEQjE--", shortlink.text)
-        assertEquals(9, shortlink.zoom)
-        assertPositionEquals(
-            Position(longitude = 0.0556182861328125, latitude = 51.51111602783203),
-            shortlink.center,
-        )
-        assertDoubleEquals(0.054931640625, shortlink.boundingBox.west)
-        assertDoubleEquals(51.510772705078125, shortlink.boundingBox.south)
-        assertDoubleEquals(0.056304931640625, shortlink.boundingBox.east)
-        assertDoubleEquals(51.51145935058594, shortlink.boundingBox.north)
-        assertEquals(shortlink, OsmShortlink.of(shortlink.center, shortlink.zoom))
-        assertEquals(shortlink.text, shortlink.toString())
+    fun `encodes generated shortlink vectors`() {
+        GeohashFixtures.osmEncode.forEach { case ->
+            val label = "${case.name} ${case.text}"
+            assertEquals(
+                case.text,
+                OsmShortlink.of(
+                        Position(longitude = case.longitude, latitude = case.latitude),
+                        zoom = case.zoom,
+                    )
+                    .text,
+                label,
+            )
+        }
     }
 
     @Test
-    fun `encodes the OpenStreetMap Rails vector`() {
-        val shortlink =
-            OsmShortlink.of(
-                Position(longitude = 0.054, latitude = 51.510),
-                zoom = 9,
-            )
-
-        assertEquals("0EEQhq--", shortlink.text)
+    fun `parses imported shortlink vectors`() {
+        GeohashFixtures.osmParse.forEach { case ->
+            val label = "${case.source} ${case.input}"
+            val shortlink = OsmShortlink.parse(case.input)
+            assertEquals(case.text, shortlink.text, label)
+            assertEquals(case.text, shortlink.toString(), label)
+            if (case.zoom != null) {
+                assertEquals(case.zoom, shortlink.zoom, label)
+                assertEquals(shortlink, OsmShortlink.of(shortlink.center, shortlink.zoom), label)
+            }
+            if (case.longitude != null && case.latitude != null) {
+                assertPositionEquals(
+                    Position(longitude = case.longitude, latitude = case.latitude),
+                    shortlink.center,
+                    message = label,
+                )
+            }
+            if (
+                case.west != null && case.south != null && case.east != null && case.north != null
+            ) {
+                assertDoubleEquals(case.west, shortlink.boundingBox.west, message = label)
+                assertDoubleEquals(case.south, shortlink.boundingBox.south, message = label)
+                assertDoubleEquals(case.east, shortlink.boundingBox.east, message = label)
+                assertDoubleEquals(case.north, shortlink.boundingBox.north, message = label)
+            }
+        }
     }
 
     @Test
@@ -54,12 +70,6 @@ class OsmShortlinkTest {
             OsmShortlink.parse("HTTPS://WWW.OPENSTREETMAP.ORG/go/0EEQjE--"),
         )
         assertEquals(expected, OsmShortlink.parse("https://osm.org:443/go/0EEQjE--"))
-    }
-
-    @Test
-    fun `normalizes historical shortlink characters`() {
-        assertEquals("0EEQjE--", OsmShortlink.parse("0EEQjE==").text)
-        assertEquals("0OP4tR~rx", OsmShortlink.parse("0OP4tR@rx").text)
     }
 
     @Test

@@ -1,0 +1,62 @@
+[
+    {
+        "source": "ngeohash",
+        "text": "dqcjq",
+        "north": "dqcjw",
+        "northEast": "dqcjx",
+        "east": "dqcjr",
+        "southEast": "dqcjp",
+        "south": "dqcjn",
+        "southWest": "dqcjj",
+        "west": "dqcjm",
+        "northWest": "dqcjt"
+    },
+    {
+        "source": "ngeohash",
+        "text": "DQCJQ",
+        "north": "dqcjw",
+        "northEast": "dqcjx",
+        "east": "dqcjr",
+        "southEast": "dqcjp",
+        "south": "dqcjn",
+        "southWest": "dqcjj",
+        "west": "dqcjm",
+        "northWest": "dqcjt"
+    },
+    {
+        "source": "ngeohash",
+        "text": "21202",
+        "north": "21208",
+        "northEast": "21209",
+        "east": "21203",
+        "southEast": "21201",
+        "south": "21200",
+        "southWest": "rcrbp",
+        "west": "rcrbr",
+        "northWest": "rcrbx"
+    },
+    {
+        "source": "libgeohash",
+        "text": "ezs42",
+        "north": "ezs48",
+        "northEast": "ezs49",
+        "east": "ezs43",
+        "southEast": "ezs41",
+        "south": "ezs40",
+        "southWest": "ezefp",
+        "west": "ezefr",
+        "northWest": "ezefx"
+    },
+    {
+        "source": "libgeohash",
+        "text": "9xj5smj4w40m",
+        "north": "9xj5smj4w40q",
+        "northEast": "9xj5smj4w40w",
+        "east": "9xj5smj4w40t",
+        "southEast": "9xj5smj4w40s",
+        "south": "9xj5smj4w40k",
+        "southWest": "9xj5smj4w40h",
+        "west": "9xj5smj4w40j",
+        "northWest": "9xj5smj4w40n"
+    }
+]
