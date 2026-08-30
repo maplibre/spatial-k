@@ -1,73 +1,64 @@
 # Geohash fixtures
 
-Checked-in vectors used by the geohash tests. Each JSON row has a `source` field. This file records
-where the suites came from and why they can live in this MIT repository.
+JSON used by the geohash tests. Every row has a `source` field.
 
-Coordinate order in these files is longitude, then latitude. Several upstream suites pass latitude
-first. The rows here are flipped to match Spatial K.
+Most of the libraries we pulled from pass latitude first. These files use longitude, then latitude,
+same as Spatial K.
 
-## Compatible copies
+## ngeohash
 
-### `ngeohash` (`sunng87/node-geohash`)
+MIT, Ning Sun. Their [LICENSE](https://github.com/sunng87/node-geohash/blob/master/LICENSE) has no
+copyright line. A copy is in `licenses/ngeohash-MIT.txt`.
 
-MIT. Author Ning Sun. Upstream
-[LICENSE](https://github.com/sunng87/node-geohash/blob/master/LICENSE) has no copyright line. A copy
-is in `licenses/ngeohash-MIT.txt`.
+Cases come from
+[`tests/test.js`](https://github.com/sunng87/node-geohash/blob/master/tests/test.js).
 
-Rows come from [`tests/test.js`](https://github.com/sunng87/node-geohash/blob/master/tests/test.js).
+Integer hashes, `ENCODE_AUTO`, hashes longer than 12 characters, and `bboxes` are out. We stop at
+`Geohash.MaxLength`, and we have no covering API.
 
-Skipped integer hashes, `ENCODE_AUTO`, hashes longer than 12 characters, and covering/`bboxes`.
-Those either exceed `Geohash.MaxLength` or test APIs this module does not have.
+## libgeohash
 
-### `libgeohash` (`simplegeo/libgeohash`)
+BSD-3-Clause, Copyright 2009 SimpleGeo. Their LICENSE forgot the copyright line that sits in the C
+headers. `licenses/libgeohash-BSD-3-Clause.txt` has both.
 
-BSD-3-Clause. Copyright 2009 SimpleGeo. The upstream LICENSE file omits the copyright line that
-appears in the C headers. `licenses/libgeohash-BSD-3-Clause.txt` keeps both.
-
-Rows come from
+Cases come from
 [`geohash_test.c`](https://github.com/simplegeo/libgeohash/blob/master/geohash_test.c).
 
-Skipped `geohash_encode(..., 0)`, which libgeohash treats as precision 6. This module requires an
-explicit length.
+`geohash_encode(..., 0)` is out. That call means precision 6 in libgeohash. We make you pass a
+length.
 
-### `mmcloughlin/geohash`
+## mmcloughlin/geohash
 
-MIT. Copyright 2015 Michael McLoughlin. Copy in `licenses/mmcloughlin-MIT.txt`.
+MIT, Copyright 2015 Michael McLoughlin. Copy in `licenses/mmcloughlin-MIT.txt`.
 
-Rows come from the named cases in
+Only the named cases in
 [`geohash_test.go`](https://github.com/mmcloughlin/geohash/blob/master/geohash_test.go)
-(`TestWikipediaExample`, `TestLeadingZero`).
+(`TestWikipediaExample`, `TestLeadingZero`). The generated `testcases_test.go` files are hundreds of
+kilobytes. Not worth the noise.
 
-The generated files `testcases_test.go`, `neighbors_testcases_test.go`, and `decodecases_test.go`
-were not imported.
+## Wikipedia
 
-## Facts and generated output
+`u4pruydqqvj` for `(10.40744, 57.64911)` is a published pair on
+<https://en.wikipedia.org/wiki/Geohash>. The row is that pair. None of the article.
 
-### Wikipedia Geohash article
+## OpenStreetMap shortlinks
 
-`u4pruydqqvj` at `(10.40744, 57.64911)` is a published coordinate and hash pair. The row records
-that pair only. It does not copy article prose.
+`openstreetmap-website` is GPL-2.0. Copying `short_link.rb` would put GPL code in an MIT tree, so
+none of that Ruby is here.
 
-<https://en.wikipedia.org/wiki/Geohash>
+`osm/encode.json` is numbers from the published encode algorithm, the wiki writeup plus the 32-bit
+wrap Rails uses. Those rows are what the algorithm printed. They are not Rails source.
 
-### OpenStreetMap shortlinks
-
-`openstreetmap-website` is GPL-2.0. None of its Ruby or test source is in this tree.
-
-`osm/encode.json` is output of the published encode algorithm (wiki description plus the 32-bit wrap
-used by OpenStreetMap Rails). Running a program to produce numbers is not a copy of that program.
-
-`osm/parse.json` uses shortlink codes from
+`osm/parse.json` uses codes from
 [the Shortlink wiki page](https://wiki.openstreetmap.org/wiki/Shortlink) (`0EEQjE--`, `0EEQjEEb`)
-and the documented historical `@` / `=` characters. Expected boxes for those codes were produced by
-the same published decode steps. `QQFq@mz--` is the `@` form of a generated code that contains `~`.
+and the old `@` / `=` characters. Boxes for those codes come from the same decode steps. `QQFq@mz--`
+is a generated `~` code with `@` swapped in.
 
 ## Files
 
-- `geohash/encode.json` — encode vectors from ngeohash, libgeohash, mmcloughlin, and the Wikipedia
-  pair
-- `geohash/decode.json` — ngeohash center check and libgeohash exact boxes
-- `geohash/neighbors.json` — full 8-neighbor maps from ngeohash and libgeohash
-- `geohash/neighbor_steps.json` — single-step ngeohash neighbor moves
-- `osm/encode.json` — generated OpenStreetMap shortlink encodings
-- `osm/parse.json` — wiki codes and historical character forms
+- `geohash/encode.json` from ngeohash, libgeohash, mmcloughlin, and the Wikipedia pair
+- `geohash/decode.json` from the ngeohash center check and the libgeohash boxes
+- `geohash/neighbors.json` from the 8-neighbor maps in ngeohash and libgeohash
+- `geohash/neighbor_steps.json` from the single-step ngeohash neighbor moves
+- `osm/encode.json` generated by the published shortlink encoder
+- `osm/parse.json` from the wiki codes and the historical character forms

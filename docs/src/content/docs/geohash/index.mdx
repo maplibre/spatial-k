@@ -4,11 +4,11 @@ title: "Geohash"
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-The `geohash` module represents
-[Geohash](https://en.wikipedia.org/wiki/Geohash) cells and
-[OpenStreetMap shortlinks](https://wiki.openstreetmap.org/wiki/Shortlink).
+A `Geohash` is a WGS84 cell. Length is stored on the value, so `ezs42` and `ezs420` are different
+cells. `OsmShortlink` is the OSM `/go/` encoding. Different alphabet, carries zoom, no parent or
+neighbors.
 
-Details can be found in the [API reference](/spatial-k/api/dokka/geohash/index.html).
+See the [API reference](/spatial-k/api/dokka/geohash/index.html).
 
 ## Installation
 
@@ -34,8 +34,8 @@ Details can be found in the [API reference](/spatial-k/api/dokka/geohash/index.h
 
 ## Encode a position
 
-`Geohash.of` returns the cell of a requested length that contains a WGS84 position.
-It ignores altitude.
+`Geohash.of` returns the cell of a given length that contains a longitude and latitude. Altitude
+does not change the cell.
 
 ```kotlin
 --8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:encode"
@@ -43,8 +43,8 @@ It ignores altitude.
 
 ## Parse and inspect a cell
 
-`Geohash.parse` accepts uppercase or lowercase base32ghs text and emits lowercase `text`.
-Each cell provides its center, bounding box, parent, and children.
+`Geohash.parse` folds ASCII case. `text` comes back lowercase. The cell also has `center`,
+`boundingBox`, `parent`, and `children`.
 
 ```kotlin
 --8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:parse"
@@ -52,9 +52,8 @@ Each cell provides its center, bounding box, parent, and children.
 
 ## Move between cells
 
-`neighbors` names the eight compass directions.
-Longitude wraps at the antimeridian, while directions past a pole are `null`.
-Use `offsetBy` for moves longer than one cell.
+`neighbors` is one property per compass direction. East and west always exist. A step past a pole is
+`null`. `offsetBy` moves more than one cell at a time.
 
 ```kotlin
 --8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:neighbors"
@@ -62,7 +61,8 @@ Use `offsetBy` for moves longer than one cell.
 
 ## Test containment
 
-A cell contains its own positions and descendant cells.
+`position in cell` is true when encoding that position at the same length yields the same cell. A
+longer hash whose prefix matches is inside too.
 
 ```kotlin
 --8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:containment"
@@ -70,17 +70,16 @@ A cell contains its own positions and descendant cells.
 
 ## Serialize as text
 
-`Geohash` and `OsmShortlink` serialize as their canonical strings.
+JSON for both types is the canonical string. `"ezs42"` or `"0EEQjE--"`, not an object.
 
 ```kotlin
 --8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:serialize"
 ```
 
-## Use OpenStreetMap shortlinks
+## OpenStreetMap shortlinks
 
-`OsmShortlink.parse` accepts a bare code, a `/go/` path, or an `osm.org` or
-`openstreetmap.org` URL. It accepts the historical `@` and `=` characters and emits the current
-`~` and `-` characters.
+`OsmShortlink.parse` takes a bare code, a `/go/` path, or an `osm.org` / `openstreetmap.org` URL.
+Old `@` and `=` still parse. `text` uses `~` and `-`.
 
 ```kotlin
 --8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:osmShortlink"
