@@ -4,9 +4,11 @@ title: "Geohash"
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-A `Geohash` is a WGS84 cell. Length is stored on the value, so `ezs42` and `ezs420` are different
-cells. `OsmShortlink` is the OSM `/go/` encoding. Different alphabet, carries zoom, no parent or
-neighbors.
+A `Geohash` is a [WGS84](https://en.wikipedia.org/wiki/World_Geodetic_System#WGS_84) cell in the
+[Geohash](https://en.wikipedia.org/wiki/Geohash) grid. Length is stored on the value, so `ezs42` and
+`ezs420` are different cells. `OsmShortlink` is the
+[OpenStreetMap shortlink](https://wiki.openstreetmap.org/wiki/Shortlink) `/go/` encoding. Different
+alphabet, carries zoom, no parent or neighbors.
 
 See the [API reference](/spatial-k/api/dokka/geohash/index.html).
 
