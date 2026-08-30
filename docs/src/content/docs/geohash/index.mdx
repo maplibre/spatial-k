@@ -1,0 +1,88 @@
+---
+title: "Geohash"
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+A `Geohash` is a [WGS84](https://en.wikipedia.org/wiki/World_Geodetic_System#WGS_84) cell in the
+[Geohash](https://en.wikipedia.org/wiki/Geohash) grid. Length is stored on the value, so `ezs42` and
+`ezs420` are different cells. `OsmShortlink` is the
+[OpenStreetMap shortlink](https://wiki.openstreetmap.org/wiki/Shortlink) `/go/` encoding. Different
+alphabet, carries zoom, no parent or neighbors.
+
+See the [API reference](/spatial-k/api/dokka/geohash/index.html).
+
+## Installation
+
+<Tabs syncKey="language">
+  <TabItem label="Multiplatform">
+    ```kotlin
+    commonMain {
+        dependencies {
+            implementation("org.maplibre.spatialk:geohash:{{ gradle.project_version }}")
+        }
+    }
+    ```
+  </TabItem>
+
+  <TabItem label="JVM">
+    ```kotlin
+    dependencies {
+        implementation("org.maplibre.spatialk:geohash-jvm:{{ gradle.project_version }}")
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## Encode a position
+
+`Geohash.of` returns the cell of a given length that contains a longitude and latitude. Altitude
+does not change the cell.
+
+```kotlin
+--8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:encode"
+```
+
+## Parse and inspect a cell
+
+`Geohash.parse` folds ASCII case. `text` comes back lowercase. The cell also has `center`,
+`boundingBox`, `parent`, and `children`.
+
+```kotlin
+--8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:parse"
+```
+
+## Move between cells
+
+`neighbors` is one property per compass direction. East and west always exist. A step past a pole is
+`null`. `offsetBy` moves more than one cell at a time.
+
+```kotlin
+--8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:neighbors"
+```
+
+## Test containment
+
+`position in cell` is true when encoding that position at the same length yields the same cell. A
+longer hash whose prefix matches is inside too.
+
+```kotlin
+--8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:containment"
+```
+
+## Serialize as text
+
+JSON for both types is the canonical string. `"ezs42"` or `"0EEQjE--"`, not an object.
+
+```kotlin
+--8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:serialize"
+```
+
+## OpenStreetMap shortlinks
+
+`OsmShortlink.parse` takes a bare code, a `/go/` path, or an `osm.org` / `openstreetmap.org` URL.
+Old `@` and `=` still parse. `text` uses `~` and `-`.
+
+```kotlin
+--8<-- "geohash/src/commonTest/kotlin/org/maplibre/spatialk/geohash/KotlinDocsTest.kt:osmShortlink"
+```

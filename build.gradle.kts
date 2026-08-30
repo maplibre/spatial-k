@@ -38,6 +38,9 @@ dependencies {
     dokka(project(":geojson"))
     kover(project(":geojson"))
 
+    dokka(project(":geohash"))
+    kover(project(":geohash"))
+
     dokka(project(":units"))
     kover(project(":units"))
 

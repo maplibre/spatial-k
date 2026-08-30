@@ -1,0 +1,154 @@
+[
+    {
+        "name": "london-rails",
+        "longitude": 0.054,
+        "latitude": 51.51,
+        "zoom": 9,
+        "text": "0EEQhq--"
+    },
+    {
+        "name": "london-rails-z0",
+        "longitude": 0.054,
+        "latitude": 51.51,
+        "zoom": 0,
+        "text": "0EE--"
+    },
+    {
+        "name": "london-rails-z8",
+        "longitude": 0.054,
+        "latitude": 51.51,
+        "zoom": 8,
+        "text": "0EEQhq-"
+    },
+    {
+        "name": "london-rails-z10",
+        "longitude": 0.054,
+        "latitude": 51.51,
+        "zoom": 10,
+        "text": "0EEQhq"
+    },
+    {
+        "name": "london-rails-z22",
+        "longitude": 0.054,
+        "latitude": 51.51,
+        "zoom": 22,
+        "text": "0EEQhqc112"
+    },
+    {
+        "name": "new-york",
+        "longitude": -74.006,
+        "latitude": 40.7128,
+        "zoom": 9,
+        "text": "Zct2v4--"
+    },
+    { "name": "tokyo", "longitude": 139.6917, "latitude": 35.6895, "zoom": 9, "text": "7Q5yLA--" },
+    {
+        "name": "sydney",
+        "longitude": 151.2093,
+        "latitude": -33.8688,
+        "zoom": 9,
+        "text": "uN~ROO--"
+    },
+    {
+        "name": "sao-paulo",
+        "longitude": -46.6333,
+        "latitude": -23.5505,
+        "zoom": 9,
+        "text": "M~ziKc--"
+    },
+    { "name": "origin-z0", "longitude": 0.0, "latitude": 0.0, "zoom": 0, "text": "wAA--" },
+    { "name": "origin-z1", "longitude": 0.0, "latitude": 0.0, "zoom": 1, "text": "wAA" },
+    { "name": "origin-z2", "longitude": 0.0, "latitude": 0.0, "zoom": 2, "text": "wAAA-" },
+    { "name": "origin-z3", "longitude": 0.0, "latitude": 0.0, "zoom": 3, "text": "wAAA--" },
+    { "name": "origin-z4", "longitude": 0.0, "latitude": 0.0, "zoom": 4, "text": "wAAA" },
+    { "name": "origin-z5", "longitude": 0.0, "latitude": 0.0, "zoom": 5, "text": "wAAAA-" },
+    { "name": "origin-z6", "longitude": 0.0, "latitude": 0.0, "zoom": 6, "text": "wAAAA--" },
+    { "name": "origin-z7", "longitude": 0.0, "latitude": 0.0, "zoom": 7, "text": "wAAAA" },
+    { "name": "origin-z8", "longitude": 0.0, "latitude": 0.0, "zoom": 8, "text": "wAAAAA-" },
+    { "name": "origin-z9", "longitude": 0.0, "latitude": 0.0, "zoom": 9, "text": "wAAAAA--" },
+    { "name": "origin-z10", "longitude": 0.0, "latitude": 0.0, "zoom": 10, "text": "wAAAAA" },
+    { "name": "origin-z11", "longitude": 0.0, "latitude": 0.0, "zoom": 11, "text": "wAAAAAA-" },
+    { "name": "origin-z12", "longitude": 0.0, "latitude": 0.0, "zoom": 12, "text": "wAAAAAA--" },
+    { "name": "origin-z13", "longitude": 0.0, "latitude": 0.0, "zoom": 13, "text": "wAAAAAA" },
+    { "name": "origin-z14", "longitude": 0.0, "latitude": 0.0, "zoom": 14, "text": "wAAAAAAA-" },
+    { "name": "origin-z15", "longitude": 0.0, "latitude": 0.0, "zoom": 15, "text": "wAAAAAAA--" },
+    { "name": "origin-z16", "longitude": 0.0, "latitude": 0.0, "zoom": 16, "text": "wAAAAAAA" },
+    { "name": "origin-z17", "longitude": 0.0, "latitude": 0.0, "zoom": 17, "text": "wAAAAAAAA-" },
+    { "name": "origin-z18", "longitude": 0.0, "latitude": 0.0, "zoom": 18, "text": "wAAAAAAAA--" },
+    { "name": "origin-z19", "longitude": 0.0, "latitude": 0.0, "zoom": 19, "text": "wAAAAAAAA" },
+    { "name": "origin-z20", "longitude": 0.0, "latitude": 0.0, "zoom": 20, "text": "wAAAAAAAAA-" },
+    { "name": "origin-z21", "longitude": 0.0, "latitude": 0.0, "zoom": 21, "text": "wAAAAAAAAA--" },
+    { "name": "origin-z22", "longitude": 0.0, "latitude": 0.0, "zoom": 22, "text": "wAAAAAAAAA" },
+    {
+        "name": "east-antimeridian-z9",
+        "longitude": 180.0,
+        "latitude": 0.0,
+        "zoom": 9,
+        "text": "QAAAAA--"
+    },
+    {
+        "name": "west-antimeridian-z9",
+        "longitude": -180.0,
+        "latitude": 0.0,
+        "zoom": 9,
+        "text": "QAAAAA--"
+    },
+    { "name": "north-pole-z9", "longitude": 0.0, "latitude": 90.0, "zoom": 9, "text": "gAAAAA--" },
+    { "name": "south-pole-z9", "longitude": 0.0, "latitude": -90.0, "zoom": 9, "text": "gAAAAA--" },
+    {
+        "name": "northeast-corner-z9",
+        "longitude": 180.0,
+        "latitude": 90.0,
+        "zoom": 9,
+        "text": "AAAAAA--"
+    },
+    {
+        "name": "southwest-corner-z9",
+        "longitude": -180.0,
+        "latitude": -90.0,
+        "zoom": 9,
+        "text": "AAAAAA--"
+    },
+    {
+        "name": "east-antimeridian-z22",
+        "longitude": 180.0,
+        "latitude": 0.0,
+        "zoom": 22,
+        "text": "QAAAAAAAAA"
+    },
+    {
+        "name": "west-antimeridian-z22",
+        "longitude": -180.0,
+        "latitude": 0.0,
+        "zoom": 22,
+        "text": "QAAAAAAAAA"
+    },
+    {
+        "name": "north-pole-z22",
+        "longitude": 0.0,
+        "latitude": 90.0,
+        "zoom": 22,
+        "text": "gAAAAAAAAA"
+    },
+    {
+        "name": "south-pole-z22",
+        "longitude": 0.0,
+        "latitude": -90.0,
+        "zoom": 22,
+        "text": "gAAAAAAAAA"
+    },
+    {
+        "name": "northeast-corner-z22",
+        "longitude": 180.0,
+        "latitude": 90.0,
+        "zoom": 22,
+        "text": "AAAAAAAAAA"
+    },
+    {
+        "name": "southwest-corner-z22",
+        "longitude": -180.0,
+        "latitude": -90.0,
+        "zoom": 22,
+        "text": "AAAAAAAAAA"
+    }
+]

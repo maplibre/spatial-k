@@ -20,6 +20,7 @@ It includes:
 - GPX implementation
 - PMTiles v3 archive reader
 - Google Encoded Polyline Algorithm support
+- Geohash cells and OpenStreetMap shortlinks
 
 Spatial K supports Kotlin Multiplatform and Java projects.
 
@@ -35,6 +36,7 @@ dependencies {
     implementation("org.maplibre.spatialk:gpx:VERSION")
     implementation("org.maplibre.spatialk:pmtiles:VERSION")
     implementation("org.maplibre.spatialk:polyline-encoding:VERSION")
+    implementation("org.maplibre.spatialk:geohash:VERSION")
 }
 ```
 

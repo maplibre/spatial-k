@@ -92,6 +92,7 @@ export default defineConfig({
           label: "Modules",
           items: [
             { label: "GeoJSON", link: "/geojson/" },
+            { label: "Geohash", link: "/geohash/" },
             { label: "Turf", link: "/turf/" },
             { label: "Units", link: "/units/" },
             { label: "GPX", link: "/gpx/" },

@@ -1,0 +1,46 @@
+[
+    {
+        "source": "ngeohash",
+        "longitude": 112.5584,
+        "latitude": 37.8324,
+        "length": 9,
+        "text": "ww8p1r4t8"
+    },
+    { "source": "ngeohash", "longitude": 117.0, "latitude": 32.0, "length": 3, "text": "wte" },
+    {
+        "source": "libgeohash",
+        "longitude": -5.60302734375,
+        "latitude": 42.60498046875,
+        "length": 5,
+        "text": "ezs42"
+    },
+    {
+        "source": "libgeohash",
+        "longitude": -105.274858,
+        "latitude": 40.018141,
+        "length": 12,
+        "text": "9xj5smj4w40m"
+    },
+    {
+        "source": "libgeohash",
+        "longitude": -105.274858,
+        "latitude": 40.018141,
+        "length": 2,
+        "text": "9x"
+    },
+    { "source": "mmcloughlin", "longitude": -5.6, "latitude": 42.6, "length": 5, "text": "ezs42" },
+    {
+        "source": "mmcloughlin",
+        "longitude": -140.309714,
+        "latitude": -74.761330,
+        "length": 6,
+        "text": "0fsnxn"
+    },
+    {
+        "source": "wikipedia",
+        "longitude": 10.40744,
+        "latitude": 57.64911,
+        "length": 11,
+        "text": "u4pruydqqvj"
+    }
+]

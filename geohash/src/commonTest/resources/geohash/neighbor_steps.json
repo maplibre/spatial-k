@@ -1,0 +1,8 @@
+[
+    { "source": "ngeohash", "text": "dqcjq", "east": 0, "north": 1, "expected": "dqcjw" },
+    { "source": "ngeohash", "text": "DQCJQ", "east": -1, "north": -1, "expected": "dqcjj" },
+    { "source": "ngeohash", "text": "r", "east": 1, "north": 1, "expected": "8" },
+    { "source": "ngeohash", "text": "r", "east": 1, "north": 0, "expected": "2" },
+    { "source": "ngeohash", "text": "r", "east": 1, "north": -1, "expected": "0" },
+    { "source": "ngeohash", "text": "j", "east": 0, "north": 1, "expected": "m" }
+]

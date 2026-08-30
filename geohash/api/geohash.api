@@ -1,0 +1,65 @@
+public final class org/maplibre/spatialk/geohash/Geohash : java/lang/Comparable {
+	public static final field Companion Lorg/maplibre/spatialk/geohash/Geohash$Companion;
+	public static final field MaxLength I
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lorg/maplibre/spatialk/geohash/Geohash;)I
+	public final fun contains (Lorg/maplibre/spatialk/geohash/Geohash;)Z
+	public final fun contains (Lorg/maplibre/spatialk/geojson/Position;)Z
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBoundingBox ()Lorg/maplibre/spatialk/geojson/BoundingBox;
+	public final fun getCenter ()Lorg/maplibre/spatialk/geojson/Position;
+	public final fun getChildren ()Ljava/util/List;
+	public final fun getLength ()I
+	public final fun getNeighbors ()Lorg/maplibre/spatialk/geohash/GeohashNeighbors;
+	public final fun getParent ()Lorg/maplibre/spatialk/geohash/Geohash;
+	public final fun getText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static final fun of (Lorg/maplibre/spatialk/geojson/Position;I)Lorg/maplibre/spatialk/geohash/Geohash;
+	public final fun offsetBy (II)Lorg/maplibre/spatialk/geohash/Geohash;
+	public static final fun parse (Ljava/lang/String;)Lorg/maplibre/spatialk/geohash/Geohash;
+	public static final fun parseOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geohash/Geohash;
+	public fun toString ()Ljava/lang/String;
+	public final fun truncatedTo (I)Lorg/maplibre/spatialk/geohash/Geohash;
+}
+
+public final class org/maplibre/spatialk/geohash/Geohash$Companion {
+	public final fun of (Lorg/maplibre/spatialk/geojson/Position;I)Lorg/maplibre/spatialk/geohash/Geohash;
+	public final fun parse (Ljava/lang/String;)Lorg/maplibre/spatialk/geohash/Geohash;
+	public final fun parseOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geohash/Geohash;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/geohash/GeohashNeighbors {
+	public final fun getEast ()Lorg/maplibre/spatialk/geohash/Geohash;
+	public final fun getNorth ()Lorg/maplibre/spatialk/geohash/Geohash;
+	public final fun getNorthEast ()Lorg/maplibre/spatialk/geohash/Geohash;
+	public final fun getNorthWest ()Lorg/maplibre/spatialk/geohash/Geohash;
+	public final fun getSouth ()Lorg/maplibre/spatialk/geohash/Geohash;
+	public final fun getSouthEast ()Lorg/maplibre/spatialk/geohash/Geohash;
+	public final fun getSouthWest ()Lorg/maplibre/spatialk/geohash/Geohash;
+	public final fun getWest ()Lorg/maplibre/spatialk/geohash/Geohash;
+	public final fun toList ()Ljava/util/List;
+}
+
+public final class org/maplibre/spatialk/geohash/OsmShortlink {
+	public static final field Companion Lorg/maplibre/spatialk/geohash/OsmShortlink$Companion;
+	public static final field MaxZoom I
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBoundingBox ()Lorg/maplibre/spatialk/geojson/BoundingBox;
+	public final fun getCenter ()Lorg/maplibre/spatialk/geojson/Position;
+	public final fun getText ()Ljava/lang/String;
+	public final fun getZoom ()I
+	public fun hashCode ()I
+	public static final fun of (Lorg/maplibre/spatialk/geojson/Position;I)Lorg/maplibre/spatialk/geohash/OsmShortlink;
+	public static final fun parse (Ljava/lang/String;)Lorg/maplibre/spatialk/geohash/OsmShortlink;
+	public static final fun parseOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geohash/OsmShortlink;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/geohash/OsmShortlink$Companion {
+	public final fun of (Lorg/maplibre/spatialk/geojson/Position;I)Lorg/maplibre/spatialk/geohash/OsmShortlink;
+	public final fun parse (Ljava/lang/String;)Lorg/maplibre/spatialk/geohash/OsmShortlink;
+	public final fun parseOrNull (Ljava/lang/String;)Lorg/maplibre/spatialk/geohash/OsmShortlink;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
