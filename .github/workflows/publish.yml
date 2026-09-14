@@ -184,29 +184,3 @@ jobs:
                       ${{ runner.temp }}/${{ env.ARTIFACT_DIR_NAME }}/SpatialKPmtiles.swiftpm.zip
                       ${{ runner.temp }}/${{ env.ARTIFACT_DIR_NAME }}/SpatialKPmtiles.swiftpm.zip.checksum
                   if-no-files-found: error
-
-    publish-pmtiles-swift-release:
-        runs-on: ubuntu-24.04
-        needs: [resolve-version, publish-maven, publish-pmtiles-swift]
-        if: github.ref_type == 'tag'
-        permissions:
-            contents: write
-        env:
-            SPATIAL_K_VERSION: ${{ needs.resolve-version.outputs.spatial_k_version }}
-            ARTIFACT_DIR_NAME: spatial-k-pmtiles-swift
-        steps:
-            - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-              with:
-                  name: spatial-k-pmtiles-swift-${{ env.SPATIAL_K_VERSION }}
-                  path: ${{ runner.temp }}/${{ env.ARTIFACT_DIR_NAME }}
-            - name: Upload to GitHub Release
-              run: |
-                  gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 ||
-                      gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes
-
-                  gh release upload "$GITHUB_REF_NAME" \
-                      "$RUNNER_TEMP/$ARTIFACT_DIR_NAME/SpatialKPmtiles.swiftpm.zip" \
-                      "$RUNNER_TEMP/$ARTIFACT_DIR_NAME/SpatialKPmtiles.swiftpm.zip.checksum" \
-                      --clobber
-              env:
-                  GH_TOKEN: ${{ github.token }}

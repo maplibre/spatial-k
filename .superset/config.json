@@ -1,1 +1,0 @@
-{ "setup": ["mise trust . && mise install"], "teardown": [], "run": [] }
