@@ -36,12 +36,11 @@ public value class Rotation private constructor(private val valueInDegrees: Doub
 
     /** Returns `true` if this rotation is infinite (positive or negative). */
     public val isInfinite: Boolean
-        get() =
-            valueInDegrees == Double.POSITIVE_INFINITY || valueInDegrees == Double.NEGATIVE_INFINITY
+        get() = valueInDegrees.isInfinite()
 
-    /** Returns `true` if this rotation is finite (not infinite). */
+    /** Returns `true` if this rotation is finite (neither infinite nor NaN). */
     public val isFinite: Boolean
-        get() = !isInfinite
+        get() = valueInDegrees.isFinite()
 
     /** Returns `true` if this rotation is greater than zero. */
     public val isPositive: Boolean

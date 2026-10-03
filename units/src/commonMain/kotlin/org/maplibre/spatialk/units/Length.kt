@@ -29,12 +29,11 @@ public value class Length private constructor(private val valueInMeters: Double)
 
     /** Returns `true` if this length is infinite (positive or negative). */
     public val isInfinite: Boolean
-        get() =
-            valueInMeters == Double.POSITIVE_INFINITY || valueInMeters == Double.POSITIVE_INFINITY
+        get() = valueInMeters.isInfinite()
 
-    /** Returns `true` if this length is finite (not infinite). */
+    /** Returns `true` if this length is finite (neither infinite nor NaN). */
     public val isFinite: Boolean
-        get() = !isInfinite
+        get() = valueInMeters.isFinite()
 
     /** Returns `true` if this length is greater than zero. */
     public val isPositive: Boolean
