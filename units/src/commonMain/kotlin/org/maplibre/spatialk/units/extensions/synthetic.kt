@@ -5,6 +5,7 @@ package org.maplibre.spatialk.units.extensions
 import kotlin.experimental.ExperimentalTypeInference
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmSynthetic
+import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.math.roundToLong
 import org.maplibre.spatialk.units.*
@@ -46,8 +47,13 @@ import org.maplibre.spatialk.units.Metric.Gradians
 import org.maplibre.spatialk.units.Metric.Hectares
 
 internal fun Double.toRoundedString(decimalPlaces: Int): String {
+    require(decimalPlaces >= 0) { "Decimal places must be nonnegative" }
+    if (!isFinite() || decimalPlaces == Int.MAX_VALUE) return toString()
     val mult = 10.0.pow(decimalPlaces)
-    val rounded = ((this * mult).roundToLong() / mult).toString()
+    val scaled = this * mult
+    if (!scaled.isFinite() || scaled.absoluteValue >= Long.MAX_VALUE.toDouble()) return toString()
+    val rounded = (scaled.roundToLong() / mult).toString()
+    if ('E' in rounded || 'e' in rounded) return rounded
     val intPart = rounded.substringBefore('.')
     if (decimalPlaces == 0) return intPart
     val decimalPart = rounded.substringAfter('.', missingDelimiterValue = "").take(decimalPlaces)

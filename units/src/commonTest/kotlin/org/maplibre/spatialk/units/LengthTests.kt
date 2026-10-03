@@ -2,6 +2,7 @@ package org.maplibre.spatialk.units
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import org.maplibre.spatialk.testutil.assertDoubleEquals
 import org.maplibre.spatialk.units.extensions.*
 
@@ -35,6 +36,26 @@ class LengthTests {
         assertDoubleEquals(1.6093, 1.miles.inKilometers)
         assertDoubleEquals(1.852, 1.nauticalMiles.inKilometers)
         assertDoubleEquals(100.0, 1.meters.inCentimeters)
+    }
+
+    @Test
+    fun testToString() {
+        for ((value, precision) in listOf(1e7 to 2, 1e308 to 2, 1e-7 to 7)) {
+            assertDoubleEquals(
+                value,
+                value.meters.toString(decimalPlaces = precision).removeSuffix(" m").toDouble(),
+                epsilon = 0.0,
+            )
+        }
+        for (value in listOf(1e7, 1e308, 1e-7, Double.MIN_VALUE)) {
+            assertDoubleEquals(
+                value,
+                Units.Meters.format(value).removeSuffix(" m").toDouble(),
+                epsilon = 0.0,
+            )
+        }
+        assertEquals("Infinity m", Length.PositiveInfinity.toString())
+        assertFailsWith<IllegalArgumentException> { 1.meters.toString(decimalPlaces = -1) }
     }
 
     @Test

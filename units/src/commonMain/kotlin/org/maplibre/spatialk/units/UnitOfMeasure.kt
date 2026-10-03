@@ -17,7 +17,8 @@ public sealed interface UnitOfMeasure {
      * Formats a value with this unit's symbol.
      *
      * @param value The numeric value to format.
-     * @param decimalPlaces The number of decimal places to display.
+     * @param decimalPlaces The nonnegative number of decimal places to display, or [Int.MAX_VALUE]
+     *   (the default) to use [Double.toString] without rounding or padding.
      * @return A formatted string representation of the value with the unit symbol.
      */
     public fun format(value: Double, decimalPlaces: Int = Int.MAX_VALUE): String {

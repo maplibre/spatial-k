@@ -18,6 +18,16 @@ class AreaTests {
     }
 
     @Test
+    fun testToString() {
+        assertDoubleEquals(
+            1e10,
+            10000.squareKilometers.toString().removeSuffix(" m²").toDouble(),
+            epsilon = 0.0,
+        )
+        assertEquals("-Infinity m²", Area.NegativeInfinity.toString())
+    }
+
+    @Test
     fun testSumArea() {
         val areas = listOf(2.squareMeters, 3.squareMeters)
         assertEquals(5.squareMeters, areas.sum())
