@@ -121,16 +121,24 @@ public value class Rotation private constructor(private val valueInDegrees: Doub
         val isNegative = this.isNegative
         val absolute = this.absoluteValue
 
-        val degreesPart = absolute.inDegrees.toInt()
+        var degreesPart = absolute.inDegrees.toInt()
         var remainder = absolute - degreesPart.degrees
-        val minutesPart = remainder.inArcMinutes.toInt()
+        var minutesPart = remainder.inArcMinutes.toInt()
         remainder -= minutesPart.arcMinutes
-        val secondsPart = remainder.inArcSeconds
+        var secondsPart = remainder.inArcSeconds.toRoundedString(decimalPlaces)
+        if (secondsPart.toDouble() >= 60.0) {
+            secondsPart = 0.0.toRoundedString(decimalPlaces)
+            minutesPart++
+        }
+        if (minutesPart >= 60) {
+            minutesPart = 0
+            degreesPart++
+        }
 
         val sign = if (isNegative) "-" else ""
         return "${sign}${degreesPart}${Degrees.symbol} " +
             "${minutesPart}${ArcMinutes.symbol} " +
-            "${secondsPart.toRoundedString(decimalPlaces)}${ArcSeconds.symbol}"
+            "${secondsPart}${ArcSeconds.symbol}"
     }
 
     override fun compareTo(other: Rotation): Int = valueInDegrees.compareTo(other.valueInDegrees)
