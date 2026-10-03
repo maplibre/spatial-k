@@ -36,5 +36,6 @@ Note: Snapshots are unstable and may change without notice.
 ## Supported targets
 
 All modules have broad Kotlin Multiplatform support, including JVM, JS, WASM, and Native. Native
-targets include [tier 1-3](https://kotlinlang.org/docs/native-target-support.html), except platforms
-deprecated by JetBrains.
+targets include [tier 1-3](https://kotlinlang.org/docs/native-target-support.html), except
+deprecated targets and Apple x64 targets. Apple targets use ARM architectures; Intel macOS and x64
+simulators are not supported.
