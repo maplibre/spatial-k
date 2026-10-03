@@ -99,15 +99,6 @@ final value class org.maplibre.spatialk.units/Bearing { // org.maplibre.spatialk
     final fun toString(): kotlin/String // org.maplibre.spatialk.units/Bearing.toString|toString(){}[0]
     final fun toString(org.maplibre.spatialk.units/RotationUnit = ..., kotlin/Int = ...): kotlin/String // org.maplibre.spatialk.units/Bearing.toString|toString(org.maplibre.spatialk.units.RotationUnit;kotlin.Int){}[0]
 
-    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<org.maplibre.spatialk.units/Bearing> { // org.maplibre.spatialk.units/Bearing.$serializer|null[0]
-        final val descriptor // org.maplibre.spatialk.units/Bearing.$serializer.descriptor|{}descriptor[0]
-            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // org.maplibre.spatialk.units/Bearing.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
-
-        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // org.maplibre.spatialk.units/Bearing.$serializer.childSerializers|childSerializers(){}[0]
-        final fun deserialize(kotlinx.serialization.encoding/Decoder): org.maplibre.spatialk.units/Bearing // org.maplibre.spatialk.units/Bearing.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
-        final fun serialize(kotlinx.serialization.encoding/Encoder, org.maplibre.spatialk.units/Bearing) // org.maplibre.spatialk.units/Bearing.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;org.maplibre.spatialk.units.Bearing){}[0]
-    }
-
     final object Companion { // org.maplibre.spatialk.units/Bearing.Companion|null[0]
         final val East // org.maplibre.spatialk.units/Bearing.Companion.East|{}East[0]
             final fun <get-East>(): org.maplibre.spatialk.units/Bearing // org.maplibre.spatialk.units/Bearing.Companion.East.<get-East>|<get-East>(){}[0]

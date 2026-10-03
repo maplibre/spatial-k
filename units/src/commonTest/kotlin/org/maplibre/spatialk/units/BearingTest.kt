@@ -2,6 +2,7 @@ package org.maplibre.spatialk.units
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import org.maplibre.spatialk.testutil.assertBearingEquals
 import org.maplibre.spatialk.testutil.assertRotationEquals
 import org.maplibre.spatialk.units.Bearing.Companion.East
@@ -46,6 +47,21 @@ class BearingTest {
         assertBearingEquals(Northeast, East - 405.degrees)
         assertBearingEquals(North, North + 360.degrees)
         assertBearingEquals(North, North + 720.degrees)
+    }
+
+    @Test
+    fun testTinyNegativeRotationNormalizesToNorth() {
+        assertEquals(North, North - 1e-15.degrees)
+        assertEquals(North, North + (-0.0).degrees)
+    }
+
+    @Test
+    fun testNonFiniteRotationIsRejected() {
+        for (rotation in
+            listOf(Rotation.PositiveInfinity, Rotation.NegativeInfinity, Rotation.Zero / 0.0)) {
+            assertFailsWith<IllegalArgumentException> { North + rotation }
+            assertFailsWith<IllegalArgumentException> { North - rotation }
+        }
     }
 
     @Test

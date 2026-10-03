@@ -87,17 +87,6 @@ public final class org/maplibre/spatialk/units/Bearing {
 	public final synthetic fun unbox-impl ()D
 }
 
-public final synthetic class org/maplibre/spatialk/units/Bearing$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lorg/maplibre/spatialk/units/Bearing$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun deserialize-7mj81W4 (Lkotlinx/serialization/encoding/Decoder;)D
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public final fun serialize-lOi3GXk (Lkotlinx/serialization/encoding/Encoder;D)V
-	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
-}
-
 public final class org/maplibre/spatialk/units/Bearing$Companion {
 	public final fun getEast-lyDGrjM ()D
 	public final fun getEastNortheast-lyDGrjM ()D
