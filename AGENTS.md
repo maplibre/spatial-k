@@ -1,7 +1,15 @@
-## AI policy
+# Repository guidance
 
 This project is a set of Kotlin Multiplatform libraries for working with geospatial data. Each
 module is a distinct library.
+
+## Priorities
+
+The published libraries are the product. Prioritize correct behavior on supported platforms and a
+clear public API. Make API and binary compatibility changes explicit in the PR description.
+
+Build tooling, benchmarks, and documentation tooling serve maintainers. Keep their complexity
+proportionate to the ways the project uses them.
 
 ## Project map
 
@@ -83,6 +91,10 @@ use `mise exec -- <command>`.
 
 ### Testing
 
+- Keep regression tests that would catch the changed behavior, sized like neighboring tests. Scratch
+  checks used while working need not be committed.
+- Choose platform checks by what the change can break. Numeric precision, serialization, and
+  foreign-language APIs can differ between runtimes.
 - For floating-point comparisons in tests, use helpers from `testutil` instead of `assertEquals` to
   handle platform-specific precision differences.
 - Foreign export tests don't need full coverage; they're primarily about proving the api is usable
@@ -98,3 +110,34 @@ use `mise exec -- <command>`.
   defaults.
 - Enum-like values which may grow over time without breaking spec changes should be defined as
   inline `value class`, not `enum class`.
+
+## Documentation
+
+Describe the library as it is, for a reader who does not know its history. Update existing text when
+an API change affects what readers need to do. Migration instructions belong in the PR description.
+
+- Site pages in `docs/src/content/docs/` explain common tasks and concepts.
+- KDoc defines API behavior, parameter meaning, and limits callers rely on.
+- `CONTRIBUTING.md` explains how to work on the project.
+
+Use plain, literal language. Update the test snippets used by documentation examples so the examples
+continue to compile.
+
+## Pull requests
+
+Follow [PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md). Use Conventional Commits for PR
+titles, for example `fix(units): correct infinity checks` or `docs: explain custom units`.
+
+Write for a reviewer who has not seen your working session. Start with the problem as a user or
+maintainer experiences it, then explain what behaves differently. A small before/after example can
+make a bug fix clearer. Include implementation details only when they explain a decision or
+tradeoff; the diff carries the rest.
+
+Keep the description as short as it can be while letting a reviewer understand and trust the change.
+Explain any changes users must make, and any part of the problem left unresolved.
+
+CI runs the standard checks and test suites. Describe what changed tests catch and anything measured
+or checked outside CI. Name affected behavior that you could not verify.
+
+Use draft status for unfinished work, unresolved decisions, or AI-assisted changes awaiting human
+review. Follow [AI_POLICY.md](AI_POLICY.md) for review and disclosure.

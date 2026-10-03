@@ -10,15 +10,15 @@ Before you mark a pull request ready for review:
 - Read every line you are asking maintainers to merge.
 - Be able to explain the change, how it fits the codebase, and how you validated it—without leaning
   on the tool to answer review questions.
-- Write the PR description yourself: motivation, approach, impact, and anything you are unsure
-  about. Spell-checking or translation help is fine; the ideas and structure should be yours.
+- Review the PR description for accuracy. You may use AI to draft it; you are responsible for every
+  claim.
 
 Design the change. Use AI to draft, explore, or speed up typing—not to replace understanding the
 problem or the existing code.
 
 ## Talk to maintainers in your own voice
 
-Issues, PR bodies, and review replies are a conversation between humans. Write them yourself.
+Issues and review replies are a conversation between humans. Write them from your own understanding.
 
 - State problems and proposals in your own words.
 - When a maintainer asks a question, answer from your understanding. Do not paste model output as
@@ -48,8 +48,7 @@ When disclosure applies under MapLibre's policy, fill in the **AI assistance** s
 request template. Disclosure is not penalized.
 
 When planning docs guided the work, commit them on your branch as you go. Removing them before merge
-is fine; reviewers can still follow the process in the commit history. Point to the relevant commits
-or paths in **Context** when that history matters for review.
+is fine; reviewers can still follow the process in the commit history.
 
 ## Credits
 
