@@ -4,10 +4,10 @@ import kotlin.math.PI
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.maplibre.spatialk.testutil.assertRotationEquals
-import org.maplibre.spatialk.units.DMS.ArcMinutes
-import org.maplibre.spatialk.units.DMS.ArcSeconds
-import org.maplibre.spatialk.units.DMS.Degrees
-import org.maplibre.spatialk.units.Metric.Gradians
+import org.maplibre.spatialk.units.Angles.Gradians
+import org.maplibre.spatialk.units.Units.ArcMinutes
+import org.maplibre.spatialk.units.Units.ArcSeconds
+import org.maplibre.spatialk.units.Units.Degrees
 import org.maplibre.spatialk.units.extensions.*
 
 class RotationTest {
@@ -36,7 +36,7 @@ class RotationTest {
 
     @Test
     fun testGradians() {
-        assertRotationEquals(90.degrees, 100.gradians)
+        assertRotationEquals(90.degrees, 100.0.toRotation(Gradians))
     }
 
     @Test
@@ -86,7 +86,7 @@ class RotationTest {
         assertEquals("-1000.00°", (-1000).degrees.toString(Degrees))
         assertEquals("720.00°", 720.degrees.toString(Degrees))
         assertEquals("12°", 12.345.degrees.toString(unit = Degrees, decimalPlaces = 0))
-        assertEquals("101 gr", 91.degrees.toString(unit = Gradians, decimalPlaces = 0))
+        assertEquals("101 gon", 91.degrees.toString(unit = Gradians, decimalPlaces = 0))
     }
 
     @Test

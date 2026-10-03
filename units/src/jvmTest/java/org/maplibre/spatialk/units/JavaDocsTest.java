@@ -1,8 +1,8 @@
 package org.maplibre.spatialk.units;
 
-import static org.maplibre.spatialk.units.Imperial.Acres;
-import static org.maplibre.spatialk.units.Imperial.Miles;
-import static org.maplibre.spatialk.units.International.*;
+import static org.maplibre.spatialk.units.Units.*;
+import static org.maplibre.spatialk.units.Units.Acres;
+import static org.maplibre.spatialk.units.Units.Miles;
 import static org.maplibre.spatialk.units.extensions.Utils.convert;
 
 import org.junit.Test;

@@ -10,9 +10,9 @@ import kotlin.jvm.JvmSynthetic
 import kotlin.math.*
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
-import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
+import org.maplibre.spatialk.units.Units.Meters
 import org.maplibre.spatialk.units.extensions.earthRadians
 
 /** Calculates the distance along a rhumb line between two points. */

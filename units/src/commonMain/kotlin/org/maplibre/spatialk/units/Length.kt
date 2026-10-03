@@ -6,8 +6,8 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 import kotlinx.serialization.Serializable
-import org.maplibre.spatialk.units.International.Meters
-import org.maplibre.spatialk.units.International.SquareMeters
+import org.maplibre.spatialk.units.Units.Meters
+import org.maplibre.spatialk.units.Units.SquareMeters
 
 /**
  * Represents a length or distance, internally stored as a [Double] of meters.

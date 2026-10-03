@@ -8,9 +8,9 @@ import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmSynthetic
 import org.maplibre.spatialk.geojson.*
-import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
+import org.maplibre.spatialk.units.Units.Meters
 
 /**
  * Calculates the length of the given [Geometry].

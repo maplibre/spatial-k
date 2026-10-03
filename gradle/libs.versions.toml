@@ -12,6 +12,8 @@ vanniktech-publish = "0.37.0"
 dokka = "2.2.0"
 detekt = "2.0.0-alpha.6"
 xmlutil = "1.0.2.1"
+kotlinpoet = "2.4.0"
+ktfmt = "0.63"
 
 [libraries]
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
@@ -35,3 +37,5 @@ gradle-kover = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.r
 gradle-detekt = { module = "dev.detekt:dev.detekt.gradle.plugin", version.ref = "detekt" }
 xmlutil-core = { module = "io.github.pdvrieze.xmlutil:core", version.ref = "xmlutil" }
 xmlutil-serialization = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xmlutil" }
+kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
+ktfmt = { module = "com.facebook:ktfmt", version.ref = "ktfmt" }

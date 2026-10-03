@@ -11,11 +11,11 @@ import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.Bearing
 import org.maplibre.spatialk.units.Bearing.Companion.North
-import org.maplibre.spatialk.units.DMS.Degrees
-import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
 import org.maplibre.spatialk.units.RotationUnit
+import org.maplibre.spatialk.units.Units.Degrees
+import org.maplibre.spatialk.units.Units.Meters
 import org.maplibre.spatialk.units.extensions.*
 
 /**

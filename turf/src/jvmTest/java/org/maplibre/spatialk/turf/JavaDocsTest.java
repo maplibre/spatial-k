@@ -1,7 +1,7 @@
 package org.maplibre.spatialk.turf;
 
 import static org.maplibre.spatialk.turf.measurement.Measurement.offset;
-import static org.maplibre.spatialk.units.International.Kilometers;
+import static org.maplibre.spatialk.units.Units.Kilometers;
 
 import org.junit.Test;
 import org.maplibre.spatialk.geojson.Position;

@@ -6,18 +6,18 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 import kotlinx.serialization.Serializable
-import org.maplibre.spatialk.units.DMS.ArcMinutes
-import org.maplibre.spatialk.units.DMS.ArcSeconds
-import org.maplibre.spatialk.units.DMS.Degrees
-import org.maplibre.spatialk.units.International.Radians
+import org.maplibre.spatialk.units.Units.ArcMinutes
+import org.maplibre.spatialk.units.Units.ArcSeconds
+import org.maplibre.spatialk.units.Units.Degrees
+import org.maplibre.spatialk.units.Units.Radians
 import org.maplibre.spatialk.units.extensions.*
 
 /**
  * Represents a magnitude of angular displacement, internally stored as a [Double] of degrees. It
  * may be greater than a full turn (360 degrees).
  *
- * This representation does not define whether positive rotations are clockwise or anticlockwise, as
- * that depends on axis of rotation (and the observer's frame of reference in space).
+ * The clockwise or anticlockwise interpretation of positive rotations depends on the axis of
+ * rotation and the observer's frame of reference.
  *
  * Most arithmetic operations are supported, and will automatically result in a [Rotation] or
  * [Bearing] depending on the operation.

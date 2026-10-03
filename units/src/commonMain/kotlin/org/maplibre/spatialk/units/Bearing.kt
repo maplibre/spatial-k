@@ -4,9 +4,9 @@ import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmSynthetic
 import kotlinx.serialization.Serializable
 import org.maplibre.spatialk.units.Bearing.Companion.North
-import org.maplibre.spatialk.units.DMS.ArcMinutes
-import org.maplibre.spatialk.units.DMS.ArcSeconds
-import org.maplibre.spatialk.units.DMS.Degrees
+import org.maplibre.spatialk.units.Units.ArcMinutes
+import org.maplibre.spatialk.units.Units.ArcSeconds
+import org.maplibre.spatialk.units.Units.Degrees
 import org.maplibre.spatialk.units.extensions.degrees
 
 /**

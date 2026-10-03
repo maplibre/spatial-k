@@ -13,9 +13,9 @@ import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.turf.measurement.bearingTo
 import org.maplibre.spatialk.turf.measurement.distance
 import org.maplibre.spatialk.turf.measurement.offset
-import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
+import org.maplibre.spatialk.units.Units.Meters
 import org.maplibre.spatialk.units.extensions.toLength
 
 /**

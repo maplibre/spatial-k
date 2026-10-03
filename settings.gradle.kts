@@ -25,4 +25,5 @@ include(
     ":polyline-encoding",
     ":pmtiles",
     ":geohash",
+    ":tools:units-generator",
 )

@@ -11,7 +11,7 @@ import org.maplibre.spatialk.units.Bearing.Companion.South
 import org.maplibre.spatialk.units.Bearing.Companion.Southeast
 import org.maplibre.spatialk.units.Bearing.Companion.Southwest
 import org.maplibre.spatialk.units.Bearing.Companion.West
-import org.maplibre.spatialk.units.DMS.Degrees
+import org.maplibre.spatialk.units.Units.Degrees
 import org.maplibre.spatialk.units.extensions.arcMinutes
 import org.maplibre.spatialk.units.extensions.arcSeconds
 import org.maplibre.spatialk.units.extensions.degrees

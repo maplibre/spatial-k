@@ -98,6 +98,10 @@ run = "hk check --all"
 description = "Auto-fix formatting issues"
 run = "hk fix --all"
 
+[tasks."generate:units"]
+description = "Generate unit catalogs and conversion helpers"
+run = "./gradlew :tools:units-generator:run"
+
 [tasks._ktfmt]
 description = "Called by dprint.json"
 hide = true

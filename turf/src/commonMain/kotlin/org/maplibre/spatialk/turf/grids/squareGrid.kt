@@ -10,9 +10,9 @@ import kotlin.jvm.JvmSynthetic
 import kotlin.math.abs
 import kotlin.math.floor
 import org.maplibre.spatialk.geojson.*
-import org.maplibre.spatialk.units.International.Meters
 import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.LengthUnit
+import org.maplibre.spatialk.units.Units.Meters
 import org.maplibre.spatialk.units.extensions.inEarthDegrees
 import org.maplibre.spatialk.units.extensions.toLength
 

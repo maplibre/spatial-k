@@ -5,7 +5,8 @@ Type-safe units of measure for length, area, and rotation, inspired by `kotlin.t
 # Package org.maplibre.spatialk.units
 
 Core value classes for physical and angular measurements (Length, Area, Rotation, Bearing) with
-predefined unit definitions (SI, Metric, Imperial, DMS).
+common unit aliases in `Units`, with specialist definitions in `Metric`, `Customary`, `Angles`, and
+`Nautical`.
 
 # Package org.maplibre.spatialk.units.extensions
 
