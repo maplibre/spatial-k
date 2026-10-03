@@ -1,16 +1,13 @@
-## Summary
+<!-- Keep the description short and useful to a reviewer. Review and take responsibility for AI-assisted text. -->
 
-<!-- What changed and why? -->
+## Description
 
-## Test plan
+<!-- What problem does this solve, and what behaves differently? Note any API changes or parts left unsolved. -->
 
-<!-- How was this tested? -->
+## Validation
+
+<!-- What CI does not show: how tests changed, and anything measured or checked by hand. -->
 
 ## AI assistance
 
-<!-- Remove this section if disclosure does not apply; see AI_POLICY.md. -->
-
-- **Tools:** <!-- e.g. Codex, OpenCode, Claude Code, Cursor -->
-- **Models:**
-- **Context:**
-  <!-- how AI was used; links to plans, skills, or session exports if any — see AI_POLICY.md -->
+<!-- List the AI tools and models you used. Remove this section if disclosure does not apply; see AI_POLICY.md. -->

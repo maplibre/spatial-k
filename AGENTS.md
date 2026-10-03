@@ -1,100 +1,85 @@
-## AI policy
+# Repository guidance
 
-This project is a set of Kotlin Multiplatform libraries for working with geospatial data. Each
-module is a distinct library.
+Spatial K is a set of Kotlin Multiplatform libraries for geospatial data. Each module is a distinct
+library.
+
+## Priorities
+
+The published libraries are the product. Prioritize correct behavior on supported platforms and a
+clear public API. Explain source and binary compatibility changes in the PR.
+
+Everything else serves maintainers: benchmarks, documentation tooling, CI scripts, and planning
+documents. Maintainers run these themselves and see failures right away, so they need to work for
+the ways we use them, without anticipating every misuse, environment, or concurrent run.
+
+Weigh review findings against these priorities: how likely the problem is in real use, and what it
+costs the people it affects.
 
 ## Project map
 
-- `geojson` — GeoJSON types and DSL
-- `geohash` — Geohash cells and OpenStreetMap shortlinks
-- `turf` — geospatial analysis (port of Turf.js)
-- `units` — units of measure
-- `gpx` — GPX format support
-- `pmtiles` — PMTiles v3 archive reader
-- `polyline-encoding` — Google Encoded Polyline Algorithm
-- `testutil` — shared test helpers
-- `benchmark` — performance benchmarks
-- `docs` — API documentation
+- `geojson` — types and DSL; [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946).
+- `geohash` — cells and OSM shortlinks;
+  [shortlink implementation](https://github.com/openstreetmap/openstreetmap-website/blob/master/lib/short_link.rb).
+- `turf` — geospatial analysis; [Turf.js source](https://github.com/Turfjs/turf).
+- `units` — units of measure; [SI Brochure](https://www.bipm.org/en/publications/si-brochure).
+- `gpx` — GPX support; [GPX 1.1 schema](https://www.topografix.com/GPX/1/1/gpx.xsd).
+- `pmtiles` — archive reader;
+  [PMTiles v3 spec](https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md).
+- `polyline-encoding` —
+  [Google Encoded Polyline Algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
+- `testutil` — shared test helpers; `benchmark` — benchmarks; `docs` — documentation site and API
+  reference.
 
-## Reference resources
+## Development
 
-- GeoJSON: [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946).
-- Geohash: [Geohash format](https://en.wikipedia.org/wiki/Geohash) and OpenStreetMap
-  [shortlink documentation](https://wiki.openstreetmap.org/wiki/Shortlink) and
-  [Rails implementation](https://github.com/openstreetmap/openstreetmap-website/blob/master/lib/short_link.rb).
-- Turf: [Turf.js docs](https://turfjs.org/docs/) and
-  [source repository](https://github.com/Turfjs/turf).
-- Units: [BIPM SI Brochure](https://www.bipm.org/en/publications/si-brochure) and
-  [NIST SI units guide](https://www.nist.gov/pml/weights-and-measures/metric-si/si-units).
-- GPX: [GPX 1.1 schema documentation](https://www.topografix.com/gpx/1/1/) and
-  [XSD](https://www.topografix.com/GPX/1/1/gpx.xsd).
-- PMTiles v3: [spec](https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md),
-  [changelog](https://github.com/protomaps/PMTiles/blob/main/spec/v3/CHANGELOG.md),
-  [Protomaps docs](https://docs.protomaps.com/pmtiles/), and
-  [go-pmtiles](https://github.com/protomaps/go-pmtiles).
-- Polyline encoding:
-  [Google Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
-- Kotlin interop:
-  [Objective-C and Swift interop](https://kotlinlang.org/docs/native-objc-interop.html#importing-swift-objective-c-libraries-to-kotlin),
-  [Swift export](https://kotlinlang.org/docs/native-swift-export.html),
-  [C interop](https://kotlinlang.org/docs/native-c-interop.html),
-  [JS interop](https://kotlinlang.org/docs/js-interop.html),
-  [JS to Kotlin interop](https://kotlinlang.org/docs/js-to-kotlin-interop.html),
-  [Java interop](https://kotlinlang.org/docs/java-interop.html), and
-  [Java to Kotlin interop](https://kotlinlang.org/docs/java-to-kotlin-interop.html).
+Use mise tasks: `mise tasks --all` lists them, and [CONTRIBUTING.md](CONTRIBUTING.md) covers setup
+and platform requirements. For other commands, use `mise exec -- <command>`.
 
-## Workflow
+- Build and check: `mise run build`.
+- Formatting and lint: `mise run check`; automatic fixes: `mise run fix`. Pre-commit hooks format
+  staged files and run checks. `hk fix [FILES...]` targets specific files and stages changes.
+- Tests: `mise run test`, or `test:jvm`, `test:jsnode`, `test:wasmjsnode`, `test:native`, and
+  `test:swift` for individual platforms.
+- One JVM test: `mise exec -- ./gradlew :module:jvmTest --tests "*SomeTest*"`.
 
-```bash
-# Install/refresh all tools
-mise install
+Keep regression tests focused on the changed behavior, sized like neighboring tests. Scratch checks
+need not be committed. Choose platforms by what the change can break: numeric precision,
+serialization, and foreign APIs can differ between runtimes. Use `testutil` helpers for
+floating-point comparisons. Foreign export tests primarily prove the API is usable in that language.
 
-# List available tasks across the workspace
-mise tasks --all
+## API design
 
-# Compile all platforms, also run Detekt
-mise run build
+- Keep Kotlin ergonomic while making exported APIs usable from ObjC and Swift; see
+  [Kotlin interop](https://kotlinlang.org/docs/native-objc-interop.html).
+- Hide Kotlin-only helpers with `@HiddenFromObjC` or equivalent annotations.
+- Use builder DSLs for option bags that may grow, rather than public constructors with defaults.
+- Use inline `value class` for enum-like values that may grow without a breaking spec change.
 
-# Run all tests (JVM, JS, WASM, native)
-mise run test
+## Documentation
 
-# Test specific platforms
-mise run test:jvm
-mise run test:jsnode
-mise run test:wasmjsnode
-mise run test:native
+Describe the current library in plain, literal language for readers who do not know its history. Fix
+existing text when a code change makes it wrong or changes what readers need to do. Notes about what
+changed and migration instructions belong in the PR description.
 
-# Run formatters and linters on _all_ files (will stage affected files)
-mise run fix
+- Site pages in `docs/src/content/docs/` explain common tasks, concepts, and decisions most users
+  make. Edge cases, platform differences, and exact contracts belong in the API reference.
+- KDoc defines API behavior, parameter meaning, and limits callers rely on.
+- `CONTRIBUTING.md` explains project-specific decisions and contributor workflows.
 
-# Run formatters and linters on targeted files (will stage affected files)
-hk fix [FILES...]
+Update the compiled test snippets used by examples so they stay correct as APIs change.
 
-# Run a specific JVM test
-mise exec -- ./gradlew :module:jvmTest --tests "*SomeTest*"
-```
+## Pull requests
 
-Formatters and linters run automatically on pre-commit; you usually don't need to run them manually.
+Follow [PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md) and use Conventional Commit
+titles, such as `fix(units): correct infinity checks`. Write the shortest description that lets a
+reviewer who has not seen your working session understand and trust the change. Start with the
+problem and resulting behavior; use a before/after example when helpful. Explain migration steps,
+unresolved limitations, and decisions the diff cannot explain.
 
-The environment is managed by mise, so if you need to run a command that's not already a mise task,
-use `mise exec -- <command>`.
+Validation covers what CI does not show. CI runs the standard checks and test suites, so passing
+them needs no mention. Describe how tests changed and what they catch, and anything checked outside
+CI: benchmark comparisons for performance changes, code metrics for refactors, and manual checks
+where relevant. Name affected behavior that went unverified.
 
-## Project invariants
-
-### Testing
-
-- For floating-point comparisons in tests, use helpers from `testutil` instead of `assertEquals` to
-  handle platform-specific precision differences.
-- Foreign export tests don't need full coverage; they're primarily about proving the api is usable
-  in that language.
-
-### API design
-
-- Design for ObjC export (used in Swift) without damaging the Kotlin API ergonomics.
-- Avoid Kotlin idioms that create unusable foreign APIs, but do not make Kotlin awkward just to
-  perfect a foreign-language call site.
-- Hide Kotlin-only helpers from foreign APIs with `@HiddenFromObjC`/similar annotations.
-- Option bags that may grow over time use a builder DSL rather than public constructor with
-  defaults.
-- Enum-like values which may grow over time without breaking spec changes should be defined as
-  inline `value class`, not `enum class`.
+Use draft status for unfinished work, unresolved decisions, or AI-assisted changes awaiting human
+review.
