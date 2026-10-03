@@ -5,9 +5,15 @@ library.
 
 ## Priorities
 
-Prioritize correct behavior on supported platforms and a clear public API. Explain source and binary
-compatibility changes in the PR. Keep maintainer tooling proportionate to how the project uses it.
-Weigh review findings by their likelihood in real use and their cost to affected users.
+The published libraries are the product. Prioritize correct behavior on supported platforms and a
+clear public API. Explain source and binary compatibility changes in the PR.
+
+Everything else serves maintainers: benchmarks, documentation tooling, CI scripts, and planning
+documents. Maintainers run these themselves and see failures right away, so they need to work for
+the ways we use them, without anticipating every misuse, environment, or concurrent run.
+
+Weigh review findings against these priorities: how likely the problem is in real use, and what it
+costs the people it affects.
 
 ## Project map
 
@@ -51,11 +57,16 @@ floating-point comparisons. Foreign export tests primarily prove the API is usab
 
 ## Documentation
 
-Describe the current library in plain, literal language. Fix existing text when an API change
-affects what readers need to do. Site pages in `docs/src/content/docs/` cover common tasks and
-concepts; KDoc defines behavior, parameters, and caller limits; `CONTRIBUTING.md` covers contributor
-workflows. Update the compiled test snippets used by examples. Put migration instructions in the PR
-description.
+Describe the current library in plain, literal language for readers who do not know its history. Fix
+existing text when a code change makes it wrong or changes what readers need to do. Notes about what
+changed and migration instructions belong in the PR description.
+
+- Site pages in `docs/src/content/docs/` explain common tasks, concepts, and decisions most users
+  make. Edge cases, platform differences, and exact contracts belong in the API reference.
+- KDoc defines API behavior, parameter meaning, and limits callers rely on.
+- `CONTRIBUTING.md` explains project-specific decisions and contributor workflows.
+
+Update the compiled test snippets used by examples so they stay correct as APIs change.
 
 ## Pull requests
 
@@ -65,6 +76,10 @@ reviewer who has not seen your working session understand and trust the change. 
 problem and resulting behavior; use a before/after example when helpful. Explain migration steps,
 unresolved limitations, and decisions the diff cannot explain.
 
-CI runs the standard checks and tests. Describe what changed tests catch and anything measured or
-checked outside CI. Name affected behavior that went unverified. Use draft status for unfinished
-work, unresolved decisions, or AI-assisted changes awaiting human review.
+Validation covers what CI does not show. CI runs the standard checks and test suites, so passing
+them needs no mention. Describe how tests changed and what they catch, and anything checked outside
+CI: benchmark comparisons for performance changes, code metrics for refactors, and manual checks
+where relevant. Name affected behavior that went unverified.
+
+Use draft status for unfinished work, unresolved decisions, or AI-assisted changes awaiting human
+review.
