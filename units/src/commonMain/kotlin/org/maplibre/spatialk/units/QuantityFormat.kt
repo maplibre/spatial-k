@@ -94,7 +94,7 @@ internal class QuantityFormat<Q, U>(
         return when (entry) {
             is FormatEntry.Simple ->
                 formatWithSymbol(
-                    (value / kind.basePerUnit(unit)).toRoundedString(decimalPlaces),
+                    (value / kind.basePerUnit(unit)).toPlainString(decimalPlaces),
                     entry.part.symbol,
                 )
             is FormatEntry.Compound ->
@@ -216,10 +216,10 @@ internal fun formatCompound(
         return formatWithSymbol(value.toRoundedString(decimalPlaces), symbols.first())
     }
     val last = basePerUnit.lastIndex
-    val wholeParts = LongArray(last)
+    val wholeParts = DoubleArray(last)
     var remainder = value.absoluteValue
     for (i in 0 until last) {
-        wholeParts[i] = (remainder / basePerUnit[i]).toLong()
+        wholeParts[i] = floor(remainder / basePerUnit[i]).coerceAtLeast(0.0)
         remainder -= wholeParts[i] * basePerUnit[i]
     }
     // Subtracting whole parts can leave a remainder just below zero.
@@ -227,21 +227,21 @@ internal fun formatCompound(
     if (decimalPlaces == Int.MAX_VALUE) {
         lastValue = lastValue.roundToSignificantDigitsOf(value.absoluteValue / basePerUnit[last])
     }
-    var lastPart = lastValue.toRoundedString(decimalPlaces)
+    var lastPart = lastValue.toPlainString(decimalPlaces)
 
     if (lastPart.toDouble() >= partsPerLargerPart(basePerUnit, last)) {
-        lastPart = 0.0.toRoundedString(decimalPlaces)
-        wholeParts[last - 1]++
+        lastPart = 0.0.toPlainString(decimalPlaces)
+        wholeParts[last - 1] += 1.0
     }
     for (i in last - 1 downTo 1) {
         if (wholeParts[i] >= partsPerLargerPart(basePerUnit, i)) {
-            wholeParts[i] = 0
-            wholeParts[i - 1]++
+            wholeParts[i] = 0.0
+            wholeParts[i - 1] += 1.0
         }
     }
 
     val sign = if (value < 0) "-" else ""
-    val numbers = wholeParts.map { it.toString() } + lastPart
+    val numbers = wholeParts.map { it.toPlainString(0) } + lastPart
     var count = numbers.size
     if (omitTrailingZeroParts) {
         while (count > 1 && numbers[count - 1].toDouble() == 0.0) count--
@@ -262,10 +262,44 @@ private const val RATIO_TOLERANCE = 1e-9
 /** The significant digits of a compound's whole value written at full precision. */
 private const val SIGNIFICANT_DIGITS = 12
 
+/** The largest power of ten used as a rounding scale without overflowing. */
+private const val MAX_SCALE_EXPONENT = 300
+
+/** Like [toRoundedString], but never in exponent notation, so the result parses as a number. */
+private fun Double.toPlainString(decimalPlaces: Int): String {
+    val plain = toRoundedString(decimalPlaces).withoutExponent()
+    if (decimalPlaces == Int.MAX_VALUE || !isFinite()) return plain
+    val whole = plain.substringBefore('.')
+    if (decimalPlaces == 0) return whole
+    val fraction = plain.substringAfter('.', missingDelimiterValue = "")
+    return "$whole.${fraction.take(decimalPlaces).padEnd(decimalPlaces, '0')}"
+}
+
+/** Rewrites a number such as `1.5E-7` or `2e+21` in plain decimal notation. */
+private fun String.withoutExponent(): String {
+    val e = indexOfFirst { it == 'e' || it == 'E' }
+    if (e < 0) return this
+    val sign = if (startsWith('-')) "-" else ""
+    val mantissa = substring(sign.length, e)
+    val exponent = substring(e + 1).toInt()
+    val pointIndex = mantissa.indexOf('.').takeIf { it >= 0 } ?: mantissa.length
+    val digits = mantissa.replace(".", "")
+    val newPointIndex = pointIndex + exponent
+    val plain =
+        when {
+            newPointIndex <= 0 -> "0." + "0".repeat(-newPointIndex) + digits
+            newPointIndex >= digits.length -> digits + "0".repeat(newPointIndex - digits.length)
+            else -> digits.substring(0, newPointIndex) + "." + digits.substring(newPointIndex)
+        }
+    val trimmed = if ('.' in plain) plain.trimEnd('0').trimEnd('.') else plain
+    return sign + trimmed
+}
+
 /** Rounds this number to the decimal place of the [SIGNIFICANT_DIGITS]th digit of [total]. */
 private fun Double.roundToSignificantDigitsOf(total: Double): Double {
     if (total == 0.0) return this
-    val decimals = (SIGNIFICANT_DIGITS - 1 - floor(log10(total)).toInt()).coerceIn(-300, 300)
+    val decimals = SIGNIFICANT_DIGITS - 1 - floor(log10(total)).toInt()
+    if (decimals !in -MAX_SCALE_EXPONENT..MAX_SCALE_EXPONENT) return this
     val scale = 10.0.pow(decimals)
     return round(this * scale) / scale
 }

@@ -3,6 +3,7 @@ package org.maplibre.spatialk.units
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import org.maplibre.spatialk.testutil.assertRotationEquals
 import org.maplibre.spatialk.units.Units.ArcSeconds
 import org.maplibre.spatialk.units.Units.Degrees
@@ -55,6 +56,16 @@ class RotationFormatTest {
             "11° 0′ 0.00″",
             dms.format(10.degrees + 59.arcMinutes + 59.999.arcSeconds, Degrees, 2),
         )
+    }
+
+    @Test
+    fun formatsExtremeCompoundValues() {
+        val max = dms.format(Rotation.MaxValue, Degrees, 0)
+        assertTrue(max.startsWith("17976931348623157") && max.endsWith("° 0′ 0″"), max)
+        assertEquals(Rotation.MaxValue, strictDms.parse(max))
+
+        val min = dms.format(Rotation.MinValue, Degrees)
+        assertTrue(strictDms.parse(min) > Rotation.Zero, min)
     }
 
     @Test

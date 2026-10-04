@@ -170,6 +170,20 @@ class LengthFormatTest {
     }
 
     @Test
+    fun formatWritesNumbersWithoutExponents() {
+        assertEquals("0.0000001 m", osm.format(1e-7.meters, Meters))
+        assertEquals("20000000 m", osm.format(2e7.meters, Meters, 0))
+        assertEquals("0.00001000 m", osm.format(1e-5.meters, Meters, 8))
+        for (value in listOf(1e-7.meters, 2e7.meters, 1e21.meters)) {
+            assertLengthEquals(
+                value,
+                strictOsm.parse(osm.format(value, Meters)),
+                message = "$value",
+            )
+        }
+    }
+
+    @Test
     fun compoundFormatAtFullPrecisionHidesFloatingPointError() {
         assertEquals("12'4.5\"", osm.format(osm.parse("12'4.5\""), Feet))
         assertEquals("3'0.5\"", osm.format(1.yards + 0.5.inches, Feet))

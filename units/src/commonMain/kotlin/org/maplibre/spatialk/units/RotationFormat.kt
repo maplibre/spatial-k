@@ -51,7 +51,8 @@ internal constructor(internal val spec: QuantityFormat<Rotation, RotationUnit>) 
 
     /**
      * Formats [value] in [unit], using the first entry that contains [unit], as described for
-     * [Builder.unit] and [Builder.compound].
+     * [Builder.unit] and [Builder.compound]. Numbers are written without exponent notation. Text
+     * written for a nonfinite value does not parse.
      *
      * @param value The rotation to format. From Java, Objective-C, and Swift, it is in degrees.
      * @param decimalPlaces The number of decimal places for the number, or for the last part of a
