@@ -147,7 +147,8 @@ public value class Bearing private constructor(private val rotationFromNorth: Ro
         internal fun of(rotationFromNorth: Rotation): Bearing {
             require(rotationFromNorth.inDegrees.isFinite()) { "Bearing must be finite" }
             val wrapped = rotationFromNorth.mod(360.degrees)
-            // Adding 360 to a tiny negative remainder can round up to exactly 360.
+            // Double.mod adds the divisor to negative remainders, which can round to 360 degrees.
+            // Represent full turns and either sign of zero as north.
             return Bearing(if (wrapped >= 360.degrees || wrapped.isZero) 0.degrees else wrapped)
         }
     }
