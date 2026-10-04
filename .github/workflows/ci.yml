@@ -98,6 +98,8 @@ jobs:
               env:
                   YARN_ENABLE_HARDENED_MODE: "1"
               run: ./gradlew kotlinNpmInstall
+            - name: Verify generated units
+              run: ./gradlew :tools:units-generator:checkGenerated
 
     # stub to use as a "required" check on github
     all-good:

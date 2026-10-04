@@ -38,6 +38,8 @@ Details can be found in the [API reference](/spatial-k/api/dokka/units/index.htm
 
 In Kotlin, `Length`, `Area`, and `Rotation` are type-safe value classes wrapping a `Double`. They
 can be converted to and from raw `Double` values using the provided unit accessors.
+Common units are available in `Units`, with helpers such as `5.meters.inFeet`.
+Specialist catalogs live in `org.maplibre.spatialk.units.catalog`; pass a unit explicitly: `3.0.toLength(US.SurveyFeet)`.
 
 In Java, use the `convert` helper from `org.maplibre.spatialk.units.extensions.Utils` to convert
 between units.
@@ -87,8 +89,7 @@ degrees relative to north.
 
 ## Custom units
 
-Predefined SI (International System of Units) and Imperial units are available, but you can define
-custom units as needed.
+You can define custom units with a conversion factor and display symbol.
 
 <Tabs syncKey="language">
   <TabItem label="Kotlin">

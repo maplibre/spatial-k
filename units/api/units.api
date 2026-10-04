@@ -118,61 +118,10 @@ public final class org/maplibre/spatialk/units/Bearing$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class org/maplibre/spatialk/units/DMS {
-	public static final field ArcMinutes Lorg/maplibre/spatialk/units/RotationUnit;
-	public static final field ArcSeconds Lorg/maplibre/spatialk/units/RotationUnit;
-	public static final field Degrees Lorg/maplibre/spatialk/units/RotationUnit;
-	public static final field INSTANCE Lorg/maplibre/spatialk/units/DMS;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class org/maplibre/spatialk/units/Earth : org/maplibre/spatialk/units/World {
 	public static final field INSTANCE Lorg/maplibre/spatialk/units/Earth;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getEquatorRadius-_8uq4Z0 ()D
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/maplibre/spatialk/units/Imperial {
-	public static final field Acres Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field Cables Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field Chains Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field Fathoms Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field Feet Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field Furlongs Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field INSTANCE Lorg/maplibre/spatialk/units/Imperial;
-	public static final field Inches Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field Leagues Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field Links Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field Miles Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field NauticalMiles Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field Rods Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field SquareFeet Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field SquareInches Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field SquareMiles Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field SquareRods Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field SquareYards Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field Yards Lorg/maplibre/spatialk/units/LengthUnit;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/maplibre/spatialk/units/International {
-	public static final field Centimeters Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field INSTANCE Lorg/maplibre/spatialk/units/International;
-	public static final field Kilometers Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field Meters Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field Millimeters Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field Radians Lorg/maplibre/spatialk/units/RotationUnit;
-	public static final field SquareCentimeters Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field SquareKilometers Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field SquareMeters Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field SquareMillimeters Lorg/maplibre/spatialk/units/AreaUnit;
-	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -245,19 +194,6 @@ public class org/maplibre/spatialk/units/LengthUnit : java/lang/Comparable, org/
 	public final fun getMetersPerUnit ()D
 	public fun getSymbol ()Ljava/lang/String;
 	public final fun times (Lorg/maplibre/spatialk/units/LengthUnit;)Lorg/maplibre/spatialk/units/AreaUnit;
-}
-
-public final class org/maplibre/spatialk/units/Metric {
-	public static final field Ares Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field Centiares Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field Decares Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field Deciares Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field Gradians Lorg/maplibre/spatialk/units/RotationUnit;
-	public static final field Hectares Lorg/maplibre/spatialk/units/AreaUnit;
-	public static final field INSTANCE Lorg/maplibre/spatialk/units/Metric;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
 }
 
 public final class org/maplibre/spatialk/units/Rotation : java/lang/Comparable {
@@ -341,6 +277,34 @@ public final class org/maplibre/spatialk/units/UnitOfMeasure$DefaultImpls {
 	public static synthetic fun format$default (Lorg/maplibre/spatialk/units/UnitOfMeasure;DIILjava/lang/Object;)Ljava/lang/String;
 }
 
+public final class org/maplibre/spatialk/units/Units {
+	public static final field Acres Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field ArcMinutes Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field ArcSeconds Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field Centimeters Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Degrees Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field Feet Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Hectares Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/Units;
+	public static final field Inches Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Kilometers Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Meters Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Miles Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Millimeters Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field NauticalMiles Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Radians Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field SquareFeet Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareKilometers Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareMeters Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareMiles Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareYards Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Turns Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field Yards Lorg/maplibre/spatialk/units/LengthUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public abstract class org/maplibre/spatialk/units/World {
 	public final field ArcMinutes Lorg/maplibre/spatialk/units/LengthUnit;
 	public final field ArcSeconds Lorg/maplibre/spatialk/units/LengthUnit;
@@ -350,34 +314,244 @@ public abstract class org/maplibre/spatialk/units/World {
 	public final fun getAverageRadius-_8uq4Z0 ()D
 }
 
+public final class org/maplibre/spatialk/units/catalog/Angles {
+	public static final field AngularHours Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field AngularMinutes Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field AngularSeconds Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field ArcMinutes Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field ArcSeconds Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field CentesimalMinutes Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field CentesimalSeconds Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field Degrees Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field Gradians Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Angles;
+	public static final field Microradians Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field MilliarcSeconds Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field Milliradians Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field Mils6400 Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field Radians Lorg/maplibre/spatialk/units/RotationUnit;
+	public static final field Turns Lorg/maplibre/spatialk/units/RotationUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/China {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/China;
+	public static final field MarketMu Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/Customary {
+	public static final field Acres Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Feet Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Furlongs Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field GunterChains Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field GunterLinks Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Customary;
+	public static final field Inches Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field LandLeagues Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field LandMiles Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Rods Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SquareFeet Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareInches Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareMiles Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareRods Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareYards Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Yards Lorg/maplibre/spatialk/units/LengthUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/Finland {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Finland;
+	public static final field Mils6000 Lorg/maplibre/spatialk/units/RotationUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/India {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/India;
+	public static final field SurveyFeet1937 Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyFeet1962 Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyFeet1975 Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyYards1937 Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyYards1962 Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyYards1975 Lorg/maplibre/spatialk/units/LengthUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/India$Assam {
+	public static final field Bigha Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/India$Assam;
+	public static final field Katha Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Lecha Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/Malaysia {
+	public static final field Benoit1895BChains Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Benoit1895BFeet Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Benoit1895BLinks Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Benoit1895BYards Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Malaysia;
+	public static final field Sears1922Chains Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Sears1922Feet Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Sears1922Links Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Sears1922TruncatedChains Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Sears1922TruncatedFeet Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Sears1922TruncatedLinks Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Sears1922TruncatedYards Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Sears1922Yards Lorg/maplibre/spatialk/units/LengthUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/Metric {
+	public static final field Ares Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Centiares Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Centimeters Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Decameters Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Decares Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Deciares Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Decimeters Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Hectares Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Hectometers Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Metric;
+	public static final field Kilometers Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Meters Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field Millimeters Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SquareCentimeters Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareDecameters Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareDecimeters Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareHectometers Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareKilometers Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareMeters Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareMillimeters Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/Namibia {
+	public static final field GermanLegalMeters Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Namibia;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/Nautical {
+	public static final field Fathoms Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Nautical;
+	public static final field InternationalCables Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field NauticalMiles Lorg/maplibre/spatialk/units/LengthUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/Nepal {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Nepal;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/Nepal$Hill {
+	public static final field Aana Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Daam Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Nepal$Hill;
+	public static final field Paisa Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Ropani Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/Nepal$Terai {
+	public static final field Bigha Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Dhur Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Nepal$Terai;
+	public static final field Kattha Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/Sweden {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Sweden;
+	public static final field Streck6300 Lorg/maplibre/spatialk/units/RotationUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/Thailand {
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Thailand;
+	public static final field Ngan Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Rai Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SquareWa Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field Wa Lorg/maplibre/spatialk/units/LengthUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/TrinidadAndTobago {
+	public static final field ClarkeFeet Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field ClarkeLinks Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/TrinidadAndTobago;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/UK {
+	public static final field AdmiraltyCables Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/UK;
+	public static final field SurveyFeet1936 Lorg/maplibre/spatialk/units/LengthUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/maplibre/spatialk/units/catalog/US {
+	public static final field CustomaryCables Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/US;
+	public static final field SurveyAcres Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SurveyCables Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyFathoms Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyFeet Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyFurlongs Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyGunterChains Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyGunterLinks Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyLandLeagues Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyMiles Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyRods Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveySquareFeet Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SurveySquareMiles Lorg/maplibre/spatialk/units/AreaUnit;
+	public static final field SurveySquareRods Lorg/maplibre/spatialk/units/AreaUnit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt {
 	public static final fun acos (D)D
 	public static final fun asin (D)D
 	public static final fun atan (D)D
 	public static final fun atan2 (DD)D
 	public static final fun cos-FBJBH8g (D)D
-	public static final fun getAcres (D)D
-	public static final fun getAcres (I)D
-	public static final fun getArcMinutes (D)D
-	public static final fun getArcMinutes (I)D
-	public static final fun getArcSeconds (D)D
-	public static final fun getArcSeconds (I)D
-	public static final fun getAres (D)D
-	public static final fun getAres (I)D
-	public static final fun getCables (D)D
-	public static final fun getCables (I)D
-	public static final fun getCentiares (D)D
-	public static final fun getCentiares (I)D
-	public static final fun getCentimeters (D)D
-	public static final fun getCentimeters (I)D
-	public static final fun getChains (D)D
-	public static final fun getChains (I)D
-	public static final fun getDecares (D)D
-	public static final fun getDecares (I)D
-	public static final fun getDeciares (D)D
-	public static final fun getDeciares (I)D
-	public static final fun getDegrees (D)D
-	public static final fun getDegrees (I)D
 	public static final fun getEarthDegrees (D)D
 	public static final fun getEarthDegrees (I)D
 	public static final fun getEarthMinutes (D)D
@@ -386,96 +560,10 @@ public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt 
 	public static final fun getEarthRadians (I)D
 	public static final fun getEarthSeconds (D)D
 	public static final fun getEarthSeconds (I)D
-	public static final fun getFathoms (D)D
-	public static final fun getFathoms (I)D
-	public static final fun getFeet (D)D
-	public static final fun getFeet (I)D
-	public static final fun getFurlongs (D)D
-	public static final fun getFurlongs (I)D
-	public static final fun getGradians (D)D
-	public static final fun getGradians (I)D
-	public static final fun getHectares (D)D
-	public static final fun getHectares (I)D
-	public static final fun getInAcres-g7vxaWU (D)D
-	public static final fun getInArcMinutes-FBJBH8g (D)D
-	public static final fun getInArcSeconds-FBJBH8g (D)D
-	public static final fun getInAres-g7vxaWU (D)D
-	public static final fun getInCables-z3ishhw (D)D
-	public static final fun getInCentiares-g7vxaWU (D)D
-	public static final fun getInCentimeters-z3ishhw (D)D
-	public static final fun getInChains-z3ishhw (D)D
-	public static final fun getInDecares-g7vxaWU (D)D
-	public static final fun getInDeciares-g7vxaWU (D)D
-	public static final fun getInDegrees-FBJBH8g (D)D
 	public static final fun getInEarthDegrees-z3ishhw (D)D
 	public static final fun getInEarthMinutes-z3ishhw (D)D
 	public static final fun getInEarthRadians-z3ishhw (D)D
 	public static final fun getInEarthSeconds-z3ishhw (D)D
-	public static final fun getInFathoms-z3ishhw (D)D
-	public static final fun getInFeet-z3ishhw (D)D
-	public static final fun getInFurlongs-z3ishhw (D)D
-	public static final fun getInGradians-FBJBH8g (D)D
-	public static final fun getInHectares-g7vxaWU (D)D
-	public static final fun getInInches-z3ishhw (D)D
-	public static final fun getInKilometers-z3ishhw (D)D
-	public static final fun getInLeagues-z3ishhw (D)D
-	public static final fun getInLinks-z3ishhw (D)D
-	public static final fun getInMeters-z3ishhw (D)D
-	public static final fun getInMiles-z3ishhw (D)D
-	public static final fun getInMillimeters-z3ishhw (D)D
-	public static final fun getInNauticalMiles-z3ishhw (D)D
-	public static final fun getInRadians-FBJBH8g (D)D
-	public static final fun getInRods-z3ishhw (D)D
-	public static final fun getInSquareCentimeters-g7vxaWU (D)D
-	public static final fun getInSquareFeet-g7vxaWU (D)D
-	public static final fun getInSquareInches-g7vxaWU (D)D
-	public static final fun getInSquareKilometers-g7vxaWU (D)D
-	public static final fun getInSquareMeters-g7vxaWU (D)D
-	public static final fun getInSquareMiles-g7vxaWU (D)D
-	public static final fun getInSquareMillimeters-g7vxaWU (D)D
-	public static final fun getInSquareRods-g7vxaWU (D)D
-	public static final fun getInSquareYards-g7vxaWU (D)D
-	public static final fun getInYards-z3ishhw (D)D
-	public static final fun getInches (D)D
-	public static final fun getInches (I)D
-	public static final fun getKilometers (D)D
-	public static final fun getKilometers (I)D
-	public static final fun getLeagues (D)D
-	public static final fun getLeagues (I)D
-	public static final fun getLinks (D)D
-	public static final fun getLinks (I)D
-	public static final fun getMeters (D)D
-	public static final fun getMeters (I)D
-	public static final fun getMiles (D)D
-	public static final fun getMiles (I)D
-	public static final fun getMillimeters (D)D
-	public static final fun getMillimeters (I)D
-	public static final fun getNauticalMiles (D)D
-	public static final fun getNauticalMiles (I)D
-	public static final fun getRadians (D)D
-	public static final fun getRadians (I)D
-	public static final fun getRods (D)D
-	public static final fun getRods (I)D
-	public static final fun getSquareCentimeters (D)D
-	public static final fun getSquareCentimeters (I)D
-	public static final fun getSquareFeet (D)D
-	public static final fun getSquareFeet (I)D
-	public static final fun getSquareInches (D)D
-	public static final fun getSquareInches (I)D
-	public static final fun getSquareKilometers (D)D
-	public static final fun getSquareKilometers (I)D
-	public static final fun getSquareMeters (D)D
-	public static final fun getSquareMeters (I)D
-	public static final fun getSquareMiles (D)D
-	public static final fun getSquareMiles (I)D
-	public static final fun getSquareMillimeters (D)D
-	public static final fun getSquareMillimeters (I)D
-	public static final fun getSquareRods (D)D
-	public static final fun getSquareRods (I)D
-	public static final fun getSquareYards (D)D
-	public static final fun getSquareYards (I)D
-	public static final fun getYards (D)D
-	public static final fun getYards (I)D
 	public static final fun sin-FBJBH8g (D)D
 	public static final fun sumArea (Ljava/lang/Iterable;)D
 	public static final fun sumLength (Ljava/lang/Iterable;)D
@@ -490,6 +578,72 @@ public final synthetic class org/maplibre/spatialk/units/extensions/SyntheticKt 
 	public static final fun toArea (DLorg/maplibre/spatialk/units/AreaUnit;)D
 	public static final fun toLength (DLorg/maplibre/spatialk/units/LengthUnit;)D
 	public static final fun toRotation (DLorg/maplibre/spatialk/units/RotationUnit;)D
+}
+
+public final synthetic class org/maplibre/spatialk/units/extensions/UnitConversionsKt {
+	public static final fun getAcres (D)D
+	public static final fun getAcres (I)D
+	public static final fun getArcMinutes (D)D
+	public static final fun getArcMinutes (I)D
+	public static final fun getArcSeconds (D)D
+	public static final fun getArcSeconds (I)D
+	public static final fun getCentimeters (D)D
+	public static final fun getCentimeters (I)D
+	public static final fun getDegrees (D)D
+	public static final fun getDegrees (I)D
+	public static final fun getFeet (D)D
+	public static final fun getFeet (I)D
+	public static final fun getHectares (D)D
+	public static final fun getHectares (I)D
+	public static final fun getInAcres-g7vxaWU (D)D
+	public static final fun getInArcMinutes-FBJBH8g (D)D
+	public static final fun getInArcSeconds-FBJBH8g (D)D
+	public static final fun getInCentimeters-z3ishhw (D)D
+	public static final fun getInDegrees-FBJBH8g (D)D
+	public static final fun getInFeet-z3ishhw (D)D
+	public static final fun getInHectares-g7vxaWU (D)D
+	public static final fun getInInches-z3ishhw (D)D
+	public static final fun getInKilometers-z3ishhw (D)D
+	public static final fun getInMeters-z3ishhw (D)D
+	public static final fun getInMiles-z3ishhw (D)D
+	public static final fun getInMillimeters-z3ishhw (D)D
+	public static final fun getInNauticalMiles-z3ishhw (D)D
+	public static final fun getInRadians-FBJBH8g (D)D
+	public static final fun getInSquareFeet-g7vxaWU (D)D
+	public static final fun getInSquareKilometers-g7vxaWU (D)D
+	public static final fun getInSquareMeters-g7vxaWU (D)D
+	public static final fun getInSquareMiles-g7vxaWU (D)D
+	public static final fun getInSquareYards-g7vxaWU (D)D
+	public static final fun getInTurns-FBJBH8g (D)D
+	public static final fun getInYards-z3ishhw (D)D
+	public static final fun getInches (D)D
+	public static final fun getInches (I)D
+	public static final fun getKilometers (D)D
+	public static final fun getKilometers (I)D
+	public static final fun getMeters (D)D
+	public static final fun getMeters (I)D
+	public static final fun getMiles (D)D
+	public static final fun getMiles (I)D
+	public static final fun getMillimeters (D)D
+	public static final fun getMillimeters (I)D
+	public static final fun getNauticalMiles (D)D
+	public static final fun getNauticalMiles (I)D
+	public static final fun getRadians (D)D
+	public static final fun getRadians (I)D
+	public static final fun getSquareFeet (D)D
+	public static final fun getSquareFeet (I)D
+	public static final fun getSquareKilometers (D)D
+	public static final fun getSquareKilometers (I)D
+	public static final fun getSquareMeters (D)D
+	public static final fun getSquareMeters (I)D
+	public static final fun getSquareMiles (D)D
+	public static final fun getSquareMiles (I)D
+	public static final fun getSquareYards (D)D
+	public static final fun getSquareYards (I)D
+	public static final fun getTurns (D)D
+	public static final fun getTurns (I)D
+	public static final fun getYards (D)D
+	public static final fun getYards (I)D
 }
 
 public final class org/maplibre/spatialk/units/extensions/Utils {

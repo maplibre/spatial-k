@@ -14,3 +14,8 @@ yarn.lock linguist-vendored
 gradle/wrapper/** linguist-vendored
 gradlew linguist-vendored
 gradlew.bat linguist-vendored
+
+# Unit catalog output
+units/src/commonMain/kotlin/org/maplibre/spatialk/units/Units.kt linguist-generated
+units/src/commonMain/kotlin/org/maplibre/spatialk/units/catalog/*.kt linguist-generated
+units/src/commonMain/kotlin/org/maplibre/spatialk/units/extensions/unitConversions.kt linguist-generated

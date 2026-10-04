@@ -12,7 +12,7 @@ import org.maplibre.spatialk.geojson.*
 import org.maplibre.spatialk.units.Area
 import org.maplibre.spatialk.units.AreaUnit
 import org.maplibre.spatialk.units.Earth
-import org.maplibre.spatialk.units.International.SquareMeters
+import org.maplibre.spatialk.units.Units.SquareMeters
 import org.maplibre.spatialk.units.extensions.degrees
 import org.maplibre.spatialk.units.extensions.inRadians
 import org.maplibre.spatialk.units.extensions.times
