@@ -47,7 +47,9 @@ import org.maplibre.spatialk.units.Metric.Gradians
 import org.maplibre.spatialk.units.Metric.Hectares
 
 internal fun Double.toRoundedString(decimalPlaces: Int): String {
-    require(decimalPlaces >= 0) { "Decimal places must be nonnegative" }
+    require(decimalPlaces in 0..15 || decimalPlaces == Int.MAX_VALUE) {
+        "Decimal places must be between 0 and 15, or Int.MAX_VALUE"
+    }
     if (!isFinite() || decimalPlaces == Int.MAX_VALUE) return toString()
     val mult = 10.0.pow(decimalPlaces)
     val scaled = this * mult

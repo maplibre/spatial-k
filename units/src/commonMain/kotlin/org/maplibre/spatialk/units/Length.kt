@@ -98,7 +98,7 @@ public value class Length private constructor(private val valueInMeters: Double)
      * Returns a formatted string representation of this length.
      *
      * @param unit The unit to display the length in.
-     * @param decimalPlaces The number of decimal places to display.
+     * @param decimalPlaces The number of decimal places to round to; see [UnitOfMeasure.format].
      */
     public fun toString(unit: LengthUnit = Meters, decimalPlaces: Int = 2): String =
         unit.format(toDouble(unit), decimalPlaces)

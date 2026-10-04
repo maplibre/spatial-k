@@ -107,7 +107,7 @@ public value class Rotation private constructor(private val valueInDegrees: Doub
      * Returns a formatted string representation of this rotation.
      *
      * @param unit The unit to display the rotation in.
-     * @param decimalPlaces The number of decimal places to display.
+     * @param decimalPlaces The number of decimal places to round to; see [UnitOfMeasure.format].
      */
     public fun toString(unit: RotationUnit = Radians, decimalPlaces: Int = 2): String =
         unit.format(toDouble(unit), decimalPlaces)
@@ -115,7 +115,8 @@ public value class Rotation private constructor(private val valueInDegrees: Doub
     /**
      * Format this [Rotation] as [Degrees], [ArcMinutes], and [ArcSeconds] components.
      *
-     * @param decimalPlaces the number of decimal places to use for the arc seconds component.
+     * @param decimalPlaces The number of decimal places for arcseconds, as described in
+     *   [UnitOfMeasure.format].
      */
     public fun toDmsString(decimalPlaces: Int = 2): String {
         val isNegative = this.isNegative
