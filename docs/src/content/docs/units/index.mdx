@@ -87,6 +87,47 @@ degrees relative to north.
   </TabItem>
 </Tabs>
 
+## Parsing and formatting text
+
+`LengthFormat`, `AreaFormat`, and `RotationFormat` convert between typed values and text such as
+`3.5 m`, `12'6"`, or `1 ไร่ 3 งาน 50 ตร.วา`. Build a format from the units and symbols you expect,
+including compounds of several units.
+
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
+    ```kotlin
+    --8<-- "units/src/commonTest/kotlin/org/maplibre/spatialk/units/KotlinDocsTest.kt:customFormats"
+    ```
+  </TabItem>
+
+  <TabItem label="Java">
+    ```java
+    --8<-- "units/src/jvmTest/java/org/maplibre/spatialk/units/JavaDocsTest.java:customFormats"
+    ```
+  </TabItem>
+</Tabs>
+
+### Presets
+
+`RotationFormat.Dms` handles degrees, minutes, and seconds, while `LengthFormat.Osm` and
+`RotationFormat.Osm` handle the
+[units used in OpenStreetMap tags](https://wiki.openstreetmap.org/wiki/Map_features/Units). A preset
+can also be the starting point for your own format.
+
+<Tabs syncKey="language">
+  <TabItem label="Kotlin">
+    ```kotlin
+    --8<-- "units/src/commonTest/kotlin/org/maplibre/spatialk/units/KotlinDocsTest.kt:formatPresets"
+    ```
+  </TabItem>
+
+  <TabItem label="Java">
+    ```java
+    --8<-- "units/src/jvmTest/java/org/maplibre/spatialk/units/JavaDocsTest.java:formatPresets"
+    ```
+  </TabItem>
+</Tabs>
+
 ## Custom units
 
 You can define custom units with a conversion factor and display symbol.

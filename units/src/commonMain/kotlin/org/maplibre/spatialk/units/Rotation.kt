@@ -112,34 +112,15 @@ public value class Rotation private constructor(private val valueInDegrees: Doub
         unit.format(toDouble(unit), decimalPlaces)
 
     /**
-     * Format this [Rotation] as [Degrees], [ArcMinutes], and [ArcSeconds] components.
+     * Format this [Rotation] as [Degrees], [ArcMinutes], and [ArcSeconds] components. A nonfinite
+     * rotation is written in degrees only, such as `NaN°` or `-Infinity°`.
      *
      * @param decimalPlaces The number of decimal places for arcseconds, as described in
      *   [UnitOfMeasure.format].
+     * @see RotationFormat.Dms
      */
-    public fun toDmsString(decimalPlaces: Int = 2): String {
-        val isNegative = this.isNegative
-        val absolute = this.absoluteValue
-
-        var degreesPart = absolute.inDegrees.toInt()
-        var remainder = absolute - degreesPart.degrees
-        var minutesPart = remainder.inArcMinutes.toInt()
-        remainder -= minutesPart.arcMinutes
-        var secondsPart = remainder.inArcSeconds.toRoundedString(decimalPlaces)
-        if (secondsPart.toDouble() >= 60.0) {
-            secondsPart = 0.0.toRoundedString(decimalPlaces)
-            minutesPart++
-        }
-        if (minutesPart >= 60) {
-            minutesPart = 0
-            degreesPart++
-        }
-
-        val sign = if (isNegative) "-" else ""
-        return "${sign}${degreesPart}${Degrees.symbol} " +
-            "${minutesPart}${ArcMinutes.symbol} " +
-            "${secondsPart}${ArcSeconds.symbol}"
-    }
+    public fun toDmsString(decimalPlaces: Int = 2): String =
+        RotationFormat.Dms.format(this, Degrees, decimalPlaces)
 
     override fun compareTo(other: Rotation): Int = valueInDegrees.compareTo(other.valueInDegrees)
 

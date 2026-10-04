@@ -56,6 +56,45 @@ public final class org/maplibre/spatialk/units/Area$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class org/maplibre/spatialk/units/AreaFormat {
+	public static final field Companion Lorg/maplibre/spatialk/units/AreaFormat$Companion;
+	public static final fun build (Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/units/AreaFormat;
+	public static final fun build (Lorg/maplibre/spatialk/units/AreaFormat;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/units/AreaFormat;
+	public final fun format (DLorg/maplibre/spatialk/units/AreaUnit;)Ljava/lang/String;
+	public final fun format (DLorg/maplibre/spatialk/units/AreaUnit;I)Ljava/lang/String;
+	public static synthetic fun format$default (Lorg/maplibre/spatialk/units/AreaFormat;DLorg/maplibre/spatialk/units/AreaUnit;IILjava/lang/Object;)Ljava/lang/String;
+	public final fun parse (Ljava/lang/String;)D
+	public final fun parseOrNull-brdJAmA (Ljava/lang/String;)Lorg/maplibre/spatialk/units/Area;
+}
+
+public final class org/maplibre/spatialk/units/AreaFormat$Builder {
+	public final fun compound (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public final fun compound (Ljava/lang/String;ZLkotlin/jvm/functions/Function1;)V
+	public final fun compound (Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun compound$default (Lorg/maplibre/spatialk/units/AreaFormat$Builder;Ljava/lang/String;ZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public final fun getDefaultUnit ()Lorg/maplibre/spatialk/units/AreaUnit;
+	public final fun getStrict ()Z
+	public final fun setDefaultUnit (Lorg/maplibre/spatialk/units/AreaUnit;)V
+	public final fun setStrict (Z)V
+	public final fun unit (Lorg/maplibre/spatialk/units/AreaUnit;)V
+	public final fun unit (Lorg/maplibre/spatialk/units/AreaUnit;Ljava/lang/String;)V
+	public final fun unit (Lorg/maplibre/spatialk/units/AreaUnit;Ljava/lang/String;Ljava/util/List;)V
+	public static synthetic fun unit$default (Lorg/maplibre/spatialk/units/AreaFormat$Builder;Lorg/maplibre/spatialk/units/AreaUnit;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)V
+}
+
+public final class org/maplibre/spatialk/units/AreaFormat$Companion {
+	public final fun build (Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/units/AreaFormat;
+	public final fun build (Lorg/maplibre/spatialk/units/AreaFormat;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/units/AreaFormat;
+	public static synthetic fun build$default (Lorg/maplibre/spatialk/units/AreaFormat$Companion;Lorg/maplibre/spatialk/units/AreaFormat;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/maplibre/spatialk/units/AreaFormat;
+}
+
+public final class org/maplibre/spatialk/units/AreaFormat$CompoundBuilder {
+	public final fun part (Lorg/maplibre/spatialk/units/AreaUnit;)V
+	public final fun part (Lorg/maplibre/spatialk/units/AreaUnit;Ljava/lang/String;)V
+	public final fun part (Lorg/maplibre/spatialk/units/AreaUnit;Ljava/lang/String;Ljava/util/List;)V
+	public static synthetic fun part$default (Lorg/maplibre/spatialk/units/AreaFormat$CompoundBuilder;Lorg/maplibre/spatialk/units/AreaUnit;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)V
+}
+
 public class org/maplibre/spatialk/units/AreaUnit : java/lang/Comparable, org/maplibre/spatialk/units/UnitOfMeasure {
 	public fun <init> (DLjava/lang/String;)V
 	public synthetic fun compareTo (Ljava/lang/Object;)I
@@ -173,6 +212,46 @@ public final class org/maplibre/spatialk/units/Length$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class org/maplibre/spatialk/units/LengthFormat {
+	public static final field Companion Lorg/maplibre/spatialk/units/LengthFormat$Companion;
+	public static final field Osm Lorg/maplibre/spatialk/units/LengthFormat;
+	public static final fun build (Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/units/LengthFormat;
+	public static final fun build (Lorg/maplibre/spatialk/units/LengthFormat;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/units/LengthFormat;
+	public final fun format (DLorg/maplibre/spatialk/units/LengthUnit;)Ljava/lang/String;
+	public final fun format (DLorg/maplibre/spatialk/units/LengthUnit;I)Ljava/lang/String;
+	public static synthetic fun format$default (Lorg/maplibre/spatialk/units/LengthFormat;DLorg/maplibre/spatialk/units/LengthUnit;IILjava/lang/Object;)Ljava/lang/String;
+	public final fun parse (Ljava/lang/String;)D
+	public final fun parseOrNull-iZNw_O0 (Ljava/lang/String;)Lorg/maplibre/spatialk/units/Length;
+}
+
+public final class org/maplibre/spatialk/units/LengthFormat$Builder {
+	public final fun compound (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public final fun compound (Ljava/lang/String;ZLkotlin/jvm/functions/Function1;)V
+	public final fun compound (Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun compound$default (Lorg/maplibre/spatialk/units/LengthFormat$Builder;Ljava/lang/String;ZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public final fun getDefaultUnit ()Lorg/maplibre/spatialk/units/LengthUnit;
+	public final fun getStrict ()Z
+	public final fun setDefaultUnit (Lorg/maplibre/spatialk/units/LengthUnit;)V
+	public final fun setStrict (Z)V
+	public final fun unit (Lorg/maplibre/spatialk/units/LengthUnit;)V
+	public final fun unit (Lorg/maplibre/spatialk/units/LengthUnit;Ljava/lang/String;)V
+	public final fun unit (Lorg/maplibre/spatialk/units/LengthUnit;Ljava/lang/String;Ljava/util/List;)V
+	public static synthetic fun unit$default (Lorg/maplibre/spatialk/units/LengthFormat$Builder;Lorg/maplibre/spatialk/units/LengthUnit;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)V
+}
+
+public final class org/maplibre/spatialk/units/LengthFormat$Companion {
+	public final fun build (Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/units/LengthFormat;
+	public final fun build (Lorg/maplibre/spatialk/units/LengthFormat;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/units/LengthFormat;
+	public static synthetic fun build$default (Lorg/maplibre/spatialk/units/LengthFormat$Companion;Lorg/maplibre/spatialk/units/LengthFormat;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/maplibre/spatialk/units/LengthFormat;
+}
+
+public final class org/maplibre/spatialk/units/LengthFormat$CompoundBuilder {
+	public final fun part (Lorg/maplibre/spatialk/units/LengthUnit;)V
+	public final fun part (Lorg/maplibre/spatialk/units/LengthUnit;Ljava/lang/String;)V
+	public final fun part (Lorg/maplibre/spatialk/units/LengthUnit;Ljava/lang/String;Ljava/util/List;)V
+	public static synthetic fun part$default (Lorg/maplibre/spatialk/units/LengthFormat$CompoundBuilder;Lorg/maplibre/spatialk/units/LengthUnit;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)V
+}
+
 public class org/maplibre/spatialk/units/LengthUnit : java/lang/Comparable, org/maplibre/spatialk/units/UnitOfMeasure {
 	public fun <init> (DLjava/lang/String;)V
 	public fun <init> (DLjava/lang/String;Lorg/maplibre/spatialk/units/AreaUnit;)V
@@ -243,6 +322,47 @@ public final class org/maplibre/spatialk/units/Rotation$Companion {
 	public final fun getPositiveInfinity-LX175cE ()D
 	public final fun getZero-LX175cE ()D
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/maplibre/spatialk/units/RotationFormat {
+	public static final field Companion Lorg/maplibre/spatialk/units/RotationFormat$Companion;
+	public static final field Dms Lorg/maplibre/spatialk/units/RotationFormat;
+	public static final field Osm Lorg/maplibre/spatialk/units/RotationFormat;
+	public static final fun build (Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/units/RotationFormat;
+	public static final fun build (Lorg/maplibre/spatialk/units/RotationFormat;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/units/RotationFormat;
+	public final fun format (DLorg/maplibre/spatialk/units/RotationUnit;)Ljava/lang/String;
+	public final fun format (DLorg/maplibre/spatialk/units/RotationUnit;I)Ljava/lang/String;
+	public static synthetic fun format$default (Lorg/maplibre/spatialk/units/RotationFormat;DLorg/maplibre/spatialk/units/RotationUnit;IILjava/lang/Object;)Ljava/lang/String;
+	public final fun parse (Ljava/lang/String;)D
+	public final fun parseOrNull-0VJ2-rQ (Ljava/lang/String;)Lorg/maplibre/spatialk/units/Rotation;
+}
+
+public final class org/maplibre/spatialk/units/RotationFormat$Builder {
+	public final fun compound (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public final fun compound (Ljava/lang/String;ZLkotlin/jvm/functions/Function1;)V
+	public final fun compound (Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun compound$default (Lorg/maplibre/spatialk/units/RotationFormat$Builder;Ljava/lang/String;ZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public final fun getDefaultUnit ()Lorg/maplibre/spatialk/units/RotationUnit;
+	public final fun getStrict ()Z
+	public final fun setDefaultUnit (Lorg/maplibre/spatialk/units/RotationUnit;)V
+	public final fun setStrict (Z)V
+	public final fun unit (Lorg/maplibre/spatialk/units/RotationUnit;)V
+	public final fun unit (Lorg/maplibre/spatialk/units/RotationUnit;Ljava/lang/String;)V
+	public final fun unit (Lorg/maplibre/spatialk/units/RotationUnit;Ljava/lang/String;Ljava/util/List;)V
+	public static synthetic fun unit$default (Lorg/maplibre/spatialk/units/RotationFormat$Builder;Lorg/maplibre/spatialk/units/RotationUnit;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)V
+}
+
+public final class org/maplibre/spatialk/units/RotationFormat$Companion {
+	public final fun build (Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/units/RotationFormat;
+	public final fun build (Lorg/maplibre/spatialk/units/RotationFormat;Lkotlin/jvm/functions/Function1;)Lorg/maplibre/spatialk/units/RotationFormat;
+	public static synthetic fun build$default (Lorg/maplibre/spatialk/units/RotationFormat$Companion;Lorg/maplibre/spatialk/units/RotationFormat;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/maplibre/spatialk/units/RotationFormat;
+}
+
+public final class org/maplibre/spatialk/units/RotationFormat$CompoundBuilder {
+	public final fun part (Lorg/maplibre/spatialk/units/RotationUnit;)V
+	public final fun part (Lorg/maplibre/spatialk/units/RotationUnit;Ljava/lang/String;)V
+	public final fun part (Lorg/maplibre/spatialk/units/RotationUnit;Ljava/lang/String;Ljava/util/List;)V
+	public static synthetic fun part$default (Lorg/maplibre/spatialk/units/RotationFormat$CompoundBuilder;Lorg/maplibre/spatialk/units/RotationUnit;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)V
 }
 
 public class org/maplibre/spatialk/units/RotationUnit : java/lang/Comparable, org/maplibre/spatialk/units/UnitOfMeasure {

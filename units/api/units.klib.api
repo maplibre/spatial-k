@@ -28,6 +28,92 @@ abstract class org.maplibre.spatialk.units/World { // org.maplibre.spatialk.unit
         final fun <get-averageRadius>(): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/World.averageRadius.<get-averageRadius>|<get-averageRadius>(){}[0]
 }
 
+final class org.maplibre.spatialk.units/AreaFormat { // org.maplibre.spatialk.units/AreaFormat|null[0]
+    final fun format(org.maplibre.spatialk.units/Area, org.maplibre.spatialk.units/AreaUnit, kotlin/Int = ...): kotlin/String // org.maplibre.spatialk.units/AreaFormat.format|format(org.maplibre.spatialk.units.Area;org.maplibre.spatialk.units.AreaUnit;kotlin.Int){}[0]
+    final fun parse(kotlin/String): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/AreaFormat.parse|parse(kotlin.String){}[0]
+    final fun parseOrNull(kotlin/String): org.maplibre.spatialk.units/Area? // org.maplibre.spatialk.units/AreaFormat.parseOrNull|parseOrNull(kotlin.String){}[0]
+
+    final class Builder { // org.maplibre.spatialk.units/AreaFormat.Builder|null[0]
+        final var defaultUnit // org.maplibre.spatialk.units/AreaFormat.Builder.defaultUnit|{}defaultUnit[0]
+            final fun <get-defaultUnit>(): org.maplibre.spatialk.units/AreaUnit? // org.maplibre.spatialk.units/AreaFormat.Builder.defaultUnit.<get-defaultUnit>|<get-defaultUnit>(){}[0]
+            final fun <set-defaultUnit>(org.maplibre.spatialk.units/AreaUnit?) // org.maplibre.spatialk.units/AreaFormat.Builder.defaultUnit.<set-defaultUnit>|<set-defaultUnit>(org.maplibre.spatialk.units.AreaUnit?){}[0]
+        final var strict // org.maplibre.spatialk.units/AreaFormat.Builder.strict|{}strict[0]
+            final fun <get-strict>(): kotlin/Boolean // org.maplibre.spatialk.units/AreaFormat.Builder.strict.<get-strict>|<get-strict>(){}[0]
+            final fun <set-strict>(kotlin/Boolean) // org.maplibre.spatialk.units/AreaFormat.Builder.strict.<set-strict>|<set-strict>(kotlin.Boolean){}[0]
+
+        final fun compound(kotlin/String = ..., kotlin/Boolean = ..., kotlin/Function1<org.maplibre.spatialk.units/AreaFormat.CompoundBuilder, kotlin/Unit>) // org.maplibre.spatialk.units/AreaFormat.Builder.compound|compound(kotlin.String;kotlin.Boolean;kotlin.Function1<org.maplibre.spatialk.units.AreaFormat.CompoundBuilder,kotlin.Unit>){}[0]
+        final fun unit(org.maplibre.spatialk.units/AreaUnit, kotlin/String = ..., kotlin.collections/List<kotlin/String> = ...) // org.maplibre.spatialk.units/AreaFormat.Builder.unit|unit(org.maplibre.spatialk.units.AreaUnit;kotlin.String;kotlin.collections.List<kotlin.String>){}[0]
+    }
+
+    final class CompoundBuilder { // org.maplibre.spatialk.units/AreaFormat.CompoundBuilder|null[0]
+        final fun part(org.maplibre.spatialk.units/AreaUnit, kotlin/String = ..., kotlin.collections/List<kotlin/String> = ...) // org.maplibre.spatialk.units/AreaFormat.CompoundBuilder.part|part(org.maplibre.spatialk.units.AreaUnit;kotlin.String;kotlin.collections.List<kotlin.String>){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.units/AreaFormat.Companion|null[0]
+        final fun invoke(org.maplibre.spatialk.units/AreaFormat? = ..., kotlin/Function1<org.maplibre.spatialk.units/AreaFormat.Builder, kotlin/Unit>): org.maplibre.spatialk.units/AreaFormat // org.maplibre.spatialk.units/AreaFormat.Companion.invoke|invoke(org.maplibre.spatialk.units.AreaFormat?;kotlin.Function1<org.maplibre.spatialk.units.AreaFormat.Builder,kotlin.Unit>){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.units/LengthFormat { // org.maplibre.spatialk.units/LengthFormat|null[0]
+    final fun format(org.maplibre.spatialk.units/Length, org.maplibre.spatialk.units/LengthUnit, kotlin/Int = ...): kotlin/String // org.maplibre.spatialk.units/LengthFormat.format|format(org.maplibre.spatialk.units.Length;org.maplibre.spatialk.units.LengthUnit;kotlin.Int){}[0]
+    final fun parse(kotlin/String): org.maplibre.spatialk.units/Length // org.maplibre.spatialk.units/LengthFormat.parse|parse(kotlin.String){}[0]
+    final fun parseOrNull(kotlin/String): org.maplibre.spatialk.units/Length? // org.maplibre.spatialk.units/LengthFormat.parseOrNull|parseOrNull(kotlin.String){}[0]
+
+    final class Builder { // org.maplibre.spatialk.units/LengthFormat.Builder|null[0]
+        final var defaultUnit // org.maplibre.spatialk.units/LengthFormat.Builder.defaultUnit|{}defaultUnit[0]
+            final fun <get-defaultUnit>(): org.maplibre.spatialk.units/LengthUnit? // org.maplibre.spatialk.units/LengthFormat.Builder.defaultUnit.<get-defaultUnit>|<get-defaultUnit>(){}[0]
+            final fun <set-defaultUnit>(org.maplibre.spatialk.units/LengthUnit?) // org.maplibre.spatialk.units/LengthFormat.Builder.defaultUnit.<set-defaultUnit>|<set-defaultUnit>(org.maplibre.spatialk.units.LengthUnit?){}[0]
+        final var strict // org.maplibre.spatialk.units/LengthFormat.Builder.strict|{}strict[0]
+            final fun <get-strict>(): kotlin/Boolean // org.maplibre.spatialk.units/LengthFormat.Builder.strict.<get-strict>|<get-strict>(){}[0]
+            final fun <set-strict>(kotlin/Boolean) // org.maplibre.spatialk.units/LengthFormat.Builder.strict.<set-strict>|<set-strict>(kotlin.Boolean){}[0]
+
+        final fun compound(kotlin/String = ..., kotlin/Boolean = ..., kotlin/Function1<org.maplibre.spatialk.units/LengthFormat.CompoundBuilder, kotlin/Unit>) // org.maplibre.spatialk.units/LengthFormat.Builder.compound|compound(kotlin.String;kotlin.Boolean;kotlin.Function1<org.maplibre.spatialk.units.LengthFormat.CompoundBuilder,kotlin.Unit>){}[0]
+        final fun unit(org.maplibre.spatialk.units/LengthUnit, kotlin/String = ..., kotlin.collections/List<kotlin/String> = ...) // org.maplibre.spatialk.units/LengthFormat.Builder.unit|unit(org.maplibre.spatialk.units.LengthUnit;kotlin.String;kotlin.collections.List<kotlin.String>){}[0]
+    }
+
+    final class CompoundBuilder { // org.maplibre.spatialk.units/LengthFormat.CompoundBuilder|null[0]
+        final fun part(org.maplibre.spatialk.units/LengthUnit, kotlin/String = ..., kotlin.collections/List<kotlin/String> = ...) // org.maplibre.spatialk.units/LengthFormat.CompoundBuilder.part|part(org.maplibre.spatialk.units.LengthUnit;kotlin.String;kotlin.collections.List<kotlin.String>){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.units/LengthFormat.Companion|null[0]
+        final val Osm // org.maplibre.spatialk.units/LengthFormat.Companion.Osm|{}Osm[0]
+            final fun <get-Osm>(): org.maplibre.spatialk.units/LengthFormat // org.maplibre.spatialk.units/LengthFormat.Companion.Osm.<get-Osm>|<get-Osm>(){}[0]
+
+        final fun invoke(org.maplibre.spatialk.units/LengthFormat? = ..., kotlin/Function1<org.maplibre.spatialk.units/LengthFormat.Builder, kotlin/Unit>): org.maplibre.spatialk.units/LengthFormat // org.maplibre.spatialk.units/LengthFormat.Companion.invoke|invoke(org.maplibre.spatialk.units.LengthFormat?;kotlin.Function1<org.maplibre.spatialk.units.LengthFormat.Builder,kotlin.Unit>){}[0]
+    }
+}
+
+final class org.maplibre.spatialk.units/RotationFormat { // org.maplibre.spatialk.units/RotationFormat|null[0]
+    final fun format(org.maplibre.spatialk.units/Rotation, org.maplibre.spatialk.units/RotationUnit, kotlin/Int = ...): kotlin/String // org.maplibre.spatialk.units/RotationFormat.format|format(org.maplibre.spatialk.units.Rotation;org.maplibre.spatialk.units.RotationUnit;kotlin.Int){}[0]
+    final fun parse(kotlin/String): org.maplibre.spatialk.units/Rotation // org.maplibre.spatialk.units/RotationFormat.parse|parse(kotlin.String){}[0]
+    final fun parseOrNull(kotlin/String): org.maplibre.spatialk.units/Rotation? // org.maplibre.spatialk.units/RotationFormat.parseOrNull|parseOrNull(kotlin.String){}[0]
+
+    final class Builder { // org.maplibre.spatialk.units/RotationFormat.Builder|null[0]
+        final var defaultUnit // org.maplibre.spatialk.units/RotationFormat.Builder.defaultUnit|{}defaultUnit[0]
+            final fun <get-defaultUnit>(): org.maplibre.spatialk.units/RotationUnit? // org.maplibre.spatialk.units/RotationFormat.Builder.defaultUnit.<get-defaultUnit>|<get-defaultUnit>(){}[0]
+            final fun <set-defaultUnit>(org.maplibre.spatialk.units/RotationUnit?) // org.maplibre.spatialk.units/RotationFormat.Builder.defaultUnit.<set-defaultUnit>|<set-defaultUnit>(org.maplibre.spatialk.units.RotationUnit?){}[0]
+        final var strict // org.maplibre.spatialk.units/RotationFormat.Builder.strict|{}strict[0]
+            final fun <get-strict>(): kotlin/Boolean // org.maplibre.spatialk.units/RotationFormat.Builder.strict.<get-strict>|<get-strict>(){}[0]
+            final fun <set-strict>(kotlin/Boolean) // org.maplibre.spatialk.units/RotationFormat.Builder.strict.<set-strict>|<set-strict>(kotlin.Boolean){}[0]
+
+        final fun compound(kotlin/String = ..., kotlin/Boolean = ..., kotlin/Function1<org.maplibre.spatialk.units/RotationFormat.CompoundBuilder, kotlin/Unit>) // org.maplibre.spatialk.units/RotationFormat.Builder.compound|compound(kotlin.String;kotlin.Boolean;kotlin.Function1<org.maplibre.spatialk.units.RotationFormat.CompoundBuilder,kotlin.Unit>){}[0]
+        final fun unit(org.maplibre.spatialk.units/RotationUnit, kotlin/String = ..., kotlin.collections/List<kotlin/String> = ...) // org.maplibre.spatialk.units/RotationFormat.Builder.unit|unit(org.maplibre.spatialk.units.RotationUnit;kotlin.String;kotlin.collections.List<kotlin.String>){}[0]
+    }
+
+    final class CompoundBuilder { // org.maplibre.spatialk.units/RotationFormat.CompoundBuilder|null[0]
+        final fun part(org.maplibre.spatialk.units/RotationUnit, kotlin/String = ..., kotlin.collections/List<kotlin/String> = ...) // org.maplibre.spatialk.units/RotationFormat.CompoundBuilder.part|part(org.maplibre.spatialk.units.RotationUnit;kotlin.String;kotlin.collections.List<kotlin.String>){}[0]
+    }
+
+    final object Companion { // org.maplibre.spatialk.units/RotationFormat.Companion|null[0]
+        final val Dms // org.maplibre.spatialk.units/RotationFormat.Companion.Dms|{}Dms[0]
+            final fun <get-Dms>(): org.maplibre.spatialk.units/RotationFormat // org.maplibre.spatialk.units/RotationFormat.Companion.Dms.<get-Dms>|<get-Dms>(){}[0]
+        final val Osm // org.maplibre.spatialk.units/RotationFormat.Companion.Osm|{}Osm[0]
+            final fun <get-Osm>(): org.maplibre.spatialk.units/RotationFormat // org.maplibre.spatialk.units/RotationFormat.Companion.Osm.<get-Osm>|<get-Osm>(){}[0]
+
+        final fun invoke(org.maplibre.spatialk.units/RotationFormat? = ..., kotlin/Function1<org.maplibre.spatialk.units/RotationFormat.Builder, kotlin/Unit>): org.maplibre.spatialk.units/RotationFormat // org.maplibre.spatialk.units/RotationFormat.Companion.invoke|invoke(org.maplibre.spatialk.units.RotationFormat?;kotlin.Function1<org.maplibre.spatialk.units.RotationFormat.Builder,kotlin.Unit>){}[0]
+    }
+}
+
 final value class org.maplibre.spatialk.units/Area : kotlin/Comparable<org.maplibre.spatialk.units/Area> { // org.maplibre.spatialk.units/Area|null[0]
     final val absoluteValue // org.maplibre.spatialk.units/Area.absoluteValue|{}absoluteValue[0]
         final fun <get-absoluteValue>(): org.maplibre.spatialk.units/Area // org.maplibre.spatialk.units/Area.absoluteValue.<get-absoluteValue>|<get-absoluteValue>(){}[0]

@@ -57,6 +57,9 @@ class LengthTests {
         }
         assertEquals("Infinity m", Length.PositiveInfinity.toString())
         assertFailsWith<IllegalArgumentException> { 1.meters.toString(decimalPlaces = -1) }
+        assertEquals("10000000.00 m", 1e7.meters.toString())
+        assertEquals("0.0000001 m", 1e-7.meters.toString(decimalPlaces = 7))
+        assertEquals("0.0000001 m", unit.format(1e-7))
     }
 
     @Test
