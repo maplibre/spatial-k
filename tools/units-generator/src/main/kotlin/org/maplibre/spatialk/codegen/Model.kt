@@ -113,7 +113,7 @@ class Family(
 }
 
 fun catalogClass(family: String): ClassName =
-    ClassName.bestGuess("org.maplibre.spatialk.units.$family")
+    ClassName.bestGuess("org.maplibre.spatialk.units.catalog.$family")
 
 fun family(
     name: String,

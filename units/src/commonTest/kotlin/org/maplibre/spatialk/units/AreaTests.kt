@@ -3,6 +3,7 @@ package org.maplibre.spatialk.units
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.maplibre.spatialk.testutil.assertDoubleEquals
+import org.maplibre.spatialk.units.catalog.Metric
 import org.maplibre.spatialk.units.extensions.*
 
 class AreaTests {

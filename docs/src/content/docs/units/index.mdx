@@ -39,7 +39,7 @@ Details can be found in the [API reference](/spatial-k/api/dokka/units/index.htm
 In Kotlin, `Length`, `Area`, and `Rotation` are type-safe value classes wrapping a `Double`. They
 can be converted to and from raw `Double` values using the provided unit accessors.
 Common units are available in `Units`, with helpers such as `5.meters.inFeet`.
-For specialist units, pass a unit explicitly: `3.0.toLength(US.SurveyFeet)`.
+Specialist catalogs live in `org.maplibre.spatialk.units.catalog`; pass a unit explicitly: `3.0.toLength(US.SurveyFeet)`.
 
 In Java, use the `convert` helper from `org.maplibre.spatialk.units.extensions.Utils` to convert
 between units.
