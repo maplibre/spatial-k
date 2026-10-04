@@ -101,6 +101,12 @@ class BearingTest {
     }
 
     @Test
+    fun testDmsRoundingCarriesInQuadrantBearings() {
+        val almostEast = North + 89.degrees + 59.arcMinutes + 59.999.arcSeconds
+        assertEquals("N 90° 0′ 0.00″ E", almostEast.toDmsString())
+    }
+
+    @Test
     fun testToDmsString() {
         assertEquals("N 0° 0′ 0.00″ E", North.toDmsString())
         assertEquals("S 90° 0′ 0.00″ E", East.toDmsString())

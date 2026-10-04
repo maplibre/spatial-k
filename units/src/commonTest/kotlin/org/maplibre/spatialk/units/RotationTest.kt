@@ -91,6 +91,25 @@ class RotationTest {
     }
 
     @Test
+    fun testDmsRoundingCarriesToMinutesAndDegrees() {
+        assertEquals(
+            "12° 35′ 0.00″",
+            (12.degrees + 34.arcMinutes + 59.999.arcSeconds).toDmsString(),
+        )
+        val almostThirteen = 12.degrees + 59.arcMinutes + 59.999.arcSeconds
+        assertEquals("13° 0′ 0.00″", almostThirteen.toDmsString())
+        assertEquals("-13° 0′ 0.00″", (-almostThirteen).toDmsString())
+        assertEquals(
+            "13° 0′ 0″",
+            (12.degrees + 59.arcMinutes + 59.6.arcSeconds).toDmsString(0),
+        )
+        assertEquals(
+            "12° 59′ 59.99″",
+            (12.degrees + 59.arcMinutes + 59.99.arcSeconds).toDmsString(),
+        )
+    }
+
+    @Test
     fun testToDmsString() {
         assertEquals("45° 30′ 0.00″", (45.degrees + 30.arcMinutes).toDmsString())
         assertEquals(
