@@ -10,20 +10,47 @@ import kotlin.math.pow
 import kotlin.math.roundToLong
 import org.maplibre.spatialk.units.*
 
+/**
+ * Writes this number in plain decimal notation, rounded and padded to [decimalPlaces]. With
+ * [Int.MAX_VALUE], or when rounding would overflow, every digit of [Double.toString] is written
+ * without rounding or padding. Nonfinite values are written as [Double.toString].
+ */
 internal fun Double.toRoundedString(decimalPlaces: Int): String {
     require(decimalPlaces in 0..15 || decimalPlaces == Int.MAX_VALUE) {
         "Decimal places must be between 0 and 15, or Int.MAX_VALUE"
     }
-    if (!isFinite() || decimalPlaces == Int.MAX_VALUE) return toString()
+    if (!isFinite()) return toString()
+    if (decimalPlaces == Int.MAX_VALUE) return toString().withoutExponent()
     val mult = 10.0.pow(decimalPlaces)
     val scaled = this * mult
-    if (!scaled.isFinite() || scaled.absoluteValue >= Long.MAX_VALUE.toDouble()) return toString()
-    val rounded = (scaled.roundToLong() / mult).toString()
-    if ('E' in rounded || 'e' in rounded) return rounded
+    if (!scaled.isFinite() || scaled.absoluteValue >= Long.MAX_VALUE.toDouble()) {
+        return toString().withoutExponent()
+    }
+    val rounded = (scaled.roundToLong() / mult).toString().withoutExponent()
     val intPart = rounded.substringBefore('.')
     if (decimalPlaces == 0) return intPart
     val decimalPart = rounded.substringAfter('.', missingDelimiterValue = "").take(decimalPlaces)
     return "$intPart.${decimalPart.padEnd(decimalPlaces, '0')}"
+}
+
+/** Rewrites a number such as `1.5E-7` or `2e+21` in plain decimal notation. */
+private fun String.withoutExponent(): String {
+    val e = indexOfFirst { it == 'e' || it == 'E' }
+    if (e < 0) return this
+    val sign = if (startsWith('-')) "-" else ""
+    val mantissa = substring(sign.length, e)
+    val exponent = substring(e + 1).toInt()
+    val pointIndex = mantissa.indexOf('.').takeIf { it >= 0 } ?: mantissa.length
+    val digits = mantissa.replace(".", "")
+    val newPointIndex = pointIndex + exponent
+    val plain =
+        when {
+            newPointIndex <= 0 -> "0." + "0".repeat(-newPointIndex) + digits
+            newPointIndex >= digits.length -> digits + "0".repeat(newPointIndex - digits.length)
+            else -> digits.substring(0, newPointIndex) + "." + digits.substring(newPointIndex)
+        }
+    val trimmed = if ('.' in plain) plain.trimEnd('0').trimEnd('.') else plain
+    return sign + trimmed
 }
 
 /** Multiplies a scalar by a [Length]. */

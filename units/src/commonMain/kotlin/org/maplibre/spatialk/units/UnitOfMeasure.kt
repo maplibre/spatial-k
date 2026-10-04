@@ -16,13 +16,15 @@ public sealed interface UnitOfMeasure {
     /**
      * Formats a value with this unit's symbol.
      *
-     * Decimal notation is padded to the requested precision. Scientific notation uses
-     * [Double.toString] for the rounded value. Nonfinite values and values outside the rounding
-     * range for the requested precision use [Double.toString] for the original value.
+     * Numbers are written in plain decimal notation, never in exponent notation, and padded to the
+     * requested precision. Values too large to round at the requested precision are written in full
+     * without rounding or padding. Nonfinite values are written as `NaN`, `Infinity`, or
+     * `-Infinity`.
      *
      * @param value The numeric value to format.
      * @param decimalPlaces The number of decimal places to round to, from 0 to 15, or
-     *   [Int.MAX_VALUE] (the default) to use [Double.toString] without rounding or padding.
+     *   [Int.MAX_VALUE] (the default) to write every digit of the value without rounding or
+     *   padding.
      * @return A formatted string representation of the value with the unit symbol.
      */
     public fun format(value: Double, decimalPlaces: Int = Int.MAX_VALUE): String =
