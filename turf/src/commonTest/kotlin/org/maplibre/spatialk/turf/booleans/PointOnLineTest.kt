@@ -4,6 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.jsonObject
@@ -56,7 +57,7 @@ class PointOnLineTest {
                         org.maplibre.spatialk.geojson.Geometry,
                         kotlinx.serialization.json.JsonObject?,
                     >(
-                        readResourceFile(path)
+                        readGeometryFixture(path)
                     )
                 val point = fc.first().geometry as Point
                 val lineString = fc.last().geometry as LineString
@@ -86,7 +87,7 @@ class PointOnLineTest {
                         org.maplibre.spatialk.geojson.Geometry,
                         kotlinx.serialization.json.JsonObject?,
                     >(
-                        readResourceFile(path)
+                        readGeometryFixture(path)
                     )
                 val point = fc.first().geometry as Point
                 val lineString = fc.last().geometry as LineString
@@ -96,6 +97,12 @@ class PointOnLineTest {
                     "assertion failed for path $path",
                 )
             }
+    }
+
+    // Fixture properties hold test options, not a GeoJSON FeatureCollection member.
+    private fun readGeometryFixture(path: String): String {
+        val json = Json.parseToJsonElement(readResourceFile(path)).jsonObject
+        return JsonObject(json - "properties").toString()
     }
 
     private fun readTestParams(path: String): Pair<Boolean, Double?> {
