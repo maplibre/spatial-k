@@ -8,6 +8,7 @@ public final class org/maplibre/spatialk/turf/booleans/Booleans {
 }
 
 public final class org/maplibre/spatialk/turf/coordinatemutation/CoordinateMutation {
+	public static final fun cleanCoordinates (Lorg/maplibre/spatialk/geojson/Geometry;)Lorg/maplibre/spatialk/geojson/Geometry;
 	public static final fun flattenCoordinates (Lorg/maplibre/spatialk/geojson/GeoJsonObject;)Ljava/util/List;
 	public static final fun round (DI)D
 	public static synthetic fun round$default (DIILjava/lang/Object;)D
