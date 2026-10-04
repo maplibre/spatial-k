@@ -37,7 +37,8 @@ import org.maplibre.spatialk.units.Units.Yards
  * (including none) between a number and its symbol and between compound parts, and whitespace
  * around the whole input.
  */
-public class LengthFormat internal constructor(internal val spec: QuantityFormat<LengthUnit>) {
+public class LengthFormat
+internal constructor(internal val spec: QuantityFormat<Length, LengthUnit>) {
 
     /**
      * Parses [input] as a [Length]. From Java, Objective-C, and Swift, the result is in meters.
@@ -50,23 +51,15 @@ public class LengthFormat internal constructor(internal val spec: QuantityFormat
         requireNotNull(parseOrNull(input)) { "Cannot parse '$input' as a length." }
 
     /** Parses [input] as a [Length], or returns `null` if it does not match this format. */
-    @HiddenFromObjC
-    public fun parseOrNull(input: String): Length? =
-        spec.parseOrNull(input)?.let { Length.of(it, Meters) }
+    @HiddenFromObjC public fun parseOrNull(input: String): Length? = spec.parseOrNull(input)
 
     /**
-     * Formats [value] in [unit], using the first entry that contains [unit].
-     *
-     * A simple entry writes the number and the entry's symbol, spaced as in [UnitOfMeasure.format].
-     * A compound entry writes every part, from the largest down, with whole numbers in all but the
-     * last part. Rounding the last part carries into larger parts, and a negative value gets one
-     * leading `-`. A nonfinite value is written with only the first part's symbol. Formatting
-     * always uses canonical symbols, even when the format is not strict.
+     * Formats [value] in [unit], using the first entry that contains [unit], as described for
+     * [Builder.unit] and [Builder.compound].
      *
      * @param value The length to format. From Java, Objective-C, and Swift, it is in meters.
      * @param decimalPlaces The number of decimal places for the number, or for the last part of a
-     *   compound; see [UnitOfMeasure.format]. With the default, the last part of a compound is
-     *   rounded to 12 significant digits of the whole value, to hide floating-point error.
+     *   compound; see [UnitOfMeasure.format].
      * @throws IllegalArgumentException if no entry contains [unit], or [decimalPlaces] is out of
      *   range.
      */
@@ -74,7 +67,7 @@ public class LengthFormat internal constructor(internal val spec: QuantityFormat
     @JvmOverloads
     @JvmName("format")
     public fun format(value: Length, unit: LengthUnit, decimalPlaces: Int = Int.MAX_VALUE): String =
-        spec.format(value.toDouble(Meters), unit, decimalPlaces)
+        spec.format(value, unit, decimalPlaces)
 
     /** Builds [LengthFormat]s and holds predefined ones. */
     public companion object {
@@ -143,7 +136,7 @@ public class LengthFormat internal constructor(internal val spec: QuantityFormat
      */
     @UnitFormatDsl
     public class Builder internal constructor(base: LengthFormat?) {
-        private val builder = QuantityFormatBuilder(base?.spec)
+        private val builder = QuantityFormatBuilder(LengthKind, base?.spec)
 
         /** The unit for a number without a symbol, or `null` to reject such input. */
         public var defaultUnit: LengthUnit?
@@ -160,10 +153,12 @@ public class LengthFormat internal constructor(internal val spec: QuantityFormat
             }
 
         /**
-         * Adds an entry for a number followed by one [unit].
+         * Adds an entry for a number followed by one [unit], such as `3 m`. The number and symbol
+         * are spaced as in [UnitOfMeasure.format].
          *
          * @param symbol The symbol to write and parse.
-         * @param aliases Other symbols accepted when parsing in lenient mode.
+         * @param aliases Other symbols accepted when parsing in lenient mode. Formatting always
+         *   writes [symbol].
          */
         @JvmOverloads
         public fun unit(
@@ -178,7 +173,11 @@ public class LengthFormat internal constructor(internal val spec: QuantityFormat
          * Adds an entry for a compound of several units, such as feet and inches in `12'5"`.
          *
          * When parsing, each part is optional but at least one must be present, and only the last
-         * present part may have a fractional value.
+         * present part may have a fractional value. When formatting, every part but the last is a
+         * whole number, rounding the last part carries into larger parts, and a negative value gets
+         * one leading `-`. With the default precision, the last part is rounded to 12 significant
+         * digits of the whole value. A nonfinite value is written with only the first part's
+         * symbol.
          *
          * @param separator The text written between parts.
          * @param omitTrailingZeroParts Whether formatting leaves out parts after the first that are
@@ -199,7 +198,7 @@ public class LengthFormat internal constructor(internal val spec: QuantityFormat
             )
         }
 
-        internal fun build(): LengthFormat = LengthFormat(builder.build { it.metersPerUnit })
+        internal fun build(): LengthFormat = LengthFormat(builder.build())
     }
 
     /** Declares the parts of a compound entry. Use it through [Builder.compound]. */
@@ -211,7 +210,8 @@ public class LengthFormat internal constructor(internal val spec: QuantityFormat
          * Adds the next smaller part of the compound.
          *
          * @param symbol The symbol to write and parse.
-         * @param aliases Other symbols accepted when parsing in lenient mode.
+         * @param aliases Other symbols accepted when parsing in lenient mode. Formatting always
+         *   writes [symbol].
          */
         @JvmOverloads
         public fun part(
@@ -222,4 +222,12 @@ public class LengthFormat internal constructor(internal val spec: QuantityFormat
             parts += FormatPart(unit, symbol, aliases.toList())
         }
     }
+}
+
+private object LengthKind : QuantityKind<Length, LengthUnit> {
+    override fun toBase(value: Length): Double = value.toDouble(Meters)
+
+    override fun fromBase(value: Double): Length = Length.of(value, Meters)
+
+    override fun basePerUnit(unit: LengthUnit): Double = unit.metersPerUnit
 }

@@ -33,7 +33,8 @@ import org.maplibre.spatialk.units.Units.Degrees
  * (including none) between a number and its symbol and between compound parts, and whitespace
  * around the whole input.
  */
-public class RotationFormat internal constructor(internal val spec: QuantityFormat<RotationUnit>) {
+public class RotationFormat
+internal constructor(internal val spec: QuantityFormat<Rotation, RotationUnit>) {
 
     /**
      * Parses [input] as a [Rotation]. From Java, Objective-C, and Swift, the result is in degrees.
@@ -46,23 +47,15 @@ public class RotationFormat internal constructor(internal val spec: QuantityForm
         requireNotNull(parseOrNull(input)) { "Cannot parse '$input' as a rotation." }
 
     /** Parses [input] as a [Rotation], or returns `null` if it does not match this format. */
-    @HiddenFromObjC
-    public fun parseOrNull(input: String): Rotation? =
-        spec.parseOrNull(input)?.let { Rotation.of(it, Degrees) }
+    @HiddenFromObjC public fun parseOrNull(input: String): Rotation? = spec.parseOrNull(input)
 
     /**
-     * Formats [value] in [unit], using the first entry that contains [unit].
-     *
-     * A simple entry writes the number and the entry's symbol, spaced as in [UnitOfMeasure.format].
-     * A compound entry writes every part, from the largest down, with whole numbers in all but the
-     * last part. Rounding the last part carries into larger parts, and a negative value gets one
-     * leading `-`. A nonfinite value is written with only the first part's symbol. Formatting
-     * always uses canonical symbols, even when the format is not strict.
+     * Formats [value] in [unit], using the first entry that contains [unit], as described for
+     * [Builder.unit] and [Builder.compound].
      *
      * @param value The rotation to format. From Java, Objective-C, and Swift, it is in degrees.
      * @param decimalPlaces The number of decimal places for the number, or for the last part of a
-     *   compound; see [UnitOfMeasure.format]. With the default, the last part of a compound is
-     *   rounded to 12 significant digits of the whole value, to hide floating-point error.
+     *   compound; see [UnitOfMeasure.format].
      * @throws IllegalArgumentException if no entry contains [unit], or [decimalPlaces] is out of
      *   range.
      */
@@ -73,7 +66,7 @@ public class RotationFormat internal constructor(internal val spec: QuantityForm
         value: Rotation,
         unit: RotationUnit,
         decimalPlaces: Int = Int.MAX_VALUE,
-    ): String = spec.format(value.toDouble(Degrees), unit, decimalPlaces)
+    ): String = spec.format(value, unit, decimalPlaces)
 
     /** Builds [RotationFormat]s and holds predefined ones. */
     public companion object {
@@ -144,7 +137,7 @@ public class RotationFormat internal constructor(internal val spec: QuantityForm
      */
     @UnitFormatDsl
     public class Builder internal constructor(base: RotationFormat?) {
-        private val builder = QuantityFormatBuilder(base?.spec)
+        private val builder = QuantityFormatBuilder(RotationKind, base?.spec)
 
         /** The unit for a number without a symbol, or `null` to reject such input. */
         public var defaultUnit: RotationUnit?
@@ -161,10 +154,12 @@ public class RotationFormat internal constructor(internal val spec: QuantityForm
             }
 
         /**
-         * Adds an entry for a number followed by one [unit].
+         * Adds an entry for a number followed by one [unit], such as `45°`. The number and symbol
+         * are spaced as in [UnitOfMeasure.format].
          *
          * @param symbol The symbol to write and parse.
-         * @param aliases Other symbols accepted when parsing in lenient mode.
+         * @param aliases Other symbols accepted when parsing in lenient mode. Formatting always
+         *   writes [symbol].
          */
         @JvmOverloads
         public fun unit(
@@ -180,12 +175,16 @@ public class RotationFormat internal constructor(internal val spec: QuantityForm
          * arcseconds in `12° 30′ 15″`.
          *
          * When parsing, each part is optional but at least one must be present, and only the last
-         * present part may have a fractional value.
+         * present part may have a fractional value. When formatting, every part but the last is a
+         * whole number, rounding the last part carries into larger parts, and a negative value gets
+         * one leading `-`. With the default precision, the last part is rounded to 12 significant
+         * digits of the whole value. A nonfinite value is written with only the first part's
+         * symbol.
          *
          * @param separator The text written between parts.
          * @param omitTrailingZeroParts Whether formatting leaves out parts after the first that are
-         *   zero once rounded and have no nonzero part after them, such as writing `12'` instead of
-         *   `12'0"`.
+         *   zero once rounded and have no nonzero part after them, such as writing `12°` instead of
+         *   `12° 0′ 0″`.
          * @param configure Declares at least 2 parts, in strictly descending unit size.
          */
         @JvmOverloads
@@ -201,7 +200,7 @@ public class RotationFormat internal constructor(internal val spec: QuantityForm
             )
         }
 
-        internal fun build(): RotationFormat = RotationFormat(builder.build { it.degreesPerUnit })
+        internal fun build(): RotationFormat = RotationFormat(builder.build())
     }
 
     /** Declares the parts of a compound entry. Use it through [Builder.compound]. */
@@ -213,7 +212,8 @@ public class RotationFormat internal constructor(internal val spec: QuantityForm
          * Adds the next smaller part of the compound.
          *
          * @param symbol The symbol to write and parse.
-         * @param aliases Other symbols accepted when parsing in lenient mode.
+         * @param aliases Other symbols accepted when parsing in lenient mode. Formatting always
+         *   writes [symbol].
          */
         @JvmOverloads
         public fun part(
@@ -224,4 +224,12 @@ public class RotationFormat internal constructor(internal val spec: QuantityForm
             parts += FormatPart(unit, symbol, aliases.toList())
         }
     }
+}
+
+private object RotationKind : QuantityKind<Rotation, RotationUnit> {
+    override fun toBase(value: Rotation): Double = value.toDouble(Degrees)
+
+    override fun fromBase(value: Double): Rotation = Rotation.of(value, Degrees)
+
+    override fun basePerUnit(unit: RotationUnit): Double = unit.degreesPerUnit
 }

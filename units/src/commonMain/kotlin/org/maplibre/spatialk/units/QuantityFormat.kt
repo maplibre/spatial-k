@@ -32,15 +32,21 @@ internal sealed class FormatEntry<U : UnitOfMeasure> {
     ) : FormatEntry<U>()
 }
 
-/**
- * Unit-agnostic parsing and formatting shared by the public quantity formats. Values are measured
- * in base units, and [basePerUnit] converts one of a unit into base units.
- */
-internal class QuantityFormat<U>(
+/** Converts between a quantity [Q] and numbers in the base unit of its units [U]. */
+internal interface QuantityKind<Q, U> {
+    fun toBase(value: Q): Double
+
+    fun fromBase(value: Double): Q
+
+    fun basePerUnit(unit: U): Double
+}
+
+/** Parses and formats quantities of [kind]. */
+internal class QuantityFormat<Q, U>(
+    val kind: QuantityKind<Q, U>,
     val entries: List<FormatEntry<U>>,
     val defaultUnit: U?,
     val strict: Boolean,
-    private val basePerUnit: (U) -> Double,
 ) where U : UnitOfMeasure, U : Comparable<U> {
 
     init {
@@ -65,7 +71,7 @@ internal class QuantityFormat<U>(
         }
     }
 
-    fun parseOrNull(input: String): Double? {
+    fun parseOrNull(input: String): Q? {
         val text = if (strict) input else input.trim()
         val negative = text.startsWith('-')
         val start = if (negative) 1 else 0
@@ -76,10 +82,11 @@ internal class QuantityFormat<U>(
                     is FormatEntry.Compound -> parseParts(text, start, entry, 0, 0.0)
                 }
             } ?: parseBareNumber(text, start) ?: return null
-        return if (negative) -magnitude else magnitude
+        return kind.fromBase(if (negative) -magnitude else magnitude)
     }
 
-    fun format(value: Double, unit: U, decimalPlaces: Int): String {
+    fun format(quantity: Q, unit: U, decimalPlaces: Int): String {
+        val value = kind.toBase(quantity)
         val entry =
             requireNotNull(entries.firstOrNull { e -> e.parts.any { it.unit == unit } }) {
                 "This format has no entry for unit '${unit.symbol}'."
@@ -87,13 +94,13 @@ internal class QuantityFormat<U>(
         return when (entry) {
             is FormatEntry.Simple ->
                 formatWithSymbol(
-                    (value / basePerUnit(unit)).toRoundedString(decimalPlaces),
+                    (value / kind.basePerUnit(unit)).toRoundedString(decimalPlaces),
                     entry.part.symbol,
                 )
             is FormatEntry.Compound ->
                 formatCompound(
                     value,
-                    entry.parts.map { basePerUnit(it.unit) },
+                    entry.parts.map { kind.basePerUnit(it.unit) },
                     entry.parts.map { it.symbol },
                     entry.separator,
                     decimalPlaces,
@@ -105,19 +112,15 @@ internal class QuantityFormat<U>(
     private fun parseSimple(text: String, start: Int, part: FormatPart<U>): Double? {
         val number = readNumber(text, start) ?: return null
         if (symbolsOf(part).none { matchSymbol(text, number.end, it) == text.length }) return null
-        return number.value * basePerUnit(part.unit)
+        return number.value * kind.basePerUnit(part.unit)
     }
 
     private fun parseBareNumber(text: String, start: Int): Double? {
         val unit = defaultUnit ?: return null
         val number = readNumber(text, start) ?: return null
-        return if (number.end == text.length) number.value * basePerUnit(unit) else null
+        return if (number.end == text.length) number.value * kind.basePerUnit(unit) else null
     }
 
-    /**
-     * Matches the parts of [entry] from [firstPart] onward against [text] starting at [start],
-     * backtracking over symbols that are prefixes of one another.
-     */
     private fun parseParts(
         text: String,
         start: Int,
@@ -128,7 +131,7 @@ internal class QuantityFormat<U>(
         val number = readNumber(text, start) ?: return null
         for (index in firstPart until entry.parts.size) {
             val part = entry.parts[index]
-            val sum = total + number.value * basePerUnit(part.unit)
+            val sum = total + number.value * kind.basePerUnit(part.unit)
             for (symbol in symbolsOf(part)) {
                 val end = matchSymbol(text, number.end, symbol) ?: continue
                 if (end == text.length) return sum
@@ -174,7 +177,7 @@ internal class QuantityFormat<U>(
 
     private class NumberToken(val value: Double, val end: Int, val isFractional: Boolean)
 
-    /** Reads digits with an optional fractional part at [start]; no sign or exponent. */
+    /** Reads an unsigned decimal number at [start], or returns `null` if there is none. */
     private fun readNumber(text: String, start: Int): NumberToken? {
         var index = start
         while (index < text.length && text[index] in '0'..'9') index++
@@ -198,14 +201,8 @@ internal fun formatWithSymbol(number: String, symbol: String): String =
     "$number${symbolSpacing(symbol)}$symbol"
 
 /**
- * Formats [value], measured in base units, as a compound of parts in descending size. [basePerUnit]
- * holds the size of each part's unit in base units. Every part but the last is a whole number; the
- * last is rounded to [decimalPlaces], and rounding carries into larger parts. A negative value gets
- * one leading `-`. Nonfinite values are written with the first part's symbol only. With
- * [omitTrailingZeroParts], zero parts after the first are left out from the end.
- *
- * With [decimalPlaces] of [Int.MAX_VALUE], the last part is rounded to [SIGNIFICANT_DIGITS] of the
- * whole value, which hides the floating-point error left over from splitting it into parts.
+ * Formats [value], in base units, as a compound whose parts have the sizes [basePerUnit] and the
+ * given [symbols], as described in [LengthFormat.Builder.compound].
  */
 internal fun formatCompound(
     value: Double,
@@ -232,7 +229,6 @@ internal fun formatCompound(
     }
     var lastPart = lastValue.toRoundedString(decimalPlaces)
 
-    // Carry parts that round up to a whole unit of the next larger part.
     if (lastPart.toDouble() >= partsPerLargerPart(basePerUnit, last)) {
         lastPart = 0.0.toRoundedString(decimalPlaces)
         wholeParts[last - 1]++
@@ -254,7 +250,7 @@ internal fun formatCompound(
         (0 until count).joinToString(separator) { formatWithSymbol(numbers[it], symbols[it]) }
 }
 
-/** How many of part [index] make one of the part before it, snapped to a nearby integer. */
+/** How many of part [index] make one of the part before it. */
 private fun partsPerLargerPart(basePerUnit: List<Double>, index: Int): Double {
     val ratio = basePerUnit[index - 1] / basePerUnit[index]
     val whole = ratio.roundToLong().toDouble()
@@ -263,10 +259,7 @@ private fun partsPerLargerPart(basePerUnit: List<Double>, index: Int): Double {
 
 private const val RATIO_TOLERANCE = 1e-9
 
-/**
- * The significant digits of a compound's whole value written by default. A double carries about 15,
- * and splitting a value into parts loses a few of them.
- */
+/** The significant digits of a compound's whole value written at full precision. */
 private const val SIGNIFICANT_DIGITS = 12
 
 /** Rounds this number to the decimal place of the [SIGNIFICANT_DIGITS]th digit of [total]. */
@@ -278,8 +271,10 @@ private fun Double.roundToSignificantDigitsOf(total: Double): Double {
 }
 
 /** Collects entries for a [QuantityFormat] builder. */
-internal class QuantityFormatBuilder<U>(base: QuantityFormat<U>?)
-    where U : UnitOfMeasure, U : Comparable<U> {
+internal class QuantityFormatBuilder<Q, U>(
+    private val kind: QuantityKind<Q, U>,
+    base: QuantityFormat<Q, U>?,
+) where U : UnitOfMeasure, U : Comparable<U> {
     private val entries: MutableList<FormatEntry<U>> = base?.entries.orEmpty().toMutableList()
     var defaultUnit: U? = base?.defaultUnit
     var strict: Boolean = base?.strict ?: false
@@ -292,6 +287,5 @@ internal class QuantityFormatBuilder<U>(base: QuantityFormat<U>?)
         entries += FormatEntry.Compound(separator, omitTrailingZeroParts, parts.toList())
     }
 
-    fun build(basePerUnit: (U) -> Double): QuantityFormat<U> =
-        QuantityFormat(entries.toList(), defaultUnit, strict, basePerUnit)
+    fun build(): QuantityFormat<Q, U> = QuantityFormat(kind, entries.toList(), defaultUnit, strict)
 }

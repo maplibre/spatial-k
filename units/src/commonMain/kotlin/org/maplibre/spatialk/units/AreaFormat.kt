@@ -29,7 +29,7 @@ import org.maplibre.spatialk.units.Units.SquareMeters
  * (including none) between a number and its symbol and between compound parts, and whitespace
  * around the whole input.
  */
-public class AreaFormat internal constructor(internal val spec: QuantityFormat<AreaUnit>) {
+public class AreaFormat internal constructor(internal val spec: QuantityFormat<Area, AreaUnit>) {
 
     /**
      * Parses [input] as an [Area]. From Java, Objective-C, and Swift, the result is in square
@@ -43,23 +43,15 @@ public class AreaFormat internal constructor(internal val spec: QuantityFormat<A
         requireNotNull(parseOrNull(input)) { "Cannot parse '$input' as an area." }
 
     /** Parses [input] as an [Area], or returns `null` if it does not match this format. */
-    @HiddenFromObjC
-    public fun parseOrNull(input: String): Area? =
-        spec.parseOrNull(input)?.let { Area.of(it, SquareMeters) }
+    @HiddenFromObjC public fun parseOrNull(input: String): Area? = spec.parseOrNull(input)
 
     /**
-     * Formats [value] in [unit], using the first entry that contains [unit].
-     *
-     * A simple entry writes the number and the entry's symbol, spaced as in [UnitOfMeasure.format].
-     * A compound entry writes every part, from the largest down, with whole numbers in all but the
-     * last part. Rounding the last part carries into larger parts, and a negative value gets one
-     * leading `-`. A nonfinite value is written with only the first part's symbol. Formatting
-     * always uses canonical symbols, even when the format is not strict.
+     * Formats [value] in [unit], using the first entry that contains [unit], as described for
+     * [Builder.unit] and [Builder.compound].
      *
      * @param value The area to format. From Java, Objective-C, and Swift, it is in square meters.
      * @param decimalPlaces The number of decimal places for the number, or for the last part of a
-     *   compound; see [UnitOfMeasure.format]. With the default, the last part of a compound is
-     *   rounded to 12 significant digits of the whole value, to hide floating-point error.
+     *   compound; see [UnitOfMeasure.format].
      * @throws IllegalArgumentException if no entry contains [unit], or [decimalPlaces] is out of
      *   range.
      */
@@ -67,7 +59,7 @@ public class AreaFormat internal constructor(internal val spec: QuantityFormat<A
     @JvmOverloads
     @JvmName("format")
     public fun format(value: Area, unit: AreaUnit, decimalPlaces: Int = Int.MAX_VALUE): String =
-        spec.format(value.toDouble(SquareMeters), unit, decimalPlaces)
+        spec.format(value, unit, decimalPlaces)
 
     /** Builds [AreaFormat]s. */
     public companion object {
@@ -100,7 +92,7 @@ public class AreaFormat internal constructor(internal val spec: QuantityFormat<A
      */
     @UnitFormatDsl
     public class Builder internal constructor(base: AreaFormat?) {
-        private val builder = QuantityFormatBuilder(base?.spec)
+        private val builder = QuantityFormatBuilder(AreaKind, base?.spec)
 
         /** The unit for a number without a symbol, or `null` to reject such input. */
         public var defaultUnit: AreaUnit?
@@ -117,10 +109,12 @@ public class AreaFormat internal constructor(internal val spec: QuantityFormat<A
             }
 
         /**
-         * Adds an entry for a number followed by one [unit].
+         * Adds an entry for a number followed by one [unit], such as `3 ha`. The number and symbol
+         * are spaced as in [UnitOfMeasure.format].
          *
          * @param symbol The symbol to write and parse.
-         * @param aliases Other symbols accepted when parsing in lenient mode.
+         * @param aliases Other symbols accepted when parsing in lenient mode. Formatting always
+         *   writes [symbol].
          */
         @JvmOverloads
         public fun unit(
@@ -136,7 +130,11 @@ public class AreaFormat internal constructor(internal val spec: QuantityFormat<A
          * 1 งาน 50 ตร.วา`.
          *
          * When parsing, each part is optional but at least one must be present, and only the last
-         * present part may have a fractional value.
+         * present part may have a fractional value. When formatting, every part but the last is a
+         * whole number, rounding the last part carries into larger parts, and a negative value gets
+         * one leading `-`. With the default precision, the last part is rounded to 12 significant
+         * digits of the whole value. A nonfinite value is written with only the first part's
+         * symbol.
          *
          * @param separator The text written between parts.
          * @param omitTrailingZeroParts Whether formatting leaves out parts after the first that are
@@ -157,7 +155,7 @@ public class AreaFormat internal constructor(internal val spec: QuantityFormat<A
             )
         }
 
-        internal fun build(): AreaFormat = AreaFormat(builder.build { it.metersSquaredPerUnit })
+        internal fun build(): AreaFormat = AreaFormat(builder.build())
     }
 
     /** Declares the parts of a compound entry. Use it through [Builder.compound]. */
@@ -169,7 +167,8 @@ public class AreaFormat internal constructor(internal val spec: QuantityFormat<A
          * Adds the next smaller part of the compound.
          *
          * @param symbol The symbol to write and parse.
-         * @param aliases Other symbols accepted when parsing in lenient mode.
+         * @param aliases Other symbols accepted when parsing in lenient mode. Formatting always
+         *   writes [symbol].
          */
         @JvmOverloads
         public fun part(
@@ -180,4 +179,12 @@ public class AreaFormat internal constructor(internal val spec: QuantityFormat<A
             parts += FormatPart(unit, symbol, aliases.toList())
         }
     }
+}
+
+private object AreaKind : QuantityKind<Area, AreaUnit> {
+    override fun toBase(value: Area): Double = value.toDouble(SquareMeters)
+
+    override fun fromBase(value: Double): Area = Area.of(value, SquareMeters)
+
+    override fun basePerUnit(unit: AreaUnit): Double = unit.metersSquaredPerUnit
 }
