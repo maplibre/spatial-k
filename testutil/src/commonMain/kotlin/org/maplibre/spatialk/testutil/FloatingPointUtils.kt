@@ -7,9 +7,12 @@ import org.maplibre.spatialk.geojson.LineString
 import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.units.Bearing
 import org.maplibre.spatialk.units.Bearing.Companion.North
+import org.maplibre.spatialk.units.Length
 import org.maplibre.spatialk.units.Rotation
 import org.maplibre.spatialk.units.extensions.degrees
 import org.maplibre.spatialk.units.extensions.inDegrees
+import org.maplibre.spatialk.units.extensions.inMeters
+import org.maplibre.spatialk.units.extensions.meters
 
 fun assertDoubleEquals(
     expected: Double,
@@ -25,6 +28,16 @@ fun assertDoubleEquals(
         },
         abs(expected - actual!!) <= epsilon,
     )
+}
+
+fun assertLengthEquals(
+    expected: Length,
+    actual: Length?,
+    epsilon: Length = 0.0001.meters,
+    message: String? = null,
+) {
+    asserter.assertNotNull(null, actual)
+    assertDoubleEquals(expected.inMeters, actual?.inMeters, epsilon.inMeters, message)
 }
 
 fun assertRotationEquals(

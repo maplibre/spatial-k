@@ -25,9 +25,6 @@ public sealed interface UnitOfMeasure {
      *   [Int.MAX_VALUE] (the default) to use [Double.toString] without rounding or padding.
      * @return A formatted string representation of the value with the unit symbol.
      */
-    public fun format(value: Double, decimalPlaces: Int = Int.MAX_VALUE): String {
-        val rounded = value.toRoundedString(decimalPlaces)
-        return if (symbol.length == 1 && !symbol[0].isLetter()) "$rounded$symbol"
-        else "$rounded $symbol"
-    }
+    public fun format(value: Double, decimalPlaces: Int = Int.MAX_VALUE): String =
+        formatWithSymbol(value.toRoundedString(decimalPlaces), symbol)
 }

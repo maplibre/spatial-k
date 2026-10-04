@@ -4,6 +4,7 @@ package org.maplibre.spatialk.units
 
 import kotlin.math.PI
 import kotlin.test.Test
+import org.maplibre.spatialk.units.catalog.Thailand
 import org.maplibre.spatialk.units.extensions.*
 
 // These snippets are primarily intended to be included in documentation. Though they exist as
@@ -42,6 +43,36 @@ class KotlinDocsTest {
         val clockwiseFromNorth: Double = (bearing - Bearing.North).inDegrees
         val signedFromNorth: Double = Bearing.North.smallestRotationTo(bearing).inDegrees
         // --8<-- [end:bearings]
+    }
+
+    @Test
+    fun customFormats() {
+        // --8<-- [start:customFormats]
+        // Thai land area, such as 1 ไร่ 3 งาน 50 ตร.วา
+        val thaiLand = AreaFormat {
+            compound(" ", omitTrailingZeroParts = true) {
+                part(Thailand.Rai)
+                part(Thailand.Ngan)
+                part(Thailand.SquareWa)
+            }
+            unit(Units.SquareMeters, aliases = listOf("m2"))
+        }
+        val plot: Area = thaiLand.parse("1 ไร่ 3 งาน 50 ตร.วา")
+        val unknown: Area? = thaiLand.parseOrNull("unknown") // null
+        println(thaiLand.format(3_200.squareMeters, Thailand.Rai, decimalPlaces = 0)) // 2 ไร่
+        // --8<-- [end:customFormats]
+    }
+
+    @Test
+    fun formatPresets() {
+        // --8<-- [start:formatPresets]
+        val angle: Rotation = RotationFormat.Dms.parse("12° 30′ 15″")
+        val maxheight: Length = LengthFormat.Osm.parse("4.2") // meters by default
+
+        // OSM tags railway track gauge in millimeters, like gauge=1435
+        val gaugeFormat = LengthFormat(LengthFormat.Osm) { defaultUnit = Units.Millimeters }
+        val gauge: Length = gaugeFormat.parse("1435")
+        // --8<-- [end:formatPresets]
     }
 
     @Test

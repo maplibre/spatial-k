@@ -1,6 +1,7 @@
 package org.maplibre.spatialk.units
 
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import org.maplibre.spatialk.units.extensions.*
@@ -49,5 +50,12 @@ class NonFiniteTest {
         val nan = Rotation.Zero / 0.0
         assertFalse(nan.isInfinite)
         assertFalse(nan.isFinite)
+    }
+
+    @Test
+    fun rotationDmsString() {
+        assertEquals("Infinity°", Rotation.PositiveInfinity.toDmsString())
+        assertEquals("-Infinity°", Rotation.NegativeInfinity.toDmsString())
+        assertEquals("NaN°", (Rotation.Zero / 0.0).toDmsString())
     }
 }
