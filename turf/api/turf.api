@@ -209,6 +209,8 @@ public final class org/maplibre/spatialk/turf/other/RTree : java/util/Collection
 	public final fun size ()I
 	public fun toArray ()[Ljava/lang/Object;
 	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
+}
+
 public abstract class org/maplibre/spatialk/turf/transformation/ScaleOrigin {
 }
 
@@ -263,8 +265,6 @@ public final class org/maplibre/spatialk/turf/transformation/ScaleOrigin$SouthWe
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-}
-
 }
 
 public final class org/maplibre/spatialk/turf/transformation/Transformation {
