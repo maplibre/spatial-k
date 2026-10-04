@@ -2,7 +2,9 @@ package org.maplibre.spatialk.units
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
@@ -33,6 +35,23 @@ class SerializationTest {
                 put("bearing", 315.0)
             }
         )
+
+    @Test
+    fun testDeserializeBearingsNormalizesRotations() {
+        for (value in listOf(0.0, 360.0, 720.0, -360.0, -1e-15)) {
+            assertEquals(Bearing.North, Json.decodeFromString<Bearing>(value.toString()))
+        }
+        assertEquals(Bearing.East, Json.decodeFromString<Bearing>("450.0"))
+        assertEquals(Bearing.West, Json.decodeFromString<Bearing>("-90.0"))
+    }
+
+    @Test
+    fun testDeserializeBearingsRejectsNonFiniteValues() {
+        val json = Json { allowSpecialFloatingPointValues = true }
+        for (value in listOf("NaN", "Infinity", "-Infinity")) {
+            assertFailsWith<SerializationException> { json.decodeFromString<Bearing>(value) }
+        }
+    }
 
     @Test
     fun testSerializeMeasurements() {

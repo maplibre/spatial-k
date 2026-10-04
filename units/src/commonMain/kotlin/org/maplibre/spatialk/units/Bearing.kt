@@ -8,16 +8,19 @@ import org.maplibre.spatialk.units.Units.ArcMinutes
 import org.maplibre.spatialk.units.Units.ArcSeconds
 import org.maplibre.spatialk.units.Units.Degrees
 import org.maplibre.spatialk.units.extensions.degrees
+import org.maplibre.spatialk.units.extensions.inDegrees
+import org.maplibre.spatialk.units.serialization.BearingSerializer
 
 /**
  * Represents an absolute bearing or heading, internally stored as a [Rotation] from [North] in the
  * range [0,360) degrees defined in the positive-clockwise direction when viewed from above (axis of
- * rotation is a vector pointing down).
+ * rotation is a vector pointing down). Non-finite rotations are rejected; deserialized angles are
+ * normalized to the same range.
  *
  * @see Rotation
  */
 @JvmInline
-@Serializable
+@Serializable(with = BearingSerializer::class)
 public value class Bearing private constructor(private val rotationFromNorth: Rotation) {
 
     /**
@@ -142,6 +145,12 @@ public value class Bearing private constructor(private val rotationFromNorth: Ro
         public val NorthNorthwest: Bearing = Bearing(337.5.degrees)
 
         @JvmSynthetic
-        internal fun of(rotationFromNorth: Rotation) = Bearing(rotationFromNorth.mod(360.degrees))
+        internal fun of(rotationFromNorth: Rotation): Bearing {
+            require(rotationFromNorth.inDegrees.isFinite()) { "Bearing must be finite" }
+            val wrapped = rotationFromNorth.mod(360.degrees)
+            // Double.mod adds the divisor to negative remainders, which can round to 360 degrees.
+            // Represent full turns and either sign of zero as north.
+            return Bearing(if (wrapped >= 360.degrees || wrapped.isZero) 0.degrees else wrapped)
+        }
     }
 }
