@@ -7,10 +7,43 @@ import org.maplibre.spatialk.units.AreaUnit
 import org.maplibre.spatialk.units.LengthUnit
 
 /**
- * Indian 1975 surveying definitions used in India. See
+ * Indian surveying definitions: 1937 used from Bangladesh to Vietnam, 1962 in Pakistan, and 1975 in
+ * India. See
  * [BGS unit usage](https://webapps.bgs.ac.uk/data/vocabularies/viewdata.cfm?name=DIC_UNIT_OF_MEASURE&row=21).
  */
 public data object India {
+    /**
+     * Definition: Indian foot (1937), EPSG 9081.
+     *
+     * See
+     * [EPSG conversions in PROJ](https://github.com/OSGeo/PROJ/blob/047e5dbc74ef872828c06f24c6f67bb7b55432cf/data/sql/unit_of_measure.sql).
+     */
+    @JvmField public val SurveyFeet1937: LengthUnit = LengthUnit(0.30479841, "ft")
+
+    /**
+     * Definition: Indian yard (1937), EPSG 9085.
+     *
+     * See
+     * [EPSG conversions in PROJ](https://github.com/OSGeo/PROJ/blob/047e5dbc74ef872828c06f24c6f67bb7b55432cf/data/sql/unit_of_measure.sql).
+     */
+    @JvmField public val SurveyYards1937: LengthUnit = LengthUnit(0.91439523, "yd")
+
+    /**
+     * Definition: Indian foot (1962), EPSG 9082.
+     *
+     * See
+     * [EPSG conversions in PROJ](https://github.com/OSGeo/PROJ/blob/047e5dbc74ef872828c06f24c6f67bb7b55432cf/data/sql/unit_of_measure.sql).
+     */
+    @JvmField public val SurveyFeet1962: LengthUnit = LengthUnit(0.3047996, "ft")
+
+    /**
+     * Definition: Indian yard (1962), EPSG 9086.
+     *
+     * See
+     * [EPSG conversions in PROJ](https://github.com/OSGeo/PROJ/blob/047e5dbc74ef872828c06f24c6f67bb7b55432cf/data/sql/unit_of_measure.sql).
+     */
+    @JvmField public val SurveyYards1962: LengthUnit = LengthUnit(0.9143988, "yd")
+
     /**
      * Definition: Indian foot (1975), EPSG 9083.
      *

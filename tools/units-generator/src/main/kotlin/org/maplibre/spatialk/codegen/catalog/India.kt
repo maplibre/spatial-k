@@ -12,9 +12,13 @@ private val assamReference =
 val india =
     family(
         "India",
-        "Indian 1975 surveying definitions used in India. See [BGS unit usage](https://webapps.bgs.ac.uk/data/vocabularies/viewdata.cfm?name=DIC_UNIT_OF_MEASURE&row=21).",
+        "Indian surveying definitions: 1937 used from Bangladesh to Vietnam, 1962 in Pakistan, and 1975 in India. See [BGS unit usage](https://webapps.bgs.ac.uk/data/vocabularies/viewdata.cfm?name=DIC_UNIT_OF_MEASURE&row=21).",
         epsgReference,
     ) {
+        length("SurveyFeet1937", 0.30479841, "ft", note = "Indian foot (1937), EPSG 9081")
+        length("SurveyYards1937", 0.91439523, "yd", note = "Indian yard (1937), EPSG 9085")
+        length("SurveyFeet1962", 0.3047996, "ft", note = "Indian foot (1962), EPSG 9082")
+        length("SurveyYards1962", 0.9143988, "yd", note = "Indian yard (1962), EPSG 9086")
         length("SurveyFeet1975", 0.3047995, "ft", note = "Indian foot (1975), EPSG 9083")
         length("SurveyYards1975", 0.9143985, "yd", note = "Indian yard (1975), EPSG 9087")
     }

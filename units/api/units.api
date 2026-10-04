@@ -376,7 +376,11 @@ public final class org/maplibre/spatialk/units/catalog/Finland {
 
 public final class org/maplibre/spatialk/units/catalog/India {
 	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/India;
+	public static final field SurveyFeet1937 Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyFeet1962 Lorg/maplibre/spatialk/units/LengthUnit;
 	public static final field SurveyFeet1975 Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyYards1937 Lorg/maplibre/spatialk/units/LengthUnit;
+	public static final field SurveyYards1962 Lorg/maplibre/spatialk/units/LengthUnit;
 	public static final field SurveyYards1975 Lorg/maplibre/spatialk/units/LengthUnit;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
@@ -484,25 +488,6 @@ public final class org/maplibre/spatialk/units/catalog/Nepal$Terai {
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class org/maplibre/spatialk/units/catalog/Pakistan {
-	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Pakistan;
-	public static final field IndianFeet1962 Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field IndianYards1962 Lorg/maplibre/spatialk/units/LengthUnit;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class org/maplibre/spatialk/units/catalog/Survey {
-	public static final field BritishFeet1936 Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Survey;
-	public static final field IndianFeet1937 Lorg/maplibre/spatialk/units/LengthUnit;
-	public static final field IndianYards1937 Lorg/maplibre/spatialk/units/LengthUnit;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class org/maplibre/spatialk/units/catalog/Sweden {
 	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/Sweden;
 	public static final field Streck6300 Lorg/maplibre/spatialk/units/RotationUnit;
@@ -534,6 +519,7 @@ public final class org/maplibre/spatialk/units/catalog/TrinidadAndTobago {
 public final class org/maplibre/spatialk/units/catalog/UK {
 	public static final field AdmiraltyCables Lorg/maplibre/spatialk/units/LengthUnit;
 	public static final field INSTANCE Lorg/maplibre/spatialk/units/catalog/UK;
+	public static final field SurveyFeet1936 Lorg/maplibre/spatialk/units/LengthUnit;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;

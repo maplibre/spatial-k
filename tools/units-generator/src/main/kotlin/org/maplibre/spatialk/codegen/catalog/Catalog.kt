@@ -8,8 +8,8 @@ import org.maplibre.spatialk.codegen.Reference
 // at scales suitable for terrestrial mapping.
 // Keep source references and native defining ratios. Symbols use established notation,
 // with local script for regional measures.
-// common = true adds a Units alias and extensions; country/subregion names describe where regional
-// units are used.
+// common = true adds a Units alias and extensions. Regional catalogs group units
+// associated with a country or region; descriptions identify where variants are used.
 
 val siReference =
     Reference("SI Brochure", "https://www.bipm.org/documents/20126/41483022/SI-Brochure-9-EN.pdf")
@@ -41,8 +41,6 @@ val catalog =
         uk,
         malaysia,
         trinidadAndTobago,
-        survey,
-        pakistan,
         india,
         indiaAssam,
         namibia,

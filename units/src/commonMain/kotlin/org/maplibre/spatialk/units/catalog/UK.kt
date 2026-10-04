@@ -5,8 +5,20 @@ package org.maplibre.spatialk.units.catalog
 import kotlin.jvm.JvmField
 import org.maplibre.spatialk.units.LengthUnit
 
-/** British nautical lengths. */
+/**
+ * British nautical and surveying definitions. The 1936 survey foot is used in British and Irish
+ * metric conversions. See
+ * [BGS unit usage](https://webapps.bgs.ac.uk/data/vocabularies/viewdata.cfm?name=DIC_UNIT_OF_MEASURE&row=21).
+ */
 public data object UK {
+    /**
+     * Definition: British foot (1936), EPSG 9095.
+     *
+     * See
+     * [EPSG conversions in PROJ](https://github.com/OSGeo/PROJ/blob/047e5dbc74ef872828c06f24c6f67bb7b55432cf/data/sql/unit_of_measure.sql).
+     */
+    @JvmField public val SurveyFeet1936: LengthUnit = LengthUnit(0.3048007491, "ft")
+
     /**
      * Definition: 1 Admiralty cable = 608 international feet.
      *

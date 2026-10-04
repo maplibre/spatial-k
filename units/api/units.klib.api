@@ -393,8 +393,16 @@ final object org.maplibre.spatialk.units.catalog/Finland { // org.maplibre.spati
 }
 
 final object org.maplibre.spatialk.units.catalog/India { // org.maplibre.spatialk.units.catalog/India|null[0]
+    final val SurveyFeet1937 // org.maplibre.spatialk.units.catalog/India.SurveyFeet1937|{}SurveyFeet1937[0]
+        final fun <get-SurveyFeet1937>(): org.maplibre.spatialk.units/LengthUnit // org.maplibre.spatialk.units.catalog/India.SurveyFeet1937.<get-SurveyFeet1937>|<get-SurveyFeet1937>(){}[0]
+    final val SurveyFeet1962 // org.maplibre.spatialk.units.catalog/India.SurveyFeet1962|{}SurveyFeet1962[0]
+        final fun <get-SurveyFeet1962>(): org.maplibre.spatialk.units/LengthUnit // org.maplibre.spatialk.units.catalog/India.SurveyFeet1962.<get-SurveyFeet1962>|<get-SurveyFeet1962>(){}[0]
     final val SurveyFeet1975 // org.maplibre.spatialk.units.catalog/India.SurveyFeet1975|{}SurveyFeet1975[0]
         final fun <get-SurveyFeet1975>(): org.maplibre.spatialk.units/LengthUnit // org.maplibre.spatialk.units.catalog/India.SurveyFeet1975.<get-SurveyFeet1975>|<get-SurveyFeet1975>(){}[0]
+    final val SurveyYards1937 // org.maplibre.spatialk.units.catalog/India.SurveyYards1937|{}SurveyYards1937[0]
+        final fun <get-SurveyYards1937>(): org.maplibre.spatialk.units/LengthUnit // org.maplibre.spatialk.units.catalog/India.SurveyYards1937.<get-SurveyYards1937>|<get-SurveyYards1937>(){}[0]
+    final val SurveyYards1962 // org.maplibre.spatialk.units.catalog/India.SurveyYards1962|{}SurveyYards1962[0]
+        final fun <get-SurveyYards1962>(): org.maplibre.spatialk.units/LengthUnit // org.maplibre.spatialk.units.catalog/India.SurveyYards1962.<get-SurveyYards1962>|<get-SurveyYards1962>(){}[0]
     final val SurveyYards1975 // org.maplibre.spatialk.units.catalog/India.SurveyYards1975|{}SurveyYards1975[0]
         final fun <get-SurveyYards1975>(): org.maplibre.spatialk.units/LengthUnit // org.maplibre.spatialk.units.catalog/India.SurveyYards1975.<get-SurveyYards1975>|<get-SurveyYards1975>(){}[0]
 
@@ -548,30 +556,6 @@ final object org.maplibre.spatialk.units.catalog/Nepal { // org.maplibre.spatial
     }
 }
 
-final object org.maplibre.spatialk.units.catalog/Pakistan { // org.maplibre.spatialk.units.catalog/Pakistan|null[0]
-    final val IndianFeet1962 // org.maplibre.spatialk.units.catalog/Pakistan.IndianFeet1962|{}IndianFeet1962[0]
-        final fun <get-IndianFeet1962>(): org.maplibre.spatialk.units/LengthUnit // org.maplibre.spatialk.units.catalog/Pakistan.IndianFeet1962.<get-IndianFeet1962>|<get-IndianFeet1962>(){}[0]
-    final val IndianYards1962 // org.maplibre.spatialk.units.catalog/Pakistan.IndianYards1962|{}IndianYards1962[0]
-        final fun <get-IndianYards1962>(): org.maplibre.spatialk.units/LengthUnit // org.maplibre.spatialk.units.catalog/Pakistan.IndianYards1962.<get-IndianYards1962>|<get-IndianYards1962>(){}[0]
-
-    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units.catalog/Pakistan.equals|equals(kotlin.Any?){}[0]
-    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units.catalog/Pakistan.hashCode|hashCode(){}[0]
-    final fun toString(): kotlin/String // org.maplibre.spatialk.units.catalog/Pakistan.toString|toString(){}[0]
-}
-
-final object org.maplibre.spatialk.units.catalog/Survey { // org.maplibre.spatialk.units.catalog/Survey|null[0]
-    final val BritishFeet1936 // org.maplibre.spatialk.units.catalog/Survey.BritishFeet1936|{}BritishFeet1936[0]
-        final fun <get-BritishFeet1936>(): org.maplibre.spatialk.units/LengthUnit // org.maplibre.spatialk.units.catalog/Survey.BritishFeet1936.<get-BritishFeet1936>|<get-BritishFeet1936>(){}[0]
-    final val IndianFeet1937 // org.maplibre.spatialk.units.catalog/Survey.IndianFeet1937|{}IndianFeet1937[0]
-        final fun <get-IndianFeet1937>(): org.maplibre.spatialk.units/LengthUnit // org.maplibre.spatialk.units.catalog/Survey.IndianFeet1937.<get-IndianFeet1937>|<get-IndianFeet1937>(){}[0]
-    final val IndianYards1937 // org.maplibre.spatialk.units.catalog/Survey.IndianYards1937|{}IndianYards1937[0]
-        final fun <get-IndianYards1937>(): org.maplibre.spatialk.units/LengthUnit // org.maplibre.spatialk.units.catalog/Survey.IndianYards1937.<get-IndianYards1937>|<get-IndianYards1937>(){}[0]
-
-    final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units.catalog/Survey.equals|equals(kotlin.Any?){}[0]
-    final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units.catalog/Survey.hashCode|hashCode(){}[0]
-    final fun toString(): kotlin/String // org.maplibre.spatialk.units.catalog/Survey.toString|toString(){}[0]
-}
-
 final object org.maplibre.spatialk.units.catalog/Sweden { // org.maplibre.spatialk.units.catalog/Sweden|null[0]
     final val Streck6300 // org.maplibre.spatialk.units.catalog/Sweden.Streck6300|{}Streck6300[0]
         final fun <get-Streck6300>(): org.maplibre.spatialk.units/RotationUnit // org.maplibre.spatialk.units.catalog/Sweden.Streck6300.<get-Streck6300>|<get-Streck6300>(){}[0]
@@ -610,6 +594,8 @@ final object org.maplibre.spatialk.units.catalog/TrinidadAndTobago { // org.mapl
 final object org.maplibre.spatialk.units.catalog/UK { // org.maplibre.spatialk.units.catalog/UK|null[0]
     final val AdmiraltyCables // org.maplibre.spatialk.units.catalog/UK.AdmiraltyCables|{}AdmiraltyCables[0]
         final fun <get-AdmiraltyCables>(): org.maplibre.spatialk.units/LengthUnit // org.maplibre.spatialk.units.catalog/UK.AdmiraltyCables.<get-AdmiraltyCables>|<get-AdmiraltyCables>(){}[0]
+    final val SurveyFeet1936 // org.maplibre.spatialk.units.catalog/UK.SurveyFeet1936|{}SurveyFeet1936[0]
+        final fun <get-SurveyFeet1936>(): org.maplibre.spatialk.units/LengthUnit // org.maplibre.spatialk.units.catalog/UK.SurveyFeet1936.<get-SurveyFeet1936>|<get-SurveyFeet1936>(){}[0]
 
     final fun equals(kotlin/Any?): kotlin/Boolean // org.maplibre.spatialk.units.catalog/UK.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // org.maplibre.spatialk.units.catalog/UK.hashCode|hashCode(){}[0]
