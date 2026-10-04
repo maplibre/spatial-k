@@ -11,9 +11,9 @@ import org.maplibre.spatialk.geojson.Position
 import org.maplibre.spatialk.testutil.assertPositionEquals
 import org.maplibre.spatialk.testutil.readResourceFile
 import org.maplibre.spatialk.units.Bearing.Companion.North
-import org.maplibre.spatialk.units.Imperial.Miles
-import org.maplibre.spatialk.units.International.Kilometers
 import org.maplibre.spatialk.units.LengthUnit
+import org.maplibre.spatialk.units.Units.Kilometers
+import org.maplibre.spatialk.units.Units.Miles
 import org.maplibre.spatialk.units.extensions.degrees
 import org.maplibre.spatialk.units.extensions.toLength
 
