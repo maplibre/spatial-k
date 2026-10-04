@@ -29,13 +29,11 @@ public value class Area private constructor(private val valueInMetersSquared: Do
 
     /** Returns `true` if this area is infinite (positive or negative). */
     public val isInfinite: Boolean
-        get() =
-            valueInMetersSquared == Double.POSITIVE_INFINITY ||
-                valueInMetersSquared == Double.POSITIVE_INFINITY
+        get() = valueInMetersSquared.isInfinite()
 
-    /** Returns `true` if this area is finite (not infinite). */
+    /** Returns `true` if this area is finite (neither infinite nor NaN). */
     public val isFinite: Boolean
-        get() = !isInfinite
+        get() = valueInMetersSquared.isFinite()
 
     /** Returns `true` if this area is greater than zero. */
     public val isPositive: Boolean
