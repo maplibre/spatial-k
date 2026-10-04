@@ -66,7 +66,7 @@ public value class Bearing private constructor(private val rotationFromNorth: Ro
 
     /**
      * Returns a string representation of this bearing as a quadrant bearing with the specified
-     * [unit] and [decimalPlaces].
+     * [unit] and [decimalPlaces]. See [UnitOfMeasure.format] for precision and notation rules.
      */
     public fun toString(unit: RotationUnit = Degrees, decimalPlaces: Int = 2): String =
         when (this - North) {
@@ -80,7 +80,8 @@ public value class Bearing private constructor(private val rotationFromNorth: Ro
      * Format this [Bearing] as a quadrant bearing with [Degrees], [ArcMinutes], and [ArcSeconds]
      * components.
      *
-     * @param decimalPlaces the number of decimal places to use for the arc seconds component.
+     * @param decimalPlaces The number of decimal places for arcseconds, as described in
+     *   [UnitOfMeasure.format].
      */
     public fun toDmsString(decimalPlaces: Int = 2): String =
         when (this - North) {

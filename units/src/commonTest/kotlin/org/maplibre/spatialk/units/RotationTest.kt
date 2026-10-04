@@ -82,6 +82,7 @@ class RotationTest {
 
     @Test
     fun testToString() {
+        assertEquals("NaN rad", (Rotation.Zero / 0.0).toString())
         assertEquals("0.00 rad", 0.degrees.toString())
         assertEquals("-1000.00°", (-1000).degrees.toString(Degrees))
         assertEquals("720.00°", 720.degrees.toString(Degrees))

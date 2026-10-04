@@ -102,7 +102,7 @@ public value class Area private constructor(private val valueInMetersSquared: Do
      * Returns a formatted string representation of this area.
      *
      * @param unit The unit to display the area in.
-     * @param decimalPlaces The number of decimal places to display.
+     * @param decimalPlaces The number of decimal places to round to; see [UnitOfMeasure.format].
      */
     public fun toString(unit: AreaUnit = SquareMeters, decimalPlaces: Int = 2): String =
         unit.format(toDouble(unit), decimalPlaces)
