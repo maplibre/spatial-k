@@ -13,7 +13,7 @@ dokka = "2.2.0"
 detekt = "2.0.0-alpha.6"
 xmlutil = "1.0.2.1"
 kotlinpoet = "2.4.0"
-ktfmt = "0.63"
+ktfmt = "0.64"
 
 [libraries]
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
