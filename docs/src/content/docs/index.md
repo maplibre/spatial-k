@@ -3,7 +3,7 @@ title: "Overview"
 ---
 
 <div style="text-align: center; width: 100%; height: 200px; background-color: transparent">
-    <div style="width: 100%; height: 100%; background-color: #4CAE4F; mask-image: url('/spatial-k/logo-icon.svg');
+  <div style="width: 100%; height: 100%; background-color: #4CAE4F; mask-image: url('/spatial-k/logo-icon.svg');
                 mask-size: contain; mask-repeat: no-repeat; mask-position: center"></div>
 </div>
 

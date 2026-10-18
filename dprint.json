@@ -6,7 +6,7 @@
     "newLineKind": "lf",
     "excludes": ["**/build", "**/.gradle", "kotlin-js-store", "**/*.api"],
     "json": { "indentWidth": 4, "preferSingleLine": true },
-    "markdown": { "textWrap": "always", "wrapCodeSpans": false, "html.skipFormat": true },
+    "markdown": { "textWrap": "always" },
     "toml": {},
     // oxc 0.43+ also formats these; leave them to the dedicated plugins.
     "oxc": {
