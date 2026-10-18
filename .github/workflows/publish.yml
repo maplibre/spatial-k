@@ -73,7 +73,7 @@ jobs:
                   persist-credentials: false
             - uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
               with:
-                  version: 2026.6.0
+                  version: 2026.10.12
             - id: version
               run: |
                   latest_release=""
@@ -111,7 +111,7 @@ jobs:
                   persist-credentials: false
             - uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
               with:
-                  version: 2026.6.0
+                  version: 2026.10.12
             - name: Publish
               run: >
                   mise run publish --mode live
@@ -146,7 +146,7 @@ jobs:
                   persist-credentials: false
             - uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
               with:
-                  version: 2026.6.0
+                  version: 2026.10.12
             - name: Build docs
               run: >
                   mise run docs:build --version
@@ -171,7 +171,7 @@ jobs:
                   persist-credentials: false
             - uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
               with:
-                  version: 2026.6.0
+                  version: 2026.10.12
             - name: Build SwiftPM binary artifact
               run: >
                   mise run publish:pmtiles-swift
