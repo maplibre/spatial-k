@@ -1,5 +1,6 @@
 // @ts-check
 
+import { unified } from "@astrojs/markdown-remark";
 import starlight from "@astrojs/starlight";
 import { defineConfig } from "astro/config";
 import { existsSync } from "node:fs";
@@ -50,16 +51,18 @@ export default defineConfig({
     plugins: [generatedApiIndexMiddleware],
   },
   markdown: {
-    remarkPlugins: [
-      remarkGfm,
-      [
-        remarkSpatialKSnippets,
-        {
-          rootDir: "..",
-          projectVersion: process.env.SPATIAL_K_VERSION ?? "VERSION",
-        },
+    processor: unified({
+      remarkPlugins: [
+        remarkGfm,
+        [
+          remarkSpatialKSnippets,
+          {
+            rootDir: "..",
+            projectVersion: process.env.SPATIAL_K_VERSION ?? "VERSION",
+          },
+        ],
       ],
-    ],
+    }),
   },
   integrations: [
     starlight({
