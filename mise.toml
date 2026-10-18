@@ -14,7 +14,6 @@ postinstall = [
 "core:java" = "temurin-21.0.12+101.0.LTS"
 "aqua:dprint/dprint" = "0.63.0"
 "aqua:jdx/hk" = "2.7.0"
-"aqua:apple/pkl" = "0.32.1"
 "aqua:facebook/ktfmt" = "0.65"
 "github:google/google-java-format" = "1.37.0"
 "core:node" = "24.22.0"
