@@ -62,5 +62,8 @@ class BinaryWriterTest {
     }
 }
 
-private fun String.compactHexToByteString(): kotlinx.io.bytestring.ByteString =
-    filterNot { it.isWhitespace() }.lowercase().hexToByteString()
+private fun String.compactHexToByteString(): kotlinx.io.bytestring.ByteString = filterNot {
+    it.isWhitespace()
+}
+    .lowercase()
+    .hexToByteString()
