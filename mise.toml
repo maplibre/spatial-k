@@ -16,7 +16,7 @@ postinstall = [
 "aqua:jdx/hk" = "2.7.0"
 "aqua:facebook/ktfmt" = "0.65"
 "github:google/google-java-format" = "1.37.0"
-"core:node" = "24.22.0"
+"core:node" = "26.12.0"
 "aqua:pnpm/pnpm" = "10.34.7"
 
 [tasks.build]
