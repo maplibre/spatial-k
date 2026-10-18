@@ -18,7 +18,7 @@ postinstall = [
 "aqua:facebook/ktfmt" = "0.64"
 "github:google/google-java-format" = "1.37.0"
 "core:node" = "24.22.0"
-"aqua:pnpm/pnpm" = "10.34.7"
+"aqua:pnpm/pnpm" = "11.28.6"
 
 [tasks.build]
 description = "Build and check all targets"
