@@ -1,7 +1,7 @@
 {
     "name": "docs",
-    "type": "module",
     "private": true,
+    "type": "module",
     "dependencies": {
         "@astrojs/starlight": "^0.39.3",
         "astro": "^6.4.4",
