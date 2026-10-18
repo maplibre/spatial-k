@@ -15,4 +15,4 @@ dependencies {
     implementation(libs.gradle.detekt)
 }
 
-kotlin { jvmToolchain(21) }
+kotlin { jvmToolchain(25) }

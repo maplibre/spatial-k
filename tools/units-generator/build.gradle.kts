@@ -8,7 +8,7 @@ dependencies {
     implementation(libs.ktfmt)
 }
 
-kotlin { jvmToolchain(21) }
+kotlin { jvmToolchain(25) }
 
 application { mainClass = "org.maplibre.spatialk.codegen.MainKt" }
 
