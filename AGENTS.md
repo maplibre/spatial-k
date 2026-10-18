@@ -37,7 +37,8 @@ and platform requirements. For other commands, use `mise exec -- <command>`.
 
 - Build and check: `mise run build`.
 - Formatting and lint: `mise run check`; automatic fixes: `mise run fix`. Pre-commit hooks format
-  staged files and run checks. `hk fix [FILES...]` targets specific files and stages changes.
+  staged files and run checks. `hk fix [FILES...]` targets specific files; add `--stage` to stage
+  the fixes.
 - Tests: `mise run test`, or `test:jvm`, `test:jsnode`, `test:wasmjsnode`, `test:native`, and
   `test:swift` for individual platforms.
 - One JVM test: `mise exec -- ./gradlew :module:jvmTest --tests "*SomeTest*"`.

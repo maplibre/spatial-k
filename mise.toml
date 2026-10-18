@@ -11,14 +11,14 @@ postinstall = [
 ]
 
 [tools]
-"core:java" = "temurin-21.0.11+10.0.LTS"
-"aqua:dprint/dprint" = "0.54.0"
-"aqua:jdx/hk" = "1.46.0"
-"aqua:apple/pkl" = "0.31.1"
-"aqua:facebook/ktfmt" = "0.63"
-"github:google/google-java-format" = "1.35.0"
-"core:node" = "24.16.0"
-"aqua:pnpm/pnpm" = "10.33.2"
+"core:java" = "temurin-21.0.12+101.0.LTS"
+"aqua:dprint/dprint" = "0.63.0"
+"aqua:jdx/hk" = "2.7.0"
+"aqua:apple/pkl" = "0.32.1"
+"aqua:facebook/ktfmt" = "0.64"
+"github:google/google-java-format" = "1.37.0"
+"core:node" = "24.22.0"
+"aqua:pnpm/pnpm" = "10.34.7"
 
 [tasks.build]
 description = "Build and check all targets"

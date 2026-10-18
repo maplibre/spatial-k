@@ -118,7 +118,10 @@ private fun testHeader(
         center = TileCenter(longitude = 12.5, latitude = -7.25, zoom = 6),
     )
 
-private fun String.compactHexToByteString(): kotlinx.io.bytestring.ByteString =
-    filterNot { it.isWhitespace() }.lowercase().hexToByteString()
+private fun String.compactHexToByteString(): kotlinx.io.bytestring.ByteString = filterNot {
+    it.isWhitespace()
+}
+    .lowercase()
+    .hexToByteString()
 
 private const val TEST_ARCHIVE_SIZE = 530uL
