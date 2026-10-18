@@ -15,11 +15,11 @@ class SimplifyTest {
     fun testSimplifyLineString() {
         val feature =
             Feature.fromJson<LineString, JsonObject?>(
-                readResourceFile("transformation/simplify/in/linestring.json")
+                readResourceFile("transformation/simplify/in/linestring.json"),
             )
         val expected =
             Feature.fromJson<LineString, JsonObject?>(
-                readResourceFile("transformation/simplify/out/linestring.json")
+                readResourceFile("transformation/simplify/out/linestring.json"),
             )
         val simplified = feature.geometry.simplify(0.01)
         val roundedSimplified =
@@ -29,7 +29,7 @@ class SimplifyTest {
                         (position.longitude * 1000000).roundToInt() / 1000000.0,
                         (position.latitude * 1000000).roundToInt() / 1000000.0,
                     )
-                }
+                },
             )
         assertEquals(expected.geometry, roundedSimplified)
     }

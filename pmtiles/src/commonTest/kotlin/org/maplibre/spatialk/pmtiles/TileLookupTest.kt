@@ -73,7 +73,7 @@ class TileLookupTest {
             encodeDirectory(DirectoryEntry(tileId = 2, offset = 3uL, length = 4, runLength = 1))
         val rootBytes =
             encodeDirectory(
-                DirectoryEntry(tileId = 1, offset = 0uL, length = leafBytes.size, runLength = 0)
+                DirectoryEntry(tileId = 1, offset = 0uL, length = leafBytes.size, runLength = 0),
             )
         val fields =
             TestHeaderFields(
@@ -89,7 +89,7 @@ class TileLookupTest {
                     fields = fields,
                     rootBytes = rootBytes,
                     leafBytes = leafBytes,
-                )
+                ),
             )
         val archive = PmTiles.open(source)
         val coord = TileIds.toZxy(2)
@@ -121,7 +121,7 @@ class TileLookupTest {
                     offset = nestedLeafOffset,
                     length = tileLeafBytes.size,
                     runLength = 0,
-                )
+                ),
             )
         val rootBytes =
             encodeDirectory(
@@ -130,7 +130,7 @@ class TileLookupTest {
                     offset = 0uL,
                     length = firstLeafBytes.size,
                     runLength = 0,
-                )
+                ),
             )
         val leafSection =
             ByteArray(nestedLeafOffset.toInt() + tileLeafBytes.size).also {
@@ -156,7 +156,7 @@ class TileLookupTest {
                         fields = fields,
                         rootBytes = rootBytes,
                         leafBytes = ByteString(leafSection),
-                    )
+                    ),
                 ),
                 options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
@@ -184,7 +184,7 @@ class TileLookupTest {
                     offset = nestedLeafOffset,
                     length = tileLeafBytes.size,
                     runLength = 0,
-                )
+                ),
             )
         val rootBytes =
             encodeDirectory(
@@ -193,7 +193,7 @@ class TileLookupTest {
                     offset = 0uL,
                     length = firstLeafBytes.size,
                     runLength = 0,
-                )
+                ),
             )
         val leafSection =
             ByteArray(nestedLeafOffset.toInt() + tileLeafBytes.size).also {
@@ -218,8 +218,8 @@ class TileLookupTest {
                                 fields = fields,
                                 rootBytes = rootBytes,
                                 leafBytes = ByteString(leafSection),
-                            )
-                        )
+                            ),
+                        ),
                     )
                 val coord = TileIds.toZxy(2)
                 archive.findTileRange(coord.z, coord.x, coord.y)
@@ -234,7 +234,7 @@ class TileLookupTest {
             encodeDirectory(DirectoryEntry(tileId = 2, offset = 0uL, length = 1, runLength = 1))
         val rootBytes =
             encodeDirectory(
-                DirectoryEntry(tileId = 1, offset = 0uL, length = leafBytes.size, runLength = 0)
+                DirectoryEntry(tileId = 1, offset = 0uL, length = leafBytes.size, runLength = 0),
             )
         val fields =
             TestHeaderFields(
@@ -253,7 +253,7 @@ class TileLookupTest {
                                 fields = fields,
                                 rootBytes = rootBytes,
                                 leafBytes = leafBytes,
-                            )
+                            ),
                         ),
                         options =
                             ArchiveOpenOptions.build {
@@ -278,7 +278,7 @@ class TileLookupTest {
                     offset = 0uL,
                     length = recursiveLeafBytes.size,
                     runLength = 0,
-                )
+                ),
             )
         val fields =
             TestHeaderFields(
@@ -297,7 +297,7 @@ class TileLookupTest {
                                 fields = fields,
                                 rootBytes = rootBytes,
                                 leafBytes = recursiveLeafBytes,
-                            )
+                            ),
                         ),
                         options =
                             ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },

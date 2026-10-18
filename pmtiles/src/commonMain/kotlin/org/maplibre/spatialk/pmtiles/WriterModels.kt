@@ -93,7 +93,7 @@ public constructor(
                 north < south
         ) {
             throw invalidHeaderConfig(
-                "Archive write bounds must be sane longitude/latitude bounds."
+                "Archive write bounds must be sane longitude/latitude bounds.",
             )
         }
     }
@@ -119,7 +119,7 @@ public constructor(
     init {
         if (!longitude.isLongitude() || !latitude.isLatitude() || zoom !in 0..MAX_HEADER_ZOOM) {
             throw invalidHeaderConfig(
-                "Archive write center must use sane longitude/latitude values and zoom 0..31."
+                "Archive write center must use sane longitude/latitude values and zoom 0..31.",
             )
         }
     }

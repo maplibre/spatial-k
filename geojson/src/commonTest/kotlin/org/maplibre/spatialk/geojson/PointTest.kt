@@ -53,7 +53,7 @@ class PointTest {
                     "type": "Point",
                     "coordinates": [1.0, 2.0]
                 }
-            """
+            """,
             )
         assertEquals(expectedPoint, actualPoint)
     }
@@ -85,7 +85,7 @@ class PointTest {
                             "type": "Point",
                             "bbox": [1.0, 2.0, 3.0, 4.0]
                         }
-                    """
+                    """,
             )
         assertEquals(expectedPoint, actualPoint)
     }
@@ -100,7 +100,7 @@ class PointTest {
                         "type": "Point",
                         "bbox": [1.0, 2.0, 3.0, 4.0]
                     }
-                    """
+                    """,
             )
 
         assertNotNull(point)
@@ -155,7 +155,7 @@ class PointTest {
                         "type": "Point",
                         "coordinates": null
                     }
-                """
+                """,
             )
         }
     }

@@ -24,7 +24,7 @@ internal val EmptyForeignMembers: JsonObject = JsonObject(emptyMap())
  */
 @HiddenFromObjC
 public inline fun <reified T : Any> GeoJsonObject.decodeForeignMembers(
-    json: Json = GeoJson.jsonFormat
+    json: Json = GeoJson.jsonFormat,
 ): T = json.decodeFromJsonElement(foreignMembers)
 
 /**
@@ -43,6 +43,6 @@ public inline fun <reified T : Any> foreignMembersOf(
     val element = json.encodeToJsonElement(value)
     return element as? JsonObject
         ?: throw SerializationException(
-            "Foreign members must encode to a JSON object, got $element"
+            "Foreign members must encode to a JSON object, got $element",
         )
 }

@@ -16,7 +16,7 @@ class LineSliceAlongTest {
     fun testLineSliceAlong() {
         val lineFeature =
             Feature.fromJson<LineString, JsonObject?>(
-                readResourceFile("misc/lineSliceAlong/line1.geojson")
+                readResourceFile("misc/lineSliceAlong/line1.geojson"),
             )
         val line = lineFeature.geometry
 
@@ -40,7 +40,7 @@ class LineSliceAlongTest {
     fun testLineSliceAlongOvershoot() {
         val lineFeature =
             Feature.fromJson<LineString, JsonObject?>(
-                readResourceFile("misc/lineSliceAlong/line1.geojson")
+                readResourceFile("misc/lineSliceAlong/line1.geojson"),
             )
         val line = lineFeature.geometry
 
@@ -64,7 +64,7 @@ class LineSliceAlongTest {
     fun testLineSliceAlongRoute1() {
         val routeFeature =
             Feature.fromJson<LineString, JsonObject?>(
-                readResourceFile("misc/lineSliceAlong/route1.geojson")
+                readResourceFile("misc/lineSliceAlong/route1.geojson"),
             )
         val route = routeFeature.geometry
 
@@ -88,7 +88,7 @@ class LineSliceAlongTest {
     fun testLineSliceAlongRoute2() {
         val routeFeature =
             Feature.fromJson<LineString, JsonObject?>(
-                readResourceFile("misc/lineSliceAlong/route2.geojson")
+                readResourceFile("misc/lineSliceAlong/route2.geojson"),
             )
         val route = routeFeature.geometry
 

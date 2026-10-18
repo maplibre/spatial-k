@@ -57,7 +57,7 @@ class MetadataTest {
             assertFailsWith<PmTilesException> {
                 val archive =
                     PmTiles.open(
-                        TestByteRangeSource(buildMetadataArchive(ByteString(0xc3.toByte(), 0x28)))
+                        TestByteRangeSource(buildMetadataArchive(ByteString(0xc3.toByte(), 0x28))),
                     )
                 archive.rawMetadataJson()
             }
@@ -91,7 +91,7 @@ class MetadataTest {
         val archive =
             PmTiles.open(
                 TestByteRangeSource(
-                    buildMetadataArchive("""{"name":1,"description":"ok"}""".encodeToByteString())
+                    buildMetadataArchive("""{"name":1,"description":"ok"}""".encodeToByteString()),
                 ),
                 options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
@@ -120,7 +120,7 @@ class MetadataTest {
                     buildMetadataArchive(
                         """{"name":"Tiles"}""".encodeToByteString(),
                         tileType = TileTypeCodes.Mvt,
-                    )
+                    ),
                 ),
                 options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )
@@ -141,8 +141,8 @@ class MetadataTest {
                 val archive =
                     PmTiles.open(
                         TestByteRangeSource(
-                            buildMetadataArchive(json.encodeToByteString(), tileType)
-                        )
+                            buildMetadataArchive(json.encodeToByteString(), tileType),
+                        ),
                     )
                 archive.metadata()
             }

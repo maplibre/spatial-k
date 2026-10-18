@@ -45,7 +45,7 @@ internal constructor(val distance: Length, val location: Length, val index: Int)
  * @return The closest position along the line
  */
 public fun LineStringGeometry.nearestPointTo(
-    point: Position
+    point: Position,
 ): Feature<Point, NearestPointOnLineProps> {
     val lines =
         when (this) {

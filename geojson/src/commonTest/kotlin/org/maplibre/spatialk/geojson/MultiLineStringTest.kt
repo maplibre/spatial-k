@@ -36,8 +36,8 @@ class MultiLineStringTest {
                     arrayOf(
                         doubleArrayOf(1.0, 1.0),
                         doubleArrayOf(1.0), // !
-                    )
-                )
+                    ),
+                ),
             )
         }
     }
@@ -78,7 +78,7 @@ class MultiLineStringTest {
                     ]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
         assertEquals(expectedMultiLineString, actualMultiLineString)
     }
@@ -143,7 +143,7 @@ class MultiLineStringTest {
                     ]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
         assertEquals(expectedMultiLineString, actualMultiLineString)
     }
@@ -210,7 +210,7 @@ class MultiLineStringTest {
                     "coordinates": null
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
         }
     }
@@ -219,13 +219,13 @@ class MultiLineStringTest {
     fun wrongType() {
         assertIs<MultiLineString>(
             MultiLineString.fromJsonOrNull(
-                """{"type":"MultiLineString","coordinates":[[[1.0,2.0],[3.0,4.0]]]}"""
-            )
+                """{"type":"MultiLineString","coordinates":[[[1.0,2.0],[3.0,4.0]]]}""",
+            ),
         )
         assertNull(
             MultiLineString.fromJsonOrNull(
-                """{"type":"LineString","coordinates":[[[1.0,2.0],[3.0,4.0]]]}"""
-            )
+                """{"type":"LineString","coordinates":[[[1.0,2.0],[3.0,4.0]]]}""",
+            ),
         )
     }
 
@@ -233,8 +233,8 @@ class MultiLineStringTest {
     fun missingType() {
         assertIs<MultiLineString>(
             MultiLineString.fromJsonOrNull(
-                """{"type":"MultiLineString","coordinates":[[[1.0,2.0],[3.0,4.0]]]}"""
-            )
+                """{"type":"MultiLineString","coordinates":[[[1.0,2.0],[3.0,4.0]]]}""",
+            ),
         )
         assertNull(MultiLineString.fromJsonOrNull("""{"coordinates":[[[1.0,2.0],[3.0,4.0]]]}"""))
     }

@@ -188,7 +188,7 @@ class KotlinDocsTest {
                         ArchiveWriteTile.stored(
                             coord = TileCoord(z = 0, x = 0, y = 0),
                             payload = ByteString(1, 2, 3),
-                        )
+                        ),
                     ),
                 options = options,
             )

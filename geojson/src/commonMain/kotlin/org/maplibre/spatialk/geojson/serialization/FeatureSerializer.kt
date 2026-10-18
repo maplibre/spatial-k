@@ -39,7 +39,7 @@ internal class FeatureSerializer<T : Geometry?, P : @Serializable Any?>(
     init {
         if (propertiesSerializer.descriptor.kind !is StructureKind)
             throw SerializationException(
-                "Expected Feature.properties to serialize to a structure, got ${propertiesSerializer.descriptor.kind}"
+                "Expected Feature.properties to serialize to a structure, got ${propertiesSerializer.descriptor.kind}",
             )
     }
 

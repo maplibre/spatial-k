@@ -206,13 +206,13 @@ public class Geohash private constructor(private val packed: Long) : Comparable<
             }
             require(
                 position.longitude.isFinite() &&
-                    position.longitude in MinimumLongitude..MaximumLongitude
+                    position.longitude in MinimumLongitude..MaximumLongitude,
             ) {
                 "Longitude must be finite and in $MinimumLongitude..$MaximumLongitude, but was ${position.longitude}"
             }
             require(
                 position.latitude.isFinite() &&
-                    position.latitude in MinimumLatitude..MaximumLatitude
+                    position.latitude in MinimumLatitude..MaximumLatitude,
             ) {
                 "Latitude must be finite and in $MinimumLatitude..$MaximumLatitude, but was ${position.latitude}"
             }

@@ -31,7 +31,7 @@ class LineStringTest {
                 arrayOf(
                     doubleArrayOf(1.0, 1.0),
                     doubleArrayOf(1.0), // !
-                )
+                ),
             )
         }
     }
@@ -63,7 +63,7 @@ class LineStringTest {
                     ]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
         assertEquals(expectedLineString, actualLineString)
     }
@@ -104,7 +104,7 @@ class LineStringTest {
                     ]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
 
         assertEquals(expectedLineString, actualLineString)
@@ -125,7 +125,7 @@ class LineStringTest {
                     "bbox": [1.0, 2.0, 3.0, 4.0]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
 
         assertNotNull(lineString)
@@ -194,7 +194,7 @@ class LineStringTest {
                     "coordinates": null
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
         }
     }
@@ -203,13 +203,13 @@ class LineStringTest {
     fun wrongType() {
         assertIs<LineString>(
             LineString.fromJsonOrNull(
-                """{"type":"LineString","coordinates":[[1.0,2.0],[1.0,2.0]]}"""
-            )
+                """{"type":"LineString","coordinates":[[1.0,2.0],[1.0,2.0]]}""",
+            ),
         )
         assertNull(
             LineString.fromJsonOrNull(
-                """{"type":"MultiPoint","coordinates":[[1.0,2.0],[1.0,2.0]]}"""
-            )
+                """{"type":"MultiPoint","coordinates":[[1.0,2.0],[1.0,2.0]]}""",
+            ),
         )
     }
 
@@ -217,8 +217,8 @@ class LineStringTest {
     fun missingType() {
         assertIs<LineString>(
             LineString.fromJsonOrNull(
-                """{"type":"LineString","coordinates":[[1.0,2.0],[1.0,2.0]]}"""
-            )
+                """{"type":"LineString","coordinates":[[1.0,2.0],[1.0,2.0]]}""",
+            ),
         )
         assertNull(LineString.fromJsonOrNull("""{"coordinates":[[1.0,2.0],[1.0,2.0]]}"""))
     }

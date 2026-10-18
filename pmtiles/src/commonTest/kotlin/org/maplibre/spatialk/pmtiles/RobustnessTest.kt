@@ -59,10 +59,10 @@ class RobustnessTest {
                         buildArchiveWithSections(
                             fields =
                                 TestHeaderFields(
-                                    rootLength = MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong()
+                                    rootLength = MINIMAL_ROOT_DIRECTORY_BYTES.size.toULong(),
                                 ),
                             rootBytes = MINIMAL_ROOT_DIRECTORY_BYTES,
-                        )
+                        ),
                     ),
                     options =
                         ArchiveOpenOptions.build {

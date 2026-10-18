@@ -114,7 +114,7 @@ internal fun buildArchiveWithSections(
             if (tileBytes.size > 0) {
                 tileBytes.copyInto(it, destinationOffset = fields.tileDataOffset.toInt())
             }
-        }
+        },
     )
 }
 
@@ -125,7 +125,7 @@ internal fun buildSingleTileArchive(
 ): ByteString {
     val rootBytes =
         encodeDirectory(
-            DirectoryEntry(tileId = 0, offset = 0uL, length = tileBytes.size, runLength = 1)
+            DirectoryEntry(tileId = 0, offset = 0uL, length = tileBytes.size, runLength = 1),
         )
     val fields =
         TestHeaderFields(

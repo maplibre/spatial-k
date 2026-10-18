@@ -77,7 +77,7 @@ public inline fun buildMultiPoint(builderAction: MultiPointBuilder.() -> Unit): 
  * @see MultiLineStringBuilder
  */
 public inline fun buildMultiLineString(
-    builderAction: MultiLineStringBuilder.() -> Unit
+    builderAction: MultiLineStringBuilder.() -> Unit,
 ): MultiLineString {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return MultiLineStringBuilder().apply { builderAction() }.build()
@@ -103,7 +103,7 @@ public inline fun buildMultiPolygon(builderAction: MultiPolygonBuilder.() -> Uni
  * @see GeometryCollectionBuilder
  */
 public inline fun <G : Geometry> buildGeometryCollection(
-    builderAction: GeometryCollectionBuilder<G>.() -> Unit
+    builderAction: GeometryCollectionBuilder<G>.() -> Unit,
 ): GeometryCollection<G> {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return GeometryCollectionBuilder<G>().apply { builderAction() }.build()
@@ -175,7 +175,7 @@ public inline fun <G : Geometry?, P : @Serializable Any> buildFeature(
  * @see FeatureBuilder
  */
 public inline fun <G : Geometry, P : @Serializable Any> buildFeature(
-    builderAction: FeatureBuilder<G?, P?>.() -> Unit = {}
+    builderAction: FeatureBuilder<G?, P?>.() -> Unit = {},
 ): Feature<G?, P?> {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return FeatureBuilder<G?, P?>(null, null).apply { builderAction() }.build()
@@ -189,7 +189,7 @@ public inline fun <G : Geometry, P : @Serializable Any> buildFeature(
  * @see FeatureCollectionBuilder
  */
 public inline fun <G : Geometry?, P : @Serializable Any?> buildFeatureCollection(
-    builderAction: FeatureCollectionBuilder<G, P>.() -> Unit
+    builderAction: FeatureCollectionBuilder<G, P>.() -> Unit,
 ): FeatureCollection<G, P> {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     return FeatureCollectionBuilder<G, P>().apply { builderAction() }.build()
@@ -236,7 +236,7 @@ public fun GeometryCollectionBuilder<in Point>.addPoint(
  * @param builderAction The builder configuration block for the line string.
  */
 public inline fun MultiLineStringBuilder.addLineString(
-    builderAction: LineStringBuilder.() -> Unit
+    builderAction: LineStringBuilder.() -> Unit,
 ) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(LineStringBuilder().apply { builderAction() }.build())
@@ -248,7 +248,7 @@ public inline fun MultiLineStringBuilder.addLineString(
  * @param builderAction The builder configuration block for the line string.
  */
 public inline fun GeometryCollectionBuilder<in LineString>.addLineString(
-    builderAction: LineStringBuilder.() -> Unit
+    builderAction: LineStringBuilder.() -> Unit,
 ) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(LineStringBuilder().apply { builderAction() }.build())
@@ -280,7 +280,7 @@ public inline fun MultiPolygonBuilder.addPolygon(builderAction: PolygonBuilder.(
  * @param builderAction The builder configuration block for the polygon.
  */
 public inline fun GeometryCollectionBuilder<in Polygon>.addPolygon(
-    builderAction: PolygonBuilder.() -> Unit
+    builderAction: PolygonBuilder.() -> Unit,
 ) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(PolygonBuilder().apply { builderAction() }.build())
@@ -292,7 +292,7 @@ public inline fun GeometryCollectionBuilder<in Polygon>.addPolygon(
  * @param builderAction The builder configuration block for the multi-point.
  */
 public inline fun GeometryCollectionBuilder<in MultiPoint>.addMultiPoint(
-    builderAction: MultiPointBuilder.() -> Unit
+    builderAction: MultiPointBuilder.() -> Unit,
 ) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(MultiPointBuilder().apply { builderAction() }.build())
@@ -304,7 +304,7 @@ public inline fun GeometryCollectionBuilder<in MultiPoint>.addMultiPoint(
  * @param builderAction The builder configuration block for the multi-line string.
  */
 public inline fun GeometryCollectionBuilder<in MultiLineString>.addMultiLineString(
-    builderAction: MultiLineStringBuilder.() -> Unit
+    builderAction: MultiLineStringBuilder.() -> Unit,
 ) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(MultiLineStringBuilder().apply { builderAction() }.build())
@@ -316,7 +316,7 @@ public inline fun GeometryCollectionBuilder<in MultiLineString>.addMultiLineStri
  * @param builderAction The builder configuration block for the multi-polygon.
  */
 public inline fun GeometryCollectionBuilder<in MultiPolygon>.addMultiPolygon(
-    builderAction: MultiPolygonBuilder.() -> Unit
+    builderAction: MultiPolygonBuilder.() -> Unit,
 ) {
     contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
     add(MultiPolygonBuilder().apply { builderAction() }.build())
@@ -493,5 +493,5 @@ public fun featureCollectionOf(): FeatureCollection<Nothing?, Nothing?> =
  * @return A [FeatureCollection] containing the specified features.
  */
 public fun <T : Geometry?, P : @Serializable Any?> featureCollectionOf(
-    vararg features: Feature<T, P>
+    vararg features: Feature<T, P>,
 ): FeatureCollection<T, P> = FeatureCollection(features.toList())

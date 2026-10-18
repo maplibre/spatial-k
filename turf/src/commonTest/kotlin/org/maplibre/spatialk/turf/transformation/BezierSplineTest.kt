@@ -13,11 +13,11 @@ class BezierSplineTest {
     fun testBezierSplineIn() {
         val feature =
             Feature.fromJson<LineString, JsonObject?>(
-                readResourceFile("transformation/bezierspline/in/bezierIn.json")
+                readResourceFile("transformation/bezierspline/in/bezierIn.json"),
             )
         val expectedOut =
             Feature.fromJson<LineString, JsonObject?>(
-                readResourceFile("transformation/bezierspline/out/bezierIn.json")
+                readResourceFile("transformation/bezierspline/out/bezierIn.json"),
             )
 
         assertLineStringEquals(expectedOut.geometry, feature.geometry.bezierSpline())
@@ -27,11 +27,11 @@ class BezierSplineTest {
     fun testBezierSplineSimple() {
         val feature =
             Feature.fromJson<LineString, JsonObject?>(
-                readResourceFile("transformation/bezierspline/in/simple.json")
+                readResourceFile("transformation/bezierspline/in/simple.json"),
             )
         val expectedOut =
             Feature.fromJson<LineString, JsonObject?>(
-                readResourceFile("transformation/bezierspline/out/simple.json")
+                readResourceFile("transformation/bezierspline/out/simple.json"),
             )
 
         assertLineStringEquals(expectedOut.geometry, feature.geometry.bezierSpline())
@@ -46,11 +46,11 @@ class BezierSplineTest {
     fun testBezierSplineAcrossPacific() {
         val feature =
             Feature.fromJson<LineString, JsonObject?>(
-                readResourceFile("transformation/bezierspline/in/issue-#1063.json")
+                readResourceFile("transformation/bezierspline/in/issue-#1063.json"),
             )
         val expectedOut =
             Feature.fromJson<LineString, JsonObject?>(
-                readResourceFile("transformation/bezierspline/out/issue-#1063.json")
+                readResourceFile("transformation/bezierspline/out/issue-#1063.json"),
             )
 
         assertLineStringEquals(expectedOut.geometry, feature.geometry.bezierSpline())

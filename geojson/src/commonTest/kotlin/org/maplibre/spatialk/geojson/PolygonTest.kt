@@ -34,8 +34,8 @@ class PolygonTest {
                         doubleArrayOf(1.0), // !
                         doubleArrayOf(4.0, 3.0),
                         doubleArrayOf(5.0, 2.0),
-                    )
-                )
+                    ),
+                ),
             )
         }
     }
@@ -56,7 +56,7 @@ class PolygonTest {
                     Position(5.0, 2.0),
                     Position(3.0, 2.0),
                     Position(5.0, 2.0),
-                )
+                ),
             )
         }
     }
@@ -172,7 +172,7 @@ class PolygonTest {
                             ]
                         ]
                     }
-                    """
+                    """,
             )
         assertEquals(expectedPolygon, actualPolygon)
     }
@@ -352,13 +352,13 @@ class PolygonTest {
     fun wrongType() {
         assertIs<Polygon>(
             Polygon.fromJsonOrNull(
-                """{"type":"Polygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
-            )
+                """{"type":"Polygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}""",
+            ),
         )
         assertNull(
             Polygon.fromJsonOrNull(
-                """{"type":"MultiPolygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
-            )
+                """{"type":"MultiPolygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}""",
+            ),
         )
     }
 
@@ -366,13 +366,13 @@ class PolygonTest {
     fun missingType() {
         assertIs<Polygon>(
             Polygon.fromJsonOrNull(
-                """{"type":"Polygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
-            )
+                """{"type":"Polygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}""",
+            ),
         )
         assertNull(
             Polygon.fromJsonOrNull(
-                """{"coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
-            )
+                """{"coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}""",
+            ),
         )
     }
 }

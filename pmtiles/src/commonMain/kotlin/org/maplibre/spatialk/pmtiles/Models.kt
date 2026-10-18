@@ -292,7 +292,7 @@ public object TileIds {
         val limit = 1L shl z
         if (x < 0 || y < 0 || x.toLong() >= limit || y.toLong() >= limit) {
             throw invalidTileCoordinate(
-                "Tile coordinate z=$z x=$x y=$y is outside the supported range."
+                "Tile coordinate z=$z x=$x y=$y is outside the supported range.",
             )
         }
     }

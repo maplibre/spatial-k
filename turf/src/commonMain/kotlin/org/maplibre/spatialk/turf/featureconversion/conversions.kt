@@ -133,7 +133,7 @@ public fun <T : Geometry> FeatureCollection<T?, *>.toGeometryCollection(): Geome
  */
 @JvmOverloads
 public fun <T : Geometry, P : @Serializable Any> GeometryCollection<T>.toFeatureCollection(
-    block: FeatureBuilder<T, P?>.() -> Unit = {}
+    block: FeatureBuilder<T, P?>.() -> Unit = {},
 ): FeatureCollection<T, P?> =
     FeatureCollection(
         geometries.map { buildFeature(it) { block() } },

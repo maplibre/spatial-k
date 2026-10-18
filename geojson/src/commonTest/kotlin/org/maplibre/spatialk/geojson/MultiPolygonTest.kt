@@ -33,9 +33,9 @@ class MultiPolygonTest {
                             doubleArrayOf(1.0), // !
                             doubleArrayOf(4.0, 3.0),
                             doubleArrayOf(5.0, 2.0),
-                        )
-                    )
-                )
+                        ),
+                    ),
+                ),
             )
         }
     }
@@ -51,7 +51,7 @@ class MultiPolygonTest {
     fun throwsNoRingException() {
         assertFailsWith(IllegalArgumentException::class) {
             MultiPolygon(
-                listOf(listOf(Position(10.0, 2.0), Position(5.0, 2.0), Position(3.0, 2.0)))
+                listOf(listOf(Position(10.0, 2.0), Position(5.0, 2.0), Position(3.0, 2.0))),
             )
         }
     }
@@ -66,8 +66,8 @@ class MultiPolygonTest {
                         Position(5.0, 2.0),
                         Position(3.0, 2.0),
                         Position(5.0, 2.0),
-                    )
-                )
+                    ),
+                ),
             )
         }
     }
@@ -118,7 +118,7 @@ class MultiPolygonTest {
                     ]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
         assertEquals(expectedMultiPolygon, actualMultiPolygon)
     }
@@ -188,7 +188,7 @@ class MultiPolygonTest {
                     ]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
         assertEquals(expectedMultiPolygon, actualMultiPolygon)
     }
@@ -289,7 +289,7 @@ class MultiPolygonTest {
                     "coordinates": null
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
         }
     }
@@ -298,13 +298,13 @@ class MultiPolygonTest {
     fun wrongType() {
         assertIs<MultiPolygon>(
             MultiPolygon.fromJsonOrNull(
-                """{"type":"MultiPolygon","coordinates":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]]]}"""
-            )
+                """{"type":"MultiPolygon","coordinates":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]]]}""",
+            ),
         )
         assertNull(
             MultiPolygon.fromJsonOrNull(
-                """{"type":"Polygon","coordinates":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]]]}"""
-            )
+                """{"type":"Polygon","coordinates":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]]]}""",
+            ),
         )
     }
 
@@ -312,13 +312,13 @@ class MultiPolygonTest {
     fun missingType() {
         assertIs<MultiPolygon>(
             MultiPolygon.fromJsonOrNull(
-                """{"type":"MultiPolygon","coordinates":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]]]}"""
-            )
+                """{"type":"MultiPolygon","coordinates":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]]]}""",
+            ),
         )
         assertNull(
             MultiPolygon.fromJsonOrNull(
-                """{"coordinates":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]]]}"""
-            )
+                """{"coordinates":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]]]}""",
+            ),
         )
     }
 }

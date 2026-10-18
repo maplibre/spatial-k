@@ -387,7 +387,7 @@ internal constructor(
             read.tiles.forEach { located ->
                 val compressedTile =
                     located.range.toArchiveTile(
-                        payload = bytes.sliceTile(read.range, located.range)
+                        payload = bytes.sliceTile(read.range, located.range),
                     )
                 tiles[located.index] =
                     if (decompress) compressedTile.decompressed() else compressedTile
@@ -503,7 +503,7 @@ internal constructor(
             ArchiveWarning(
                 code = ArchiveWarningCodes.MissingVectorLayers,
                 message = "MVT metadata does not contain `vector_layers`.",
-            )
+            ),
         )
     }
 
@@ -515,7 +515,7 @@ internal constructor(
             ArchiveWarning(
                 code = ArchiveWarningCodes.InvalidMetadataRecovered,
                 message = message,
-            )
+            ),
         )
     }
 }
@@ -542,7 +542,7 @@ private data class CoalescedTileRead(
 )
 
 private fun List<LocatedTile>.coalescedReads(
-    coalescing: TileReadCoalescing
+    coalescing: TileReadCoalescing,
 ): List<CoalescedTileRead> {
     if (isEmpty()) return emptyList()
 
@@ -550,7 +550,7 @@ private fun List<LocatedTile>.coalescedReads(
         sortedWith(
             compareBy<LocatedTile> { it.range.archiveRange.offset }
                 .thenBy { it.range.archiveRange.length }
-                .thenBy { it.index }
+                .thenBy { it.index },
         )
     val reads = mutableListOf<CoalescedTileRead>()
     var readStart = sortedTiles.first().range.archiveRange.offset

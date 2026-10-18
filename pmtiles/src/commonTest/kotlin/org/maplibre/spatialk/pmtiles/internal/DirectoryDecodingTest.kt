@@ -82,7 +82,7 @@ class DirectoryDecodingTest {
             assertFailsWith<PmTilesException> {
                 decodeDirectory(
                     encodeDirectory(
-                        DirectoryEntry(tileId = 0, offset = 0uL, length = 1, runLength = 1)
+                        DirectoryEntry(tileId = 0, offset = 0uL, length = 1, runLength = 1),
                     ),
                     header(),
                     limits =
@@ -98,7 +98,7 @@ class DirectoryDecodingTest {
             assertFailsWith<PmTilesException> {
                 decodeDirectory(
                     encodeDirectory(
-                        DirectoryEntry(tileId = 0, offset = 0uL, length = 2, runLength = 1)
+                        DirectoryEntry(tileId = 0, offset = 0uL, length = 2, runLength = 1),
                     ),
                     header(tileDataLength = 2uL),
                     limits =
@@ -111,7 +111,7 @@ class DirectoryDecodingTest {
             assertFailsWith<PmTilesException> {
                 decodeDirectory(
                     encodeDirectory(
-                        DirectoryEntry(tileId = 0, offset = 3uL, length = 2, runLength = 1)
+                        DirectoryEntry(tileId = 0, offset = 3uL, length = 2, runLength = 1),
                     ),
                     header(tileDataLength = 4uL),
                     limits = defaultLimits,
@@ -166,8 +166,8 @@ class DirectoryDecodingTest {
                             leafDirectoriesLength = leafDirectoriesLength,
                             tileDataOffset = 300uL,
                             tileDataLength = tileDataLength,
-                        )
-                    )
+                        ),
+                    ),
                 ),
                 archiveSize = 300uL + tileDataLength,
             )

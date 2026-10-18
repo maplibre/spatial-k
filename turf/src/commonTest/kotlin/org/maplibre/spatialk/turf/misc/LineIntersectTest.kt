@@ -15,7 +15,7 @@ class LineIntersectTest {
     fun testLineIntersect() {
         val features =
             FeatureCollection.fromJson<Geometry?, JsonObject?>(
-                readResourceFile("misc/lineIntersect/twoPoints.json")
+                readResourceFile("misc/lineIntersect/twoPoints.json"),
             )
         val intersect =
             intersect(

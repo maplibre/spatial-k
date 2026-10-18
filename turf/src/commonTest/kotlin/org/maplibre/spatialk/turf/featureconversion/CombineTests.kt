@@ -86,8 +86,8 @@ class CombineTests {
                             Position(1.0, 1.0),
                             Position(0.0, 1.0),
                             Position(0.0, 0.0),
-                        )
-                    )
+                        ),
+                    ),
                 ),
                 Polygon(
                     listOf(
@@ -97,8 +97,8 @@ class CombineTests {
                             Position(3.0, 3.0),
                             Position(2.0, 3.0),
                             Position(2.0, 2.0),
-                        )
-                    )
+                        ),
+                    ),
                 ),
             )
 
@@ -122,7 +122,7 @@ class CombineTests {
                     Position(1.0, 1.0),
                     Position(0.0, 1.0),
                     Position(0.0, 0.0),
-                )
+                ),
             ),
             multiPolygon.coordinates[0],
         )
@@ -134,7 +134,7 @@ class CombineTests {
                     Position(3.0, 3.0),
                     Position(2.0, 3.0),
                     Position(2.0, 2.0),
-                )
+                ),
             ),
             multiPolygon.coordinates[1],
         )
@@ -154,8 +154,8 @@ class CombineTests {
                             Position(4.0, 4.0),
                             Position(3.0, 4.0),
                             Position(3.0, 3.0),
-                        )
-                    )
+                        ),
+                    ),
                 ),
                 Point(Position(5.0, 5.0)),
             )
@@ -183,7 +183,7 @@ class CombineTests {
                     Position(4.0, 4.0),
                     Position(3.0, 4.0),
                     Position(3.0, 3.0),
-                )
+                ),
             ),
             multiPolygon.coordinates[0],
         )
@@ -209,8 +209,8 @@ class CombineTests {
                             Position(1.0, 3.0),
                             Position(1.0, 1.0),
                         ),
-                    )
-                )
+                    ),
+                ),
             )
 
         val result = input.combine()

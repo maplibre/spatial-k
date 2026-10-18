@@ -165,11 +165,11 @@ class RTreeTest {
     ) {
         val sortedExpected =
             expected.sortedWith(
-                compareBy({ it.bbox?.southwest?.longitude }, { it.bbox?.southwest?.latitude })
+                compareBy({ it.bbox?.southwest?.longitude }, { it.bbox?.southwest?.latitude }),
             )
         val sortedActual =
             actual.sortedWith(
-                compareBy({ it.bbox?.southwest?.longitude }, { it.bbox?.southwest?.latitude })
+                compareBy({ it.bbox?.southwest?.longitude }, { it.bbox?.southwest?.latitude }),
             )
 
         assertEquals(sortedExpected.size, sortedActual.size, "Lists have different sizes")

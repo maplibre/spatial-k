@@ -57,7 +57,7 @@ internal fun foreignMembersFromExtras(
     val conflict = reservedConflict(extras.keys, reserved)
     if (conflict != null) {
         throw SerializationException(
-            "Foreign member \"$conflict\" conflicts with a reserved GeoJSON member name"
+            "Foreign member \"$conflict\" conflicts with a reserved GeoJSON member name",
         )
     }
     return if (extras.isEmpty()) EmptyForeignMembers else JsonObject(extras.toMap())

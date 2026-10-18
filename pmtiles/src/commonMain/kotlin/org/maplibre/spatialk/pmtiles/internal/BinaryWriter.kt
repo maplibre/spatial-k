@@ -33,7 +33,7 @@ internal class BinaryWriter {
         var remaining = value
         while (remaining >= VARINT_CONTINUATION_THRESHOLD) {
             builder.append(
-                ((remaining and VARINT_PAYLOAD_MASK) or VARINT_CONTINUATION_BIT).toByte()
+                ((remaining and VARINT_PAYLOAD_MASK) or VARINT_CONTINUATION_BIT).toByte(),
             )
             remaining = remaining shr VARINT_PAYLOAD_BITS
         }

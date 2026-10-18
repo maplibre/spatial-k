@@ -81,7 +81,7 @@ class FeatureCollectionTest {
                     ]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
 
         assertEquals(expectedFeatureCollection, actualFeatureCollection)
@@ -144,7 +144,7 @@ class FeatureCollectionTest {
                     ]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
 
         assertEquals(expectedFeatureCollection, actualFeatureCollection)

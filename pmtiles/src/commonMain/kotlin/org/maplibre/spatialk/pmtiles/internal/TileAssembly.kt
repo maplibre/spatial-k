@@ -42,7 +42,7 @@ internal suspend fun assembleTileData(
         val tileId = tile.coord.toTileId()
         if (tileId == previousTileId) {
             throw invalidTileInput(
-                "Duplicate tile coordinate z=${tile.coord.z} x=${tile.coord.x} y=${tile.coord.y}."
+                "Duplicate tile coordinate z=${tile.coord.z} x=${tile.coord.x} y=${tile.coord.y}.",
             )
         }
 

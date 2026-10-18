@@ -86,8 +86,8 @@ class SerializationTests {
         assertNull(Point.fromJsonOrNull("""{"type":"MultiPoint","coordinates":[12.3,45.6]}"""))
         assertNull(
             Point.fromJsonOrNull(
-                """{"type":"MultiPoint","coordinates":[[12.3,45.6],[78.9,12.3]]}"""
-            )
+                """{"type":"MultiPoint","coordinates":[[12.3,45.6],[78.9,12.3]]}""",
+            ),
         )
     }
 
@@ -148,7 +148,7 @@ class SerializationTests {
     fun testDeserializeMultiLineString() {
         val multiLineString =
             MultiLineString.fromJson(
-                """{"type":"MultiLineString","coordinates":[[[12.3,45.6],[78.9,12.3]],[[87.6,54.3],[21.9,56.4]]]}"""
+                """{"type":"MultiLineString","coordinates":[[[12.3,45.6],[78.9,12.3]],[[87.6,54.3],[21.9,56.4]]]}""",
             )
         assertEquals(
             MultiLineString(
@@ -200,7 +200,7 @@ class SerializationTests {
                 |[-79.87,43.42]],[[-79.75,43.81],[-79.56,43.85],[-79.7,43.88],[-79.75,43.81]]]}
                 """
                     .trimMargin()
-                    .replace("\n", "")
+                    .replace("\n", ""),
             )
 
         assertEquals(
@@ -286,7 +286,7 @@ class SerializationTests {
                 |[-79.75,43.81]]]]}
                 """
                     .trimMargin()
-                    .replace("\n", "")
+                    .replace("\n", ""),
             )
 
         assertEquals(
@@ -358,7 +358,7 @@ class SerializationTests {
                 |{"type":"MultiPoint","coordinates":[[12.3,45.6],[78.9,12.3]]}]}
                 """
                     .trimMargin()
-                    .replace("\n", "")
+                    .replace("\n", ""),
             )
 
         assertEquals(GeometryCollection(point, multiPoint), collection, "GeometryCollection")

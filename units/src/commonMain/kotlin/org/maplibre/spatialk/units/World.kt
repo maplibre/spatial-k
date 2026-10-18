@@ -12,7 +12,7 @@ public abstract class World(
      * Radius for use with the Haversine formula. Approximated using a spherical (non-ellipsoid)
      * model.
      */
-    public val averageRadius: Length
+    public val averageRadius: Length,
 ) {
     /** Radians [LengthUnit] on this world's surface. */
     @JvmField public val Radians: LengthUnit = Units.Radians.asLengthUnitOn(this)

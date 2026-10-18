@@ -50,7 +50,7 @@ class MultiPointTest {
                     "type": "MultiPoint"
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
         assertEquals(expectedMultiPoint, actualMultiPoint)
     }
@@ -88,7 +88,7 @@ class MultiPointTest {
                     "bbox": [1.0, 2.0, 3.0, 4.0]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
         assertEquals(expectedMultiPoint, actualMultiPoint)
     }
@@ -144,7 +144,7 @@ class MultiPointTest {
                     "coordinates": null
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
         }
     }
@@ -152,7 +152,7 @@ class MultiPointTest {
     @Test
     fun wrongType() {
         assertIs<MultiPoint>(
-            MultiPoint.fromJsonOrNull("""{"type":"MultiPoint","coordinates":[[1.0,2.0]]}""")
+            MultiPoint.fromJsonOrNull("""{"type":"MultiPoint","coordinates":[[1.0,2.0]]}"""),
         )
         assertNull(MultiPoint.fromJsonOrNull("""{"type":"LineString","coordinates":[[1.0,2.0]]}"""))
     }
@@ -160,7 +160,7 @@ class MultiPointTest {
     @Test
     fun missingType() {
         assertIs<MultiPoint>(
-            MultiPoint.fromJsonOrNull("""{"type":"MultiPoint","coordinates":[[1.0,2.0]]}""")
+            MultiPoint.fromJsonOrNull("""{"type":"MultiPoint","coordinates":[[1.0,2.0]]}"""),
         )
         assertNull(MultiPoint.fromJsonOrNull("""{"coordinates":[[1.0,2.0]]}"""))
     }

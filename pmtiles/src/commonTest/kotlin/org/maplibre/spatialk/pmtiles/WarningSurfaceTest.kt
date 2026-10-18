@@ -32,7 +32,7 @@ class WarningSurfaceTest {
                         fields = fields,
                         rootBytes = MINIMAL_ROOT_DIRECTORY_BYTES,
                         metadataBytes = metadataBytes,
-                    )
+                    ),
                 ),
                 options = ArchiveOpenOptions.build { validationMode = ValidationMode.Lenient },
             )

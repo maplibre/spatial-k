@@ -19,7 +19,7 @@ kotlin {
         freeCompilerArgs =
             listOf(
                 // Will be the default soon: https://youtrack.jetbrains.com/issue/KT-11914
-                "-Xconsistent-data-class-copy-visibility"
+                "-Xconsistent-data-class-copy-visibility",
             )
     }
     @OptIn(ExperimentalAbiValidation::class) abiValidation()
