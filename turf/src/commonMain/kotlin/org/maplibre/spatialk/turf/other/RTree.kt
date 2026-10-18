@@ -77,7 +77,7 @@ public class RTree<T : GeoJsonObject>(
                                 add(it.bbox.northeast)
                                 add(it.bbox.southwest)
                             }
-                        }
+                        },
                     )
                 }
         }

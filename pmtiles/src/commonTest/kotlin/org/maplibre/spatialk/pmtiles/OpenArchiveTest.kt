@@ -251,7 +251,7 @@ class OpenArchiveTest {
         val sizeWrapped =
             assertFailsWith<PmTilesException> {
                 PmTiles.open(
-                    TestByteRangeSource(buildArchive(), sizeError = IllegalStateException())
+                    TestByteRangeSource(buildArchive(), sizeError = IllegalStateException()),
                 )
             }
         assertEquals(PmTilesErrorCodes.SourceUnavailable, sizeWrapped.code)
@@ -259,7 +259,7 @@ class OpenArchiveTest {
         val readWrapped =
             assertFailsWith<PmTilesException> {
                 PmTiles.open(
-                    TestByteRangeSource(buildArchive(), readError = IllegalStateException())
+                    TestByteRangeSource(buildArchive(), readError = IllegalStateException()),
                 )
             }
         assertEquals(PmTilesErrorCodes.SourceUnavailable, readWrapped.code)

@@ -37,7 +37,7 @@ open class RTreeBenchmark {
                     Point(
                         longitude = random.nextDouble(360.0) - 180,
                         latitude = random.nextDouble(180.0) - 90,
-                    )
+                    ),
             ) {
                 properties = null
             }

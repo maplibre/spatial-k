@@ -15,7 +15,7 @@ class LineSliceTest {
     fun testLineSlice() {
         val features =
             FeatureCollection.fromJson<Geometry?, JsonObject?>(
-                readResourceFile("misc/lineSlice/route.json")
+                readResourceFile("misc/lineSlice/route.json"),
             )
         val slice = LineString.fromJson(readResourceFile("misc/lineSlice/slice.json"))
 

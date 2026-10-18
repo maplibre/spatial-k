@@ -145,7 +145,7 @@ public fun greatCircle(
                         poNewLS.add(
                             if (previousPosition.longitude > borderEast)
                                 Position(PositiveAntimeridian, lat)
-                            else Position(NegativeAntimeridian, lat)
+                            else Position(NegativeAntimeridian, lat),
                         )
                         poMulti.add(poNewLS.toList())
                         poNewLS =
@@ -154,7 +154,7 @@ public fun greatCircle(
                         poNewLS.add(
                             if (previousPosition.longitude > borderEast)
                                 Position(NegativeAntimeridian, lat)
-                            else Position(PositiveAntimeridian, lat)
+                            else Position(PositiveAntimeridian, lat),
                         )
                     } else {
                         poNewLS =

@@ -16,7 +16,7 @@ internal fun runSuspending(block: suspend () -> Unit) {
                 completed = true
                 failure = result.exceptionOrNull()
             }
-        }
+        },
     )
 
     check(completed) { "Test coroutine suspended unexpectedly." }

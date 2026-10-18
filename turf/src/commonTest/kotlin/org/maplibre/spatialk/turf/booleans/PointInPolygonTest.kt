@@ -76,7 +76,7 @@ class PointInPolygonTest {
         val ptOutsidePoly = Point(-86.75079345703125, 36.18527313913089)
         val polyHole =
             Feature.fromJson<Polygon, JsonObject?>(
-                    readResourceFile("booleans/in/poly-with-hole.geojson")
+                    readResourceFile("booleans/in/poly-with-hole.geojson"),
                 )
                 .geometry
 
@@ -93,7 +93,7 @@ class PointInPolygonTest {
         val ptOutsidePoly = Point(-86.75302505493164, 36.23015046460186)
         val multiPolyHole =
             Feature.fromJson<MultiPolygon, JsonObject?>(
-                    readResourceFile("booleans/in/multipoly-with-hole.geojson")
+                    readResourceFile("booleans/in/multipoly-with-hole.geojson"),
                 )
                 .geometry
 
@@ -234,8 +234,8 @@ class PointInPolygonTest {
                         doubleArrayOf(-24.453622256504122, 41.146696777884564),
                         doubleArrayOf(-21.6445524714804, 40.43225902006474),
                         doubleArrayOf(5.080336744095521, 67.89398938540765),
-                    )
-                )
+                    ),
+                ),
             )
 
         assertTrue(poly.contains(pt1.coordinates))

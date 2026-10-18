@@ -46,7 +46,7 @@ class GeometryTest {
                     "bbox": [1.0, 2.0, 3.0, 4.0]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
 
         assertNotNull(geometry)
@@ -75,7 +75,7 @@ class GeometryTest {
                     "bbox": [1.0, 2.0, 3.0, 4.0]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
         assertEquals(expectedPoint, actualPoint)
     }
@@ -95,7 +95,7 @@ class GeometryTest {
                     "bbox": [1.0, 2.0, 3.0, 4.0]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
 
         assertNotNull(lineString)
@@ -136,7 +136,7 @@ class GeometryTest {
                     "bbox": [1.0, 2.0, 3.0, 4.0]
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
 
         assertEquals(expectedLineString, actualLineString)

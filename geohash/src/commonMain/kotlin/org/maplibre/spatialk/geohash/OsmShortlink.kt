@@ -107,13 +107,13 @@ private constructor(
             }
             require(
                 position.longitude.isFinite() &&
-                    position.longitude in MinimumLongitude..MaximumLongitude
+                    position.longitude in MinimumLongitude..MaximumLongitude,
             ) {
                 "Longitude must be finite and in $MinimumLongitude..$MaximumLongitude, but was ${position.longitude}"
             }
             require(
                 position.latitude.isFinite() &&
-                    position.latitude in MinimumLatitude..MaximumLatitude
+                    position.latitude in MinimumLatitude..MaximumLatitude,
             ) {
                 "Latitude must be finite and in $MinimumLatitude..$MaximumLatitude, but was ${position.latitude}"
             }
@@ -228,7 +228,7 @@ private constructor(
                 host == "osm.org" ||
                     host == "www.osm.org" ||
                     host == "openstreetmap.org" ||
-                    host == "www.openstreetmap.org"
+                    host == "www.openstreetmap.org",
             ) {
                 "OpenStreetMap shortlink URL has an unsupported host"
             }

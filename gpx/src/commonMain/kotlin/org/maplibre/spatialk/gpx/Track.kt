@@ -57,7 +57,7 @@ public fun Track.toGeoJson(): Feature<GeometryCollection<Point>, Track> {
         GeometryCollection(
             segments.flatMap { segment ->
                 segment.points.map { point -> point.toGeoJson().geometry }
-            }
+            },
         ),
         this,
     )

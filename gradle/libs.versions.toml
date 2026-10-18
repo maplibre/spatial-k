@@ -13,7 +13,7 @@ dokka = "2.2.0"
 detekt = "2.0.0-alpha.6"
 xmlutil = "1.0.2.1"
 kotlinpoet = "2.4.0"
-ktfmt = "0.64"
+ktfmt = "0.65"
 
 [libraries]
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
@@ -38,4 +38,4 @@ gradle-detekt = { module = "dev.detekt:dev.detekt.gradle.plugin", version.ref = 
 xmlutil-core = { module = "io.github.pdvrieze.xmlutil:core", version.ref = "xmlutil" }
 xmlutil-serialization = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xmlutil" }
 kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
-ktfmt = { module = "com.facebook:ktfmt", version.ref = "ktfmt" }
+ktfmt = { module = "org.jetbrains.kotlinx:ktfmt", version.ref = "ktfmt" }

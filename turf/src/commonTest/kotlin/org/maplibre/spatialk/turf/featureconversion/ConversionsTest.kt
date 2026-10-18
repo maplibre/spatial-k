@@ -40,8 +40,8 @@ class ConversionsTest {
                         Position(1.0, 1.0),
                         Position(0.0, 1.0),
                         Position(0.0, 0.0),
-                    )
-                )
+                    ),
+                ),
             )
         val result = polygon.toMultiPolygon()
 
@@ -54,8 +54,8 @@ class ConversionsTest {
                         Position(1.0, 1.0),
                         Position(0.0, 1.0),
                         Position(0.0, 0.0),
-                    )
-                )
+                    ),
+                ),
             ),
             result.coordinates,
         )
@@ -74,8 +74,8 @@ class ConversionsTest {
                         Position(1.0, 1.0),
                         Position(0.0, 1.0),
                         Position(0.0, 0.0),
-                    )
-                )
+                    ),
+                ),
             )
         val result = polygon.toMultiLineString()
 
@@ -87,7 +87,7 @@ class ConversionsTest {
                     Position(1.0, 1.0),
                     Position(0.0, 1.0),
                     Position(0.0, 0.0),
-                )
+                ),
             ),
             result.coordinates,
         )
@@ -114,7 +114,7 @@ class ConversionsTest {
                         Position(1.0, 3.0),
                         Position(1.0, 1.0),
                     ),
-                )
+                ),
             )
         val result = polygon.toMultiLineString()
 
@@ -153,7 +153,7 @@ class ConversionsTest {
                             Position(1.0, 1.0),
                             Position(0.0, 1.0),
                             Position(0.0, 0.0),
-                        )
+                        ),
                     ),
                     listOf(
                         listOf(
@@ -162,9 +162,9 @@ class ConversionsTest {
                             Position(3.0, 3.0),
                             Position(2.0, 3.0),
                             Position(2.0, 2.0),
-                        )
+                        ),
                     ),
-                )
+                ),
             )
         val result = multiPolygon.toMultiLineStrings()
 
@@ -177,7 +177,7 @@ class ConversionsTest {
                     Position(1.0, 1.0),
                     Position(0.0, 1.0),
                     Position(0.0, 0.0),
-                )
+                ),
             ),
             result.geometries[0].coordinates,
         )
@@ -189,7 +189,7 @@ class ConversionsTest {
                     Position(3.0, 3.0),
                     Position(2.0, 3.0),
                     Position(2.0, 2.0),
-                )
+                ),
             ),
             result.geometries[1].coordinates,
         )
@@ -206,7 +206,7 @@ class ConversionsTest {
                     Position(1.0, 0.0),
                     Position(1.0, 1.0),
                     Position(0.0, 1.0),
-                )
+                ),
             )
         val result = lineString.toPolygon()
 
@@ -236,7 +236,7 @@ class ConversionsTest {
                         Position(4.0, 4.0),
                         Position(0.0, 4.0),
                     ),
-                )
+                ),
             )
         val result = multiLineString.toPolygon()
 
@@ -263,8 +263,8 @@ class ConversionsTest {
                         Position(1.0, 1.0),
                         Position(0.0, 1.0),
                         Position(0.0, 0.0),
-                    )
-                )
+                    ),
+                ),
             )
         val result = multiLineString.toPolygon(autoClose = false, autoOrder = true)
 
@@ -294,7 +294,7 @@ class ConversionsTest {
                         Position(4.0, 4.0),
                         Position(0.0, 4.0),
                     ),
-                )
+                ),
             )
         val result = multiLineString.toPolygon(autoClose = true, autoOrder = false)
 
@@ -329,7 +329,7 @@ class ConversionsTest {
                         Position(0.0, 4.0),
                         Position(0.0, 0.0),
                     ),
-                )
+                ),
             )
         val result = multiLineString.toPolygon(autoClose = false, autoOrder = false)
 
@@ -355,8 +355,8 @@ class ConversionsTest {
                         Position(1.0, 0.0),
                         Position(1.0, 1.0),
                         Position(0.0, 1.0),
-                    )
-                )
+                    ),
+                ),
             )
         assertFailsWith<IllegalArgumentException> {
             multiLineString.toPolygon(autoClose = false, autoOrder = true)
@@ -374,7 +374,7 @@ class ConversionsTest {
                             Position(1.0, 0.0),
                             Position(1.0, 1.0),
                             Position(0.0, 1.0),
-                        )
+                        ),
                     ),
                     LineString(
                         listOf(
@@ -382,9 +382,9 @@ class ConversionsTest {
                             Position(3.0, 2.0),
                             Position(3.0, 3.0),
                             Position(2.0, 3.0),
-                        )
+                        ),
                     ),
-                )
+                ),
             )
         val result = geometryCollection.toMultiPolygon(autoClose = true, autoOrder = false)
 
@@ -434,7 +434,7 @@ class ConversionsTest {
                     Point(Position(0.0, 0.0)),
                     Point(Position(1.0, 1.0)),
                     Point(Position(2.0, 2.0)),
-                )
+                ),
             )
         val result = geometryCollection.toFeatureCollection { properties = null }
 

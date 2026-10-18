@@ -22,7 +22,7 @@ class NearestPointOnLineTest {
     fun testNearestPointOnLineMultiLine() {
         val fc =
             FeatureCollection.fromJson<Geometry?, JsonObject?>(
-                readResourceFile("misc/nearestPointOnLine/multiLine.json")
+                readResourceFile("misc/nearestPointOnLine/multiLine.json"),
             )
 
         val multiline = fc[0].geometry as LineStringGeometry
@@ -40,7 +40,7 @@ class NearestPointOnLineTest {
     fun testNearestPointOnLineFromTurfJs() {
         val fc =
             FeatureCollection.fromJson<Geometry?, JsonObject?>(
-                readResourceFile("misc/nearestPointOnLine/line1.json")
+                readResourceFile("misc/nearestPointOnLine/line1.json"),
             )
 
         val line = fc[0].geometry as LineString

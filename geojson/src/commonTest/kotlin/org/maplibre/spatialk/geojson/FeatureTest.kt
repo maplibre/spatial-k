@@ -50,7 +50,7 @@ class FeatureTest {
                     "properties": null
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
 
         assertEquals(expectedFeature, actualFeature)
@@ -98,7 +98,7 @@ class FeatureTest {
                     "properties": null
                 }
                 """
-                    .trimIndent()
+                    .trimIndent(),
             )
 
         assertEquals(expectedFeature, actualFeature)
@@ -210,7 +210,7 @@ class FeatureTest {
                         "name": "Dinagat Islands"
                     }
                 }
-                """
+                """,
             )
 
         assertEquals(expectedFeature, actualFeature)
@@ -252,7 +252,7 @@ class FeatureTest {
 
         val actualFeature =
             Feature.fromJson<Geometry, Nothing?>(
-                Feature.fromJson<Geometry, Nothing?>(jsonString).toJson()
+                Feature.fromJson<Geometry, Nothing?>(jsonString).toJson(),
             )
         val expectedFeature = Feature.fromJson<Geometry, Nothing?>(jsonString)
         assertEquals(expectedFeature, actualFeature)
@@ -280,7 +280,7 @@ class FeatureTest {
 
         val actualFeature =
             Feature.fromJson<Geometry, JsonObject>(
-                Feature.fromJson<Geometry, JsonObject>(jsonString).toJson()
+                Feature.fromJson<Geometry, JsonObject>(jsonString).toJson(),
             )
         val expectedFeature = Feature.fromJson<Geometry, JsonObject>(jsonString)
         assertEquals(expectedFeature, actualFeature)
@@ -298,8 +298,8 @@ class FeatureTest {
                     },
                     "properties": null
                 }
-                """
-            )
+                """,
+            ),
         )
     }
 
@@ -316,8 +316,8 @@ class FeatureTest {
                     },
                     "properties": null
                 }
-                """
-            )
+                """,
+            ),
         )
     }
 
@@ -395,7 +395,7 @@ class FeatureTest {
 
         val json =
             Json.decodeFromString<JsonObject>(
-                Feature.fromJson<Geometry?, Nothing?>(nullJson).toJson()
+                Feature.fromJson<Geometry?, Nothing?>(nullJson).toJson(),
             )
         assertTrue(json.containsKey("geometry"))
         assertEquals(JsonNull, json["geometry"])
@@ -435,7 +435,7 @@ class FeatureTest {
 
         val json =
             Json.decodeFromString<JsonObject>(
-                Feature.fromJson<Nothing?, JsonObject?>(nullJson).toJson()
+                Feature.fromJson<Nothing?, JsonObject?>(nullJson).toJson(),
             )
         assertTrue(json.containsKey("properties"))
         assertEquals(JsonNull, json["properties"])

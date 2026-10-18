@@ -33,7 +33,7 @@ class SerializationTest {
                 put("area", 50.0)
                 put("rotation", 45.0)
                 put("bearing", 315.0)
-            }
+            },
         )
 
     @Test

@@ -19,7 +19,7 @@ internal object PositionSerializer : KSerializer<Position> {
 
         if (array.size < 2)
             throw SerializationException(
-                "Position data requires at least two elements [longitude, latitude]. Found array of size: ${array.size}"
+                "Position data requires at least two elements [longitude, latitude]. Found array of size: ${array.size}",
             )
 
         return Position(array)

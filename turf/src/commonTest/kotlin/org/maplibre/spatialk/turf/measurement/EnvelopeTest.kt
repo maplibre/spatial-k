@@ -24,7 +24,7 @@ class EnvelopeTest {
                     add(103.0, 1.0)
                     add(104.0, 0.0)
                     add(130.0, 4.0)
-                }
+                },
             )
             addFeature(
                 buildPolygon {
@@ -40,7 +40,7 @@ class EnvelopeTest {
                         add(100.0, 0.0)
                         add(102.0, -10.0)
                     }
-                }
+                },
             )
         }
 
@@ -54,7 +54,7 @@ class EnvelopeTest {
                     Position(130.0, 4.0),
                     Position(20.0, 4.0),
                     Position(20.0, -10.0),
-                )
+                ),
             ),
             envelope.coordinates,
             "positions should be correct",

@@ -22,11 +22,11 @@ class CircleTest {
     fun testCircle() {
         val pointFeature =
             Feature.fromJson<Point, JsonObject?>(
-                readResourceFile("transformation/circle/in/circle1.json")
+                readResourceFile("transformation/circle/in/circle1.json"),
             )
         val expectedOut =
             FeatureCollection.fromJson<Geometry?, JsonObject?>(
-                readResourceFile("transformation/circle/out/circle1.json")
+                readResourceFile("transformation/circle/out/circle1.json"),
             )
 
         val (_, expectedCircle) = expectedOut.features

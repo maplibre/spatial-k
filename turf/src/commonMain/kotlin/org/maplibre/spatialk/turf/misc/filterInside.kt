@@ -24,7 +24,7 @@ import org.maplibre.spatialk.turf.booleans.contains
  *   are inside at least one of the polygons.
  */
 public fun <G : PointGeometry> GeometryCollection<G>.filterInside(
-    polygons: GeometryCollection<PolygonGeometry>
+    polygons: GeometryCollection<PolygonGeometry>,
 ): GeometryCollection<G> {
     val results = mutableListOf<G>()
 

@@ -31,7 +31,7 @@ class KotlinDocsTest {
                 listOf(
                     Position(longitude = -120.2, latitude = 38.5),
                     Position(longitude = -120.95, latitude = 40.7),
-                )
+                ),
             )
         // --8<-- [end:encode]
     }

@@ -32,7 +32,7 @@ internal suspend fun encodeGzip(bytes: ByteString, limits: CompressionLimits): B
 
             uncompressedStream
                 .pipeThrough<Uint8Array<ArrayBuffer>>(
-                    CompressionStream(CompressionFormat.gzip).asReadableWritablePair()
+                    CompressionStream(CompressionFormat.gzip).asReadableWritablePair(),
                 )
                 .readBoundedCompressedBytes(limits)
         } catch (error: PmTilesException) {
@@ -60,7 +60,7 @@ private external interface CancelableStreamReader {
 }
 
 private suspend fun ReadableStream<Uint8Array<ArrayBuffer>>.readBoundedCompressedBytes(
-    limits: CompressionLimits
+    limits: CompressionLimits,
 ): ByteString {
     val reader = getReader()
     val sink = BoundedCompressedByteArraySink(limits)

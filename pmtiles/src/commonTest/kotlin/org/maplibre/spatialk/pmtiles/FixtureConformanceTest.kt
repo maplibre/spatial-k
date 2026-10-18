@@ -74,7 +74,7 @@ class FixtureConformanceTest {
     fun readsRasterFixtureThroughLeafDirectories() = runTest {
         val archive =
             PmTiles.open(
-                TestByteRangeSource(readFixture("stamen-toner-raster-cc-by-odbl-z3.pmtiles"))
+                TestByteRangeSource(readFixture("stamen-toner-raster-cc-by-odbl-z3.pmtiles")),
             )
 
         val range = assertNotNull(archive.findTileRange(3, 4, 3))
@@ -126,8 +126,8 @@ class FixtureConformanceTest {
         val archive =
             PmTiles.open(
                 TestByteRangeSource(
-                    readFixture("generated-go-pmtiles-unclustered-clustered.pmtiles")
-                )
+                    readFixture("generated-go-pmtiles-unclustered-clustered.pmtiles"),
+                ),
             )
 
         assertEquals(true, archive.header.isClustered)

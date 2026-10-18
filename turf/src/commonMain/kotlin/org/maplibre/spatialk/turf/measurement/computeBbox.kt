@@ -31,7 +31,7 @@ public fun computeBbox(coordinates: List<Position>): BoundingBox {
                 Double.POSITIVE_INFINITY,
                 Double.NEGATIVE_INFINITY,
                 Double.NEGATIVE_INFINITY,
-            )
+            ),
         ) { result, (longitude, latitude) ->
             require(longitude.isFinite() && latitude.isFinite()) {
                 "coordinates must be finite but got ($longitude, $latitude)"

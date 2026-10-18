@@ -74,7 +74,7 @@ private fun bezierSpline(
                             (1.0 - sharpness) * coords[i + 1].altitude() +
                                 sharpness * (centers[i + 1].altitude() + dz),
                     ),
-                )
+                ),
             )
         }
         add(Pair(coords[coords.lastIndex], coords[coords.lastIndex]))

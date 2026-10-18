@@ -1,6 +1,5 @@
 package org.maplibre.spatialk.codegen
 
-import com.facebook.ktfmt.format.Formatter
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -11,6 +10,9 @@ import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import java.io.File
+import org.jetbrains.kotlinx.ktfmt.format.FileType
+import org.jetbrains.kotlinx.ktfmt.format.Formatter
+import org.jetbrains.kotlinx.ktfmt.format.KotlinCode
 import org.maplibre.spatialk.codegen.catalog.catalog
 
 private const val PACKAGE = "org.maplibre.spatialk.units"
@@ -37,7 +39,11 @@ fun main(args: Array<String>) {
         val path =
             "units/src/commonMain/kotlin/${file.packageName.replace('.', '/')}/${file.name}.kt"
         val target = root.resolve(path)
-        val content = Formatter.format(Formatter.KOTLINLANG_FORMAT, file.toString())
+        val content =
+            Formatter.format(
+                Formatter.KOTLINLANG_FORMAT,
+                KotlinCode.from(file.toString(), FileType.REGULAR),
+            )
         if ("--check" in args) {
             check(target.readText() == content) {
                 "$path is out of date. Run mise run generate:units."
@@ -58,7 +64,7 @@ private fun conversionHelpers(): FileSpec {
             .addAnnotation(
                 AnnotationSpec.builder(ClassName("kotlin.jvm", "JvmSynthetic"))
                     .useSiteTarget(AnnotationSpec.UseSiteTarget.FILE)
-                    .build()
+                    .build(),
             )
     for (unit in units) {
         val helper = unit.helper ?: continue
@@ -78,7 +84,7 @@ private fun conversionHelpers(): FileSpec {
                         catalogClass(unit.family),
                         unit.name,
                     )
-                    .build()
+                    .build(),
             )
         }
         helpers.addProperty(
@@ -95,7 +101,7 @@ private fun conversionHelpers(): FileSpec {
                     catalogClass(unit.family),
                     unit.name,
                 )
-                .build()
+                .build(),
         )
     }
     return helpers.build()
@@ -136,7 +142,7 @@ private fun commonUnits(): TypeSpec {
         TypeSpec.objectBuilder("Units")
             .addModifiers(KModifier.PUBLIC, KModifier.DATA)
             .addKdoc(
-                "Common units for terrestrial mapping. Each property aliases a definition in a specialist catalog.\n"
+                "Common units for terrestrial mapping. Each property aliases a definition in a specialist catalog.\n",
             )
     for (unit in units) {
         val commonName = unit.commonName ?: continue
@@ -153,7 +159,7 @@ private fun commonUnits(): TypeSpec {
                     unit.name,
                 )
                 .initializer("%T.%L", catalogClass(unit.family), unit.name)
-                .build()
+                .build(),
         )
     }
     return type.build()
@@ -167,5 +173,5 @@ private fun PropertySpec.Builder.inlineGetter(
         FunSpec.getterBuilder()
             .addModifiers(KModifier.INLINE)
             .addStatement("return $format", *args)
-            .build()
+            .build(),
     )

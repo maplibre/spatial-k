@@ -308,7 +308,7 @@ class ForeignMembersTest {
                     "properties": null,
                     "coordinates": [1.1, 2.2]
                 }
-                """
+                """,
             )
         }
         assertFailsWith<SerializationException> {
@@ -319,7 +319,7 @@ class ForeignMembersTest {
                     "coordinates": [1.1, 2.2],
                     "properties": { "name": "nope" }
                 }
-                """
+                """,
             )
         }
         assertFailsWith<SerializationException> {
@@ -330,7 +330,7 @@ class ForeignMembersTest {
                     "features": [],
                     "geometry": { "type": "Point", "coordinates": [1.1, 2.2] }
                 }
-                """
+                """,
             )
         }
         assertFailsWith<SerializationException> {
@@ -341,7 +341,7 @@ class ForeignMembersTest {
                     "coordinates": [1.1, 2.2],
                     "geometries": []
                 }
-                """
+                """,
             )
         }
         assertFailsWith<SerializationException> {
@@ -352,7 +352,7 @@ class ForeignMembersTest {
                     "geometries": [],
                     "coordinates": [1.1, 2.2]
                 }
-                """
+                """,
             )
         }
     }
@@ -370,7 +370,7 @@ class ForeignMembersTest {
                     "bbox": null,
                     "title": "Example Feature"
                 }
-                """
+                """,
             )
         assertNull(feature.id)
         assertNull(feature.bbox)
@@ -385,7 +385,7 @@ class ForeignMembersTest {
                     "bbox": null,
                     "title": "origin"
                 }
-                """
+                """,
             )
         assertNull(point.bbox)
         assertEquals(JsonPrimitive("origin"), point.foreignMembers["title"])

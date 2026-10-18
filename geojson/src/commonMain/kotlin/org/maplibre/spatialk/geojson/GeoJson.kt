@@ -77,12 +77,12 @@ public data object GeoJson {
 
     @PublishedApi
     internal inline fun <reified T : GeoJsonObject?> decodeFromString(
-        @Language("json") string: String
+        @Language("json") string: String,
     ): T = jsonFormat.decodeFromString<T>(string)
 
     @PublishedApi
     internal inline fun <reified T : GeoJsonObject?> decodeFromStringOrNull(
-        @Language("json") string: String
+        @Language("json") string: String,
     ): T? =
         try {
             decodeFromString<T>(string)

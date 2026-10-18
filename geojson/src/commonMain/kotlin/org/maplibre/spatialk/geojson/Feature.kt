@@ -67,7 +67,7 @@ constructor(
         @JvmSynthetic
         @JvmName("inlineFromJson")
         public inline fun <reified G : Geometry?, reified P : @Serializable Any?> fromJson(
-            @Language("json") json: String
+            @Language("json") json: String,
         ): Feature<G, P> = GeoJson.decodeFromString(json)
 
         /**
@@ -79,7 +79,7 @@ constructor(
         @JvmSynthetic
         @JvmName("inlineFromJsonOrNull")
         public inline fun <reified G : Geometry?, reified P : @Serializable Any?> fromJsonOrNull(
-            @Language("json") json: String
+            @Language("json") json: String,
         ): Feature<G, P>? = GeoJson.decodeFromStringOrNull(json)
 
         // Publish for Java below; Kotlin should use the inline reified versions above

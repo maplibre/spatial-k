@@ -30,7 +30,7 @@ internal suspend fun decodeGzip(bytes: ByteString, limits: DecompressionLimits):
 
             compressedStream
                 .pipeThrough<Uint8Array<ArrayBuffer>>(
-                    DecompressionStream(CompressionFormat.gzip).asReadableWritablePair()
+                    DecompressionStream(CompressionFormat.gzip).asReadableWritablePair(),
                 )
                 .readBoundedBytes(limits)
         } catch (error: PmTilesException) {
@@ -49,7 +49,7 @@ private fun DecompressionStream.asReadableWritablePair():
     ReadableWritablePair<Uint8Array<ArrayBuffer>, Uint8Array<ArrayBuffer>> = unsafeCast(this)
 
 private suspend fun ReadableStream<Uint8Array<ArrayBuffer>>.readBoundedBytes(
-    limits: DecompressionLimits
+    limits: DecompressionLimits,
 ): ByteString {
     val reader = getReader()
     val sink = BoundedByteArraySink(limits)

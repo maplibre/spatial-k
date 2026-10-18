@@ -74,7 +74,7 @@ internal class DirectoryResolver(
                     code = ArchiveWarningCodes.NestedLeafDirectory,
                     message = "Lookup traversed a nested leaf directory.",
                     context = "depth=$depth tileId=${entry.tileId}",
-                )
+                ),
             )
         }
 

@@ -26,7 +26,7 @@ class TileBytesTest {
                     tileBytes = tileBytes,
                     tileCompression = CompressionCodes.Brotli.code,
                     tileType = TileTypeCodes.Png.code,
-                )
+                ),
             )
         val archive = PmTiles.open(source)
 
@@ -75,7 +75,7 @@ class TileBytesTest {
                     rootBytes = rootBytes,
                     tileBytes = tileData,
                     minimumArchiveSize = tileDataOffset + tileData.size.toULong(),
-                )
+                ),
             )
         val archive = PmTiles.open(source)
         source.reads.clear()
@@ -86,7 +86,7 @@ class TileBytesTest {
                     TileIds.toZxy(1),
                     TileIds.toZxy(2),
                     TileIds.toZxy(0),
-                )
+                ),
             )
 
         assertEquals(3, tiles.size)
@@ -119,7 +119,7 @@ class TileBytesTest {
                     rootBytes = rootBytes,
                     tileBytes = tileData,
                     minimumArchiveSize = tileDataOffset + tileData.size.toULong(),
-                )
+                ),
             )
         val archive = PmTiles.open(source)
         val coords = listOf(TileIds.toZxy(0), TileIds.toZxy(1))
@@ -171,7 +171,7 @@ class TileBytesTest {
                     rootBytes = rootBytes,
                     tileBytes = tileData,
                     minimumArchiveSize = tileDataOffset + tileData.size.toULong(),
-                )
+                ),
             )
         val archive = PmTiles.open(source)
         source.reads.clear()
@@ -214,7 +214,7 @@ class TileBytesTest {
                     rootBytes = rootBytes,
                     tileBytes = compressedTileData,
                     minimumArchiveSize = tileDataOffset + compressedTileData.size.toULong(),
-                )
+                ),
             )
         val archive =
             PmTiles.open(
@@ -266,8 +266,8 @@ class TileBytesTest {
                     buildSingleTileArchive(
                         tileBytes = helloGzipBytes,
                         tileCompression = CompressionCodes.Gzip.code,
-                    )
-                )
+                    ),
+                ),
             )
 
         val tile = archive.readDecompressedTile(0, 0, 0)
@@ -319,7 +319,7 @@ class TileBytesTest {
                     buildSingleTileArchive(
                         tileBytes = compressedBytes,
                         tileCompression = CompressionCodes.Brotli.code,
-                    )
+                    ),
                 ),
                 options =
                     ArchiveOpenOptions.build {
@@ -367,7 +367,7 @@ class TileBytesTest {
                             buildSingleTileArchive(
                                 tileBytes = helloGzipBytes,
                                 tileCompression = CompressionCodes.Gzip.code,
-                            )
+                            ),
                         ),
                         options =
                             ArchiveOpenOptions.build {

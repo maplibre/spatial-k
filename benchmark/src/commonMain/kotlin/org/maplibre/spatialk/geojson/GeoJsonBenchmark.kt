@@ -36,7 +36,7 @@ open class GeoJsonBenchmark {
                     Point(
                         longitude = random.nextDouble(360.0) - 180,
                         latitude = random.nextDouble(360.0) - 180,
-                    )
+                    ),
             )
         }
 
@@ -50,7 +50,7 @@ open class GeoJsonBenchmark {
                                 latitude = random.nextDouble(360.0) - 180,
                             )
                         }
-                    }
+                    },
             )
         }
 
@@ -72,7 +72,7 @@ open class GeoJsonBenchmark {
                                 )
                             }
                         }
-                    }
+                    },
             ) {
                 properties = buildJsonObject { put("example", "value") }
             }

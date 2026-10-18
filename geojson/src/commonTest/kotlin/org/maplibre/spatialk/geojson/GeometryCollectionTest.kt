@@ -65,7 +65,7 @@ class GeometryCollectionTest {
                     }
                 ]
             }
-            """
+            """,
             )
         assertEquals(expectedGeometryCollection, actualGeometryCollection)
     }
@@ -127,7 +127,7 @@ class GeometryCollectionTest {
                     }
                 ]
             }
-            """
+            """,
             )
         assertEquals(expectedGeometryCollection, actualGeometryCollection)
     }
@@ -224,8 +224,8 @@ class GeometryCollectionTest {
                     }
                 ]
             }
-            """
-            )
+            """,
+            ),
         )
     }
 
@@ -249,8 +249,8 @@ class GeometryCollectionTest {
                     }
                 ]
             }
-            """
-            )
+            """,
+            ),
         )
     }
 

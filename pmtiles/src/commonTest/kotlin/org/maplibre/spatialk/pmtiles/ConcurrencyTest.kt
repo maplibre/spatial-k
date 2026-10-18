@@ -25,11 +25,11 @@ class ConcurrencyTest {
         val tileId = 2L
         val leafBytes =
             encodeDirectory(
-                DirectoryEntry(tileId = tileId, offset = 1uL, length = 2, runLength = 1)
+                DirectoryEntry(tileId = tileId, offset = 1uL, length = 2, runLength = 1),
             )
         val rootBytes =
             encodeDirectory(
-                DirectoryEntry(tileId = 1, offset = 0uL, length = leafBytes.size, runLength = 0)
+                DirectoryEntry(tileId = 1, offset = 0uL, length = leafBytes.size, runLength = 0),
             )
         val leafRange = ByteRange(200uL, leafBytes.size.toULong())
         val archiveBytes =
@@ -104,11 +104,11 @@ class ConcurrencyTest {
         val secondTileId = 3L
         val firstLeafBytes =
             encodeDirectory(
-                DirectoryEntry(tileId = firstTileId, offset = 0uL, length = 1, runLength = 1)
+                DirectoryEntry(tileId = firstTileId, offset = 0uL, length = 1, runLength = 1),
             )
         val secondLeafBytes =
             encodeDirectory(
-                DirectoryEntry(tileId = secondTileId, offset = 1uL, length = 1, runLength = 1)
+                DirectoryEntry(tileId = secondTileId, offset = 1uL, length = 1, runLength = 1),
             )
         val firstLeafRange = ByteRange(200uL, firstLeafBytes.size.toULong())
         val secondLeafRange =
@@ -193,7 +193,7 @@ private class BlockingRangeSource(
 }
 
 private suspend inline fun <reified T : Throwable> assertSuspendFailsWith(
-    noinline block: suspend () -> Unit
+    noinline block: suspend () -> Unit,
 ): T {
     var failure: Throwable? = null
     try {

@@ -47,7 +47,7 @@ class ExplodeTest {
                 listOf(
                     listOf(Position(1.0, 2.0), Position(3.0, 4.0)),
                     listOf(Position(5.0, 6.0), Position(7.0, 8.0), Position(9.0, 10.0)),
-                )
+                ),
             )
         val result = multiLineString.explode()
 
@@ -70,8 +70,8 @@ class ExplodeTest {
                         Position(1.0, 1.0),
                         Position(0.0, 1.0),
                         Position(0.0, 0.0),
-                    )
-                )
+                    ),
+                ),
             )
         val result = polygon.explode()
 
@@ -102,7 +102,7 @@ class ExplodeTest {
                         Position(1.0, 3.0),
                         Position(1.0, 1.0),
                     ),
-                )
+                ),
             )
         val result = polygon.explode()
 
@@ -133,7 +133,7 @@ class ExplodeTest {
                             Position(1.0, 1.0),
                             Position(0.0, 1.0),
                             Position(0.0, 0.0),
-                        )
+                        ),
                     ),
                     listOf(
                         listOf(
@@ -142,9 +142,9 @@ class ExplodeTest {
                             Position(3.0, 3.0),
                             Position(2.0, 3.0),
                             Position(2.0, 2.0),
-                        )
+                        ),
                     ),
-                )
+                ),
             )
         val result = multiPolygon.explode()
 
@@ -171,7 +171,7 @@ class ExplodeTest {
                     Point(Position(1.0, 2.0)),
                     LineString(listOf(Position(3.0, 4.0), Position(5.0, 6.0))),
                     MultiPoint(listOf(Position(7.0, 8.0), Position(9.0, 10.0))),
-                )
+                ),
             )
         val result = geometryCollection.explode()
 
@@ -245,17 +245,17 @@ class ExplodeTest {
                                     Position(1.0, 1.0),
                                     Position(0.0, 1.0),
                                     Position(0.0, 0.0),
-                                )
-                            )
-                        )
+                                ),
+                            ),
+                        ),
                     ),
                     MultiLineString(
                         listOf(
                             listOf(Position(2.0, 2.0), Position(3.0, 3.0)),
                             listOf(Position(4.0, 4.0), Position(5.0, 5.0), Position(6.0, 6.0)),
-                        )
+                        ),
                     ),
-                )
+                ),
             )
         val result = complexGeometry.explode()
 

@@ -95,7 +95,7 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
     ) : this(
         min(southwest.size, northeast.size).let { size ->
             southwest.coordinates.sliceArray(0..<size) + northeast.coordinates.sliceArray(0..<size)
-        }
+        },
     )
 
     /**
@@ -134,7 +134,7 @@ public class BoundingBox internal constructor(internal val coordinates: DoubleAr
         doubleArrayOf(west, south, minAltitude) +
             additionalElements.sliceArray(0..<additionalElements.size / 2) +
             doubleArrayOf(east, north, maxAltitude) +
-            additionalElements.sliceArray(additionalElements.size / 2..<additionalElements.size)
+            additionalElements.sliceArray(additionalElements.size / 2..<additionalElements.size),
     )
 
     public val southwest: Position

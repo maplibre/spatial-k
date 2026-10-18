@@ -90,7 +90,7 @@ public class Position internal constructor(internal val coordinates: DoubleArray
         altitude: Double? = null,
     ) : this(
         if (altitude == null) doubleArrayOf(longitude, latitude)
-        else doubleArrayOf(longitude, latitude, altitude)
+        else doubleArrayOf(longitude, latitude, altitude),
     )
 
     /**

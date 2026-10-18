@@ -53,7 +53,7 @@ class ArchiveWriterTest {
         assertEquals(
             sink.bytes,
             PmTiles.writeToByteString(
-                listOf(ArchiveWriteTile.stored(TileCoord(0, 0, 0), ByteString(1, 2, 3)))
+                listOf(ArchiveWriteTile.stored(TileCoord(0, 0, 0), ByteString(1, 2, 3))),
             ),
         )
     }

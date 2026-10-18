@@ -53,5 +53,5 @@ private fun BoundingBox.withLongitudes(west: Double, east: Double): BoundingBox 
         coordinates.copyOf().also {
             it[0] = west
             it[size / 2] = east
-        }
+        },
     )

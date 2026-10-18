@@ -25,9 +25,9 @@ class FilterInsideTest {
                                 Position(100.0, 100.0),
                                 Position(100.0, 0.0),
                                 Position(0.0, 0.0),
-                            )
-                        )
-                    )
+                            ),
+                        ),
+                    ),
                 )
 
         assertTrue(result.geometries.isNotEmpty(), "returns a geometry collection")
@@ -52,7 +52,7 @@ class FilterInsideTest {
                                 Position(10.0, 10.0),
                                 Position(0.0, 10.0),
                                 Position(0.0, 0.0),
-                            )
+                            ),
                         ),
                         Polygon(
                             listOf(
@@ -61,9 +61,9 @@ class FilterInsideTest {
                                 Position(20.0, 20.0),
                                 Position(20.0, 0.0),
                                 Position(10.0, 0.0),
-                            )
+                            ),
                         ),
-                    )
+                    ),
                 )
         assertTrue(result2.geometries.isNotEmpty(), "returns a geometry collection")
         assertEquals(5, result2.geometries.size, "multiple points in multiple polygons")
@@ -80,8 +80,8 @@ class FilterInsideTest {
                         Position(100.0, 100.0),
                         Position(100.0, 0.0),
                         Position(0.0, 0.0),
-                    )
-                )
+                    ),
+                ),
             )
 
         // multipoint within
@@ -141,7 +141,7 @@ class FilterInsideTest {
                             Position(100.0, 100.0),
                             Position(100.0, 0.0),
                             Position(0.0, 0.0),
-                        )
+                        ),
                     ),
                     Polygon(
                         listOf(
@@ -150,9 +150,9 @@ class FilterInsideTest {
                             Position(20.0, 20.0),
                             Position(20.0, 0.0),
                             Position(10.0, 0.0),
-                        )
+                        ),
                     ),
-                )
+                ),
             )
         assertTrue(fcMultiWithin.geometries.isNotEmpty(), "returns a geometry collection")
         assertEquals(2, fcMultiWithin.geometries.size, "multiple points in multiple polygons")
@@ -168,7 +168,7 @@ class FilterInsideTest {
                     Position(100.0, 100.0),
                     Position(100.0, 0.0),
                     Position(0.0, 0.0),
-                )
+                ),
             )
         val polygons = GeometryCollection(poly)
 
@@ -197,7 +197,7 @@ class FilterInsideTest {
                     Position(10.0, 10.0),
                     Position(0.0, 10.0),
                     Position(0.0, 0.0),
-                )
+                ),
             )
         val poly2 =
             Polygon(
@@ -207,7 +207,7 @@ class FilterInsideTest {
                     Position(10.0, 10.0),
                     Position(0.0, 10.0),
                     Position(0.0, 0.0),
-                )
+                ),
             )
         val polygons = GeometryCollection(poly1, poly2)
         val points = GeometryCollection(Point(5.0, 5.0))

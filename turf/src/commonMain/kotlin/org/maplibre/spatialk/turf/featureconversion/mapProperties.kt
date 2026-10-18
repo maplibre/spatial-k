@@ -16,7 +16,7 @@ import org.maplibre.spatialk.geojson.Geometry
  * @return A new [Feature] with the same geometry and transformed properties.
  */
 public fun <G : Geometry?, P1, P2> Feature<G, P1>.mapProperties(
-    transform: (P1) -> P2
+    transform: (P1) -> P2,
 ): Feature<G, P2> =
     Feature(
         geometry = geometry,
@@ -34,7 +34,7 @@ public fun <G : Geometry?, P1, P2> Feature<G, P1>.mapProperties(
  * @return A new [FeatureCollection] with the same geometries and transformed properties.
  */
 public fun <G : Geometry?, P1, P2> FeatureCollection<G, P1>.mapProperties(
-    transform: (P1) -> P2
+    transform: (P1) -> P2,
 ): FeatureCollection<G, P2> =
     FeatureCollection(
         features = features.map { it.mapProperties(transform) },

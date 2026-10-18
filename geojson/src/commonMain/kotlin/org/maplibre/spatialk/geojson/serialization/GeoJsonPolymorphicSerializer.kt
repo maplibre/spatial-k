@@ -41,7 +41,7 @@ internal abstract class GeoJsonPolymorphicSerializer<T : GeoJsonObject>(
         val actualSerializer =
             allowedSerializers[type]
                 ?: throw SerializationException(
-                    "Unexpected type $type; expected one of: ${allowedTypes.joinToString()}"
+                    "Unexpected type $type; expected one of: ${allowedTypes.joinToString()}",
                 )
         @Suppress("UNCHECKED_CAST")
         return actualSerializer as DeserializationStrategy<T>

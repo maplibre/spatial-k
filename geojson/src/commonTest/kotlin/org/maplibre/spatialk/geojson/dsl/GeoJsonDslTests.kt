@@ -27,7 +27,7 @@ class GeoJsonDslTests {
                 add(simplePoint)
                 add(Position(45.0, 45.0))
                 add(Position(0.0, 0.0))
-            }
+            },
         )
 
         val simpleLine = buildLineString {
@@ -46,7 +46,7 @@ class GeoJsonDslTests {
                     add(Position(44.4, 55.5))
                     add(Position(55.5, 66.6))
                 }
-            }
+            },
         )
 
         val simplePolygon = buildPolygon {
@@ -76,7 +76,7 @@ class GeoJsonDslTests {
                         add(5.0, 5.0)
                     }
                 }
-            }
+            },
         )
 
         addFeature(
@@ -84,7 +84,7 @@ class GeoJsonDslTests {
                 add(simplePoint)
                 add(simpleLine)
                 add(simplePolygon)
-            }
+            },
         )
     }
 
@@ -138,7 +138,7 @@ class GeoJsonDslTests {
                     Position(200.0, 99.0),
                     Position(500.0, 99.0),
                     Position(-200.0, 0.0),
-                )
+                ),
             ),
             buildPolygon {
                 addRing {

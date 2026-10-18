@@ -22,7 +22,7 @@ class DirectoryEncodingTest {
                 listOf(
                     DirectoryEntry(tileId = 0, offset = 0uL, length = 2, runLength = 1),
                     DirectoryEntry(tileId = 5, offset = 10uL, length = 3, runLength = 1),
-                )
+                ),
             )
 
         assertEquals("02000501010203010b".hexToByteString(), bytes)
@@ -35,7 +35,7 @@ class DirectoryEncodingTest {
                 listOf(
                     DirectoryEntry(tileId = 0, offset = 0uL, length = 2, runLength = 1),
                     DirectoryEntry(tileId = 1, offset = 2uL, length = 3, runLength = 1),
-                )
+                ),
             )
 
         assertEquals("020001010102030100".hexToByteString(), bytes)
@@ -48,7 +48,7 @@ class DirectoryEncodingTest {
                 listOf(
                     DirectoryEntry(tileId = 5, offset = 0uL, length = 4, runLength = 3),
                     DirectoryEntry(tileId = 10, offset = 0uL, length = 6, runLength = 0),
-                )
+                ),
             )
 
         assertEquals("020505030004060101".hexToByteString(), bytes)
@@ -90,7 +90,7 @@ class DirectoryEncodingTest {
                         offset = ULong.MAX_VALUE,
                         length = 1,
                         runLength = 1,
-                    )
+                    ),
                 ),
             )
             .forEach { entries ->

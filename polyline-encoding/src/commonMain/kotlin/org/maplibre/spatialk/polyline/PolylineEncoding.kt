@@ -111,7 +111,7 @@ public data object PolylineEncoding {
     private fun decodeValue(encoded: String, startIndex: Int): DecodedValue {
         if (startIndex >= encoded.length) {
             throw IllegalArgumentException(
-                "Encoded string ended unexpectedly at index $startIndex — truncated or odd number of values"
+                "Encoded string ended unexpectedly at index $startIndex — truncated or odd number of values",
             )
         }
         var result = 0L
@@ -122,7 +122,7 @@ public data object PolylineEncoding {
         do {
             if (index >= encoded.length) {
                 throw IllegalArgumentException(
-                    "Encoded string ended unexpectedly at index $index — truncated input"
+                    "Encoded string ended unexpectedly at index $index — truncated input",
                 )
             }
             b = encoded[index++].code - 63
