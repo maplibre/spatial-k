@@ -1,6 +1,5 @@
 package org.maplibre.spatialk.gpx
 
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -68,9 +67,7 @@ public data class Document(
  * @property extensions Extension schema elements.
  */
 @Serializable
-public data class Metadata
-@OptIn(ExperimentalTime::class)
-constructor(
+public data class Metadata(
     @SerialName("name") @XmlElement val name: String? = null,
     @SerialName("desc") @XmlElement val description: String? = null,
     @SerialName("author") @XmlSerialName("author") @XmlElement val author: Author? = null,

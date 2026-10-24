@@ -3,7 +3,6 @@
 package org.maplibre.spatialk.gpx
 
 import kotlin.test.Test
-import kotlin.time.ExperimentalTime
 import org.maplibre.spatialk.geojson.Feature
 import org.maplibre.spatialk.geojson.Point
 
@@ -11,7 +10,6 @@ import org.maplibre.spatialk.geojson.Point
 // part of the test suite, they are not intended to be comprehensive tests.
 
 class KotlinDocsTest {
-    @OptIn(ExperimentalTime::class)
     @Test
     fun example() {
         // --8<-- [start:example]
@@ -31,7 +29,6 @@ class KotlinDocsTest {
         // --8<-- [end:example]
     }
 
-    @OptIn(ExperimentalTime::class)
     @Test
     fun toGeoJson() {
         // --8<-- [start:toGeoJson]
