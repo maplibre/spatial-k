@@ -22,13 +22,9 @@
         "toml.enabled": false
     },
     "yaml": { "indentWidth": 4 },
+    "ktfmt": { "style": "kotlinlang", "lineWidth": 100 },
     "exec": {
         "commands": [
-            {
-                "command": "mise run _ktfmt --kotlinlang-style - --stdin-name={{file_path}}",
-                "exts": ["kt", "kts"]
-            },
-            { "command": "google-java-format - --assume-filename {{file_path}}", "exts": ["java"] },
             {
                 "command": "pnpm --filter docs exec mdxlint --rc-path .mdxlintrc.json --file-path {{file_path}}",
                 "exts": ["mdx"]
@@ -41,6 +37,8 @@
         "https://plugins.dprint.dev/markdown-0.28.0.wasm",
         "https://plugins.dprint.dev/toml-0.9.0.wasm",
         "https://plugins.dprint.dev/g-plane/pretty_yaml-v0.6.0.wasm",
-        "https://plugins.dprint.dev/exec-0.8.0.json@1f2dfbf5dec6d2e590b2c8b0ba6dbfaf80d0320fa9bd4c3f4f29efb99cd2bd6f"
+        "https://plugins.dprint.dev/exec-0.8.0.json@1f2dfbf5dec6d2e590b2c8b0ba6dbfaf80d0320fa9bd4c3f4f29efb99cd2bd6f",
+        "https://plugins.dprint.dev/sargunv/ktfmt-0.65.0.json@d355d4440dda00c0e315b5c39669f417bcfa76b64b68591fa1818f7a1f6b1005",
+        "https://plugins.dprint.dev/sargunv/google-java-format-0.1.0.json@168697c8e19478c6492a5f9117d163f6241b26010d04946f8441a9236616486e"
     ]
 }
