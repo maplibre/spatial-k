@@ -1,6 +1,5 @@
 package org.maplibre.spatialk.gpx
 
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -46,7 +45,6 @@ import org.maplibre.spatialk.gpx.serializers.UtcDefaultInstantSerializer
  * @property extensions Extension schema elements.
  */
 @Serializable
-@OptIn(ExperimentalTime::class)
 public data class Waypoint(
     @SerialName("lat") val latitude: Double,
     @SerialName("lon") val longitude: Double,
