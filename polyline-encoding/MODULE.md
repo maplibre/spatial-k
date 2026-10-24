@@ -6,14 +6,15 @@ Encoding and decoding of coordinate sequences using the
 ## Usage
 
 ```kotlin
-val positions = listOf(
-    Position(latitude = 38.5, longitude = -120.2),
-    Position(latitude = 40.7, longitude = -120.95),
-    Position(latitude = 43.252, longitude = -126.453),
-)
+val positions =
+    listOf(
+        Position(latitude = 38.5, longitude = -120.2),
+        Position(latitude = 40.7, longitude = -120.95),
+        Position(latitude = 43.252, longitude = -126.453),
+    )
 
-val encoded = PolylineEncoding.encode(positions)     // "_p~iF~ps|U_ulLnnqC_mqNvxq`@"
-val decoded = PolylineEncoding.decode(encoded)       // back to positions
+val encoded = PolylineEncoding.encode(positions) // "_p~iF~ps|U_ulLnnqC_mqNvxq`@"
+val decoded = PolylineEncoding.decode(encoded) // back to positions
 
 // Safe variant — returns null instead of throwing on malformed input
 val safe = PolylineEncoding.decodeOrNull(encoded)

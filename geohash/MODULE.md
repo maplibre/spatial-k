@@ -12,9 +12,13 @@ val cell =
     )
 
 cell.text // "u4pruydqqvj"
+
 cell.center
+
 cell.boundingBox
+
 cell.children
+
 cell.neighbors.east
 ```
 
