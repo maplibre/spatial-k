@@ -1,6 +1,6 @@
 packages:
-    - docs
+  - docs
 
 allowBuilds:
-    esbuild: true
-    sharp: true
+  esbuild: true
+  sharp: true
