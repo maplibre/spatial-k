@@ -14,8 +14,6 @@ postinstall = [
 "core:java" = "temurin-25.0.4+101.0.LTS"
 "aqua:dprint/dprint" = "0.64.3"
 "aqua:jdx/hk" = "2.8.1"
-"aqua:facebook/ktfmt" = "0.65"
-"github:google/google-java-format" = "1.37.0"
 "core:node" = "26.12.1"
 "aqua:pnpm/pnpm" = "12.15.0"
 
@@ -100,8 +98,3 @@ run = "hk fix --all"
 [tasks."generate:units"]
 description = "Generate unit catalogs and conversion helpers"
 run = "./gradlew :tools:units-generator:run"
-
-[tasks._ktfmt]
-description = "Called by dprint.json"
-hide = true
-run = 'java -jar {{ tools["aqua:facebook/ktfmt"].path }}/ktfmt'
