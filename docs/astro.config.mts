@@ -1,16 +1,18 @@
 // @ts-check
 
-import { unified } from "@astrojs/markdown-remark";
-import starlight from "@astrojs/starlight";
-import { defineConfig } from "astro/config";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+
+import { unified } from "@astrojs/markdown-remark";
+import starlight from "@astrojs/starlight";
+import { defineConfig } from "astro/config";
 import remarkGfm from "remark-gfm";
 import starlightCopyButton from "starlight-copy-button";
 import starlightLinksValidator from "starlight-links-validator";
 import starlightLlmsTxt from "starlight-llms-txt";
 import type { Plugin } from "vite";
+
 import remarkSpatialKSnippets from "./plugins/remark-spatial-k-snippets.mjs";
 
 const base = "/spatial-k";

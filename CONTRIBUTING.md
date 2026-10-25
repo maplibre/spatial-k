@@ -51,8 +51,8 @@ files, and include them in the same PR.
 
 ## Documentation
 
-The site uses [Starlight](https://starlight.astro.build/) and lives in `docs`. Run `mise run
-docs:dev` to serve it locally, or `mise run docs:build --version dev` to build it.
+The site uses [Starlight](https://starlight.astro.build/) and lives in `docs`. Run
+`mise run docs:dev` to serve it locally, or `mise run docs:build --version dev` to build it.
 
 Site pages explain common tasks; KDoc defines the API contract. Update the test snippets used by
 documentation examples when changing their APIs. Put migration instructions in the PR description.

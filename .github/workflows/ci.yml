@@ -1,109 +1,109 @@
 name: CI
 
 on:
-    push:
-        branches: [main]
-    pull_request:
+  push:
+    branches: [main]
+  pull_request:
 
 permissions:
-    contents: read
+  contents: read
 
 jobs:
-    build:
-        strategy:
-            matrix:
-                include:
-                    # Run full build and most tests on ubuntu
-                    - runner: ubuntu-24.04
-                      task: build
-                    # Run windows and macos native tests on those platforms
-                    - runner: windows-2025
-                      task: mingwX64Test
-                    - runner: macos-26
-                      task: macosArm64Test
+  build:
+    strategy:
+      matrix:
+        include:
+          # Run full build and most tests on ubuntu
+          - runner: ubuntu-24.04
+            task: build
+          # Run windows and macos native tests on those platforms
+          - runner: windows-2025
+            task: mingwX64Test
+          - runner: macos-26
+            task: macosArm64Test
 
-        runs-on: ${{ matrix.runner }}
-        steps:
-            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-              with:
-                  persist-credentials: false
-            - uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
-              with:
-                  version: 2026.10.18
-            - run: ./gradlew version # TODO: remove this once we're confident in our config
-            - run: ./gradlew "${{ matrix.task }}"
-            - if: ${{ matrix.task == 'macosArm64Test' }}
-              run: mise run test:swift
-            - if: ${{ matrix.task == 'build' }} # Kover only supports JVM
-              name: Generate coverage summary
-              run: |
-                  echo '## Coverage' >> "$GITHUB_STEP_SUMMARY"
-                  ./gradlew -q :koverLog | tee -a "$GITHUB_STEP_SUMMARY"
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
+        with:
+          version: 2026.10.18
+      - run: ./gradlew version # TODO: remove this once we're confident in our config
+      - run: ./gradlew "${{ matrix.task }}"
+      - if: ${{ matrix.task == 'macosArm64Test' }}
+        run: mise run test:swift
+      - if: ${{ matrix.task == 'build' }} # Kover only supports JVM
+        name: Generate coverage summary
+        run: |
+          echo '## Coverage' >> "$GITHUB_STEP_SUMMARY"
+          ./gradlew -q :koverLog | tee -a "$GITHUB_STEP_SUMMARY"
 
-    benchmark:
-        runs-on: ubuntu-24.04
-        steps:
-            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-              with:
-                  persist-credentials: false
-            - uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
-              with:
-                  version: 2026.10.18
-            - name: Run benchmark
-              run: |
-                  echo '## Benchmark' >> "$GITHUB_STEP_SUMMARY"
-                  ./gradlew -q benchmark -PbenchmarkWarmups=1 -PbenchmarkIterations=1 | tee -a "$GITHUB_STEP_SUMMARY"
+  benchmark:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
+        with:
+          version: 2026.10.18
+      - name: Run benchmark
+        run: |
+          echo '## Benchmark' >> "$GITHUB_STEP_SUMMARY"
+          ./gradlew -q benchmark -PbenchmarkWarmups=1 -PbenchmarkIterations=1 | tee -a "$GITHUB_STEP_SUMMARY"
 
-    build-docs:
-        runs-on: ubuntu-24.04
-        steps:
-            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-              with:
-                  persist-credentials: false
-            - uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
-              with:
-                  version: 2026.10.18
-            - run: mise run docs:build --version dev
-            - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
-              with:
-                  path: docs/dist
+  build-docs:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
+        with:
+          version: 2026.10.18
+      - run: mise run docs:build --version dev
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: docs/dist
 
-    check-format:
-        runs-on: ubuntu-24.04
-        steps:
-            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-              with:
-                  persist-credentials: false
-            - uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
-              with:
-                  version: 2026.10.18
-            - run: mise run check
+  check-format:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
+        with:
+          version: 2026.10.18
+      - run: mise run check
 
-    check-integrity:
-        runs-on: ubuntu-24.04
-        steps:
-            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-              with:
-                  persist-credentials: false
-            - uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
-              with:
-                  version: 2026.10.18
-            - name: Verify gradle wrapper
-              run: |
-                  GRADLE_VERSION=$(grep distributionUrl gradle/wrapper/gradle-wrapper.properties \
-                    | sed 's/.*gradle-\(.*\)-bin\.zip.*/\1/')
-                  mise x "gradle@$GRADLE_VERSION" -- gradle wrapper --gradle-version "$GRADLE_VERSION"
-                  git diff --exit-code gradle/wrapper/ gradlew gradlew.bat
-            - name: Verify yarn lockfile integrity
-              env:
-                  YARN_ENABLE_HARDENED_MODE: "1"
-              run: ./gradlew kotlinNpmInstall
-            - name: Verify generated units
-              run: ./gradlew :tools:units-generator:checkGenerated
+  check-integrity:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
+        with:
+          version: 2026.10.18
+      - name: Verify gradle wrapper
+        run: |
+          GRADLE_VERSION=$(grep distributionUrl gradle/wrapper/gradle-wrapper.properties \
+            | sed 's/.*gradle-\(.*\)-bin\.zip.*/\1/')
+          mise x "gradle@$GRADLE_VERSION" -- gradle wrapper --gradle-version "$GRADLE_VERSION"
+          git diff --exit-code gradle/wrapper/ gradlew gradlew.bat
+      - name: Verify yarn lockfile integrity
+        env:
+          YARN_ENABLE_HARDENED_MODE: "1"
+        run: ./gradlew kotlinNpmInstall
+      - name: Verify generated units
+        run: ./gradlew :tools:units-generator:checkGenerated
 
-    # stub to use as a "required" check on github
-    all-good:
-        needs: [build, check-format, build-docs, benchmark, check-integrity]
-        runs-on: ubuntu-24.04
-        steps:
-            - run: echo 'All checks passed!'
+  # stub to use as a "required" check on github
+  all-good:
+    needs: [build, check-format, build-docs, benchmark, check-integrity]
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo 'All checks passed!'
