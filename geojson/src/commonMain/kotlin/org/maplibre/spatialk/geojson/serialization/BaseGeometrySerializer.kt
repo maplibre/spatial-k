@@ -14,8 +14,8 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.json.JsonDecoder
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonEncoder
-import kotlinx.serialization.json.JsonObject
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.Geometry
@@ -102,6 +102,6 @@ internal abstract class BaseGeometrySerializer<G : Geometry, C>(
     protected abstract fun construct(
         coordinates: C,
         bbox: BoundingBox?,
-        foreignMembers: JsonObject,
+        foreignMembers: Map<String, JsonElement>,
     ): G
 }

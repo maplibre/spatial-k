@@ -1,7 +1,7 @@
 package org.maplibre.spatialk.geojson.serialization
 
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonElement
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.MultiLineString
 import org.maplibre.spatialk.geojson.Position
@@ -16,6 +16,6 @@ internal object MultiLineStringSerializer :
     override fun construct(
         coordinates: List<List<Position>>,
         bbox: BoundingBox?,
-        foreignMembers: JsonObject,
+        foreignMembers: Map<String, JsonElement>,
     ) = MultiLineString(coordinates, bbox, foreignMembers)
 }

@@ -8,6 +8,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.nullable
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.FeatureCollectionReservedKeys
@@ -31,7 +32,7 @@ public data class FeatureCollection<out G : Geometry?, out P : @Serializable Any
 constructor(
     public val features: List<Feature<G, P>> = emptyList(),
     override val bbox: BoundingBox? = null,
-    override val foreignMembers: JsonObject = EmptyForeignMembers,
+    override val foreignMembers: Map<String, JsonElement> = EmptyForeignMembers,
 ) : Collection<Feature<G, P>> by features, GeoJsonObject {
     /**
      * Constructs a [FeatureCollection] from a vararg of [Feature] objects.
@@ -44,7 +45,7 @@ constructor(
     public constructor(
         vararg features: Feature<G, P>,
         bbox: BoundingBox? = null,
-        foreignMembers: JsonObject = EmptyForeignMembers,
+        foreignMembers: Map<String, JsonElement> = EmptyForeignMembers,
     ) : this(features.toMutableList(), bbox, foreignMembers)
 
     init {

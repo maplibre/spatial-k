@@ -1,6 +1,8 @@
 @file:OptIn(ExperimentalWasmDsl::class)
 
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     id("published-library")
@@ -8,6 +10,16 @@ plugins {
 }
 
 kotlin {
+    // Test-only framework for the Swift interop tests in Package.swift.
+    val xcFramework = XCFramework("SpatialKGeoJson")
+    macosArm64 {
+        binaries.framework(listOf(NativeBuildType.DEBUG)) {
+            baseName = "SpatialKGeoJson"
+            isStatic = true
+            xcFramework.add(this)
+        }
+    }
+
     sourceSets {
         commonMain {
             dependencies {

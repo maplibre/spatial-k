@@ -1,6 +1,7 @@
 package org.maplibre.spatialk.geojson.dsl
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.maplibre.spatialk.geojson.BoundingBox
@@ -32,7 +33,7 @@ public class FeatureBuilder<G : Geometry?, P : @Serializable Any?>(
 ) {
     public var id: FeatureId? = null
     public var bbox: BoundingBox? = null
-    public var foreignMembers: JsonObject = EmptyForeignMembers
+    public var foreignMembers: Map<String, JsonElement> = EmptyForeignMembers
 
     /**
      * Sets the Feature identifier using a string value.

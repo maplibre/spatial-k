@@ -1,7 +1,7 @@
 package org.maplibre.spatialk.geojson.dsl
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonElement
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.Feature
@@ -20,7 +20,7 @@ import org.maplibre.spatialk.geojson.Geometry
 @GeoJsonDsl
 public class FeatureCollectionBuilder<G : Geometry?, P : @Serializable Any?> {
     public var bbox: BoundingBox? = null
-    public var foreignMembers: JsonObject = EmptyForeignMembers
+    public var foreignMembers: Map<String, JsonElement> = EmptyForeignMembers
     private val features: MutableList<Feature<G, P>> = mutableListOf()
 
     /**

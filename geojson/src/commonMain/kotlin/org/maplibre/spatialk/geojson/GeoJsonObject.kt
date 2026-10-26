@@ -4,7 +4,6 @@ import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoJsonObjectSerializer
 
@@ -20,7 +19,7 @@ import org.maplibre.spatialk.geojson.serialization.GeoJsonObjectSerializer
 public sealed interface GeoJsonObject {
     public val bbox: BoundingBox?
 
-    public val foreignMembers: JsonObject
+    public val foreignMembers: Map<String, JsonElement>
 
     /** Factory methods for creating and serializing [GeoJsonObject] objects. */
     public companion object {

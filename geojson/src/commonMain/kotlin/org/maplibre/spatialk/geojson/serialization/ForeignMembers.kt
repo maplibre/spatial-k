@@ -43,7 +43,10 @@ internal val FeatureReservedKeys: Set<String> =
 internal val FeatureCollectionReservedKeys: Set<String> =
     setOf("type", "bbox", "features", "coordinates", "geometries", "geometry", "properties")
 
-internal fun validateForeignMembers(foreignMembers: JsonObject, reserved: Set<String>) {
+internal fun validateForeignMembers(
+    foreignMembers: Map<String, JsonElement>,
+    reserved: Set<String>,
+) {
     val conflict = reservedConflict(foreignMembers.keys, reserved)
     require(conflict == null) {
         "Foreign member \"$conflict\" conflicts with a reserved GeoJSON member name"
@@ -87,7 +90,7 @@ internal class StreamingGeoJsonWriter(private val encoder: CompositeEncoder) {
  * Writes known members then [extras] as a JSON object without first building a [JsonObject] tree.
  */
 internal inline fun JsonEncoder.encodeStreamingGeoJsonObject(
-    extras: JsonObject,
+    extras: Map<String, JsonElement>,
     crossinline writeKnown: StreamingGeoJsonWriter.() -> Unit,
 ) {
     encodeStructure(StreamingGeoJsonMapDescriptor) {

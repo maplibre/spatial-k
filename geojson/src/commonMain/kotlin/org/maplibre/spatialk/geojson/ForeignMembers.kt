@@ -25,7 +25,7 @@ internal val EmptyForeignMembers: JsonObject = JsonObject(emptyMap())
 @HiddenFromObjC
 public inline fun <reified T : Any> GeoJsonObject.decodeForeignMembers(
     json: Json = GeoJson.jsonFormat,
-): T = json.decodeFromJsonElement(foreignMembers)
+): T = json.decodeFromJsonElement(JsonObject(foreignMembers))
 
 /**
  * Encodes [value] as a [JsonObject] for [GeoJsonObject.foreignMembers].
