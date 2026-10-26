@@ -1,6 +1,6 @@
 package org.maplibre.spatialk.geojson.dsl
 
-import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonElement
 import org.maplibre.spatialk.geojson.BoundingBox
 import org.maplibre.spatialk.geojson.EmptyForeignMembers
 import org.maplibre.spatialk.geojson.MultiPolygon
@@ -19,7 +19,7 @@ import org.maplibre.spatialk.geojson.Position
 @GeoJsonDsl
 public class MultiPolygonBuilder {
     public var bbox: BoundingBox? = null
-    public var foreignMembers: JsonObject = EmptyForeignMembers
+    public var foreignMembers: Map<String, JsonElement> = EmptyForeignMembers
     private val coordinates: MutableList<List<List<Position>>> = mutableListOf()
 
     /**

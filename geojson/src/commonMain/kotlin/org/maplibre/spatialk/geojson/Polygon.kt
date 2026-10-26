@@ -4,7 +4,7 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonElement
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeometryCoordinateReservedKeys
 import org.maplibre.spatialk.geojson.serialization.PolygonSerializer
@@ -42,7 +42,7 @@ constructor(
     /** The [BoundingBox] of this [Polygon]. */
     override val bbox: BoundingBox? = null,
     /** Members not defined by RFC 7946. */
-    override val foreignMembers: JsonObject = EmptyForeignMembers,
+    override val foreignMembers: Map<String, JsonElement> = EmptyForeignMembers,
 ) : SingleGeometry, PolygonGeometry {
     /**
      * Create a [Polygon] by a number of linear rings.
@@ -57,7 +57,7 @@ constructor(
     public constructor(
         vararg coordinates: List<Position>,
         bbox: BoundingBox? = null,
-        foreignMembers: JsonObject = EmptyForeignMembers,
+        foreignMembers: Map<String, JsonElement> = EmptyForeignMembers,
     ) : this(coordinates.toList(), bbox, foreignMembers)
 
     /**
@@ -73,7 +73,7 @@ constructor(
     public constructor(
         vararg lineStrings: LineString,
         bbox: BoundingBox? = null,
-        foreignMembers: JsonObject = EmptyForeignMembers,
+        foreignMembers: Map<String, JsonElement> = EmptyForeignMembers,
     ) : this(lineStrings.map { it.coordinates }, bbox, foreignMembers)
 
     /**
@@ -91,7 +91,7 @@ constructor(
     public constructor(
         coordinates: Array<Array<DoubleArray>>,
         bbox: BoundingBox? = null,
-        foreignMembers: JsonObject = EmptyForeignMembers,
+        foreignMembers: Map<String, JsonElement> = EmptyForeignMembers,
     ) : this(coordinates.map { it.map(::Position) }, bbox, foreignMembers)
 
     init {

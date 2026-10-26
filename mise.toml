@@ -45,12 +45,17 @@ if [ "$(uname)" != "Darwin" ]; then
   exit 0
 fi
 
-./gradlew :pmtiles:assembleSpatialKPmtilesKotlinDebugXCFramework
-rm -rf pmtiles/src/Artifacts/SpatialKPmtilesKotlin.xcframework
+./gradlew \
+  :pmtiles:assembleSpatialKPmtilesKotlinDebugXCFramework \
+  :geojson:assembleSpatialKGeoJsonDebugXCFramework
+
+# The published pmtiles package expects the framework under Artifacts/.
 mkdir -p pmtiles/src/Artifacts
-ln -s ../../build/XCFrameworks/debug/SpatialKPmtilesKotlin.xcframework \
+ln -sfn ../../build/XCFrameworks/debug/SpatialKPmtilesKotlin.xcframework \
   pmtiles/src/Artifacts/SpatialKPmtilesKotlin.xcframework
+
 swift test --package-path pmtiles/src
+swift test --package-path geojson
 '''
 
 [tasks.test]

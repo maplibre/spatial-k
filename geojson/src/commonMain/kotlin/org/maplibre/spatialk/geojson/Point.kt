@@ -4,7 +4,7 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonElement
 import org.intellij.lang.annotations.Language
 import org.maplibre.spatialk.geojson.serialization.GeoUriParser
 import org.maplibre.spatialk.geojson.serialization.GeometryCoordinateReservedKeys
@@ -28,7 +28,7 @@ constructor(
     /** The [BoundingBox] of this [Point]. */
     override val bbox: BoundingBox? = null,
     /** Members not defined by RFC 7946. */
-    override val foreignMembers: JsonObject = EmptyForeignMembers,
+    override val foreignMembers: Map<String, JsonElement> = EmptyForeignMembers,
 ) : SingleGeometry, PointGeometry {
 
     init {
@@ -62,7 +62,7 @@ constructor(
         latitude: Double,
         altitude: Double? = null,
         bbox: BoundingBox? = null,
-        foreignMembers: JsonObject = EmptyForeignMembers,
+        foreignMembers: Map<String, JsonElement> = EmptyForeignMembers,
     ) : this(Position(longitude, latitude, altitude), bbox, foreignMembers)
 
     /**
