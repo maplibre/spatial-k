@@ -4,7 +4,16 @@
   "indentWidth": 2,
   "useTabs": false,
   "newLineKind": "lf",
-  "excludes": ["**/build", "**/.gradle", "kotlin-js-store", "**/*.api"],
+  "excludes": [
+    "**/build",
+    "**/.gradle",
+    "kotlin-js-store",
+    "**/*.api",
+    // Package-manager lockfiles are generated; oxc would only re-indent them.
+    "**/pnpm-lock.yaml",
+    "**/*-lock.yaml",
+    "**/*.lock.yaml",
+  ],
   "oxc": {
     "experimentalSortImports": { "newlinesBetween": true },
     "lineWidth": 100,
@@ -21,7 +30,7 @@
     ],
   },
   "plugins": [
-    "https://plugins.dprint.dev/oxc-0.47.0.wasm",
+    "https://plugins.dprint.dev/oxc-0.48.0.wasm",
     "https://plugins.dprint.dev/exec-0.8.0.json@1f2dfbf5dec6d2e590b2c8b0ba6dbfaf80d0320fa9bd4c3f4f29efb99cd2bd6f",
     "https://plugins.dprint.dev/sargunv/ktfmt-0.65.0.json@d355d4440dda00c0e315b5c39669f417bcfa76b64b68591fa1818f7a1f6b1005",
     "https://plugins.dprint.dev/sargunv/google-java-format-0.1.0.json@168697c8e19478c6492a5f9117d163f6241b26010d04946f8441a9236616486e",
