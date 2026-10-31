@@ -3,12 +3,11 @@
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.internal.platform.wasm.WasmPlatforms.wasmJs
 import org.jetbrains.kotlin.gradle.internal.platform.wasm.WasmPlatforms.wasmWasi
-import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 
 plugins { id("base-module") }
 
 kotlin {
-    js(KotlinJsCompilerType.IR) {
+    js {
         browser()
         nodejs()
     }

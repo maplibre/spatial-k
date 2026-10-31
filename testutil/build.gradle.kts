@@ -10,7 +10,7 @@ kotlin {
             implementation(project(":geojson"))
         }
 
-        val commonMain by getting
+        val commonMain = getByName("commonMain")
 
         create("fsMain").apply {
             dependsOn(commonMain)
