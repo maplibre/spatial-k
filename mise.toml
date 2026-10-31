@@ -21,6 +21,7 @@ postinstall = [
 "aqua:jdx/hk" = "2.10.0"
 "core:node" = "26.13.0"
 "aqua:pnpm/pnpm" = "12.16.1"
+"aqua:jdx/jactionlint" = "2.4.0"
 
 [tasks.build]
 description = "Build and check all targets"

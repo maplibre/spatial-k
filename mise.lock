@@ -72,6 +72,41 @@ checksum_source = "mise-versions"
 url = "https://github.com/jdx/hk/releases/download/v2.10.0/hk-x86_64-pc-windows-msvc.zip"
 url_api = "https://api.github.com/repos/jdx/hk/releases/assets/688167961"
 
+[[tools."aqua:jdx/jactionlint"]]
+version = "2.4.0"
+backend = "aqua:jdx/jactionlint"
+specifiers = ["2.4.0"]
+
+[tools."aqua:jdx/jactionlint"."platforms.linux-arm64"]
+checksum = "sha256:42413391c248f99ff4550d6c866ee717d5ea4ca2b966d9d54ad1503af955e22f"
+url = "https://github.com/jdx/jactionlint/releases/download/v2.4.0/jactionlint_2.4.0_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/jdx/jactionlint/releases/assets/688130101"
+provenance = "github-attestations"
+
+[tools."aqua:jdx/jactionlint"."platforms.linux-x64"]
+checksum = "sha256:26ddba81db28fffc51163175c070ee1a9d1150260de4b5232f01d9b749f32d8e"
+url = "https://github.com/jdx/jactionlint/releases/download/v2.4.0/jactionlint_2.4.0_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/jdx/jactionlint/releases/assets/688130108"
+provenance = "github-attestations"
+
+[tools."aqua:jdx/jactionlint"."platforms.macos-arm64"]
+checksum = "sha256:349a13dbffdd25376898a256d195806afda08ba97ccc6378cbf2dd11a77ef8e7"
+url = "https://github.com/jdx/jactionlint/releases/download/v2.4.0/jactionlint_2.4.0_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/jdx/jactionlint/releases/assets/688130202"
+provenance = "github-attestations"
+
+[tools."aqua:jdx/jactionlint"."platforms.windows-arm64"]
+checksum = "sha256:1dfb63d0ca9b05024d4f66a9ead71720b68c0bfba70e79487ddb85b6956ce64b"
+url = "https://github.com/jdx/jactionlint/releases/download/v2.4.0/jactionlint_2.4.0_windows_arm64.zip"
+url_api = "https://api.github.com/repos/jdx/jactionlint/releases/assets/688130247"
+provenance = "github-attestations"
+
+[tools."aqua:jdx/jactionlint"."platforms.windows-x64"]
+checksum = "sha256:4e0c7b428a4faa35bb3b86af6fa65a0ac9797edcd4c64e4f7e16ca886437e172"
+url = "https://github.com/jdx/jactionlint/releases/download/v2.4.0/jactionlint_2.4.0_windows_amd64.zip"
+url_api = "https://api.github.com/repos/jdx/jactionlint/releases/assets/688130261"
+provenance = "github-attestations"
+
 [[tools."aqua:pnpm/pnpm"]]
 version = "12.16.1"
 backend = "aqua:pnpm/pnpm"

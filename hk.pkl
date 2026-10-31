@@ -8,6 +8,8 @@ steps {
   ["dprint"] = Builtins.dprint
 
   // linters
+  ["jactionlint"] = Builtins.jactionlint
+
   ["detekt"] {
     glob = List("**/src/commonMain/kotlin/**/*.kt")
     check = "./gradlew detekt"
