@@ -18,10 +18,10 @@ postinstall = [
 [tools]
 "core:java" = "temurin-25.0.5+8.0.LTS"
 "aqua:dprint/dprint" = "0.64.3"
-"aqua:jdx/hk" = "2.10.0"
+"aqua:jdx/hk" = "2.11.1"
 "core:node" = "26.13.0"
-"aqua:pnpm/pnpm" = "12.16.1"
-"aqua:jdx/jactionlint" = "2.4.0"
+"aqua:pnpm/pnpm" = "12.18.0"
+"aqua:jdx/jactionlint" = "2.5.0"
 
 [tasks.build]
 description = "Build and check all targets"
