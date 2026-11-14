@@ -73,7 +73,7 @@ jobs:
           persist-credentials: false
       - uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
         with:
-          version: 2026.11.3
+          version: 2026.11.8
       - id: version
         run: |
           latest_release=""
@@ -111,7 +111,7 @@ jobs:
           persist-credentials: false
       - uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
         with:
-          version: 2026.11.3
+          version: 2026.11.8
       - name: Publish
         run: >
           mise run publish --mode live --ref-type "$REF_TYPE" --ref-name "$REF_NAME"
@@ -140,7 +140,7 @@ jobs:
           persist-credentials: false
       - uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
         with:
-          version: 2026.11.3
+          version: 2026.11.8
       - name: Build docs
         run: >
           mise run docs:build --version "${{ needs.resolve-version.outputs.spatial_k_version }}"
@@ -164,7 +164,7 @@ jobs:
           persist-credentials: false
       - uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
         with:
-          version: 2026.11.3
+          version: 2026.11.8
       - name: Build SwiftPM binary artifact
         run: >
           mise run publish:pmtiles-swift --version "$SPATIAL_K_VERSION" --output-dir
