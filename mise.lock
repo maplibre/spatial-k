@@ -3,73 +3,73 @@
 lockfile_version = 3
 
 [[tools."aqua:dprint/dprint"]]
-version = "0.64.3"
+version = "0.65.0"
 backend = "aqua:dprint/dprint"
-specifiers = ["0.64.3"]
+specifiers = ["0.65.0"]
 
 [tools."aqua:dprint/dprint"."platforms.linux-arm64"]
-checksum = "sha256:c820bfc67b0cd6f5f0fa4d00ecdcb056944c86030859f5e50151c88d9164b30d"
-url = "https://github.com/dprint/dprint/releases/download/0.64.3/dprint-aarch64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/dprint/dprint/releases/assets/667629157"
+checksum = "sha256:804535e54f431674f5481725ba5d4718de0a7398d6abd33b899fd734f6d98062"
+url = "https://github.com/dprint/dprint/releases/download/0.65.0/dprint-aarch64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/dprint/dprint/releases/assets/756773173"
 provenance = "github-attestations"
 
 [tools."aqua:dprint/dprint"."platforms.linux-x64"]
-checksum = "sha256:f71cb7e22d6776439eba168d5cb296092d6413fea7148fe4d70684a2702a4fee"
-url = "https://github.com/dprint/dprint/releases/download/0.64.3/dprint-x86_64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/dprint/dprint/releases/assets/667629165"
+checksum = "sha256:d1aaf0c6d015931b860804eda5bf7fac9d29e2253351b7d6b0177e6b03a8776d"
+url = "https://github.com/dprint/dprint/releases/download/0.65.0/dprint-x86_64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/dprint/dprint/releases/assets/756773175"
 provenance = "github-attestations"
 
 [tools."aqua:dprint/dprint"."platforms.macos-arm64"]
-checksum = "sha256:94b48820945602fb113a34343db0a9e653a8346c60966f790556dc9ce4084a92"
-url = "https://github.com/dprint/dprint/releases/download/0.64.3/dprint-aarch64-apple-darwin.zip"
-url_api = "https://api.github.com/repos/dprint/dprint/releases/assets/667629166"
+checksum = "sha256:5e57a5e75f5d29d1f9dcc10255fccb9815031f4720fe6759643d0ee12cf201f2"
+url = "https://github.com/dprint/dprint/releases/download/0.65.0/dprint-aarch64-apple-darwin.zip"
+url_api = "https://api.github.com/repos/dprint/dprint/releases/assets/756773168"
 provenance = "github-attestations"
 
 [tools."aqua:dprint/dprint"."platforms.windows-arm64"]
-checksum = "sha256:3beb87a2582f1e43a301efd0840565518484e53f8c7b0ad27b857eee08e0745f"
-url = "https://github.com/dprint/dprint/releases/download/0.64.3/dprint-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/dprint/dprint/releases/assets/667629154"
+checksum = "sha256:83bc6c5df42d6001062a71ac475ceb5be119472af6afb3fce52ff13ed042db77"
+url = "https://github.com/dprint/dprint/releases/download/0.65.0/dprint-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/dprint/dprint/releases/assets/756773171"
 provenance = "github-attestations"
 
 [tools."aqua:dprint/dprint"."platforms.windows-x64"]
-checksum = "sha256:3beb87a2582f1e43a301efd0840565518484e53f8c7b0ad27b857eee08e0745f"
-url = "https://github.com/dprint/dprint/releases/download/0.64.3/dprint-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/dprint/dprint/releases/assets/667629154"
+checksum = "sha256:83bc6c5df42d6001062a71ac475ceb5be119472af6afb3fce52ff13ed042db77"
+url = "https://github.com/dprint/dprint/releases/download/0.65.0/dprint-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/dprint/dprint/releases/assets/756773171"
 provenance = "github-attestations"
 
 [[tools."aqua:jdx/hk"]]
-version = "2.12.0"
+version = "2.13.0"
 backend = "aqua:jdx/hk"
-specifiers = ["2.12.0"]
+specifiers = ["2.13.0"]
 
 [tools."aqua:jdx/hk"."platforms.linux-arm64"]
-checksum = "sha256:0f4e44802c3fcf98461b6608281353ae1944b82fd12f4a683f8e2e6683e562f3"
+checksum = "sha256:490196a4e638991c671f42941d72ade4d00b14750145f34fc64377b49fc070bb"
 checksum_source = "mise-versions"
-url = "https://github.com/jdx/hk/releases/download/v2.12.0/hk-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/hk/releases/assets/728911209"
+url = "https://github.com/jdx/hk/releases/download/v2.13.0/hk-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/756295808"
 
 [tools."aqua:jdx/hk"."platforms.linux-x64"]
-checksum = "sha256:db98f893b882f064c1f7abcc96f4ccc31e8154fd1ba0f7f94823d371c2c4fdad"
-url = "https://github.com/jdx/hk/releases/download/v2.12.0/hk-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/hk/releases/assets/728911276"
+checksum = "sha256:8ff0b29c9925d73df9b14af7fc43ace86de03db73eafa3046750fce5c39e1955"
+url = "https://github.com/jdx/hk/releases/download/v2.13.0/hk-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/756295854"
 
 [tools."aqua:jdx/hk"."platforms.macos-arm64"]
-checksum = "sha256:269c17d47e884c19adb77144d5957e854fc5fc6a1a6f9c1a0a5b19431e2fabb8"
+checksum = "sha256:64efc441dc0858a175909fd6253ddd6c540da80e7d1bd2a2ad0ec9c0cdab3d97"
 checksum_source = "mise-versions"
-url = "https://github.com/jdx/hk/releases/download/v2.12.0/hk-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/jdx/hk/releases/assets/728911206"
+url = "https://github.com/jdx/hk/releases/download/v2.13.0/hk-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/756295809"
 
 [tools."aqua:jdx/hk"."platforms.windows-arm64"]
-checksum = "sha256:b84354929124ff501ae57a5ed5e3824f982f361d94396f5acc06fde6a15fbe5f"
+checksum = "sha256:54d34ae2e9ce7307658c69021801a2aad64149614eab60640dab7a63a18e2025"
 checksum_source = "mise-versions"
-url = "https://github.com/jdx/hk/releases/download/v2.12.0/hk-aarch64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/jdx/hk/releases/assets/728911208"
+url = "https://github.com/jdx/hk/releases/download/v2.13.0/hk-aarch64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/756295811"
 
 [tools."aqua:jdx/hk"."platforms.windows-x64"]
-checksum = "sha256:052f2ea36dc679cae7fbbd57f75c2b4e5c4cd7bb6711f7bf6b9a147524ffe9f9"
+checksum = "sha256:2908de6281368b8128f1d4d7a03905d3ab0eb86a82641d6055be88806bf9ffac"
 checksum_source = "mise-versions"
-url = "https://github.com/jdx/hk/releases/download/v2.12.0/hk-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/jdx/hk/releases/assets/728911213"
+url = "https://github.com/jdx/hk/releases/download/v2.13.0/hk-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/756295806"
 
 [[tools."aqua:jdx/jactionlint"]]
 version = "2.6.0"
@@ -107,60 +107,60 @@ url_api = "https://api.github.com/repos/jdx/jactionlint/releases/assets/74051606
 provenance = "github-attestations"
 
 [[tools."aqua:pnpm/pnpm"]]
-version = "12.18.0"
+version = "12.21.0"
 backend = "aqua:pnpm/pnpm"
-specifiers = ["12.18.0"]
+specifiers = ["12.21.0"]
 
 [tools."aqua:pnpm/pnpm"."platforms.linux-arm64"]
-checksum = "sha256:700bd1aa4028465b80e62b7c5bec8455be60bbafaf53a3262a4ab8e2057712ac"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.18.0/pnpm-linux-arm64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/711505548"
+checksum = "sha256:6c5913a48c93b3a556b71c3bd9bf12c6bf9fbfbbbd2dcbd1d52a85c539751b9e"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.21.0/pnpm-linux-arm64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/744357257"
 provenance = "github-attestations"
 
 [tools."aqua:pnpm/pnpm"."platforms.linux-x64"]
-checksum = "sha256:3726060e236c0db3e7124c0a5af123c840ba0cb76682149b63ea0baf290017c2"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.18.0/pnpm-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/711505542"
+checksum = "sha256:84c4773bcf4a217f4083cd7b2a91e4cee6103cf42426c1282ef37d308f55a410"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.21.0/pnpm-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/744357264"
 provenance = "github-attestations"
 
 [tools."aqua:pnpm/pnpm"."platforms.macos-arm64"]
-checksum = "sha256:9b647f634d7e8f23162c9d3d1d0e0950d1152402ca0f4c331583ed7c75cd3706"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.18.0/pnpm-darwin-arm64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/711505537"
+checksum = "sha256:5c4d73018e00dd602531ce714625594fb693cbe110e6719df2b043b0ae62ab1a"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.21.0/pnpm-darwin-arm64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/744357270"
 provenance = "github-attestations"
 
 [tools."aqua:pnpm/pnpm"."platforms.windows-arm64"]
-checksum = "sha256:942765d3d900f2c586874011169489db9983285df6e033a0c930ada8498a572d"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.18.0/pnpm-win32-arm64.zip"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/711505549"
+checksum = "sha256:9584890db13a8bcd9a77556f3455e37718a17a31c0aee0254cf8d8ac6b3a8df1"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.21.0/pnpm-win32-arm64.zip"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/744357256"
 provenance = "github-attestations"
 
 [tools."aqua:pnpm/pnpm"."platforms.windows-x64"]
-checksum = "sha256:dfe2123affd2ed4be280ba7ab4678c0fae130b4936fabefa9b1675b60514ef7c"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.18.0/pnpm-win32-x64.zip"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/711505547"
+checksum = "sha256:4fb64bb37e46c788309e0fd4ea93beb512546fdc7348121194fb704fbb72c09c"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.21.0/pnpm-win32-x64.zip"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/744357265"
 provenance = "github-attestations"
 
 [[tools.java]]
-version = "temurin-25.0.5+8.0.LTS"
+version = "temurin-25.0.5.1+2.0.LTS"
 backend = "core:java"
-specifiers = ["temurin-25.0.5+8.0.LTS"]
+specifiers = ["temurin-25.0.5.1+2.0.LTS"]
 
 [tools.java."platforms.linux-arm64"]
-checksum = "sha256:bb5b2ded252f21c6090cf780b0a408ad0d83bbb557e702955643557f13231880"
-url = "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.5%2B8/OpenJDK25U-jdk_aarch64_linux_hotspot_25.0.5_8.tar.gz"
+checksum = "sha256:c37879e0d08eeb1baa69fcbb7758cd455b7b1c0ceab1e2a136ccb1713c530984"
+url = "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.5.1%2B2/OpenJDK25U-jdk_aarch64_linux_hotspot_25.0.5.1_2.tar.gz"
 
 [tools.java."platforms.linux-x64"]
-checksum = "sha256:68982529869257d0ee6b824ec5aa270ff8b118bb438670da0b97ebdab178d7fb"
-url = "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.5%2B8/OpenJDK25U-jdk_x64_linux_hotspot_25.0.5_8.tar.gz"
+checksum = "sha256:760f91b22c3efc9bd1b64ff950598231be82928cc807e30691a0e7a2995a62c0"
+url = "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.5.1%2B2/OpenJDK25U-jdk_x64_linux_hotspot_25.0.5.1_2.tar.gz"
 
 [tools.java."platforms.macos-arm64"]
-checksum = "sha256:36dc14d797aaff6d89aab302cd053fdba6207dfdcf772052fa7b023a94b0e857"
-url = "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.5%2B8/OpenJDK25U-jdk_aarch64_mac_hotspot_25.0.5_8.tar.gz"
+checksum = "sha256:248353ea41be39d5d2c1c67c7ce0ae4d1668966aacd0c5308464bc1be42f677b"
+url = "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.5.1%2B2/OpenJDK25U-jdk_aarch64_mac_hotspot_25.0.5.1_2.tar.gz"
 
 [tools.java."platforms.windows-x64"]
-checksum = "sha256:636bdc13dc649ddc7d5921c5c7d23cca6e44fd19d662b45cc9c02135a6c96c42"
-url = "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.5%2B8/OpenJDK25U-jdk_x64_windows_hotspot_25.0.5_8.zip"
+checksum = "sha256:849d380ab0a64d9098e7d3a2de28beb73841c3b255c8284f019ccd8748c5eb5b"
+url = "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.5.1%2B2/OpenJDK25U-jdk_x64_windows_hotspot_25.0.5.1_2.zip"
 
 [[tools.node]]
 version = "26.13.1"
