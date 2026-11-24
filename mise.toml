@@ -16,11 +16,11 @@ postinstall = [
 ]
 
 [tools]
-"core:java" = "temurin-25.0.5+8.0.LTS"
-"aqua:dprint/dprint" = "0.64.3"
-"aqua:jdx/hk" = "2.12.0"
+"core:java" = "temurin-25.0.5.1+2.0.LTS"
+"aqua:dprint/dprint" = "0.65.0"
+"aqua:jdx/hk" = "2.13.0"
 "core:node" = "26.13.1"
-"aqua:pnpm/pnpm" = "12.18.0"
+"aqua:pnpm/pnpm" = "12.21.0"
 "aqua:jdx/jactionlint" = "2.6.0"
 
 [tasks.build]
